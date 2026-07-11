@@ -12,6 +12,9 @@ const TODAY = new Date().toISOString().slice(0, 10);
 const festivals = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/festivals.json'), 'utf8'));
 const markets = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/markets.json'), 'utf8'));
 const posts = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/posts.json'), 'utf8'));
+let apiFests = [];
+try { apiFests = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/festivals_api.json'), 'utf8')); }
+catch (e) { console.log('⚠ festivals_api.json 없음 — 검색 데이터 비어있음 (node fetch-festivals.js 먼저 실행)'); }
 
 const MONTHS = [
   { key: '2026-07', months: [7], label: '2026년 7월', short: '7월', emoji: '💦' },
@@ -368,7 +371,7 @@ function layout(title, desc, urlPath, content) {
 <body>
 <header><div class="wrap">
 <a class="logo" href="/">🎪 ${SITE_NAME}</a>
-<nav><a href="/2026-07/">월별 축제</a><a href="/jangteo/">전국 오일장</a><a href="/test/">🔮 취향 테스트</a><a href="/blog/">축제 가이드</a></nav>
+<nav><a href="/2026-07/">월별 축제</a><a href="/search/">🔎 축제 검색</a><a href="/jangteo/">전국 오일장</a><a href="/test/">🔮 취향 테스트</a><a href="/blog/">축제 가이드</a></nav>
 </div></header>
 ${content}
 <footer><div class="wrap">
@@ -724,8 +727,73 @@ writePage('test', layout(
   `4가지 질문으로 알아보는 나의 축제 유형! 물놀이·음악·먹거리·불꽃놀이… 나에게 딱 맞는 2026 전국 축제를 30초 만에 추천받으세요.`,
   '/test/', testContent));
 
+// ---------- 킥⑤ 축제 검색 (공공데이터 TourAPI) ----------
+const SIDO_ORDER = ['서울','경기','인천','강원','충북','충남','대전','세종','전북','전남','광주','경북','경남','대구','울산','부산','제주'];
+const sidosPresent = SIDO_ORDER.filter(s => apiFests.some(f => f.sido === s));
+const sidoOpts = sidosPresent.map(s => `<option value="${s}">${s} (${apiFests.filter(f => f.sido === s).length})</option>`).join('');
+const searchContent = `<main><div class="wrap">
+<style>
+.srchbar{background:#fff;border-radius:16px;padding:16px 18px;box-shadow:0 3px 14px rgba(31,41,55,.07);margin:14px 0 6px}
+.srchbar .row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.srchbar select,.srchbar input{padding:10px 13px;border:1.5px solid #dcefeb;border-radius:12px;font-size:.93rem;font-family:inherit;background:#f4faf8;color:#374151}
+.srchbar input#fKw{flex:1;min-width:150px}
+.srchbar .q{display:flex;flex-wrap:wrap;gap:7px;margin-top:12px}
+.srchbar .q button{border:1.5px solid #a9e5dd;background:#fff;color:#0c7d72;border-radius:20px;padding:8px 16px;font-size:.87rem;font-weight:800;cursor:pointer;font-family:inherit;transition:all .15s}
+.srchbar .q button:hover{border-color:#0f9d8f}
+.srchbar .q button.on{background:linear-gradient(135deg,#0f9d8f,#2dd4bf);color:#fff;border-color:transparent}
+#fReset{background:#f3f4f6;color:#374151;border:none;cursor:pointer;font-weight:700}
+.srch-count{margin:16px 0 12px;font-weight:800;color:#0a6c63;font-size:1.02rem}
+.page-h1{font-size:1.5rem;font-weight:900;letter-spacing:-.02em;margin:6px 0}
+.page-sub{color:#6b7280;font-size:.95rem;margin-bottom:6px}
+</style>
+<h1 class="page-h1">🔎 전국 축제 검색</h1>
+<p class="page-sub">공공데이터(한국관광공사) 기반 전국 축제 ${apiFests.length}건 — 날짜·지역·도시로 찾아보세요.</p>
+<div class="srchbar">
+<div class="row">
+<select id="fSido"><option value="">전체 지역</option>${sidoOpts}</select>
+<select id="fSigungu"><option value="">전체 도시</option></select>
+<input type="text" id="fKw" placeholder="축제명·지역 검색">
+<button id="fReset">초기화</button>
+</div>
+<div class="q" id="fQuick">
+<button data-q="all" class="on">전체</button>
+<button data-q="now">진행중</button>
+<button data-q="weekend">이번 주말</button>
+<button data-q="month">이번 달</button>
+<button data-q="next">다음 달</button>
+</div>
+</div>
+<div class="srch-count" id="fCount"></div>
+<div class="grid" id="fGrid"></div>
+<p class="note">데이터 출처: 한국관광공사 국문관광정보 서비스(공공데이터포털). 일정은 변동될 수 있으니 방문 전 공식 정보를 확인하세요. 축제 카드를 누르면 네이버 검색으로 연결됩니다.</p>
+</div></main>
+<script>window.FESTS=${JSON.stringify(apiFests)};</script>
+<script>
+(function(){
+var F=window.FESTS||[];
+var st={sido:'',sigungu:'',kw:'',quick:'all'};
+function td(){var d=new Date();d.setHours(0,0,0,0);return d;}
+function toD(y){return new Date(+y.slice(0,4),+y.slice(4,6)-1,+y.slice(6,8));}
+function ov(f,a,b){var s=toD(f.start),e=toD(f.end);return s<=b&&e>=a;}
+function fy(y){return y?y.slice(0,4)+'.'+(+y.slice(4,6))+'.'+(+y.slice(6,8)):'';}
+function esc(s){return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function dday(f){var t=td(),s=toD(f.start),e=toD(f.end);if(e<t)return{l:'종료',c:'off'};if(s<=t)return{l:'진행중',c:'on'};return{l:'D-'+Math.round((s-t)/86400000),c:'on'};}
+function ranges(){var t=td(),w=t.getDay();var sat=new Date(t);sat.setDate(t.getDate()+((6-w+7)%7));var sun=new Date(sat);sun.setDate(sat.getDate()+1);var m0=new Date(t.getFullYear(),t.getMonth(),1),m1=new Date(t.getFullYear(),t.getMonth()+1,0),n0=new Date(t.getFullYear(),t.getMonth()+1,1),n1=new Date(t.getFullYear(),t.getMonth()+2,0);return{t:t,sat:sat,sun:sun,m0:m0,m1:m1,n0:n0,n1:n1};}
+function card(f){var d=dday(f),img=f.img||'/img/cat-culture.webp',loc=(f.sido||'')+(f.sigungu?' '+f.sigungu:'');var q=encodeURIComponent(f.title+' 축제');return '<a class="card" href="https://search.naver.com/search.naver?query='+q+'" target="_blank" rel="noopener"><div class="thumb"><img loading="lazy" src="'+esc(img)+'" alt="'+esc(f.title)+'" onerror="this.src=&#39;/img/cat-culture.webp&#39;"><span class="dday '+d.c+'">'+d.l+'</span>'+(f.sido?'<span class="cat">'+esc(f.sido)+'</span>':'')+'</div><div class="card-body"><h3>'+esc(f.title)+'</h3><div class="date">'+fy(f.start)+' ~ '+fy(f.end)+'</div><div class="loc">'+esc(loc)+'</div></div></a>';}
+function apply(){var r=ranges();var list=F.filter(function(f){if(toD(f.end)<r.t)return false;if(st.sido&&f.sido!==st.sido)return false;if(st.sigungu&&f.sigungu!==st.sigungu)return false;if(st.kw){var k=st.kw.toLowerCase();if((f.title||'').toLowerCase().indexOf(k)<0&&(f.addr||'').indexOf(st.kw)<0)return false;}if(st.quick==='now'&&!ov(f,r.t,r.t))return false;if(st.quick==='weekend'&&!ov(f,r.sat,r.sun))return false;if(st.quick==='month'&&!ov(f,r.m0,r.m1))return false;if(st.quick==='next'&&!ov(f,r.n0,r.n1))return false;return true;});list.sort(function(a,b){return (a.start||'').localeCompare(b.start||'');});document.getElementById('fCount').textContent='총 '+list.length+'개 축제';document.getElementById('fGrid').innerHTML=list.length?list.map(card).join(''):'<p style="grid-column:1/-1;color:#6b7280;padding:24px 0">조건에 맞는 축제가 없어요. 필터를 바꿔보세요.</p>';}
+function fillSg(){var set={};F.forEach(function(f){if((!st.sido||f.sido===st.sido)&&f.sigungu)set[f.sigungu]=1;});var arr=Object.keys(set).sort();document.getElementById('fSigungu').innerHTML='<option value="">전체 도시</option>'+arr.map(function(s){return '<option value="'+s+'">'+s+'</option>';}).join('');}
+document.getElementById('fSido').addEventListener('change',function(e){st.sido=e.target.value;st.sigungu='';fillSg();apply();});
+document.getElementById('fSigungu').addEventListener('change',function(e){st.sigungu=e.target.value;apply();});
+document.getElementById('fKw').addEventListener('input',function(e){st.kw=e.target.value.trim();apply();});
+document.getElementById('fReset').addEventListener('click',function(){st={sido:'',sigungu:'',kw:'',quick:'all'};document.getElementById('fSido').value='';document.getElementById('fKw').value='';fillSg();var bs=document.querySelectorAll('#fQuick button');for(var i=0;i<bs.length;i++)bs[i].classList.toggle('on',bs[i].getAttribute('data-q')==='all');apply();});
+var qbs=document.querySelectorAll('#fQuick button');for(var i=0;i<qbs.length;i++){qbs[i].addEventListener('click',function(){st.quick=this.getAttribute('data-q');for(var j=0;j<qbs.length;j++)qbs[j].classList.remove('on');this.classList.add('on');apply();});}
+fillSg();apply();
+})();
+</script>`;
+writePage('search', layout('전국 축제 검색 — 날짜·지역·도시별 | ' + SITE_NAME, '전국 축제를 날짜·지역·도시로 검색하세요. 공공데이터 기반 최신 축제 ' + apiFests.length + '건. 진행중·이번 주말·이번 달 축제를 한눈에.', '/search/', searchContent));
+
 // ---------- sitemap / robots ----------
-const urls = ['/', ...MONTHS.map(m => `/${m.key}/`), '/jangteo/', '/test/', '/blog/', ...posts.map(p => `/blog/${p.slug}/`), '/privacy/'];
+const urls = ['/', ...MONTHS.map(m => `/${m.key}/`), '/search/', '/jangteo/', '/test/', '/blog/', ...posts.map(p => `/blog/${p.slug}/`), '/privacy/'];
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${urls.map(u => `<url><loc>${SITE}${u}</loc><lastmod>${TODAY}</lastmod></url>`).join('\n')}

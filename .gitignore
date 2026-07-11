@@ -1,3 +1,6 @@
 .vercel
 vc.js
 .vercel
+tourapi.key
+*.key
+node_modules/
