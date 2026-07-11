@@ -14,12 +14,12 @@ const markets = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/markets.json'),
 const posts = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/posts.json'), 'utf8'));
 
 const MONTHS = [
-  { key: '2026-07', months: [7], label: '2026년 7월', short: '7월' },
-  { key: '2026-08', months: [8], label: '2026년 8월', short: '8월' },
-  { key: '2026-09', months: [9], label: '2026년 9월', short: '9월' },
-  { key: '2026-10', months: [10], label: '2026년 10월', short: '10월' },
-  { key: '2026-11', months: [11], label: '2026년 11월', short: '11월' },
-  { key: '2026-12', months: [12, 1], label: '2026년 12월~2027년 1월 겨울', short: '12월·겨울' },
+  { key: '2026-07', months: [7], label: '2026년 7월', short: '7월', emoji: '💦' },
+  { key: '2026-08', months: [8], label: '2026년 8월', short: '8월', emoji: '🌊' },
+  { key: '2026-09', months: [9], label: '2026년 9월', short: '9월', emoji: '🎆' },
+  { key: '2026-10', months: [10], label: '2026년 10월', short: '10월', emoji: '🍁' },
+  { key: '2026-11', months: [11], label: '2026년 11월', short: '11월', emoji: '🌾' },
+  { key: '2026-12', months: [12, 1], label: '2026년 12월~2027년 1월 겨울', short: '12월·겨울', emoji: '⛄' },
 ];
 
 const CAT_EMOJI = { '물놀이': '💦', '음악': '🎵', '음식': '🍜', '꽃': '🌸', '문화': '🎭', '불꽃': '🎆', '전통': '🏮', '빛': '✨', '눈': '⛄', '기타': '🎪' };
@@ -43,9 +43,9 @@ function festCard(f) {
     ? '<span class="badge ok">일정 확정</span>'
     : '<span class="badge est">예년 기준·변동 가능</span>';
   return `<div class="card" data-region="${esc(f.region)}" data-start="${f.start}" data-end="${f.end}">
-  <div class="thumb"><img src="/img/cat-${img}.webp" alt="${esc(f.category)} 축제" loading="lazy"><span class="dday"></span></div>
+  <div class="thumb"><img src="/img/cat-${img}.webp" alt="${esc(f.category)} 축제" loading="lazy"><span class="dday"></span><span class="cat">${emoji} ${esc(f.category)}</span></div>
   <div class="card-body">
-  <div class="card-top"><span class="cat">${emoji} ${esc(f.category)}</span>${badge}</div>
+  <div class="card-top">${badge}</div>
   <h3>${esc(f.name)}</h3>
   <p class="date">📅 ${fmtRange(f)}</p>
   <p class="loc">📍 ${esc(f.region)} ${esc(f.city)} · ${esc(f.place)}</p>
@@ -126,64 +126,79 @@ document.querySelectorAll('.rbtn').forEach(b => b.addEventListener('click', () =
 
 const CSS = `
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Apple SD Gothic Neo','Malgun Gothic',sans-serif;color:#333;line-height:1.6;background:#fffaf5}
+body{font-family:'Pretendard Variable',Pretendard,'Apple SD Gothic Neo','Malgun Gothic',sans-serif;color:#1f2937;line-height:1.65;background:#fff;letter-spacing:-.01em}
 a{color:inherit;text-decoration:none}
-.wrap{max-width:960px;margin:0 auto;padding:0 16px}
-header{background:linear-gradient(135deg,#ff6b4a,#ff9a3c);color:#fff;padding:14px 0}
+.wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+header{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid #f3ece6;padding:13px 0}
 header .wrap{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
-.logo{font-size:1.5rem;font-weight:800}
-nav a{margin-left:14px;font-weight:600;font-size:.95rem;opacity:.95}
-nav a:hover{text-decoration:underline}
+.logo{font-size:1.35rem;font-weight:900;color:#ff5a3c}
+nav a{margin-left:20px;font-weight:600;font-size:.95rem;color:#4b5563;transition:color .15s}
+nav a:hover{color:#ff5a3c}
 .hero{position:relative;overflow:hidden;background:url('/img/hero.webp') center/cover;color:#fff;text-align:center}
 .hero-vid{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-.hero-inner{position:relative;z-index:1;padding:64px 16px 72px;background:rgba(40,15,5,.45)}
-.hero h1{text-shadow:0 2px 8px rgba(0,0,0,.5)}
-.hero p{text-shadow:0 1px 4px rgba(0,0,0,.5)}
-.hero h1{font-size:1.7rem;margin-bottom:8px}
-.hero p{opacity:.95}
-main{padding:28px 0 40px}
-h2.sec{font-size:1.3rem;margin:28px 0 14px;padding-left:10px;border-left:5px solid #ff6b4a}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
-.card{background:#fff;border:1px solid #ffe3d0;border-radius:12px;overflow:hidden;box-shadow:0 2px 6px rgba(255,107,74,.07)}
-.card .card-body{padding:14px 16px}
-.card .thumb{position:relative;height:130px;overflow:hidden;background:#ffe9db}
-.card .thumb img{width:100%;height:100%;object-fit:cover;display:block}
-.card .dday{position:absolute;top:8px;left:8px;background:rgba(0,0,0,.65);color:#fff;font-size:.78rem;font-weight:800;padding:3px 9px;border-radius:12px}
+.hero-inner{position:relative;z-index:1;padding:88px 20px 96px;background:linear-gradient(180deg,rgba(20,10,25,.28),rgba(20,10,25,.62))}
+.hero h1{font-size:clamp(1.7rem,4.2vw,2.7rem);font-weight:900;letter-spacing:-.03em;margin-bottom:12px;text-shadow:0 2px 14px rgba(0,0,0,.45)}
+.hero p{font-size:clamp(.98rem,1.8vw,1.15rem);opacity:.96;text-shadow:0 1px 6px rgba(0,0,0,.45)}
+.hero-cta{margin-top:26px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.hero-cta a{padding:13px 26px;border-radius:28px;font-weight:800;font-size:.98rem;transition:transform .15s}
+.hero-cta a:hover{transform:translateY(-2px)}
+.hero-cta .cta1{background:#ff5a3c;color:#fff;box-shadow:0 6px 18px rgba(255,90,60,.45)}
+.hero-cta .cta2{background:rgba(255,255,255,.16);color:#fff;border:1.5px solid rgba(255,255,255,.65);backdrop-filter:blur(4px)}
+.hero-stats{margin-top:28px;display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.hero-stats span{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.28);backdrop-filter:blur(4px);padding:6px 15px;border-radius:18px;font-size:.85rem;font-weight:600}
+main{padding:36px 0 56px}
+h2.sec{position:relative;font-size:1.45rem;font-weight:800;letter-spacing:-.02em;margin:48px 0 18px;padding-left:15px}
+h2.sec::before{content:'';position:absolute;left:0;top:14%;width:5px;height:72%;background:linear-gradient(180deg,#ff5a3c,#ff9a3c);border-radius:4px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px}
+.card{background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 3px 14px rgba(31,41,55,.08);transition:transform .2s,box-shadow .2s}
+.card:hover{transform:translateY(-5px);box-shadow:0 12px 28px rgba(31,41,55,.14)}
+.card .card-body{padding:16px 18px 18px}
+.card .thumb{position:relative;height:158px;overflow:hidden;background:#ffe9db}
+.card .thumb img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .45s}
+.card:hover .thumb img{transform:scale(1.07)}
+.card .thumb::after{content:'';position:absolute;inset:auto 0 0 0;height:46%;background:linear-gradient(180deg,transparent,rgba(0,0,0,.28))}
+.card .dday{position:absolute;top:10px;left:10px;z-index:2;background:rgba(17,24,39,.72);color:#fff;font-size:.78rem;font-weight:800;padding:4px 11px;border-radius:14px;backdrop-filter:blur(3px)}
 .card .dday:empty{display:none}
-.card .dday.on{background:#e0502f}
-.card .dday.off{background:#999}
+.card .dday.on{background:#ff5a3c}
+.card .dday.off{background:#9ca3af}
 .card.ended{opacity:.55}
-.card h3{font-size:1.08rem;margin:6px 0 4px}
-.card .date{font-weight:700;color:#e0502f;font-size:.93rem}
-.card .loc{font-size:.87rem;color:#666;margin:2px 0 6px}
-.card .desc{font-size:.9rem;color:#555}
-.card-top{display:flex;justify-content:space-between;align-items:center}
-.cat{font-size:.82rem;color:#b45}
-.badge{font-size:.72rem;padding:2px 8px;border-radius:10px;font-weight:700}
+.card .cat{position:absolute;bottom:10px;left:10px;z-index:2;background:rgba(255,255,255,.94);color:#e0502f;font-size:.78rem;font-weight:800;padding:3px 11px;border-radius:12px}
+.card h3{font-size:1.13rem;font-weight:800;letter-spacing:-.02em;margin:2px 0 6px}
+.card .date{font-weight:700;color:#ff5a3c;font-size:.92rem}
+.card .loc{font-size:.86rem;color:#6b7280;margin:2px 0 8px}
+.card .desc{font-size:.9rem;color:#4b5563}
+.card-top{display:flex;justify-content:flex-end;align-items:center;margin-bottom:2px}
+.badge{font-size:.72rem;padding:3px 9px;border-radius:10px;font-weight:700}
 .badge.ok{background:#e5f6e8;color:#1a7f37}
 .badge.est{background:#fff2d6;color:#9a6700}
-.filter{margin:12px 0 18px;display:flex;flex-wrap:wrap;gap:6px}
-.rbtn{border:1px solid #ffb08a;background:#fff;color:#e0502f;border-radius:16px;padding:5px 13px;font-size:.87rem;cursor:pointer;font-weight:600}
-.rbtn.active{background:#ff6b4a;color:#fff;border-color:#ff6b4a}
-.monthnav{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;margin:14px 0}
-.monthnav a{background:#fff;border:1px solid #ffd9c2;border-radius:10px;padding:14px;text-align:center;font-weight:700;color:#e0502f}
-.monthnav a:hover{background:#fff0e6}
-.monthnav .cnt{display:block;font-size:.8rem;color:#999;font-weight:400}
-table{width:100%;border-collapse:collapse;background:#fff;border-radius:10px;overflow:hidden;font-size:.9rem}
-th,td{padding:10px 8px;border-bottom:1px solid #f4e3d6;text-align:left}
-th{background:#fff0e6;color:#c14a26}
+.filter{margin:14px 0 22px;display:flex;flex-wrap:wrap;gap:8px}
+.rbtn{border:1.5px solid #ffd0be;background:#fff;color:#e0502f;border-radius:20px;padding:7px 17px;font-size:.88rem;cursor:pointer;font-weight:700;transition:all .15s}
+.rbtn:hover{border-color:#ff5a3c}
+.rbtn.active{background:linear-gradient(135deg,#ff5a3c,#ff9a3c);color:#fff;border-color:transparent;box-shadow:0 4px 12px rgba(255,90,60,.35)}
+.monthnav{display:grid;grid-template-columns:repeat(auto-fill,minmax(148px,1fr));gap:12px;margin:16px 0}
+.monthnav a{background:#fff;border:1.5px solid #f3e8e0;border-radius:16px;padding:18px 12px;text-align:center;font-weight:800;color:#374151;box-shadow:0 2px 8px rgba(31,41,55,.05);transition:all .18s}
+.monthnav a:hover{transform:translateY(-3px);border-color:#ffb59d;box-shadow:0 8px 20px rgba(255,90,60,.14);color:#ff5a3c}
+.monthnav .mn-emoji{display:block;font-size:1.6rem;margin-bottom:6px}
+.monthnav .cnt{display:block;font-size:.8rem;color:#9ca3af;font-weight:500;margin-top:2px}
+table{width:100%;border-collapse:collapse;background:#fff;border-radius:16px;overflow:hidden;font-size:.92rem;box-shadow:0 3px 14px rgba(31,41,55,.07)}
+th,td{padding:12px 10px;border-bottom:1px solid #f6efe9;text-align:left}
+th{background:#fff5ef;color:#c14a26;font-weight:800}
+tr:hover td{background:#fffaf6}
 tr.today-open{background:#e5f6e8}
 tr.today-open td:first-child::after{content:" 🔴 오늘 장날!";color:#1a7f37;font-size:.78rem;font-weight:700}
-.note{font-size:.83rem;color:#888;margin:10px 0}
-footer{background:#3d2b23;color:#d9c9bf;padding:24px 0;font-size:.85rem;text-align:center}
+.note{font-size:.86rem;color:#8b8378;margin:10px 0}
+body{background:#fdfaf7}
+footer{background:#231a14;color:#cfc2b8;padding:38px 0;font-size:.86rem;text-align:center;margin-top:20px}
 footer a{text-decoration:underline}
-.wkgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px}
-.wkchip{background:#fff;border:1px solid #ffd9c2;border-radius:10px;padding:10px 14px;font-size:.92rem}
-.wkchip:hover{background:#fff0e6}
-.wkchip span{display:block;font-size:.8rem;color:#999}
-.bloglist a{display:block;background:#fff;border:1px solid #ffe3d0;border-radius:10px;padding:14px 16px;margin-bottom:10px;font-weight:600}
-.bloglist a span{display:block;font-size:.83rem;color:#999;font-weight:400;margin-top:2px}
-article{background:#fff;border:1px solid #ffe3d0;border-radius:12px;padding:24px}
+footer p{margin:3px 0}
+.wkgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(235px,1fr));gap:10px}
+.wkchip{background:#fff;border-radius:14px;padding:14px 17px;font-size:.94rem;box-shadow:0 2px 10px rgba(31,41,55,.07);transition:all .18s;border:1.5px solid transparent}
+.wkchip:hover{transform:translateY(-3px);border-color:#ffb59d;box-shadow:0 8px 20px rgba(255,90,60,.14)}
+.wkchip span{display:block;font-size:.8rem;color:#9ca3af;margin-top:2px}
+.bloglist a{display:block;background:#fff;border-radius:14px;padding:16px 19px;margin-bottom:12px;font-weight:700;box-shadow:0 2px 10px rgba(31,41,55,.07);transition:all .18s;border:1.5px solid transparent}
+.bloglist a:hover{transform:translateY(-2px);border-color:#ffb59d;box-shadow:0 8px 20px rgba(255,90,60,.12)}
+.bloglist a span{display:block;font-size:.84rem;color:#9ca3af;font-weight:400;margin-top:3px}
+article{background:#fff;border-radius:16px;padding:30px;box-shadow:0 3px 14px rgba(31,41,55,.07)}
 article h1{font-size:1.5rem;margin-bottom:14px}
 article h2{font-size:1.2rem;margin:22px 0 8px;color:#c14a26}
 article p,article li{margin-bottom:10px;font-size:.96rem}
@@ -204,6 +219,7 @@ function layout(title, desc, urlPath, content) {
 <meta property="og:description" content="${esc(desc)}">
 <meta property="og:url" content="${SITE}${urlPath}">
 <meta property="og:type" content="website">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE}" crossorigin="anonymous"></script>
 <style>${CSS}</style>
 </head>
@@ -235,7 +251,7 @@ function writePage(rel, html) {
 // ---------- 월별 페이지 ----------
 const monthNavHtml = `<div class="monthnav">` + MONTHS.map(mm => {
   const cnt = festivals.filter(f => f.month.some(m => mm.months.includes(m))).length;
-  return `<a href="/${mm.key}/">${mm.short} 축제<span class="cnt">${cnt}개</span></a>`;
+  return `<a href="/${mm.key}/"><span class="mn-emoji">${mm.emoji}</span>${mm.short} 축제<span class="cnt">${cnt}개</span></a>`;
 }).join('') + `</div>`;
 
 MONTHS.forEach(mm => {
@@ -348,8 +364,10 @@ const WEEKEND_JS = `<script>
 const indexContent = `<div class="hero">
 <video class="hero-vid" autoplay muted loop playsinline poster="/img/hero.webp" aria-hidden="true"><source src="/img/hero.mp4" type="video/mp4"></video>
 <div class="hero-inner">
-<h1>전국 축제·오일장 일정, 한눈에 모아보기</h1>
-<p>이번 주말 어디 갈까? 전국 ${festivals.length}개 축제와 ${markets.length}곳 오일장 일정을 확인하세요.</p>
+<h1>이번 주말, 어디로 떠나볼까요?</h1>
+<p>전국 축제와 오일장 일정을 한눈에 — 가족 나들이 계획이 3분이면 끝나요.</p>
+<div class="hero-cta"><a class="cta1" href="#weekend-title">이번 주말 축제 보기</a><a class="cta2" href="/jangteo/">오늘 서는 오일장</a></div>
+<div class="hero-stats"><span>🎪 축제 ${festivals.length}개</span><span>🧺 오일장 ${markets.length}곳</span><span>📅 매달 업데이트</span></div>
 </div>
 </div>
 <main><div class="wrap">

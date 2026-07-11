@@ -10,67 +10,83 @@
 <meta property="og:description" content="2026년 8월 전국 축제 일정 한눈에 보기 — 지역별 축제 날짜, 장소, 볼거리 정리. 금남로 차 없는 거리 걷자잉, 경산갓바위소원성취축제, 함평 물놀이 페스타 등 30개 축제.">
 <meta property="og:url" content="https://chukjemoa.co.kr/2026-08/">
 <meta property="og:type" content="website">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3293445488923111" crossorigin="anonymous"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Apple SD Gothic Neo','Malgun Gothic',sans-serif;color:#333;line-height:1.6;background:#fffaf5}
+body{font-family:'Pretendard Variable',Pretendard,'Apple SD Gothic Neo','Malgun Gothic',sans-serif;color:#1f2937;line-height:1.65;background:#fff;letter-spacing:-.01em}
 a{color:inherit;text-decoration:none}
-.wrap{max-width:960px;margin:0 auto;padding:0 16px}
-header{background:linear-gradient(135deg,#ff6b4a,#ff9a3c);color:#fff;padding:14px 0}
+.wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+header{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid #f3ece6;padding:13px 0}
 header .wrap{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
-.logo{font-size:1.5rem;font-weight:800}
-nav a{margin-left:14px;font-weight:600;font-size:.95rem;opacity:.95}
-nav a:hover{text-decoration:underline}
+.logo{font-size:1.35rem;font-weight:900;color:#ff5a3c}
+nav a{margin-left:20px;font-weight:600;font-size:.95rem;color:#4b5563;transition:color .15s}
+nav a:hover{color:#ff5a3c}
 .hero{position:relative;overflow:hidden;background:url('/img/hero.webp') center/cover;color:#fff;text-align:center}
 .hero-vid{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-.hero-inner{position:relative;z-index:1;padding:64px 16px 72px;background:rgba(40,15,5,.45)}
-.hero h1{text-shadow:0 2px 8px rgba(0,0,0,.5)}
-.hero p{text-shadow:0 1px 4px rgba(0,0,0,.5)}
-.hero h1{font-size:1.7rem;margin-bottom:8px}
-.hero p{opacity:.95}
-main{padding:28px 0 40px}
-h2.sec{font-size:1.3rem;margin:28px 0 14px;padding-left:10px;border-left:5px solid #ff6b4a}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
-.card{background:#fff;border:1px solid #ffe3d0;border-radius:12px;overflow:hidden;box-shadow:0 2px 6px rgba(255,107,74,.07)}
-.card .card-body{padding:14px 16px}
-.card .thumb{position:relative;height:130px;overflow:hidden;background:#ffe9db}
-.card .thumb img{width:100%;height:100%;object-fit:cover;display:block}
-.card .dday{position:absolute;top:8px;left:8px;background:rgba(0,0,0,.65);color:#fff;font-size:.78rem;font-weight:800;padding:3px 9px;border-radius:12px}
+.hero-inner{position:relative;z-index:1;padding:88px 20px 96px;background:linear-gradient(180deg,rgba(20,10,25,.28),rgba(20,10,25,.62))}
+.hero h1{font-size:clamp(1.7rem,4.2vw,2.7rem);font-weight:900;letter-spacing:-.03em;margin-bottom:12px;text-shadow:0 2px 14px rgba(0,0,0,.45)}
+.hero p{font-size:clamp(.98rem,1.8vw,1.15rem);opacity:.96;text-shadow:0 1px 6px rgba(0,0,0,.45)}
+.hero-cta{margin-top:26px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.hero-cta a{padding:13px 26px;border-radius:28px;font-weight:800;font-size:.98rem;transition:transform .15s}
+.hero-cta a:hover{transform:translateY(-2px)}
+.hero-cta .cta1{background:#ff5a3c;color:#fff;box-shadow:0 6px 18px rgba(255,90,60,.45)}
+.hero-cta .cta2{background:rgba(255,255,255,.16);color:#fff;border:1.5px solid rgba(255,255,255,.65);backdrop-filter:blur(4px)}
+.hero-stats{margin-top:28px;display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.hero-stats span{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.28);backdrop-filter:blur(4px);padding:6px 15px;border-radius:18px;font-size:.85rem;font-weight:600}
+main{padding:36px 0 56px}
+h2.sec{position:relative;font-size:1.45rem;font-weight:800;letter-spacing:-.02em;margin:48px 0 18px;padding-left:15px}
+h2.sec::before{content:'';position:absolute;left:0;top:14%;width:5px;height:72%;background:linear-gradient(180deg,#ff5a3c,#ff9a3c);border-radius:4px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px}
+.card{background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 3px 14px rgba(31,41,55,.08);transition:transform .2s,box-shadow .2s}
+.card:hover{transform:translateY(-5px);box-shadow:0 12px 28px rgba(31,41,55,.14)}
+.card .card-body{padding:16px 18px 18px}
+.card .thumb{position:relative;height:158px;overflow:hidden;background:#ffe9db}
+.card .thumb img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .45s}
+.card:hover .thumb img{transform:scale(1.07)}
+.card .thumb::after{content:'';position:absolute;inset:auto 0 0 0;height:46%;background:linear-gradient(180deg,transparent,rgba(0,0,0,.28))}
+.card .dday{position:absolute;top:10px;left:10px;z-index:2;background:rgba(17,24,39,.72);color:#fff;font-size:.78rem;font-weight:800;padding:4px 11px;border-radius:14px;backdrop-filter:blur(3px)}
 .card .dday:empty{display:none}
-.card .dday.on{background:#e0502f}
-.card .dday.off{background:#999}
+.card .dday.on{background:#ff5a3c}
+.card .dday.off{background:#9ca3af}
 .card.ended{opacity:.55}
-.card h3{font-size:1.08rem;margin:6px 0 4px}
-.card .date{font-weight:700;color:#e0502f;font-size:.93rem}
-.card .loc{font-size:.87rem;color:#666;margin:2px 0 6px}
-.card .desc{font-size:.9rem;color:#555}
-.card-top{display:flex;justify-content:space-between;align-items:center}
-.cat{font-size:.82rem;color:#b45}
-.badge{font-size:.72rem;padding:2px 8px;border-radius:10px;font-weight:700}
+.card .cat{position:absolute;bottom:10px;left:10px;z-index:2;background:rgba(255,255,255,.94);color:#e0502f;font-size:.78rem;font-weight:800;padding:3px 11px;border-radius:12px}
+.card h3{font-size:1.13rem;font-weight:800;letter-spacing:-.02em;margin:2px 0 6px}
+.card .date{font-weight:700;color:#ff5a3c;font-size:.92rem}
+.card .loc{font-size:.86rem;color:#6b7280;margin:2px 0 8px}
+.card .desc{font-size:.9rem;color:#4b5563}
+.card-top{display:flex;justify-content:flex-end;align-items:center;margin-bottom:2px}
+.badge{font-size:.72rem;padding:3px 9px;border-radius:10px;font-weight:700}
 .badge.ok{background:#e5f6e8;color:#1a7f37}
 .badge.est{background:#fff2d6;color:#9a6700}
-.filter{margin:12px 0 18px;display:flex;flex-wrap:wrap;gap:6px}
-.rbtn{border:1px solid #ffb08a;background:#fff;color:#e0502f;border-radius:16px;padding:5px 13px;font-size:.87rem;cursor:pointer;font-weight:600}
-.rbtn.active{background:#ff6b4a;color:#fff;border-color:#ff6b4a}
-.monthnav{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;margin:14px 0}
-.monthnav a{background:#fff;border:1px solid #ffd9c2;border-radius:10px;padding:14px;text-align:center;font-weight:700;color:#e0502f}
-.monthnav a:hover{background:#fff0e6}
-.monthnav .cnt{display:block;font-size:.8rem;color:#999;font-weight:400}
-table{width:100%;border-collapse:collapse;background:#fff;border-radius:10px;overflow:hidden;font-size:.9rem}
-th,td{padding:10px 8px;border-bottom:1px solid #f4e3d6;text-align:left}
-th{background:#fff0e6;color:#c14a26}
+.filter{margin:14px 0 22px;display:flex;flex-wrap:wrap;gap:8px}
+.rbtn{border:1.5px solid #ffd0be;background:#fff;color:#e0502f;border-radius:20px;padding:7px 17px;font-size:.88rem;cursor:pointer;font-weight:700;transition:all .15s}
+.rbtn:hover{border-color:#ff5a3c}
+.rbtn.active{background:linear-gradient(135deg,#ff5a3c,#ff9a3c);color:#fff;border-color:transparent;box-shadow:0 4px 12px rgba(255,90,60,.35)}
+.monthnav{display:grid;grid-template-columns:repeat(auto-fill,minmax(148px,1fr));gap:12px;margin:16px 0}
+.monthnav a{background:#fff;border:1.5px solid #f3e8e0;border-radius:16px;padding:18px 12px;text-align:center;font-weight:800;color:#374151;box-shadow:0 2px 8px rgba(31,41,55,.05);transition:all .18s}
+.monthnav a:hover{transform:translateY(-3px);border-color:#ffb59d;box-shadow:0 8px 20px rgba(255,90,60,.14);color:#ff5a3c}
+.monthnav .mn-emoji{display:block;font-size:1.6rem;margin-bottom:6px}
+.monthnav .cnt{display:block;font-size:.8rem;color:#9ca3af;font-weight:500;margin-top:2px}
+table{width:100%;border-collapse:collapse;background:#fff;border-radius:16px;overflow:hidden;font-size:.92rem;box-shadow:0 3px 14px rgba(31,41,55,.07)}
+th,td{padding:12px 10px;border-bottom:1px solid #f6efe9;text-align:left}
+th{background:#fff5ef;color:#c14a26;font-weight:800}
+tr:hover td{background:#fffaf6}
 tr.today-open{background:#e5f6e8}
 tr.today-open td:first-child::after{content:" 🔴 오늘 장날!";color:#1a7f37;font-size:.78rem;font-weight:700}
-.note{font-size:.83rem;color:#888;margin:10px 0}
-footer{background:#3d2b23;color:#d9c9bf;padding:24px 0;font-size:.85rem;text-align:center}
+.note{font-size:.86rem;color:#8b8378;margin:10px 0}
+body{background:#fdfaf7}
+footer{background:#231a14;color:#cfc2b8;padding:38px 0;font-size:.86rem;text-align:center;margin-top:20px}
 footer a{text-decoration:underline}
-.wkgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px}
-.wkchip{background:#fff;border:1px solid #ffd9c2;border-radius:10px;padding:10px 14px;font-size:.92rem}
-.wkchip:hover{background:#fff0e6}
-.wkchip span{display:block;font-size:.8rem;color:#999}
-.bloglist a{display:block;background:#fff;border:1px solid #ffe3d0;border-radius:10px;padding:14px 16px;margin-bottom:10px;font-weight:600}
-.bloglist a span{display:block;font-size:.83rem;color:#999;font-weight:400;margin-top:2px}
-article{background:#fff;border:1px solid #ffe3d0;border-radius:12px;padding:24px}
+footer p{margin:3px 0}
+.wkgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(235px,1fr));gap:10px}
+.wkchip{background:#fff;border-radius:14px;padding:14px 17px;font-size:.94rem;box-shadow:0 2px 10px rgba(31,41,55,.07);transition:all .18s;border:1.5px solid transparent}
+.wkchip:hover{transform:translateY(-3px);border-color:#ffb59d;box-shadow:0 8px 20px rgba(255,90,60,.14)}
+.wkchip span{display:block;font-size:.8rem;color:#9ca3af;margin-top:2px}
+.bloglist a{display:block;background:#fff;border-radius:14px;padding:16px 19px;margin-bottom:12px;font-weight:700;box-shadow:0 2px 10px rgba(31,41,55,.07);transition:all .18s;border:1.5px solid transparent}
+.bloglist a:hover{transform:translateY(-2px);border-color:#ffb59d;box-shadow:0 8px 20px rgba(255,90,60,.12)}
+.bloglist a span{display:block;font-size:.84rem;color:#9ca3af;font-weight:400;margin-top:3px}
+article{background:#fff;border-radius:16px;padding:30px;box-shadow:0 3px 14px rgba(31,41,55,.07)}
 article h1{font-size:1.5rem;margin-bottom:14px}
 article h2{font-size:1.2rem;margin:22px 0 8px;color:#c14a26}
 article p,article li{margin-bottom:10px;font-size:.96rem}
@@ -98,9 +114,9 @@ document.querySelectorAll('.rbtn').forEach(b => b.addEventListener('click', () =
 }));
 </script>
 <div class="grid"><div class="card" data-region="광주" data-start="2026-04-04" data-end="2026-11-07">
-  <div class="thumb"><img src="/img/cat-culture.webp" alt="문화 축제" loading="lazy"><span class="dday"></span></div>
+  <div class="thumb"><img src="/img/cat-culture.webp" alt="문화 축제" loading="lazy"><span class="dday"></span><span class="cat">🎭 문화</span></div>
   <div class="card-body">
-  <div class="card-top"><span class="cat">🎭 문화</span><span class="badge ok">일정 확정</span></div>
+  <div class="card-top"><span class="badge ok">일정 확정</span></div>
   <h3>금남로 차 없는 거리 걷자잉</h3>
   <p class="date">📅 2026.4.4 ~ 2026.11.7</p>
   <p class="loc">📍 광주 동구 · 금남로공원·전일빌딩245 일원</p>
@@ -108,9 +124,9 @@ document.querySelectorAll('.rbtn').forEach(b => b.addEventListener('click', () =
   </div>
 </div>
 <div class="card" data-region="경북" data-start="2026-06-01" data-end="2026-09-30">
-  <div class="thumb"><img src="/img/cat-culture.webp" alt="문화 축제" loading="lazy"><span class="dday"></span></div>
+  <div class="thumb"><img src="/img/cat-culture.webp" alt="문화 축제" loading="lazy"><span class="dday"></span><span class="cat">🎭 문화</span></div>
   <div class="card-body">
-  <div class="card-top"><span class="cat">🎭 문화</span><span class="badge ok">일정 확정</span></div>
+  <div class="card-top"><span class="badge ok">일정 확정</span></div>
   <h3>경산갓바위소원성취축제</h3>
   <p class="date">📅 2026.6.1 ~ 2026.9.30</p>
   <p class="loc">📍 경북 경산시 · 갓바위 일원</p>
@@ -118,9 +134,9 @@ document.querySelectorAll('.rbtn').forEach(b => b.addEventListener('click', () =
   </div>
 </div>
 <div class="card" data-region="전남" data-start="2026-07-17" data-end="2026-08-17">
-  <div class="thumb"><img src="/img/cat-water.webp" alt="물놀이 축제" loading="lazy"><span class="dday"></span></div>
+  <div class="thumb"><img src="/img/cat-water.webp" alt="물놀이 축제" loading="lazy"><span class="dday"></span><span class="cat">💦 물놀이</span></div>
   <div class="card-body">
-  <div class="card-top"><span class="cat">💦 물놀이</span><span class="badge ok">일정 확정</span></div>
+  <div class="card-top"><span class="badge ok">일정 확정</span></div>
   <h3>함평 물놀이 페스타</h3>
   <p class="date">📅 2026.7.17 ~ 2026.8.17</p>
   <p class="loc">📍 전남 함평군 · 함평엑스포공원 물놀이장</p>
@@ -128,9 +144,9 @@ document.querySelectorAll('.rbtn').forEach(b => b.addEventListener('click', () =
   </div>
 </div>
 <div class="card" data-region="강원" data-start="2026-07-17" data-end="2026-08-17">
-  <div class="thumb"><img src="/img/cat-flower.webp" alt="꽃 축제" loading="lazy"><span class="dday"></span></div>
+  <div class="thumb"><img src="/img/cat-flower.webp" alt="꽃 축제" loading="lazy"><span class="dday"></span><span class="cat">🌸 꽃</span></div>
   <div class="card-body">
-  <div class="card-top"><span class="cat">🌸 꽃</span><span class="badge ok">일정 확정</span></div>
+  <div class="card-top"><span class="badge ok">일정 확정</span></div>
   <h3>태백 해바라기축제</h3>
   <p class="date">📅 2026.7.17 ~ 2026.8.17</p>
   <p class="loc">📍 강원 태백시 · 구와우마을 일원</p>
@@ -138,9 +154,9 @@ document.querySelectorAll('.rbtn').forEach(b => b.addEventListener('click', () =
   </div>
 </div>
 <div class="card" data-region="강원" data-start="2026-07-22" data-end="2026-08-08">
-  <div class="thumb"><img src="/img/cat-music.webp" alt="음악 축제" loading="lazy"><span class="dday"></span></div>
+  <div class="thumb"><img src="/img/cat-music.webp" alt="음악 축제" loading="lazy"><span class="dday"></span><span class="cat">🎵 음악</span></div>
   <div class="card-body">
-  <div class="card-top"><span class="cat">🎵 음악</span><span class="badge est">예년 기준·변동 가능</span></div>
+  <div class="card-top"><span class="badge est">예년 기준·변동 가능</span></div>
   <h3>대관령음악제</h3>
   <p class="date">📅 2026.7.22 ~ 2026.8.8</p>
   <p class="loc">📍 강원 평창군 · 알펜시아 콘서트홀 일원</p>
@@ -148,9 +164,9 @@ document.querySelectorAll('.rbtn').forEach(b => b.addEventListener('click', () =
   </div>
 </div>
 <div class="card" data-region="충남" data-start="2026-07-24" data-end="2026-08-09">
-  <div class="thumb"><img src="/img/cat-water.webp" alt="물놀이 축제" loading="lazy"><span class="dday"></span></div>
+  <div class="thumb"><img src="/img/cat-water.webp" alt="물놀이 축제" loading="lazy"><span class="dday"></span><span class="cat">💦 물놀이</span></div>
   <div class="card-body">
-  <div class="card-top"><span class="cat">💦 물놀이</span><span class="badge ok">일정 확정</span></div>
+  <div class="card-top"><span class="badge ok">일정 확정</span></div>
   <h3>보령머드축제</h3>
   <p class="date">📅 2026.7.24 ~ 2026.8.9</p>
   <p class="loc">📍 충남 보령시 · 대천해수욕장 일원</p>
@@ -158,9 +174,9 @@ document.querySelectorAll('.rbtn').forEach(b => b.addEventListener('click', () =
   </div>
 </div>
 <div class="card" data-region="전북" data-start="2026-07-24" data-end="2026-08-17">
-  <div class="thumb"><img src="/img/cat-culture.webp" alt="문화 축제" loading="lazy"><span class="dday"></span></div>
+  <div class="thumb"><img src="/img/cat-culture.webp" alt="문화 축제" loading="lazy"><span class="dday"></span><span class="cat">🎭 문화</span></div>
   <div class="card-body">
-  <div class="card-top"><span class="cat">🎭 문화</span><span class="badge ok">일정 확정</span></div>
+  <div class="card-top"><span class="badge ok">일정 확정</span></div>
   <h3>변산비치펍 시즌2</h3>
   <p class="date">📅 2026.7.24 ~ 2026.8.17</p>
   <p class="loc">📍 전북 부안군 · 변산·격포·모항해수욕장</p>
@@ -168,9 +184,9 @@ document.querySelectorAll('.rbtn').forEach(b => b.addEventListener('click', () =
   </div>
 </div>
 <div class="card" data-region="강원" data-start="2026-07-24" data-end="2026-08-02">
-  <div class="thumb"><img src="/img/cat-water.webp" alt="물놀이 축제" loading="lazy"><span class="dday"></span></div>
+  <div class="thumb"><img src="/img/cat-water.webp" alt="물놀이 축제" loading="lazy"><span class="dday"></span><span class="cat">💦 물놀이</span></div>
   <div class="card-body">
-  <div class="card-top"><span class="cat">💦 물놀이</span><span class="badge est">예년 기준·변동 가능</span></div>
+  <div class="card-top"><span class="badge est">예년 기준·변동 가능</span></div>
   <h3>평창더위사냥축제</h3>
   <p class="date">📅 2026.7.24 ~ 2026.8.2</p>
   <p class="loc">📍 강원 평창군 · 대화면 땀띠공원 일원</p>
@@ -178,9 +194,9 @@ document.querySelectorAll('.rbtn').forEach(b => b.addEventListener('click', () =
   </div>
 </div>
 <div class="card" data-region="전남" data-start="2026-07-25" data-end="2026-08-02">
-  <div class="thumb"><img src="/img/cat-water.webp" alt="물놀이 축제" loading="lazy"><span class="dday"></span></div>
+  <div class="thumb"><img src="/img/cat-water.webp" alt="물놀이 축제" loading="lazy"><span class="dday"></span><span class="cat">💦 물놀이</span></div>
   <div class="card-body">
-  <div class="card-top"><span class="cat">💦 물놀이</span><span class="badge ok">일정 확정</span></div>
+  <div class="card-top"><span class="badge ok">일정 확정</span></div>
   <h3>정남진장흥물축제</h3>
   <p class="date">📅 2026.7.25 ~ 2026.8.2</p>
   <p class="loc">📍 전남 장흥군 · 탐진강·편백숲우드랜드 일원</p>
@@ -188,9 +204,9 @@ document.querySelectorAll('.rbtn').forEach(b => b.addEventListener('click', () =
   </div>
 </div>
 <div class="card" data-region="경북" data-start="2026-07-25" data-end="2026-08-02">
-  <div class="thumb"><img src="/img/cat-water.webp" alt="물놀이 축제" loading="lazy"><span class="dday"></span></div>
+  <div class="thumb"><img src="/img/cat-water.webp" alt="물놀이 축제" loading="lazy"><span class="dday"></span><span class="cat">💦 물놀이</span></div>
   <div class="card-body">
-  <div class="card-top"><span class="cat">💦 물놀이</span><span class="badge ok">일정 확정</span></div>
+  <div class="card-top"><span class="badge ok">일정 확정</span></div>
   <h3>봉화은어축제</h3>
   <p class="date">📅 2026.7.25 ~ 2026.8.2</p>
   <p class="loc">📍 경북 봉화군 · 내성천 일원</p>
@@ -198,9 +214,9 @@ document.querySelectorAll('.rbtn').forEach(b => b.addEventListener('click', () =
   </div>
 </div>
 <div class="card" data-region="강원" data-start="2026-07-25" data-end="2026-08-09">
-  <div class="thumb"><img src="/img/cat-water.webp" alt="물놀이 축제" loading="lazy"><span class="dday"></span></div>
+  <div class="thumb"><img src="/img/cat-water.webp" alt="물놀이 축제" loading="lazy"><span class="dday"></span><span class="cat">💦 물놀이</span></div>
   <div class="card-body">
-  <div class="card-top"><span class="cat">💦 물놀이</span><span class="badge est">예년 기준·변동 가능</span></div>
+  <div class="card-top"><span class="badge est">예년 기준·변동 가능</span></div>
   <h3>물의나라 화천쪽배축제</h3>
   <p class="date">📅 2026.7.25 ~ 2026.8.9</p>
   <p class="loc">📍 강원 화천군 · 붕어섬 일원</p>
@@ -208,9 +224,9 @@ document.querySelectorAll('.rbtn').forEach(b => b.addEventListener('click', () =
   </div>
 </div>
 <div class="card" data-region="강원" data-start="2026-07-30" data-end="2026-08-04">
-  <div class="thumb"><img src="/img/cat-music.webp" alt="음악 축제" loading="lazy"><span class="dday"></span></div>
+  <div class="thumb"><img src="/img/cat-music.webp" alt="음악 축제" loading="lazy"><span class="dday"></span><span class="cat">🎵 음악</span></div>
   <div class="card-body">
-  <div class="card-top"><span class="cat">🎵 음악</span><span class="badge ok">일정 확정</span></div>
+  <div class="card-top"><span class="badge ok">일정 확정</span></div>
   <h3>동해 해변뮤직페스티벌</h3>
   <p class="date">📅 2026.7.30 ~ 2026.8.4</p>
   <p class="loc">📍 강원 동해시 · 추암·망상해변</p>
@@ -218,9 +234,9 @@ document.querySelectorAll('.rbtn').forEach(b => b.addEventListener('click', () =
   </div>
 </div>
 <div class="card" data-region="강원" data-start="2026-07-31" data-end="2026-08-09">
-  <div class="thumb"><img src="/img/cat-music.webp" alt="음악 축제" loading="lazy"><span class="dday"></span></div>
+  <div class="thumb"><img src="/img/cat-music.webp" alt="음악 축제" loading="lazy"><span class="dday"></span><span class="cat">🎵 음악</span></div>
   <div class="card-body">
-  <div class="card-top"><span class="cat">🎵 음악</span><span class="badge est">예년 기준·변동 가능</span></div>
+  <div class="card-top"><span class="badge est">예년 기준·변동 가능</span></div>
   <h3>홍천강 별빛음악 맥주축제</h3>
   <p class="date">📅 2026.7.31 ~ 2026.8.9</p>
   <p class="loc">📍 강원 홍천군 · 홍천강 일원</p>
@@ -228,9 +244,9 @@ document.querySelectorAll('.rbtn').forEach(b => b.addEventListener('click', () =
   </div>
 </div>
 <div class="card" data-region="경남" data-start="2026-07-31" data-end="2026-08-09">
-  <div class="thumb"><img src="/img/cat-culture.webp" alt="문화 축제" loading="lazy"><span class="dday"></span></div>
+  <div class="thumb"><img src="/img/cat-culture.webp" alt="문화 축제" loading="lazy"><span class="dday"></span><span class="cat">🎭 문화</span></div>
   <div class="card-body">
-  <div class="card-top"><span class="cat">🎭 문화</span><span class="badge ok">일정 확정</span></div>
+  <div class="card-top"><span class="badge ok">일정 확정</span></div>
   <h3>거창국제연극제</h3>
   <p class="date">📅 2026.7.31 ~ 2026.8.9</p>
   <p class="loc">📍 경남 거창군 · 수승대 일원</p>
@@ -238,9 +254,9 @@ document.querySelectorAll('.rbtn').forEach(b => b.addEventListener('click', () =
   </div>
 </div>
 <div class="card" data-region="인천" data-start="2026-07-31" data-end="2026-08-02">
-  <div class="thumb"><img src="/img/cat-music.webp" alt="음악 축제" loading="lazy"><span class="dday"></span></div>
+  <div class="thumb"><img src="/img/cat-music.webp" alt="음악 축제" loading="lazy"><span class="dday"></span><span class="cat">🎵 음악</span></div>
   <div class="card-body">
-  <div class="card-top"><span class="cat">🎵 음악</span><span class="badge ok">일정 확정</span></div>
+  <div class="card-top"><span class="badge ok">일정 확정</span></div>
   <h3>인천펜타포트 락 페스티벌</h3>
   <p class="date">📅 2026.7.31 ~ 2026.8.2</p>
   <p class="loc">📍 인천 연수구 · 송도달빛축제공원</p>
@@ -248,9 +264,9 @@ document.querySelectorAll('.rbtn').forEach(b => b.addEventListener('click', () =
   </div>
 </div>
 <div class="card" data-region="제주" data-start="2026-07-31" data-end="2026-08-02">
-  <div class="thumb"><img src="/img/cat-tradition.webp" alt="전통 축제" loading="lazy"><span class="dday"></span></div>
+  <div class="thumb"><img src="/img/cat-tradition.webp" alt="전통 축제" loading="lazy"><span class="dday"></span><span class="cat">🏮 전통</span></div>
   <div class="card-body">
-  <div class="card-top"><span class="cat">🏮 전통</span><span class="badge est">예년 기준·변동 가능</span></div>
+  <div class="card-top"><span class="badge est">예년 기준·변동 가능</span></div>
   <h3>이호테우축제</h3>
   <p class="date">📅 2026.7.31 ~ 2026.8.2</p>
   <p class="loc">📍 제주 제주시 · 이호테우해변 일원</p>
@@ -258,9 +274,9 @@ document.querySelectorAll('.rbtn').forEach(b => b.addEventListener('click', () =
   </div>
 </div>
 <div class="card" data-region="충남" data-start="2026-08-01" data-end="2026-08-02">
-  <div class="thumb"><img src="/img/cat-food.webp" alt="음식 축제" loading="lazy"><span class="dday"></span></div>
+  <div class="thumb"><img src="/img/cat-food.webp" alt="음식 축제" loading="lazy"><span class="dday"></span><span class="cat">🍜 음식</span></div>
   <div class="card-body">
-  <div class="card-top"><span class="cat">🍜 음식</span><span class="badge ok">일정 확정</span></div>
+  <div class="card-top"><span class="badge ok">일정 확정</span></div>
   <h3>삼길포우럭축제</h3>
   <p class="date">📅 2026.8.1 ~ 2026.8.2</p>
   <p class="loc">📍 충남 서산시 · 대산읍 삼길포항</p>
@@ -268,9 +284,9 @@ document.querySelectorAll('.rbtn').forEach(b => b.addEventListener('click', () =
   </div>
 </div>
 <div class="card" data-region="부산" data-start="2026-08-01" data-end="2026-08-02">
-  <div class="thumb"><img src="/img/cat-music.webp" alt="음악 축제" loading="lazy"><span class="dday"></span></div>
+  <div class="thumb"><img src="/img/cat-music.webp" alt="음악 축제" loading="lazy"><span class="dday"></span><span class="cat">🎵 음악</span></div>
   <div class="card-body">
-  <div class="card-top"><span class="cat">🎵 음악</span><span class="badge ok">일정 확정</span></div>
+  <div class="card-top"><span class="badge ok">일정 확정</span></div>
   <h3>현인가요제</h3>
   <p class="date">📅 2026.8.1 ~ 2026.8.2</p>
   <p class="loc">📍 부산 서구 · 송도해수욕장</p>
@@ -278,9 +294,9 @@ document.querySelectorAll('.rbtn').forEach(b => b.addEventListener('click', () =
   </div>
 </div>
 <div class="card" data-region="전북" data-start="2026-08-01" data-end="2026-08-02">
-  <div class="thumb"><img src="/img/cat-food.webp" alt="음식 축제" loading="lazy"><span class="dday"></span></div>
+  <div class="thumb"><img src="/img/cat-food.webp" alt="음식 축제" loading="lazy"><span class="dday"></span><span class="cat">🍜 음식</span></div>
   <div class="card-body">
-  <div class="card-top"><span class="cat">🍜 음식</span><span class="badge ok">일정 확정</span></div>
+  <div class="card-top"><span class="badge ok">일정 확정</span></div>
   <h3>진안고원 수박축제</h3>
   <p class="date">📅 2026.8.1 ~ 2026.8.2</p>
   <p class="loc">📍 전북 진안군 · 동향면 체련공원 일원</p>
@@ -288,9 +304,9 @@ document.querySelectorAll('.rbtn').forEach(b => b.addEventListener('click', () =
   </div>
 </div>
 <div class="card" data-region="강원" data-start="2026-08-06" data-end="2026-08-09">
-  <div class="thumb"><img src="/img/cat-culture.webp" alt="문화 축제" loading="lazy"><span class="dday"></span></div>
+  <div class="thumb"><img src="/img/cat-culture.webp" alt="문화 축제" loading="lazy"><span class="dday"></span><span class="cat">🎭 문화</span></div>
   <div class="card-body">
-  <div class="card-top"><span class="cat">🎭 문화</span><span class="badge est">예년 기준·변동 가능</span></div>
+  <div class="card-top"><span class="badge est">예년 기준·변동 가능</span></div>
   <h3>정동진독립영화제</h3>
   <p class="date">📅 2026.8.6 ~ 2026.8.9</p>
   <p class="loc">📍 강원 강릉시 · 정동초등학교 운동장</p>
@@ -298,9 +314,9 @@ document.querySelectorAll('.rbtn').forEach(b => b.addEventListener('click', () =
   </div>
 </div>
 <div class="card" data-region="강원" data-start="2026-08-06" data-end="2026-08-09">
-  <div class="thumb"><img src="/img/cat-water.webp" alt="물놀이 축제" loading="lazy"><span class="dday"></span></div>
+  <div class="thumb"><img src="/img/cat-water.webp" alt="물놀이 축제" loading="lazy"><span class="dday"></span><span class="cat">💦 물놀이</span></div>
   <div class="card-body">
-  <div class="card-top"><span class="cat">💦 물놀이</span><span class="badge est">예년 기준·변동 가능</span></div>
+  <div class="card-top"><span class="badge est">예년 기준·변동 가능</span></div>
   <h3>영월 동강축제</h3>
   <p class="date">📅 2026.8.6 ~ 2026.8.9</p>
   <p class="loc">📍 강원 영월군 · 동강둔치 일원</p>
@@ -308,9 +324,9 @@ document.querySelectorAll('.rbtn').forEach(b => b.addEventListener('click', () =
   </div>
 </div>
 <div class="card" data-region="강원" data-start="2026-08-07" data-end="2026-08-09">
-  <div class="thumb"><img src="/img/cat-food.webp" alt="음식 축제" loading="lazy"><span class="dday"></span></div>
+  <div class="thumb"><img src="/img/cat-food.webp" alt="음식 축제" loading="lazy"><span class="dday"></span><span class="cat">🍜 음식</span></div>
   <div class="card-body">
-  <div class="card-top"><span class="cat">🍜 음식</span><span class="badge est">예년 기준·변동 가능</span></div>
+  <div class="card-top"><span class="badge est">예년 기준·변동 가능</span></div>
   <h3>화천토마토축제</h3>
   <p class="date">📅 2026.8.7 ~ 2026.8.9</p>
   <p class="loc">📍 강원 화천군 · 사내면 사창리 문화마을 일원</p>
@@ -318,9 +334,9 @@ document.querySelectorAll('.rbtn').forEach(b => b.addEventListener('click', () =
   </div>
 </div>
 <div class="card" data-region="대전" data-start="2026-08-07" data-end="2026-08-17">
-  <div class="thumb"><img src="/img/cat-culture.webp" alt="문화 축제" loading="lazy"><span class="dday"></span></div>
+  <div class="thumb"><img src="/img/cat-culture.webp" alt="문화 축제" loading="lazy"><span class="dday"></span><span class="cat">🎭 문화</span></div>
   <div class="card-body">
-  <div class="card-top"><span class="cat">🎭 문화</span><span class="badge ok">일정 확정</span></div>
+  <div class="card-top"><span class="badge ok">일정 확정</span></div>
   <h3>대전 0시 축제</h3>
   <p class="date">📅 2026.8.7 ~ 2026.8.17</p>
   <p class="loc">📍 대전 중구 · 중앙로 일원(대전역~옛 충남도청)</p>
@@ -328,9 +344,9 @@ document.querySelectorAll('.rbtn').forEach(b => b.addEventListener('click', () =
   </div>
 </div>
 <div class="card" data-region="부산" data-start="2026-08-07" data-end="2026-08-09">
-  <div class="thumb"><img src="/img/cat-water.webp" alt="물놀이 축제" loading="lazy"><span class="dday"></span></div>
+  <div class="thumb"><img src="/img/cat-water.webp" alt="물놀이 축제" loading="lazy"><span class="dday"></span><span class="cat">💦 물놀이</span></div>
   <div class="card-body">
-  <div class="card-top"><span class="cat">💦 물놀이</span><span class="badge ok">일정 확정</span></div>
+  <div class="card-top"><span class="badge ok">일정 확정</span></div>
   <h3>부산바다축제</h3>
   <p class="date">📅 2026.8.7 ~ 2026.8.9</p>
   <p class="loc">📍 부산 사하구 · 다대포해수욕장</p>
@@ -338,9 +354,9 @@ document.querySelectorAll('.rbtn').forEach(b => b.addEventListener('click', () =
   </div>
 </div>
 <div class="card" data-region="경남" data-start="2026-08-07" data-end="2026-08-08">
-  <div class="thumb"><img src="/img/cat-music.webp" alt="음악 축제" loading="lazy"><span class="dday"></span></div>
+  <div class="thumb"><img src="/img/cat-music.webp" alt="음악 축제" loading="lazy"><span class="dday"></span><span class="cat">🎵 음악</span></div>
   <div class="card-body">
-  <div class="card-top"><span class="cat">🎵 음악</span><span class="badge ok">일정 확정</span></div>
+  <div class="card-top"><span class="badge ok">일정 확정</span></div>
   <h3>진주 M2 페스티벌</h3>
   <p class="date">📅 2026.8.7 ~ 2026.8.8</p>
   <p class="loc">📍 경남 진주시 · 남강둔치 일원</p>
@@ -348,9 +364,9 @@ document.querySelectorAll('.rbtn').forEach(b => b.addEventListener('click', () =
   </div>
 </div>
 <div class="card" data-region="경남" data-start="2026-08-07" data-end="2026-08-16">
-  <div class="thumb"><img src="/img/cat-etc.webp" alt="기타 축제" loading="lazy"><span class="dday"></span></div>
+  <div class="thumb"><img src="/img/cat-etc.webp" alt="기타 축제" loading="lazy"><span class="dday"></span><span class="cat">🎪 기타</span></div>
   <div class="card-body">
-  <div class="card-top"><span class="cat">🎪 기타</span><span class="badge ok">일정 확정</span></div>
+  <div class="card-top"><span class="badge ok">일정 확정</span></div>
   <h3>합천 고스트파크 축제</h3>
   <p class="date">📅 2026.8.7 ~ 2026.8.16</p>
   <p class="loc">📍 경남 합천군 · 합천영상테마파크</p>
@@ -358,9 +374,9 @@ document.querySelectorAll('.rbtn').forEach(b => b.addEventListener('click', () =
   </div>
 </div>
 <div class="card" data-region="경남" data-start="2026-08-12" data-end="2026-08-16">
-  <div class="thumb"><img src="/img/cat-tradition.webp" alt="전통 축제" loading="lazy"><span class="dday"></span></div>
+  <div class="thumb"><img src="/img/cat-tradition.webp" alt="전통 축제" loading="lazy"><span class="dday"></span><span class="cat">🏮 전통</span></div>
   <div class="card-body">
-  <div class="card-top"><span class="cat">🏮 전통</span><span class="badge ok">일정 확정</span></div>
+  <div class="card-top"><span class="badge ok">일정 확정</span></div>
   <h3>통영한산대첩축제</h3>
   <p class="date">📅 2026.8.12 ~ 2026.8.16</p>
   <p class="loc">📍 경남 통영시 · 한산대첩광장·강구안 일원</p>
@@ -368,9 +384,9 @@ document.querySelectorAll('.rbtn').forEach(b => b.addEventListener('click', () =
   </div>
 </div>
 <div class="card" data-region="강원" data-start="2026-08-25" data-end="2026-08-30">
-  <div class="thumb"><img src="/img/cat-food.webp" alt="음식 축제" loading="lazy"><span class="dday"></span></div>
+  <div class="thumb"><img src="/img/cat-food.webp" alt="음식 축제" loading="lazy"><span class="dday"></span><span class="cat">🍜 음식</span></div>
   <div class="card-body">
-  <div class="card-top"><span class="cat">🍜 음식</span><span class="badge est">예년 기준·변동 가능</span></div>
+  <div class="card-top"><span class="badge est">예년 기준·변동 가능</span></div>
   <h3>춘천막국수닭갈비축제</h3>
   <p class="date">📅 2026.8.25 ~ 2026.8.30</p>
   <p class="loc">📍 강원 춘천시 · 삼악산호수케이블카 주차장 일원</p>
@@ -378,9 +394,9 @@ document.querySelectorAll('.rbtn').forEach(b => b.addEventListener('click', () =
   </div>
 </div>
 <div class="card" data-region="충북" data-start="2026-08-26" data-end="2026-08-30">
-  <div class="thumb"><img src="/img/cat-food.webp" alt="음식 축제" loading="lazy"><span class="dday"></span></div>
+  <div class="thumb"><img src="/img/cat-food.webp" alt="음식 축제" loading="lazy"><span class="dday"></span><span class="cat">🍜 음식</span></div>
   <div class="card-body">
-  <div class="card-top"><span class="cat">🍜 음식</span><span class="badge est">예년 기준·변동 가능</span></div>
+  <div class="card-top"><span class="badge est">예년 기준·변동 가능</span></div>
   <h3>영동포도축제</h3>
   <p class="date">📅 2026.8.26 ~ 2026.8.30</p>
   <p class="loc">📍 충북 영동군 · 영동체육관 일원</p>
@@ -388,9 +404,9 @@ document.querySelectorAll('.rbtn').forEach(b => b.addEventListener('click', () =
   </div>
 </div>
 <div class="card" data-region="충북" data-start="2026-08-27" data-end="2026-08-30">
-  <div class="thumb"><img src="/img/cat-food.webp" alt="음식 축제" loading="lazy"><span class="dday"></span></div>
+  <div class="thumb"><img src="/img/cat-food.webp" alt="음식 축제" loading="lazy"><span class="dday"></span><span class="cat">🍜 음식</span></div>
   <div class="card-body">
-  <div class="card-top"><span class="cat">🍜 음식</span><span class="badge est">예년 기준·변동 가능</span></div>
+  <div class="card-top"><span class="badge est">예년 기준·변동 가능</span></div>
   <h3>괴산고추축제</h3>
   <p class="date">📅 2026.8.27 ~ 2026.8.30</p>
   <p class="loc">📍 충북 괴산군 · 괴산읍 동진천 일원</p>
@@ -398,7 +414,7 @@ document.querySelectorAll('.rbtn').forEach(b => b.addEventListener('click', () =
   </div>
 </div></div>
 <h2 class="sec">다른 달 축제 보기</h2>
-<div class="monthnav"><a href="/2026-07/">7월 축제<span class="cnt">27개</span></a><a href="/2026-08/">8월 축제<span class="cnt">30개</span></a><a href="/2026-09/">9월 축제<span class="cnt">18개</span></a><a href="/2026-10/">10월 축제<span class="cnt">18개</span></a><a href="/2026-11/">11월 축제<span class="cnt">6개</span></a><a href="/2026-12/">12월·겨울 축제<span class="cnt">13개</span></a></div>
+<div class="monthnav"><a href="/2026-07/"><span class="mn-emoji">💦</span>7월 축제<span class="cnt">27개</span></a><a href="/2026-08/"><span class="mn-emoji">🌊</span>8월 축제<span class="cnt">30개</span></a><a href="/2026-09/"><span class="mn-emoji">🎆</span>9월 축제<span class="cnt">18개</span></a><a href="/2026-10/"><span class="mn-emoji">🍁</span>10월 축제<span class="cnt">18개</span></a><a href="/2026-11/"><span class="mn-emoji">🌾</span>11월 축제<span class="cnt">6개</span></a><a href="/2026-12/"><span class="mn-emoji">⛄</span>12월·겨울 축제<span class="cnt">13개</span></a></div>
 </div></main>
 <footer><div class="wrap">
 <p>축제모아 — 전국 축제·오일장 일정 모음</p>
