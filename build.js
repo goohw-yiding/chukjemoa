@@ -15,6 +15,9 @@ const posts = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/posts.json'), 'ut
 let apiFests = [];
 try { apiFests = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/festivals_api.json'), 'utf8')); }
 catch (e) { console.log('⚠ festivals_api.json 없음 — 검색 데이터 비어있음 (node fetch-festivals.js 먼저 실행)'); }
+let apiPets = [];
+try { apiPets = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/pets.json'), 'utf8')); }
+catch (e) { console.log('⚠ pets.json 없음 — 반려견 여행지 데이터 비어있음 (node fetch-pets.js 먼저 실행)'); }
 
 const MONTHS = [
   { key: '2026-07', months: [7], label: '2026년 7월', short: '7월', emoji: '💦' },
@@ -371,7 +374,7 @@ function layout(title, desc, urlPath, content) {
 <body>
 <header><div class="wrap">
 <a class="logo" href="/">🎪 ${SITE_NAME}</a>
-<nav><a href="/2026-07/">월별 축제</a><a href="/search/">🔎 축제 검색</a><a href="/jangteo/">전국 오일장</a><a href="/test/">🔮 취향 테스트</a><a href="/blog/">축제 가이드</a></nav>
+<nav><a href="/2026-07/">월별 축제</a><a href="/search/">🔎 축제 검색</a><a href="/pet/">🐶 반려견 여행지</a><a href="/jangteo/">전국 오일장</a><a href="/test/">🔮 취향 테스트</a><a href="/blog/">축제 가이드</a></nav>
 </div></header>
 ${content}
 <footer><div class="wrap">
@@ -799,8 +802,61 @@ fetch('/search/data.json').then(function(r){return r.json();}).then(function(dat
 writePage('search', layout('전국 축제 검색 — 날짜·지역·도시별 | ' + SITE_NAME, '전국 축제를 날짜·지역·도시로 검색하세요. 공공데이터 기반 최신 축제 ' + apiFests.length + '건. 진행중·이번 주말·이번 달·반려견 동반 축제를 한눈에.', '/search/', searchContent));
 fs.writeFileSync(path.join(ROOT, 'search', 'data.json'), JSON.stringify(apiFests));
 
+// ---------- 킥⑥ 반려견 동반 여행지 (반려동물 동반여행 API) ----------
+const petSidos = SIDO_ORDER.filter(s => apiPets.some(p => p.sido === s));
+const petSidoOpts = petSidos.map(s => `<option value="${s}">${s} (${apiPets.filter(p => p.sido === s).length})</option>`).join('');
+const petCats = ['관광지','음식점','숙박','레포츠','문화시설'];
+const petCatOpts = petCats.filter(c => apiPets.some(p => p.cat === c)).map(c => `<option value="${c}">${c}</option>`).join('');
+const petContent = `<main><div class="wrap">
+<style>
+.srchbar{background:#fff;border-radius:16px;padding:16px 18px;box-shadow:0 3px 14px rgba(31,41,55,.07);margin:14px 0 6px}
+.srchbar .row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.srchbar select,.srchbar input{padding:10px 13px;border:1.5px solid #dcefeb;border-radius:12px;font-size:.93rem;font-family:inherit;background:#f4faf8;color:#374151}
+.srchbar input#pKw{flex:1;min-width:150px}
+.srch-count{margin:16px 0 12px;font-weight:800;color:#0a6c63;font-size:1.02rem}
+.page-h1{font-size:1.5rem;font-weight:900;letter-spacing:-.02em;margin:6px 0}
+.page-sub{color:#6b7280;font-size:.95rem;margin-bottom:6px}
+.pmore{background:#fff;border:1.5px solid #a9e5dd;color:#0c7d72;border-radius:22px;padding:11px 26px;font-weight:800;font-size:.95rem;cursor:pointer;font-family:inherit;transition:all .15s}
+.pmore:hover{border-color:#0f9d8f;transform:translateY(-1px)}
+</style>
+<h1 class="page-h1">🐶 반려견 동반 여행지</h1>
+<p class="page-sub">공공데이터(한국관광공사 반려동물 동반여행) 기반 전국 반려동물 동반 가능 장소 ${apiPets.length}곳 — 축제 다녀오는 길에 강아지랑 들르기 좋은 곳을 지역별로 찾아보세요.</p>
+<div class="srchbar"><div class="row">
+<select id="pSido"><option value="">전체 지역</option>${petSidoOpts}</select>
+<select id="pSigungu"><option value="">전체 시·군·구</option></select>
+<select id="pCat"><option value="">전체 유형</option>${petCatOpts}</select>
+<input type="text" id="pKw" placeholder="장소명·주소 검색">
+<button id="pReset" class="pmore" style="border-color:#f0e6dc;color:#374151">초기화</button>
+</div></div>
+<div class="srch-count" id="pCount"></div>
+<div class="grid" id="pGrid"></div>
+<div style="text-align:center;margin:22px 0"><button id="pMore" class="pmore" style="display:none">더 보기</button></div>
+<p class="note">데이터 출처: 한국관광공사 반려동물 동반여행 서비스(공공데이터포털). 반려동물 동반 조건·이용가능 시설은 방문 전 각 장소에 꼭 확인하세요. 카드를 누르면 네이버 검색으로 연결됩니다.</p>
+</div></main>
+<script>
+(function(){
+var P=[];var st={sido:'',sigungu:'',cat:'',kw:''};var shown=60;
+var CE={'관광지':'🏞️','음식점':'🍴','숙박':'🏨','레포츠':'🚵','문화시설':'🎭'};
+function esc(s){return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function card(p){var loc=(p.sido||'')+(p.sigungu?' '+p.sigungu:'');var q=encodeURIComponent(p.title);var img=p.img||'/img/hero.webp';return '<a class="card" href="https://search.naver.com/search.naver?query='+q+'" target="_blank" rel="noopener"><div class="thumb"><img loading="lazy" src="'+esc(img)+'" alt="'+esc(p.title)+'" onerror="this.src=&#39;/img/hero.webp&#39;"><span class="cat">'+(CE[p.cat]||'')+' '+esc(p.cat)+'</span></div><div class="card-body"><h3>'+esc(p.title)+'</h3><div class="loc">'+esc(loc)+'</div></div></a>';}
+function filtered(){return P.filter(function(p){if(st.sido&&p.sido!==st.sido)return false;if(st.sigungu&&p.sigungu!==st.sigungu)return false;if(st.cat&&p.cat!==st.cat)return false;if(st.kw){var k=st.kw.toLowerCase();if((p.title||'').toLowerCase().indexOf(k)<0&&(p.addr||'').indexOf(st.kw)<0)return false;}return true;});}
+function render(){var list=filtered();document.getElementById('pCount').textContent='총 '+list.length+'곳';var g=document.getElementById('pGrid');g.innerHTML=list.length?list.slice(0,shown).map(card).join(''):'<p style="grid-column:1/-1;color:#6b7280;padding:24px 0">조건에 맞는 곳이 없어요. 지역·유형을 바꿔보세요.</p>';document.getElementById('pMore').style.display=list.length>shown?'inline-block':'none';}
+function fillSg(){var set={};P.forEach(function(p){if((!st.sido||p.sido===st.sido)&&p.sigungu)set[p.sigungu]=1;});var arr=Object.keys(set).sort();document.getElementById('pSigungu').innerHTML='<option value="">전체 시·군·구</option>'+arr.map(function(s){return '<option value="'+s+'">'+s+'</option>';}).join('');}
+document.getElementById('pSido').addEventListener('change',function(e){st.sido=e.target.value;st.sigungu='';shown=60;fillSg();render();});
+document.getElementById('pSigungu').addEventListener('change',function(e){st.sigungu=e.target.value;shown=60;render();});
+document.getElementById('pCat').addEventListener('change',function(e){st.cat=e.target.value;shown=60;render();});
+document.getElementById('pKw').addEventListener('input',function(e){st.kw=e.target.value.trim();shown=60;render();});
+document.getElementById('pReset').addEventListener('click',function(){st={sido:'',sigungu:'',cat:'',kw:''};shown=60;document.getElementById('pSido').value='';document.getElementById('pCat').value='';document.getElementById('pKw').value='';fillSg();render();});
+document.getElementById('pMore').addEventListener('click',function(){shown+=60;render();});
+document.getElementById('pCount').textContent='불러오는 중…';
+fetch('/pet/data.json').then(function(r){return r.json();}).then(function(data){P=data;fillSg();render();}).catch(function(){document.getElementById('pCount').textContent='데이터를 불러오지 못했습니다. 새로고침 해주세요.';});
+})();
+</script>`;
+writePage('pet', layout('반려견 동반 여행지 — 전국 반려동물 동반 관광지·맛집·숙소 | ' + SITE_NAME, '반려동물 동반 가능한 전국 관광지·음식점·숙박·레포츠를 지역별로. 공공데이터 기반 ' + apiPets.length + '곳. 강아지와 함께 갈 곳 찾기.', '/pet/', petContent));
+fs.writeFileSync(path.join(ROOT, 'pet', 'data.json'), JSON.stringify(apiPets));
+
 // ---------- sitemap / robots ----------
-const urls = ['/', ...MONTHS.map(m => `/${m.key}/`), '/search/', '/jangteo/', '/test/', '/blog/', ...posts.map(p => `/blog/${p.slug}/`), '/privacy/'];
+const urls = ['/', ...MONTHS.map(m => `/${m.key}/`), '/search/', '/pet/', '/jangteo/', '/test/', '/blog/', ...posts.map(p => `/blog/${p.slug}/`), '/privacy/'];
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${urls.map(u => `<url><loc>${SITE}${u}</loc><lastmod>${TODAY}</lastmod></url>`).join('\n')}
