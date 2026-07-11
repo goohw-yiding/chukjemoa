@@ -424,33 +424,67 @@ ${monthNavHtml}
 
 // ---------- 오일장 페이지 ----------
 const marketRows = markets.map(m =>
-  `<tr data-days="${m.daysNum.join(',')}"><td><strong>${esc(m.name)}</strong></td><td>${esc(m.region)} ${esc(m.city)}</td><td>${esc(m.days)}</td><td>${esc(m.famous)}</td><td>${esc(m.desc)}</td></tr>`
+  `<tr data-days="${m.daysNum.join(',')}"><td><strong>${esc(m.name)}</strong></td><td class="nextday"></td><td>${esc(m.region)} ${esc(m.city)}</td><td>${esc(m.days)}</td><td>${esc(m.famous)}</td><td>${esc(m.desc)}</td><td class="jt-links"><a href="https://search.naver.com/search.naver?query=${encodeURIComponent(m.name + ' 맛집')}" target="_blank" rel="noopener">🍴 맛집</a><a href="https://map.naver.com/p/search/${encodeURIComponent(m.name)}" target="_blank" rel="noopener">🗺️ 지도</a></td></tr>`
 ).join('\n');
 
 const jangteoContent = `<main><div class="wrap">
 <div style="border-radius:12px;overflow:hidden;margin-bottom:16px"><img src="/img/jangteo.webp" alt="전통 오일장 풍경" style="width:100%;max-height:220px;object-fit:cover;display:block"></div>
 <h1 style="font-size:1.5rem;margin-bottom:6px">전국 유명 오일장(5일장) 날짜 총정리</h1>
-<p class="note">오일장은 날짜 끝자리 기준으로 열립니다. 예: 4·9일장 → 4, 9, 14, 19, 24, 29일. <strong>오늘 열리는 장은 초록색으로 표시됩니다.</strong></p>
-<p id="today-info" class="note" style="font-weight:700;color:#1a7f37"></p>
-<table>
-<thead><tr><th>장터</th><th>위치</th><th>장날</th><th>대표 품목</th><th>특징</th></tr></thead>
-<tbody>${marketRows}</tbody>
-</table>
+<style>
+.datepick{background:#fff;border-radius:14px;padding:14px 16px;box-shadow:0 2px 10px rgba(31,41,55,.06);margin:12px 0 16px;display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.datepick label{font-weight:700;color:#374151;font-size:.95rem}
+.datepick input[type=date]{padding:8px 10px;border:1.5px solid #dcefeb;border-radius:10px;font-family:inherit;font-size:.95rem;background:#f4faf8;color:#374151}
+#date-reset{border:1.5px solid #a9e5dd;background:#fff;color:#0c7d72;border-radius:10px;padding:8px 14px;font-weight:700;cursor:pointer;font-family:inherit}
+#date-summary{font-weight:800;color:#0a6c63;font-size:.95rem}
+.ndbadge{display:inline-block;padding:4px 11px;border-radius:20px;font-size:.82rem;font-weight:800;white-space:nowrap}
+.nd0{background:#0f9d8f;color:#fff}.nd1{background:#2dd4bf;color:#08403a}.nd2{background:#7fd8ce;color:#08403a}.nd3{background:#bfe8e2;color:#0a6c63}.nd4{background:#e6f0ec;color:#4b5563}.nd-js{background:#7a2fbf;color:#fff}
+tr.open-on td{background:#e5f6e8}
+.jt-links a{display:inline-block;margin-right:8px;color:#0c7d72;font-weight:700;font-size:.85rem;white-space:nowrap}
+.jt-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+</style>
+<p class="note">오일장은 날짜 끝자리 기준으로 열립니다. 예: 4·9일장 → 4, 9, 14, 19, 24, 29일. <strong>가까운 장날 순으로 자동 정렬</strong>되고, 그 날 열리는 장은 초록색으로 표시됩니다.</p>
+<div class="datepick">
+<label>📅 가려는 날짜: <input type="date" id="visit-date"></label>
+<button id="date-reset" type="button">오늘로</button>
+<span id="date-summary"></span>
+</div>
+<div class="jt-scroll"><table>
+<thead><tr><th>장터</th><th>다음 장날</th><th>위치</th><th>장날</th><th>대표 품목</th><th>특징</th><th>바로가기</th></tr></thead>
+<tbody id="jt-body">${marketRows}</tbody>
+</table></div>
 <h2 class="sec">이달의 축제도 확인하세요</h2>
 ${monthNavHtml}
 </div></main>
 <script>
 (function(){
-  const now = new Date();
-  const d = now.getDate() % 10;
-  let openCnt = 0;
-  document.querySelectorAll('tr[data-days]').forEach(tr => {
-    const days = tr.dataset.days.split(',').filter(Boolean).map(Number).map(x => x % 10);
-    if (days.includes(d)) { tr.classList.add('today-open'); openCnt++; }
+var MS=86400000;
+function opensOn(days,dt){ if(!days.length) return true; var ld=dt.getDate()%10; for(var i=0;i<days.length;i++){ if((days[i]%10)===ld) return true; } return false; }
+function nextOffset(days,base){ if(!days.length) return 0; for(var o=0;o<5;o++){ if(opensOn(days,new Date(base.getTime()+o*MS))) return o; } return 0; }
+var LB=['오늘','내일','모레','3일 후','4일 후'];
+var tbody=document.getElementById('jt-body');
+var rows=[].slice.call(tbody.querySelectorAll('tr'));
+rows.forEach(function(tr,i){ tr.__i=i; });
+var input=document.getElementById('visit-date');
+function baseDate(){ if(input.value){ var p=input.value.split('-'); return new Date(+p[0],+p[1]-1,+p[2]); } var n=new Date(); return new Date(n.getFullYear(),n.getMonth(),n.getDate()); }
+function render(){
+  var base=baseDate(); var isToday=!input.value; var openCnt=0;
+  rows.forEach(function(tr){
+    var raw=(tr.getAttribute('data-days')||'').split(',').filter(Boolean); var days=raw.map(Number);
+    var js=!days.length; var open=opensOn(days,base); var o=nextOffset(days,base);
+    var lbl, cls;
+    if(js){ lbl='상설'; cls='nd-js'; }
+    else if(open){ lbl=isToday?'오늘':'이 날 열림'; cls='nd0'; }
+    else { lbl=isToday?LB[o]:(o+'일 후'); cls='nd'+Math.min(o,4); }
+    tr.querySelector('.nextday').innerHTML='<span class="ndbadge '+cls+'">'+lbl+'</span>';
+    tr.__off=js?-1:o;
+    if(open){ tr.classList.add('open-on'); openCnt++; } else { tr.classList.remove('open-on'); }
   });
-  const info = document.getElementById('today-info');
-  info.textContent = '오늘은 ' + (now.getMonth()+1) + '월 ' + now.getDate() + '일 — ' +
-    (openCnt ? '오늘 서는 오일장 ' + openCnt + '곳!' : '오늘 서는 오일장이 없어요. 장날을 확인해보세요.');
+  rows.slice().sort(function(a,b){ return (a.__off-b.__off) || (a.__i-b.__i); }).forEach(function(tr){ tbody.appendChild(tr); });
+  document.getElementById('date-summary').textContent=(base.getMonth()+1)+'월 '+base.getDate()+'일'+(isToday?' (오늘)':'')+' 기준 · 그 날 열리는 장 '+openCnt+'곳';
+}
+input.addEventListener('change',render);
+document.getElementById('date-reset').addEventListener('click',function(){ input.value=''; render(); });
+render();
 })();
 </script>`;
 writePage('jangteo', layout(
