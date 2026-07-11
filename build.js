@@ -134,8 +134,11 @@ header .wrap{display:flex;align-items:center;justify-content:space-between;flex-
 .logo{font-size:1.5rem;font-weight:800}
 nav a{margin-left:14px;font-weight:600;font-size:.95rem;opacity:.95}
 nav a:hover{text-decoration:underline}
-.hero{background:linear-gradient(rgba(40,15,5,.55),rgba(40,15,5,.55)),url('/img/hero.webp') center/cover;color:#fff;text-align:center;padding:56px 16px 64px}
-.hero h1{text-shadow:0 2px 8px rgba(0,0,0,.4)}
+.hero{position:relative;overflow:hidden;background:url('/img/hero.webp') center/cover;color:#fff;text-align:center}
+.hero-vid{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.hero-inner{position:relative;z-index:1;padding:64px 16px 72px;background:rgba(40,15,5,.45)}
+.hero h1{text-shadow:0 2px 8px rgba(0,0,0,.5)}
+.hero p{text-shadow:0 1px 4px rgba(0,0,0,.5)}
 .hero h1{font-size:1.7rem;margin-bottom:8px}
 .hero p{opacity:.95}
 main{padding:28px 0 40px}
@@ -343,8 +346,11 @@ const WEEKEND_JS = `<script>
 </script>`;
 
 const indexContent = `<div class="hero">
+<video class="hero-vid" autoplay muted loop playsinline poster="/img/hero.webp" aria-hidden="true"><source src="/img/hero.mp4" type="video/mp4"></video>
+<div class="hero-inner">
 <h1>전국 축제·오일장 일정, 한눈에 모아보기</h1>
 <p>이번 주말 어디 갈까? 전국 ${festivals.length}개 축제와 ${markets.length}곳 오일장 일정을 확인하세요.</p>
+</div>
 </div>
 <main><div class="wrap">
 <h2 class="sec" id="weekend-title">이번 주말 갈 만한 축제</h2>
