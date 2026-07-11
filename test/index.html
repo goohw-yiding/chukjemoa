@@ -3,12 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>축제모아 — 전국 축제·오일장 일정 총정리 (2026)</title>
-<meta name="description" content="2026 전국 축제 일정과 오일장(5일장) 날짜를 한눈에. 월별·지역별 축제 정보, 보령머드축제부터 화천산천어축제까지.">
-<link rel="canonical" href="https://chukjemoa.co.kr/">
-<meta property="og:title" content="축제모아 — 전국 축제·오일장 일정 총정리 (2026)">
-<meta property="og:description" content="2026 전국 축제 일정과 오일장(5일장) 날짜를 한눈에. 월별·지역별 축제 정보, 보령머드축제부터 화천산천어축제까지.">
-<meta property="og:url" content="https://chukjemoa.co.kr/">
+<title>축제 취향 테스트 — 나에게 맞는 축제 찾기 | 축제모아</title>
+<meta name="description" content="4가지 질문으로 알아보는 나의 축제 유형! 물놀이·음악·먹거리·불꽃놀이… 나에게 딱 맞는 2026 전국 축제를 30초 만에 추천받으세요.">
+<link rel="canonical" href="https://chukjemoa.co.kr/test/">
+<meta property="og:title" content="축제 취향 테스트 — 나에게 맞는 축제 찾기 | 축제모아">
+<meta property="og:description" content="4가지 질문으로 알아보는 나의 축제 유형! 물놀이·음악·먹거리·불꽃놀이… 나에게 딱 맞는 2026 전국 축제를 30초 만에 추천받으세요.">
+<meta property="og:url" content="https://chukjemoa.co.kr/test/">
 <meta property="og:type" content="website">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3293445488923111" crossorigin="anonymous"></script>
@@ -134,189 +134,111 @@ article ul{padding-left:20px}
 <a class="logo" href="/">🎪 축제모아</a>
 <nav><a href="/2026-07/">월별 축제</a><a href="/jangteo/">전국 오일장</a><a href="/test/">🔮 취향 테스트</a><a href="/blog/">축제 가이드</a></nav>
 </div></header>
-<div class="hero">
-<video class="hero-vid" autoplay muted loop playsinline poster="/img/hero.webp" aria-hidden="true"><source src="/img/hero.mp4" type="video/mp4"></video>
-<div class="hero-inner">
-<h1>이번 주말, 어디로 떠나볼까요?</h1>
-<p>전국 축제와 오일장 일정을 한눈에 — 가족 나들이 계획이 3분이면 끝나요.</p>
-<div class="hero-cta"><a class="cta1" href="#weekend-title">이번 주말 축제 보기</a><a class="cta2" href="/test/">🔮 축제 취향 테스트</a></div>
-<div class="hero-stats"><span>🎪 축제 87개</span><span>🧺 오일장 27곳</span><span>📅 매달 업데이트</span></div>
+<main><div class="wrap" style="padding-top:10px">
+<div style="text-align:center;margin-bottom:22px">
+<h1 style="font-size:1.6rem;font-weight:900;letter-spacing:-.02em">🔮 30초 축제 취향 테스트</h1>
+<p class="note" style="margin-top:4px">4가지 질문으로 나에게 딱 맞는 전국 축제를 찾아드려요.</p>
 </div>
-</div>
-<main><div class="wrap">
-<div id="myfavs-sec" style="display:none">
-<h2 class="sec">💖 내가 찜한 축제</h2>
-<div class="wkgrid" id="myfavs"></div>
-</div>
-<h2 class="sec" id="weekend-title">이번 주말 갈 만한 축제</h2>
-<div class="wkgrid" id="weekend"></div>
+<div class="quiz" id="quiz"></div>
 <script>
 (function(){
   const F = [{"n":"대구치맥페스티벌","s":"2026-07-01","e":"2026-07-05","r":"대구","c":"달서구","g":"음식","la":35.83,"lo":128.53,"k":"2026-07"},{"n":"부여서동연꽃축제","s":"2026-07-03","e":"2026-07-05","r":"충남","c":"부여군","g":"꽃","la":36.28,"lo":126.91,"k":"2026-07"},{"n":"금산삼계탕축제","s":"2026-07-10","e":"2026-07-12","r":"충남","c":"금산군","g":"음식","la":36.11,"lo":127.49,"k":"2026-07"},{"n":"울산 문화의거리 현대미술제","s":"2026-07-10","e":"2026-07-19","r":"울산","c":"중구","g":"문화","la":35.57,"lo":129.33,"k":"2026-07"},{"n":"안심창조밸리 연꽃마을축제","s":"2026-07-11","e":"2026-07-12","r":"대구","c":"동구","g":"꽃","la":35.89,"lo":128.64,"k":"2026-07"},{"n":"그루브 인 관악","s":"2026-07-11","e":"2026-07-12","r":"서울","c":"관악구","g":"음악","la":37.48,"lo":126.95,"k":"2026-07"},{"n":"함평 물놀이 페스타","s":"2026-07-17","e":"2026-08-17","r":"전남","c":"함평군","g":"물놀이","la":35.07,"lo":126.52,"k":"2026-07"},{"n":"태백 해바라기축제","s":"2026-07-17","e":"2026-08-17","r":"강원","c":"태백시","g":"꽃","la":37.16,"lo":128.99,"k":"2026-07"},{"n":"보령머드축제","s":"2026-07-24","e":"2026-08-09","r":"충남","c":"보령시","g":"물놀이","la":36.33,"lo":126.61,"k":"2026-07"},{"n":"세종조치원복숭아축제","s":"2026-07-24","e":"2026-07-26","r":"세종","c":"조치원읍","g":"음식","la":36.6,"lo":127.3,"k":"2026-07"},{"n":"변산비치펍 시즌2","s":"2026-07-24","e":"2026-08-17","r":"전북","c":"부안군","g":"문화","la":35.73,"lo":126.73,"k":"2026-07"},{"n":"정남진장흥물축제","s":"2026-07-25","e":"2026-08-02","r":"전남","c":"장흥군","g":"물놀이","la":34.68,"lo":126.91,"k":"2026-07"},{"n":"봉화은어축제","s":"2026-07-25","e":"2026-08-02","r":"경북","c":"봉화군","g":"물놀이","la":36.89,"lo":128.73,"k":"2026-07"},{"n":"거제여름해양축제","s":"2026-07-25","e":"2026-07-26","r":"경남","c":"거제시","g":"물놀이","la":34.88,"lo":128.62,"k":"2026-07"},{"n":"대구 동구 여름축제","s":"2026-07-25","e":"2026-07-26","r":"대구","c":"동구","g":"물놀이","la":35.89,"lo":128.64,"k":"2026-07"},{"n":"평택뮤직페스티벌","s":"2026-07-25","e":"2026-07-25","r":"경기","c":"평택시","g":"음악","la":36.99,"lo":127.11,"k":"2026-07"},{"n":"무안연꽃축제","s":"2026-07-24","e":"2026-07-26","r":"전남","c":"무안군","g":"꽃","la":34.99,"lo":126.48,"k":"2026-07"},{"n":"평창더위사냥축제","s":"2026-07-24","e":"2026-08-02","r":"강원","c":"평창군","g":"물놀이","la":37.37,"lo":128.39,"k":"2026-07"},{"n":"대관령음악제","s":"2026-07-22","e":"2026-08-08","r":"강원","c":"평창군","g":"음악","la":37.37,"lo":128.39,"k":"2026-07"},{"n":"홍천강 별빛음악 맥주축제","s":"2026-07-31","e":"2026-08-09","r":"강원","c":"홍천군","g":"음악","la":37.7,"lo":127.89,"k":"2026-07"},{"n":"물의나라 화천쪽배축제","s":"2026-07-25","e":"2026-08-09","r":"강원","c":"화천군","g":"물놀이","la":38.11,"lo":127.71,"k":"2026-07"},{"n":"동해 해변뮤직페스티벌","s":"2026-07-30","e":"2026-08-04","r":"강원","c":"동해시","g":"음악","la":37.52,"lo":129.11,"k":"2026-07"},{"n":"거창국제연극제","s":"2026-07-31","e":"2026-08-09","r":"경남","c":"거창군","g":"문화","la":35.69,"lo":127.91,"k":"2026-07"},{"n":"인천펜타포트 락 페스티벌","s":"2026-07-31","e":"2026-08-02","r":"인천","c":"연수구","g":"음악","la":37.41,"lo":126.68,"k":"2026-07"},{"n":"이호테우축제","s":"2026-07-31","e":"2026-08-02","r":"제주","c":"제주시","g":"전통","la":33.5,"lo":126.53,"k":"2026-07"},{"n":"삼길포우럭축제","s":"2026-08-01","e":"2026-08-02","r":"충남","c":"서산시","g":"음식","la":36.78,"lo":126.45,"k":"2026-08"},{"n":"현인가요제","s":"2026-08-01","e":"2026-08-02","r":"부산","c":"서구","g":"음악","la":35.1,"lo":129.02,"k":"2026-08"},{"n":"진안고원 수박축제","s":"2026-08-01","e":"2026-08-02","r":"전북","c":"진안군","g":"음식","la":35.79,"lo":127.42,"k":"2026-08"},{"n":"화천토마토축제","s":"2026-08-07","e":"2026-08-09","r":"강원","c":"화천군","g":"음식","la":38.11,"lo":127.71,"k":"2026-08"},{"n":"대전 0시 축제","s":"2026-08-07","e":"2026-08-17","r":"대전","c":"중구","g":"문화","la":36.33,"lo":127.42,"k":"2026-08"},{"n":"부산바다축제","s":"2026-08-07","e":"2026-08-09","r":"부산","c":"사하구","g":"물놀이","la":35.1,"lo":128.97,"k":"2026-08"},{"n":"진주 M2 페스티벌","s":"2026-08-07","e":"2026-08-08","r":"경남","c":"진주시","g":"음악","la":35.18,"lo":128.11,"k":"2026-08"},{"n":"합천 고스트파크 축제","s":"2026-08-07","e":"2026-08-16","r":"경남","c":"합천군","g":"기타","la":35.57,"lo":128.17,"k":"2026-08"},{"n":"통영한산대첩축제","s":"2026-08-12","e":"2026-08-16","r":"경남","c":"통영시","g":"전통","la":34.85,"lo":128.43,"k":"2026-08"},{"n":"정동진독립영화제","s":"2026-08-06","e":"2026-08-09","r":"강원","c":"강릉시","g":"문화","la":37.75,"lo":128.9,"k":"2026-08"},{"n":"영월 동강축제","s":"2026-08-06","e":"2026-08-09","r":"강원","c":"영월군","g":"물놀이","la":37.18,"lo":128.46,"k":"2026-08"},{"n":"춘천막국수닭갈비축제","s":"2026-08-25","e":"2026-08-30","r":"강원","c":"춘천시","g":"음식","la":37.88,"lo":127.73,"k":"2026-08"},{"n":"괴산고추축제","s":"2026-08-27","e":"2026-08-30","r":"충북","c":"괴산군","g":"음식","la":36.82,"lo":127.79,"k":"2026-08"},{"n":"영동포도축제","s":"2026-08-26","e":"2026-08-30","r":"충북","c":"영동군","g":"음식","la":36.17,"lo":127.78,"k":"2026-08"},{"n":"금남로 차 없는 거리 걷자잉","s":"2026-04-04","e":"2026-11-07","r":"광주","c":"동구","g":"문화","la":35.15,"lo":126.92,"k":"2026-07"},{"n":"경산갓바위소원성취축제","s":"2026-06-01","e":"2026-09-30","r":"경북","c":"경산시","g":"문화","la":35.83,"lo":128.74,"k":"2026-07"},{"n":"무주반딧불축제","s":"2026-09-04","e":"2026-09-12","r":"전북","c":"무주군","g":"기타","la":36.01,"lo":127.66,"k":"2026-09"},{"n":"서울세계불꽃축제","s":"2026-09-05","e":"2026-09-05","r":"서울","c":"영등포구","g":"불꽃","la":37.53,"lo":126.9,"k":"2026-09"},{"n":"평창효석문화제","s":"2026-09-04","e":"2026-09-13","r":"강원","c":"평창군","g":"꽃","la":37.37,"lo":128.39,"k":"2026-09"},{"n":"명량대첩축제","s":"2026-09-04","e":"2026-09-06","r":"전남","c":"해남군·진도군","g":"전통","la":34.57,"lo":126.6,"k":"2026-09"},{"n":"차 없는 잠수교 뚜벅뚜벅 축제","s":"2026-09-06","e":"2026-10-25","r":"서울","c":"서초구","g":"문화","la":37.48,"lo":127.03,"k":"2026-09"},{"n":"정선아리랑제","s":"2026-09-10","e":"2026-09-13","r":"강원","c":"정선군","g":"전통","la":37.38,"lo":128.66,"k":"2026-09"},{"n":"시흥갯골축제","s":"2026-09-11","e":"2026-09-13","r":"경기","c":"시흥시","g":"기타","la":37.38,"lo":126.8,"k":"2026-09"},{"n":"원주 다이내믹댄싱카니발","s":"2026-09-16","e":"2026-09-20","r":"강원","c":"원주시","g":"문화","la":37.34,"lo":127.95,"k":"2026-09"},{"n":"안성맞춤 남사당 바우덕이축제","s":"2026-09-23","e":"2026-09-27","r":"경기","c":"안성시","g":"전통","la":37.01,"lo":127.27,"k":"2026-09"},{"n":"한성백제문화제","s":"2026-09-25","e":"2026-09-27","r":"서울","c":"송파구","g":"전통","la":37.51,"lo":127.11,"k":"2026-09"},{"n":"서울거리예술축제","s":"2026-09-25","e":"2026-09-27","r":"서울","c":"중구","g":"문화","la":37.56,"lo":126.99,"k":"2026-09"},{"n":"소래포구축제","s":"2026-09-25","e":"2026-09-27","r":"인천","c":"남동구","g":"음식","la":37.45,"lo":126.73,"k":"2026-09"},{"n":"부산국제록페스티벌","s":"2026-09-26","e":"2026-09-27","r":"부산","c":"사상구","g":"음악","la":35.15,"lo":128.99,"k":"2026-09"},{"n":"안동국제탈춤페스티벌","s":"2026-09-25","e":"2026-10-04","r":"경북","c":"안동시","g":"전통","la":36.57,"lo":128.73,"k":"2026-09"},{"n":"김제지평선축제","s":"2026-10-01","e":"2026-10-05","r":"전북","c":"김제시","g":"전통","la":35.8,"lo":126.88,"k":"2026-10"},{"n":"진주남강유등축제","s":"2026-10-01","e":"2026-10-18","r":"경남","c":"진주시","g":"빛","la":35.18,"lo":128.11,"k":"2026-10"},{"n":"자라섬재즈페스티벌","s":"2026-10-09","e":"2026-10-11","r":"경기","c":"가평군","g":"음악","la":37.83,"lo":127.51,"k":"2026-10"},{"n":"강릉커피축제","s":"2026-10-21","e":"2026-10-25","r":"강원","c":"강릉시","g":"음식","la":37.75,"lo":128.9,"k":"2026-10"},{"n":"부산불꽃축제","s":"2026-11-07","e":"2026-11-07","r":"부산","c":"수영구","g":"불꽃","la":35.15,"lo":129.11,"k":"2026-11"},{"n":"수원화성문화제","s":"2026-10-03","e":"2026-10-06","r":"경기","c":"수원시","g":"문화","la":37.26,"lo":127.03,"k":"2026-10"},{"n":"백제문화제","s":"2026-09-26","e":"2026-10-04","r":"충남","c":"공주시·부여군","g":"전통","la":36.37,"lo":127.02,"k":"2026-09"},{"n":"추억의충장축제","s":"2026-10-07","e":"2026-10-11","r":"광주","c":"동구","g":"문화","la":35.15,"lo":126.92,"k":"2026-10"},{"n":"부산자갈치축제","s":"2026-10-08","e":"2026-10-11","r":"부산","c":"중구","g":"음식","la":35.1,"lo":129.03,"k":"2026-10"},{"n":"전주비빔밥축제","s":"2026-10-15","e":"2026-10-18","r":"전북","c":"전주시","g":"음식","la":35.82,"lo":127.15,"k":"2026-10"},{"n":"이천쌀문화축제","s":"2026-10-14","e":"2026-10-18","r":"경기","c":"이천시","g":"음식","la":37.27,"lo":127.44,"k":"2026-10"},{"n":"서울억새축제","s":"2026-10-16","e":"2026-10-22","r":"서울","c":"마포구","g":"꽃","la":37.56,"lo":126.91,"k":"2026-10"},{"n":"임실N치즈축제","s":"2026-10-08","e":"2026-10-11","r":"전북","c":"임실군","g":"음식","la":35.62,"lo":127.29,"k":"2026-10"},{"n":"강경젓갈축제","s":"2026-10-14","e":"2026-10-18","r":"충남","c":"논산시","g":"음식","la":36.19,"lo":127.1,"k":"2026-10"},{"n":"양양송이축제","s":"2026-09-30","e":"2026-10-04","r":"강원","c":"양양군","g":"음식","la":38.07,"lo":128.63,"k":"2026-09"},{"n":"순천만갈대축제","s":"2026-11-01","e":"2026-11-09","r":"전남","c":"순천시","g":"꽃","la":34.95,"lo":127.49,"k":"2026-11"},{"n":"정읍 내장산단풍축제","s":"2026-10-30","e":"2026-11-08","r":"전북","c":"정읍시","g":"꽃","la":35.57,"lo":126.86,"k":"2026-10"},{"n":"서울김장문화제","s":"2026-11-06","e":"2026-11-08","r":"서울","c":"중구","g":"음식","la":37.56,"lo":126.99,"k":"2026-11"},{"n":"파주장단콩축제","s":"2026-11-20","e":"2026-11-22","r":"경기","c":"파주시","g":"음식","la":37.76,"lo":126.78,"k":"2026-11"},{"n":"서울빛초롱축제","s":"2026-12-11","e":"2027-01-17","r":"서울","c":"종로구","g":"빛","la":37.57,"lo":126.98,"k":"2026-12"},{"n":"청양칠갑산얼음분수축제","s":"2026-12-24","e":"2027-02-21","r":"충남","c":"청양군","g":"눈","la":36.46,"lo":126.8,"k":"2026-12"},{"n":"화천산천어축제","s":"2027-01-09","e":"2027-02-01","r":"강원","c":"화천군","g":"눈","la":38.11,"lo":127.71,"k":"2026-12"},{"n":"태백산눈축제","s":"2027-01-30","e":"2027-02-07","r":"강원","c":"태백시","g":"눈","la":37.16,"lo":128.99,"k":"2026-12"},{"n":"보성차밭빛축제","s":"2026-12-18","e":"2027-01-31","r":"전남","c":"보성군","g":"빛","la":34.77,"lo":127.08,"k":"2026-12"},{"n":"담양산타축제","s":"2026-12-18","e":"2026-12-25","r":"전남","c":"담양군","g":"빛","la":35.32,"lo":126.99,"k":"2026-12"},{"n":"평창송어축제","s":"2026-12-31","e":"2027-02-01","r":"강원","c":"평창군","g":"눈","la":37.37,"lo":128.39,"k":"2026-12"},{"n":"인제빙어축제","s":"2027-01-23","e":"2027-01-31","r":"강원","c":"인제군","g":"눈","la":38.07,"lo":128.17,"k":"2026-12"},{"n":"대관령눈꽃축제","s":"2027-01-15","e":"2027-01-24","r":"강원","c":"평창군","g":"눈","la":37.37,"lo":128.39,"k":"2026-12"},{"n":"아침고요수목원 오색별빛정원전","s":"2026-12-04","e":"2027-03-14","r":"경기","c":"가평군","g":"빛","la":37.83,"lo":127.51,"k":"2026-12"},{"n":"부산크리스마스트리문화축제","s":"2026-12-05","e":"2027-01-03","r":"부산","c":"중구","g":"빛","la":35.1,"lo":129.03,"k":"2026-12"},{"n":"호미곶한민족해맞이축전","s":"2026-12-31","e":"2027-01-01","r":"경북","c":"포항시","g":"기타","la":36.02,"lo":129.36,"k":"2026-12"},{"n":"성산일출축제","s":"2026-12-30","e":"2027-01-01","r":"제주","c":"서귀포시","g":"기타","la":33.25,"lo":126.56,"k":"2026-12"}];
   const EMOJI = {"물놀이":"💦","음악":"🎵","음식":"🍜","꽃":"🌸","문화":"🎭","불꽃":"🎆","전통":"🏮","빛":"✨","눈":"⛄","기타":"🎪"};
-  const t = new Date(); t.setHours(0,0,0,0);
-  const sat = new Date(t); sat.setDate(t.getDate() + ((6 - t.getDay() + 7) % 7));
-  const sun = new Date(sat); sun.setDate(sat.getDate() + 1);
-  const iso = d => d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
-  const list = F.filter(f => f.s <= iso(sun) && f.e >= iso(sat)).slice(0, 10);
-  const box = document.getElementById('weekend');
-  if (box) {
-    if (!list.length) { box.innerHTML = '<p class="note">이번 주말 예정된 축제 정보가 없어요.</p>'; }
-    else {
-      document.getElementById('weekend-title').textContent =
-        '이번 주말(' + (sat.getMonth()+1) + '/' + sat.getDate() + '~' + (sun.getMonth()+1) + '/' + sun.getDate() + ') 갈 만한 축제';
-      box.innerHTML = list.map((f, i) =>
-        '<a class="wkchip" data-i="' + i + '" href="/' + f.k + '/">' + (EMOJI[f.g]||'🎪') + ' <strong>' + f.n + '</strong><span>' + f.r + ' ' + f.c + ' <em class="wx"></em></span></a>'
-      ).join('');
-
-      // 킥② 주말 날씨 배지 (Open-Meteo, API 키 불필요)
-      const WX = c =>
-        c <= 1 ? '☀️' : c <= 3 ? '⛅' : c <= 48 ? '🌫️' :
-        (c <= 67 || (c >= 80 && c <= 82)) ? '🌧️' :
-        (c <= 77 || c === 85 || c === 86) ? '❄️' : c >= 95 ? '⛈️' : '🌡️';
-      const groups = {};
-      list.forEach((f, i) => {
-        const key = f.la.toFixed(1) + ',' + f.lo.toFixed(1);
-        (groups[key] = groups[key] || { la: f.la, lo: f.lo, idx: [] }).idx.push(i);
-      });
-      Object.values(groups).slice(0, 8).forEach(g => {
-        const u = 'https://api.open-meteo.com/v1/forecast?latitude=' + g.la + '&longitude=' + g.lo +
-          '&daily=weather_code,temperature_2m_max&start_date=' + iso(sat) + '&end_date=' + iso(sat) + '&timezone=Asia%2FSeoul';
-        fetch(u).then(r => r.json()).then(d => {
-          if (!d.daily) return;
-          const txt = WX(d.daily.weather_code[0]) + ' ' + Math.round(d.daily.temperature_2m_max[0]) + '°';
-          g.idx.forEach(i => {
-            const el = document.querySelector('.wkchip[data-i="' + i + '"] .wx');
-            if (el) el.textContent = txt;
-          });
-        }).catch(() => {});
-      });
-    }
-  }
-
-  // 킥④ 찜한 축제 D-day (메인)
-  window.renderFavs = function(){
-    const sec = document.getElementById('myfavs-sec'), fbox = document.getElementById('myfavs');
-    if (!sec || !fbox) return;
-    let favs = [];
-    try { favs = JSON.parse(localStorage.getItem('cjm_favs')) || []; } catch(e) {}
-    const mine = F.filter(f => favs.indexOf(f.n) !== -1).sort((a, b) => a.s.localeCompare(b.s));
-    if (!mine.length) { sec.style.display = 'none'; return; }
-    sec.style.display = '';
-    fbox.innerHTML = mine.map(f => {
-      const s = new Date(f.s), e = new Date(f.e);
-      const d = Math.ceil((s - t) / 86400000);
-      const dd = t > e ? '종료' : (t >= s ? '진행중 🔥' : 'D-' + d);
-      const col = t > e ? '#9ca3af' : '#ff5a3c';
-      return '<a class="wkchip" href="/' + f.k + '/">' + (EMOJI[f.g]||'🎪') + ' <strong>' + f.n +
-        '</strong> <em style="font-style:normal;font-weight:800;color:' + col + '">' + dd + '</em><span>' + f.r + ' ' + f.c + ' · ' + f.s.slice(5).replace('-','/') + ' 시작</span></a>';
-    }).join('');
+  const TYPES = {
+    '물놀이': ['💦 여름 물개상', '더위는 정면돌파! 시원하게 젖어야 진짜 축제죠.'],
+    '음악': ['🎵 페스티벌 프로참석러', '음악이 울리는 곳이 곧 내 자리. 떼창은 필수!'],
+    '음식': ['🍜 축제는 먹으러 가는 편', '축제의 완성은 먹거리. 한 손엔 꼬치, 한 손엔 지도!'],
+    '꽃': ['🌸 감성 사진 장인', '꽃길만 걷고 싶은 당신, 인생샷은 덤이에요.'],
+    '문화': ['🎭 문화 산책러', '천천히 보고 느끼는 게 좋은 교양파 여행자.'],
+    '불꽃': ['🎆 불꽃 낭만러', '밤하늘에 터지는 그 순간을 위해 축제에 갑니다.'],
+    '전통': ['🏮 옛멋 탐험가', '장터 국밥에 민속놀이, 정겨운 게 최고죠.'],
+    '빛': ['✨ 야경 수집가', '반짝이는 불빛 아래에서 가장 행복한 타입.'],
+    '눈': ['⛄ 겨울왕국 주민', '추울수록 신나는 겨울축제 마니아!'],
+    '기타': ['🎪 축제 만능러', '어떤 축제든 즐길 준비 완료, 만능 나들이꾼!']
   };
-  renderFavs();
+  const QS = [
+    { q: '이번 나들이, 누구랑 가세요?', o: [
+      ['👨‍👩‍👧 아이들과 가족끼리', {'물놀이':2,'전통':1,'눈':2,'기타':1}],
+      ['💕 연인과 둘이서', {'꽃':2,'빛':2,'불꽃':2}],
+      ['🍻 친구들과 우르르', {'음악':3,'음식':2,'물놀이':1}],
+      ['🎧 혼자 여유롭게', {'문화':3,'꽃':1,'전통':1}]
+    ]},
+    { q: '축제에서 제일 기대되는 건?', o: [
+      ['🍢 길거리 먹거리 털기', {'음식':3,'전통':1}],
+      ['🎤 무대·공연·음악', {'음악':3,'불꽃':1}],
+      ['📸 인생샷 건지기', {'꽃':2,'빛':2,'눈':1}],
+      ['🖐️ 체험하고 구경하기', {'문화':2,'전통':2,'물놀이':1}]
+    ]},
+    { q: '끌리는 분위기는?', o: [
+      ['🌊 시원하고 짜릿하게', {'물놀이':3,'음악':1}],
+      ['🌙 로맨틱하고 반짝반짝', {'빛':3,'불꽃':2,'꽃':1}],
+      ['🍲 정겹고 구수하게', {'전통':3,'음식':1}],
+      ['🍃 조용하고 아늑하게', {'문화':2,'꽃':2,'눈':1}]
+    ]},
+    { q: '언제 떠나고 싶어요?', o: [
+      ['🔥 당장 이번 주말!', {}, 'weekend'],
+      ['📅 이번 달 안에', {}, 'month'],
+      ['🍁 선선한 가을에', {'꽃':1,'불꽃':1}, 'fall'],
+      ['❄️ 눈 오는 겨울에', {'눈':2,'빛':1}, 'winter']
+    ]}
+  ];
+  let step = 0, score = {}, time = 'any';
+  const box = document.getElementById('quiz');
+  function render() {
+    if (step >= QS.length) return result();
+    const q = QS[step];
+    box.innerHTML = '<div class="qnum">Q' + (step+1) + ' / ' + QS.length + '</div><h2>' + q.q + '</h2>' +
+      '<div class="opts">' + q.o.map((o, i) => '<button data-i="' + i + '">' + o[0] + '</button>').join('') + '</div>' +
+      '<div class="dots">' + QS.map((x, i) => '<i class="' + (i <= step ? 'on' : '') + '"></i>').join('') + '</div>';
+    box.querySelectorAll('.opts button').forEach(b => b.addEventListener('click', () => {
+      const o = q.o[+b.dataset.i];
+      Object.keys(o[1]).forEach(k => score[k] = (score[k] || 0) + o[1][k]);
+      if (o[2]) time = o[2];
+      step++; render();
+    }));
+  }
+  function result() {
+    const t = new Date(); t.setHours(0,0,0,0);
+    const iso = d => d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+    const today = iso(t);
+    const sat = new Date(t); sat.setDate(t.getDate() + ((6 - t.getDay() + 7) % 7));
+    const sun = new Date(sat); sun.setDate(sat.getDate() + 1);
+    const monthEnd = iso(new Date(t.getFullYear(), t.getMonth() + 1, 0));
+    const top = Object.keys(score).sort((a, b) => score[b] - score[a]);
+    const best = top[0] || '기타';
+    const tinfo = TYPES[best] || TYPES['기타'];
+    let pool = F.filter(f => f.e >= today);
+    if (time === 'weekend') pool = pool.filter(f => f.s <= iso(sun) && f.e >= iso(sat));
+    else if (time === 'month') pool = pool.filter(f => f.s <= monthEnd);
+    else if (time === 'fall') pool = pool.filter(f => ['09','10','11'].indexOf(f.s.slice(5,7)) !== -1);
+    else if (time === 'winter') pool = pool.filter(f => ['12','01','02'].indexOf(f.s.slice(5,7)) !== -1);
+    const rank = f => { const i = top.indexOf(f.g); return i === -1 ? 99 : i; };
+    pool.sort((a, b) => rank(a) - rank(b) || a.s.localeCompare(b.s));
+    const recs = pool.slice(0, 3);
+    const recHtml = recs.length ? recs.map(f =>
+      '<a class="rec" href="/' + f.k + '/">' + (EMOJI[f.g]||'🎪') + ' <strong>' + f.n + '</strong><span>📍 ' + f.r + ' ' + f.c + ' · 📅 ' + f.s.replace(/-/g,'.') + ' ~ ' + f.e.replace(/-/g,'.') + '</span></a>').join('')
+      : '<p class="note">조건에 맞는 축제가 없어요. 다른 계절로 다시 해보세요!</p>';
+    box.innerHTML = '<div class="qnum">나의 축제 유형은</div>' +
+      '<div class="result-type">' + tinfo[0] + '</div>' +
+      '<p class="result-desc">' + tinfo[1] + '</p>' +
+      '<h2 style="font-size:1.05rem;margin-bottom:12px">🎯 지금 딱 맞는 추천 축제</h2>' + recHtml +
+      '<div class="share-row">' +
+      '<button class="sh1" id="share-btn">📤 결과 공유하기</button>' +
+      '<button class="sh3" id="retry-btn">🔄 다시 하기</button>' +
+      '<a class="sh2" href="/">축제 더 보기</a></div>';
+    document.getElementById('retry-btn').addEventListener('click', () => { step = 0; score = {}; time = 'any'; render(); });
+    document.getElementById('share-btn').addEventListener('click', () => {
+      const txt = '나의 축제 유형은 [' + tinfo[0] + ']! 너도 해봐 👉';
+      const url = 'https://chukjemoa.co.kr/test/';
+      if (navigator.share) navigator.share({ title: '축제 취향 테스트', text: txt, url: url }).catch(() => {});
+      else navigator.clipboard.writeText(txt + ' ' + url).then(() => alert('링크가 복사됐어요! 카톡에 붙여넣어 보세요 💬'));
+    });
+  }
+  render();
 })();
 </script>
-<a class="testbanner" href="/test/"><strong>🔮 30초 축제 취향 테스트</strong><span>4가지 질문으로 나에게 딱 맞는 축제를 찾아드려요 — 결과를 친구에게 공유해보세요!</span></a>
-<h2 class="sec">지금 &amp; 곧 열리는 축제 <button id="nearby-btn" class="nearby-btn" style="margin-left:10px;vertical-align:middle">📍 내 주변 축제 보기</button></h2>
-<div class="grid" id="nearby-grid"><div class="card" data-region="광주" data-start="2026-04-04" data-end="2026-11-07" data-lat="35.15" data-lng="126.92" data-name="금남로 차 없는 거리 걷자잉">
-  <div class="thumb"><img src="/img/cat-culture.webp" alt="문화 축제" loading="lazy"><span class="dday"></span><button class="fav" data-name="금남로 차 없는 거리 걷자잉" aria-label="찜하기">♡</button><span class="km"></span><span class="cat">🎭 문화</span></div>
-  <div class="card-body">
-  <div class="card-top"><span class="badge ok">일정 확정</span></div>
-  <h3>금남로 차 없는 거리 걷자잉</h3>
-  <p class="date">📅 2026.4.4 ~ 2026.11.7</p>
-  <p class="loc">📍 광주 동구 · 금남로공원·전일빌딩245 일원</p>
-  <p class="desc">주말 금남로에서 즐기는 거리 문화행사</p>
-  </div>
-</div>
-<div class="card" data-region="경북" data-start="2026-06-01" data-end="2026-09-30" data-lat="35.83" data-lng="128.74" data-name="경산갓바위소원성취축제">
-  <div class="thumb"><img src="/img/cat-culture.webp" alt="문화 축제" loading="lazy"><span class="dday"></span><button class="fav" data-name="경산갓바위소원성취축제" aria-label="찜하기">♡</button><span class="km"></span><span class="cat">🎭 문화</span></div>
-  <div class="card-body">
-  <div class="card-top"><span class="badge ok">일정 확정</span></div>
-  <h3>경산갓바위소원성취축제</h3>
-  <p class="date">📅 2026.6.1 ~ 2026.9.30</p>
-  <p class="loc">📍 경북 경산시 · 갓바위 일원</p>
-  <p class="desc">갓바위에서 소원을 비는 힐링 축제</p>
-  </div>
-</div>
-<div class="card" data-region="충남" data-start="2026-07-10" data-end="2026-07-12" data-lat="36.11" data-lng="127.49" data-name="금산삼계탕축제">
-  <div class="thumb"><img src="/img/cat-food.webp" alt="음식 축제" loading="lazy"><span class="dday"></span><button class="fav" data-name="금산삼계탕축제" aria-label="찜하기">♡</button><span class="km"></span><span class="cat">🍜 음식</span></div>
-  <div class="card-body">
-  <div class="card-top"><span class="badge ok">일정 확정</span></div>
-  <h3>금산삼계탕축제</h3>
-  <p class="date">📅 2026.7.10 ~ 2026.7.12</p>
-  <p class="loc">📍 충남 금산군 · 금산인삼관 광장 일원</p>
-  <p class="desc">인삼고을 금산의 여름 보양식 축제</p>
-  </div>
-</div>
-<div class="card" data-region="울산" data-start="2026-07-10" data-end="2026-07-19" data-lat="35.57" data-lng="129.33" data-name="울산 문화의거리 현대미술제">
-  <div class="thumb"><img src="/img/cat-culture.webp" alt="문화 축제" loading="lazy"><span class="dday"></span><button class="fav" data-name="울산 문화의거리 현대미술제" aria-label="찜하기">♡</button><span class="km"></span><span class="cat">🎭 문화</span></div>
-  <div class="card-body">
-  <div class="card-top"><span class="badge ok">일정 확정</span></div>
-  <h3>울산 문화의거리 현대미술제</h3>
-  <p class="date">📅 2026.7.10 ~ 2026.7.19</p>
-  <p class="loc">📍 울산 중구 · 울산 문화의거리</p>
-  <p class="desc">거리 곳곳에서 즐기는 현대미술 전시</p>
-  </div>
-</div>
-<div class="card" data-region="대구" data-start="2026-07-11" data-end="2026-07-12" data-lat="35.89" data-lng="128.64" data-name="안심창조밸리 연꽃마을축제">
-  <div class="thumb"><img src="/img/cat-flower.webp" alt="꽃 축제" loading="lazy"><span class="dday"></span><button class="fav" data-name="안심창조밸리 연꽃마을축제" aria-label="찜하기">♡</button><span class="km"></span><span class="cat">🌸 꽃</span></div>
-  <div class="card-body">
-  <div class="card-top"><span class="badge ok">일정 확정</span></div>
-  <h3>안심창조밸리 연꽃마을축제</h3>
-  <p class="date">📅 2026.7.11 ~ 2026.7.12</p>
-  <p class="loc">📍 대구 동구 · 금강역 레일카페 일원</p>
-  <p class="desc">연꽃길 걷기와 무대공연이 있는 마을축제</p>
-  </div>
-</div>
-<div class="card" data-region="서울" data-start="2026-07-11" data-end="2026-07-12" data-lat="37.48" data-lng="126.95" data-name="그루브 인 관악">
-  <div class="thumb"><img src="/img/cat-music.webp" alt="음악 축제" loading="lazy"><span class="dday"></span><button class="fav" data-name="그루브 인 관악" aria-label="찜하기">♡</button><span class="km"></span><span class="cat">🎵 음악</span></div>
-  <div class="card-body">
-  <div class="card-top"><span class="badge ok">일정 확정</span></div>
-  <h3>그루브 인 관악</h3>
-  <p class="date">📅 2026.7.11 ~ 2026.7.12</p>
-  <p class="loc">📍 서울 관악구 · 관악아트홀 일원</p>
-  <p class="desc">청년 스트릿 댄스와 플리마켓 문화축제</p>
-  </div>
-</div>
-<div class="card" data-region="전남" data-start="2026-07-17" data-end="2026-08-17" data-lat="35.07" data-lng="126.52" data-name="함평 물놀이 페스타">
-  <div class="thumb"><img src="/img/cat-water.webp" alt="물놀이 축제" loading="lazy"><span class="dday"></span><button class="fav" data-name="함평 물놀이 페스타" aria-label="찜하기">♡</button><span class="km"></span><span class="cat">💦 물놀이</span></div>
-  <div class="card-body">
-  <div class="card-top"><span class="badge ok">일정 확정</span></div>
-  <h3>함평 물놀이 페스타</h3>
-  <p class="date">📅 2026.7.17 ~ 2026.8.17</p>
-  <p class="loc">📍 전남 함평군 · 함평엑스포공원 물놀이장</p>
-  <p class="desc">한 달간 즐기는 가족 여름 물놀이장</p>
-  </div>
-</div>
-<div class="card" data-region="강원" data-start="2026-07-17" data-end="2026-08-17" data-lat="37.16" data-lng="128.99" data-name="태백 해바라기축제">
-  <div class="thumb"><img src="/img/cat-flower.webp" alt="꽃 축제" loading="lazy"><span class="dday"></span><button class="fav" data-name="태백 해바라기축제" aria-label="찜하기">♡</button><span class="km"></span><span class="cat">🌸 꽃</span></div>
-  <div class="card-body">
-  <div class="card-top"><span class="badge ok">일정 확정</span></div>
-  <h3>태백 해바라기축제</h3>
-  <p class="date">📅 2026.7.17 ~ 2026.8.17</p>
-  <p class="loc">📍 강원 태백시 · 구와우마을 일원</p>
-  <p class="desc">고원 해바라기 꽃밭의 여름 정취</p>
-  </div>
-</div>
-<div class="card" data-region="강원" data-start="2026-07-22" data-end="2026-08-08" data-lat="37.37" data-lng="128.39" data-name="대관령음악제">
-  <div class="thumb"><img src="/img/cat-music.webp" alt="음악 축제" loading="lazy"><span class="dday"></span><button class="fav" data-name="대관령음악제" aria-label="찜하기">♡</button><span class="km"></span><span class="cat">🎵 음악</span></div>
-  <div class="card-body">
-  <div class="card-top"><span class="badge est">예년 기준·변동 가능</span></div>
-  <h3>대관령음악제</h3>
-  <p class="date">📅 2026.7.22 ~ 2026.8.8</p>
-  <p class="loc">📍 강원 평창군 · 알펜시아 콘서트홀 일원</p>
-  <p class="desc">산 위에서 즐기는 국제 클래식 음악제</p>
-  </div>
-</div></div>
-<h2 class="sec">월별 축제 일정</h2>
+<h2 class="sec">월별 축제 일정 보기</h2>
 <div class="monthnav"><a href="/2026-07/"><span class="mn-emoji">💦</span>7월 축제<span class="cnt">27개</span></a><a href="/2026-08/"><span class="mn-emoji">🌊</span>8월 축제<span class="cnt">30개</span></a><a href="/2026-09/"><span class="mn-emoji">🎆</span>9월 축제<span class="cnt">18개</span></a><a href="/2026-10/"><span class="mn-emoji">🍁</span>10월 축제<span class="cnt">18개</span></a><a href="/2026-11/"><span class="mn-emoji">🌾</span>11월 축제<span class="cnt">6개</span></a><a href="/2026-12/"><span class="mn-emoji">⛄</span>12월·겨울 축제<span class="cnt">13개</span></a></div>
-<h2 class="sec">전국 오일장 — 오늘 서는 장은?</h2>
-<p class="note">성남 모란장, 정선아리랑시장, 봉평장 등 전국 유명 5일장 날짜를 정리했어요.</p>
-<p><a href="/jangteo/" style="display:inline-block;background:#ff6b4a;color:#fff;font-weight:700;padding:10px 22px;border-radius:24px">오일장 날짜 보러가기 →</a></p>
-<h2 class="sec">축제 가이드</h2>
-<div class="bloglist">
-<a href="/blog/boryeong-mud-guide/">2026 보령머드축제 완벽 가이드 — 일정·가는 법·준비물 총정리<span>2026-07-11</span></a>
-<a href="/blog/ojang-day-guide/">오일장 날짜 읽는 법 — 4·9일장이 무슨 뜻일까? (전국 5일장 총정리)<span>2026-07-11</span></a>
-</div>
 </div></main>
 <footer><div class="wrap">
 <p>축제모아 — 전국 축제·오일장 일정 모음</p>
@@ -390,42 +312,6 @@ article ul{padding-left:20px}
   });
 })();
 </script>
-<script>
-(function(){
-  if (sessionStorage.getItem('fw')) return;
-  sessionStorage.setItem('fw', '1');
-  const cv = document.createElement('canvas');
-  cv.style.cssText = 'position:fixed;inset:0;width:100vw;height:100vh;pointer-events:none;z-index:9999';
-  document.body.appendChild(cv);
-  const ctx = cv.getContext('2d');
-  cv.width = innerWidth; cv.height = innerHeight;
-  const colors = ['#ff6b4a','#ffd93c','#6bcB77','#4d96ff','#ff6bd6','#fff'];
-  let parts = [], done = false;
-  function burst(x, y) {
-    const c = colors[Math.floor(Math.random()*colors.length)];
-    for (let i = 0; i < 60; i++) {
-      const a = Math.PI*2*i/60, v = 2+Math.random()*3;
-      parts.push({x, y, vx: Math.cos(a)*v, vy: Math.sin(a)*v, life: 70+Math.random()*30, c});
-    }
-  }
-  let n = 0;
-  const iv = setInterval(() => {
-    burst(cv.width*(0.15+Math.random()*0.7), cv.height*(0.15+Math.random()*0.4));
-    if (++n >= 5) { clearInterval(iv); done = true; }
-  }, 450);
-  (function loop(){
-    ctx.clearRect(0,0,cv.width,cv.height);
-    parts = parts.filter(p => p.life > 0);
-    parts.forEach(p => {
-      p.x += p.vx; p.y += p.vy; p.vy += 0.04; p.life--;
-      ctx.globalAlpha = Math.min(1, p.life/50);
-      ctx.fillStyle = p.c;
-      ctx.beginPath(); ctx.arc(p.x, p.y, 2.2, 0, 7); ctx.fill();
-    });
-    if (!done || parts.length) requestAnimationFrame(loop);
-    else cv.remove();
-  })();
-})();
-</script>
+
 </body>
 </html>
