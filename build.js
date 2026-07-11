@@ -1,11 +1,11 @@
-// 축제모아 정적 사이트 빌드 스크립트
-// 사용법: node build.js  (data/*.json 수정 후 재실행하면 페이지 재생성)
+﻿// 異뺤젣紐⑥븘 ?뺤쟻 ?ъ씠??鍮뚮뱶 ?ㅽ겕由쏀듃
+// ?ъ슜踰? node build.js  (data/*.json ?섏젙 ???ъ떎?됲븯硫??섏씠吏 ?ъ깮??
 const fs = require('fs');
 const path = require('path');
 
 const ROOT = __dirname;
-const SITE = 'https://chukjemoa.com';
-const SITE_NAME = '축제모아';
+const SITE = 'https://chukjemoa.co.kr';
+const SITE_NAME = '異뺤젣紐⑥븘';
 const ADSENSE = 'ca-pub-3293445488923111';
 const TODAY = new Date().toISOString().slice(0, 10);
 
@@ -14,15 +14,15 @@ const markets = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/markets.json'),
 const posts = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/posts.json'), 'utf8'));
 
 const MONTHS = [
-  { key: '2026-07', months: [7], label: '2026년 7월', short: '7월' },
-  { key: '2026-08', months: [8], label: '2026년 8월', short: '8월' },
-  { key: '2026-09', months: [9], label: '2026년 9월', short: '9월' },
-  { key: '2026-10', months: [10], label: '2026년 10월', short: '10월' },
-  { key: '2026-11', months: [11], label: '2026년 11월', short: '11월' },
-  { key: '2026-12', months: [12, 1], label: '2026년 12월~2027년 1월 겨울', short: '12월·겨울' },
+  { key: '2026-07', months: [7], label: '2026??7??, short: '7?? },
+  { key: '2026-08', months: [8], label: '2026??8??, short: '8?? },
+  { key: '2026-09', months: [9], label: '2026??9??, short: '9?? },
+  { key: '2026-10', months: [10], label: '2026??10??, short: '10?? },
+  { key: '2026-11', months: [11], label: '2026??11??, short: '11?? },
+  { key: '2026-12', months: [12, 1], label: '2026??12??2027??1??寃⑥슱', short: '12?붋룰꺼?? },
 ];
 
-const CAT_EMOJI = { '물놀이': '💦', '음악': '🎵', '음식': '🍜', '꽃': '🌸', '문화': '🎭', '불꽃': '🎆', '전통': '🏮', '빛': '✨', '눈': '⛄', '기타': '🎪' };
+const CAT_EMOJI = { '臾쇰???: '?뮚', '?뚯븙': '?렦', '?뚯떇': '?뜙', '苑?: '?뙵', '臾명솕': '?렚', '遺덇퐙': '?럣', '?꾪넻': '?룼', '鍮?: '??, '??: '??, '湲고?': '?렕' };
 
 function fmtDate(s) {
   const [y, m, d] = s.split('-').map(Number);
@@ -36,15 +36,15 @@ function esc(s) {
 }
 
 function festCard(f) {
-  const emoji = CAT_EMOJI[f.category] || '🎪';
+  const emoji = CAT_EMOJI[f.category] || '?렕';
   const badge = f.confirmed
-    ? '<span class="badge ok">일정 확정</span>'
-    : '<span class="badge est">예년 기준·변동 가능</span>';
+    ? '<span class="badge ok">?쇱젙 ?뺤젙</span>'
+    : '<span class="badge est">?덈뀈 湲곗?쨌蹂??媛??/span>';
   return `<div class="card" data-region="${esc(f.region)}">
   <div class="card-top"><span class="cat">${emoji} ${esc(f.category)}</span>${badge}</div>
   <h3>${esc(f.name)}</h3>
-  <p class="date">📅 ${fmtRange(f)}</p>
-  <p class="loc">📍 ${esc(f.region)} ${esc(f.city)} · ${esc(f.place)}</p>
+  <p class="date">?뱟 ${fmtRange(f)}</p>
+  <p class="loc">?뱧 ${esc(f.region)} ${esc(f.city)} 쨌 ${esc(f.place)}</p>
   <p class="desc">${esc(f.desc)}</p>
 </div>`;
 }
@@ -52,7 +52,7 @@ function festCard(f) {
 function regionFilter(list) {
   const regions = [...new Set(list.map(f => f.region))];
   const btns = regions.map(r => `<button class="rbtn" data-r="${esc(r)}">${esc(r)}</button>`).join('');
-  return `<div class="filter"><button class="rbtn active" data-r="all">전체</button>${btns}</div>
+  return `<div class="filter"><button class="rbtn active" data-r="all">?꾩껜</button>${btns}</div>
 <script>
 document.querySelectorAll('.rbtn').forEach(b => b.addEventListener('click', () => {
   document.querySelectorAll('.rbtn').forEach(x => x.classList.remove('active'));
@@ -102,7 +102,7 @@ table{width:100%;border-collapse:collapse;background:#fff;border-radius:10px;ove
 th,td{padding:10px 8px;border-bottom:1px solid #f4e3d6;text-align:left}
 th{background:#fff0e6;color:#c14a26}
 tr.today-open{background:#e5f6e8}
-tr.today-open td:first-child::after{content:" 🔴 오늘 장날!";color:#1a7f37;font-size:.78rem;font-weight:700}
+tr.today-open td:first-child::after{content:" ?뵶 ?ㅻ뒛 ?λ궇!";color:#1a7f37;font-size:.78rem;font-weight:700}
 .note{font-size:.83rem;color:#888;margin:10px 0}
 footer{background:#3d2b23;color:#d9c9bf;padding:24px 0;font-size:.85rem;text-align:center}
 footer a{text-decoration:underline}
@@ -134,15 +134,15 @@ function layout(title, desc, urlPath, content) {
 </head>
 <body>
 <header><div class="wrap">
-<a class="logo" href="/">🎪 ${SITE_NAME}</a>
-<nav><a href="/2026-07/">월별 축제</a><a href="/jangteo/">전국 오일장</a><a href="/blog/">축제 가이드</a></nav>
+<a class="logo" href="/">?렕 ${SITE_NAME}</a>
+<nav><a href="/2026-07/">?붾퀎 異뺤젣</a><a href="/jangteo/">?꾧뎅 ?ㅼ씪??/a><a href="/blog/">異뺤젣 媛?대뱶</a></nav>
 </div></header>
 ${content}
 <footer><div class="wrap">
-<p>${SITE_NAME} — 전국 축제·오일장 일정 모음</p>
-<p>축제 일정은 주최 측 사정에 따라 변경될 수 있습니다. 방문 전 공식 홈페이지를 확인하세요.</p>
-<p><a href="/privacy/">개인정보처리방침</a> · 문의: goohw593@gmail.com</p>
-<p>© 2026 ${SITE_NAME}</p>
+<p>${SITE_NAME} ???꾧뎅 異뺤젣쨌?ㅼ씪???쇱젙 紐⑥쓬</p>
+<p>異뺤젣 ?쇱젙? 二쇱턀 痢??ъ젙???곕씪 蹂寃쎈맆 ???덉뒿?덈떎. 諛⑸Ц ??怨듭떇 ?덊럹?댁?瑜??뺤씤?섏꽭??</p>
+<p><a href="/privacy/">媛쒖씤?뺣낫泥섎━諛⑹묠</a> 쨌 臾몄쓽: goohw593@gmail.com</p>
+<p>짤 2026 ${SITE_NAME}</p>
 </div></footer>
 </body>
 </html>`;
@@ -152,46 +152,46 @@ function writePage(rel, html) {
   const dir = path.join(ROOT, rel);
   fs.mkdirSync(dir, { recursive: true });
   fs.writeFileSync(path.join(dir, 'index.html'), html);
-  console.log('✓', rel + '/index.html');
+  console.log('??, rel + '/index.html');
 }
 
-// ---------- 월별 페이지 ----------
+// ---------- ?붾퀎 ?섏씠吏 ----------
 const monthNavHtml = `<div class="monthnav">` + MONTHS.map(mm => {
   const cnt = festivals.filter(f => f.month.some(m => mm.months.includes(m))).length;
-  return `<a href="/${mm.key}/">${mm.short} 축제<span class="cnt">${cnt}개</span></a>`;
+  return `<a href="/${mm.key}/">${mm.short} 異뺤젣<span class="cnt">${cnt}媛?/span></a>`;
 }).join('') + `</div>`;
 
 MONTHS.forEach(mm => {
   const list = festivals
     .filter(f => f.month.some(m => mm.months.includes(m)))
     .sort((a, b) => a.start.localeCompare(b.start));
-  const title = `${mm.label} 축제 일정 총정리 (${list.length}개) | ${SITE_NAME}`;
-  const desc = `${mm.label} 전국 축제 일정 한눈에 보기 — 지역별 축제 날짜, 장소, 볼거리 정리. ${list.slice(0, 3).map(f => f.name).join(', ')} 등 ${list.length}개 축제.`;
+  const title = `${mm.label} 異뺤젣 ?쇱젙 珥앹젙由?(${list.length}媛? | ${SITE_NAME}`;
+  const desc = `${mm.label} ?꾧뎅 異뺤젣 ?쇱젙 ?쒕늿??蹂닿린 ??吏??퀎 異뺤젣 ?좎쭨, ?μ냼, 蹂쇨굅由??뺣━. ${list.slice(0, 3).map(f => f.name).join(', ')} ??${list.length}媛?異뺤젣.`;
   const content = `<main><div class="wrap">
-<h1 style="font-size:1.5rem;margin-bottom:6px">${mm.label} 전국 축제 일정</h1>
-<p class="note">총 ${list.length}개 · 지역 버튼을 눌러 필터링하세요. 일정은 변동될 수 있으니 방문 전 공식 홈페이지를 확인하세요.</p>
+<h1 style="font-size:1.5rem;margin-bottom:6px">${mm.label} ?꾧뎅 異뺤젣 ?쇱젙</h1>
+<p class="note">珥?${list.length}媛?쨌 吏??踰꾪듉???뚮윭 ?꾪꽣留곹븯?몄슂. ?쇱젙? 蹂?숇맆 ???덉쑝??諛⑸Ц ??怨듭떇 ?덊럹?댁?瑜??뺤씤?섏꽭??</p>
 ${regionFilter(list)}
 <div class="grid">${list.map(festCard).join('\n')}</div>
-<h2 class="sec">다른 달 축제 보기</h2>
+<h2 class="sec">?ㅻⅨ ??異뺤젣 蹂닿린</h2>
 ${monthNavHtml}
 </div></main>`;
   writePage(mm.key, layout(title, desc, `/${mm.key}/`, content));
 });
 
-// ---------- 오일장 페이지 ----------
+// ---------- ?ㅼ씪???섏씠吏 ----------
 const marketRows = markets.map(m =>
   `<tr data-days="${m.daysNum.join(',')}"><td><strong>${esc(m.name)}</strong></td><td>${esc(m.region)} ${esc(m.city)}</td><td>${esc(m.days)}</td><td>${esc(m.famous)}</td><td>${esc(m.desc)}</td></tr>`
 ).join('\n');
 
 const jangteoContent = `<main><div class="wrap">
-<h1 style="font-size:1.5rem;margin-bottom:6px">전국 유명 오일장(5일장) 날짜 총정리</h1>
-<p class="note">오일장은 날짜 끝자리 기준으로 열립니다. 예: 4·9일장 → 4, 9, 14, 19, 24, 29일. <strong>오늘 열리는 장은 초록색으로 표시됩니다.</strong></p>
+<h1 style="font-size:1.5rem;margin-bottom:6px">?꾧뎅 ?좊챸 ?ㅼ씪??5?쇱옣) ?좎쭨 珥앹젙由?/h1>
+<p class="note">?ㅼ씪?μ? ?좎쭨 ?앹옄由?湲곗??쇰줈 ?대┰?덈떎. ?? 4쨌9?쇱옣 ??4, 9, 14, 19, 24, 29?? <strong>?ㅻ뒛 ?대━???μ? 珥덈줉?됱쑝濡??쒖떆?⑸땲??</strong></p>
 <p id="today-info" class="note" style="font-weight:700;color:#1a7f37"></p>
 <table>
-<thead><tr><th>장터</th><th>위치</th><th>장날</th><th>대표 품목</th><th>특징</th></tr></thead>
+<thead><tr><th>?ν꽣</th><th>?꾩튂</th><th>?λ궇</th><th>????덈ぉ</th><th>?뱀쭠</th></tr></thead>
 <tbody>${marketRows}</tbody>
 </table>
-<h2 class="sec">이달의 축제도 확인하세요</h2>
+<h2 class="sec">?대떖??異뺤젣???뺤씤?섏꽭??/h2>
 ${monthNavHtml}
 </div></main>
 <script>
@@ -204,83 +204,83 @@ ${monthNavHtml}
     if (days.includes(d)) { tr.classList.add('today-open'); openCnt++; }
   });
   const info = document.getElementById('today-info');
-  info.textContent = '오늘은 ' + (now.getMonth()+1) + '월 ' + now.getDate() + '일 — ' +
-    (openCnt ? '오늘 서는 오일장 ' + openCnt + '곳!' : '오늘 서는 오일장이 없어요. 장날을 확인해보세요.');
+  info.textContent = '?ㅻ뒛? ' + (now.getMonth()+1) + '??' + now.getDate() + '????' +
+    (openCnt ? '?ㅻ뒛 ?쒕뒗 ?ㅼ씪??' + openCnt + '怨?' : '?ㅻ뒛 ?쒕뒗 ?ㅼ씪?μ씠 ?놁뼱?? ?λ궇???뺤씤?대낫?몄슂.');
 })();
 </script>`;
 writePage('jangteo', layout(
-  `전국 오일장(5일장) 날짜 총정리 — 모란장·정선장·봉평장 장날 | ${SITE_NAME}`,
-  `전국 유명 오일장 장날 한눈에 보기. 성남 모란장(4·9일), 정선아리랑시장(2·7일), 봉평장(2·7일) 등 27곳 5일장 날짜와 대표 먹거리 정리.`,
+  `?꾧뎅 ?ㅼ씪??5?쇱옣) ?좎쭨 珥앹젙由???紐⑤??Β룹젙?좎옣쨌遊됲룊???λ궇 | ${SITE_NAME}`,
+  `?꾧뎅 ?좊챸 ?ㅼ씪???λ궇 ?쒕늿??蹂닿린. ?깅궓 紐⑤???4쨌9??, ?뺤꽑?꾨━?묒떆??2쨌7??, 遊됲룊??2쨌7?? ??27怨?5?쇱옣 ?좎쭨? ???癒밴굅由??뺣━.`,
   '/jangteo/', jangteoContent));
 
-// ---------- 블로그 ----------
+// ---------- 釉붾줈洹?----------
 posts.forEach(p => {
   const content = `<main><div class="wrap"><article>
 <h1>${esc(p.title)}</h1>
-<p class="note">작성일: ${p.date}</p>
+<p class="note">?묒꽦?? ${p.date}</p>
 ${p.body}
 </article>
-<h2 class="sec">월별 축제 일정 보기</h2>
+<h2 class="sec">?붾퀎 異뺤젣 ?쇱젙 蹂닿린</h2>
 ${monthNavHtml}
 </div></main>`;
   writePage(`blog/${p.slug}`, layout(`${p.title} | ${SITE_NAME}`, p.desc, `/blog/${p.slug}/`, content));
 });
 
 const blogIndex = `<main><div class="wrap">
-<h1 style="font-size:1.5rem;margin-bottom:14px">축제·장터 가이드</h1>
+<h1 style="font-size:1.5rem;margin-bottom:14px">異뺤젣쨌?ν꽣 媛?대뱶</h1>
 <div class="bloglist">
-${posts.map(p => `<a href="/blog/${p.slug}/">${esc(p.title)}<span>${p.date} · ${esc(p.desc)}</span></a>`).join('\n')}
+${posts.map(p => `<a href="/blog/${p.slug}/">${esc(p.title)}<span>${p.date} 쨌 ${esc(p.desc)}</span></a>`).join('\n')}
 </div>
-<h2 class="sec">월별 축제 일정 보기</h2>
+<h2 class="sec">?붾퀎 異뺤젣 ?쇱젙 蹂닿린</h2>
 ${monthNavHtml}
 </div></main>`;
-writePage('blog', layout(`축제·장터 가이드 | ${SITE_NAME}`, `축제 준비물, 오일장 이용 팁 등 축제·장터를 200% 즐기는 가이드 모음.`, '/blog/', blogIndex));
+writePage('blog', layout(`異뺤젣쨌?ν꽣 媛?대뱶 | ${SITE_NAME}`, `異뺤젣 以鍮꾨Ъ, ?ㅼ씪???댁슜 ????異뺤젣쨌?ν꽣瑜?200% 利먭린??媛?대뱶 紐⑥쓬.`, '/blog/', blogIndex));
 
-// ---------- 메인 페이지 ----------
+// ---------- 硫붿씤 ?섏씠吏 ----------
 const upcoming = festivals
   .filter(f => f.end >= TODAY)
   .sort((a, b) => a.start.localeCompare(b.start))
   .slice(0, 9);
 
 const indexContent = `<div class="hero">
-<h1>전국 축제·오일장 일정, 한눈에 모아보기</h1>
-<p>이번 주말 어디 갈까? 전국 ${festivals.length}개 축제와 ${markets.length}곳 오일장 일정을 확인하세요.</p>
+<h1>?꾧뎅 異뺤젣쨌?ㅼ씪???쇱젙, ?쒕늿??紐⑥븘蹂닿린</h1>
+<p>?대쾲 二쇰쭚 ?대뵒 媛덇퉴? ?꾧뎅 ${festivals.length}媛?異뺤젣? ${markets.length}怨??ㅼ씪???쇱젙???뺤씤?섏꽭??</p>
 </div>
 <main><div class="wrap">
-<h2 class="sec">지금 & 곧 열리는 축제</h2>
+<h2 class="sec">吏湲?& 怨??대━??異뺤젣</h2>
 <div class="grid">${upcoming.map(festCard).join('\n')}</div>
-<h2 class="sec">월별 축제 일정</h2>
+<h2 class="sec">?붾퀎 異뺤젣 ?쇱젙</h2>
 ${monthNavHtml}
-<h2 class="sec">전국 오일장 — 오늘 서는 장은?</h2>
-<p class="note">성남 모란장, 정선아리랑시장, 봉평장 등 전국 유명 5일장 날짜를 정리했어요.</p>
-<p><a href="/jangteo/" style="display:inline-block;background:#ff6b4a;color:#fff;font-weight:700;padding:10px 22px;border-radius:24px">오일장 날짜 보러가기 →</a></p>
-<h2 class="sec">축제 가이드</h2>
+<h2 class="sec">?꾧뎅 ?ㅼ씪?????ㅻ뒛 ?쒕뒗 ?μ??</h2>
+<p class="note">?깅궓 紐⑤??? ?뺤꽑?꾨━?묒떆?? 遊됲룊?????꾧뎅 ?좊챸 5?쇱옣 ?좎쭨瑜??뺣━?덉뼱??</p>
+<p><a href="/jangteo/" style="display:inline-block;background:#ff6b4a;color:#fff;font-weight:700;padding:10px 22px;border-radius:24px">?ㅼ씪???좎쭨 蹂대윭媛湲???/a></p>
+<h2 class="sec">異뺤젣 媛?대뱶</h2>
 <div class="bloglist">
 ${posts.map(p => `<a href="/blog/${p.slug}/">${esc(p.title)}<span>${p.date}</span></a>`).join('\n')}
 </div>
 </div></main>`;
 writePage('.', layout(
-  `${SITE_NAME} — 전국 축제·오일장 일정 총정리 (2026)`,
-  `2026 전국 축제 일정과 오일장(5일장) 날짜를 한눈에. 월별·지역별 축제 정보, 보령머드축제부터 화천산천어축제까지.`,
+  `${SITE_NAME} ???꾧뎅 異뺤젣쨌?ㅼ씪???쇱젙 珥앹젙由?(2026)`,
+  `2026 ?꾧뎅 異뺤젣 ?쇱젙怨??ㅼ씪??5?쇱옣) ?좎쭨瑜??쒕늿?? ?붾퀎쨌吏??퀎 異뺤젣 ?뺣낫, 蹂대졊癒몃뱶異뺤젣遺???붿쿇?곗쿇?댁텞?쒓퉴吏.`,
   '/', indexContent));
 
-// ---------- 개인정보처리방침 ----------
+// ---------- 媛쒖씤?뺣낫泥섎━諛⑹묠 ----------
 const privacyContent = `<main><div class="wrap"><article>
-<h1>개인정보처리방침</h1>
-<p>시행일: 2026년 7월 11일</p>
-<h2>1. 개요</h2>
-<p>축제모아(chukjemoa.com, 이하 "사이트")는 이용자의 개인정보를 중요시하며, 관련 법령을 준수합니다. 본 사이트는 회원가입 없이 이용 가능하며, 이용자가 직접 입력하는 개인정보를 수집·저장하지 않습니다.</p>
-<h2>2. 쿠키 및 광고</h2>
-<p>본 사이트는 Google AdSense 광고를 게재합니다. Google을 포함한 제3자 광고 사업자는 쿠키를 사용하여 이용자의 이전 방문 기록을 바탕으로 광고를 게재할 수 있습니다. Google의 광고 쿠키 사용으로 Google 및 파트너는 사이트 방문 기록에 기반한 맞춤 광고를 제공할 수 있습니다.</p>
-<p>이용자는 <a href="https://www.google.com/settings/ads" target="_blank" rel="noopener">Google 광고 설정</a>에서 맞춤 광고를 비활성화할 수 있습니다.</p>
-<h2>3. 분석 도구</h2>
-<p>사이트 개선을 위해 방문 통계 도구를 사용할 수 있으며, 이 과정에서 IP 주소·브라우저 정보 등 비식별 정보가 자동 수집될 수 있습니다.</p>
-<h2>4. 외부 링크</h2>
-<p>본 사이트는 축제 공식 홈페이지 등 외부 사이트 링크를 포함합니다. 외부 사이트의 개인정보 처리에 대해서는 책임지지 않습니다.</p>
-<h2>5. 문의</h2>
-<p>개인정보 관련 문의: goohw593@gmail.com</p>
+<h1>媛쒖씤?뺣낫泥섎━諛⑹묠</h1>
+<p>?쒗뻾?? 2026??7??11??/p>
+<h2>1. 媛쒖슂</h2>
+<p>異뺤젣紐⑥븘(chukjemoa.co.kr, ?댄븯 "?ъ씠??)???댁슜?먯쓽 媛쒖씤?뺣낫瑜?以묒슂?쒗븯硫? 愿??踰뺣졊??以?섑빀?덈떎. 蹂??ъ씠?몃뒗 ?뚯썝媛???놁씠 ?댁슜 媛?ν븯硫? ?댁슜?먭? 吏곸젒 ?낅젰?섎뒗 媛쒖씤?뺣낫瑜??섏쭛쨌??ν븯吏 ?딆뒿?덈떎.</p>
+<h2>2. 荑좏궎 諛?愿묎퀬</h2>
+<p>蹂??ъ씠?몃뒗 Google AdSense 愿묎퀬瑜?寃뚯옱?⑸땲?? Google???ы븿??????愿묎퀬 ?ъ뾽?먮뒗 荑좏궎瑜??ъ슜?섏뿬 ?댁슜?먯쓽 ?댁쟾 諛⑸Ц 湲곕줉??諛뷀깢?쇰줈 愿묎퀬瑜?寃뚯옱?????덉뒿?덈떎. Google??愿묎퀬 荑좏궎 ?ъ슜?쇰줈 Google 諛??뚰듃?덈뒗 ?ъ씠??諛⑸Ц 湲곕줉??湲곕컲??留욎땄 愿묎퀬瑜??쒓났?????덉뒿?덈떎.</p>
+<p>?댁슜?먮뒗 <a href="https://www.google.com/settings/ads" target="_blank" rel="noopener">Google 愿묎퀬 ?ㅼ젙</a>?먯꽌 留욎땄 愿묎퀬瑜?鍮꾪솢?깊솕?????덉뒿?덈떎.</p>
+<h2>3. 遺꾩꽍 ?꾧뎄</h2>
+<p>?ъ씠??媛쒖꽑???꾪빐 諛⑸Ц ?듦퀎 ?꾧뎄瑜??ъ슜?????덉쑝硫? ??怨쇱젙?먯꽌 IP 二쇱냼쨌釉뚮씪?곗? ?뺣낫 ??鍮꾩떇蹂??뺣낫媛 ?먮룞 ?섏쭛?????덉뒿?덈떎.</p>
+<h2>4. ?몃? 留곹겕</h2>
+<p>蹂??ъ씠?몃뒗 異뺤젣 怨듭떇 ?덊럹?댁? ???몃? ?ъ씠??留곹겕瑜??ы븿?⑸땲?? ?몃? ?ъ씠?몄쓽 媛쒖씤?뺣낫 泥섎━????댁꽌??梨낆엫吏吏 ?딆뒿?덈떎.</p>
+<h2>5. 臾몄쓽</h2>
+<p>媛쒖씤?뺣낫 愿??臾몄쓽: goohw593@gmail.com</p>
 </article></div></main>`;
-writePage('privacy', layout(`개인정보처리방침 | ${SITE_NAME}`, `축제모아 개인정보처리방침`, '/privacy/', privacyContent));
+writePage('privacy', layout(`媛쒖씤?뺣낫泥섎━諛⑹묠 | ${SITE_NAME}`, `異뺤젣紐⑥븘 媛쒖씤?뺣낫泥섎━諛⑹묠`, '/privacy/', privacyContent));
 
 // ---------- sitemap / robots ----------
 const urls = ['/', ...MONTHS.map(m => `/${m.key}/`), '/jangteo/', '/blog/', ...posts.map(p => `/blog/${p.slug}/`), '/privacy/'];
@@ -291,5 +291,6 @@ ${urls.map(u => `<url><loc>${SITE}${u}</loc><lastmod>${TODAY}</lastmod></url>`).
 fs.writeFileSync(path.join(ROOT, 'sitemap.xml'), sitemap);
 fs.writeFileSync(path.join(ROOT, 'robots.txt'), `User-agent: *\nAllow: /\nSitemap: ${SITE}/sitemap.xml\n`);
 fs.writeFileSync(path.join(ROOT, 'ads.txt'), `google.com, pub-3293445488923111, DIRECT, f08c47fec0942fa0\n`);
-console.log('✓ sitemap.xml, robots.txt, ads.txt');
-console.log('빌드 완료:', urls.length, '페이지');
+console.log('??sitemap.xml, robots.txt, ads.txt');
+console.log('鍮뚮뱶 ?꾨즺:', urls.length, '?섏씠吏');
+
