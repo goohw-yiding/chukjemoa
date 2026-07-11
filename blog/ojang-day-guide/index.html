@@ -21,13 +21,22 @@ header .wrap{display:flex;align-items:center;justify-content:space-between;flex-
 .logo{font-size:1.5rem;font-weight:800}
 nav a{margin-left:14px;font-weight:600;font-size:.95rem;opacity:.95}
 nav a:hover{text-decoration:underline}
-.hero{background:linear-gradient(135deg,#ff6b4a,#ff9a3c);color:#fff;text-align:center;padding:36px 16px 44px}
+.hero{background:linear-gradient(rgba(40,15,5,.55),rgba(40,15,5,.55)),url('/img/hero.webp') center/cover;color:#fff;text-align:center;padding:56px 16px 64px}
+.hero h1{text-shadow:0 2px 8px rgba(0,0,0,.4)}
 .hero h1{font-size:1.7rem;margin-bottom:8px}
 .hero p{opacity:.95}
 main{padding:28px 0 40px}
 h2.sec{font-size:1.3rem;margin:28px 0 14px;padding-left:10px;border-left:5px solid #ff6b4a}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
-.card{background:#fff;border:1px solid #ffe3d0;border-radius:12px;padding:16px;box-shadow:0 2px 6px rgba(255,107,74,.07)}
+.card{background:#fff;border:1px solid #ffe3d0;border-radius:12px;overflow:hidden;box-shadow:0 2px 6px rgba(255,107,74,.07)}
+.card .card-body{padding:14px 16px}
+.card .thumb{position:relative;height:130px;overflow:hidden;background:#ffe9db}
+.card .thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.card .dday{position:absolute;top:8px;left:8px;background:rgba(0,0,0,.65);color:#fff;font-size:.78rem;font-weight:800;padding:3px 9px;border-radius:12px}
+.card .dday:empty{display:none}
+.card .dday.on{background:#e0502f}
+.card .dday.off{background:#999}
+.card.ended{opacity:.55}
 .card h3{font-size:1.08rem;margin:6px 0 4px}
 .card .date{font-weight:700;color:#e0502f;font-size:.93rem}
 .card .loc{font-size:.87rem;color:#666;margin:2px 0 6px}
@@ -52,6 +61,10 @@ tr.today-open td:first-child::after{content:" 🔴 오늘 장날!";color:#1a7f37
 .note{font-size:.83rem;color:#888;margin:10px 0}
 footer{background:#3d2b23;color:#d9c9bf;padding:24px 0;font-size:.85rem;text-align:center}
 footer a{text-decoration:underline}
+.wkgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px}
+.wkchip{background:#fff;border:1px solid #ffd9c2;border-radius:10px;padding:10px 14px;font-size:.92rem}
+.wkchip:hover{background:#fff0e6}
+.wkchip span{display:block;font-size:.8rem;color:#999}
 .bloglist a{display:block;background:#fff;border:1px solid #ffe3d0;border-radius:10px;padding:14px 16px;margin-bottom:10px;font-weight:600}
 .bloglist a span{display:block;font-size:.83rem;color:#999;font-weight:400;margin-top:2px}
 article{background:#fff;border:1px solid #ffe3d0;border-radius:12px;padding:24px}
@@ -81,5 +94,19 @@ article ul{padding-left:20px}
 <p><a href="/privacy/">개인정보처리방침</a> · 문의: goohw593@gmail.com</p>
 <p>© 2026 축제모아</p>
 </div></footer>
+<script>
+(function(){
+  const t = new Date(); t.setHours(0,0,0,0);
+  document.querySelectorAll('.card[data-start]').forEach(c => {
+    const s = new Date(c.dataset.start), e = new Date(c.dataset.end), el = c.querySelector('.dday');
+    if (!el) return;
+    const d = Math.ceil((s - t) / 86400000);
+    if (t >= s && t <= e) { el.textContent = '진행중 🔥'; el.classList.add('on'); }
+    else if (d > 0 && d <= 99) { el.textContent = 'D-' + d; }
+    else if (t > e) { el.textContent = '종료'; el.classList.add('off'); c.classList.add('ended'); }
+  });
+})();
+</script>
+
 </body>
 </html>

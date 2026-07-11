@@ -21,13 +21,22 @@ header .wrap{display:flex;align-items:center;justify-content:space-between;flex-
 .logo{font-size:1.5rem;font-weight:800}
 nav a{margin-left:14px;font-weight:600;font-size:.95rem;opacity:.95}
 nav a:hover{text-decoration:underline}
-.hero{background:linear-gradient(135deg,#ff6b4a,#ff9a3c);color:#fff;text-align:center;padding:36px 16px 44px}
+.hero{background:linear-gradient(rgba(40,15,5,.55),rgba(40,15,5,.55)),url('/img/hero.webp') center/cover;color:#fff;text-align:center;padding:56px 16px 64px}
+.hero h1{text-shadow:0 2px 8px rgba(0,0,0,.4)}
 .hero h1{font-size:1.7rem;margin-bottom:8px}
 .hero p{opacity:.95}
 main{padding:28px 0 40px}
 h2.sec{font-size:1.3rem;margin:28px 0 14px;padding-left:10px;border-left:5px solid #ff6b4a}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
-.card{background:#fff;border:1px solid #ffe3d0;border-radius:12px;padding:16px;box-shadow:0 2px 6px rgba(255,107,74,.07)}
+.card{background:#fff;border:1px solid #ffe3d0;border-radius:12px;overflow:hidden;box-shadow:0 2px 6px rgba(255,107,74,.07)}
+.card .card-body{padding:14px 16px}
+.card .thumb{position:relative;height:130px;overflow:hidden;background:#ffe9db}
+.card .thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.card .dday{position:absolute;top:8px;left:8px;background:rgba(0,0,0,.65);color:#fff;font-size:.78rem;font-weight:800;padding:3px 9px;border-radius:12px}
+.card .dday:empty{display:none}
+.card .dday.on{background:#e0502f}
+.card .dday.off{background:#999}
+.card.ended{opacity:.55}
 .card h3{font-size:1.08rem;margin:6px 0 4px}
 .card .date{font-weight:700;color:#e0502f;font-size:.93rem}
 .card .loc{font-size:.87rem;color:#666;margin:2px 0 6px}
@@ -52,6 +61,10 @@ tr.today-open td:first-child::after{content:" 🔴 오늘 장날!";color:#1a7f37
 .note{font-size:.83rem;color:#888;margin:10px 0}
 footer{background:#3d2b23;color:#d9c9bf;padding:24px 0;font-size:.85rem;text-align:center}
 footer a{text-decoration:underline}
+.wkgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px}
+.wkchip{background:#fff;border:1px solid #ffd9c2;border-radius:10px;padding:10px 14px;font-size:.92rem}
+.wkchip:hover{background:#fff0e6}
+.wkchip span{display:block;font-size:.8rem;color:#999}
 .bloglist a{display:block;background:#fff;border:1px solid #ffe3d0;border-radius:10px;padding:14px 16px;margin-bottom:10px;font-weight:600}
 .bloglist a span{display:block;font-size:.83rem;color:#999;font-weight:400;margin-top:2px}
 article{background:#fff;border:1px solid #ffe3d0;border-radius:12px;padding:24px}
@@ -81,131 +94,185 @@ document.querySelectorAll('.rbtn').forEach(b => b.addEventListener('click', () =
   });
 }));
 </script>
-<div class="grid"><div class="card" data-region="광주">
+<div class="grid"><div class="card" data-region="광주" data-start="2026-04-04" data-end="2026-11-07">
+  <div class="thumb"><img src="/img/cat-culture.webp" alt="문화 축제" loading="lazy"><span class="dday"></span></div>
+  <div class="card-body">
   <div class="card-top"><span class="cat">🎭 문화</span><span class="badge ok">일정 확정</span></div>
   <h3>금남로 차 없는 거리 걷자잉</h3>
   <p class="date">📅 2026.4.4 ~ 2026.11.7</p>
   <p class="loc">📍 광주 동구 · 금남로공원·전일빌딩245 일원</p>
   <p class="desc">주말 금남로에서 즐기는 거리 문화행사</p>
+  </div>
 </div>
-<div class="card" data-region="경북">
+<div class="card" data-region="경북" data-start="2026-06-01" data-end="2026-09-30">
+  <div class="thumb"><img src="/img/cat-culture.webp" alt="문화 축제" loading="lazy"><span class="dday"></span></div>
+  <div class="card-body">
   <div class="card-top"><span class="cat">🎭 문화</span><span class="badge ok">일정 확정</span></div>
   <h3>경산갓바위소원성취축제</h3>
   <p class="date">📅 2026.6.1 ~ 2026.9.30</p>
   <p class="loc">📍 경북 경산시 · 갓바위 일원</p>
   <p class="desc">갓바위에서 소원을 비는 힐링 축제</p>
+  </div>
 </div>
-<div class="card" data-region="전북">
+<div class="card" data-region="전북" data-start="2026-09-04" data-end="2026-09-12">
+  <div class="thumb"><img src="/img/cat-etc.webp" alt="기타 축제" loading="lazy"><span class="dday"></span></div>
+  <div class="card-body">
   <div class="card-top"><span class="cat">🎪 기타</span><span class="badge ok">일정 확정</span></div>
   <h3>무주반딧불축제</h3>
   <p class="date">📅 2026.9.4 ~ 2026.9.12</p>
   <p class="loc">📍 전북 무주군 · 한풍루·남대천 일원</p>
   <p class="desc">반딧불이와 함께하는 청정 생태축제</p>
+  </div>
 </div>
-<div class="card" data-region="강원">
+<div class="card" data-region="강원" data-start="2026-09-04" data-end="2026-09-13">
+  <div class="thumb"><img src="/img/cat-flower.webp" alt="꽃 축제" loading="lazy"><span class="dday"></span></div>
+  <div class="card-body">
   <div class="card-top"><span class="cat">🌸 꽃</span><span class="badge est">예년 기준·변동 가능</span></div>
   <h3>평창효석문화제</h3>
   <p class="date">📅 2026.9.4 ~ 2026.9.13</p>
   <p class="loc">📍 강원 평창군 · 봉평면 효석문화마을 일원</p>
   <p class="desc">소금 뿌린 듯한 메밀꽃밭 문학 축제</p>
+  </div>
 </div>
-<div class="card" data-region="전남">
+<div class="card" data-region="전남" data-start="2026-09-04" data-end="2026-09-06">
+  <div class="thumb"><img src="/img/cat-tradition.webp" alt="전통 축제" loading="lazy"><span class="dday"></span></div>
+  <div class="card-body">
   <div class="card-top"><span class="cat">🏮 전통</span><span class="badge est">예년 기준·변동 가능</span></div>
   <h3>명량대첩축제</h3>
   <p class="date">📅 2026.9.4 ~ 2026.9.6</p>
   <p class="loc">📍 전남 해남군·진도군 · 울돌목 일원</p>
   <p class="desc">울돌목에서 재현하는 명량해전</p>
+  </div>
 </div>
-<div class="card" data-region="서울">
+<div class="card" data-region="서울" data-start="2026-09-05" data-end="2026-09-05">
+  <div class="thumb"><img src="/img/cat-firework.webp" alt="불꽃 축제" loading="lazy"><span class="dday"></span></div>
+  <div class="card-body">
   <div class="card-top"><span class="cat">🎆 불꽃</span><span class="badge ok">일정 확정</span></div>
   <h3>서울세계불꽃축제</h3>
   <p class="date">📅 2026.9.5</p>
   <p class="loc">📍 서울 영등포구 · 여의도·이촌 한강공원</p>
   <p class="desc">한강 밤하늘을 수놓는 세계 불꽃쇼</p>
+  </div>
 </div>
-<div class="card" data-region="서울">
+<div class="card" data-region="서울" data-start="2026-09-06" data-end="2026-10-25">
+  <div class="thumb"><img src="/img/cat-culture.webp" alt="문화 축제" loading="lazy"><span class="dday"></span></div>
+  <div class="card-body">
   <div class="card-top"><span class="cat">🎭 문화</span><span class="badge ok">일정 확정</span></div>
   <h3>차 없는 잠수교 뚜벅뚜벅 축제</h3>
   <p class="date">📅 2026.9.6 ~ 2026.10.25</p>
   <p class="loc">📍 서울 서초구 · 잠수교 일원</p>
   <p class="desc">매주 일요일 잠수교를 걷는 한강 축제</p>
+  </div>
 </div>
-<div class="card" data-region="강원">
+<div class="card" data-region="강원" data-start="2026-09-10" data-end="2026-09-13">
+  <div class="thumb"><img src="/img/cat-tradition.webp" alt="전통 축제" loading="lazy"><span class="dday"></span></div>
+  <div class="card-body">
   <div class="card-top"><span class="cat">🏮 전통</span><span class="badge est">예년 기준·변동 가능</span></div>
   <h3>정선아리랑제</h3>
   <p class="date">📅 2026.9.10 ~ 2026.9.13</p>
   <p class="loc">📍 강원 정선군 · 정선읍 아라리공원 일원</p>
   <p class="desc">아리랑의 본향에서 열리는 소리 축제</p>
+  </div>
 </div>
-<div class="card" data-region="경기">
+<div class="card" data-region="경기" data-start="2026-09-11" data-end="2026-09-13">
+  <div class="thumb"><img src="/img/cat-etc.webp" alt="기타 축제" loading="lazy"><span class="dday"></span></div>
+  <div class="card-body">
   <div class="card-top"><span class="cat">🎪 기타</span><span class="badge est">예년 기준·변동 가능</span></div>
   <h3>시흥갯골축제</h3>
   <p class="date">📅 2026.9.11 ~ 2026.9.13</p>
   <p class="loc">📍 경기 시흥시 · 갯골생태공원</p>
   <p class="desc">내만 갯골 생태를 체험하는 가족축제</p>
+  </div>
 </div>
-<div class="card" data-region="강원">
+<div class="card" data-region="강원" data-start="2026-09-16" data-end="2026-09-20">
+  <div class="thumb"><img src="/img/cat-culture.webp" alt="문화 축제" loading="lazy"><span class="dday"></span></div>
+  <div class="card-body">
   <div class="card-top"><span class="cat">🎭 문화</span><span class="badge est">예년 기준·변동 가능</span></div>
   <h3>원주 다이내믹댄싱카니발</h3>
   <p class="date">📅 2026.9.16 ~ 2026.9.20</p>
   <p class="loc">📍 강원 원주시 · 댄싱공연장·원주 일원</p>
   <p class="desc">거리 퍼레이드 댄싱 경연 대축제</p>
+  </div>
 </div>
-<div class="card" data-region="경기">
+<div class="card" data-region="경기" data-start="2026-09-23" data-end="2026-09-27">
+  <div class="thumb"><img src="/img/cat-tradition.webp" alt="전통 축제" loading="lazy"><span class="dday"></span></div>
+  <div class="card-body">
   <div class="card-top"><span class="cat">🏮 전통</span><span class="badge est">예년 기준·변동 가능</span></div>
   <h3>안성맞춤 남사당 바우덕이축제</h3>
   <p class="date">📅 2026.9.23 ~ 2026.9.27</p>
   <p class="loc">📍 경기 안성시 · 안성맞춤랜드</p>
   <p class="desc">남사당 줄타기·풍물 전통연희 축제</p>
+  </div>
 </div>
-<div class="card" data-region="서울">
+<div class="card" data-region="서울" data-start="2026-09-25" data-end="2026-09-27">
+  <div class="thumb"><img src="/img/cat-tradition.webp" alt="전통 축제" loading="lazy"><span class="dday"></span></div>
+  <div class="card-body">
   <div class="card-top"><span class="cat">🏮 전통</span><span class="badge est">예년 기준·변동 가능</span></div>
   <h3>한성백제문화제</h3>
   <p class="date">📅 2026.9.25 ~ 2026.9.27</p>
   <p class="loc">📍 서울 송파구 · 올림픽공원·석촌호수 일원</p>
   <p class="desc">한성백제 역사를 재현하는 문화축제</p>
+  </div>
 </div>
-<div class="card" data-region="서울">
+<div class="card" data-region="서울" data-start="2026-09-25" data-end="2026-09-27">
+  <div class="thumb"><img src="/img/cat-culture.webp" alt="문화 축제" loading="lazy"><span class="dday"></span></div>
+  <div class="card-body">
   <div class="card-top"><span class="cat">🎭 문화</span><span class="badge est">예년 기준·변동 가능</span></div>
   <h3>서울거리예술축제</h3>
   <p class="date">📅 2026.9.25 ~ 2026.9.27</p>
   <p class="loc">📍 서울 중구 · 서울광장·청계천 일원</p>
   <p class="desc">도심 곳곳에서 만나는 거리공연 축제</p>
+  </div>
 </div>
-<div class="card" data-region="인천">
+<div class="card" data-region="인천" data-start="2026-09-25" data-end="2026-09-27">
+  <div class="thumb"><img src="/img/cat-food.webp" alt="음식 축제" loading="lazy"><span class="dday"></span></div>
+  <div class="card-body">
   <div class="card-top"><span class="cat">🍜 음식</span><span class="badge est">예년 기준·변동 가능</span></div>
   <h3>소래포구축제</h3>
   <p class="date">📅 2026.9.25 ~ 2026.9.27</p>
   <p class="loc">📍 인천 남동구 · 소래포구 일원</p>
   <p class="desc">가을 새우·꽃게 등 수산물 먹거리 축제</p>
+  </div>
 </div>
-<div class="card" data-region="경북">
+<div class="card" data-region="경북" data-start="2026-09-25" data-end="2026-10-04">
+  <div class="thumb"><img src="/img/cat-tradition.webp" alt="전통 축제" loading="lazy"><span class="dday"></span></div>
+  <div class="card-body">
   <div class="card-top"><span class="cat">🏮 전통</span><span class="badge ok">일정 확정</span></div>
   <h3>안동국제탈춤페스티벌</h3>
   <p class="date">📅 2026.9.25 ~ 2026.10.4</p>
   <p class="loc">📍 경북 안동시 · 탈춤공원·원도심 일원</p>
   <p class="desc">세계 탈춤이 모이는 국제 전통축제</p>
+  </div>
 </div>
-<div class="card" data-region="부산">
+<div class="card" data-region="부산" data-start="2026-09-26" data-end="2026-09-27">
+  <div class="thumb"><img src="/img/cat-music.webp" alt="음악 축제" loading="lazy"><span class="dday"></span></div>
+  <div class="card-body">
   <div class="card-top"><span class="cat">🎵 음악</span><span class="badge est">예년 기준·변동 가능</span></div>
   <h3>부산국제록페스티벌</h3>
   <p class="date">📅 2026.9.26 ~ 2026.9.27</p>
   <p class="loc">📍 부산 사상구 · 삼락생태공원</p>
   <p class="desc">낙동강변에서 열리는 록 음악 축제</p>
+  </div>
 </div>
-<div class="card" data-region="충남">
+<div class="card" data-region="충남" data-start="2026-09-26" data-end="2026-10-04">
+  <div class="thumb"><img src="/img/cat-tradition.webp" alt="전통 축제" loading="lazy"><span class="dday"></span></div>
+  <div class="card-body">
   <div class="card-top"><span class="cat">🏮 전통</span><span class="badge est">예년 기준·변동 가능</span></div>
   <h3>백제문화제</h3>
   <p class="date">📅 2026.9.26 ~ 2026.10.4</p>
   <p class="loc">📍 충남 공주시·부여군 · 금강신관공원·구드래 일원</p>
   <p class="desc">백제 역사문화 재현 대표 축제</p>
+  </div>
 </div>
-<div class="card" data-region="강원">
+<div class="card" data-region="강원" data-start="2026-09-30" data-end="2026-10-04">
+  <div class="thumb"><img src="/img/cat-food.webp" alt="음식 축제" loading="lazy"><span class="dday"></span></div>
+  <div class="card-body">
   <div class="card-top"><span class="cat">🍜 음식</span><span class="badge est">예년 기준·변동 가능</span></div>
   <h3>양양송이축제</h3>
   <p class="date">📅 2026.9.30 ~ 2026.10.4</p>
   <p class="loc">📍 강원 양양군 · 남대천 둔치 일원</p>
   <p class="desc">자연산 송이 채취·경매 체험</p>
+  </div>
 </div></div>
 <h2 class="sec">다른 달 축제 보기</h2>
 <div class="monthnav"><a href="/2026-07/">7월 축제<span class="cnt">27개</span></a><a href="/2026-08/">8월 축제<span class="cnt">30개</span></a><a href="/2026-09/">9월 축제<span class="cnt">18개</span></a><a href="/2026-10/">10월 축제<span class="cnt">18개</span></a><a href="/2026-11/">11월 축제<span class="cnt">6개</span></a><a href="/2026-12/">12월·겨울 축제<span class="cnt">13개</span></a></div>
@@ -216,5 +283,19 @@ document.querySelectorAll('.rbtn').forEach(b => b.addEventListener('click', () =
 <p><a href="/privacy/">개인정보처리방침</a> · 문의: goohw593@gmail.com</p>
 <p>© 2026 축제모아</p>
 </div></footer>
+<script>
+(function(){
+  const t = new Date(); t.setHours(0,0,0,0);
+  document.querySelectorAll('.card[data-start]').forEach(c => {
+    const s = new Date(c.dataset.start), e = new Date(c.dataset.end), el = c.querySelector('.dday');
+    if (!el) return;
+    const d = Math.ceil((s - t) / 86400000);
+    if (t >= s && t <= e) { el.textContent = '진행중 🔥'; el.classList.add('on'); }
+    else if (d > 0 && d <= 99) { el.textContent = 'D-' + d; }
+    else if (t > e) { el.textContent = '종료'; el.classList.add('off'); c.classList.add('ended'); }
+  });
+})();
+</script>
+
 </body>
 </html>

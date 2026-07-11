@@ -23,6 +23,7 @@ const MONTHS = [
 ];
 
 const CAT_EMOJI = { '물놀이': '💦', '음악': '🎵', '음식': '🍜', '꽃': '🌸', '문화': '🎭', '불꽃': '🎆', '전통': '🏮', '빛': '✨', '눈': '⛄', '기타': '🎪' };
+const CAT_IMG = { '물놀이': 'water', '음악': 'music', '음식': 'food', '꽃': 'flower', '문화': 'culture', '불꽃': 'firework', '전통': 'tradition', '빛': 'light', '눈': 'snow', '기타': 'etc' };
 
 function fmtDate(s) {
   const [y, m, d] = s.split('-').map(Number);
@@ -37,17 +38,75 @@ function esc(s) {
 
 function festCard(f) {
   const emoji = CAT_EMOJI[f.category] || '🎪';
+  const img = CAT_IMG[f.category] || 'etc';
   const badge = f.confirmed
     ? '<span class="badge ok">일정 확정</span>'
     : '<span class="badge est">예년 기준·변동 가능</span>';
-  return `<div class="card" data-region="${esc(f.region)}">
+  return `<div class="card" data-region="${esc(f.region)}" data-start="${f.start}" data-end="${f.end}">
+  <div class="thumb"><img src="/img/cat-${img}.webp" alt="${esc(f.category)} 축제" loading="lazy"><span class="dday"></span></div>
+  <div class="card-body">
   <div class="card-top"><span class="cat">${emoji} ${esc(f.category)}</span>${badge}</div>
   <h3>${esc(f.name)}</h3>
   <p class="date">📅 ${fmtRange(f)}</p>
   <p class="loc">📍 ${esc(f.region)} ${esc(f.city)} · ${esc(f.place)}</p>
   <p class="desc">${esc(f.desc)}</p>
+  </div>
 </div>`;
 }
+
+// 카드 D-day 배지 스크립트 (클라이언트에서 오늘 기준 계산)
+const DDAY_JS = `<script>
+(function(){
+  const t = new Date(); t.setHours(0,0,0,0);
+  document.querySelectorAll('.card[data-start]').forEach(c => {
+    const s = new Date(c.dataset.start), e = new Date(c.dataset.end), el = c.querySelector('.dday');
+    if (!el) return;
+    const d = Math.ceil((s - t) / 86400000);
+    if (t >= s && t <= e) { el.textContent = '진행중 🔥'; el.classList.add('on'); }
+    else if (d > 0 && d <= 99) { el.textContent = 'D-' + d; }
+    else if (t > e) { el.textContent = '종료'; el.classList.add('off'); c.classList.add('ended'); }
+  });
+})();
+</script>`;
+
+// 입장 불꽃놀이 효과 (세션당 1회)
+const FIREWORKS_JS = `<script>
+(function(){
+  if (sessionStorage.getItem('fw')) return;
+  sessionStorage.setItem('fw', '1');
+  const cv = document.createElement('canvas');
+  cv.style.cssText = 'position:fixed;inset:0;width:100vw;height:100vh;pointer-events:none;z-index:9999';
+  document.body.appendChild(cv);
+  const ctx = cv.getContext('2d');
+  cv.width = innerWidth; cv.height = innerHeight;
+  const colors = ['#ff6b4a','#ffd93c','#6bcB77','#4d96ff','#ff6bd6','#fff'];
+  let parts = [], done = false;
+  function burst(x, y) {
+    const c = colors[Math.floor(Math.random()*colors.length)];
+    for (let i = 0; i < 60; i++) {
+      const a = Math.PI*2*i/60, v = 2+Math.random()*3;
+      parts.push({x, y, vx: Math.cos(a)*v, vy: Math.sin(a)*v, life: 70+Math.random()*30, c});
+    }
+  }
+  let n = 0;
+  const iv = setInterval(() => {
+    burst(cv.width*(0.15+Math.random()*0.7), cv.height*(0.15+Math.random()*0.4));
+    if (++n >= 5) { clearInterval(iv); done = true; }
+  }, 450);
+  (function loop(){
+    ctx.clearRect(0,0,cv.width,cv.height);
+    parts = parts.filter(p => p.life > 0);
+    parts.forEach(p => {
+      p.x += p.vx; p.y += p.vy; p.vy += 0.04; p.life--;
+      ctx.globalAlpha = Math.min(1, p.life/50);
+      ctx.fillStyle = p.c;
+      ctx.beginPath(); ctx.arc(p.x, p.y, 2.2, 0, 7); ctx.fill();
+    });
+    if (!done || parts.length) requestAnimationFrame(loop);
+    else cv.remove();
+  })();
+})();
+</script>`;
 
 function regionFilter(list) {
   const regions = [...new Set(list.map(f => f.region))];
@@ -75,13 +134,22 @@ header .wrap{display:flex;align-items:center;justify-content:space-between;flex-
 .logo{font-size:1.5rem;font-weight:800}
 nav a{margin-left:14px;font-weight:600;font-size:.95rem;opacity:.95}
 nav a:hover{text-decoration:underline}
-.hero{background:linear-gradient(135deg,#ff6b4a,#ff9a3c);color:#fff;text-align:center;padding:36px 16px 44px}
+.hero{background:linear-gradient(rgba(40,15,5,.55),rgba(40,15,5,.55)),url('/img/hero.webp') center/cover;color:#fff;text-align:center;padding:56px 16px 64px}
+.hero h1{text-shadow:0 2px 8px rgba(0,0,0,.4)}
 .hero h1{font-size:1.7rem;margin-bottom:8px}
 .hero p{opacity:.95}
 main{padding:28px 0 40px}
 h2.sec{font-size:1.3rem;margin:28px 0 14px;padding-left:10px;border-left:5px solid #ff6b4a}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
-.card{background:#fff;border:1px solid #ffe3d0;border-radius:12px;padding:16px;box-shadow:0 2px 6px rgba(255,107,74,.07)}
+.card{background:#fff;border:1px solid #ffe3d0;border-radius:12px;overflow:hidden;box-shadow:0 2px 6px rgba(255,107,74,.07)}
+.card .card-body{padding:14px 16px}
+.card .thumb{position:relative;height:130px;overflow:hidden;background:#ffe9db}
+.card .thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.card .dday{position:absolute;top:8px;left:8px;background:rgba(0,0,0,.65);color:#fff;font-size:.78rem;font-weight:800;padding:3px 9px;border-radius:12px}
+.card .dday:empty{display:none}
+.card .dday.on{background:#e0502f}
+.card .dday.off{background:#999}
+.card.ended{opacity:.55}
 .card h3{font-size:1.08rem;margin:6px 0 4px}
 .card .date{font-weight:700;color:#e0502f;font-size:.93rem}
 .card .loc{font-size:.87rem;color:#666;margin:2px 0 6px}
@@ -106,6 +174,10 @@ tr.today-open td:first-child::after{content:" 🔴 오늘 장날!";color:#1a7f37
 .note{font-size:.83rem;color:#888;margin:10px 0}
 footer{background:#3d2b23;color:#d9c9bf;padding:24px 0;font-size:.85rem;text-align:center}
 footer a{text-decoration:underline}
+.wkgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px}
+.wkchip{background:#fff;border:1px solid #ffd9c2;border-radius:10px;padding:10px 14px;font-size:.92rem}
+.wkchip:hover{background:#fff0e6}
+.wkchip span{display:block;font-size:.8rem;color:#999}
 .bloglist a{display:block;background:#fff;border:1px solid #ffe3d0;border-radius:10px;padding:14px 16px;margin-bottom:10px;font-weight:600}
 .bloglist a span{display:block;font-size:.83rem;color:#999;font-weight:400;margin-top:2px}
 article{background:#fff;border:1px solid #ffe3d0;border-radius:12px;padding:24px}
@@ -144,6 +216,8 @@ ${content}
 <p><a href="/privacy/">개인정보처리방침</a> · 문의: goohw593@gmail.com</p>
 <p>© 2026 ${SITE_NAME}</p>
 </div></footer>
+${DDAY_JS}
+${urlPath === '/' ? FIREWORKS_JS : ''}
 </body>
 </html>`;
 }
@@ -184,6 +258,7 @@ const marketRows = markets.map(m =>
 ).join('\n');
 
 const jangteoContent = `<main><div class="wrap">
+<div style="border-radius:12px;overflow:hidden;margin-bottom:16px"><img src="/img/jangteo.webp" alt="전통 오일장 풍경" style="width:100%;max-height:220px;object-fit:cover;display:block"></div>
 <h1 style="font-size:1.5rem;margin-bottom:6px">전국 유명 오일장(5일장) 날짜 총정리</h1>
 <p class="note">오일장은 날짜 끝자리 기준으로 열립니다. 예: 4·9일장 → 4, 9, 14, 19, 24, 29일. <strong>오늘 열리는 장은 초록색으로 표시됩니다.</strong></p>
 <p id="today-info" class="note" style="font-weight:700;color:#1a7f37"></p>
@@ -242,11 +317,39 @@ const upcoming = festivals
   .sort((a, b) => a.start.localeCompare(b.start))
   .slice(0, 9);
 
+const slim = festivals.map(f => ({
+  n: f.name, s: f.start, e: f.end, r: f.region, c: f.city, g: f.category,
+  k: (MONTHS.find(mm => f.month.some(m => mm.months.includes(m))) || MONTHS[0]).key
+}));
+
+const WEEKEND_JS = `<script>
+(function(){
+  const F = ${JSON.stringify(slim)};
+  const EMOJI = ${JSON.stringify(CAT_EMOJI)};
+  const t = new Date(); t.setHours(0,0,0,0);
+  const sat = new Date(t); sat.setDate(t.getDate() + ((6 - t.getDay() + 7) % 7));
+  const sun = new Date(sat); sun.setDate(sat.getDate() + 1);
+  const iso = d => d.toISOString().slice(0,10);
+  const list = F.filter(f => f.s <= iso(sun) && f.e >= iso(sat)).slice(0, 10);
+  const box = document.getElementById('weekend');
+  if (!box) return;
+  if (!list.length) { box.innerHTML = '<p class="note">이번 주말 예정된 축제 정보가 없어요.</p>'; return; }
+  document.getElementById('weekend-title').textContent =
+    '이번 주말(' + (sat.getMonth()+1) + '/' + sat.getDate() + '~' + (sun.getMonth()+1) + '/' + sun.getDate() + ') 갈 만한 축제';
+  box.innerHTML = list.map(f =>
+    '<a class="wkchip" href="/' + f.k + '/">' + (EMOJI[f.g]||'🎪') + ' <strong>' + f.n + '</strong><span>' + f.r + ' ' + f.c + '</span></a>'
+  ).join('');
+})();
+</script>`;
+
 const indexContent = `<div class="hero">
 <h1>전국 축제·오일장 일정, 한눈에 모아보기</h1>
 <p>이번 주말 어디 갈까? 전국 ${festivals.length}개 축제와 ${markets.length}곳 오일장 일정을 확인하세요.</p>
 </div>
 <main><div class="wrap">
+<h2 class="sec" id="weekend-title">이번 주말 갈 만한 축제</h2>
+<div class="wkgrid" id="weekend"></div>
+${WEEKEND_JS}
 <h2 class="sec">지금 & 곧 열리는 축제</h2>
 <div class="grid">${upcoming.map(festCard).join('\n')}</div>
 <h2 class="sec">월별 축제 일정</h2>
