@@ -88,7 +88,20 @@ async function main(){
   // 종료일 오름차순
   out.sort((a,b)=> (a.end||'').localeCompare(b.end||''));
   const dir = path.join(__dirname, 'data');
-  fs.writeFileSync(path.join(dir, 'festivals_api.json'), JSON.stringify(out));
+  const fpath = path.join(dir, 'festivals_api.json');
+  // ---- 상세 개요·공식홈페이지 enrich (KorService2/detailCommon2) : 캐시병합 + 부족분만, 하루한도 대비 CAP ----
+  const fcache = {};
+  try { JSON.parse(fs.readFileSync(fpath,'utf8')).forEach(f=>{ if(f.ov||f.hp) fcache[f.id]={ov:f.ov||'',hp:f.hp||''}; }); } catch(e){}
+  out.forEach(f=>{ const c=fcache[f.id]; if(c){ if(c.ov)f.ov=c.ov; if(c.hp)f.hp=c.hp; } });
+  const DC='https://apis.data.go.kr/B551011/KorService2/detailCommon2';
+  function hpUrl(s){ if(!s) return ''; const m=String(s).match(/href=["']([^"']+)["']/i); return m?m[1]:''; }
+  async function common(cid){ const u=`${DC}?serviceKey=${KEY}&MobileOS=ETC&MobileApp=chukjemoa&_type=json&numOfRows=1&pageNo=1&contentId=${cid}`; try{ const j=JSON.parse(await get(u)); const it=j.response&&j.response.body&&j.response.body.items; const d=it&&it.item?(Array.isArray(it.item)?it.item[0]:it.item):null; if(!d)return null; return {ov:(d.overview||'').replace(/<[^>]+>/g,' ').replace(/&nbsp;/g,' ').replace(/\s{2,}/g,' ').trim().slice(0,600), hp:hpUrl(d.homepage)}; }catch(e){ return null; } }
+  const need = out.filter(f=>!(f.ov||f.hp)).slice(0, 900);
+  let en=0; const CB2=10;
+  for(let i=0;i<need.length;i+=CB2){ const ch=need.slice(i,i+CB2); const ds=await Promise.all(ch.map(f=>common(f.id))); ds.forEach((d,k)=>{ if(d){ if(d.ov){ch[k].ov=d.ov;en++;} if(d.hp)ch[k].hp=d.hp; } }); process.stdout.write('\r개요 '+Math.min(i+CB2,need.length)+'/'+need.length+' (신규 '+en+')'); }
+  console.log('');
+  console.log('개요 보유:', out.filter(f=>f.ov).length, '/', out.length, '| 공식홈피:', out.filter(f=>f.hp).length);
+  fs.writeFileSync(fpath, JSON.stringify(out));
   // 시도별 카운트 요약
   const bySido = {};
   out.forEach(f=> bySido[f.sido||'기타'] = (bySido[f.sido||'기타']||0)+1);
