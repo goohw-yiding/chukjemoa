@@ -193,6 +193,12 @@ fetch('/pet/data.json').then(function(r){return r.json();}).then(function(data){
 (function(){
   const t = new Date(); t.setHours(0,0,0,0);
   document.querySelectorAll('.card[data-start]').forEach(c => {
+    c.style.cursor = 'pointer';
+    c.addEventListener('click', function(ev){
+      if (ev.target.closest('.fav') || ev.target.closest('a')) return;
+      const n = c.dataset.name; if (!n) return;
+      window.open('https://search.naver.com/search.naver?query=' + encodeURIComponent(n + ' 축제'), '_blank', 'noopener');
+    });
     const s = new Date(c.dataset.start), e = new Date(c.dataset.end), el = c.querySelector('.dday');
     if (!el) return;
     const d = Math.ceil((s - t) / 86400000);

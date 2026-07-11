@@ -168,7 +168,7 @@ article ul{padding-left:20px}
       document.getElementById('weekend-title').textContent =
         '이번 주말(' + (sat.getMonth()+1) + '/' + sat.getDate() + '~' + (sun.getMonth()+1) + '/' + sun.getDate() + ') 갈 만한 축제';
       box.innerHTML = list.map((f, i) =>
-        '<a class="wkchip" data-i="' + i + '" href="/' + f.k + '/">' + (EMOJI[f.g]||'🎪') + ' <strong>' + f.n + '</strong><span>' + f.r + ' ' + f.c + ' <em class="wx"></em></span></a>'
+        '<a class="wkchip" data-i="' + i + '" target="_blank" rel="noopener" href="https://search.naver.com/search.naver?query=' + encodeURIComponent(f.n + ' 축제') + '">' + (EMOJI[f.g]||'🎪') + ' <strong>' + f.n + '</strong><span>' + f.r + ' ' + f.c + ' <em class="wx"></em></span></a>'
       ).join('');
 
       // 킥② 주말 날씨 배지 (Open-Meteo, API 키 불필요)
@@ -210,7 +210,7 @@ article ul{padding-left:20px}
       const d = Math.ceil((s - t) / 86400000);
       const dd = t > e ? '종료' : (t >= s ? '진행중 🔥' : 'D-' + d);
       const col = t > e ? '#9ca3af' : '#0f9d8f';
-      return '<a class="wkchip" href="/' + f.k + '/">' + (EMOJI[f.g]||'🎪') + ' <strong>' + f.n +
+      return '<a class="wkchip" target="_blank" rel="noopener" href="https://search.naver.com/search.naver?query=' + encodeURIComponent(f.n + ' 축제') + '">' + (EMOJI[f.g]||'🎪') + ' <strong>' + f.n +
         '</strong> <em style="font-style:normal;font-weight:800;color:' + col + '">' + dd + '</em><span>' + f.r + ' ' + f.c + ' · ' + f.s.slice(5).replace('-','/') + ' 시작</span></a>';
     }).join('');
   };
@@ -330,6 +330,12 @@ article ul{padding-left:20px}
 (function(){
   const t = new Date(); t.setHours(0,0,0,0);
   document.querySelectorAll('.card[data-start]').forEach(c => {
+    c.style.cursor = 'pointer';
+    c.addEventListener('click', function(ev){
+      if (ev.target.closest('.fav') || ev.target.closest('a')) return;
+      const n = c.dataset.name; if (!n) return;
+      window.open('https://search.naver.com/search.naver?query=' + encodeURIComponent(n + ' 축제'), '_blank', 'noopener');
+    });
     const s = new Date(c.dataset.start), e = new Date(c.dataset.end), el = c.querySelector('.dday');
     if (!el) return;
     const d = Math.ceil((s - t) / 86400000);
