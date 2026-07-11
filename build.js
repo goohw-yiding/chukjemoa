@@ -741,6 +741,8 @@ const searchContent = `<main><div class="wrap">
 .srchbar .q button{border:1.5px solid #a9e5dd;background:#fff;color:#0c7d72;border-radius:20px;padding:8px 16px;font-size:.87rem;font-weight:800;cursor:pointer;font-family:inherit;transition:all .15s}
 .srchbar .q button:hover{border-color:#0f9d8f}
 .srchbar .q button.on{background:linear-gradient(135deg,#0f9d8f,#2dd4bf);color:#fff;border-color:transparent}
+.srchbar .chk{display:inline-flex;align-items:center;gap:5px;font-size:.9rem;font-weight:700;color:#0c7d72;cursor:pointer;background:#f4faf8;border:1.5px solid #dcefeb;border-radius:12px;padding:9px 12px}
+.srchbar .chk input{accent-color:#0f9d8f}
 #fReset{background:#f3f4f6;color:#374151;border:none;cursor:pointer;font-weight:700}
 .srch-count{margin:16px 0 12px;font-weight:800;color:#0a6c63;font-size:1.02rem}
 .page-h1{font-size:1.5rem;font-weight:900;letter-spacing:-.02em;margin:6px 0}
@@ -753,6 +755,8 @@ const searchContent = `<main><div class="wrap">
 <select id="fSido"><option value="">전체 지역</option>${sidoOpts}</select>
 <select id="fSigungu"><option value="">전체 도시</option></select>
 <input type="text" id="fKw" placeholder="축제명·지역 검색">
+<label class="chk"><input type="checkbox" id="fPet"> 🐶 반려견 동반</label>
+<label class="chk"><input type="checkbox" id="fPast"> 지난 축제 포함</label>
 <button id="fReset">초기화</button>
 </div>
 <div class="q" id="fQuick">
@@ -767,11 +771,10 @@ const searchContent = `<main><div class="wrap">
 <div class="grid" id="fGrid"></div>
 <p class="note">데이터 출처: 한국관광공사 국문관광정보 서비스(공공데이터포털). 일정은 변동될 수 있으니 방문 전 공식 정보를 확인하세요. 축제 카드를 누르면 네이버 검색으로 연결됩니다.</p>
 </div></main>
-<script>window.FESTS=${JSON.stringify(apiFests)};</script>
 <script>
 (function(){
-var F=window.FESTS||[];
-var st={sido:'',sigungu:'',kw:'',quick:'all'};
+var F=[];
+var st={sido:'',sigungu:'',kw:'',quick:'all',pet:false,past:false};
 function td(){var d=new Date();d.setHours(0,0,0,0);return d;}
 function toD(y){return new Date(+y.slice(0,4),+y.slice(4,6)-1,+y.slice(6,8));}
 function ov(f,a,b){var s=toD(f.start),e=toD(f.end);return s<=b&&e>=a;}
@@ -780,17 +783,21 @@ function esc(s){return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replac
 function dday(f){var t=td(),s=toD(f.start),e=toD(f.end);if(e<t)return{l:'종료',c:'off'};if(s<=t)return{l:'진행중',c:'on'};return{l:'D-'+Math.round((s-t)/86400000),c:'on'};}
 function ranges(){var t=td(),w=t.getDay();var sat=new Date(t);sat.setDate(t.getDate()+((6-w+7)%7));var sun=new Date(sat);sun.setDate(sat.getDate()+1);var m0=new Date(t.getFullYear(),t.getMonth(),1),m1=new Date(t.getFullYear(),t.getMonth()+1,0),n0=new Date(t.getFullYear(),t.getMonth()+1,1),n1=new Date(t.getFullYear(),t.getMonth()+2,0);return{t:t,sat:sat,sun:sun,m0:m0,m1:m1,n0:n0,n1:n1};}
 function card(f){var d=dday(f),img=f.img||'/img/cat-culture.webp',loc=(f.sido||'')+(f.sigungu?' '+f.sigungu:'');var q=encodeURIComponent(f.title+' 축제');return '<a class="card" href="https://search.naver.com/search.naver?query='+q+'" target="_blank" rel="noopener"><div class="thumb"><img loading="lazy" src="'+esc(img)+'" alt="'+esc(f.title)+'" onerror="this.src=&#39;/img/cat-culture.webp&#39;"><span class="dday '+d.c+'">'+d.l+'</span>'+(f.sido?'<span class="cat">'+esc(f.sido)+'</span>':'')+'</div><div class="card-body"><h3>'+esc(f.title)+'</h3><div class="date">'+fy(f.start)+' ~ '+fy(f.end)+'</div><div class="loc">'+esc(loc)+'</div></div></a>';}
-function apply(){var r=ranges();var list=F.filter(function(f){if(toD(f.end)<r.t)return false;if(st.sido&&f.sido!==st.sido)return false;if(st.sigungu&&f.sigungu!==st.sigungu)return false;if(st.kw){var k=st.kw.toLowerCase();if((f.title||'').toLowerCase().indexOf(k)<0&&(f.addr||'').indexOf(st.kw)<0)return false;}if(st.quick==='now'&&!ov(f,r.t,r.t))return false;if(st.quick==='weekend'&&!ov(f,r.sat,r.sun))return false;if(st.quick==='month'&&!ov(f,r.m0,r.m1))return false;if(st.quick==='next'&&!ov(f,r.n0,r.n1))return false;return true;});list.sort(function(a,b){return (a.start||'').localeCompare(b.start||'');});document.getElementById('fCount').textContent='총 '+list.length+'개 축제';document.getElementById('fGrid').innerHTML=list.length?list.map(card).join(''):'<p style="grid-column:1/-1;color:#6b7280;padding:24px 0">조건에 맞는 축제가 없어요. 필터를 바꿔보세요.</p>';}
+function apply(){var r=ranges();var list=F.filter(function(f){if(!st.past&&toD(f.end)<r.t)return false;if(st.pet&&!f.pet)return false;if(st.sido&&f.sido!==st.sido)return false;if(st.sigungu&&f.sigungu!==st.sigungu)return false;if(st.kw){var k=st.kw.toLowerCase();if((f.title||'').toLowerCase().indexOf(k)<0&&(f.addr||'').indexOf(st.kw)<0)return false;}if(st.quick==='now'&&!ov(f,r.t,r.t))return false;if(st.quick==='weekend'&&!ov(f,r.sat,r.sun))return false;if(st.quick==='month'&&!ov(f,r.m0,r.m1))return false;if(st.quick==='next'&&!ov(f,r.n0,r.n1))return false;return true;});list.sort(function(a,b){return (a.start||'').localeCompare(b.start||'');});document.getElementById('fCount').textContent='총 '+list.length+'개 축제';document.getElementById('fGrid').innerHTML=list.length?list.map(card).join(''):'<p style="grid-column:1/-1;color:#6b7280;padding:24px 0">조건에 맞는 축제가 없어요. 필터를 바꿔보세요.</p>';}
 function fillSg(){var set={};F.forEach(function(f){if((!st.sido||f.sido===st.sido)&&f.sigungu)set[f.sigungu]=1;});var arr=Object.keys(set).sort();document.getElementById('fSigungu').innerHTML='<option value="">전체 도시</option>'+arr.map(function(s){return '<option value="'+s+'">'+s+'</option>';}).join('');}
 document.getElementById('fSido').addEventListener('change',function(e){st.sido=e.target.value;st.sigungu='';fillSg();apply();});
 document.getElementById('fSigungu').addEventListener('change',function(e){st.sigungu=e.target.value;apply();});
 document.getElementById('fKw').addEventListener('input',function(e){st.kw=e.target.value.trim();apply();});
-document.getElementById('fReset').addEventListener('click',function(){st={sido:'',sigungu:'',kw:'',quick:'all'};document.getElementById('fSido').value='';document.getElementById('fKw').value='';fillSg();var bs=document.querySelectorAll('#fQuick button');for(var i=0;i<bs.length;i++)bs[i].classList.toggle('on',bs[i].getAttribute('data-q')==='all');apply();});
+document.getElementById('fReset').addEventListener('click',function(){st={sido:'',sigungu:'',kw:'',quick:'all',pet:false,past:false};document.getElementById('fSido').value='';document.getElementById('fKw').value='';document.getElementById('fPet').checked=false;document.getElementById('fPast').checked=false;fillSg();var bs=document.querySelectorAll('#fQuick button');for(var i=0;i<bs.length;i++)bs[i].classList.toggle('on',bs[i].getAttribute('data-q')==='all');apply();});
 var qbs=document.querySelectorAll('#fQuick button');for(var i=0;i<qbs.length;i++){qbs[i].addEventListener('click',function(){st.quick=this.getAttribute('data-q');for(var j=0;j<qbs.length;j++)qbs[j].classList.remove('on');this.classList.add('on');apply();});}
-fillSg();apply();
+document.getElementById('fPet').addEventListener('change',function(e){st.pet=e.target.checked;apply();});
+document.getElementById('fPast').addEventListener('change',function(e){st.past=e.target.checked;apply();});
+document.getElementById('fCount').textContent='불러오는 중…';
+fetch('/search/data.json').then(function(r){return r.json();}).then(function(data){F=data;fillSg();apply();}).catch(function(){document.getElementById('fCount').textContent='데이터를 불러오지 못했습니다. 새로고침 해주세요.';});
 })();
 </script>`;
-writePage('search', layout('전국 축제 검색 — 날짜·지역·도시별 | ' + SITE_NAME, '전국 축제를 날짜·지역·도시로 검색하세요. 공공데이터 기반 최신 축제 ' + apiFests.length + '건. 진행중·이번 주말·이번 달 축제를 한눈에.', '/search/', searchContent));
+writePage('search', layout('전국 축제 검색 — 날짜·지역·도시별 | ' + SITE_NAME, '전국 축제를 날짜·지역·도시로 검색하세요. 공공데이터 기반 최신 축제 ' + apiFests.length + '건. 진행중·이번 주말·이번 달·반려견 동반 축제를 한눈에.', '/search/', searchContent));
+fs.writeFileSync(path.join(ROOT, 'search', 'data.json'), JSON.stringify(apiFests));
 
 // ---------- sitemap / robots ----------
 const urls = ['/', ...MONTHS.map(m => `/${m.key}/`), '/search/', '/jangteo/', '/test/', '/blog/', ...posts.map(p => `/blog/${p.slug}/`), '/privacy/'];

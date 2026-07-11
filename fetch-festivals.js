@@ -40,7 +40,7 @@ function get(url){
 function ymd(d){ return d.toISOString().slice(0,10).replace(/-/g,''); }
 
 async function main(){
-  const start = new Date(Date.now() - 1000*60*60*24*60); // 60일 전부터(진행중 포함)
+  const start = new Date(new Date().getFullYear() - 1, 0, 1); // 작년 1/1부터(지난 축제 아카이브 포함)
   const eventStartDate = ymd(start);
   const rows = 100;
   let page = 1, total = Infinity, all = [];
@@ -81,7 +81,8 @@ async function main(){
       sido, sigungu,
       img: it.firstimage || '',
       x: it.mapx || '', y: it.mapy || '',
-      tel: (it.tel||'').trim()
+      tel: (it.tel||'').trim(),
+      pet: /반려|반려견|반려동물|댕댕|멍멍|펫\b|펫페어|강아지|도그|\bdog\b|\bpet\b/i.test(it.title||'') ? 1 : 0
     });
   }
   // 종료일 오름차순
