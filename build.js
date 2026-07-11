@@ -353,6 +353,7 @@ function layout(title, desc, urlPath, content) {
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="google-site-verification" content="yaGGvBqUsyeq_wrJvUrsiCBcGYtHZA_HBFHdSKlD1GU" />
+<meta name="naver-site-verification" content="5eaaca3f7a2290de756df104664ced1f008e71eb" />
 <title>${esc(title)}</title>
 <meta name="description" content="${esc(desc)}">
 <link rel="canonical" href="${SITE}${urlPath}">
