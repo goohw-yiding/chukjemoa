@@ -732,9 +732,13 @@ const upcoming = festivals
 
 const slim = festivals.map(f => {
   const co = coordOf(f);
+  const mm2 = apiMatch(f);
   return {
     n: f.name, s: f.start, e: f.end, r: f.region, c: f.city, g: f.category, la: co[0], lo: co[1],
-    k: (MONTHS.find(mm => f.month.some(m => mm.months.includes(m))) || MONTHS[0]).key
+    k: (MONTHS.find(mm => f.month.some(m => mm.months.includes(m))) || MONTHS[0]).key,
+    p: f.place, d: f.desc, img: thumbOf(f),
+    ov: (mm2 && mm2.ov) || '', hp: (mm2 && mm2.hp) || '',
+    near: (mm2 && Array.isArray(nearby[mm2.id]) && nearby[mm2.id].length) ? encodeURIComponent(JSON.stringify(nearby[mm2.id])) : ''
   };
 });
 
@@ -754,8 +758,9 @@ const WEEKEND_JS = `<script>
       document.getElementById('weekend-title').textContent =
         '이번 주말(' + (sat.getMonth()+1) + '/' + sat.getDate() + '~' + (sun.getMonth()+1) + '/' + sun.getDate() + ') 갈 만한 축제';
       box.innerHTML = list.map((f, i) =>
-        '<a class="wkchip" data-i="' + i + '" target="_blank" rel="noopener" href="https://search.naver.com/search.naver?query=' + encodeURIComponent(f.n + ' 축제') + '">' + (EMOJI[f.g]||'🎪') + ' <strong>' + f.n + '</strong><span>' + f.r + ' ' + f.c + ' <em class="wx"></em></span></a>'
+        '<a class="wkchip" data-i="' + i + '" style="cursor:pointer" href="https://search.naver.com/search.naver?query=' + encodeURIComponent(f.n + ' 축제') + '">' + (EMOJI[f.g]||'🎪') + ' <strong>' + f.n + '</strong><span>' + f.r + ' ' + f.c + ' <em class="wx"></em></span></a>'
       ).join('');
+      Array.prototype.forEach.call(box.querySelectorAll('.wkchip'), function(ch){ ch.addEventListener('click', function(ev){ if(!window.openFestModal) return; ev.preventDefault(); var f=list[+ch.getAttribute('data-i')]; if(f) window.openFestModal({name:f.n,start:f.s,end:f.e,region:f.r,city:f.c,place:f.p,desc:f.d,img:f.img,ov:f.ov,hp:f.hp,near:f.near}); }); });
 
       // 킥② 주말 날씨 배지 (Open-Meteo, API 키 불필요)
       const WX = c =>
@@ -791,14 +796,15 @@ const WEEKEND_JS = `<script>
     const mine = F.filter(f => favs.indexOf(f.n) !== -1).sort((a, b) => a.s.localeCompare(b.s));
     if (!mine.length) { sec.style.display = 'none'; return; }
     sec.style.display = '';
-    fbox.innerHTML = mine.map(f => {
+    fbox.innerHTML = mine.map((f, idx) => {
       const s = new Date(f.s), e = new Date(f.e);
       const d = Math.ceil((s - t) / 86400000);
       const dd = t > e ? '종료' : (t >= s ? '진행중 🔥' : 'D-' + d);
       const col = t > e ? '#9ca3af' : '#0f9d8f';
-      return '<a class="wkchip" target="_blank" rel="noopener" href="https://search.naver.com/search.naver?query=' + encodeURIComponent(f.n + ' 축제') + '">' + (EMOJI[f.g]||'🎪') + ' <strong>' + f.n +
+      return '<a class="wkchip" data-i="' + idx + '" style="cursor:pointer" href="https://search.naver.com/search.naver?query=' + encodeURIComponent(f.n + ' 축제') + '">' + (EMOJI[f.g]||'🎪') + ' <strong>' + f.n +
         '</strong> <em style="font-style:normal;font-weight:800;color:' + col + '">' + dd + '</em><span>' + f.r + ' ' + f.c + ' · ' + f.s.slice(5).replace('-','/') + ' 시작</span></a>';
     }).join('');
+    Array.prototype.forEach.call(fbox.querySelectorAll('.wkchip'), function(ch){ ch.addEventListener('click', function(ev){ if(!window.openFestModal) return; ev.preventDefault(); var f=mine[+ch.getAttribute('data-i')]; if(f) window.openFestModal({name:f.n,start:f.s,end:f.e,region:f.r,city:f.c,place:f.p,desc:f.d,img:f.img,ov:f.ov,hp:f.hp,near:f.near}); }); });
   };
   renderFavs();
 })();
