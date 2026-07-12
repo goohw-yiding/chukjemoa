@@ -79,6 +79,17 @@ apiFests.forEach(a => {
     if (n.length > 1 && !API_IMG_INDEX[n]) API_IMG_INDEX[n] = a.img;
   }
 });
+// 큐레이션 축제 → 공공데이터 축제 객체 매칭(개요·공식홈피·근처 enrich용)
+const API_BY_NORM = {};
+apiFests.forEach(a => { const n = normTitle(a.title); if (n.length > 1 && !API_BY_NORM[n]) API_BY_NORM[n] = a; });
+function apiMatch(f) {
+  const n = normTitle(f.name); if (!n) return null;
+  if (API_BY_NORM[n]) return API_BY_NORM[n];
+  for (const k in API_BY_NORM) { if (k.length >= 5 && n.length >= 5 && (k.includes(n) || n.includes(k))) return API_BY_NORM[k]; }
+  return null;
+}
+// HTML 속성값 안전 이스케이프(따옴표 포함)
+function escA(s) { return esc(s).replace(/"/g, '&quot;'); }
 // 큐레이션 축제(festivals.json)의 실사진 URL을 반환. 확신 매칭만 실사진, 없으면 null.
 function realImgOf(f) {
   const n = normTitle(f.name);
@@ -196,7 +207,11 @@ function festCard(f) {
   const badge = f.confirmed
     ? '<span class="badge ok">일정 확정</span>'
     : '<span class="badge est">예년 기준·변동 가능</span>';
-  return `<div class="card" data-region="${esc(f.region)}" data-start="${f.start}" data-end="${f.end}" data-lat="${la}" data-lng="${lo}" data-name="${esc(f.name)}">
+  const mm = apiMatch(f);
+  const dOv = mm && mm.ov ? ` data-ov="${escA(mm.ov)}"` : '';
+  const dHp = mm && mm.hp ? ` data-hp="${escA(mm.hp)}"` : '';
+  const dNear = mm && Array.isArray(nearby[mm.id]) && nearby[mm.id].length ? ` data-near="${encodeURIComponent(JSON.stringify(nearby[mm.id]))}"` : '';
+  return `<div class="card" data-region="${esc(f.region)}" data-start="${f.start}" data-end="${f.end}" data-lat="${la}" data-lng="${lo}" data-name="${escA(f.name)}" data-city="${escA(f.city)}" data-place="${escA(f.place)}" data-desc="${escA(f.desc)}" data-cat="${escA(f.category)}" data-img="${escA(thumbOf(f))}"${dOv}${dHp}${dNear}>
   <div class="thumb"><img src="${esc(thumbOf(f))}" alt="${esc(f.name)}" loading="lazy" onerror="this.src=&#39;/img/cat-${img}.webp&#39;"><span class="dday"></span><button class="fav" data-name="${esc(f.name)}" aria-label="찜하기">♡</button><span class="km"></span><span class="cat">${emoji} ${esc(f.category)}</span></div>
   <div class="card-body">
   <div class="card-top">${badge}</div>
@@ -216,6 +231,7 @@ const DDAY_JS = `<script>
     c.style.cursor = 'pointer';
     c.addEventListener('click', function(ev){
       if (ev.target.closest('.fav') || ev.target.closest('a')) return;
+      if (window.openFestModal) { window.openFestModal(c.dataset); return; }
       const n = c.dataset.name; if (!n) return;
       window.open('https://search.naver.com/search.naver?query=' + encodeURIComponent(n + ' 축제'), '_blank', 'noopener');
     });
@@ -226,6 +242,43 @@ const DDAY_JS = `<script>
     else if (d > 0 && d <= 99) { el.textContent = 'D-' + d; }
     else if (t > e) { el.textContent = '종료'; el.classList.add('off'); c.classList.add('ended'); }
   });
+})();
+</script>`;
+
+// 공용 축제 상세 모달 (메인·월별·연휴 카드 클릭 시 사이트 내에서 표시 — 네이버 이탈 방지)
+const FEST_MODAL_HTML = `<div id="festmodal" class="fmodal"><div class="fmbox">
+<button class="fmx" id="fm2x" aria-label="닫기">✕</button>
+<img id="fm2-img" class="fm-img" alt="">
+<h3 id="fm2-title"></h3>
+<p id="fm2-meta"></p>
+<p id="fm2-ov"></p>
+<div id="fm2-near"></div>
+<div class="fm-links"><a id="fm2-hp" target="_blank" rel="noopener">🏛️ 공식 홈페이지</a><a id="fm2-naver" target="_blank" rel="noopener">🔎 네이버에서 보기</a></div>
+</div></div>`;
+const FEST_MODAL_JS = `<script>
+(function(){
+  var m=document.getElementById('festmodal'); if(!m) return;
+  function esc(s){return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+  function fy(y){y=String(y||'').replace(/[^0-9]/g,'');if(y.length<8)return '';return y.slice(0,4)+'.'+(+y.slice(4,6))+'.'+(+y.slice(6,8));}
+  window.openFestModal=function(ds){
+    var img=document.getElementById('fm2-img');
+    if(ds.img){img.src=ds.img;img.style.display='block';}else{img.style.display='none';}
+    document.getElementById('fm2-title').textContent=ds.name||'';
+    var loc=[ds.region,ds.city,ds.place].filter(Boolean).join(' ');
+    var dr=fy(ds.start)+(ds.end&&String(ds.end).replace(/[^0-9]/g,'')!==String(ds.start).replace(/[^0-9]/g,'')?' ~ '+fy(ds.end):'');
+    document.getElementById('fm2-meta').textContent=[dr,loc].filter(Boolean).join('  ·  ');
+    document.getElementById('fm2-ov').textContent=ds.ov||ds.desc||'상세 개요는 아래 네이버·공식 홈페이지에서 확인하세요.';
+    var nearEl=document.getElementById('fm2-near');nearEl.innerHTML='';
+    if(ds.near){try{var arr=JSON.parse(decodeURIComponent(ds.near));if(arr&&arr.length){nearEl.innerHTML='<div style="font-weight:800;color:#0a6c63;margin:16px 0 8px">📍 근처 가볼 곳</div><div style="display:flex;flex-wrap:wrap;gap:8px">'+arr.map(function(n){return '<a href="https://search.naver.com/search.naver?query='+encodeURIComponent(n.t)+'" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;background:#f4faf8;border:1px solid #dcefeb;border-radius:20px;padding:6px 12px;font-size:.85rem;font-weight:700;color:#374151;text-decoration:none">'+(n.img?'<img src="'+esc(n.img)+'" style="width:22px;height:22px;border-radius:50%;object-fit:cover" onerror="this.style.display=&#39;none&#39;">':'')+esc(n.t)+' <span style="color:#9aa3af;font-weight:600">'+esc(n.ty)+(n.d?' '+n.d+'km':'')+'</span></a>';}).join('')+'</div>';}}catch(e){}}
+    var hp=document.getElementById('fm2-hp');
+    if(ds.hp){hp.href=(ds.hp.indexOf('http')===0?ds.hp:'http://'+ds.hp);hp.style.display='inline-block';}else{hp.style.display='none';}
+    document.getElementById('fm2-naver').href='https://search.naver.com/search.naver?query='+encodeURIComponent((ds.name||'')+' 축제');
+    m.classList.add('show');
+  };
+  function close(){m.classList.remove('show');}
+  document.getElementById('fm2x').addEventListener('click',close);
+  m.addEventListener('click',function(e){if(e.target.id==='festmodal')close();});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
 })();
 </script>`;
 
@@ -455,6 +508,18 @@ article ul{padding-left:20px}
 .share-row .sh2{background:#0f9d8f;color:#fff}
 .share-row .sh3{background:#f3f4f6;color:#374151}
 .share-row button:hover,.share-row a:hover{transform:translateY(-2px)}
+.fmodal{display:none;position:fixed;inset:0;z-index:100;background:rgba(17,24,39,.55);align-items:center;justify-content:center;padding:18px}
+.fmodal.show{display:flex}
+.fmbox{background:#fff;border-radius:18px;max-width:560px;width:100%;max-height:86vh;overflow:auto;padding:22px;position:relative;box-shadow:0 20px 50px rgba(0,0,0,.3)}
+.fmx{position:absolute;top:12px;right:12px;border:none;background:#f3f4f6;width:34px;height:34px;border-radius:50%;font-size:1rem;cursor:pointer;color:#374151}
+.fm-img{width:100%;max-height:240px;object-fit:cover;border-radius:12px;margin-bottom:14px}
+.fmbox h3{font-size:1.3rem;font-weight:900;letter-spacing:-.02em;margin:2px 40px 6px 0}
+#fm-meta,#fm2-meta{color:#0a6c63;font-weight:700;font-size:.92rem;margin-bottom:12px}
+#fm-ov,#fm2-ov{color:#374151;font-size:.95rem;line-height:1.65}
+.fm-links{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.fm-links a{flex:1;min-width:140px;text-align:center;padding:12px;border-radius:12px;font-weight:800;font-size:.95rem}
+#fm-hp,#fm2-hp{background:#0f9d8f;color:#fff}
+#fm-naver,#fm2-naver{background:#f3f4f6;color:#374151;border:1.5px solid #dcefeb}
 @media(max-width:600px){.hero h1{font-size:1.3rem}nav a{margin-left:9px;font-size:.85rem}}
 `;
 
@@ -525,9 +590,11 @@ ${content}
 <footer><div class="wrap">
 ${footer}
 </div></footer>
+${lang === 'ko' ? FEST_MODAL_HTML : ''}
 ${DDAY_JS}
 ${FAV_JS}
 ${NEARBY_JS}
+${lang === 'ko' ? FEST_MODAL_JS : ''}
 ${urlPath === '/' ? FIREWORKS_JS : ''}
 </body>
 </html>`;
@@ -1472,8 +1539,11 @@ if (holidays.length && apiFests.length) {
   function holCard(f) {
     const img = f.img || '/img/cat-culture.webp';
     const loc = (f.sido || '') + (f.sigungu ? ' ' + f.sigungu : '');
-    const q = encodeURIComponent(f.title + ' 축제');
-    return `<a class="card" href="https://search.naver.com/search.naver?query=${q}" target="_blank" rel="noopener"><div class="thumb"><img loading="lazy" src="${esc(img)}" alt="${esc(f.title)}" onerror="this.src=&#39;/img/cat-culture.webp&#39;">${f.sido ? `<span class="cat">${esc(f.sido)}</span>` : ''}</div><div class="card-body"><h3>${esc(f.title)}</h3><div class="date">📅 ${fyy(f.start)} ~ ${fyy(f.end)}</div><div class="loc">📍 ${esc(loc)}</div></div></a>`;
+    const iso = s => String(s).replace(/(\d{4})(\d{2})(\d{2})/, '$1-$2-$3');
+    const dOv = f.ov ? ` data-ov="${escA(f.ov)}"` : '';
+    const dHp = f.hp ? ` data-hp="${escA(f.hp)}"` : '';
+    const dNear = Array.isArray(nearby[f.id]) && nearby[f.id].length ? ` data-near="${encodeURIComponent(JSON.stringify(nearby[f.id]))}"` : '';
+    return `<div class="card" style="cursor:pointer" data-name="${escA(f.title)}" data-start="${iso(f.start)}" data-end="${iso(f.end)}" data-region="${escA(f.sido || '')}" data-city="${escA(f.sigungu || '')}" data-img="${escA(img)}"${dOv}${dHp}${dNear}><div class="thumb"><img loading="lazy" src="${esc(img)}" alt="${esc(f.title)}" onerror="this.src=&#39;/img/cat-culture.webp&#39;"><span class="dday"></span>${f.sido ? `<span class="cat">${esc(f.sido)}</span>` : ''}</div><div class="card-body"><h3>${esc(f.title)}</h3><div class="date">📅 ${fyy(f.start)} ~ ${fyy(f.end)}</div><div class="loc">📍 ${esc(loc)}</div></div></div>`;
   }
   const sections = upcoming.map(b => {
     const uniq = [...new Set(b.names)];

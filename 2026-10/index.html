@@ -147,6 +147,18 @@ article ul{padding-left:20px}
 .share-row .sh2{background:#0f9d8f;color:#fff}
 .share-row .sh3{background:#f3f4f6;color:#374151}
 .share-row button:hover,.share-row a:hover{transform:translateY(-2px)}
+.fmodal{display:none;position:fixed;inset:0;z-index:100;background:rgba(17,24,39,.55);align-items:center;justify-content:center;padding:18px}
+.fmodal.show{display:flex}
+.fmbox{background:#fff;border-radius:18px;max-width:560px;width:100%;max-height:86vh;overflow:auto;padding:22px;position:relative;box-shadow:0 20px 50px rgba(0,0,0,.3)}
+.fmx{position:absolute;top:12px;right:12px;border:none;background:#f3f4f6;width:34px;height:34px;border-radius:50%;font-size:1rem;cursor:pointer;color:#374151}
+.fm-img{width:100%;max-height:240px;object-fit:cover;border-radius:12px;margin-bottom:14px}
+.fmbox h3{font-size:1.3rem;font-weight:900;letter-spacing:-.02em;margin:2px 40px 6px 0}
+#fm-meta,#fm2-meta{color:#0a6c63;font-weight:700;font-size:.92rem;margin-bottom:12px}
+#fm-ov,#fm2-ov{color:#374151;font-size:.95rem;line-height:1.65}
+.fm-links{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.fm-links a{flex:1;min-width:140px;text-align:center;padding:12px;border-radius:12px;font-weight:800;font-size:.95rem}
+#fm-hp,#fm2-hp{background:#0f9d8f;color:#fff}
+#fm-naver,#fm2-naver{background:#f3f4f6;color:#374151;border:1.5px solid #dcefeb}
 @media(max-width:600px){.hero h1{font-size:1.3rem}nav a{margin-left:9px;font-size:.85rem}}
 </style>
 </head>
@@ -170,7 +182,7 @@ document.querySelectorAll('.rbtn').forEach(b => b.addEventListener('click', () =
   });
 }));
 </script>
-<div class="grid"><div class="card" data-region="광주" data-start="2026-04-04" data-end="2026-11-07" data-lat="35.15" data-lng="126.92" data-name="금남로 차 없는 거리 걷자잉">
+<div class="grid"><div class="card" data-region="광주" data-start="2026-04-04" data-end="2026-11-07" data-lat="35.15" data-lng="126.92" data-name="금남로 차 없는 거리 걷자잉" data-city="동구" data-place="금남로공원·전일빌딩245 일원" data-desc="주말 금남로에서 즐기는 거리 문화행사" data-cat="문화" data-img="/img/cat-culture.webp">
   <div class="thumb"><img src="/img/cat-culture.webp" alt="금남로 차 없는 거리 걷자잉" loading="lazy" onerror="this.src=&#39;/img/cat-culture.webp&#39;"><span class="dday"></span><button class="fav" data-name="금남로 차 없는 거리 걷자잉" aria-label="찜하기">♡</button><span class="km"></span><span class="cat">🎭 문화</span></div>
   <div class="card-body">
   <div class="card-top"><span class="badge ok">일정 확정</span></div>
@@ -180,7 +192,7 @@ document.querySelectorAll('.rbtn').forEach(b => b.addEventListener('click', () =
   <p class="desc">주말 금남로에서 즐기는 거리 문화행사</p>
   </div>
 </div>
-<div class="card" data-region="서울" data-start="2026-09-06" data-end="2026-10-25" data-lat="37.48" data-lng="127.03" data-name="차 없는 잠수교 뚜벅뚜벅 축제">
+<div class="card" data-region="서울" data-start="2026-09-06" data-end="2026-10-25" data-lat="37.48" data-lng="127.03" data-name="차 없는 잠수교 뚜벅뚜벅 축제" data-city="서초구" data-place="잠수교 일원" data-desc="매주 일요일 잠수교를 걷는 한강 축제" data-cat="문화" data-img="https://tong.visitkorea.or.kr/cms/resource/24/4063024_image2_1.jpg" data-ov="&quot;2026 차 없는 잠수교 뚜벅뚜벅 축제&quot;는 서울특별시 미래한강본부에서 주최하는 무료 행사이며, 시민들이 도심 속 휴식과 다양한 문화 프로그램을 즐길 수 있도록 기획된 서울의 대표적인 거리 축제이다. 잠수교 일대에는 다양한 국가별 음식이 모여있는 달빛 식당, 수공예품부터 친환경 소품까지 나만의 소품을 찾을 수 있는 달빛 상점, 남녀노소 누구나 동심으로 돌아가 즐거운 즐길거리와 여유롭게 쉬어갈 수 있는 쉼터 등 상설 프로그램이 더욱 확대되었으며, 시민들과 함께 즐기는 뚜벅뚜벅 퍼레이드, 노을 아래 생생한 라이브로 즐길 수 있는 레인보우 라이브 스테이지 등 매 회차 달라지는 8개의 특별 프로그램으로 언제든 새롭게 즐길 수 있다." data-near="%5B%7B%22t%22%3A%22%ED%94%8C%EB%A1%9C%ED%8C%85%EC%95%84%EC%9D%BC%EB%9E%9C%EB%93%9C%22%2C%22ty%22%3A%22%EA%B4%80%EA%B4%91%EC%A7%80%22%2C%22d%22%3A0.1%2C%22img%22%3A%22http%3A%2F%2Ftong.visitkorea.or.kr%2Fcms%2Fresource%2F50%2F3386650_image2_1.jpg%22%7D%2C%7B%22t%22%3A%22%EC%9D%B4%EC%86%94%EB%9D%BC%20%EB%A0%88%EC%8A%A4%ED%86%A0%EB%9E%91%22%2C%22ty%22%3A%22%EB%A7%9B%EC%A7%91%22%2C%22d%22%3A0.1%2C%22img%22%3A%22http%3A%2F%2Ftong.visitkorea.or.kr%2Fcms%2Fresource%2F06%2F2856706_image2_1.jpg%22%7D%2C%7B%22t%22%3A%22%EC%84%9C%EB%B9%99%EA%B3%A0%EB%8F%99%20%EB%B6%80%EA%B5%B0%EB%8B%B9%22%2C%22ty%22%3A%22%EA%B4%80%EA%B4%91%EC%A7%80%22%2C%22d%22%3A0.9%2C%22img%22%3A%22http%3A%2F%2Ftong.visitkorea.or.kr%2Fcms%2Fresource%2F78%2F3542778_image2_1.jpg%22%7D%2C%7B%22t%22%3A%22%EB%8F%88%EA%B9%8C%EC%8A%A4%EC%9E%94%EC%B9%98%20%EB%8F%99%EB%B9%99%EA%B3%A0%EC%A0%90%22%2C%22ty%22%3A%22%EB%A7%9B%EC%A7%91%22%2C%22d%22%3A0.9%2C%22img%22%3A%22http%3A%2F%2Ftong.visitkorea.or.kr%2Fcms%2Fresource%2F00%2F2837900_image2_1.jpg%22%7D%2C%7B%22t%22%3A%22%EC%9A%A9%EC%82%B0%EA%B3%B5%EC%9B%90%20%EB%B6%80%EB%B6%84%EA%B0%9C%EB%B0%A9%EB%B6%80%EC%A7%80%22%2C%22ty%22%3A%22%EA%B4%80%EA%B4%91%EC%A7%80%22%2C%22d%22%3A1%2C%22img%22%3A%22http%3A%2F%2Ftong.visitkorea.or.kr%2Fcms%2Fresource%2F53%2F3458353_image2_1.jpg%22%7D%5D">
   <div class="thumb"><img src="https://tong.visitkorea.or.kr/cms/resource/24/4063024_image2_1.jpg" alt="차 없는 잠수교 뚜벅뚜벅 축제" loading="lazy" onerror="this.src=&#39;/img/cat-culture.webp&#39;"><span class="dday"></span><button class="fav" data-name="차 없는 잠수교 뚜벅뚜벅 축제" aria-label="찜하기">♡</button><span class="km"></span><span class="cat">🎭 문화</span></div>
   <div class="card-body">
   <div class="card-top"><span class="badge ok">일정 확정</span></div>
@@ -190,7 +202,9 @@ document.querySelectorAll('.rbtn').forEach(b => b.addEventListener('click', () =
   <p class="desc">매주 일요일 잠수교를 걷는 한강 축제</p>
   </div>
 </div>
-<div class="card" data-region="경북" data-start="2026-09-25" data-end="2026-10-04" data-lat="36.57" data-lng="128.73" data-name="안동국제탈춤페스티벌">
+<div class="card" data-region="경북" data-start="2026-09-25" data-end="2026-10-04" data-lat="36.57" data-lng="128.73" data-name="안동국제탈춤페스티벌" data-city="안동시" data-place="탈춤공원·원도심 일원" data-desc="세계 탈춤이 모이는 국제 전통축제" data-cat="전통" data-img="https://tong.visitkorea.or.kr/cms/resource/06/4025906_image2_1.JPG" data-ov="*하기 축제장 먹거리 내용은 전년도(2025년) 축제 내용으로, 2026년도 축제 내용은 업데이트 중에 있습니다.*안동국제탈춤페스티벌은 가면의 기억, 모두의 춤으로 하나가 되는 글로벌 축제이다.
+유네스코 인류무형문화유산으로 등재된 한국의 탈춤과 세계 여러나라의 탈춤 모두 축제장에서 경험하며 함께 즐길 수 있다.
+나아가 다채로운 공연과 퍼레이드, 대동난장, 세계탈놀이 경연대회 등 함께 어울릴 수 있는 장을 선사할 예정이다. 안동국제탈춤페스티벌2026은 가면이 간직해 온 시간을 현재의 삶과 연결하고자 한다. 아이부터 어르신까지, 지역 주민과 세계의 방문객까지 모두가 같은 공간에서 웃고 박수 치며 리듬을 나누는 순간, 탈이 전해 온 기억은 살아 있는 문화가 된다. 이번 축제는 그렇게 이어진 마음들이 모여 완성되는 ‘모두의 춤’이며, 함께할 때 더욱 빛나는 공동체의 힘을 보여주는 자리가 될 것이다." data-near="%5B%7B%22t%22%3A%22%EA%B4%80%EA%B4%91%EC%BB%A4%EB%AE%A4%EB%8B%88%ED%8B%B0%EC%84%BC%ED%84%B0%20%EC%97%AC%EA%B8%B0%22%2C%22ty%22%3A%22%EA%B4%80%EA%B4%91%EC%A7%80%22%2C%22d%22%3A0.1%2C%22img%22%3A%22http%3A%2F%2Ftong.visitkorea.or.kr%2Fcms%2Fresource%2F70%2F2826670_image2_1.jpg%22%7D%2C%7B%22t%22%3A%22%EC%95%88%EB%8F%99%20%EC%9A%B4%ED%9D%A5%EB%8F%99%20%EB%8B%B9%EA%B0%84%EC%A7%80%EC%A3%BC%EC%99%80%20%EC%98%A4%EC%B8%B5%EC%A0%84%ED%83%91%22%2C%22ty%22%3A%22%EA%B4%80%EA%B4%91%EC%A7%80%22%2C%22d%22%3A0.3%2C%22img%22%3A%22http%3A%2F%2Ftong.visitkorea.or.kr%2Fcms%2Fresource%2F47%2F3585147_image2_1.jpg%22%7D%2C%7B%22t%22%3A%22%EC%9D%BC%EC%A7%81%EC%8B%9D%EB%8B%B9%22%2C%22ty%22%3A%22%EB%A7%9B%EC%A7%91%22%2C%22d%22%3A0.4%2C%22img%22%3A%22http%3A%2F%2Ftong.visitkorea.or.kr%2Fcms%2Fresource%2F83%2F2738383_image2_1.jpg%22%7D%2C%7B%22t%22%3A%22%EC%95%88%EB%8F%99%ED%95%9C%EC%9A%B0%EA%B0%88%EB%B9%84%22%2C%22ty%22%3A%22%EB%A7%9B%EC%A7%91%22%2C%22d%22%3A0.5%2C%22img%22%3A%22%22%7D%2C%7B%22t%22%3A%22%EB%B8%8C%EB%9D%BC%EC%9A%B4%EB%8F%84%ED%8A%B8%20%EC%95%88%EB%8F%99%EB%AC%B8%ED%99%94%EC%9D%98%EA%B1%B0%EB%A6%AC%EC%A0%90%22%2C%22ty%22%3A%22%EC%88%99%EC%86%8C%22%2C%22d%22%3A0.5%2C%22img%22%3A%22http%3A%2F%2Ftong.visitkorea.or.kr%2Fcms%2Fresource%2F50%2F3054650_image2_1.jpg%22%7D%5D">
   <div class="thumb"><img src="https://tong.visitkorea.or.kr/cms/resource/06/4025906_image2_1.JPG" alt="안동국제탈춤페스티벌" loading="lazy" onerror="this.src=&#39;/img/cat-tradition.webp&#39;"><span class="dday"></span><button class="fav" data-name="안동국제탈춤페스티벌" aria-label="찜하기">♡</button><span class="km"></span><span class="cat">🏮 전통</span></div>
   <div class="card-body">
   <div class="card-top"><span class="badge ok">일정 확정</span></div>
@@ -200,7 +214,7 @@ document.querySelectorAll('.rbtn').forEach(b => b.addEventListener('click', () =
   <p class="desc">세계 탈춤이 모이는 국제 전통축제</p>
   </div>
 </div>
-<div class="card" data-region="충남" data-start="2026-09-26" data-end="2026-10-04" data-lat="36.37" data-lng="127.02" data-name="백제문화제">
+<div class="card" data-region="충남" data-start="2026-09-26" data-end="2026-10-04" data-lat="36.37" data-lng="127.02" data-name="백제문화제" data-city="공주시·부여군" data-place="금강신관공원·구드래 일원" data-desc="백제 역사문화 재현 대표 축제" data-cat="전통" data-img="/img/cat-tradition.webp">
   <div class="thumb"><img src="/img/cat-tradition.webp" alt="백제문화제" loading="lazy" onerror="this.src=&#39;/img/cat-tradition.webp&#39;"><span class="dday"></span><button class="fav" data-name="백제문화제" aria-label="찜하기">♡</button><span class="km"></span><span class="cat">🏮 전통</span></div>
   <div class="card-body">
   <div class="card-top"><span class="badge est">예년 기준·변동 가능</span></div>
@@ -210,7 +224,7 @@ document.querySelectorAll('.rbtn').forEach(b => b.addEventListener('click', () =
   <p class="desc">백제 역사문화 재현 대표 축제</p>
   </div>
 </div>
-<div class="card" data-region="강원" data-start="2026-09-30" data-end="2026-10-04" data-lat="38.07" data-lng="128.63" data-name="양양송이축제">
+<div class="card" data-region="강원" data-start="2026-09-30" data-end="2026-10-04" data-lat="38.07" data-lng="128.63" data-name="양양송이축제" data-city="양양군" data-place="남대천 둔치 일원" data-desc="자연산 송이 채취·경매 체험" data-cat="음식" data-img="http://tong.visitkorea.or.kr/cms/resource/10/3542210_image2_1.JPG" data-ov="양양송이축제는 강원도 양양군에서 매년 가을에 개최되는 지역 대표 축제이다. 축제는 양양의 특산물인 송이를 주제로 하며, 송이의 우수성과 가치를 널리 알리기 위해 마련된 행사이다. 축제 기간 동안 관람객은 산지에서 당일 채취한 신선한 양양송이를 직접 구매할 수 있으며, 다양한 요리 체험과 미식 프로그램을 통해 송이의 풍미를 즐길 수 있다. 또한 가족 단위와 관광객이 함께 참여할 수 있는 체험 프로그램, 공연, 전시가 마련되어 지역 주민과 방문객이 어울리는 장이 된다. 행사는 오전부터 밤까지 이어지며, 낮에는 먹거리와 체험 부스가 운영되고, 밤에는 음악 공연과 야간 콘텐츠가 준비된다. 축제를 통해 지역 경제 활성화와 관광객 유치가 이루어지고 있으며, 양양의 자연과 문화, 특산물을 알리는 중요한 계기가 되고 있다." data-hp="https://www.yycf.or.kr/contents/performances_and_events_detail.html?idx=330" data-near="%5B%7B%22t%22%3A%22%EC%97%B0%EC%96%B4%20%EC%9E%90%EC%A0%84%EA%B1%B0%EA%B8%B8%22%2C%22ty%22%3A%22%EB%A0%88%ED%8F%AC%EC%B8%A0%22%2C%22d%22%3A0.2%2C%22img%22%3A%22http%3A%2F%2Ftong.visitkorea.or.kr%2Fcms%2Fresource%2F74%2F3577874_image2_1.jpg%22%7D%2C%7B%22t%22%3A%22%EA%B3%B5%EA%B0%80%EB%84%A4%EA%B0%90%EC%9E%90%EC%98%B9%EC%8B%AC%EC%9D%B4%22%2C%22ty%22%3A%22%EB%A7%9B%EC%A7%91%22%2C%22d%22%3A0.3%2C%22img%22%3A%22http%3A%2F%2Ftong.visitkorea.or.kr%2Fcms%2Fresource%2F19%2F2837919_image2_1.jpg%22%7D%2C%7B%22t%22%3A%22%EB%8F%99%EC%9D%BC%EC%8B%9D%EB%8B%B9%22%2C%22ty%22%3A%22%EB%A7%9B%EC%A7%91%22%2C%22d%22%3A0.3%2C%22img%22%3A%22http%3A%2F%2Ftong.visitkorea.or.kr%2Fcms%2Fresource%2F29%2F2785929_image2_1.jpg%22%7D%2C%7B%22t%22%3A%22%EC%B2%9C%EC%84%A0%EC%8B%9D%EB%8B%B9%22%2C%22ty%22%3A%22%EB%A7%9B%EC%A7%91%22%2C%22d%22%3A0.4%2C%22img%22%3A%22http%3A%2F%2Ftong.visitkorea.or.kr%2Fcms%2Fresource%2F27%2F3567927_image2_1.jpg%22%7D%2C%7B%22t%22%3A%22%EC%96%91%EC%96%91%EB%AC%B8%ED%99%94%EC%9B%90%22%2C%22ty%22%3A%22%EB%AC%B8%ED%99%94%EC%8B%9C%EC%84%A4%22%2C%22d%22%3A0.7%2C%22img%22%3A%22http%3A%2F%2Ftong.visitkorea.or.kr%2Fcms%2Fresource%2F56%2F3076856_image2_1.jpg%22%7D%5D">
   <div class="thumb"><img src="http://tong.visitkorea.or.kr/cms/resource/10/3542210_image2_1.JPG" alt="양양송이축제" loading="lazy" onerror="this.src=&#39;/img/cat-food.webp&#39;"><span class="dday"></span><button class="fav" data-name="양양송이축제" aria-label="찜하기">♡</button><span class="km"></span><span class="cat">🍜 음식</span></div>
   <div class="card-body">
   <div class="card-top"><span class="badge est">예년 기준·변동 가능</span></div>
@@ -220,7 +234,8 @@ document.querySelectorAll('.rbtn').forEach(b => b.addEventListener('click', () =
   <p class="desc">자연산 송이 채취·경매 체험</p>
   </div>
 </div>
-<div class="card" data-region="전북" data-start="2026-10-01" data-end="2026-10-05" data-lat="35.8" data-lng="126.88" data-name="김제지평선축제">
+<div class="card" data-region="전북" data-start="2026-10-01" data-end="2026-10-05" data-lat="35.8" data-lng="126.88" data-name="김제지평선축제" data-city="김제시" data-place="벽골제 일원" data-desc="황금들녘 지평선 농경문화 축제" data-cat="전통" data-img="https://tong.visitkorea.or.kr/cms/resource/44/4013544_image2_1.jpg" data-ov="*하기 축제장 먹거리 내용은 전년도(2025년) 축제 내용으로, 2026년도 축제 내용은 업데이트 중에 있습니다.*
+문화체육관광부가 지정한 대한민국 명예대표 문화관광축제중 유일하게 전통농경문화를 주제로 개최하는 김제지평선축제는 우리나라 최고(最古)· 최대(最大) 수리시설인 벽골제를 중심으로 펼쳐진다. 드넓은 황금 들판과 지평선을 배경으로 개최되는 전국 최초 대통령배 전국 농악경연대회를 비롯한 다양한 볼거리와 아궁이 쌀밥 짓기, 메뚜기 잡기, 벼 베기, 탈곡 체험 등 각종 농경문화를 직접 체험할 수 있는 프로그램이 마련되어 있다. 이와 함께 벽골제 전설을 바탕으로 한 쌍룡놀이와 풍년을 기원하는 입석 줄다리기 등 전통 민속행사도 현장에서 직접 참여할 수 있어 축제의 즐거움을 더한다." data-near="%5B%7B%22t%22%3A%22%EC%A1%B0%EC%A0%95%EB%9E%98%20%EC%95%84%EB%A6%AC%EB%9E%91%EB%AC%B8%ED%95%99%EA%B4%80%22%2C%22ty%22%3A%22%EB%AC%B8%ED%99%94%EC%8B%9C%EC%84%A4%22%2C%22d%22%3A0.4%2C%22img%22%3A%22http%3A%2F%2Ftong.visitkorea.or.kr%2Fcms%2Fresource%2F70%2F3073870_image2_1.jpg%22%7D%2C%7B%22t%22%3A%22%EC%95%84%EB%A6%AC%EB%9E%91%EB%AC%B8%ED%95%99%EB%A7%88%EC%9D%84%22%2C%22ty%22%3A%22%EA%B4%80%EA%B4%91%EC%A7%80%22%2C%22d%22%3A2.4%2C%22img%22%3A%22http%3A%2F%2Ftong.visitkorea.or.kr%2Fcms%2Fresource%2F34%2F3556534_image2_1.jpg%22%7D%2C%7B%22t%22%3A%22%EB%AA%A8%EB%8D%95%EC%82%AC(%EB%B2%BD%EC%A0%9C%EC%84%9C%EC%9B%90)%22%2C%22ty%22%3A%22%EA%B4%80%EA%B4%91%EC%A7%80%22%2C%22d%22%3A4.1%2C%22img%22%3A%22http%3A%2F%2Ftong.visitkorea.or.kr%2Fcms%2Fresource%2F45%2F3363645_image2_1.JPG%22%7D%2C%7B%22t%22%3A%22%EB%8C%80%EC%A0%9C%EB%B3%B5%EA%B5%AC%EB%B9%84%22%2C%22ty%22%3A%22%EA%B4%80%EA%B4%91%EC%A7%80%22%2C%22d%22%3A5.2%2C%22img%22%3A%22http%3A%2F%2Ftong.visitkorea.or.kr%2Fcms%2Fresource%2F99%2F3363699_image2_1.JPG%22%7D%2C%7B%22t%22%3A%22%ED%8C%94%ED%9A%A8%EC%82%AC(%EA%B9%80%EC%A0%9C)%22%2C%22ty%22%3A%22%EA%B4%80%EA%B4%91%EC%A7%80%22%2C%22d%22%3A5.4%2C%22img%22%3A%22http%3A%2F%2Ftong.visitkorea.or.kr%2Fcms%2Fresource%2F75%2F3563575_image2_1.jpg%22%7D%5D">
   <div class="thumb"><img src="https://tong.visitkorea.or.kr/cms/resource/44/4013544_image2_1.jpg" alt="김제지평선축제" loading="lazy" onerror="this.src=&#39;/img/cat-tradition.webp&#39;"><span class="dday"></span><button class="fav" data-name="김제지평선축제" aria-label="찜하기">♡</button><span class="km"></span><span class="cat">🏮 전통</span></div>
   <div class="card-body">
   <div class="card-top"><span class="badge ok">일정 확정</span></div>
@@ -230,7 +245,7 @@ document.querySelectorAll('.rbtn').forEach(b => b.addEventListener('click', () =
   <p class="desc">황금들녘 지평선 농경문화 축제</p>
   </div>
 </div>
-<div class="card" data-region="경남" data-start="2026-10-01" data-end="2026-10-18" data-lat="35.18" data-lng="128.11" data-name="진주남강유등축제">
+<div class="card" data-region="경남" data-start="2026-10-01" data-end="2026-10-18" data-lat="35.18" data-lng="128.11" data-name="진주남강유등축제" data-city="진주시" data-place="진주성·남강 일원" data-desc="남강을 수놓는 수만 개의 유등" data-cat="빛" data-img="https://tong.visitkorea.or.kr/cms/resource/57/4082657_image2_1.png" data-ov="*하기 축제 내용은 전년도(2025년) 축제 내용으로, 2026년도 축제 내용은 업데이트 중에 있습니다.* 진주남강유등축제는 임진왜란 진주성 전투에서 왜군이 강을 건너는 것을 저지하고, 가족에게 안부를 전하기 위해 남강에 유등을 띄운 데에서 유래되었다. 문화체육관광부 지정 대한민국 대표 축제였음과 동시에 5년 연속 대한민국 글로벌 육성 축제로 선정된 해외로 진출하는 명품 축제이다." data-near="%5B%7B%22t%22%3A%22%EC%B2%AD%EA%B3%84%EC%84%9C%EC%9B%90(%EC%A7%84%EC%A3%BC)%22%2C%22ty%22%3A%22%EA%B4%80%EA%B4%91%EC%A7%80%22%2C%22d%22%3A0%2C%22img%22%3A%22http%3A%2F%2Ftong.visitkorea.or.kr%2Fcms%2Fresource%2F83%2F3040383_image2_1.jpg%22%7D%2C%7B%22t%22%3A%22%EB%82%98%EC%9D%B8%ED%98%B8%ED%85%94%22%2C%22ty%22%3A%22%EC%88%99%EC%86%8C%22%2C%22d%22%3A0.1%2C%22img%22%3A%22%22%7D%2C%7B%22t%22%3A%22%EC%B4%89%EC%84%9D%EB%A3%A8%22%2C%22ty%22%3A%22%EA%B4%80%EA%B4%91%EC%A7%80%22%2C%22d%22%3A0.2%2C%22img%22%3A%22http%3A%2F%2Ftong.visitkorea.or.kr%2Fcms%2Fresource%2F29%2F3349329_image2_1.jpg%22%7D%2C%7B%22t%22%3A%22%EC%95%88%EC%9D%98%EA%B0%88%EB%B9%84%ED%83%95%22%2C%22ty%22%3A%22%EB%A7%9B%EC%A7%91%22%2C%22d%22%3A0.2%2C%22img%22%3A%22http%3A%2F%2Ftong.visitkorea.or.kr%2Fcms%2Fresource%2F68%2F2843668_image2_1.JPG%22%7D%2C%7B%22t%22%3A%22%EA%B5%AD%EB%A6%BD%EC%A7%84%EC%A3%BC%EB%B0%95%EB%AC%BC%EA%B4%80%22%2C%22ty%22%3A%22%EB%AC%B8%ED%99%94%EC%8B%9C%EC%84%A4%22%2C%22d%22%3A0.3%2C%22img%22%3A%22http%3A%2F%2Ftong.visitkorea.or.kr%2Fcms%2Fresource%2F08%2F3557008_image2_1.jpg%22%7D%5D">
   <div class="thumb"><img src="https://tong.visitkorea.or.kr/cms/resource/57/4082657_image2_1.png" alt="진주남강유등축제" loading="lazy" onerror="this.src=&#39;/img/cat-light.webp&#39;"><span class="dday"></span><button class="fav" data-name="진주남강유등축제" aria-label="찜하기">♡</button><span class="km"></span><span class="cat">✨ 빛</span></div>
   <div class="card-body">
   <div class="card-top"><span class="badge ok">일정 확정</span></div>
@@ -240,7 +255,7 @@ document.querySelectorAll('.rbtn').forEach(b => b.addEventListener('click', () =
   <p class="desc">남강을 수놓는 수만 개의 유등</p>
   </div>
 </div>
-<div class="card" data-region="경기" data-start="2026-10-03" data-end="2026-10-06" data-lat="37.26" data-lng="127.03" data-name="수원화성문화제">
+<div class="card" data-region="경기" data-start="2026-10-03" data-end="2026-10-06" data-lat="37.26" data-lng="127.03" data-name="수원화성문화제" data-city="수원시" data-place="화성행궁·수원화성 일원" data-desc="정조대왕 능행차와 화성 문화제" data-cat="문화" data-img="https://tong.visitkorea.or.kr/cms/resource/90/4060890_image2_1.jpg" data-ov="수원화성문화제는 1795년 정조대왕의 8일간의 화성 행행(行幸)을 현대적 감각으로 풀어낸 수원 대표 종합문화예술축제이다. 《원행을묘정리의궤》에 기록된 역사적 순간들이 공연, 퍼레이드, 체험, 시민참여 프로그램으로 되살아나며, 유네스코 세계유산 수원화성과 화성행궁 일원에서 펼쳐진다. 대표 프로그램인 ‘정조대왕 능행차’는 시민과 관광객이 함께 즐기는 국내 최대 규모의 왕실 퍼레이드로, 축제의 웅장한 매력을 보여준다. 또한 낮에는 전통문화 체험과 참여형 프로그램을, 밤에는 수원화성의 아름다운 경관과 어우러진 고품격 공연 콘텐츠를 즐길 수 있어 국내외 관광객에게 특별한 축제 경험을 선사한다." data-near="%5B%7B%22t%22%3A%22%EB%8D%94%EC%9C%A0%EB%A1%9C%ED%94%BC%EC%96%B8%22%2C%22ty%22%3A%22%EB%A7%9B%EC%A7%91%22%2C%22d%22%3A0.2%2C%22img%22%3A%22http%3A%2F%2Ftong.visitkorea.or.kr%2Fcms%2Fresource%2F75%2F2766375_image2_1.jpg%22%7D%2C%7B%22t%22%3A%22%EC%88%98%EC%9B%90%EC%8B%9C%EB%A6%BD%EB%AF%B8%EC%88%A0%EA%B4%80%22%2C%22ty%22%3A%22%EB%AC%B8%ED%99%94%EC%8B%9C%EC%84%A4%22%2C%22d%22%3A0.2%2C%22img%22%3A%22http%3A%2F%2Ftong.visitkorea.or.kr%2Fcms%2Fresource%2F96%2F3020696_image2_1.jpeg%22%7D%2C%7B%22t%22%3A%22%ED%9A%A8%EC%9B%90%EC%9D%98%20%EC%A2%85%C2%B7%EC%84%9C%EC%9E%A5%EB%8C%80%22%2C%22ty%22%3A%22%EA%B4%80%EA%B4%91%EC%A7%80%22%2C%22d%22%3A0.2%2C%22img%22%3A%22http%3A%2F%2Ftong.visitkorea.or.kr%2Fcms%2Fresource%2F31%2F3467431_image2_1.JPG%22%7D%2C%7B%22t%22%3A%2291%EC%BB%A4%ED%94%BC%22%2C%22ty%22%3A%22%EB%A7%9B%EC%A7%91%22%2C%22d%22%3A0.2%2C%22img%22%3A%22http%3A%2F%2Ftong.visitkorea.or.kr%2Fcms%2Fresource%2F36%2F2892836_image2_1.jpg%22%7D%2C%7B%22t%22%3A%22%EC%97%B4%EB%91%90%EC%95%8C%EC%9A%B0%EB%8F%99%EC%A7%91%22%2C%22ty%22%3A%22%EB%A7%9B%EC%A7%91%22%2C%22d%22%3A0.2%2C%22img%22%3A%22http%3A%2F%2Ftong.visitkorea.or.kr%2Fcms%2Fresource%2F88%2F3424688_image2_1.jpg%22%7D%5D">
   <div class="thumb"><img src="https://tong.visitkorea.or.kr/cms/resource/90/4060890_image2_1.jpg" alt="수원화성문화제" loading="lazy" onerror="this.src=&#39;/img/cat-culture.webp&#39;"><span class="dday"></span><button class="fav" data-name="수원화성문화제" aria-label="찜하기">♡</button><span class="km"></span><span class="cat">🎭 문화</span></div>
   <div class="card-body">
   <div class="card-top"><span class="badge est">예년 기준·변동 가능</span></div>
@@ -250,7 +265,8 @@ document.querySelectorAll('.rbtn').forEach(b => b.addEventListener('click', () =
   <p class="desc">정조대왕 능행차와 화성 문화제</p>
   </div>
 </div>
-<div class="card" data-region="광주" data-start="2026-10-07" data-end="2026-10-11" data-lat="35.15" data-lng="126.92" data-name="추억의충장축제">
+<div class="card" data-region="광주" data-start="2026-10-07" data-end="2026-10-11" data-lat="35.15" data-lng="126.92" data-name="추억의충장축제" data-city="동구" data-place="충장로·금남로 일원" data-desc="7080 추억의 거리 퍼레이드" data-cat="문화" data-img="https://tong.visitkorea.or.kr/cms/resource/71/3584471_image2_1.jpg" data-ov="*하기 축제장 먹거리 내용은 전년도(2025년) 축제 내용으로, 2026년도 축제 내용은 업데이트 중에 있습니다.*
+광주 추억의 충장축제'는 전남광주통합특별시 최고의 상권인 전남광주통합특별시 동구 '충장로'에서 시작된 전남광주통합특별시 최대 규모의 광주대표 축제이다. 이 축제는 '추억'이라는 보편적 소재를 통해 세대와 계층을 아우르는 '국내 최초의 추억 테마 축제'로서 특별한 의미를 지닌다. 누구나 간직하고 있는 소중한 추억을 공유하며, 다양한 연령대와 배경을 가진 사람들이 하나로 어우러지는 새로운 추억을 만들어내는 추억생산의 공간을 만들어낸다.특히 축제의 핵심 공간인 금남로와 5.18민주광장이라는 세계 민주주의 역사 속 의미 깊은 공간을 중심으로 펼쳐진다는 점에서, 단순한 지역축제를 넘어선 역사적·문화적 가치를 담고 있다. 민주화의 성지에서 열리는 축제로서 과거의 아픔을 딛고 희망찬 미래를 향한 시민들의 의지를 보여주는 상징적 의미를 지닌다.충장축제는 그 우수성을 대외적으로 인정받아 2024-2025 문화체육관광부 문화관광축제로 선정되었고, 현재는 대한민국 명예문화관광축제로 지정되었다. 또한, 2024년 아시아 피너클 어워드에서 '베스트 퍼레이드 상'을 수" data-near="%5B%7B%22t%22%3A%22%EC%9B%90%EA%B0%81%EC%82%AC(%EA%B4%91%EC%A3%BC)%22%2C%22ty%22%3A%22%EA%B4%80%EA%B4%91%EC%A7%80%22%2C%22d%22%3A0.1%2C%22img%22%3A%22http%3A%2F%2Ftong.visitkorea.or.kr%2Fcms%2Fresource%2F55%2F3029155_image2_1.jpg%22%7D%2C%7B%22t%22%3A%225%C2%B718%EB%AF%BC%EC%A3%BC%ED%99%94%EC%9A%B4%EB%8F%99%20%EA%B8%B0%EB%A1%9D%EA%B4%80%22%2C%22ty%22%3A%22%EB%AC%B8%ED%99%94%EC%8B%9C%EC%84%A4%22%2C%22d%22%3A0.1%2C%22img%22%3A%22http%3A%2F%2Ftong.visitkorea.or.kr%2Fcms%2Fresource%2F32%2F3532032_image2_1.jpg%22%7D%2C%7B%22t%22%3A%22%EA%B4%91%EC%A3%BC%20%EB%8F%99%EA%B5%AC%EB%AC%B8%ED%99%94%EC%9B%90%22%2C%22ty%22%3A%22%EB%AC%B8%ED%99%94%EC%8B%9C%EC%84%A4%22%2C%22d%22%3A0.2%2C%22img%22%3A%22http%3A%2F%2Ftong.visitkorea.or.kr%2Fcms%2Fresource%2F81%2F3367381_image2_1.jpg%22%7D%2C%7B%22t%22%3A%22%EC%A7%84%EC%8A%A4%ED%86%B5%22%2C%22ty%22%3A%22%EB%A7%9B%EC%A7%91%22%2C%22d%22%3A0.3%2C%22img%22%3A%22http%3A%2F%2Ftong.visitkorea.or.kr%2Fcms%2Fresource%2F13%2F2665113_image2_1.jpg%22%7D%2C%7B%22t%22%3A%22%EA%B9%80%EB%83%87%EA%B3%BC%22%2C%22ty%22%3A%22%EC%88%99%EC%86%8C%22%2C%22d%22%3A0.3%2C%22img%22%3A%22%22%7D%5D">
   <div class="thumb"><img src="https://tong.visitkorea.or.kr/cms/resource/71/3584471_image2_1.jpg" alt="추억의충장축제" loading="lazy" onerror="this.src=&#39;/img/cat-culture.webp&#39;"><span class="dday"></span><button class="fav" data-name="추억의충장축제" aria-label="찜하기">♡</button><span class="km"></span><span class="cat">🎭 문화</span></div>
   <div class="card-body">
   <div class="card-top"><span class="badge est">예년 기준·변동 가능</span></div>
@@ -260,7 +276,7 @@ document.querySelectorAll('.rbtn').forEach(b => b.addEventListener('click', () =
   <p class="desc">7080 추억의 거리 퍼레이드</p>
   </div>
 </div>
-<div class="card" data-region="부산" data-start="2026-10-08" data-end="2026-10-11" data-lat="35.1" data-lng="129.03" data-name="부산자갈치축제">
+<div class="card" data-region="부산" data-start="2026-10-08" data-end="2026-10-11" data-lat="35.1" data-lng="129.03" data-name="부산자갈치축제" data-city="중구" data-place="자갈치시장 일원" data-desc="싱싱한 수산물 맛보는 시장 축제" data-cat="음식" data-img="/img/cat-food.webp">
   <div class="thumb"><img src="/img/cat-food.webp" alt="부산자갈치축제" loading="lazy" onerror="this.src=&#39;/img/cat-food.webp&#39;"><span class="dday"></span><button class="fav" data-name="부산자갈치축제" aria-label="찜하기">♡</button><span class="km"></span><span class="cat">🍜 음식</span></div>
   <div class="card-body">
   <div class="card-top"><span class="badge est">예년 기준·변동 가능</span></div>
@@ -270,7 +286,7 @@ document.querySelectorAll('.rbtn').forEach(b => b.addEventListener('click', () =
   <p class="desc">싱싱한 수산물 맛보는 시장 축제</p>
   </div>
 </div>
-<div class="card" data-region="전북" data-start="2026-10-08" data-end="2026-10-11" data-lat="35.62" data-lng="127.29" data-name="임실N치즈축제">
+<div class="card" data-region="전북" data-start="2026-10-08" data-end="2026-10-11" data-lat="35.62" data-lng="127.29" data-name="임실N치즈축제" data-city="임실군" data-place="임실치즈테마파크" data-desc="치즈 만들기 체험 미식 축제" data-cat="음식" data-img="https://tong.visitkorea.or.kr/cms/resource/54/3377054_image2_1.png" data-ov="*하기 축제 내용은 전년도(2025년) 축제 내용으로, 2026년도 축제 내용은 업데이트 중에 있습니다.*1967년 임실로 선교활동을 하러 오신 지정환 신부님께서 산양 두 마리를 시작으로, 마을 청년들과 함께 수많은 시행착오와 고생 끝에 대한민국 최초로 치즈를 만들어낸 것을 기념하고, 지역경제 활성화와 치즈산업 발전을 위하여 매년 10월 초 임실치즈테마파크에서 임실군민과 방문객들이 함께 즐기는 대한민국 대표 문화관광축제로 거듭 발전해 나가는 임실N치즈축제이다." data-near="%5B%7B%22t%22%3A%22%EC%9E%84%EC%8B%A4%EC%B9%98%EC%A6%88%ED%8E%9C%EC%85%98%22%2C%22ty%22%3A%22%EC%88%99%EC%86%8C%22%2C%22d%22%3A0%2C%22img%22%3A%22%22%7D%2C%7B%22t%22%3A%22%EC%9E%84%EC%8B%A4%EB%A7%9B%EC%86%8C%22%2C%22ty%22%3A%22%EB%A7%9B%EC%A7%91%22%2C%22d%22%3A0%2C%22img%22%3A%22http%3A%2F%2Ftong.visitkorea.or.kr%2Fcms%2Fresource%2F74%2F3423874_image2_1.jpg%22%7D%2C%7B%22t%22%3A%22%EC%B9%98%EC%A6%88%EB%B0%B8%EB%A6%AC%EC%B0%B8%EB%82%98%EB%AC%B4%EC%A7%91%22%2C%22ty%22%3A%22%EB%A7%9B%EC%A7%91%22%2C%22d%22%3A0.1%2C%22img%22%3A%22%22%7D%2C%7B%22t%22%3A%22%EC%9E%84%EC%8B%A4%EC%B9%98%EC%A6%88%ED%85%8C%EB%A7%88%ED%8C%8C%ED%81%AC%22%2C%22ty%22%3A%22%EA%B4%80%EA%B4%91%EC%A7%80%22%2C%22d%22%3A0.2%2C%22img%22%3A%22http%3A%2F%2Ftong.visitkorea.or.kr%2Fcms%2Fresource%2F80%2F3080980_image2_1.jpg%22%7D%2C%7B%22t%22%3A%22%EC%9E%84%EC%8B%A4%20%EC%B9%98%EC%A6%88%EB%A7%88%EC%9D%84%22%2C%22ty%22%3A%22%EA%B4%80%EA%B4%91%EC%A7%80%22%2C%22d%22%3A0.8%2C%22img%22%3A%22http%3A%2F%2Ftong.visitkorea.or.kr%2Fcms%2Fresource%2F31%2F3557431_image2_1.jpg%22%7D%5D">
   <div class="thumb"><img src="https://tong.visitkorea.or.kr/cms/resource/54/3377054_image2_1.png" alt="임실N치즈축제" loading="lazy" onerror="this.src=&#39;/img/cat-food.webp&#39;"><span class="dday"></span><button class="fav" data-name="임실N치즈축제" aria-label="찜하기">♡</button><span class="km"></span><span class="cat">🍜 음식</span></div>
   <div class="card-body">
   <div class="card-top"><span class="badge est">예년 기준·변동 가능</span></div>
@@ -280,7 +296,7 @@ document.querySelectorAll('.rbtn').forEach(b => b.addEventListener('click', () =
   <p class="desc">치즈 만들기 체험 미식 축제</p>
   </div>
 </div>
-<div class="card" data-region="경기" data-start="2026-10-09" data-end="2026-10-11" data-lat="37.83" data-lng="127.51" data-name="자라섬재즈페스티벌">
+<div class="card" data-region="경기" data-start="2026-10-09" data-end="2026-10-11" data-lat="37.83" data-lng="127.51" data-name="자라섬재즈페스티벌" data-city="가평군" data-place="자라섬 일원" data-desc="가을밤 섬에서 즐기는 재즈 공연" data-cat="음악" data-img="/img/cat-music.webp">
   <div class="thumb"><img src="/img/cat-music.webp" alt="자라섬재즈페스티벌" loading="lazy" onerror="this.src=&#39;/img/cat-music.webp&#39;"><span class="dday"></span><button class="fav" data-name="자라섬재즈페스티벌" aria-label="찜하기">♡</button><span class="km"></span><span class="cat">🎵 음악</span></div>
   <div class="card-body">
   <div class="card-top"><span class="badge ok">일정 확정</span></div>
@@ -290,7 +306,7 @@ document.querySelectorAll('.rbtn').forEach(b => b.addEventListener('click', () =
   <p class="desc">가을밤 섬에서 즐기는 재즈 공연</p>
   </div>
 </div>
-<div class="card" data-region="경기" data-start="2026-10-14" data-end="2026-10-18" data-lat="37.27" data-lng="127.44" data-name="이천쌀문화축제">
+<div class="card" data-region="경기" data-start="2026-10-14" data-end="2026-10-18" data-lat="37.27" data-lng="127.44" data-name="이천쌀문화축제" data-city="이천시" data-place="이천농업테마공원" data-desc="임금님표 이천쌀 가마솥 축제" data-cat="음식" data-img="/img/cat-food.webp">
   <div class="thumb"><img src="/img/cat-food.webp" alt="이천쌀문화축제" loading="lazy" onerror="this.src=&#39;/img/cat-food.webp&#39;"><span class="dday"></span><button class="fav" data-name="이천쌀문화축제" aria-label="찜하기">♡</button><span class="km"></span><span class="cat">🍜 음식</span></div>
   <div class="card-body">
   <div class="card-top"><span class="badge est">예년 기준·변동 가능</span></div>
@@ -300,7 +316,9 @@ document.querySelectorAll('.rbtn').forEach(b => b.addEventListener('click', () =
   <p class="desc">임금님표 이천쌀 가마솥 축제</p>
   </div>
 </div>
-<div class="card" data-region="충남" data-start="2026-10-14" data-end="2026-10-18" data-lat="36.19" data-lng="127.1" data-name="강경젓갈축제">
+<div class="card" data-region="충남" data-start="2026-10-14" data-end="2026-10-18" data-lat="36.19" data-lng="127.1" data-name="강경젓갈축제" data-city="논산시" data-place="강경읍 젓갈시장 일원" data-desc="김장철 앞 전국 최대 젓갈 축제" data-cat="음식" data-img="http://tong.visitkorea.or.kr/cms/resource/99/3538099_image2_1.jpg" data-ov="강경젓갈축제는 전통의 맛과 문화를 현대적으로 재해석하여 세대 간 교류를 이어가는 축제이다. 젊은 소비세대를 대상으로 한 다양한 참여 프로그램을 운영하여 강경 젓갈 음식문화의 저변을 확대하는 축제이다.
+강경의 역사와 문화 자원을 활용한 차별화된 관광콘텐츠를 통해 지역 관광의 새로운 가치를 제시하는 축제이다. 금강의 자연경관을 배경으로 최신 트렌드를 반영한 테마형 휴식 공간을 조성하여 방문객에게 특별한 경험과 여유를 제공하는 축제이다.
+또한 기업과의 협력을 통해 지속 가능한 축제 산업화 전략을 추진하여 지역경제 활성화를 도모하는 축제이다. 이러한 과정을 통해 대한민국을 대표하는 향토축제로 자리매김하고자 하는 축제이다." data-near="%5B%7B%22t%22%3A%22%ED%99%A9%EC%82%B0%EC%98%A5%22%2C%22ty%22%3A%22%EB%A7%9B%EC%A7%91%22%2C%22d%22%3A0.1%2C%22img%22%3A%22%22%7D%2C%7B%22t%22%3A%22%ED%8C%94%EA%B4%98%EC%A0%95%22%2C%22ty%22%3A%22%EA%B4%80%EA%B4%91%EC%A7%80%22%2C%22d%22%3A0.2%2C%22img%22%3A%22http%3A%2F%2Ftong.visitkorea.or.kr%2Fcms%2Fresource%2F74%2F3339274_image2_1.jpg%22%7D%2C%7B%22t%22%3A%22%EC%A3%BD%EB%A6%BC%EC%84%9C%EC%9B%90%22%2C%22ty%22%3A%22%EA%B4%80%EA%B4%91%EC%A7%80%22%2C%22d%22%3A0.3%2C%22img%22%3A%22http%3A%2F%2Ftong.visitkorea.or.kr%2Fcms%2Fresource%2F93%2F3334793_image2_1.jpg%22%7D%2C%7B%22t%22%3A%22%EA%B0%95%EA%B2%BD%ED%95%B4%EB%AC%BC%EC%B9%BC%EA%B5%AD%EC%88%98%22%2C%22ty%22%3A%22%EB%A7%9B%EC%A7%91%22%2C%22d%22%3A0.5%2C%22img%22%3A%22http%3A%2F%2Ftong.visitkorea.or.kr%2Fcms%2Fresource%2F82%2F2747882_image2_1.jpg%22%7D%2C%7B%22t%22%3A%22%EA%B0%95%EA%B2%BD%EC%97%AD%EC%82%AC%EB%AC%B8%ED%99%94%EC%95%88%EB%82%B4%EC%86%8C(%EA%B5%AC%20%EA%B0%95%EA%B2%BD%EB%85%B8%EB%8F%99%EC%A1%B0%ED%95%A9)%22%2C%22ty%22%3A%22%EA%B4%80%EA%B4%91%EC%A7%80%22%2C%22d%22%3A0.6%2C%22img%22%3A%22http%3A%2F%2Ftong.visitkorea.or.kr%2Fcms%2Fresource%2F43%2F3339243_image2_1.jpg%22%7D%5D">
   <div class="thumb"><img src="http://tong.visitkorea.or.kr/cms/resource/99/3538099_image2_1.jpg" alt="강경젓갈축제" loading="lazy" onerror="this.src=&#39;/img/cat-food.webp&#39;"><span class="dday"></span><button class="fav" data-name="강경젓갈축제" aria-label="찜하기">♡</button><span class="km"></span><span class="cat">🍜 음식</span></div>
   <div class="card-body">
   <div class="card-top"><span class="badge est">예년 기준·변동 가능</span></div>
@@ -310,7 +328,7 @@ document.querySelectorAll('.rbtn').forEach(b => b.addEventListener('click', () =
   <p class="desc">김장철 앞 전국 최대 젓갈 축제</p>
   </div>
 </div>
-<div class="card" data-region="전북" data-start="2026-10-15" data-end="2026-10-18" data-lat="35.82" data-lng="127.15" data-name="전주비빔밥축제">
+<div class="card" data-region="전북" data-start="2026-10-15" data-end="2026-10-18" data-lat="35.82" data-lng="127.15" data-name="전주비빔밥축제" data-city="전주시" data-place="전주한옥마을 일원" data-desc="대표 한식 비빔밥 미식 축제" data-cat="음식" data-img="/img/cat-food.webp">
   <div class="thumb"><img src="/img/cat-food.webp" alt="전주비빔밥축제" loading="lazy" onerror="this.src=&#39;/img/cat-food.webp&#39;"><span class="dday"></span><button class="fav" data-name="전주비빔밥축제" aria-label="찜하기">♡</button><span class="km"></span><span class="cat">🍜 음식</span></div>
   <div class="card-body">
   <div class="card-top"><span class="badge est">예년 기준·변동 가능</span></div>
@@ -320,7 +338,7 @@ document.querySelectorAll('.rbtn').forEach(b => b.addEventListener('click', () =
   <p class="desc">대표 한식 비빔밥 미식 축제</p>
   </div>
 </div>
-<div class="card" data-region="서울" data-start="2026-10-16" data-end="2026-10-22" data-lat="37.56" data-lng="126.91" data-name="서울억새축제">
+<div class="card" data-region="서울" data-start="2026-10-16" data-end="2026-10-22" data-lat="37.56" data-lng="126.91" data-name="서울억새축제" data-city="마포구" data-place="하늘공원" data-desc="하늘공원 은빛 억새 물결" data-cat="꽃" data-img="http://tong.visitkorea.or.kr/cms/resource/81/3544281_image2_1.JPG" data-ov="서울억새축제가 열리는 하늘공원은 과거 서울시 쓰레기 매립장이자 각종 쓰레기가 매립되어 만들어진 해발 98m의 인공 쓰레기 산으로, ’02년 FIFA 한·일월드컵' 개최에 맞춰 생태공원화하였다. 특히 하늘공원은 매립지의 척박한 환경이 자연으로 복원되어지는 변화를 표현하고자 '억새'를 심어 현재는 도심 속 광활한 억새밭에서 매년 10월 서울억새축제가 개최된다." data-hp="https://parks.seoul.go.kr/story/news/detailView.do?searchTp=all&amp;searchWd=&amp;currentPage=1&amp;bIdx=3598&amp;SH_C_START_DATE=&amp;SH_C_END_DATE=&amp;SH_C_CODE=&amp;SH_C_PARK_CODE" data-near="%5B%7B%22t%22%3A%22%EB%82%9C%EC%A7%80%EC%B2%9C%EA%B3%B5%EC%9B%90%22%2C%22ty%22%3A%22%EA%B4%80%EA%B4%91%EC%A7%80%22%2C%22d%22%3A0.4%2C%22img%22%3A%22http%3A%2F%2Ftong.visitkorea.or.kr%2Fcms%2Fresource%2F24%2F3565324_image2_1.jpg%22%7D%2C%7B%22t%22%3A%22%EC%96%B4%EA%B9%A8%EB%8F%99%EB%AC%B4%EC%8A%A4%ED%86%A0%EB%A6%AC%EC%9B%80%22%2C%22ty%22%3A%22%EA%B4%80%EA%B4%91%EC%A7%80%22%2C%22d%22%3A0.7%2C%22img%22%3A%22%22%7D%2C%7B%22t%22%3A%22%EC%96%B4%EA%B9%A8%EB%8F%99%EB%AC%B4%EB%8F%84%EC%84%9C%EA%B4%80%22%2C%22ty%22%3A%22%EB%AC%B8%ED%99%94%EC%8B%9C%EC%84%A4%22%2C%22d%22%3A0.7%2C%22img%22%3A%22http%3A%2F%2Ftong.visitkorea.or.kr%2Fcms%2Fresource%2F70%2F3449270_image2_1.jpg%22%7D%2C%7B%22t%22%3A%22%EB%85%B8%EC%9D%84%EC%BA%A0%ED%95%91%EC%9E%A5(%EC%84%9C%EC%9A%B8)%22%2C%22ty%22%3A%22%EB%A0%88%ED%8F%AC%EC%B8%A0%22%2C%22d%22%3A0.7%2C%22img%22%3A%22http%3A%2F%2Ftong.visitkorea.or.kr%2Fcms%2Fresource%2F81%2F3564781_image2_1.jpg%22%7D%2C%7B%22t%22%3A%22%EC%84%9C%EC%9A%B8%EC%8B%9C%EB%A6%BD%20%EB%82%9C%EC%A7%80%EB%AF%B8%EC%88%A0%EC%B0%BD%EC%9E%91%EC%8A%A4%ED%8A%9C%EB%94%94%EC%98%A4%22%2C%22ty%22%3A%22%EB%AC%B8%ED%99%94%EC%8B%9C%EC%84%A4%22%2C%22d%22%3A0.7%2C%22img%22%3A%22http%3A%2F%2Ftong.visitkorea.or.kr%2Fcms%2Fresource%2F92%2F3393092_image2_1.JPG%22%7D%5D">
   <div class="thumb"><img src="http://tong.visitkorea.or.kr/cms/resource/81/3544281_image2_1.JPG" alt="서울억새축제" loading="lazy" onerror="this.src=&#39;/img/cat-flower.webp&#39;"><span class="dday"></span><button class="fav" data-name="서울억새축제" aria-label="찜하기">♡</button><span class="km"></span><span class="cat">🌸 꽃</span></div>
   <div class="card-body">
   <div class="card-top"><span class="badge est">예년 기준·변동 가능</span></div>
@@ -330,7 +348,8 @@ document.querySelectorAll('.rbtn').forEach(b => b.addEventListener('click', () =
   <p class="desc">하늘공원 은빛 억새 물결</p>
   </div>
 </div>
-<div class="card" data-region="강원" data-start="2026-10-21" data-end="2026-10-25" data-lat="37.75" data-lng="128.9" data-name="강릉커피축제">
+<div class="card" data-region="강원" data-start="2026-10-21" data-end="2026-10-25" data-lat="37.75" data-lng="128.9" data-name="강릉커피축제" data-city="강릉시" data-place="강릉커피거리 일원" data-desc="바다와 함께하는 커피 도시 축제" data-cat="음식" data-img="https://tong.visitkorea.or.kr/cms/resource/24/3546224_image2_1.JPG" data-ov="*하기 축제 내용은 전년도(2025년) 축제 내용으로, 2026년도 축제 내용은 업데이트 중에 있습니다.*
+지방자치단체 중 최초로 개최된 커피축제로 매해 30만명이 넘는 관람객과 커피 업계 종사자 뿐만 아니라 커피 애호가들을 커피도시 강릉으로 불러 모으는 강릉 대표 축제이다. 이제 커피는 단순히 먹거리가 아닌 문화로 자리 잡았다. GCF는 커피문화를 이끄는 리더로서 그 역할을 하고 있다." data-near="%5B%7B%22t%22%3A%22%ED%95%9C%EB%81%BC%EB%B0%A5%EC%A7%91%22%2C%22ty%22%3A%22%EB%A7%9B%EC%A7%91%22%2C%22d%22%3A0%2C%22img%22%3A%22%22%7D%2C%7B%22t%22%3A%22%EC%97%90%EC%9D%B4%EC%97%A0%EB%B8%8C%EB%A0%88%EB%93%9C%EC%95%A4%EC%BB%A4%ED%94%BC%22%2C%22ty%22%3A%22%EB%A7%9B%EC%A7%91%22%2C%22d%22%3A0%2C%22img%22%3A%22%22%7D%2C%7B%22t%22%3A%22%EC%95%88%EB%AA%A926%ED%8E%9C%EC%85%98%22%2C%22ty%22%3A%22%EC%88%99%EC%86%8C%22%2C%22d%22%3A0%2C%22img%22%3A%22%22%7D%2C%7B%22t%22%3A%22%EB%AF%B8%ED%8A%B8%EC%BB%AC%EC%B3%90%22%2C%22ty%22%3A%22%EB%A7%9B%EC%A7%91%22%2C%22d%22%3A0.1%2C%22img%22%3A%22http%3A%2F%2Ftong.visitkorea.or.kr%2Fcms%2Fresource%2F79%2F2868579_image2_1.jpg%22%7D%2C%7B%22t%22%3A%22%ED%95%98%EC%8A%AC%EB%9D%BC%EA%B0%80%EB%B0%B0%22%2C%22ty%22%3A%22%EB%A7%9B%EC%A7%91%22%2C%22d%22%3A0.1%2C%22img%22%3A%22http%3A%2F%2Ftong.visitkorea.or.kr%2Fcms%2Fresource%2F49%2F2894349_image2_1.jpg%22%7D%5D">
   <div class="thumb"><img src="https://tong.visitkorea.or.kr/cms/resource/24/3546224_image2_1.JPG" alt="강릉커피축제" loading="lazy" onerror="this.src=&#39;/img/cat-food.webp&#39;"><span class="dday"></span><button class="fav" data-name="강릉커피축제" aria-label="찜하기">♡</button><span class="km"></span><span class="cat">🍜 음식</span></div>
   <div class="card-body">
   <div class="card-top"><span class="badge ok">일정 확정</span></div>
@@ -340,7 +359,7 @@ document.querySelectorAll('.rbtn').forEach(b => b.addEventListener('click', () =
   <p class="desc">바다와 함께하는 커피 도시 축제</p>
   </div>
 </div>
-<div class="card" data-region="전북" data-start="2026-10-30" data-end="2026-11-08" data-lat="35.57" data-lng="126.86" data-name="정읍 내장산단풍축제">
+<div class="card" data-region="전북" data-start="2026-10-30" data-end="2026-11-08" data-lat="35.57" data-lng="126.86" data-name="정읍 내장산단풍축제" data-city="정읍시" data-place="내장산국립공원 일원" data-desc="단풍 명소 내장산 가을 축제" data-cat="꽃" data-img="/img/cat-flower.webp">
   <div class="thumb"><img src="/img/cat-flower.webp" alt="정읍 내장산단풍축제" loading="lazy" onerror="this.src=&#39;/img/cat-flower.webp&#39;"><span class="dday"></span><button class="fav" data-name="정읍 내장산단풍축제" aria-label="찜하기">♡</button><span class="km"></span><span class="cat">🌸 꽃</span></div>
   <div class="card-body">
   <div class="card-top"><span class="badge est">예년 기준·변동 가능</span></div>
@@ -359,6 +378,15 @@ document.querySelectorAll('.rbtn').forEach(b => b.addEventListener('click', () =
 <p><a href="/privacy/">개인정보처리방침</a> · 문의: goohw593@gmail.com</p>
 <p>© 2026 축제모아</p>
 </div></footer>
+<div id="festmodal" class="fmodal"><div class="fmbox">
+<button class="fmx" id="fm2x" aria-label="닫기">✕</button>
+<img id="fm2-img" class="fm-img" alt="">
+<h3 id="fm2-title"></h3>
+<p id="fm2-meta"></p>
+<p id="fm2-ov"></p>
+<div id="fm2-near"></div>
+<div class="fm-links"><a id="fm2-hp" target="_blank" rel="noopener">🏛️ 공식 홈페이지</a><a id="fm2-naver" target="_blank" rel="noopener">🔎 네이버에서 보기</a></div>
+</div></div>
 <script>
 (function(){
   const t = new Date(); t.setHours(0,0,0,0);
@@ -366,6 +394,7 @@ document.querySelectorAll('.rbtn').forEach(b => b.addEventListener('click', () =
     c.style.cursor = 'pointer';
     c.addEventListener('click', function(ev){
       if (ev.target.closest('.fav') || ev.target.closest('a')) return;
+      if (window.openFestModal) { window.openFestModal(c.dataset); return; }
       const n = c.dataset.name; if (!n) return;
       window.open('https://search.naver.com/search.naver?query=' + encodeURIComponent(n + ' 축제'), '_blank', 'noopener');
     });
@@ -429,6 +458,32 @@ document.querySelectorAll('.rbtn').forEach(b => b.addEventListener('click', () =
       alert('위치 권한을 허용하면 가까운 축제부터 보여드려요!');
     }, { timeout: 8000 });
   });
+})();
+</script>
+<script>
+(function(){
+  var m=document.getElementById('festmodal'); if(!m) return;
+  function esc(s){return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+  function fy(y){y=String(y||'').replace(/[^0-9]/g,'');if(y.length<8)return '';return y.slice(0,4)+'.'+(+y.slice(4,6))+'.'+(+y.slice(6,8));}
+  window.openFestModal=function(ds){
+    var img=document.getElementById('fm2-img');
+    if(ds.img){img.src=ds.img;img.style.display='block';}else{img.style.display='none';}
+    document.getElementById('fm2-title').textContent=ds.name||'';
+    var loc=[ds.region,ds.city,ds.place].filter(Boolean).join(' ');
+    var dr=fy(ds.start)+(ds.end&&String(ds.end).replace(/[^0-9]/g,'')!==String(ds.start).replace(/[^0-9]/g,'')?' ~ '+fy(ds.end):'');
+    document.getElementById('fm2-meta').textContent=[dr,loc].filter(Boolean).join('  ·  ');
+    document.getElementById('fm2-ov').textContent=ds.ov||ds.desc||'상세 개요는 아래 네이버·공식 홈페이지에서 확인하세요.';
+    var nearEl=document.getElementById('fm2-near');nearEl.innerHTML='';
+    if(ds.near){try{var arr=JSON.parse(decodeURIComponent(ds.near));if(arr&&arr.length){nearEl.innerHTML='<div style="font-weight:800;color:#0a6c63;margin:16px 0 8px">📍 근처 가볼 곳</div><div style="display:flex;flex-wrap:wrap;gap:8px">'+arr.map(function(n){return '<a href="https://search.naver.com/search.naver?query='+encodeURIComponent(n.t)+'" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;background:#f4faf8;border:1px solid #dcefeb;border-radius:20px;padding:6px 12px;font-size:.85rem;font-weight:700;color:#374151;text-decoration:none">'+(n.img?'<img src="'+esc(n.img)+'" style="width:22px;height:22px;border-radius:50%;object-fit:cover" onerror="this.style.display=&#39;none&#39;">':'')+esc(n.t)+' <span style="color:#9aa3af;font-weight:600">'+esc(n.ty)+(n.d?' '+n.d+'km':'')+'</span></a>';}).join('')+'</div>';}}catch(e){}}
+    var hp=document.getElementById('fm2-hp');
+    if(ds.hp){hp.href=(ds.hp.indexOf('http')===0?ds.hp:'http://'+ds.hp);hp.style.display='inline-block';}else{hp.style.display='none';}
+    document.getElementById('fm2-naver').href='https://search.naver.com/search.naver?query='+encodeURIComponent((ds.name||'')+' 축제');
+    m.classList.add('show');
+  };
+  function close(){m.classList.remove('show');}
+  document.getElementById('fm2x').addEventListener('click',close);
+  m.addEventListener('click',function(e){if(e.target.id==='festmodal')close();});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
 })();
 </script>
 

@@ -159,6 +159,18 @@ article ul{padding-left:20px}
 .share-row .sh2{background:#0f9d8f;color:#fff}
 .share-row .sh3{background:#f3f4f6;color:#374151}
 .share-row button:hover,.share-row a:hover{transform:translateY(-2px)}
+.fmodal{display:none;position:fixed;inset:0;z-index:100;background:rgba(17,24,39,.55);align-items:center;justify-content:center;padding:18px}
+.fmodal.show{display:flex}
+.fmbox{background:#fff;border-radius:18px;max-width:560px;width:100%;max-height:86vh;overflow:auto;padding:22px;position:relative;box-shadow:0 20px 50px rgba(0,0,0,.3)}
+.fmx{position:absolute;top:12px;right:12px;border:none;background:#f3f4f6;width:34px;height:34px;border-radius:50%;font-size:1rem;cursor:pointer;color:#374151}
+.fm-img{width:100%;max-height:240px;object-fit:cover;border-radius:12px;margin-bottom:14px}
+.fmbox h3{font-size:1.3rem;font-weight:900;letter-spacing:-.02em;margin:2px 40px 6px 0}
+#fm-meta,#fm2-meta{color:#0a6c63;font-weight:700;font-size:.92rem;margin-bottom:12px}
+#fm-ov,#fm2-ov{color:#374151;font-size:.95rem;line-height:1.65}
+.fm-links{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.fm-links a{flex:1;min-width:140px;text-align:center;padding:12px;border-radius:12px;font-weight:800;font-size:.95rem}
+#fm-hp,#fm2-hp{background:#0f9d8f;color:#fff}
+#fm-naver,#fm2-naver{background:#f3f4f6;color:#374151;border:1.5px solid #dcefeb}
 @media(max-width:600px){.hero h1{font-size:1.3rem}nav a{margin-left:9px;font-size:.85rem}}
 </style>
 </head>
@@ -182,7 +194,7 @@ document.querySelectorAll('.rbtn').forEach(b => b.addEventListener('click', () =
   });
 }));
 </script>
-<div class="grid"><div class="card" data-region="광주" data-start="2026-04-04" data-end="2026-11-07" data-lat="35.15" data-lng="126.92" data-name="금남로 차 없는 거리 걷자잉">
+<div class="grid"><div class="card" data-region="광주" data-start="2026-04-04" data-end="2026-11-07" data-lat="35.15" data-lng="126.92" data-name="금남로 차 없는 거리 걷자잉" data-city="동구" data-place="금남로공원·전일빌딩245 일원" data-desc="주말 금남로에서 즐기는 거리 문화행사" data-cat="문화" data-img="/img/cat-culture.webp">
   <div class="thumb"><img src="/img/cat-culture.webp" alt="금남로 차 없는 거리 걷자잉" loading="lazy" onerror="this.src=&#39;/img/cat-culture.webp&#39;"><span class="dday"></span><button class="fav" data-name="금남로 차 없는 거리 걷자잉" aria-label="찜하기">♡</button><span class="km"></span><span class="cat">🎭 문화</span></div>
   <div class="card-body">
   <div class="card-top"><span class="badge ok">일정 확정</span></div>
@@ -192,7 +204,7 @@ document.querySelectorAll('.rbtn').forEach(b => b.addEventListener('click', () =
   <p class="desc">주말 금남로에서 즐기는 거리 문화행사</p>
   </div>
 </div>
-<div class="card" data-region="경북" data-start="2026-06-01" data-end="2026-09-30" data-lat="35.83" data-lng="128.74" data-name="경산갓바위소원성취축제">
+<div class="card" data-region="경북" data-start="2026-06-01" data-end="2026-09-30" data-lat="35.83" data-lng="128.74" data-name="경산갓바위소원성취축제" data-city="경산시" data-place="갓바위 일원" data-desc="갓바위에서 소원을 비는 힐링 축제" data-cat="문화" data-img="http://tong.visitkorea.or.kr/cms/resource/90/3550790_image2_1.jpg" data-ov="‘경산갓바위소원성취축제’는 갓바위의 소원성취 전통을 계승하며 전통문화와 현대 공연이 어우러지는 힐링·참여형 축제이다. 축제는 경산 갓바위 주차장과 와촌면민운동장에서 동시에 열리며 갓바위 주차장에서는 9월 26일(금)~28일(일) 3일간, 다례봉행, 템플스테이, 소원 돌탑 쌓기, 무소음 명상 요가 등 다양한 전통문화 체험이 진행된다. 와촌면민운동장에서는 9월 26(금)~27일(토) 2일간, 개막식과 읍면동 부녀단체 찌짐 부치기 대회, 소원 음악회 등 다채로운 프로그램이 진행된다. 또한 지역 특산물 판매 부스를 통해 신선한 ‘와촌 자두’를 비롯한 경산의 다양한 특산물을 즐길 수 있다. '1387년의 기도, 내 꿈 이루는 My Universe'라는 주제처럼, 시민과 관광객 모두가 소원을 빌고 함께 즐길 수 있는 화합 한마당 대잔치를 목표로 열린다." data-hp="https://gsctf.or.kr/user/festival/festival/view?boardIdx=372" data-near="%5B%7B%22t%22%3A%22Cafe.803%22%2C%22ty%22%3A%22%EB%A7%9B%EC%A7%91%22%2C%22d%22%3A0.2%2C%22img%22%3A%22http%3A%2F%2Ftong.visitkorea.or.kr%2Fcms%2Fresource%2F03%2F2840703_image2_1.jpg%22%7D%2C%7B%22t%22%3A%22%EC%84%A0%EB%B3%B8%EC%82%AC(%EA%B2%BD%EC%82%B0)%22%2C%22ty%22%3A%22%EA%B4%80%EA%B4%91%EC%A7%80%22%2C%22d%22%3A1%2C%22img%22%3A%22http%3A%2F%2Ftong.visitkorea.or.kr%2Fcms%2Fresource%2F79%2F3568779_image2_1.JPG%22%7D%2C%7B%22t%22%3A%22%EA%B0%9C%EC%9A%B8%EA%B0%80%EC%8B%9D%EB%8B%B9%22%2C%22ty%22%3A%22%EB%A7%9B%EC%A7%91%22%2C%22d%22%3A1.5%2C%22img%22%3A%22http%3A%2F%2Ftong.visitkorea.or.kr%2Fcms%2Fresource%2F84%2F2840684_image2_1.jpg%22%7D%2C%7B%22t%22%3A%22%EC%9B%90%ED%9A%A8%EC%95%94(%EA%B2%BD%EC%82%B0)%22%2C%22ty%22%3A%22%EA%B4%80%EA%B4%91%EC%A7%80%22%2C%22d%22%3A1.7%2C%22img%22%3A%22http%3A%2F%2Ftong.visitkorea.or.kr%2Fcms%2Fresource%2F25%2F3035425_image2_1.jpg%22%7D%2C%7B%22t%22%3A%22%EA%B4%80%EC%95%94%EC%82%AC(%EB%8C%80%EA%B5%AC)%22%2C%22ty%22%3A%22%EA%B4%80%EA%B4%91%EC%A7%80%22%2C%22d%22%3A1.7%2C%22img%22%3A%22http%3A%2F%2Ftong.visitkorea.or.kr%2Fcms%2Fresource%2F68%2F3586468_image2_1.JPG%22%7D%5D">
   <div class="thumb"><img src="http://tong.visitkorea.or.kr/cms/resource/90/3550790_image2_1.jpg" alt="경산갓바위소원성취축제" loading="lazy" onerror="this.src=&#39;/img/cat-culture.webp&#39;"><span class="dday"></span><button class="fav" data-name="경산갓바위소원성취축제" aria-label="찜하기">♡</button><span class="km"></span><span class="cat">🎭 문화</span></div>
   <div class="card-body">
   <div class="card-top"><span class="badge ok">일정 확정</span></div>
@@ -202,7 +214,7 @@ document.querySelectorAll('.rbtn').forEach(b => b.addEventListener('click', () =
   <p class="desc">갓바위에서 소원을 비는 힐링 축제</p>
   </div>
 </div>
-<div class="card" data-region="전남" data-start="2026-07-17" data-end="2026-08-17" data-lat="35.07" data-lng="126.52" data-name="함평 물놀이 페스타">
+<div class="card" data-region="전남" data-start="2026-07-17" data-end="2026-08-17" data-lat="35.07" data-lng="126.52" data-name="함평 물놀이 페스타" data-city="함평군" data-place="함평엑스포공원 물놀이장" data-desc="한 달간 즐기는 가족 여름 물놀이장" data-cat="물놀이" data-img="/img/cat-water.webp">
   <div class="thumb"><img src="/img/cat-water.webp" alt="함평 물놀이 페스타" loading="lazy" onerror="this.src=&#39;/img/cat-water.webp&#39;"><span class="dday"></span><button class="fav" data-name="함평 물놀이 페스타" aria-label="찜하기">♡</button><span class="km"></span><span class="cat">💦 물놀이</span></div>
   <div class="card-body">
   <div class="card-top"><span class="badge ok">일정 확정</span></div>
@@ -212,7 +224,7 @@ document.querySelectorAll('.rbtn').forEach(b => b.addEventListener('click', () =
   <p class="desc">한 달간 즐기는 가족 여름 물놀이장</p>
   </div>
 </div>
-<div class="card" data-region="강원" data-start="2026-07-17" data-end="2026-08-17" data-lat="37.16" data-lng="128.99" data-name="태백 해바라기축제">
+<div class="card" data-region="강원" data-start="2026-07-17" data-end="2026-08-17" data-lat="37.16" data-lng="128.99" data-name="태백 해바라기축제" data-city="태백시" data-place="구와우마을 일원" data-desc="고원 해바라기 꽃밭의 여름 정취" data-cat="꽃" data-img="/img/cat-flower.webp">
   <div class="thumb"><img src="/img/cat-flower.webp" alt="태백 해바라기축제" loading="lazy" onerror="this.src=&#39;/img/cat-flower.webp&#39;"><span class="dday"></span><button class="fav" data-name="태백 해바라기축제" aria-label="찜하기">♡</button><span class="km"></span><span class="cat">🌸 꽃</span></div>
   <div class="card-body">
   <div class="card-top"><span class="badge ok">일정 확정</span></div>
@@ -222,7 +234,9 @@ document.querySelectorAll('.rbtn').forEach(b => b.addEventListener('click', () =
   <p class="desc">고원 해바라기 꽃밭의 여름 정취</p>
   </div>
 </div>
-<div class="card" data-region="강원" data-start="2026-07-22" data-end="2026-08-08" data-lat="37.37" data-lng="128.39" data-name="대관령음악제">
+<div class="card" data-region="강원" data-start="2026-07-22" data-end="2026-08-08" data-lat="37.37" data-lng="128.39" data-name="대관령음악제" data-city="평창군" data-place="알펜시아 콘서트홀 일원" data-desc="산 위에서 즐기는 국제 클래식 음악제" data-cat="음악" data-img="https://tong.visitkorea.or.kr/cms/resource/08/4080008_image2_1.jpg" data-ov="강원특별자치도가 주최하고 (재)강원문화재단이 주관하는 2026 평창대관령음악제(예술감독 양성원)가 7월 23일(목)부터 8월 2일(일)까지 11일간 평창군 대관령면 알펜시아 콘서트홀과 대관령 야외공연장(뮤직텐트)을 비롯한 강원특별자치도 일대에서 개최된다.
+올해는 '계승과 혁신 Legacy and Innovation'을 주제로 수백 년에 걸쳐 쌓아온 작곡가들의 작품이 현재까지 살아 숨쉬며 새로운 창작의 토양이 되는 예술의 토대임을 나타내고자 하며, 새로운 음악가와 새로운 작품들도 많이 소개하는 등 공연 전반을 하나의 서사와 여정으로 연결해 관객이 음악을 통한 큰 흐름을 경험할 수 있는 시간을 제공할 예정이다.
+19회의 , 10회의 , , '실내악 멤토십 프로그램'과 '마스터클래스'와 5회의 , 그리고 '특강'의 등이 펼쳐진다." data-near="%5B%7B%22t%22%3A%22%EC%95%8C%ED%8E%9C%EC%8B%9C%EC%95%84%EB%A6%AC%EC%A1%B0%ED%8A%B8%20%EC%8A%A4%ED%82%A4%EC%9E%A5%22%2C%22ty%22%3A%22%EB%A0%88%ED%8F%AC%EC%B8%A0%22%2C%22d%22%3A0.2%2C%22img%22%3A%22http%3A%2F%2Ftong.visitkorea.or.kr%2Fcms%2Fresource%2F62%2F3586962_image2_1.jpg%22%7D%2C%7B%22t%22%3A%22%ED%99%80%EB%A6%AC%EB%8D%B0%EC%9D%B4%EC%9D%B8%20%EC%95%8C%ED%8E%9C%EC%8B%9C%EC%95%84%20%ED%8F%89%EC%B0%BD%20%EB%A6%AC%EC%A1%B0%ED%8A%B8%22%2C%22ty%22%3A%22%EA%B4%80%EA%B4%91%EC%A7%80%22%2C%22d%22%3A0.2%2C%22img%22%3A%22http%3A%2F%2Ftong.visitkorea.or.kr%2Fcms%2Fresource%2F33%2F3557633_image2_1.jpg%22%7D%2C%7B%22t%22%3A%22%EC%9D%B8%ED%84%B0%EC%BB%A8%ED%8B%B0%EB%84%A8%ED%83%88%20%EC%95%8C%ED%8E%9C%EC%8B%9C%EC%95%84%20%ED%8F%89%EC%B0%BD%20%EB%A6%AC%EC%A1%B0%ED%8A%B8%22%2C%22ty%22%3A%22%EA%B4%80%EA%B4%91%EC%A7%80%22%2C%22d%22%3A0.2%2C%22img%22%3A%22http%3A%2F%2Ftong.visitkorea.or.kr%2Fcms%2Fresource%2F59%2F3557559_image2_1.jpg%22%7D%2C%7B%22t%22%3A%22%EC%95%8C%ED%8E%9C%EC%8B%9C%EC%95%84%20%EC%95%8C%ED%8C%8C%EC%9D%B8%EC%BD%94%EC%8A%A4%ED%84%B0%22%2C%22ty%22%3A%22%EB%A0%88%ED%8F%AC%EC%B8%A0%22%2C%22d%22%3A0.2%2C%22img%22%3A%22http%3A%2F%2Ftong.visitkorea.or.kr%2Fcms%2Fresource%2F62%2F3534962_image2_1.jpg%22%7D%2C%7B%22t%22%3A%22%ED%99%80%EB%A6%AC%EB%8D%B0%EC%9D%B4%EC%9D%B8%26%EC%8A%A4%EC%9C%84%ED%8A%B8%20%EC%95%8C%ED%8E%9C%EC%8B%9C%EC%95%84%20%ED%8F%89%EC%B0%BD%22%2C%22ty%22%3A%22%EC%88%99%EC%86%8C%22%2C%22d%22%3A0.7%2C%22img%22%3A%22http%3A%2F%2Ftong.visitkorea.or.kr%2Fcms%2Fresource%2F56%2F2921356_image2_1.jpg%22%7D%5D">
   <div class="thumb"><img src="https://tong.visitkorea.or.kr/cms/resource/08/4080008_image2_1.jpg" alt="대관령음악제" loading="lazy" onerror="this.src=&#39;/img/cat-music.webp&#39;"><span class="dday"></span><button class="fav" data-name="대관령음악제" aria-label="찜하기">♡</button><span class="km"></span><span class="cat">🎵 음악</span></div>
   <div class="card-body">
   <div class="card-top"><span class="badge est">예년 기준·변동 가능</span></div>
@@ -232,7 +246,7 @@ document.querySelectorAll('.rbtn').forEach(b => b.addEventListener('click', () =
   <p class="desc">산 위에서 즐기는 국제 클래식 음악제</p>
   </div>
 </div>
-<div class="card" data-region="충남" data-start="2026-07-24" data-end="2026-08-09" data-lat="36.33" data-lng="126.61" data-name="보령머드축제">
+<div class="card" data-region="충남" data-start="2026-07-24" data-end="2026-08-09" data-lat="36.33" data-lng="126.61" data-name="보령머드축제" data-city="보령시" data-place="대천해수욕장 일원" data-desc="세계인이 찾는 국내 최대 머드 체험축제" data-cat="물놀이" data-img="https://tong.visitkorea.or.kr/cms/resource/79/3534979_image2_1.jpg" data-ov="*하기 축제장 먹거리 내용은 전년도(2025년) 축제 내용으로, 2026년도 축제 내용은 업데이트 중에 있습니다.*대한민국을 대표하는 글로벌 체험형 여름 축제, 보령머드축제이다. 시원하게 펼쳐진 대천해수욕장을 바라보며 온몸으로 머드를 즐기는 ‘일반존’부터, 온 가족이 함께 안전하게 활력을 충전하는 ‘패밀리존’과 ‘워터파크존’까지 다채로운 공간이 마련되어 있다. 주야간 DJ, EDM 공연과 함께 머드 물대포를 맞으며 즐기는 이색 체험 프로그램인 머드몹신 등 낮에는 짜릿한 머드 어트랙션으로 무더위를 날리고, 밤에는 밤바다를 수놓는 화려한 드론쇼와 열정적인 대형야간공연으로 축제의 열기가 이어진다. 낮과 밤이 모두 완벽한 보령에서 올여름 특별한 추억을 남길 수 있다." data-near="%5B%7B%22t%22%3A%22%EC%8B%A0%ED%9D%91%EB%A7%88%EC%9D%84%22%2C%22ty%22%3A%22%EA%B4%80%EA%B4%91%EC%A7%80%22%2C%22d%22%3A0.2%2C%22img%22%3A%22http%3A%2F%2Ftong.visitkorea.or.kr%2Fcms%2Fresource%2F33%2F3348633_image2_1.JPG%22%7D%2C%7B%22t%22%3A%22%EB%8C%80%EC%B2%9C%ED%82%A4%EC%A1%B0%EA%B0%9C%EC%82%BC%ED%95%A9%22%2C%22ty%22%3A%22%EB%A7%9B%EC%A7%91%22%2C%22d%22%3A0.3%2C%22img%22%3A%22http%3A%2F%2Ftong.visitkorea.or.kr%2Fcms%2Fresource%2F81%2F2766981_image2_1.jpg%22%7D%2C%7B%22t%22%3A%22%EB%A9%94%EB%A6%AC%EB%A8%B8%EB%93%9C%ED%98%B8%ED%85%94%22%2C%22ty%22%3A%22%EC%88%99%EC%86%8C%22%2C%22d%22%3A0.3%2C%22img%22%3A%22http%3A%2F%2Ftong.visitkorea.or.kr%2Fcms%2Fresource%2F44%2F2811244_image2_1.jpg%22%7D%2C%7B%22t%22%3A%22%EB%8D%B0%EC%9D%B4%EB%82%98%EC%9D%B4%EC%8A%A4%ED%98%B8%ED%85%94%22%2C%22ty%22%3A%22%EC%88%99%EC%86%8C%22%2C%22d%22%3A0.3%2C%22img%22%3A%22http%3A%2F%2Ftong.visitkorea.or.kr%2Fcms%2Fresource%2F96%2F3544696_image2_1.jpg%22%7D%2C%7B%22t%22%3A%22%EC%88%98%EC%A7%80%ED%8E%9C%EC%85%98%22%2C%22ty%22%3A%22%EC%88%99%EC%86%8C%22%2C%22d%22%3A0.3%2C%22img%22%3A%22%22%7D%5D">
   <div class="thumb"><img src="https://tong.visitkorea.or.kr/cms/resource/79/3534979_image2_1.jpg" alt="보령머드축제" loading="lazy" onerror="this.src=&#39;/img/cat-water.webp&#39;"><span class="dday"></span><button class="fav" data-name="보령머드축제" aria-label="찜하기">♡</button><span class="km"></span><span class="cat">💦 물놀이</span></div>
   <div class="card-body">
   <div class="card-top"><span class="badge ok">일정 확정</span></div>
@@ -242,7 +256,7 @@ document.querySelectorAll('.rbtn').forEach(b => b.addEventListener('click', () =
   <p class="desc">세계인이 찾는 국내 최대 머드 체험축제</p>
   </div>
 </div>
-<div class="card" data-region="전북" data-start="2026-07-24" data-end="2026-08-17" data-lat="35.73" data-lng="126.73" data-name="변산비치펍 시즌2">
+<div class="card" data-region="전북" data-start="2026-07-24" data-end="2026-08-17" data-lat="35.73" data-lng="126.73" data-name="변산비치펍 시즌2" data-city="부안군" data-place="변산·격포·모항해수욕장" data-desc="해변에서 즐기는 야간 공연·먹거리 축제" data-cat="문화" data-img="/img/cat-culture.webp">
   <div class="thumb"><img src="/img/cat-culture.webp" alt="변산비치펍 시즌2" loading="lazy" onerror="this.src=&#39;/img/cat-culture.webp&#39;"><span class="dday"></span><button class="fav" data-name="변산비치펍 시즌2" aria-label="찜하기">♡</button><span class="km"></span><span class="cat">🎭 문화</span></div>
   <div class="card-body">
   <div class="card-top"><span class="badge ok">일정 확정</span></div>
@@ -252,7 +266,7 @@ document.querySelectorAll('.rbtn').forEach(b => b.addEventListener('click', () =
   <p class="desc">해변에서 즐기는 야간 공연·먹거리 축제</p>
   </div>
 </div>
-<div class="card" data-region="강원" data-start="2026-07-24" data-end="2026-08-02" data-lat="37.37" data-lng="128.39" data-name="평창더위사냥축제">
+<div class="card" data-region="강원" data-start="2026-07-24" data-end="2026-08-02" data-lat="37.37" data-lng="128.39" data-name="평창더위사냥축제" data-city="평창군" data-place="대화면 땀띠공원 일원" data-desc="얼음계곡에서 더위를 날리는 피서축제" data-cat="물놀이" data-img="/img/cat-water.webp">
   <div class="thumb"><img src="/img/cat-water.webp" alt="평창더위사냥축제" loading="lazy" onerror="this.src=&#39;/img/cat-water.webp&#39;"><span class="dday"></span><button class="fav" data-name="평창더위사냥축제" aria-label="찜하기">♡</button><span class="km"></span><span class="cat">💦 물놀이</span></div>
   <div class="card-body">
   <div class="card-top"><span class="badge est">예년 기준·변동 가능</span></div>
@@ -262,7 +276,7 @@ document.querySelectorAll('.rbtn').forEach(b => b.addEventListener('click', () =
   <p class="desc">얼음계곡에서 더위를 날리는 피서축제</p>
   </div>
 </div>
-<div class="card" data-region="전남" data-start="2026-07-25" data-end="2026-08-02" data-lat="34.68" data-lng="126.91" data-name="정남진장흥물축제">
+<div class="card" data-region="전남" data-start="2026-07-25" data-end="2026-08-02" data-lat="34.68" data-lng="126.91" data-name="정남진장흥물축제" data-city="장흥군" data-place="탐진강·편백숲우드랜드 일원" data-desc="지상 최대 물싸움과 수상 액티비티" data-cat="물놀이" data-img="https://tong.visitkorea.or.kr/cms/resource/77/4071277_image2_1.jpg" data-ov="*하기 축제 먹거리 내용은 전년도(2025년) 축제 내용으로, 2026년도 축제 내용은 업데이트 중에 있습니다.*정남진 장흥 물축제는 2026년 문화체육관광부 명예 문화관광축제이자 예비 글로벌 축제로 선정된 대한민국 대표 여름축제이다. 탐진강과 장흥댐의 청정 수자원을 바탕으로 ‘물’을 테마로 한 다채로운 콘텐츠를 선보이며, 세계인이 함께 즐기는 글로벌 축제로의 도약을 준비하고 있다. 축제의 대표 프로그램인 살수대첩 거리 퍼레이드는 장흥 도심에서 남녀노소 누구나 참여해 물을 맞고 즐기며 하나가 되는 장흥만의 특별한 콘텐츠이다. 이와 함께 지상 최대의 물싸움과 황금물고기(대왕장어)를 잡아라!, 수상 액티비티 등 시원하고 역동적인 체험 프로그램이 펼쳐진다. 낮에는 물놀이와 다양한 체험 프로그램으로 활력을 더하고, 밤에는 K-POP 공연과 장흥 Water Beat 등 다채로운 공연과 야간 콘텐츠가 축제의 열기를 이어가며 아침부터 밤까지 즐길거리가 가득한 축제를 선사한다. 또한 빠삐용zip 체험프로그램, 장흥 캠핑 스테이 등 장흥의 자연·먹거리·관광 콘텐츠가 어우러져 방문객들에게 특별한 여름 추억을 선사한다. 세대와 지역, 국적을 넘어 모두가 함께 어우러지는 정남진 " data-near="%5B%7B%22t%22%3A%223%EB%8C%80%EA%B3%B0%ED%83%95%22%2C%22ty%22%3A%22%EB%A7%9B%EC%A7%91%22%2C%22d%22%3A0.4%2C%22img%22%3A%22%22%7D%2C%7B%22t%22%3A%22%EC%98%88%EC%96%91%EC%84%9C%EC%9B%90%22%2C%22ty%22%3A%22%EA%B4%80%EA%B4%91%EC%A7%80%22%2C%22d%22%3A0.4%2C%22img%22%3A%22http%3A%2F%2Ftong.visitkorea.or.kr%2Fcms%2Fresource%2F45%2F3381145_image2_1.JPG%22%7D%2C%7B%22t%22%3A%22%EC%8B%B1%EC%8B%B1%ED%9A%8C%EB%A7%88%EC%9D%84%22%2C%22ty%22%3A%22%EB%A7%9B%EC%A7%91%22%2C%22d%22%3A0.5%2C%22img%22%3A%22%22%7D%2C%7B%22t%22%3A%22%EC%88%98%EB%B3%B5%EC%8B%9D%EB%8B%B9%22%2C%22ty%22%3A%22%EB%A7%9B%EC%A7%91%22%2C%22d%22%3A0.5%2C%22img%22%3A%22http%3A%2F%2Ftong.visitkorea.or.kr%2Fcms%2Fresource%2F65%2F2868065_image2_1.jpg%22%7D%2C%7B%22t%22%3A%22%EC%A0%95%EB%82%A8%EC%A7%84%EC%9A%B0%EB%A6%AC%ED%95%9C%EC%9A%B0%22%2C%22ty%22%3A%22%EB%A7%9B%EC%A7%91%22%2C%22d%22%3A0.5%2C%22img%22%3A%22http%3A%2F%2Ftong.visitkorea.or.kr%2Fcms%2Fresource%2F62%2F2787662_image2_1.jpg%22%7D%5D">
   <div class="thumb"><img src="https://tong.visitkorea.or.kr/cms/resource/77/4071277_image2_1.jpg" alt="정남진장흥물축제" loading="lazy" onerror="this.src=&#39;/img/cat-water.webp&#39;"><span class="dday"></span><button class="fav" data-name="정남진장흥물축제" aria-label="찜하기">♡</button><span class="km"></span><span class="cat">💦 물놀이</span></div>
   <div class="card-body">
   <div class="card-top"><span class="badge ok">일정 확정</span></div>
@@ -272,7 +286,7 @@ document.querySelectorAll('.rbtn').forEach(b => b.addEventListener('click', () =
   <p class="desc">지상 최대 물싸움과 수상 액티비티</p>
   </div>
 </div>
-<div class="card" data-region="경북" data-start="2026-07-25" data-end="2026-08-02" data-lat="36.89" data-lng="128.73" data-name="봉화은어축제">
+<div class="card" data-region="경북" data-start="2026-07-25" data-end="2026-08-02" data-lat="36.89" data-lng="128.73" data-name="봉화은어축제" data-city="봉화군" data-place="내성천 일원" data-desc="맨손 은어잡기로 즐기는 청정계곡 축제" data-cat="물놀이" data-img="/img/cat-water.webp">
   <div class="thumb"><img src="/img/cat-water.webp" alt="봉화은어축제" loading="lazy" onerror="this.src=&#39;/img/cat-water.webp&#39;"><span class="dday"></span><button class="fav" data-name="봉화은어축제" aria-label="찜하기">♡</button><span class="km"></span><span class="cat">💦 물놀이</span></div>
   <div class="card-body">
   <div class="card-top"><span class="badge ok">일정 확정</span></div>
@@ -282,7 +296,7 @@ document.querySelectorAll('.rbtn').forEach(b => b.addEventListener('click', () =
   <p class="desc">맨손 은어잡기로 즐기는 청정계곡 축제</p>
   </div>
 </div>
-<div class="card" data-region="강원" data-start="2026-07-25" data-end="2026-08-09" data-lat="38.11" data-lng="127.71" data-name="물의나라 화천쪽배축제">
+<div class="card" data-region="강원" data-start="2026-07-25" data-end="2026-08-09" data-lat="38.11" data-lng="127.71" data-name="물의나라 화천쪽배축제" data-city="화천군" data-place="붕어섬 일원" data-desc="이색 쪽배 콘테스트와 수상 레저" data-cat="물놀이" data-img="/img/cat-water.webp">
   <div class="thumb"><img src="/img/cat-water.webp" alt="물의나라 화천쪽배축제" loading="lazy" onerror="this.src=&#39;/img/cat-water.webp&#39;"><span class="dday"></span><button class="fav" data-name="물의나라 화천쪽배축제" aria-label="찜하기">♡</button><span class="km"></span><span class="cat">💦 물놀이</span></div>
   <div class="card-body">
   <div class="card-top"><span class="badge est">예년 기준·변동 가능</span></div>
@@ -292,7 +306,7 @@ document.querySelectorAll('.rbtn').forEach(b => b.addEventListener('click', () =
   <p class="desc">이색 쪽배 콘테스트와 수상 레저</p>
   </div>
 </div>
-<div class="card" data-region="강원" data-start="2026-07-30" data-end="2026-08-04" data-lat="37.52" data-lng="129.11" data-name="동해 해변뮤직페스티벌">
+<div class="card" data-region="강원" data-start="2026-07-30" data-end="2026-08-04" data-lat="37.52" data-lng="129.11" data-name="동해 해변뮤직페스티벌" data-city="동해시" data-place="추암·망상해변" data-desc="동해 해변에서 펼쳐지는 여름 음악공연" data-cat="음악" data-img="/img/cat-music.webp">
   <div class="thumb"><img src="/img/cat-music.webp" alt="동해 해변뮤직페스티벌" loading="lazy" onerror="this.src=&#39;/img/cat-music.webp&#39;"><span class="dday"></span><button class="fav" data-name="동해 해변뮤직페스티벌" aria-label="찜하기">♡</button><span class="km"></span><span class="cat">🎵 음악</span></div>
   <div class="card-body">
   <div class="card-top"><span class="badge ok">일정 확정</span></div>
@@ -302,7 +316,7 @@ document.querySelectorAll('.rbtn').forEach(b => b.addEventListener('click', () =
   <p class="desc">동해 해변에서 펼쳐지는 여름 음악공연</p>
   </div>
 </div>
-<div class="card" data-region="강원" data-start="2026-07-31" data-end="2026-08-09" data-lat="37.7" data-lng="127.89" data-name="홍천강 별빛음악 맥주축제">
+<div class="card" data-region="강원" data-start="2026-07-31" data-end="2026-08-09" data-lat="37.7" data-lng="127.89" data-name="홍천강 별빛음악 맥주축제" data-city="홍천군" data-place="홍천강 일원" data-desc="강변에서 맥주와 라이브 음악을 함께" data-cat="음악" data-img="https://tong.visitkorea.or.kr/cms/resource/16/4075616_image2_1.jpg" data-ov="올해 홍천강 별빛음악 맥주축제는 ‘Cool Music, Cold Beer!’를 주제로 개최되는 홍천의 여름 대표 축제이다. 2026년 제10회를 맞이하는 축제로, 홍천강 일원과 도시산림공원 토리숲을 중심으로 맥주, 음악, 공연, 체험 프로그램이 함께 운영되는 행사이다. 축제에서는 전국 최대 규모의 맥주공장인 하이트진로 강원공장에서 생산된 Terra 테라 생맥주와 홍천군 소재 수제맥주사의 맥주를 맛볼 수 있는 것이 특징이다. 또한 World Wet Dance 대회, EDM, 랩, 힙합 등 다양한 장르의 무대공연과 현장 이벤트가 진행되는 축제이다. 홍천강 별빛음악 맥주축제는 2026-2027년 강원특별자치도 우수축제로 선정된 지역 대표 여름축제이다." data-near="%5B%7B%22t%22%3A%22%ED%99%8D%EC%B2%9C%EB%AC%B8%ED%99%94%EC%98%88%EC%88%A0%ED%9A%8C%EA%B4%80%22%2C%22ty%22%3A%22%EB%AC%B8%ED%99%94%EC%8B%9C%EC%84%A4%22%2C%22d%22%3A0.2%2C%22img%22%3A%22http%3A%2F%2Ftong.visitkorea.or.kr%2Fcms%2Fresource%2F34%2F3021034_image2_1.jpg%22%7D%2C%7B%22t%22%3A%22%ED%99%8D%EC%B2%9C%EA%B5%90%EC%9C%A1%EB%8F%84%EC%84%9C%EA%B4%80%22%2C%22ty%22%3A%22%EB%AC%B8%ED%99%94%EC%8B%9C%EC%84%A4%22%2C%22d%22%3A0.9%2C%22img%22%3A%22http%3A%2F%2Ftong.visitkorea.or.kr%2Fcms%2Fresource%2F77%2F1583777_image2_1.jpg%22%7D%2C%7B%22t%22%3A%22%EC%96%B4%EB%8F%84%EB%9F%AC%EB%B8%94%EB%8F%85%22%2C%22ty%22%3A%22%EB%A7%9B%EC%A7%91%22%2C%22d%22%3A0.9%2C%22img%22%3A%22http%3A%2F%2Ftong.visitkorea.or.kr%2Fcms%2Fresource%2F24%2F2918824_image2_1.jpg%22%7D%2C%7B%22t%22%3A%22%EC%83%9D%EB%AA%85%EA%B1%B4%EA%B0%95%EA%B3%BC%ED%95%99%EA%B4%80%22%2C%22ty%22%3A%22%EB%AC%B8%ED%99%94%EC%8B%9C%EC%84%A4%22%2C%22d%22%3A1.6%2C%22img%22%3A%22http%3A%2F%2Ftong.visitkorea.or.kr%2Fcms%2Fresource%2F80%2F3381780_image2_1.JPG%22%7D%2C%7B%22t%22%3A%22%ED%99%8D%EC%B2%9C%20%EB%AC%B4%EA%B6%81%ED%99%94%EA%B3%B5%EC%9B%90%22%2C%22ty%22%3A%22%EA%B4%80%EA%B4%91%EC%A7%80%22%2C%22d%22%3A2%2C%22img%22%3A%22http%3A%2F%2Ftong.visitkorea.or.kr%2Fcms%2Fresource%2F31%2F3043031_image2_1.jpg%22%7D%5D">
   <div class="thumb"><img src="https://tong.visitkorea.or.kr/cms/resource/16/4075616_image2_1.jpg" alt="홍천강 별빛음악 맥주축제" loading="lazy" onerror="this.src=&#39;/img/cat-music.webp&#39;"><span class="dday"></span><button class="fav" data-name="홍천강 별빛음악 맥주축제" aria-label="찜하기">♡</button><span class="km"></span><span class="cat">🎵 음악</span></div>
   <div class="card-body">
   <div class="card-top"><span class="badge est">예년 기준·변동 가능</span></div>
@@ -312,7 +326,7 @@ document.querySelectorAll('.rbtn').forEach(b => b.addEventListener('click', () =
   <p class="desc">강변에서 맥주와 라이브 음악을 함께</p>
   </div>
 </div>
-<div class="card" data-region="경남" data-start="2026-07-31" data-end="2026-08-09" data-lat="35.69" data-lng="127.91" data-name="거창국제연극제">
+<div class="card" data-region="경남" data-start="2026-07-31" data-end="2026-08-09" data-lat="35.69" data-lng="127.91" data-name="거창국제연극제" data-city="거창군" data-place="수승대 일원" data-desc="계곡 야외무대의 국내외 연극 축제" data-cat="문화" data-img="/img/cat-culture.webp">
   <div class="thumb"><img src="/img/cat-culture.webp" alt="거창국제연극제" loading="lazy" onerror="this.src=&#39;/img/cat-culture.webp&#39;"><span class="dday"></span><button class="fav" data-name="거창국제연극제" aria-label="찜하기">♡</button><span class="km"></span><span class="cat">🎭 문화</span></div>
   <div class="card-body">
   <div class="card-top"><span class="badge ok">일정 확정</span></div>
@@ -322,7 +336,7 @@ document.querySelectorAll('.rbtn').forEach(b => b.addEventListener('click', () =
   <p class="desc">계곡 야외무대의 국내외 연극 축제</p>
   </div>
 </div>
-<div class="card" data-region="인천" data-start="2026-07-31" data-end="2026-08-02" data-lat="37.41" data-lng="126.68" data-name="인천펜타포트 락 페스티벌">
+<div class="card" data-region="인천" data-start="2026-07-31" data-end="2026-08-02" data-lat="37.41" data-lng="126.68" data-name="인천펜타포트 락 페스티벌" data-city="연수구" data-place="송도달빛축제공원" data-desc="국내 최대 록 페스티벌" data-cat="음악" data-img="https://tong.visitkorea.or.kr/cms/resource/65/4070165_image2_1.jpg" data-ov="*하기 축제 먹거리 내용은 전년도(2025년) 축제 내용으로, 2026년도 축제 내용은 업데이트 중에 있습니다.*인천펜타포트 음악축제는 대한민국을 대표하는 글로벌 음악축제로, 2026년에도 인천 송도달빛축제공원에서 개최된다. 2006년 첫 개최 이후 국내 대표 락 페스티벌로 성장한 펜타포트는 문화체육관광부 선정 대한민국 대표 글로벌 축제로서 국내외 음악 팬들의 높은 관심을 받고 있다. 2026 인천펜타포트 음악축제는 국내외 최정상급 아티스트가 참여하는 대규모 음악축제로, 세계적 수준의 공연 콘텐츠와 다양한 관람객 참여 프로그램을 선보일 예정이다. 또한 ‘펜타 슈퍼루키’, ‘라이브 클럽파티’, ‘펜타 쇼케이스’ 등 지역 연계 프로그램을 통해 신진 아티스트 발굴과 음악산업 활성화에도 기여하고 있다. 특히 인천펜타포트 락 페스티벌 개최 이전에 홍대와 일본 도쿄에서 사전 공연을 운영하여 글로벌 팬덤의 접점을 확대하고 축제에 대한 기대감과 사전 붐업 효과를 조성할 예정이다. 또한 팝업스토어를 통해 공식 굿즈와 브랜드 콘텐츠를 선보이며 브랜드 경험 확장에 기여하고자 한다. 인천펜타포트 음악축제는 음악과 도시 문화가 결합된 글로벌 문화 플랫폼으로서 인천의 문화도시 브랜드" data-near="%5B%7B%22t%22%3A%22%EC%95%84%EC%95%94%EB%8F%84%ED%95%B4%EC%95%88%EA%B3%B5%EC%9B%90%22%2C%22ty%22%3A%22%EA%B4%80%EA%B4%91%EC%A7%80%22%2C%22d%22%3A0.9%2C%22img%22%3A%22http%3A%2F%2Ftong.visitkorea.or.kr%2Fcms%2Fresource%2F50%2F3037250_image2_1.jpg%22%7D%2C%7B%22t%22%3A%22%EC%95%88%EB%8F%99%EA%B5%AD%EB%B0%A5%26%EB%B4%89%ED%8F%89%EB%A9%94%EB%B0%80%EC%B4%8C%22%2C%22ty%22%3A%22%EB%A7%9B%EC%A7%91%22%2C%22d%22%3A0.9%2C%22img%22%3A%22http%3A%2F%2Ftong.visitkorea.or.kr%2Fcms%2Fresource%2F92%2F2658792_image2_1.jpg%22%7D%2C%7B%22t%22%3A%22%EC%85%80%EB%A0%88%EB%B8%8C%EB%A5%B4%22%2C%22ty%22%3A%22%EB%A7%9B%EC%A7%91%22%2C%22d%22%3A1%2C%22img%22%3A%22http%3A%2F%2Ftong.visitkorea.or.kr%2Fcms%2Fresource%2F66%2F3449366_image2_1.jpg%22%7D%2C%7B%22t%22%3A%22%EB%B0%B1%ED%95%A9%EC%B9%BC%EA%B5%AD%EC%88%98%20%EC%86%A1%EB%8F%84%EC%A0%90%22%2C%22ty%22%3A%22%EB%A7%9B%EC%A7%91%22%2C%22d%22%3A1.1%2C%22img%22%3A%22%22%7D%2C%7B%22t%22%3A%22G%ED%83%80%EC%9B%8C%20%EC%A0%84%EB%A7%9D%EB%8C%80%22%2C%22ty%22%3A%22%EA%B4%80%EA%B4%91%EC%A7%80%22%2C%22d%22%3A1.3%2C%22img%22%3A%22http%3A%2F%2Ftong.visitkorea.or.kr%2Fcms%2Fresource%2F41%2F3393341_image2_1.JPG%22%7D%5D">
   <div class="thumb"><img src="https://tong.visitkorea.or.kr/cms/resource/65/4070165_image2_1.jpg" alt="인천펜타포트 락 페스티벌" loading="lazy" onerror="this.src=&#39;/img/cat-music.webp&#39;"><span class="dday"></span><button class="fav" data-name="인천펜타포트 락 페스티벌" aria-label="찜하기">♡</button><span class="km"></span><span class="cat">🎵 음악</span></div>
   <div class="card-body">
   <div class="card-top"><span class="badge ok">일정 확정</span></div>
@@ -332,7 +346,7 @@ document.querySelectorAll('.rbtn').forEach(b => b.addEventListener('click', () =
   <p class="desc">국내 최대 록 페스티벌</p>
   </div>
 </div>
-<div class="card" data-region="제주" data-start="2026-07-31" data-end="2026-08-02" data-lat="33.5" data-lng="126.53" data-name="이호테우축제">
+<div class="card" data-region="제주" data-start="2026-07-31" data-end="2026-08-02" data-lat="33.5" data-lng="126.53" data-name="이호테우축제" data-city="제주시" data-place="이호테우해변 일원" data-desc="테우 노젓기 등 제주 어촌문화 체험" data-cat="전통" data-img="/img/cat-tradition.webp">
   <div class="thumb"><img src="/img/cat-tradition.webp" alt="이호테우축제" loading="lazy" onerror="this.src=&#39;/img/cat-tradition.webp&#39;"><span class="dday"></span><button class="fav" data-name="이호테우축제" aria-label="찜하기">♡</button><span class="km"></span><span class="cat">🏮 전통</span></div>
   <div class="card-body">
   <div class="card-top"><span class="badge est">예년 기준·변동 가능</span></div>
@@ -342,7 +356,7 @@ document.querySelectorAll('.rbtn').forEach(b => b.addEventListener('click', () =
   <p class="desc">테우 노젓기 등 제주 어촌문화 체험</p>
   </div>
 </div>
-<div class="card" data-region="충남" data-start="2026-08-01" data-end="2026-08-02" data-lat="36.78" data-lng="126.45" data-name="삼길포우럭축제">
+<div class="card" data-region="충남" data-start="2026-08-01" data-end="2026-08-02" data-lat="36.78" data-lng="126.45" data-name="삼길포우럭축제" data-city="서산시" data-place="대산읍 삼길포항" data-desc="싱싱한 우럭 잡기와 수산물 먹거리" data-cat="음식" data-img="/img/cat-food.webp">
   <div class="thumb"><img src="/img/cat-food.webp" alt="삼길포우럭축제" loading="lazy" onerror="this.src=&#39;/img/cat-food.webp&#39;"><span class="dday"></span><button class="fav" data-name="삼길포우럭축제" aria-label="찜하기">♡</button><span class="km"></span><span class="cat">🍜 음식</span></div>
   <div class="card-body">
   <div class="card-top"><span class="badge ok">일정 확정</span></div>
@@ -352,7 +366,7 @@ document.querySelectorAll('.rbtn').forEach(b => b.addEventListener('click', () =
   <p class="desc">싱싱한 우럭 잡기와 수산물 먹거리</p>
   </div>
 </div>
-<div class="card" data-region="부산" data-start="2026-08-01" data-end="2026-08-02" data-lat="35.1" data-lng="129.02" data-name="현인가요제">
+<div class="card" data-region="부산" data-start="2026-08-01" data-end="2026-08-02" data-lat="35.1" data-lng="129.02" data-name="현인가요제" data-city="서구" data-place="송도해수욕장" data-desc="송도 바다를 배경으로 한 전국 가요제" data-cat="음악" data-img="/img/cat-music.webp">
   <div class="thumb"><img src="/img/cat-music.webp" alt="현인가요제" loading="lazy" onerror="this.src=&#39;/img/cat-music.webp&#39;"><span class="dday"></span><button class="fav" data-name="현인가요제" aria-label="찜하기">♡</button><span class="km"></span><span class="cat">🎵 음악</span></div>
   <div class="card-body">
   <div class="card-top"><span class="badge ok">일정 확정</span></div>
@@ -362,7 +376,7 @@ document.querySelectorAll('.rbtn').forEach(b => b.addEventListener('click', () =
   <p class="desc">송도 바다를 배경으로 한 전국 가요제</p>
   </div>
 </div>
-<div class="card" data-region="전북" data-start="2026-08-01" data-end="2026-08-02" data-lat="35.79" data-lng="127.42" data-name="진안고원 수박축제">
+<div class="card" data-region="전북" data-start="2026-08-01" data-end="2026-08-02" data-lat="35.79" data-lng="127.42" data-name="진안고원 수박축제" data-city="진안군" data-place="동향면 체련공원 일원" data-desc="고원 수박왕 선발과 시원한 수박 잔치" data-cat="음식" data-img="/img/cat-food.webp">
   <div class="thumb"><img src="/img/cat-food.webp" alt="진안고원 수박축제" loading="lazy" onerror="this.src=&#39;/img/cat-food.webp&#39;"><span class="dday"></span><button class="fav" data-name="진안고원 수박축제" aria-label="찜하기">♡</button><span class="km"></span><span class="cat">🍜 음식</span></div>
   <div class="card-body">
   <div class="card-top"><span class="badge ok">일정 확정</span></div>
@@ -372,7 +386,7 @@ document.querySelectorAll('.rbtn').forEach(b => b.addEventListener('click', () =
   <p class="desc">고원 수박왕 선발과 시원한 수박 잔치</p>
   </div>
 </div>
-<div class="card" data-region="강원" data-start="2026-08-06" data-end="2026-08-09" data-lat="37.75" data-lng="128.9" data-name="정동진독립영화제">
+<div class="card" data-region="강원" data-start="2026-08-06" data-end="2026-08-09" data-lat="37.75" data-lng="128.9" data-name="정동진독립영화제" data-city="강릉시" data-place="정동초등학교 운동장" data-desc="별빛 아래서 보는 야외 독립영화제" data-cat="문화" data-img="/img/cat-culture.webp">
   <div class="thumb"><img src="/img/cat-culture.webp" alt="정동진독립영화제" loading="lazy" onerror="this.src=&#39;/img/cat-culture.webp&#39;"><span class="dday"></span><button class="fav" data-name="정동진독립영화제" aria-label="찜하기">♡</button><span class="km"></span><span class="cat">🎭 문화</span></div>
   <div class="card-body">
   <div class="card-top"><span class="badge est">예년 기준·변동 가능</span></div>
@@ -382,7 +396,7 @@ document.querySelectorAll('.rbtn').forEach(b => b.addEventListener('click', () =
   <p class="desc">별빛 아래서 보는 야외 독립영화제</p>
   </div>
 </div>
-<div class="card" data-region="강원" data-start="2026-08-06" data-end="2026-08-09" data-lat="37.18" data-lng="128.46" data-name="영월 동강축제">
+<div class="card" data-region="강원" data-start="2026-08-06" data-end="2026-08-09" data-lat="37.18" data-lng="128.46" data-name="영월 동강축제" data-city="영월군" data-place="동강둔치 일원" data-desc="동강 래프팅과 맨손 물고기 잡기" data-cat="물놀이" data-img="/img/cat-water.webp">
   <div class="thumb"><img src="/img/cat-water.webp" alt="영월 동강축제" loading="lazy" onerror="this.src=&#39;/img/cat-water.webp&#39;"><span class="dday"></span><button class="fav" data-name="영월 동강축제" aria-label="찜하기">♡</button><span class="km"></span><span class="cat">💦 물놀이</span></div>
   <div class="card-body">
   <div class="card-top"><span class="badge est">예년 기준·변동 가능</span></div>
@@ -392,7 +406,7 @@ document.querySelectorAll('.rbtn').forEach(b => b.addEventListener('click', () =
   <p class="desc">동강 래프팅과 맨손 물고기 잡기</p>
   </div>
 </div>
-<div class="card" data-region="강원" data-start="2026-08-07" data-end="2026-08-09" data-lat="38.11" data-lng="127.71" data-name="화천토마토축제">
+<div class="card" data-region="강원" data-start="2026-08-07" data-end="2026-08-09" data-lat="38.11" data-lng="127.71" data-name="화천토마토축제" data-city="화천군" data-place="사내면 사창리 문화마을 일원" data-desc="토마토 속 황금반지 찾기 이색 체험" data-cat="음식" data-img="/img/cat-food.webp">
   <div class="thumb"><img src="/img/cat-food.webp" alt="화천토마토축제" loading="lazy" onerror="this.src=&#39;/img/cat-food.webp&#39;"><span class="dday"></span><button class="fav" data-name="화천토마토축제" aria-label="찜하기">♡</button><span class="km"></span><span class="cat">🍜 음식</span></div>
   <div class="card-body">
   <div class="card-top"><span class="badge est">예년 기준·변동 가능</span></div>
@@ -402,7 +416,7 @@ document.querySelectorAll('.rbtn').forEach(b => b.addEventListener('click', () =
   <p class="desc">토마토 속 황금반지 찾기 이색 체험</p>
   </div>
 </div>
-<div class="card" data-region="대전" data-start="2026-08-07" data-end="2026-08-17" data-lat="36.33" data-lng="127.42" data-name="대전 0시 축제">
+<div class="card" data-region="대전" data-start="2026-08-07" data-end="2026-08-17" data-lat="36.33" data-lng="127.42" data-name="대전 0시 축제" data-city="중구" data-place="중앙로 일원(대전역~옛 충남도청)" data-desc="원도심 1km를 채우는 한여름 밤 축제" data-cat="문화" data-img="/img/cat-culture.webp">
   <div class="thumb"><img src="/img/cat-culture.webp" alt="대전 0시 축제" loading="lazy" onerror="this.src=&#39;/img/cat-culture.webp&#39;"><span class="dday"></span><button class="fav" data-name="대전 0시 축제" aria-label="찜하기">♡</button><span class="km"></span><span class="cat">🎭 문화</span></div>
   <div class="card-body">
   <div class="card-top"><span class="badge ok">일정 확정</span></div>
@@ -412,7 +426,7 @@ document.querySelectorAll('.rbtn').forEach(b => b.addEventListener('click', () =
   <p class="desc">원도심 1km를 채우는 한여름 밤 축제</p>
   </div>
 </div>
-<div class="card" data-region="부산" data-start="2026-08-07" data-end="2026-08-09" data-lat="35.1" data-lng="128.97" data-name="부산바다축제">
+<div class="card" data-region="부산" data-start="2026-08-07" data-end="2026-08-09" data-lat="35.1" data-lng="128.97" data-name="부산바다축제" data-city="사하구" data-place="다대포해수욕장" data-desc="해변 공연과 불꽃쇼의 부산 여름축제" data-cat="물놀이" data-img="https://tong.visitkorea.or.kr/cms/resource/40/4085840_image2_1.jpg" data-ov="여름하면 바다, 바다하면 부산바다축제! 30주년을 맞은 '제30회 부산바다축제'는 부산 여름 대표 축제로 2026년 8월 7일부터 13일까지 총 7일간 개최되며, 다대포 해수욕장 일원에서 진행된다. 다대포 탁 트인 바다와 선셋을 배경으로 펼쳐지는 프로그램은 감각적이고 에너지 넘치는 분위기로 구성 될 예정이다. 특히 올해는 30주년이라는 뜻깊은 해를 맞아 부산 청년들의 뜨거운 열정과 지역 상권과의 긴밀한 협력이 돋보이는 ‘지역 상생형 축제’로 기획될 예정이다. 축제의 화려한 서막을 여는 8월 7일(금) 야간 개막식에서는 다대포 해변의 압도적인 개방감을 살린 ‘다대불꽃쇼’가 펼쳐지며 7일간의 축제 시작을 최고조로 끌어올릴 예정이다." data-near="%5B%7B%22t%22%3A%22%EB%8B%A4%EB%8C%80%ED%8F%AC%20%EA%BF%88%EC%9D%98%20%EB%82%99%EC%A1%B0%EB%B6%84%EC%88%98%22%2C%22ty%22%3A%22%EA%B4%80%EA%B4%91%EC%A7%80%22%2C%22d%22%3A0.2%2C%22img%22%3A%22http%3A%2F%2Ftong.visitkorea.or.kr%2Fcms%2Fresource%2F08%2F3506208_image2_1.jpg%22%7D%2C%7B%22t%22%3A%22%ED%95%B4%EC%95%88%EB%88%84%EB%A6%AC%EA%B8%B8%20%EB%AA%B0%EC%9A%B4%EB%8C%80%EA%B8%B8%22%2C%22ty%22%3A%22%EB%A0%88%ED%8F%AC%EC%B8%A0%22%2C%22d%22%3A0.5%2C%22img%22%3A%22http%3A%2F%2Ftong.visitkorea.or.kr%2Fcms%2Fresource%2F00%2F2646400_image2_1.jpg%22%7D%2C%7B%22t%22%3A%22%EC%98%A4%EC%9D%B4%EC%95%84%ED%98%B8%ED%85%94%22%2C%22ty%22%3A%22%EC%88%99%EC%86%8C%22%2C%22d%22%3A1.3%2C%22img%22%3A%22http%3A%2F%2Ftong.visitkorea.or.kr%2Fcms%2Fresource%2F32%2F2709432_image2_1.jpg%22%7D%2C%7B%22t%22%3A%22%EB%B3%B4%EB%A6%AC%EC%97%90%20%EB%B8%8C%EB%A0%88%EB%93%9C%20%ED%8C%A9%ED%86%A0%EB%A6%AC%22%2C%22ty%22%3A%22%EB%A7%9B%EC%A7%91%22%2C%22d%22%3A2.1%2C%22img%22%3A%22http%3A%2F%2Ftong.visitkorea.or.kr%2Fcms%2Fresource%2F76%2F2870876_image2_1.jpg%22%7D%2C%7B%22t%22%3A%22%EB%91%90%EB%8F%84%22%2C%22ty%22%3A%22%EA%B4%80%EA%B4%91%EC%A7%80%22%2C%22d%22%3A4.3%2C%22img%22%3A%22http%3A%2F%2Ftong.visitkorea.or.kr%2Fcms%2Fresource%2F28%2F3589728_image2_1.jpg%22%7D%5D">
   <div class="thumb"><img src="https://tong.visitkorea.or.kr/cms/resource/40/4085840_image2_1.jpg" alt="부산바다축제" loading="lazy" onerror="this.src=&#39;/img/cat-water.webp&#39;"><span class="dday"></span><button class="fav" data-name="부산바다축제" aria-label="찜하기">♡</button><span class="km"></span><span class="cat">💦 물놀이</span></div>
   <div class="card-body">
   <div class="card-top"><span class="badge ok">일정 확정</span></div>
@@ -422,7 +436,7 @@ document.querySelectorAll('.rbtn').forEach(b => b.addEventListener('click', () =
   <p class="desc">해변 공연과 불꽃쇼의 부산 여름축제</p>
   </div>
 </div>
-<div class="card" data-region="경남" data-start="2026-08-07" data-end="2026-08-08" data-lat="35.18" data-lng="128.11" data-name="진주 M2 페스티벌">
+<div class="card" data-region="경남" data-start="2026-08-07" data-end="2026-08-08" data-lat="35.18" data-lng="128.11" data-name="진주 M2 페스티벌" data-city="진주시" data-place="남강둔치 일원" data-desc="남강 수상무대의 뮤직&amp;미디어 축제" data-cat="음악" data-img="/img/cat-music.webp">
   <div class="thumb"><img src="/img/cat-music.webp" alt="진주 M2 페스티벌" loading="lazy" onerror="this.src=&#39;/img/cat-music.webp&#39;"><span class="dday"></span><button class="fav" data-name="진주 M2 페스티벌" aria-label="찜하기">♡</button><span class="km"></span><span class="cat">🎵 음악</span></div>
   <div class="card-body">
   <div class="card-top"><span class="badge ok">일정 확정</span></div>
@@ -432,7 +446,7 @@ document.querySelectorAll('.rbtn').forEach(b => b.addEventListener('click', () =
   <p class="desc">남강 수상무대의 뮤직&amp;미디어 축제</p>
   </div>
 </div>
-<div class="card" data-region="경남" data-start="2026-08-07" data-end="2026-08-16" data-lat="35.57" data-lng="128.17" data-name="합천 고스트파크 축제">
+<div class="card" data-region="경남" data-start="2026-08-07" data-end="2026-08-16" data-lat="35.57" data-lng="128.17" data-name="합천 고스트파크 축제" data-city="합천군" data-place="합천영상테마파크" data-desc="한여름 공포 어트랙션 호러 축제" data-cat="기타" data-img="/img/cat-etc.webp">
   <div class="thumb"><img src="/img/cat-etc.webp" alt="합천 고스트파크 축제" loading="lazy" onerror="this.src=&#39;/img/cat-etc.webp&#39;"><span class="dday"></span><button class="fav" data-name="합천 고스트파크 축제" aria-label="찜하기">♡</button><span class="km"></span><span class="cat">🎪 기타</span></div>
   <div class="card-body">
   <div class="card-top"><span class="badge ok">일정 확정</span></div>
@@ -442,7 +456,7 @@ document.querySelectorAll('.rbtn').forEach(b => b.addEventListener('click', () =
   <p class="desc">한여름 공포 어트랙션 호러 축제</p>
   </div>
 </div>
-<div class="card" data-region="경남" data-start="2026-08-12" data-end="2026-08-16" data-lat="34.85" data-lng="128.43" data-name="통영한산대첩축제">
+<div class="card" data-region="경남" data-start="2026-08-12" data-end="2026-08-16" data-lat="34.85" data-lng="128.43" data-name="통영한산대첩축제" data-city="통영시" data-place="한산대첩광장·강구안 일원" data-desc="한산해전 재현과 통영 불꽃쇼" data-cat="전통" data-img="https://tong.visitkorea.or.kr/cms/resource/08/4041308_image2_1.jpg" data-ov="*하기 축제장 먹거리 내용은 전년도(2025년) 축제 내용으로, 2026년도 축제 내용은 업데이트 중에 있습니다.*제65회 통영한산대첩축제는 임진왜란 3대 대첩 중 하나인 한산대첩 승전을 기념하고, 충무공 이순신 장군의 호국 정신과 리더십을 되새기기 위해 개최되는 대한민국 대표 호국‧역사문화축제이다. 축제는 승전일인 음력 7월 7일(양력 8월 14일)을 전후하여 통영시 일원에서 펼쳐지며, 한산해전 재현, 삼도수군통제사 행차, 출정식 및 승전축하입항식 등 역사적 스토리를 생생하게 체험할 수 있는 프로그램으로 구성된다. 또한 전통문화 체험, 공연, 전시, 해양레포츠, 미디어 콘텐츠, 야간 프로그램 등 다양한 세대가 함께 즐길 수 있는 콘텐츠를 운영하여 남녀노소 누구나 참여 가능한 축제로 자리매김하고 있다. 통영의 아름다운 바다와 역사문화자원을 바탕으로 전통과 현대가 어우러진 특별한 축제 경험을 제공하며, 대한민국을 대표하는 글로벌 호국‧역사재현 축제로 도약하고자 한다." data-near="%5B%7B%22t%22%3A%22%EB%B2%85%EC%88%98%EB%8B%A4%EC%B0%8C(%EB%B2%85%EC%88%98%EC%8B%A4%EB%B9%84)%22%2C%22ty%22%3A%22%EB%A7%9B%EC%A7%91%22%2C%22d%22%3A0.1%2C%22img%22%3A%22http%3A%2F%2Ftong.visitkorea.or.kr%2Fcms%2Fresource%2F16%2F2796716_image2_1.jpg%22%7D%2C%7B%22t%22%3A%22%ED%86%B5%EC%98%81%20%ED%80%B8%EB%AA%A8%ED%85%94%22%2C%22ty%22%3A%22%EC%88%99%EC%86%8C%22%2C%22d%22%3A0.1%2C%22img%22%3A%22http%3A%2F%2Ftong.visitkorea.or.kr%2Fcms%2Fresource%2F39%2F3577339_image2_1.jpg%22%7D%2C%7B%22t%22%3A%22%5B%EB%B0%B1%EB%85%84%EA%B0%80%EA%B2%8C%5D%EA%B1%B0%EA%B5%AC%EC%9E%A5%EA%B0%88%EB%B9%84%22%2C%22ty%22%3A%22%EB%A7%9B%EC%A7%91%22%2C%22d%22%3A0.1%2C%22img%22%3A%22http%3A%2F%2Ftong.visitkorea.or.kr%2Fcms%2Fresource%2F51%2F2630051_image2_1.JPG%22%7D%2C%7B%22t%22%3A%22%EC%98%A4%EB%8A%98%EB%8F%84%EB%B0%94%EB%8B%A4%ED%95%B4%22%2C%22ty%22%3A%22%EB%A7%9B%EC%A7%91%22%2C%22d%22%3A0.2%2C%22img%22%3A%22http%3A%2F%2Ftong.visitkorea.or.kr%2Fcms%2Fresource%2F51%2F2987051_image2_1.jpg%22%7D%2C%7B%22t%22%3A%22%EB%B8%8C%EB%9D%BC%EC%9A%B4%EB%8F%84%ED%8A%B8%20%ED%95%AD%EB%82%A8%EC%A0%90%22%2C%22ty%22%3A%22%EC%88%99%EC%86%8C%22%2C%22d%22%3A0.2%2C%22img%22%3A%22http%3A%2F%2Ftong.visitkorea.or.kr%2Fcms%2Fresource%2F83%2F3577983_image2_1.jpg%22%7D%5D">
   <div class="thumb"><img src="https://tong.visitkorea.or.kr/cms/resource/08/4041308_image2_1.jpg" alt="통영한산대첩축제" loading="lazy" onerror="this.src=&#39;/img/cat-tradition.webp&#39;"><span class="dday"></span><button class="fav" data-name="통영한산대첩축제" aria-label="찜하기">♡</button><span class="km"></span><span class="cat">🏮 전통</span></div>
   <div class="card-body">
   <div class="card-top"><span class="badge ok">일정 확정</span></div>
@@ -452,7 +466,7 @@ document.querySelectorAll('.rbtn').forEach(b => b.addEventListener('click', () =
   <p class="desc">한산해전 재현과 통영 불꽃쇼</p>
   </div>
 </div>
-<div class="card" data-region="강원" data-start="2026-08-25" data-end="2026-08-30" data-lat="37.88" data-lng="127.73" data-name="춘천막국수닭갈비축제">
+<div class="card" data-region="강원" data-start="2026-08-25" data-end="2026-08-30" data-lat="37.88" data-lng="127.73" data-name="춘천막국수닭갈비축제" data-city="춘천시" data-place="삼악산호수케이블카 주차장 일원" data-desc="춘천 대표 먹거리 막국수·닭갈비 축제" data-cat="음식" data-img="/img/cat-food.webp">
   <div class="thumb"><img src="/img/cat-food.webp" alt="춘천막국수닭갈비축제" loading="lazy" onerror="this.src=&#39;/img/cat-food.webp&#39;"><span class="dday"></span><button class="fav" data-name="춘천막국수닭갈비축제" aria-label="찜하기">♡</button><span class="km"></span><span class="cat">🍜 음식</span></div>
   <div class="card-body">
   <div class="card-top"><span class="badge est">예년 기준·변동 가능</span></div>
@@ -462,7 +476,7 @@ document.querySelectorAll('.rbtn').forEach(b => b.addEventListener('click', () =
   <p class="desc">춘천 대표 먹거리 막국수·닭갈비 축제</p>
   </div>
 </div>
-<div class="card" data-region="충북" data-start="2026-08-26" data-end="2026-08-30" data-lat="36.17" data-lng="127.78" data-name="영동포도축제">
+<div class="card" data-region="충북" data-start="2026-08-26" data-end="2026-08-30" data-lat="36.17" data-lng="127.78" data-name="영동포도축제" data-city="영동군" data-place="영동체육관 일원" data-desc="포도의 고장 영동의 달콤한 수확축제" data-cat="음식" data-img="/img/cat-food.webp">
   <div class="thumb"><img src="/img/cat-food.webp" alt="영동포도축제" loading="lazy" onerror="this.src=&#39;/img/cat-food.webp&#39;"><span class="dday"></span><button class="fav" data-name="영동포도축제" aria-label="찜하기">♡</button><span class="km"></span><span class="cat">🍜 음식</span></div>
   <div class="card-body">
   <div class="card-top"><span class="badge est">예년 기준·변동 가능</span></div>
@@ -472,7 +486,7 @@ document.querySelectorAll('.rbtn').forEach(b => b.addEventListener('click', () =
   <p class="desc">포도의 고장 영동의 달콤한 수확축제</p>
   </div>
 </div>
-<div class="card" data-region="충북" data-start="2026-08-27" data-end="2026-08-30" data-lat="36.82" data-lng="127.79" data-name="괴산고추축제">
+<div class="card" data-region="충북" data-start="2026-08-27" data-end="2026-08-30" data-lat="36.82" data-lng="127.79" data-name="괴산고추축제" data-city="괴산군" data-place="괴산읍 동진천 일원" data-desc="청결고추 수확철 농특산물 축제" data-cat="음식" data-img="https://tong.visitkorea.or.kr/cms/resource/58/3518158_image2_1.jpg" data-ov="천혜의 자연환경을 자랑하는 유기농의 심장 괴산에서 괴산고추축제를 개최한다. 전국 최고의 맛을 자랑하는 괴산청결고추를 비롯한 농특산물과 다양한 체험거리, 볼거리, 먹거리를 한곳에서 즐길 수 있는 괴산고추축제는 문화체육관광부 선정 문화관광유망축제(2012년~2019년)이자 예비축제(2021~2025), 충청북도 대표 축제이다." data-near="%5B%7B%22t%22%3A%22%EA%B4%B4%EC%82%B0%ED%96%A5%EA%B5%90%22%2C%22ty%22%3A%22%EA%B4%80%EA%B4%91%EC%A7%80%22%2C%22d%22%3A0.2%2C%22img%22%3A%22http%3A%2F%2Ftong.visitkorea.or.kr%2Fcms%2Fresource%2F31%2F3534131_image2_1.png%22%7D%2C%7B%22t%22%3A%22%EB%8B%A4%EB%9E%98%EC%A0%95%22%2C%22ty%22%3A%22%EB%A7%9B%EC%A7%91%22%2C%22d%22%3A0.2%2C%22img%22%3A%22http%3A%2F%2Ftong.visitkorea.or.kr%2Fcms%2Fresource%2F68%2F2857068_image2_1.jpg%22%7D%2C%7B%22t%22%3A%22%EA%B4%B4%EC%82%B0%EB%8F%99%ED%97%8C%22%2C%22ty%22%3A%22%EA%B4%80%EA%B4%91%EC%A7%80%22%2C%22d%22%3A0.5%2C%22img%22%3A%22http%3A%2F%2Ftong.visitkorea.or.kr%2Fcms%2Fresource%2F85%2F3334585_image2_1.JPG%22%7D%2C%7B%22t%22%3A%22%EA%B0%9C%EC%8B%AC%EC%82%AC(%EA%B4%B4%EC%82%B0)%22%2C%22ty%22%3A%22%EA%B4%80%EA%B4%91%EC%A7%80%22%2C%22d%22%3A0.6%2C%22img%22%3A%22http%3A%2F%2Ftong.visitkorea.or.kr%2Fcms%2Fresource%2F66%2F3334566_image2_1.JPG%22%7D%2C%7B%22t%22%3A%22%EC%9D%BC%EC%99%84%ED%99%8D%EB%B2%94%EC%8B%9D%EA%B3%A0%ED%83%9D%22%2C%22ty%22%3A%22%EA%B4%80%EA%B4%91%EC%A7%80%22%2C%22d%22%3A0.6%2C%22img%22%3A%22%22%7D%5D">
   <div class="thumb"><img src="https://tong.visitkorea.or.kr/cms/resource/58/3518158_image2_1.jpg" alt="괴산고추축제" loading="lazy" onerror="this.src=&#39;/img/cat-food.webp&#39;"><span class="dday"></span><button class="fav" data-name="괴산고추축제" aria-label="찜하기">♡</button><span class="km"></span><span class="cat">🍜 음식</span></div>
   <div class="card-body">
   <div class="card-top"><span class="badge est">예년 기준·변동 가능</span></div>
@@ -491,6 +505,15 @@ document.querySelectorAll('.rbtn').forEach(b => b.addEventListener('click', () =
 <p><a href="/privacy/">개인정보처리방침</a> · 문의: goohw593@gmail.com</p>
 <p>© 2026 축제모아</p>
 </div></footer>
+<div id="festmodal" class="fmodal"><div class="fmbox">
+<button class="fmx" id="fm2x" aria-label="닫기">✕</button>
+<img id="fm2-img" class="fm-img" alt="">
+<h3 id="fm2-title"></h3>
+<p id="fm2-meta"></p>
+<p id="fm2-ov"></p>
+<div id="fm2-near"></div>
+<div class="fm-links"><a id="fm2-hp" target="_blank" rel="noopener">🏛️ 공식 홈페이지</a><a id="fm2-naver" target="_blank" rel="noopener">🔎 네이버에서 보기</a></div>
+</div></div>
 <script>
 (function(){
   const t = new Date(); t.setHours(0,0,0,0);
@@ -498,6 +521,7 @@ document.querySelectorAll('.rbtn').forEach(b => b.addEventListener('click', () =
     c.style.cursor = 'pointer';
     c.addEventListener('click', function(ev){
       if (ev.target.closest('.fav') || ev.target.closest('a')) return;
+      if (window.openFestModal) { window.openFestModal(c.dataset); return; }
       const n = c.dataset.name; if (!n) return;
       window.open('https://search.naver.com/search.naver?query=' + encodeURIComponent(n + ' 축제'), '_blank', 'noopener');
     });
@@ -561,6 +585,32 @@ document.querySelectorAll('.rbtn').forEach(b => b.addEventListener('click', () =
       alert('위치 권한을 허용하면 가까운 축제부터 보여드려요!');
     }, { timeout: 8000 });
   });
+})();
+</script>
+<script>
+(function(){
+  var m=document.getElementById('festmodal'); if(!m) return;
+  function esc(s){return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+  function fy(y){y=String(y||'').replace(/[^0-9]/g,'');if(y.length<8)return '';return y.slice(0,4)+'.'+(+y.slice(4,6))+'.'+(+y.slice(6,8));}
+  window.openFestModal=function(ds){
+    var img=document.getElementById('fm2-img');
+    if(ds.img){img.src=ds.img;img.style.display='block';}else{img.style.display='none';}
+    document.getElementById('fm2-title').textContent=ds.name||'';
+    var loc=[ds.region,ds.city,ds.place].filter(Boolean).join(' ');
+    var dr=fy(ds.start)+(ds.end&&String(ds.end).replace(/[^0-9]/g,'')!==String(ds.start).replace(/[^0-9]/g,'')?' ~ '+fy(ds.end):'');
+    document.getElementById('fm2-meta').textContent=[dr,loc].filter(Boolean).join('  ·  ');
+    document.getElementById('fm2-ov').textContent=ds.ov||ds.desc||'상세 개요는 아래 네이버·공식 홈페이지에서 확인하세요.';
+    var nearEl=document.getElementById('fm2-near');nearEl.innerHTML='';
+    if(ds.near){try{var arr=JSON.parse(decodeURIComponent(ds.near));if(arr&&arr.length){nearEl.innerHTML='<div style="font-weight:800;color:#0a6c63;margin:16px 0 8px">📍 근처 가볼 곳</div><div style="display:flex;flex-wrap:wrap;gap:8px">'+arr.map(function(n){return '<a href="https://search.naver.com/search.naver?query='+encodeURIComponent(n.t)+'" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;background:#f4faf8;border:1px solid #dcefeb;border-radius:20px;padding:6px 12px;font-size:.85rem;font-weight:700;color:#374151;text-decoration:none">'+(n.img?'<img src="'+esc(n.img)+'" style="width:22px;height:22px;border-radius:50%;object-fit:cover" onerror="this.style.display=&#39;none&#39;">':'')+esc(n.t)+' <span style="color:#9aa3af;font-weight:600">'+esc(n.ty)+(n.d?' '+n.d+'km':'')+'</span></a>';}).join('')+'</div>';}}catch(e){}}
+    var hp=document.getElementById('fm2-hp');
+    if(ds.hp){hp.href=(ds.hp.indexOf('http')===0?ds.hp:'http://'+ds.hp);hp.style.display='inline-block';}else{hp.style.display='none';}
+    document.getElementById('fm2-naver').href='https://search.naver.com/search.naver?query='+encodeURIComponent((ds.name||'')+' 축제');
+    m.classList.add('show');
+  };
+  function close(){m.classList.remove('show');}
+  document.getElementById('fm2x').addEventListener('click',close);
+  m.addEventListener('click',function(e){if(e.target.id==='festmodal')close();});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
 })();
 </script>
 

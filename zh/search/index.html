@@ -135,6 +135,18 @@ article ul{padding-left:20px}
 .share-row .sh2{background:#0f9d8f;color:#fff}
 .share-row .sh3{background:#f3f4f6;color:#374151}
 .share-row button:hover,.share-row a:hover{transform:translateY(-2px)}
+.fmodal{display:none;position:fixed;inset:0;z-index:100;background:rgba(17,24,39,.55);align-items:center;justify-content:center;padding:18px}
+.fmodal.show{display:flex}
+.fmbox{background:#fff;border-radius:18px;max-width:560px;width:100%;max-height:86vh;overflow:auto;padding:22px;position:relative;box-shadow:0 20px 50px rgba(0,0,0,.3)}
+.fmx{position:absolute;top:12px;right:12px;border:none;background:#f3f4f6;width:34px;height:34px;border-radius:50%;font-size:1rem;cursor:pointer;color:#374151}
+.fm-img{width:100%;max-height:240px;object-fit:cover;border-radius:12px;margin-bottom:14px}
+.fmbox h3{font-size:1.3rem;font-weight:900;letter-spacing:-.02em;margin:2px 40px 6px 0}
+#fm-meta,#fm2-meta{color:#0a6c63;font-weight:700;font-size:.92rem;margin-bottom:12px}
+#fm-ov,#fm2-ov{color:#374151;font-size:.95rem;line-height:1.65}
+.fm-links{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.fm-links a{flex:1;min-width:140px;text-align:center;padding:12px;border-radius:12px;font-weight:800;font-size:.95rem}
+#fm-hp,#fm2-hp{background:#0f9d8f;color:#fff}
+#fm-naver,#fm2-naver{background:#f3f4f6;color:#374151;border:1.5px solid #dcefeb}
 @media(max-width:600px){.hero h1{font-size:1.3rem}nav a{margin-left:9px;font-size:.85rem}}
 </style>
 </head>
@@ -221,6 +233,7 @@ fetch('/zh/search/data.json').then(function(r){return r.json();}).then(function(
 <p>数据：韩国观光公社（TourAPI） · 联系：goohw593@gmail.com</p>
 <p>© 2026 Chukjemoa</p>
 </div></footer>
+
 <script>
 (function(){
   const t = new Date(); t.setHours(0,0,0,0);
@@ -228,6 +241,7 @@ fetch('/zh/search/data.json').then(function(r){return r.json();}).then(function(
     c.style.cursor = 'pointer';
     c.addEventListener('click', function(ev){
       if (ev.target.closest('.fav') || ev.target.closest('a')) return;
+      if (window.openFestModal) { window.openFestModal(c.dataset); return; }
       const n = c.dataset.name; if (!n) return;
       window.open('https://search.naver.com/search.naver?query=' + encodeURIComponent(n + ' 축제'), '_blank', 'noopener');
     });
@@ -293,6 +307,7 @@ fetch('/zh/search/data.json').then(function(r){return r.json();}).then(function(
   });
 })();
 </script>
+
 
 </body>
 </html>

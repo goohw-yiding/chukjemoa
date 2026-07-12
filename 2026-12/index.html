@@ -142,6 +142,18 @@ article ul{padding-left:20px}
 .share-row .sh2{background:#0f9d8f;color:#fff}
 .share-row .sh3{background:#f3f4f6;color:#374151}
 .share-row button:hover,.share-row a:hover{transform:translateY(-2px)}
+.fmodal{display:none;position:fixed;inset:0;z-index:100;background:rgba(17,24,39,.55);align-items:center;justify-content:center;padding:18px}
+.fmodal.show{display:flex}
+.fmbox{background:#fff;border-radius:18px;max-width:560px;width:100%;max-height:86vh;overflow:auto;padding:22px;position:relative;box-shadow:0 20px 50px rgba(0,0,0,.3)}
+.fmx{position:absolute;top:12px;right:12px;border:none;background:#f3f4f6;width:34px;height:34px;border-radius:50%;font-size:1rem;cursor:pointer;color:#374151}
+.fm-img{width:100%;max-height:240px;object-fit:cover;border-radius:12px;margin-bottom:14px}
+.fmbox h3{font-size:1.3rem;font-weight:900;letter-spacing:-.02em;margin:2px 40px 6px 0}
+#fm-meta,#fm2-meta{color:#0a6c63;font-weight:700;font-size:.92rem;margin-bottom:12px}
+#fm-ov,#fm2-ov{color:#374151;font-size:.95rem;line-height:1.65}
+.fm-links{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.fm-links a{flex:1;min-width:140px;text-align:center;padding:12px;border-radius:12px;font-weight:800;font-size:.95rem}
+#fm-hp,#fm2-hp{background:#0f9d8f;color:#fff}
+#fm-naver,#fm2-naver{background:#f3f4f6;color:#374151;border:1.5px solid #dcefeb}
 @media(max-width:600px){.hero h1{font-size:1.3rem}nav a{margin-left:9px;font-size:.85rem}}
 </style>
 </head>
@@ -165,7 +177,7 @@ document.querySelectorAll('.rbtn').forEach(b => b.addEventListener('click', () =
   });
 }));
 </script>
-<div class="grid"><div class="card" data-region="경기" data-start="2026-12-04" data-end="2027-03-14" data-lat="37.83" data-lng="127.51" data-name="아침고요수목원 오색별빛정원전">
+<div class="grid"><div class="card" data-region="경기" data-start="2026-12-04" data-end="2027-03-14" data-lat="37.83" data-lng="127.51" data-name="아침고요수목원 오색별빛정원전" data-city="가평군" data-place="아침고요수목원" data-desc="수목원 전체를 밝히는 별빛 정원" data-cat="빛" data-img="/img/cat-light.webp">
   <div class="thumb"><img src="/img/cat-light.webp" alt="아침고요수목원 오색별빛정원전" loading="lazy" onerror="this.src=&#39;/img/cat-light.webp&#39;"><span class="dday"></span><button class="fav" data-name="아침고요수목원 오색별빛정원전" aria-label="찜하기">♡</button><span class="km"></span><span class="cat">✨ 빛</span></div>
   <div class="card-body">
   <div class="card-top"><span class="badge est">예년 기준·변동 가능</span></div>
@@ -175,7 +187,7 @@ document.querySelectorAll('.rbtn').forEach(b => b.addEventListener('click', () =
   <p class="desc">수목원 전체를 밝히는 별빛 정원</p>
   </div>
 </div>
-<div class="card" data-region="부산" data-start="2026-12-05" data-end="2027-01-03" data-lat="35.1" data-lng="129.03" data-name="부산크리스마스트리문화축제">
+<div class="card" data-region="부산" data-start="2026-12-05" data-end="2027-01-03" data-lat="35.1" data-lng="129.03" data-name="부산크리스마스트리문화축제" data-city="중구" data-place="광복로 일원" data-desc="광복로 거리 밝히는 트리 축제" data-cat="빛" data-img="/img/cat-light.webp">
   <div class="thumb"><img src="/img/cat-light.webp" alt="부산크리스마스트리문화축제" loading="lazy" onerror="this.src=&#39;/img/cat-light.webp&#39;"><span class="dday"></span><button class="fav" data-name="부산크리스마스트리문화축제" aria-label="찜하기">♡</button><span class="km"></span><span class="cat">✨ 빛</span></div>
   <div class="card-body">
   <div class="card-top"><span class="badge est">예년 기준·변동 가능</span></div>
@@ -185,7 +197,7 @@ document.querySelectorAll('.rbtn').forEach(b => b.addEventListener('click', () =
   <p class="desc">광복로 거리 밝히는 트리 축제</p>
   </div>
 </div>
-<div class="card" data-region="서울" data-start="2026-12-11" data-end="2027-01-17" data-lat="37.57" data-lng="126.98" data-name="서울빛초롱축제">
+<div class="card" data-region="서울" data-start="2026-12-11" data-end="2027-01-17" data-lat="37.57" data-lng="126.98" data-name="서울빛초롱축제" data-city="종로구" data-place="청계천·광화문광장 일대" data-desc="청계천 밝히는 겨울 등불 축제" data-cat="빛" data-img="https://tong.visitkorea.or.kr/cms/resource/20/3563320_image2_1.jpg" data-ov="서울빛초롱축제는 2009년부터 시작하여 17회차를 맞이하는 서울 대표 야간 빛 축제로, 빛 조형물 전시와 다양한 체험 프로그램 등 화려한 볼거리를 제공한다. 특히, 이번 2025 서울빛초롱축제는 “나의 빛, 우리의 꿈, 서울의 마법＂을 주제로 청계천 및 우이천 일대에서 개최된다." data-near="%5B%7B%22t%22%3A%22%EC%B2%AD%EA%B3%84%EA%B4%91%EC%9E%A5%22%2C%22ty%22%3A%22%EA%B4%80%EA%B4%91%EC%A7%80%22%2C%22d%22%3A0%2C%22img%22%3A%22http%3A%2F%2Ftong.visitkorea.or.kr%2Fcms%2Fresource%2F55%2F3385055_image2_1.JPG%22%7D%2C%7B%22t%22%3A%22%EC%8B%A0%EB%AC%B8%EB%B0%95%EB%AC%BC%EA%B4%80%22%2C%22ty%22%3A%22%EB%AC%B8%ED%99%94%EC%8B%9C%EC%84%A4%22%2C%22d%22%3A0.1%2C%22img%22%3A%22http%3A%2F%2Ftong.visitkorea.or.kr%2Fcms%2Fresource%2F15%2F3556615_image2_1.jpg%22%7D%2C%7B%22t%22%3A%22%EC%9D%BC%EB%AF%BC%EB%AF%B8%EC%88%A0%EA%B4%80%22%2C%22ty%22%3A%22%EB%AC%B8%ED%99%94%EC%8B%9C%EC%84%A4%22%2C%22d%22%3A0.1%2C%22img%22%3A%22http%3A%2F%2Ftong.visitkorea.or.kr%2Fcms%2Fresource%2F25%2F3412025_image2_1.JPG%22%7D%2C%7B%22t%22%3A%22%EB%94%94%EB%9D%BC%EC%9D%B4%ED%94%84%EC%8A%A4%ED%83%80%EC%9D%BC%ED%82%A4%EC%B9%9C%20%EA%B4%91%ED%99%94%EB%AC%B8%EC%A0%90%22%2C%22ty%22%3A%22%EB%A7%9B%EC%A7%91%22%2C%22d%22%3A0.1%2C%22img%22%3A%22http%3A%2F%2Ftong.visitkorea.or.kr%2Fcms%2Fresource%2F04%2F2853904_image2_1.jpg%22%7D%2C%7B%22t%22%3A%22%EB%B6%93%EC%B2%98%EC%8A%A4%EC%BB%B7%20%EA%B4%91%ED%99%94%EB%AC%B8%EC%A0%90%22%2C%22ty%22%3A%22%EB%A7%9B%EC%A7%91%22%2C%22d%22%3A0.1%2C%22img%22%3A%22http%3A%2F%2Ftong.visitkorea.or.kr%2Fcms%2Fresource%2F80%2F2853980_image2_1.jpg%22%7D%5D">
   <div class="thumb"><img src="https://tong.visitkorea.or.kr/cms/resource/20/3563320_image2_1.jpg" alt="서울빛초롱축제" loading="lazy" onerror="this.src=&#39;/img/cat-light.webp&#39;"><span class="dday"></span><button class="fav" data-name="서울빛초롱축제" aria-label="찜하기">♡</button><span class="km"></span><span class="cat">✨ 빛</span></div>
   <div class="card-body">
   <div class="card-top"><span class="badge est">예년 기준·변동 가능</span></div>
@@ -195,7 +207,7 @@ document.querySelectorAll('.rbtn').forEach(b => b.addEventListener('click', () =
   <p class="desc">청계천 밝히는 겨울 등불 축제</p>
   </div>
 </div>
-<div class="card" data-region="전남" data-start="2026-12-18" data-end="2027-01-31" data-lat="34.77" data-lng="127.08" data-name="보성차밭빛축제">
+<div class="card" data-region="전남" data-start="2026-12-18" data-end="2027-01-31" data-lat="34.77" data-lng="127.08" data-name="보성차밭빛축제" data-city="보성군" data-place="한국차문화공원·봇재 일원" data-desc="녹차밭을 수놓는 은하수 조명" data-cat="빛" data-img="/img/cat-light.webp">
   <div class="thumb"><img src="/img/cat-light.webp" alt="보성차밭빛축제" loading="lazy" onerror="this.src=&#39;/img/cat-light.webp&#39;"><span class="dday"></span><button class="fav" data-name="보성차밭빛축제" aria-label="찜하기">♡</button><span class="km"></span><span class="cat">✨ 빛</span></div>
   <div class="card-body">
   <div class="card-top"><span class="badge est">예년 기준·변동 가능</span></div>
@@ -205,7 +217,7 @@ document.querySelectorAll('.rbtn').forEach(b => b.addEventListener('click', () =
   <p class="desc">녹차밭을 수놓는 은하수 조명</p>
   </div>
 </div>
-<div class="card" data-region="전남" data-start="2026-12-18" data-end="2026-12-25" data-lat="35.32" data-lng="126.99" data-name="담양산타축제">
+<div class="card" data-region="전남" data-start="2026-12-18" data-end="2026-12-25" data-lat="35.32" data-lng="126.99" data-name="담양산타축제" data-city="담양군" data-place="메타프로방스 일원" data-desc="산타 퍼레이드와 크리스마스 조명" data-cat="빛" data-img="/img/cat-light.webp">
   <div class="thumb"><img src="/img/cat-light.webp" alt="담양산타축제" loading="lazy" onerror="this.src=&#39;/img/cat-light.webp&#39;"><span class="dday"></span><button class="fav" data-name="담양산타축제" aria-label="찜하기">♡</button><span class="km"></span><span class="cat">✨ 빛</span></div>
   <div class="card-body">
   <div class="card-top"><span class="badge est">예년 기준·변동 가능</span></div>
@@ -215,7 +227,7 @@ document.querySelectorAll('.rbtn').forEach(b => b.addEventListener('click', () =
   <p class="desc">산타 퍼레이드와 크리스마스 조명</p>
   </div>
 </div>
-<div class="card" data-region="충남" data-start="2026-12-24" data-end="2027-02-21" data-lat="36.46" data-lng="126.8" data-name="청양칠갑산얼음분수축제">
+<div class="card" data-region="충남" data-start="2026-12-24" data-end="2027-02-21" data-lat="36.46" data-lng="126.8" data-name="청양칠갑산얼음분수축제" data-city="청양군" data-place="정산면 알프스마을" data-desc="거대 얼음분수와 눈썰매 겨울왕국" data-cat="눈" data-img="/img/cat-snow.webp">
   <div class="thumb"><img src="/img/cat-snow.webp" alt="청양칠갑산얼음분수축제" loading="lazy" onerror="this.src=&#39;/img/cat-snow.webp&#39;"><span class="dday"></span><button class="fav" data-name="청양칠갑산얼음분수축제" aria-label="찜하기">♡</button><span class="km"></span><span class="cat">⛄ 눈</span></div>
   <div class="card-body">
   <div class="card-top"><span class="badge est">예년 기준·변동 가능</span></div>
@@ -225,7 +237,7 @@ document.querySelectorAll('.rbtn').forEach(b => b.addEventListener('click', () =
   <p class="desc">거대 얼음분수와 눈썰매 겨울왕국</p>
   </div>
 </div>
-<div class="card" data-region="제주" data-start="2026-12-30" data-end="2027-01-01" data-lat="33.25" data-lng="126.56" data-name="성산일출축제">
+<div class="card" data-region="제주" data-start="2026-12-30" data-end="2027-01-01" data-lat="33.25" data-lng="126.56" data-name="성산일출축제" data-city="서귀포시" data-place="성산일출봉 일원" data-desc="성산일출봉에서 맞는 새해 해돋이" data-cat="기타" data-img="/img/cat-etc.webp">
   <div class="thumb"><img src="/img/cat-etc.webp" alt="성산일출축제" loading="lazy" onerror="this.src=&#39;/img/cat-etc.webp&#39;"><span class="dday"></span><button class="fav" data-name="성산일출축제" aria-label="찜하기">♡</button><span class="km"></span><span class="cat">🎪 기타</span></div>
   <div class="card-body">
   <div class="card-top"><span class="badge est">예년 기준·변동 가능</span></div>
@@ -235,7 +247,8 @@ document.querySelectorAll('.rbtn').forEach(b => b.addEventListener('click', () =
   <p class="desc">성산일출봉에서 맞는 새해 해돋이</p>
   </div>
 </div>
-<div class="card" data-region="강원" data-start="2026-12-31" data-end="2027-02-01" data-lat="37.37" data-lng="128.39" data-name="평창송어축제">
+<div class="card" data-region="강원" data-start="2026-12-31" data-end="2027-02-01" data-lat="37.37" data-lng="128.39" data-name="평창송어축제" data-city="평창군" data-place="진부면 오대천 일원" data-desc="얼음낚시로 즐기는 송어 축제" data-cat="눈" data-img="https://tong.visitkorea.or.kr/cms/resource/81/4002581_image2_1.jpg" data-ov="우리 조상들은 매년 겨울이 되면 눈이 많이 내려 옆집까지 서로 줄을 메어놓고, 그 줄을 따라 눈 터널을 만들어 왕래를 하였고, 차가운 강바람에 개여울이 일찍 합강(合江)되면 강속의 큰 바위를 망치로 두드려 겨울 물고기를 사냥해서 한끼니를 때우던 그 어렵던 시절이 있었다. 바로 이곳에 우리 선조들의 삶의 핍박을 축제로 승화시켜 눈과, 얼음, 송어가 함께하는 겨울이야기 라는 주제로
+매년 12월말부터 1월말까지 평창송어축제가 한마당 펼쳐진다. 얼음 위에서 보면 오대천에서 노니는 어류가 투명하게 보이는 가운데 송어낚시의 짜릿한 손맛을 느끼며 다양한 겨울체험 행사와 함께 진정한 겨울축제의 즐거움을 함께 느낄 수 있다." data-near="%5B%7B%22t%22%3A%22%EC%A7%84%EB%B6%80%EC%98%81%EC%96%91%EB%A7%88%EC%9D%84%22%2C%22ty%22%3A%22%EB%A7%9B%EC%A7%91%22%2C%22d%22%3A0.2%2C%22img%22%3A%22http%3A%2F%2Ftong.visitkorea.or.kr%2Fcms%2Fresource%2F83%2F2781583_image2_1.jpg%22%7D%2C%7B%22t%22%3A%22%EC%9E%90%EB%A7%A4%EC%8B%9D%EB%8B%B9%22%2C%22ty%22%3A%22%EB%A7%9B%EC%A7%91%22%2C%22d%22%3A0.3%2C%22img%22%3A%22http%3A%2F%2Ftong.visitkorea.or.kr%2Fcms%2Fresource%2F99%2F2784899_image2_1.jpg%22%7D%2C%7B%22t%22%3A%22%ED%94%84%EB%A0%98%EC%8B%9D%EB%8B%B9%22%2C%22ty%22%3A%22%EB%A7%9B%EC%A7%91%22%2C%22d%22%3A0.3%2C%22img%22%3A%22http%3A%2F%2Ftong.visitkorea.or.kr%2Fcms%2Fresource%2F17%2F2789517_image2_1.jpg%22%7D%2C%7B%22t%22%3A%22%EB%8B%A4%EB%9E%98%EC%88%9C%EB%8C%80%22%2C%22ty%22%3A%22%EB%A7%9B%EC%A7%91%22%2C%22d%22%3A0.4%2C%22img%22%3A%22http%3A%2F%2Ftong.visitkorea.or.kr%2Fcms%2Fresource%2F99%2F2794999_image2_1.jpg%22%7D%2C%7B%22t%22%3A%22%EC%BB%A4%ED%94%BC%ED%8A%B8%EB%A6%AC%22%2C%22ty%22%3A%22%EB%A7%9B%EC%A7%91%22%2C%22d%22%3A0.4%2C%22img%22%3A%22http%3A%2F%2Ftong.visitkorea.or.kr%2Fcms%2Fresource%2F99%2F2784299_image2_1.jpg%22%7D%5D">
   <div class="thumb"><img src="https://tong.visitkorea.or.kr/cms/resource/81/4002581_image2_1.jpg" alt="평창송어축제" loading="lazy" onerror="this.src=&#39;/img/cat-snow.webp&#39;"><span class="dday"></span><button class="fav" data-name="평창송어축제" aria-label="찜하기">♡</button><span class="km"></span><span class="cat">⛄ 눈</span></div>
   <div class="card-body">
   <div class="card-top"><span class="badge est">예년 기준·변동 가능</span></div>
@@ -245,7 +258,7 @@ document.querySelectorAll('.rbtn').forEach(b => b.addEventListener('click', () =
   <p class="desc">얼음낚시로 즐기는 송어 축제</p>
   </div>
 </div>
-<div class="card" data-region="경북" data-start="2026-12-31" data-end="2027-01-01" data-lat="36.02" data-lng="129.36" data-name="호미곶한민족해맞이축전">
+<div class="card" data-region="경북" data-start="2026-12-31" data-end="2027-01-01" data-lat="36.02" data-lng="129.36" data-name="호미곶한민족해맞이축전" data-city="포항시" data-place="호미곶 해맞이광장" data-desc="한반도 최동단 새해 일출 축전" data-cat="기타" data-img="/img/cat-etc.webp">
   <div class="thumb"><img src="/img/cat-etc.webp" alt="호미곶한민족해맞이축전" loading="lazy" onerror="this.src=&#39;/img/cat-etc.webp&#39;"><span class="dday"></span><button class="fav" data-name="호미곶한민족해맞이축전" aria-label="찜하기">♡</button><span class="km"></span><span class="cat">🎪 기타</span></div>
   <div class="card-body">
   <div class="card-top"><span class="badge est">예년 기준·변동 가능</span></div>
@@ -255,7 +268,7 @@ document.querySelectorAll('.rbtn').forEach(b => b.addEventListener('click', () =
   <p class="desc">한반도 최동단 새해 일출 축전</p>
   </div>
 </div>
-<div class="card" data-region="강원" data-start="2027-01-09" data-end="2027-02-01" data-lat="38.11" data-lng="127.71" data-name="화천산천어축제">
+<div class="card" data-region="강원" data-start="2027-01-09" data-end="2027-02-01" data-lat="38.11" data-lng="127.71" data-name="화천산천어축제" data-city="화천군" data-place="화천천 일대" data-desc="세계적 겨울축제, 산천어 얼음낚시" data-cat="눈" data-img="https://tong.visitkorea.or.kr/cms/resource/46/4071246_image2_1.jpg" data-near="%5B%7B%22t%22%3A%22%EB%82%AD%EC%B2%9C%EC%82%B0%EB%A6%BC%EC%9A%95%EC%9E%A5%22%2C%22ty%22%3A%22%EA%B4%80%EA%B4%91%EC%A7%80%22%2C%22d%22%3A0.4%2C%22img%22%3A%22http%3A%2F%2Ftong.visitkorea.or.kr%2Fcms%2Fresource%2F91%2F3385991_image2_1.JPG%22%7D%2C%7B%22t%22%3A%22%ED%99%94%EC%B2%9C%20%EC%82%B0%ED%83%80%ED%81%B4%EB%A1%9C%EC%8A%A4%EC%9A%B0%EC%B2%B4%EA%B5%AD%20%EB%8C%80%ED%95%9C%EB%AF%BC%EA%B5%AD%20%EB%B3%B8%EC%A0%90%22%2C%22ty%22%3A%22%EA%B4%80%EA%B4%91%EC%A7%80%22%2C%22d%22%3A0.7%2C%22img%22%3A%22http%3A%2F%2Ftong.visitkorea.or.kr%2Fcms%2Fresource%2F46%2F3385946_image2_1.JPG%22%7D%2C%7B%22t%22%3A%22%ED%99%94%EC%B2%9C%EA%B5%90%EC%9C%A1%EB%8F%84%EC%84%9C%EA%B4%80%22%2C%22ty%22%3A%22%EB%AC%B8%ED%99%94%EC%8B%9C%EC%84%A4%22%2C%22d%22%3A0.8%2C%22img%22%3A%22http%3A%2F%2Ftong.visitkorea.or.kr%2Fcms%2Fresource%2F38%2F3577638_image2_1.jpg%22%7D%2C%7B%22t%22%3A%22%EC%82%B0%EC%B2%9C%EC%96%B4%EC%8B%9C%EB%84%A4%EB%A7%88%22%2C%22ty%22%3A%22%EB%AC%B8%ED%99%94%EC%8B%9C%EC%84%A4%22%2C%22d%22%3A1%2C%22img%22%3A%22http%3A%2F%2Ftong.visitkorea.or.kr%2Fcms%2Fresource%2F30%2F3465530_image2_1.JPG%22%7D%2C%7B%22t%22%3A%22%ED%99%94%EC%B2%9C%20%ED%9C%B4%EC%BA%A0%ED%95%91%EC%9E%A5%22%2C%22ty%22%3A%22%EB%A0%88%ED%8F%AC%EC%B8%A0%22%2C%22d%22%3A1.4%2C%22img%22%3A%22http%3A%2F%2Ftong.visitkorea.or.kr%2Fcms%2Fresource%2F41%2F2756341_image2_1.JPG%22%7D%5D">
   <div class="thumb"><img src="https://tong.visitkorea.or.kr/cms/resource/46/4071246_image2_1.jpg" alt="화천산천어축제" loading="lazy" onerror="this.src=&#39;/img/cat-snow.webp&#39;"><span class="dday"></span><button class="fav" data-name="화천산천어축제" aria-label="찜하기">♡</button><span class="km"></span><span class="cat">⛄ 눈</span></div>
   <div class="card-body">
   <div class="card-top"><span class="badge est">예년 기준·변동 가능</span></div>
@@ -265,7 +278,7 @@ document.querySelectorAll('.rbtn').forEach(b => b.addEventListener('click', () =
   <p class="desc">세계적 겨울축제, 산천어 얼음낚시</p>
   </div>
 </div>
-<div class="card" data-region="강원" data-start="2027-01-15" data-end="2027-01-24" data-lat="37.37" data-lng="128.39" data-name="대관령눈꽃축제">
+<div class="card" data-region="강원" data-start="2027-01-15" data-end="2027-01-24" data-lat="37.37" data-lng="128.39" data-name="대관령눈꽃축제" data-city="평창군" data-place="대관령면 횡계리 일원" data-desc="눈의 고장 대관령 설원 축제" data-cat="눈" data-img="https://tong.visitkorea.or.kr/cms/resource/89/3588789_image2_1.JPG" data-ov="30년 전, 대한민국 겨울의 중심 '대관령'의 청년 여럿이 모여 눈꽃축제를 만들었다. 1993년 시작된 '대관령눈꽃축제'는 전국에서 가장 먼저 탄생한 겨울 축제로 30여 년의 역사를 자랑한다. 겨울철 비수기를 이겨내고 지역경제 활성화와 주민 화합을 목표로 해마다 개최되고 있으며 많은 관광객이 찾는 축제로 발전하였다. 대관령눈꽃축제는 &quot;동계 꿈나무 눈동이의 국가대표 성장기&quot;를 테마로 바뀌었다. 2018 평창 올림픽을 보고 스포츠 국가대표를 꿈꾸던 평창의 마스코트 ‘눈동이’가 2026 밀라노 올림픽 국가대표로 거듭나는 과정을 초대형 눈조각과 얼음조각으로 생생하게 만날 수 있다. 눈동이의 성장 여정을 따라 펼쳐지는 다이내믹한 동계 스포츠 체험존이 준비되어 있다." data-near="%5B%7B%22t%22%3A%22%ED%98%B8%ED%85%94%20%EB%8D%94%EB%A7%88%EB%A3%A8%22%2C%22ty%22%3A%22%EC%88%99%EC%86%8C%22%2C%22d%22%3A0.1%2C%22img%22%3A%22http%3A%2F%2Ftong.visitkorea.or.kr%2Fcms%2Fresource%2F83%2F2762983_image2_1.jpg%22%7D%2C%7B%22t%22%3A%22%EB%84%98%EB%B2%84%EB%82%98%EC%9D%B8%EC%A0%95%EC%9C%A1%EC%8B%9D%EB%8B%B9%22%2C%22ty%22%3A%22%EB%A7%9B%EC%A7%91%22%2C%22d%22%3A0.1%2C%22img%22%3A%22http%3A%2F%2Ftong.visitkorea.or.kr%2Fcms%2Fresource%2F18%2F2790218_image2_1.jpg%22%7D%2C%7B%22t%22%3A%22%EB%B0%94%EC%9A%B0%EA%B3%A8%22%2C%22ty%22%3A%22%EB%A7%9B%EC%A7%91%22%2C%22d%22%3A0.1%2C%22img%22%3A%22http%3A%2F%2Ftong.visitkorea.or.kr%2Fcms%2Fresource%2F56%2F2776556_image2_1.jpg%22%7D%2C%7B%22t%22%3A%22%EB%8C%80%EB%B0%95%EC%8B%9D%EB%8B%B9%22%2C%22ty%22%3A%22%EB%A7%9B%EC%A7%91%22%2C%22d%22%3A0.2%2C%22img%22%3A%22http%3A%2F%2Ftong.visitkorea.or.kr%2Fcms%2Fresource%2F30%2F2801730_image2_1.jpg%22%7D%2C%7B%22t%22%3A%22%EB%93%9C%EB%A6%BC%EC%95%BC%EC%8B%9D%22%2C%22ty%22%3A%22%EB%A7%9B%EC%A7%91%22%2C%22d%22%3A0.2%2C%22img%22%3A%22http%3A%2F%2Ftong.visitkorea.or.kr%2Fcms%2Fresource%2F23%2F2794123_image2_1.JPG%22%7D%5D">
   <div class="thumb"><img src="https://tong.visitkorea.or.kr/cms/resource/89/3588789_image2_1.JPG" alt="대관령눈꽃축제" loading="lazy" onerror="this.src=&#39;/img/cat-snow.webp&#39;"><span class="dday"></span><button class="fav" data-name="대관령눈꽃축제" aria-label="찜하기">♡</button><span class="km"></span><span class="cat">⛄ 눈</span></div>
   <div class="card-body">
   <div class="card-top"><span class="badge est">예년 기준·변동 가능</span></div>
@@ -275,7 +288,7 @@ document.querySelectorAll('.rbtn').forEach(b => b.addEventListener('click', () =
   <p class="desc">눈의 고장 대관령 설원 축제</p>
   </div>
 </div>
-<div class="card" data-region="강원" data-start="2027-01-23" data-end="2027-01-31" data-lat="38.07" data-lng="128.17" data-name="인제빙어축제">
+<div class="card" data-region="강원" data-start="2027-01-23" data-end="2027-01-31" data-lat="38.07" data-lng="128.17" data-name="인제빙어축제" data-city="인제군" data-place="소양호 빙어호 일원" data-desc="호수 위 빙어 얼음낚시 축제" data-cat="눈" data-img="/img/cat-snow.webp">
   <div class="thumb"><img src="/img/cat-snow.webp" alt="인제빙어축제" loading="lazy" onerror="this.src=&#39;/img/cat-snow.webp&#39;"><span class="dday"></span><button class="fav" data-name="인제빙어축제" aria-label="찜하기">♡</button><span class="km"></span><span class="cat">⛄ 눈</span></div>
   <div class="card-body">
   <div class="card-top"><span class="badge est">예년 기준·변동 가능</span></div>
@@ -285,7 +298,7 @@ document.querySelectorAll('.rbtn').forEach(b => b.addEventListener('click', () =
   <p class="desc">호수 위 빙어 얼음낚시 축제</p>
   </div>
 </div>
-<div class="card" data-region="강원" data-start="2027-01-30" data-end="2027-02-07" data-lat="37.16" data-lng="128.99" data-name="태백산눈축제">
+<div class="card" data-region="강원" data-start="2027-01-30" data-end="2027-02-07" data-lat="37.16" data-lng="128.99" data-name="태백산눈축제" data-city="태백시" data-place="태백산국립공원 당골광장" data-desc="대형 눈조각과 눈썰매 설경 축제" data-cat="눈" data-img="/img/cat-snow.webp">
   <div class="thumb"><img src="/img/cat-snow.webp" alt="태백산눈축제" loading="lazy" onerror="this.src=&#39;/img/cat-snow.webp&#39;"><span class="dday"></span><button class="fav" data-name="태백산눈축제" aria-label="찜하기">♡</button><span class="km"></span><span class="cat">⛄ 눈</span></div>
   <div class="card-body">
   <div class="card-top"><span class="badge est">예년 기준·변동 가능</span></div>
@@ -304,6 +317,15 @@ document.querySelectorAll('.rbtn').forEach(b => b.addEventListener('click', () =
 <p><a href="/privacy/">개인정보처리방침</a> · 문의: goohw593@gmail.com</p>
 <p>© 2026 축제모아</p>
 </div></footer>
+<div id="festmodal" class="fmodal"><div class="fmbox">
+<button class="fmx" id="fm2x" aria-label="닫기">✕</button>
+<img id="fm2-img" class="fm-img" alt="">
+<h3 id="fm2-title"></h3>
+<p id="fm2-meta"></p>
+<p id="fm2-ov"></p>
+<div id="fm2-near"></div>
+<div class="fm-links"><a id="fm2-hp" target="_blank" rel="noopener">🏛️ 공식 홈페이지</a><a id="fm2-naver" target="_blank" rel="noopener">🔎 네이버에서 보기</a></div>
+</div></div>
 <script>
 (function(){
   const t = new Date(); t.setHours(0,0,0,0);
@@ -311,6 +333,7 @@ document.querySelectorAll('.rbtn').forEach(b => b.addEventListener('click', () =
     c.style.cursor = 'pointer';
     c.addEventListener('click', function(ev){
       if (ev.target.closest('.fav') || ev.target.closest('a')) return;
+      if (window.openFestModal) { window.openFestModal(c.dataset); return; }
       const n = c.dataset.name; if (!n) return;
       window.open('https://search.naver.com/search.naver?query=' + encodeURIComponent(n + ' 축제'), '_blank', 'noopener');
     });
@@ -374,6 +397,32 @@ document.querySelectorAll('.rbtn').forEach(b => b.addEventListener('click', () =
       alert('위치 권한을 허용하면 가까운 축제부터 보여드려요!');
     }, { timeout: 8000 });
   });
+})();
+</script>
+<script>
+(function(){
+  var m=document.getElementById('festmodal'); if(!m) return;
+  function esc(s){return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+  function fy(y){y=String(y||'').replace(/[^0-9]/g,'');if(y.length<8)return '';return y.slice(0,4)+'.'+(+y.slice(4,6))+'.'+(+y.slice(6,8));}
+  window.openFestModal=function(ds){
+    var img=document.getElementById('fm2-img');
+    if(ds.img){img.src=ds.img;img.style.display='block';}else{img.style.display='none';}
+    document.getElementById('fm2-title').textContent=ds.name||'';
+    var loc=[ds.region,ds.city,ds.place].filter(Boolean).join(' ');
+    var dr=fy(ds.start)+(ds.end&&String(ds.end).replace(/[^0-9]/g,'')!==String(ds.start).replace(/[^0-9]/g,'')?' ~ '+fy(ds.end):'');
+    document.getElementById('fm2-meta').textContent=[dr,loc].filter(Boolean).join('  ·  ');
+    document.getElementById('fm2-ov').textContent=ds.ov||ds.desc||'상세 개요는 아래 네이버·공식 홈페이지에서 확인하세요.';
+    var nearEl=document.getElementById('fm2-near');nearEl.innerHTML='';
+    if(ds.near){try{var arr=JSON.parse(decodeURIComponent(ds.near));if(arr&&arr.length){nearEl.innerHTML='<div style="font-weight:800;color:#0a6c63;margin:16px 0 8px">📍 근처 가볼 곳</div><div style="display:flex;flex-wrap:wrap;gap:8px">'+arr.map(function(n){return '<a href="https://search.naver.com/search.naver?query='+encodeURIComponent(n.t)+'" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;background:#f4faf8;border:1px solid #dcefeb;border-radius:20px;padding:6px 12px;font-size:.85rem;font-weight:700;color:#374151;text-decoration:none">'+(n.img?'<img src="'+esc(n.img)+'" style="width:22px;height:22px;border-radius:50%;object-fit:cover" onerror="this.style.display=&#39;none&#39;">':'')+esc(n.t)+' <span style="color:#9aa3af;font-weight:600">'+esc(n.ty)+(n.d?' '+n.d+'km':'')+'</span></a>';}).join('')+'</div>';}}catch(e){}}
+    var hp=document.getElementById('fm2-hp');
+    if(ds.hp){hp.href=(ds.hp.indexOf('http')===0?ds.hp:'http://'+ds.hp);hp.style.display='inline-block';}else{hp.style.display='none';}
+    document.getElementById('fm2-naver').href='https://search.naver.com/search.naver?query='+encodeURIComponent((ds.name||'')+' 축제');
+    m.classList.add('show');
+  };
+  function close(){m.classList.remove('show');}
+  document.getElementById('fm2x').addEventListener('click',close);
+  m.addEventListener('click',function(e){if(e.target.id==='festmodal')close();});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
 })();
 </script>
 

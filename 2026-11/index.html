@@ -135,6 +135,18 @@ article ul{padding-left:20px}
 .share-row .sh2{background:#0f9d8f;color:#fff}
 .share-row .sh3{background:#f3f4f6;color:#374151}
 .share-row button:hover,.share-row a:hover{transform:translateY(-2px)}
+.fmodal{display:none;position:fixed;inset:0;z-index:100;background:rgba(17,24,39,.55);align-items:center;justify-content:center;padding:18px}
+.fmodal.show{display:flex}
+.fmbox{background:#fff;border-radius:18px;max-width:560px;width:100%;max-height:86vh;overflow:auto;padding:22px;position:relative;box-shadow:0 20px 50px rgba(0,0,0,.3)}
+.fmx{position:absolute;top:12px;right:12px;border:none;background:#f3f4f6;width:34px;height:34px;border-radius:50%;font-size:1rem;cursor:pointer;color:#374151}
+.fm-img{width:100%;max-height:240px;object-fit:cover;border-radius:12px;margin-bottom:14px}
+.fmbox h3{font-size:1.3rem;font-weight:900;letter-spacing:-.02em;margin:2px 40px 6px 0}
+#fm-meta,#fm2-meta{color:#0a6c63;font-weight:700;font-size:.92rem;margin-bottom:12px}
+#fm-ov,#fm2-ov{color:#374151;font-size:.95rem;line-height:1.65}
+.fm-links{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.fm-links a{flex:1;min-width:140px;text-align:center;padding:12px;border-radius:12px;font-weight:800;font-size:.95rem}
+#fm-hp,#fm2-hp{background:#0f9d8f;color:#fff}
+#fm-naver,#fm2-naver{background:#f3f4f6;color:#374151;border:1.5px solid #dcefeb}
 @media(max-width:600px){.hero h1{font-size:1.3rem}nav a{margin-left:9px;font-size:.85rem}}
 </style>
 </head>
@@ -158,7 +170,7 @@ document.querySelectorAll('.rbtn').forEach(b => b.addEventListener('click', () =
   });
 }));
 </script>
-<div class="grid"><div class="card" data-region="광주" data-start="2026-04-04" data-end="2026-11-07" data-lat="35.15" data-lng="126.92" data-name="금남로 차 없는 거리 걷자잉">
+<div class="grid"><div class="card" data-region="광주" data-start="2026-04-04" data-end="2026-11-07" data-lat="35.15" data-lng="126.92" data-name="금남로 차 없는 거리 걷자잉" data-city="동구" data-place="금남로공원·전일빌딩245 일원" data-desc="주말 금남로에서 즐기는 거리 문화행사" data-cat="문화" data-img="/img/cat-culture.webp">
   <div class="thumb"><img src="/img/cat-culture.webp" alt="금남로 차 없는 거리 걷자잉" loading="lazy" onerror="this.src=&#39;/img/cat-culture.webp&#39;"><span class="dday"></span><button class="fav" data-name="금남로 차 없는 거리 걷자잉" aria-label="찜하기">♡</button><span class="km"></span><span class="cat">🎭 문화</span></div>
   <div class="card-body">
   <div class="card-top"><span class="badge ok">일정 확정</span></div>
@@ -168,7 +180,7 @@ document.querySelectorAll('.rbtn').forEach(b => b.addEventListener('click', () =
   <p class="desc">주말 금남로에서 즐기는 거리 문화행사</p>
   </div>
 </div>
-<div class="card" data-region="전북" data-start="2026-10-30" data-end="2026-11-08" data-lat="35.57" data-lng="126.86" data-name="정읍 내장산단풍축제">
+<div class="card" data-region="전북" data-start="2026-10-30" data-end="2026-11-08" data-lat="35.57" data-lng="126.86" data-name="정읍 내장산단풍축제" data-city="정읍시" data-place="내장산국립공원 일원" data-desc="단풍 명소 내장산 가을 축제" data-cat="꽃" data-img="/img/cat-flower.webp">
   <div class="thumb"><img src="/img/cat-flower.webp" alt="정읍 내장산단풍축제" loading="lazy" onerror="this.src=&#39;/img/cat-flower.webp&#39;"><span class="dday"></span><button class="fav" data-name="정읍 내장산단풍축제" aria-label="찜하기">♡</button><span class="km"></span><span class="cat">🌸 꽃</span></div>
   <div class="card-body">
   <div class="card-top"><span class="badge est">예년 기준·변동 가능</span></div>
@@ -178,7 +190,7 @@ document.querySelectorAll('.rbtn').forEach(b => b.addEventListener('click', () =
   <p class="desc">단풍 명소 내장산 가을 축제</p>
   </div>
 </div>
-<div class="card" data-region="전남" data-start="2026-11-01" data-end="2026-11-09" data-lat="34.95" data-lng="127.49" data-name="순천만갈대축제">
+<div class="card" data-region="전남" data-start="2026-11-01" data-end="2026-11-09" data-lat="34.95" data-lng="127.49" data-name="순천만갈대축제" data-city="순천시" data-place="순천만습지 일원" data-desc="황금빛 갈대와 흑두루미 생태 축제" data-cat="꽃" data-img="/img/cat-flower.webp">
   <div class="thumb"><img src="/img/cat-flower.webp" alt="순천만갈대축제" loading="lazy" onerror="this.src=&#39;/img/cat-flower.webp&#39;"><span class="dday"></span><button class="fav" data-name="순천만갈대축제" aria-label="찜하기">♡</button><span class="km"></span><span class="cat">🌸 꽃</span></div>
   <div class="card-body">
   <div class="card-top"><span class="badge est">예년 기준·변동 가능</span></div>
@@ -188,7 +200,7 @@ document.querySelectorAll('.rbtn').forEach(b => b.addEventListener('click', () =
   <p class="desc">황금빛 갈대와 흑두루미 생태 축제</p>
   </div>
 </div>
-<div class="card" data-region="서울" data-start="2026-11-06" data-end="2026-11-08" data-lat="37.56" data-lng="126.99" data-name="서울김장문화제">
+<div class="card" data-region="서울" data-start="2026-11-06" data-end="2026-11-08" data-lat="37.56" data-lng="126.99" data-name="서울김장문화제" data-city="중구" data-place="서울광장 일대" data-desc="수천 명이 함께하는 김장 나눔" data-cat="음식" data-img="/img/cat-food.webp">
   <div class="thumb"><img src="/img/cat-food.webp" alt="서울김장문화제" loading="lazy" onerror="this.src=&#39;/img/cat-food.webp&#39;"><span class="dday"></span><button class="fav" data-name="서울김장문화제" aria-label="찜하기">♡</button><span class="km"></span><span class="cat">🍜 음식</span></div>
   <div class="card-body">
   <div class="card-top"><span class="badge est">예년 기준·변동 가능</span></div>
@@ -198,7 +210,7 @@ document.querySelectorAll('.rbtn').forEach(b => b.addEventListener('click', () =
   <p class="desc">수천 명이 함께하는 김장 나눔</p>
   </div>
 </div>
-<div class="card" data-region="부산" data-start="2026-11-07" data-end="2026-11-07" data-lat="35.15" data-lng="129.11" data-name="부산불꽃축제">
+<div class="card" data-region="부산" data-start="2026-11-07" data-end="2026-11-07" data-lat="35.15" data-lng="129.11" data-name="부산불꽃축제" data-city="수영구" data-place="광안리해수욕장 일원" data-desc="광안대교 배경 멀티미디어 불꽃쇼" data-cat="불꽃" data-img="/img/cat-firework.webp">
   <div class="thumb"><img src="/img/cat-firework.webp" alt="부산불꽃축제" loading="lazy" onerror="this.src=&#39;/img/cat-firework.webp&#39;"><span class="dday"></span><button class="fav" data-name="부산불꽃축제" aria-label="찜하기">♡</button><span class="km"></span><span class="cat">🎆 불꽃</span></div>
   <div class="card-body">
   <div class="card-top"><span class="badge ok">일정 확정</span></div>
@@ -208,7 +220,7 @@ document.querySelectorAll('.rbtn').forEach(b => b.addEventListener('click', () =
   <p class="desc">광안대교 배경 멀티미디어 불꽃쇼</p>
   </div>
 </div>
-<div class="card" data-region="경기" data-start="2026-11-20" data-end="2026-11-22" data-lat="37.76" data-lng="126.78" data-name="파주장단콩축제">
+<div class="card" data-region="경기" data-start="2026-11-20" data-end="2026-11-22" data-lat="37.76" data-lng="126.78" data-name="파주장단콩축제" data-city="파주시" data-place="임진각 광장" data-desc="장단콩·메주 직거래 먹거리 축제" data-cat="음식" data-img="/img/cat-food.webp">
   <div class="thumb"><img src="/img/cat-food.webp" alt="파주장단콩축제" loading="lazy" onerror="this.src=&#39;/img/cat-food.webp&#39;"><span class="dday"></span><button class="fav" data-name="파주장단콩축제" aria-label="찜하기">♡</button><span class="km"></span><span class="cat">🍜 음식</span></div>
   <div class="card-body">
   <div class="card-top"><span class="badge est">예년 기준·변동 가능</span></div>
@@ -227,6 +239,15 @@ document.querySelectorAll('.rbtn').forEach(b => b.addEventListener('click', () =
 <p><a href="/privacy/">개인정보처리방침</a> · 문의: goohw593@gmail.com</p>
 <p>© 2026 축제모아</p>
 </div></footer>
+<div id="festmodal" class="fmodal"><div class="fmbox">
+<button class="fmx" id="fm2x" aria-label="닫기">✕</button>
+<img id="fm2-img" class="fm-img" alt="">
+<h3 id="fm2-title"></h3>
+<p id="fm2-meta"></p>
+<p id="fm2-ov"></p>
+<div id="fm2-near"></div>
+<div class="fm-links"><a id="fm2-hp" target="_blank" rel="noopener">🏛️ 공식 홈페이지</a><a id="fm2-naver" target="_blank" rel="noopener">🔎 네이버에서 보기</a></div>
+</div></div>
 <script>
 (function(){
   const t = new Date(); t.setHours(0,0,0,0);
@@ -234,6 +255,7 @@ document.querySelectorAll('.rbtn').forEach(b => b.addEventListener('click', () =
     c.style.cursor = 'pointer';
     c.addEventListener('click', function(ev){
       if (ev.target.closest('.fav') || ev.target.closest('a')) return;
+      if (window.openFestModal) { window.openFestModal(c.dataset); return; }
       const n = c.dataset.name; if (!n) return;
       window.open('https://search.naver.com/search.naver?query=' + encodeURIComponent(n + ' 축제'), '_blank', 'noopener');
     });
@@ -297,6 +319,32 @@ document.querySelectorAll('.rbtn').forEach(b => b.addEventListener('click', () =
       alert('위치 권한을 허용하면 가까운 축제부터 보여드려요!');
     }, { timeout: 8000 });
   });
+})();
+</script>
+<script>
+(function(){
+  var m=document.getElementById('festmodal'); if(!m) return;
+  function esc(s){return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+  function fy(y){y=String(y||'').replace(/[^0-9]/g,'');if(y.length<8)return '';return y.slice(0,4)+'.'+(+y.slice(4,6))+'.'+(+y.slice(6,8));}
+  window.openFestModal=function(ds){
+    var img=document.getElementById('fm2-img');
+    if(ds.img){img.src=ds.img;img.style.display='block';}else{img.style.display='none';}
+    document.getElementById('fm2-title').textContent=ds.name||'';
+    var loc=[ds.region,ds.city,ds.place].filter(Boolean).join(' ');
+    var dr=fy(ds.start)+(ds.end&&String(ds.end).replace(/[^0-9]/g,'')!==String(ds.start).replace(/[^0-9]/g,'')?' ~ '+fy(ds.end):'');
+    document.getElementById('fm2-meta').textContent=[dr,loc].filter(Boolean).join('  ·  ');
+    document.getElementById('fm2-ov').textContent=ds.ov||ds.desc||'상세 개요는 아래 네이버·공식 홈페이지에서 확인하세요.';
+    var nearEl=document.getElementById('fm2-near');nearEl.innerHTML='';
+    if(ds.near){try{var arr=JSON.parse(decodeURIComponent(ds.near));if(arr&&arr.length){nearEl.innerHTML='<div style="font-weight:800;color:#0a6c63;margin:16px 0 8px">📍 근처 가볼 곳</div><div style="display:flex;flex-wrap:wrap;gap:8px">'+arr.map(function(n){return '<a href="https://search.naver.com/search.naver?query='+encodeURIComponent(n.t)+'" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;background:#f4faf8;border:1px solid #dcefeb;border-radius:20px;padding:6px 12px;font-size:.85rem;font-weight:700;color:#374151;text-decoration:none">'+(n.img?'<img src="'+esc(n.img)+'" style="width:22px;height:22px;border-radius:50%;object-fit:cover" onerror="this.style.display=&#39;none&#39;">':'')+esc(n.t)+' <span style="color:#9aa3af;font-weight:600">'+esc(n.ty)+(n.d?' '+n.d+'km':'')+'</span></a>';}).join('')+'</div>';}}catch(e){}}
+    var hp=document.getElementById('fm2-hp');
+    if(ds.hp){hp.href=(ds.hp.indexOf('http')===0?ds.hp:'http://'+ds.hp);hp.style.display='inline-block';}else{hp.style.display='none';}
+    document.getElementById('fm2-naver').href='https://search.naver.com/search.naver?query='+encodeURIComponent((ds.name||'')+' 축제');
+    m.classList.add('show');
+  };
+  function close(){m.classList.remove('show');}
+  document.getElementById('fm2x').addEventListener('click',close);
+  m.addEventListener('click',function(e){if(e.target.id==='festmodal')close();});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
 })();
 </script>
 
