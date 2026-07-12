@@ -34,6 +34,73 @@ const MONTHS = [
 const CAT_EMOJI = { '물놀이': '💦', '음악': '🎵', '음식': '🍜', '꽃': '🌸', '문화': '🎭', '불꽃': '🎆', '전통': '🏮', '빛': '✨', '눈': '⛄', '기타': '🎪' };
 const CAT_IMG = { '물놀이': 'water', '음악': 'music', '음식': 'food', '꽃': 'flower', '문화': 'culture', '불꽃': 'firework', '전통': 'tradition', '빛': 'light', '눈': 'snow', '기타': 'etc' };
 
+// ---------- 실사진 매칭 (큐레이션 축제 ↔ 공공데이터 이미지) ----------
+function normTitle(s) {
+  return String(s || '')
+    .replace(/\(.*?\)|\[.*?\]/g, '')
+    .replace(/축제|페스티벌|festival/gi, '')
+    .replace(/[\s·・…,'"’”“\-~!?]/g, '')
+    .toLowerCase();
+}
+const API_IMG_INDEX = {};
+apiFests.forEach(a => {
+  if (a.img && String(a.img).trim()) {
+    const n = normTitle(a.title);
+    if (n.length > 1 && !API_IMG_INDEX[n]) API_IMG_INDEX[n] = a.img;
+  }
+});
+// 큐레이션 축제(festivals.json)의 실사진 URL을 반환. 확신 매칭만 실사진, 없으면 null.
+function realImgOf(f) {
+  const n = normTitle(f.name);
+  if (!n) return null;
+  if (API_IMG_INDEX[n]) return API_IMG_INDEX[n];
+  // 안전한 포함 매칭: 짧은 쪽 길이 5자 이상일 때만
+  for (const k in API_IMG_INDEX) {
+    if (k.length >= 5 && n.length >= 5 && (k.includes(n) || n.includes(k))) return API_IMG_INDEX[k];
+  }
+  return null;
+}
+// 카드 썸네일 URL(실사진 우선, 카테고리 폴백)
+function thumbOf(f) {
+  return realImgOf(f) || ('/img/cat-' + (CAT_IMG[f.category] || 'etc') + '.webp');
+}
+// JSON-LD·OG용 절대 이미지 URL
+function absImgOf(f) {
+  const r = realImgOf(f);
+  if (r) return r.replace(/^http:/, 'https:');
+  return SITE + '/img/cat-' + (CAT_IMG[f.category] || 'etc') + '.webp';
+}
+// schema.org Event JSON-LD 배열 문자열 생성
+function eventsJsonLd(list) {
+  const items = list.map(f => {
+    const o = {
+      '@context': 'https://schema.org',
+      '@type': 'Event',
+      name: f.name,
+      startDate: f.start,
+      endDate: f.end,
+      eventStatus: 'https://schema.org/EventScheduled',
+      eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+      location: {
+        '@type': 'Place',
+        name: f.place || (f.region + ' ' + f.city),
+        address: {
+          '@type': 'PostalAddress',
+          addressRegion: f.region,
+          addressLocality: f.city,
+          streetAddress: f.place,
+          addressCountry: 'KR'
+        }
+      },
+      image: [absImgOf(f)],
+      description: f.desc,
+      url: SITE + '/search/'
+    };
+    return o;
+  });
+  return items.map(o => `<script type="application/ld+json">${JSON.stringify(o)}</script>`).join('\n');
+}
+
 // 지역별 대표 좌표 (내 주변 축제·날씨 배지용, "region|city" 키)
 const COORDS = {
   '강원|강릉시': [37.75, 128.90], '강원|동해시': [37.52, 129.11], '강원|양양군': [38.07, 128.63],
@@ -100,7 +167,7 @@ function festCard(f) {
     ? '<span class="badge ok">일정 확정</span>'
     : '<span class="badge est">예년 기준·변동 가능</span>';
   return `<div class="card" data-region="${esc(f.region)}" data-start="${f.start}" data-end="${f.end}" data-lat="${la}" data-lng="${lo}" data-name="${esc(f.name)}">
-  <div class="thumb"><img src="/img/cat-${img}.webp" alt="${esc(f.category)} 축제" loading="lazy"><span class="dday"></span><button class="fav" data-name="${esc(f.name)}" aria-label="찜하기">♡</button><span class="km"></span><span class="cat">${emoji} ${esc(f.category)}</span></div>
+  <div class="thumb"><img src="${esc(thumbOf(f))}" alt="${esc(f.name)}" loading="lazy" onerror="this.src=&#39;/img/cat-${img}.webp&#39;"><span class="dday"></span><button class="fav" data-name="${esc(f.name)}" aria-label="찜하기">♡</button><span class="km"></span><span class="cat">${emoji} ${esc(f.category)}</span></div>
   <div class="card-body">
   <div class="card-top">${badge}</div>
   <h3>${esc(f.name)}</h3>
@@ -395,6 +462,7 @@ ${alts}
 <meta property="og:type" content="website">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE}" crossorigin="anonymous"></script>
+${opts.jsonld || ''}
 <style>${CSS}</style>
 </head>
 <body>
@@ -442,7 +510,7 @@ ${regionFilter(list)}
 <h2 class="sec">다른 달 축제 보기</h2>
 ${monthNavHtml}
 </div></main>`;
-  writePage(mm.key, layout(title, desc, `/${mm.key}/`, content));
+  writePage(mm.key, layout(title, desc, `/${mm.key}/`, content, { jsonld: eventsJsonLd(list) }));
 });
 
 // ---------- 오일장 페이지 ----------
@@ -651,7 +719,7 @@ ${posts.map(p => `<a href="/blog/${p.slug}/">${esc(p.title)}<span>${p.date}</spa
 writePage('.', layout(
   `${SITE_NAME} — 전국 축제·오일장 일정 총정리 (2026)`,
   `2026 전국 축제 일정과 오일장(5일장) 날짜를 한눈에. 월별·지역별 축제 정보, 보령머드축제부터 화천산천어축제까지.`,
-  '/', indexContent, { alternates:[{hreflang:'ko',href:'/'},{hreflang:'en',href:'/en/'},{hreflang:'x-default',href:'/'}] }));
+  '/', indexContent, { jsonld: eventsJsonLd(upcoming), alternates:[{hreflang:'ko',href:'/'},{hreflang:'en',href:'/en/'},{hreflang:'x-default',href:'/'}] }));
 
 // ---------- 개인정보처리방침 ----------
 const privacyContent = `<main><div class="wrap"><article>
