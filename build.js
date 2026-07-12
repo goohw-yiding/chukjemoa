@@ -21,6 +21,12 @@ catch (e) { console.log('⚠ pets.json 없음 — 반려견 여행지 데이터 
 let apiFestsEn = [];
 try { apiFestsEn = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/festivals_en.json'), 'utf8')); }
 catch (e) { console.log('⚠ festivals_en.json 없음 — 영문 데이터 비어있음 (node fetch-festivals-en.js 먼저 실행)'); }
+let apiAccessible = [];
+try { apiAccessible = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/accessible.json'), 'utf8')); }
+catch (e) { console.log('⚠ accessible.json 없음 — 무장애 데이터 비어있음 (node fetch-accessible.js 먼저 실행)'); }
+let apiTrails = [];
+try { apiTrails = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/trails.json'), 'utf8')); }
+catch (e) { console.log('⚠ trails.json 없음 — 걷기길 데이터 비어있음 (node fetch-trails.js 먼저 실행)'); }
 
 const MONTHS = [
   { key: '2026-07', months: [7], label: '2026년 7월', short: '7월', emoji: '💦' },
@@ -435,7 +441,7 @@ function layout(title, desc, urlPath, content, opts) {
   const logoHref = lang === 'en' ? '/en/' : '/';
   const nav = lang === 'en'
     ? `<nav><a href="/en/">Home</a><a href="/en/search/">🔎 Festivals</a><a href="/">🇰🇷 한국어</a></nav>`
-    : `<nav><a href="/2026-07/">월별 축제</a><a href="/search/">🔎 축제 검색</a><a href="/pet/">🐶 반려견 여행지</a><a href="/jangteo/">전국 오일장</a><a href="/test/">🔮 취향 테스트</a><a href="/blog/">축제 가이드</a><a href="/en/">EN</a></nav>`;
+    : `<nav><a href="/2026-07/">월별 축제</a><a href="/search/">🔎 축제 검색</a><a href="/pet/">🐶 반려견 여행지</a><a href="/accessible/">♿ 무장애 여행</a><a href="/trails/">🥾 걷기 여행</a><a href="/jangteo/">전국 오일장</a><a href="/test/">🔮 취향 테스트</a><a href="/blog/">축제 가이드</a><a href="/en/">EN</a></nav>`;
   const footer = lang === 'en'
     ? `<p>Chukjemoa — Korea Festivals &amp; Traditional Markets</p>
 <p>Schedules may change; please check the official website before visiting.</p>
@@ -1102,8 +1108,133 @@ fetch('/en/search/data.json').then(function(r){return r.json();}).then(function(
   writePage('en', layout('Korea Festivals Calendar 2026 — Festivals & Traditional Markets | Chukjemoa', 'Discover festivals and traditional markets across South Korea. Search by date and region with official Korea Tourism Organization data.', '/en/', enHome, { lang:'en', alternates:[{hreflang:'ko',href:'/'},{hreflang:'en',href:'/en/'},{hreflang:'x-default',href:'/en/'}] }));
 }
 
+// ---------- 무장애 여행 /accessible/ (KorWithService2) ----------
+if (apiAccessible.length) {
+  const accSidos = SIDO_ORDER.filter(s => apiAccessible.some(p => p.sido === s));
+  const accSidoOpts = accSidos.map(s => `<option value="${s}">${s} (${apiAccessible.filter(p => p.sido === s).length})</option>`).join('');
+  const accCats = ['관광지','문화시설','음식점','숙박','레포츠','쇼핑'];
+  const accCatOpts = accCats.filter(c => apiAccessible.some(p => p.cat === c)).map(c => `<option value="${c}">${c}</option>`).join('');
+  const ACC_FILTERS = ['휠체어','장애인주차','장애인화장실','엘리베이터','유아·수유','시각약자','청각약자'];
+  const accContent = `<main><div class="wrap">
+<style>
+.srchbar{background:#fff;border-radius:16px;padding:16px 18px;box-shadow:0 3px 14px rgba(31,41,55,.07);margin:14px 0 6px}
+.srchbar .row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.srchbar select,.srchbar input{padding:10px 13px;border:1.5px solid #dcefeb;border-radius:12px;font-size:.93rem;font-family:inherit;background:#f4faf8;color:#374151}
+.srchbar input#aKw{flex:1;min-width:150px}
+.srch-count{margin:16px 0 12px;font-weight:800;color:#0a6c63;font-size:1.02rem}
+.page-h1{font-size:1.5rem;font-weight:900;letter-spacing:-.02em;margin:6px 0}
+.page-sub{color:#6b7280;font-size:.95rem;margin-bottom:6px}
+.pmore{background:#fff;border:1.5px solid #a9e5dd;color:#0c7d72;border-radius:22px;padding:11px 26px;font-weight:800;font-size:.95rem;cursor:pointer;font-family:inherit;transition:all .15s}
+.pmore:hover{border-color:#0f9d8f;transform:translateY(-1px)}
+.card .accrow{margin-top:8px;display:flex;flex-wrap:wrap;gap:5px}
+.card .accbadge{font-size:.74rem;font-weight:800;color:#0c7d72;background:#e6f6f3;border-radius:20px;padding:3px 9px}
+</style>
+<h1 class="page-h1">♿ 무장애 여행지</h1>
+<p class="page-sub">공공데이터(한국관광공사 무장애여행) 기반 휠체어·유아차·고령자도 편하게 갈 수 있는 전국 관광지·문화시설·맛집·숙소 ${apiAccessible.length.toLocaleString()}곳 — 접근성 편의시설을 갖춘 곳을 지역·유형별로 찾아보세요.</p>
+<div class="srchbar"><div class="row">
+<select id="aSido"><option value="">전체 지역</option>${accSidoOpts}</select>
+<select id="aSigungu"><option value="">전체 시·군·구</option></select>
+<select id="aCat"><option value="">전체 유형</option>${accCatOpts}</select>
+<select id="aAcc"><option value="">모든 편의시설</option>${ACC_FILTERS.map(x => `<option value="${x}">${x} 있는 곳</option>`).join('')}</select>
+<input type="text" id="aKw" placeholder="장소명·주소 검색">
+<button id="aReset" class="pmore" style="border-color:#f0e6dc;color:#374151">초기화</button>
+</div></div>
+<div class="srch-count" id="aCount"></div>
+<div class="grid" id="aGrid"></div>
+<div style="text-align:center;margin:22px 0"><button id="aMore" class="pmore" style="display:none">더 보기</button></div>
+<p class="note">데이터 출처: 한국관광공사 무장애여행 서비스(공공데이터포털). 편의시설 정보는 순차적으로 채워지고 있으며, 방문 전 각 시설에 접근성을 꼭 확인하세요. 카드를 누르면 네이버 검색으로 연결됩니다.</p>
+</div></main>
+<script>
+(function(){
+var A=[];var st={sido:'',sigungu:'',cat:'',acc:'',kw:''};var shown=60;
+var CE={'관광지':'🏞️','문화시설':'🎭','음식점':'🍴','숙박':'🏨','레포츠':'🚵','쇼핑':'🛍️','기타':'📍'};
+function esc(s){return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function card(p){var loc=(p.sido||'')+(p.sigungu?' '+p.sigungu:'');var q=encodeURIComponent(p.title);var img=p.img||'/img/hero.webp';var acc=(p.acc&&p.acc.length)?'<div class="accrow">'+p.acc.map(function(a){return '<span class="accbadge">♿ '+esc(a)+'</span>';}).join('')+'</div>':'';return '<a class="card" href="https://search.naver.com/search.naver?query='+q+'" target="_blank" rel="noopener"><div class="thumb"><img loading="lazy" src="'+esc(img)+'" alt="'+esc(p.title)+'" onerror="this.src=&#39;/img/hero.webp&#39;"><span class="cat">'+(CE[p.cat]||'')+' '+esc(p.cat)+'</span></div><div class="card-body"><h3>'+esc(p.title)+'</h3><div class="loc">'+esc(loc)+'</div>'+acc+'</div></a>';}
+function filtered(){return A.filter(function(p){if(st.sido&&p.sido!==st.sido)return false;if(st.sigungu&&p.sigungu!==st.sigungu)return false;if(st.cat&&p.cat!==st.cat)return false;if(st.acc&&!(p.acc&&p.acc.indexOf(st.acc)>=0))return false;if(st.kw){var k=st.kw.toLowerCase();if((p.title||'').toLowerCase().indexOf(k)<0&&(p.addr||'').indexOf(st.kw)<0)return false;}return true;});}
+function render(){var list=filtered();document.getElementById('aCount').textContent='총 '+list.length.toLocaleString()+'곳';var g=document.getElementById('aGrid');g.innerHTML=list.length?list.slice(0,shown).map(card).join(''):'<p style="grid-column:1/-1;color:#6b7280;padding:24px 0">조건에 맞는 곳이 없어요. 지역·유형·편의시설을 바꿔보세요.</p>';document.getElementById('aMore').style.display=list.length>shown?'inline-block':'none';}
+function fillSg(){var set={};A.forEach(function(p){if((!st.sido||p.sido===st.sido)&&p.sigungu)set[p.sigungu]=1;});var arr=Object.keys(set).sort();document.getElementById('aSigungu').innerHTML='<option value="">전체 시·군·구</option>'+arr.map(function(s){return '<option value="'+s+'">'+s+'</option>';}).join('');}
+document.getElementById('aSido').addEventListener('change',function(e){st.sido=e.target.value;st.sigungu='';shown=60;fillSg();render();});
+document.getElementById('aSigungu').addEventListener('change',function(e){st.sigungu=e.target.value;shown=60;render();});
+document.getElementById('aCat').addEventListener('change',function(e){st.cat=e.target.value;shown=60;render();});
+document.getElementById('aAcc').addEventListener('change',function(e){st.acc=e.target.value;shown=60;render();});
+document.getElementById('aKw').addEventListener('input',function(e){st.kw=e.target.value.trim();shown=60;render();});
+document.getElementById('aReset').addEventListener('click',function(){st={sido:'',sigungu:'',cat:'',acc:'',kw:''};shown=60;document.getElementById('aSido').value='';document.getElementById('aCat').value='';document.getElementById('aAcc').value='';document.getElementById('aKw').value='';fillSg();render();});
+document.getElementById('aMore').addEventListener('click',function(){shown+=60;render();});
+document.getElementById('aCount').textContent='불러오는 중…';
+fetch('/accessible/data.json').then(function(r){return r.json();}).then(function(data){A=data;fillSg();render();}).catch(function(){document.getElementById('aCount').textContent='데이터를 불러오지 못했습니다. 새로고침 해주세요.';});
+})();
+</script>`;
+  writePage('accessible', layout('무장애 여행지 — 휠체어·유아차·고령자 접근 가능 관광지 | ' + SITE_NAME, '휠체어·유아차·고령자도 편하게 갈 수 있는 전국 무장애 관광지·문화시설·맛집·숙소를 지역별로. 공공데이터 기반 ' + apiAccessible.length.toLocaleString() + '곳.', '/accessible/', accContent));
+  fs.writeFileSync(path.join(ROOT, 'accessible', 'data.json'), JSON.stringify(apiAccessible));
+}
+
+// ---------- 걷기 여행 /trails/ (두루누비 걷기길) ----------
+if (apiTrails.length) {
+  const trThemes = [...new Set(apiTrails.map(t => t.theme).filter(Boolean))];
+  const trThemeOpts = trThemes.map(t => `<option value="${t}">${t} (${apiTrails.filter(x => x.theme === t).length})</option>`).join('');
+  const trSidos = SIDO_ORDER.filter(s => apiTrails.some(t => t.sido === s));
+  const trSidoOpts = trSidos.map(s => `<option value="${s}">${s} (${apiTrails.filter(t => t.sido === s).length})</option>`).join('');
+  const trLevels = ['쉬움','보통','어려움','매우 어려움'];
+  const trLevelOpts = trLevels.filter(l => apiTrails.some(t => t.level === l)).map(l => `<option value="${l}">${l}</option>`).join('');
+  const trailContent = `<main><div class="wrap">
+<style>
+.srchbar{background:#fff;border-radius:16px;padding:16px 18px;box-shadow:0 3px 14px rgba(31,41,55,.07);margin:14px 0 6px}
+.srchbar .row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.srchbar select,.srchbar input{padding:10px 13px;border:1.5px solid #dcefeb;border-radius:12px;font-size:.93rem;font-family:inherit;background:#f4faf8;color:#374151}
+.srchbar input#tKw{flex:1;min-width:150px}
+.srch-count{margin:16px 0 12px;font-weight:800;color:#0a6c63;font-size:1.02rem}
+.page-h1{font-size:1.5rem;font-weight:900;letter-spacing:-.02em;margin:6px 0}
+.page-sub{color:#6b7280;font-size:.95rem;margin-bottom:6px}
+.pmore{background:#fff;border:1.5px solid #a9e5dd;color:#0c7d72;border-radius:22px;padding:11px 26px;font-weight:800;font-size:.95rem;cursor:pointer;font-family:inherit;transition:all .15s}
+.pmore:hover{border-color:#0f9d8f;transform:translateY(-1px)}
+.trgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
+.trcard{display:block;background:#fff;border-radius:16px;padding:16px 18px;box-shadow:0 3px 14px rgba(31,41,55,.07);text-decoration:none;color:inherit;transition:all .15s;border:1.5px solid #eef5f3}
+.trcard:hover{transform:translateY(-2px);border-color:#a9e5dd;box-shadow:0 6px 20px rgba(15,157,143,.13)}
+.trcard .th{display:inline-block;font-size:.74rem;font-weight:800;color:#0c7d72;background:#e6f6f3;border-radius:20px;padding:3px 10px;margin-bottom:8px}
+.trcard h3{font-size:1.06rem;font-weight:800;margin:2px 0 6px;letter-spacing:-.01em}
+.trcard .meta{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
+.trcard .chip{font-size:.78rem;font-weight:700;color:#374151;background:#f4faf8;border:1px solid #dcefeb;border-radius:20px;padding:3px 10px}
+.trcard .sm{font-size:.86rem;color:#6b7280;line-height:1.5;margin-top:6px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+</style>
+<h1 class="page-h1">🥾 걷기 여행 · 전국 걷기길</h1>
+<p class="page-sub">공공데이터(두루누비) 기반 전국 걷기여행 코스 ${apiTrails.length}개 — 해파랑길·서해랑길·남파랑길·DMZ 평화의길 등. 거리·난이도·지역으로 나에게 맞는 코스를 찾아보세요.</p>
+<div class="srchbar"><div class="row">
+<select id="tTheme"><option value="">전체 길</option>${trThemeOpts}</select>
+<select id="tSido"><option value="">전체 지역</option>${trSidoOpts}</select>
+<select id="tLevel"><option value="">전체 난이도</option>${trLevelOpts}</select>
+<input type="text" id="tKw" placeholder="코스명·지역 검색">
+<button id="tReset" class="pmore" style="border-color:#f0e6dc;color:#374151">초기화</button>
+</div></div>
+<div class="srch-count" id="tCount"></div>
+<div class="trgrid" id="tGrid"></div>
+<div style="text-align:center;margin:22px 0"><button id="tMore" class="pmore" style="display:none">더 보기</button></div>
+<p class="note">데이터 출처: 한국관광공사 두루누비 걷기여행 정보. 코스 상황·통제는 방문 전 두루누비(durunubi.kr)에서 확인하세요. 카드를 누르면 네이버 검색으로 연결됩니다.</p>
+</div></main>
+<script>
+(function(){
+var T=[];var st={theme:'',sido:'',level:'',kw:''};var shown=60;
+var LC={'쉬움':'#15803d','보통':'#0d9488','어려움':'#b45309','매우 어려움':'#b91c1c'};
+function esc(s){return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function hrs(m){if(!m)return '';var h=m/60;return h>=1?('약 '+(h%1===0?h:h.toFixed(1))+'시간'):(m+'분');}
+function card(t){var q=encodeURIComponent(t.name);var chips='';if(t.dist)chips+='<span class="chip">📏 '+t.dist+'km</span>';var hh=hrs(t.min);if(hh)chips+='<span class="chip">⏱ '+hh+'</span>';if(t.level)chips+='<span class="chip" style="color:'+(LC[t.level]||'#374151')+'">🥾 '+esc(t.level)+'</span>';if(t.cycle)chips+='<span class="chip">'+esc(t.cycle)+'</span>';var reg=t.sigun||t.sido||'';return '<a class="trcard" href="https://search.naver.com/search.naver?query='+q+'" target="_blank" rel="noopener"><span class="th">'+esc(t.theme)+'</span>'+(reg?'<span class="th" style="background:#f4faf8;color:#6b7280;margin-left:6px">📍 '+esc(reg)+'</span>':'')+'<h3>'+esc(t.name)+'</h3><div class="meta">'+chips+'</div><div class="sm">'+esc(t.summary||t.desc||'')+'</div></a>';}
+function filtered(){return T.filter(function(t){if(st.theme&&t.theme!==st.theme)return false;if(st.sido&&t.sido!==st.sido)return false;if(st.level&&t.level!==st.level)return false;if(st.kw){var k=st.kw.toLowerCase();if((t.name||'').toLowerCase().indexOf(k)<0&&(t.sigun||'').indexOf(st.kw)<0)return false;}return true;});}
+function render(){var list=filtered();document.getElementById('tCount').textContent='총 '+list.length+'개 코스';var g=document.getElementById('tGrid');g.innerHTML=list.length?list.slice(0,shown).map(card).join(''):'<p style="grid-column:1/-1;color:#6b7280;padding:24px 0">조건에 맞는 코스가 없어요. 필터를 바꿔보세요.</p>';document.getElementById('tMore').style.display=list.length>shown?'inline-block':'none';}
+document.getElementById('tTheme').addEventListener('change',function(e){st.theme=e.target.value;shown=60;render();});
+document.getElementById('tSido').addEventListener('change',function(e){st.sido=e.target.value;shown=60;render();});
+document.getElementById('tLevel').addEventListener('change',function(e){st.level=e.target.value;shown=60;render();});
+document.getElementById('tKw').addEventListener('input',function(e){st.kw=e.target.value.trim();shown=60;render();});
+document.getElementById('tReset').addEventListener('click',function(){st={theme:'',sido:'',level:'',kw:''};shown=60;document.getElementById('tTheme').value='';document.getElementById('tSido').value='';document.getElementById('tLevel').value='';document.getElementById('tKw').value='';render();});
+document.getElementById('tMore').addEventListener('click',function(){shown+=60;render();});
+document.getElementById('tCount').textContent='불러오는 중…';
+fetch('/trails/data.json').then(function(r){return r.json();}).then(function(data){T=data;render();}).catch(function(){document.getElementById('tCount').textContent='데이터를 불러오지 못했습니다. 새로고침 해주세요.';});
+})();
+</script>`;
+  writePage('trails', layout('걷기 여행 — 전국 걷기길 코스(해파랑길·서해랑길·남파랑길) | ' + SITE_NAME, '전국 걷기여행 코스를 거리·난이도·지역별로. 두루누비 공공데이터 기반 ' + apiTrails.length + '개 코스 — 해파랑길·서해랑길·남파랑길·DMZ 평화의길.', '/trails/', trailContent));
+  fs.writeFileSync(path.join(ROOT, 'trails', 'data.json'), JSON.stringify(apiTrails));
+}
+
 // ---------- sitemap / robots ----------
-const urls = ['/', ...MONTHS.map(m => `/${m.key}/`), '/search/', '/pet/', '/jangteo/', '/test/', '/blog/', ...posts.map(p => `/blog/${p.slug}/`), '/privacy/', ...(apiFestsEn.length ? ['/en/', '/en/search/'] : [])];
+const urls = ['/', ...MONTHS.map(m => `/${m.key}/`), '/search/', '/pet/', ...(apiAccessible.length ? ['/accessible/'] : []), ...(apiTrails.length ? ['/trails/'] : []), '/jangteo/', '/test/', '/blog/', ...posts.map(p => `/blog/${p.slug}/`), '/privacy/', ...(apiFestsEn.length ? ['/en/', '/en/search/'] : [])];
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${urls.map(u => `<url><loc>${SITE}${u}</loc><lastmod>${TODAY}</lastmod></url>`).join('\n')}
