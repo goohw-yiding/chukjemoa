@@ -172,6 +172,13 @@ article ul{padding-left:20px}
 <p id="fm2-ov"></p>
 <div id="fm2-near"></div>
 <div class="fm-links"><a id="fm2-hp" target="_blank" rel="noopener">🏛️ 공식 홈페이지</a><a id="fm2-naver" target="_blank" rel="noopener">🔎 네이버에서 보기</a></div>
+</div></div><div id="placemodal" class="fmodal"><div class="fmbox">
+<button class="fmx" id="pm2x" aria-label="닫기">✕</button>
+<img id="pm2-img" class="fm-img" alt="">
+<h3 id="pm2-title"></h3>
+<p id="pm2-meta"></p>
+<div id="pm2-body"></div>
+<div class="fm-links"><a id="pm2-map" target="_blank" rel="noopener">🗺️ 지도</a><a id="pm2-naver" target="_blank" rel="noopener">🔎 네이버에서 보기</a></div>
 </div></div>
 <script>
 (function(){
@@ -269,6 +276,23 @@ article ul{padding-left:20px}
   function close(){m.classList.remove('show');}
   document.getElementById('fm2x').addEventListener('click',close);
   m.addEventListener('click',function(e){if(e.target.id==='festmodal')close();});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
+})();
+</script><script>
+(function(){
+  var m=document.getElementById('placemodal'); if(!m) return;
+  window.openPlaceModal=function(o){
+    var img=document.getElementById('pm2-img'); if(o.img){img.src=o.img;img.style.display='block';}else{img.style.display='none';}
+    document.getElementById('pm2-title').textContent=o.title||'';
+    document.getElementById('pm2-meta').textContent=o.meta||'';
+    document.getElementById('pm2-body').innerHTML=o.body||'';
+    document.getElementById('pm2-naver').href=o.naver||('https://search.naver.com/search.naver?query='+encodeURIComponent(o.title||''));
+    var mp=document.getElementById('pm2-map'); if(o.map){mp.href=o.map;mp.style.display='inline-block';}else{mp.style.display='none';}
+    m.classList.add('show');
+  };
+  function close(){m.classList.remove('show');}
+  document.getElementById('pm2x').addEventListener('click',close);
+  m.addEventListener('click',function(e){if(e.target.id==='placemodal')close();});
   document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
 })();
 </script>

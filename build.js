@@ -282,6 +282,34 @@ const FEST_MODAL_JS = `<script>
 })();
 </script>`;
 
+// 공용 장소 모달 (반려견·무장애·걷기 카드 클릭 시 사이트 내 표시 — 네이버 이탈 방지)
+const PLACE_MODAL_HTML = `<div id="placemodal" class="fmodal"><div class="fmbox">
+<button class="fmx" id="pm2x" aria-label="닫기">✕</button>
+<img id="pm2-img" class="fm-img" alt="">
+<h3 id="pm2-title"></h3>
+<p id="pm2-meta"></p>
+<div id="pm2-body"></div>
+<div class="fm-links"><a id="pm2-map" target="_blank" rel="noopener">🗺️ 지도</a><a id="pm2-naver" target="_blank" rel="noopener">🔎 네이버에서 보기</a></div>
+</div></div>`;
+const PLACE_MODAL_JS = `<script>
+(function(){
+  var m=document.getElementById('placemodal'); if(!m) return;
+  window.openPlaceModal=function(o){
+    var img=document.getElementById('pm2-img'); if(o.img){img.src=o.img;img.style.display='block';}else{img.style.display='none';}
+    document.getElementById('pm2-title').textContent=o.title||'';
+    document.getElementById('pm2-meta').textContent=o.meta||'';
+    document.getElementById('pm2-body').innerHTML=o.body||'';
+    document.getElementById('pm2-naver').href=o.naver||('https://search.naver.com/search.naver?query='+encodeURIComponent(o.title||''));
+    var mp=document.getElementById('pm2-map'); if(o.map){mp.href=o.map;mp.style.display='inline-block';}else{mp.style.display='none';}
+    m.classList.add('show');
+  };
+  function close(){m.classList.remove('show');}
+  document.getElementById('pm2x').addEventListener('click',close);
+  m.addEventListener('click',function(e){if(e.target.id==='placemodal')close();});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
+})();
+</script>`;
+
 // 킥④ 찜하기 (모든 카드 페이지 공통, localStorage)
 const FAV_JS = `<script>
 (function(){
@@ -590,11 +618,11 @@ ${content}
 <footer><div class="wrap">
 ${footer}
 </div></footer>
-${lang === 'ko' ? FEST_MODAL_HTML : ''}
+${lang === 'ko' ? FEST_MODAL_HTML + PLACE_MODAL_HTML : ''}
 ${DDAY_JS}
 ${FAV_JS}
 ${NEARBY_JS}
-${lang === 'ko' ? FEST_MODAL_JS : ''}
+${lang === 'ko' ? FEST_MODAL_JS + PLACE_MODAL_JS : ''}
 ${urlPath === '/' ? FIREWORKS_JS : ''}
 </body>
 </html>`;
@@ -1119,14 +1147,15 @@ const petContent = `<main><div class="wrap">
 <div class="srch-count" id="pCount"></div>
 <div class="grid" id="pGrid"></div>
 <div style="text-align:center;margin:22px 0"><button id="pMore" class="pmore" style="display:none">더 보기</button></div>
-<p class="note">데이터 출처: 한국관광공사 반려동물 동반여행 서비스(공공데이터포털). 반려동물 동반 조건·이용가능 시설은 방문 전 각 장소에 꼭 확인하세요. 카드를 누르면 네이버 검색으로 연결됩니다.</p>
+<p class="note">데이터 출처: 한국관광공사 반려동물 동반여행 서비스(공공데이터포털). 반려동물 동반 조건·이용가능 시설은 방문 전 각 장소에 꼭 확인하세요. 카드를 누르면 상세정보와 지도·검색 링크가 표시됩니다.</p>
 </div></main>
 <script>
 (function(){
-var P=[];var st={sido:'',sigungu:'',cat:'',kw:''};var shown=60;
+var P=[];var byId={};var st={sido:'',sigungu:'',cat:'',kw:''};var shown=60;
 var CE={'관광지':'🏞️','음식점':'🍴','숙박':'🏨','레포츠':'🚵','문화시설':'🎭'};
 function esc(s){return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
-function card(p){var loc=(p.sido||'')+(p.sigungu?' '+p.sigungu:'');var q=encodeURIComponent(p.title);var img=p.img||'/img/hero.webp';var badge=[p.psbl,p.type].filter(Boolean).join(' · ');var info=[p.need,p.note].filter(Boolean).join(' / ');return '<a class="card" href="https://search.naver.com/search.naver?query='+q+'" target="_blank" rel="noopener"><div class="thumb"><img loading="lazy" src="'+esc(img)+'" alt="'+esc(p.title)+'" onerror="this.src=&#39;/img/hero.webp&#39;"><span class="cat">'+(CE[p.cat]||'')+' '+esc(p.cat)+'</span></div><div class="card-body"><h3>'+esc(p.title)+'</h3><div class="loc">'+esc(loc)+'</div>'+(badge?'<div class="petbadge">🐾 '+esc(badge)+'</div>':'')+(info?'<div class="petnote" title="'+esc(info)+'">ⓘ '+esc(info)+'</div>':'')+'</div></a>';}
+function card(p){var loc=(p.sido||'')+(p.sigungu?' '+p.sigungu:'');var q=encodeURIComponent(p.title);var img=p.img||'/img/hero.webp';var badge=[p.psbl,p.type].filter(Boolean).join(' · ');var info=[p.need,p.note].filter(Boolean).join(' / ');return '<a class="card" data-id="'+esc(p.id)+'" style="cursor:pointer" href="https://search.naver.com/search.naver?query='+q+'"><div class="thumb"><img loading="lazy" src="'+esc(img)+'" alt="'+esc(p.title)+'" onerror="this.src=&#39;/img/hero.webp&#39;"><span class="cat">'+(CE[p.cat]||'')+' '+esc(p.cat)+'</span></div><div class="card-body"><h3>'+esc(p.title)+'</h3><div class="loc">'+esc(loc)+'</div>'+(badge?'<div class="petbadge">🐾 '+esc(badge)+'</div>':'')+(info?'<div class="petnote" title="'+esc(info)+'">ⓘ '+esc(info)+'</div>':'')+'</div></a>';}
+function openPet(p){if(!window.openPlaceModal){window.open('https://search.naver.com/search.naver?query='+encodeURIComponent(p.title),'_blank','noopener');return;}var loc=(p.sido||'')+(p.sigungu?' '+p.sigungu:'');var body='';var badge=[p.psbl,p.type].filter(Boolean).join(' · ');if(badge)body+='<div class="petbadge" style="font-size:.9rem">🐾 동반 가능: '+esc(badge)+'</div>';var info=[p.need,p.note].filter(Boolean).join(' / ');if(info)body+='<div style="color:#6b7280;font-size:.9rem;margin-top:6px">ⓘ '+esc(info)+'</div>';window.openPlaceModal({img:p.img,title:p.title,meta:[(CE[p.cat]||'')+' '+p.cat,loc,p.tel].filter(Boolean).join('  ·  '),body:body,naver:'https://search.naver.com/search.naver?query='+encodeURIComponent(p.title),map:'https://map.naver.com/p/search/'+encodeURIComponent(p.title)});}
 function filtered(){return P.filter(function(p){if(st.sido&&p.sido!==st.sido)return false;if(st.sigungu&&p.sigungu!==st.sigungu)return false;if(st.cat&&p.cat!==st.cat)return false;if(st.kw){var k=st.kw.toLowerCase();if((p.title||'').toLowerCase().indexOf(k)<0&&(p.addr||'').indexOf(st.kw)<0)return false;}return true;});}
 function render(){var list=filtered();document.getElementById('pCount').textContent='총 '+list.length+'곳';var g=document.getElementById('pGrid');g.innerHTML=list.length?list.slice(0,shown).map(card).join(''):'<p style="grid-column:1/-1;color:#6b7280;padding:24px 0">조건에 맞는 곳이 없어요. 지역·유형을 바꿔보세요.</p>';document.getElementById('pMore').style.display=list.length>shown?'inline-block':'none';}
 function fillSg(){var set={};P.forEach(function(p){if((!st.sido||p.sido===st.sido)&&p.sigungu)set[p.sigungu]=1;});var arr=Object.keys(set).sort();document.getElementById('pSigungu').innerHTML='<option value="">전체 시·군·구</option>'+arr.map(function(s){return '<option value="'+s+'">'+s+'</option>';}).join('');}
@@ -1136,8 +1165,9 @@ document.getElementById('pCat').addEventListener('change',function(e){st.cat=e.t
 document.getElementById('pKw').addEventListener('input',function(e){st.kw=e.target.value.trim();shown=60;render();});
 document.getElementById('pReset').addEventListener('click',function(){st={sido:'',sigungu:'',cat:'',kw:''};shown=60;document.getElementById('pSido').value='';document.getElementById('pCat').value='';document.getElementById('pKw').value='';fillSg();render();});
 document.getElementById('pMore').addEventListener('click',function(){shown+=60;render();});
+document.getElementById('pGrid').addEventListener('click',function(e){var c=e.target.closest('.card');if(!c||!window.openPlaceModal)return;e.preventDefault();var p=byId[c.getAttribute('data-id')];if(p)openPet(p);});
 document.getElementById('pCount').textContent='불러오는 중…';
-fetch('/pet/data.json').then(function(r){return r.json();}).then(function(data){P=data;fillSg();render();}).catch(function(){document.getElementById('pCount').textContent='데이터를 불러오지 못했습니다. 새로고침 해주세요.';});
+fetch('/pet/data.json').then(function(r){return r.json();}).then(function(data){P=data;byId={};P.forEach(function(p){byId[p.id]=p;});fillSg();render();}).catch(function(){document.getElementById('pCount').textContent='데이터를 불러오지 못했습니다. 새로고침 해주세요.';});
 })();
 </script>`;
 writePage('pet', layout('반려견 동반 여행지 — 전국 반려동물 동반 관광지·맛집·숙소 | ' + SITE_NAME, '반려동물 동반 가능한 전국 관광지·음식점·숙박·레포츠를 지역별로. 공공데이터 기반 ' + apiPets.length + '곳. 강아지와 함께 갈 곳 찾기.', '/pet/', petContent));
@@ -1425,14 +1455,15 @@ if (apiAccessible.length) {
 <div class="srch-count" id="aCount"></div>
 <div class="grid" id="aGrid"></div>
 <div style="text-align:center;margin:22px 0"><button id="aMore" class="pmore" style="display:none">더 보기</button></div>
-<p class="note">데이터 출처: 한국관광공사 무장애여행 서비스(공공데이터포털). 편의시설 정보는 순차적으로 채워지고 있으며, 방문 전 각 시설에 접근성을 꼭 확인하세요. 카드를 누르면 네이버 검색으로 연결됩니다.</p>
+<p class="note">데이터 출처: 한국관광공사 무장애여행 서비스(공공데이터포털). 편의시설 정보는 순차적으로 채워지고 있으며, 방문 전 각 시설에 접근성을 꼭 확인하세요. 카드를 누르면 상세정보와 지도·검색 링크가 표시됩니다.</p>
 </div></main>
 <script>
 (function(){
-var A=[];var st={sido:'',sigungu:'',cat:'',acc:'',kw:''};var shown=60;
+var A=[];var byId={};var st={sido:'',sigungu:'',cat:'',acc:'',kw:''};var shown=60;
 var CE={'관광지':'🏞️','문화시설':'🎭','음식점':'🍴','숙박':'🏨','레포츠':'🚵','쇼핑':'🛍️','기타':'📍'};
 function esc(s){return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
-function card(p){var loc=(p.sido||'')+(p.sigungu?' '+p.sigungu:'');var q=encodeURIComponent(p.title);var img=p.img||'/img/hero.webp';var acc=(p.acc&&p.acc.length)?'<div class="accrow">'+p.acc.map(function(a){return '<span class="accbadge">♿ '+esc(a)+'</span>';}).join('')+'</div>':'';return '<a class="card" href="https://search.naver.com/search.naver?query='+q+'" target="_blank" rel="noopener"><div class="thumb"><img loading="lazy" src="'+esc(img)+'" alt="'+esc(p.title)+'" onerror="this.src=&#39;/img/hero.webp&#39;"><span class="cat">'+(CE[p.cat]||'')+' '+esc(p.cat)+'</span></div><div class="card-body"><h3>'+esc(p.title)+'</h3><div class="loc">'+esc(loc)+'</div>'+acc+'</div></a>';}
+function card(p){var loc=(p.sido||'')+(p.sigungu?' '+p.sigungu:'');var q=encodeURIComponent(p.title);var img=p.img||'/img/hero.webp';var acc=(p.acc&&p.acc.length)?'<div class="accrow">'+p.acc.map(function(a){return '<span class="accbadge">♿ '+esc(a)+'</span>';}).join('')+'</div>':'';return '<a class="card" data-id="'+esc(p.id)+'" style="cursor:pointer" href="https://search.naver.com/search.naver?query='+q+'"><div class="thumb"><img loading="lazy" src="'+esc(img)+'" alt="'+esc(p.title)+'" onerror="this.src=&#39;/img/hero.webp&#39;"><span class="cat">'+(CE[p.cat]||'')+' '+esc(p.cat)+'</span></div><div class="card-body"><h3>'+esc(p.title)+'</h3><div class="loc">'+esc(loc)+'</div>'+acc+'</div></a>';}
+function openAcc(p){if(!window.openPlaceModal){window.open('https://search.naver.com/search.naver?query='+encodeURIComponent(p.title),'_blank','noopener');return;}var loc=(p.sido||'')+(p.sigungu?' '+p.sigungu:'');var body=(p.acc&&p.acc.length)?'<div style="font-weight:800;color:#0a6c63;margin:6px 0 8px">♿ 무장애 편의시설</div><div class="accrow">'+p.acc.map(function(a){return '<span class="accbadge">♿ '+esc(a)+'</span>';}).join('')+'</div>':'<div style="color:#6b7280;font-size:.9rem">편의시설 정보는 순차적으로 채워지고 있어요. 방문 전 접근성을 꼭 확인하세요.</div>';window.openPlaceModal({img:p.img,title:p.title,meta:[(CE[p.cat]||'')+' '+p.cat,loc,p.tel].filter(Boolean).join('  ·  '),body:body,naver:'https://search.naver.com/search.naver?query='+encodeURIComponent(p.title),map:'https://map.naver.com/p/search/'+encodeURIComponent(p.title)});}
 function filtered(){return A.filter(function(p){if(st.sido&&p.sido!==st.sido)return false;if(st.sigungu&&p.sigungu!==st.sigungu)return false;if(st.cat&&p.cat!==st.cat)return false;if(st.acc&&!(p.acc&&p.acc.indexOf(st.acc)>=0))return false;if(st.kw){var k=st.kw.toLowerCase();if((p.title||'').toLowerCase().indexOf(k)<0&&(p.addr||'').indexOf(st.kw)<0)return false;}return true;});}
 function render(){var list=filtered();document.getElementById('aCount').textContent='총 '+list.length.toLocaleString()+'곳';var g=document.getElementById('aGrid');g.innerHTML=list.length?list.slice(0,shown).map(card).join(''):'<p style="grid-column:1/-1;color:#6b7280;padding:24px 0">조건에 맞는 곳이 없어요. 지역·유형·편의시설을 바꿔보세요.</p>';document.getElementById('aMore').style.display=list.length>shown?'inline-block':'none';}
 function fillSg(){var set={};A.forEach(function(p){if((!st.sido||p.sido===st.sido)&&p.sigungu)set[p.sigungu]=1;});var arr=Object.keys(set).sort();document.getElementById('aSigungu').innerHTML='<option value="">전체 시·군·구</option>'+arr.map(function(s){return '<option value="'+s+'">'+s+'</option>';}).join('');}
@@ -1443,8 +1474,9 @@ document.getElementById('aAcc').addEventListener('change',function(e){st.acc=e.t
 document.getElementById('aKw').addEventListener('input',function(e){st.kw=e.target.value.trim();shown=60;render();});
 document.getElementById('aReset').addEventListener('click',function(){st={sido:'',sigungu:'',cat:'',acc:'',kw:''};shown=60;document.getElementById('aSido').value='';document.getElementById('aCat').value='';document.getElementById('aAcc').value='';document.getElementById('aKw').value='';fillSg();render();});
 document.getElementById('aMore').addEventListener('click',function(){shown+=60;render();});
+document.getElementById('aGrid').addEventListener('click',function(e){var c=e.target.closest('.card');if(!c||!window.openPlaceModal)return;e.preventDefault();var p=byId[c.getAttribute('data-id')];if(p)openAcc(p);});
 document.getElementById('aCount').textContent='불러오는 중…';
-fetch('/accessible/data.json').then(function(r){return r.json();}).then(function(data){A=data;fillSg();render();}).catch(function(){document.getElementById('aCount').textContent='데이터를 불러오지 못했습니다. 새로고침 해주세요.';});
+fetch('/accessible/data.json').then(function(r){return r.json();}).then(function(data){A=data;byId={};A.forEach(function(p){byId[p.id]=p;});fillSg();render();}).catch(function(){document.getElementById('aCount').textContent='데이터를 불러오지 못했습니다. 새로고침 해주세요.';});
 })();
 </script>`;
   writePage('accessible', layout('무장애 여행지 — 휠체어·유아차·고령자 접근 가능 관광지 | ' + SITE_NAME, '휠체어·유아차·고령자도 편하게 갈 수 있는 전국 무장애 관광지·문화시설·맛집·숙소를 지역별로. 공공데이터 기반 ' + apiAccessible.length.toLocaleString() + '곳.', '/accessible/', accContent));
@@ -1491,15 +1523,17 @@ if (apiTrails.length) {
 <div class="srch-count" id="tCount"></div>
 <div class="trgrid" id="tGrid"></div>
 <div style="text-align:center;margin:22px 0"><button id="tMore" class="pmore" style="display:none">더 보기</button></div>
-<p class="note">데이터 출처: 한국관광공사 두루누비 걷기여행 정보. 코스 상황·통제는 방문 전 두루누비(durunubi.kr)에서 확인하세요. 카드를 누르면 네이버 검색으로 연결됩니다.</p>
+<p class="note">데이터 출처: 한국관광공사 두루누비 걷기여행 정보. 코스 상황·통제는 방문 전 두루누비(durunubi.kr)에서 확인하세요. 카드를 누르면 상세정보와 지도·검색 링크가 표시됩니다.</p>
 </div></main>
 <script>
 (function(){
-var T=[];var st={theme:'',sido:'',level:'',kw:''};var shown=60;
+var T=[];var byId={};var st={theme:'',sido:'',level:'',kw:''};var shown=60;
 var LC={'쉬움':'#15803d','보통':'#0d9488','어려움':'#b45309','매우 어려움':'#b91c1c'};
 function esc(s){return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 function hrs(m){if(!m)return '';var h=m/60;return h>=1?('약 '+(h%1===0?h:h.toFixed(1))+'시간'):(m+'분');}
-function card(t){var q=encodeURIComponent(t.name);var chips='';if(t.dist)chips+='<span class="chip">📏 '+t.dist+'km</span>';var hh=hrs(t.min);if(hh)chips+='<span class="chip">⏱ '+hh+'</span>';if(t.level)chips+='<span class="chip" style="color:'+(LC[t.level]||'#374151')+'">🥾 '+esc(t.level)+'</span>';if(t.cycle)chips+='<span class="chip">'+esc(t.cycle)+'</span>';var reg=t.sigun||t.sido||'';return '<a class="trcard" href="https://search.naver.com/search.naver?query='+q+'" target="_blank" rel="noopener"><span class="th">'+esc(t.theme)+'</span>'+(reg?'<span class="th" style="background:#f4faf8;color:#6b7280;margin-left:6px">📍 '+esc(reg)+'</span>':'')+'<h3>'+esc(t.name)+'</h3><div class="meta">'+chips+'</div><div class="sm">'+esc(t.summary||t.desc||'')+'</div></a>';}
+function card(t){var chips='';if(t.dist)chips+='<span class="chip">📏 '+t.dist+'km</span>';var hh=hrs(t.min);if(hh)chips+='<span class="chip">⏱ '+hh+'</span>';if(t.level)chips+='<span class="chip" style="color:'+(LC[t.level]||'#374151')+'">🥾 '+esc(t.level)+'</span>';if(t.cycle)chips+='<span class="chip">'+esc(t.cycle)+'</span>';var reg=t.sigun||t.sido||'';return '<a class="trcard" data-id="'+esc(t.id)+'" style="cursor:pointer" href="https://search.naver.com/search.naver?query='+encodeURIComponent(t.name)+'"><span class="th">'+esc(t.theme)+'</span>'+(reg?'<span class="th" style="background:#f4faf8;color:#6b7280;margin-left:6px">📍 '+esc(reg)+'</span>':'')+'<h3>'+esc(t.name)+'</h3><div class="meta">'+chips+'</div><div class="sm">'+esc(t.summary||t.desc||'')+'</div></a>';}
+function tchip(x,col){return '<span style="display:inline-block;font-size:.8rem;font-weight:700;color:'+(col||'#374151')+';background:#f4faf8;border:1px solid #dcefeb;border-radius:20px;padding:3px 10px;margin:0 6px 6px 0">'+x+'</span>';}
+function openTrail(t){if(!window.openPlaceModal){window.open('https://search.naver.com/search.naver?query='+encodeURIComponent(t.name),'_blank','noopener');return;}var body='<div style="margin:2px 0 10px">';if(t.dist)body+=tchip('📏 '+t.dist+'km');var hh=hrs(t.min);if(hh)body+=tchip('⏱ '+hh);if(t.level)body+=tchip('🥾 '+esc(t.level),LC[t.level]);if(t.cycle)body+=tchip(esc(t.cycle));body+='</div>';var txt=[t.summary,t.desc,t.tour].filter(Boolean).join(' ');if(txt)body+='<div style="color:#374151;font-size:.92rem;line-height:1.6">'+esc(txt)+'</div>';window.openPlaceModal({img:'',title:t.name,meta:[t.theme,(t.sigun||t.sido||'')].filter(Boolean).join('  ·  '),body:body,naver:'https://search.naver.com/search.naver?query='+encodeURIComponent(t.name),map:'https://map.naver.com/p/search/'+encodeURIComponent(t.name)});}
 function filtered(){return T.filter(function(t){if(st.theme&&t.theme!==st.theme)return false;if(st.sido&&t.sido!==st.sido)return false;if(st.level&&t.level!==st.level)return false;if(st.kw){var k=st.kw.toLowerCase();if((t.name||'').toLowerCase().indexOf(k)<0&&(t.sigun||'').indexOf(st.kw)<0)return false;}return true;});}
 function render(){var list=filtered();document.getElementById('tCount').textContent='총 '+list.length+'개 코스';var g=document.getElementById('tGrid');g.innerHTML=list.length?list.slice(0,shown).map(card).join(''):'<p style="grid-column:1/-1;color:#6b7280;padding:24px 0">조건에 맞는 코스가 없어요. 필터를 바꿔보세요.</p>';document.getElementById('tMore').style.display=list.length>shown?'inline-block':'none';}
 document.getElementById('tTheme').addEventListener('change',function(e){st.theme=e.target.value;shown=60;render();});
@@ -1508,8 +1542,9 @@ document.getElementById('tLevel').addEventListener('change',function(e){st.level
 document.getElementById('tKw').addEventListener('input',function(e){st.kw=e.target.value.trim();shown=60;render();});
 document.getElementById('tReset').addEventListener('click',function(){st={theme:'',sido:'',level:'',kw:''};shown=60;document.getElementById('tTheme').value='';document.getElementById('tSido').value='';document.getElementById('tLevel').value='';document.getElementById('tKw').value='';render();});
 document.getElementById('tMore').addEventListener('click',function(){shown+=60;render();});
+document.getElementById('tGrid').addEventListener('click',function(e){var c=e.target.closest('.trcard');if(!c||!window.openPlaceModal)return;e.preventDefault();var t=byId[c.getAttribute('data-id')];if(t)openTrail(t);});
 document.getElementById('tCount').textContent='불러오는 중…';
-fetch('/trails/data.json').then(function(r){return r.json();}).then(function(data){T=data;render();}).catch(function(){document.getElementById('tCount').textContent='데이터를 불러오지 못했습니다. 새로고침 해주세요.';});
+fetch('/trails/data.json').then(function(r){return r.json();}).then(function(data){T=data;byId={};T.forEach(function(t){byId[t.id]=t;});render();}).catch(function(){document.getElementById('tCount').textContent='데이터를 불러오지 못했습니다. 새로고침 해주세요.';});
 })();
 </script>`;
   writePage('trails', layout('걷기 여행 — 전국 걷기길 코스(해파랑길·서해랑길·남파랑길) | ' + SITE_NAME, '전국 걷기여행 코스를 거리·난이도·지역별로. 두루누비 공공데이터 기반 ' + apiTrails.length + '개 코스 — 해파랑길·서해랑길·남파랑길·DMZ 평화의길.', '/trails/', trailContent));
@@ -1568,7 +1603,7 @@ if (holidays.length && apiFests.length) {
 <h1 style="font-size:1.5rem;font-weight:900;margin:8px 0 4px">🎌 2026 연휴에 갈 축제</h1>
 <p class="page-sub" style="margin-bottom:8px">다가오는 공휴일·연휴에 맞춰 전국에서 열리는 축제를 모았어요. 황금연휴 나들이 계획을 한눈에 — 설날·추석·광복절·개천절·한글날 등 공휴일 기준입니다.</p>
 ${sections || '<p class="note">다가오는 연휴 정보를 준비 중이에요.</p>'}
-<p class="note" style="margin-top:20px">공휴일 데이터: 한국천문연구원 특일정보(공공데이터포털). 축제 일정은 변경될 수 있으니 방문 전 공식 홈페이지를 확인하세요. 카드를 누르면 네이버 검색으로 연결됩니다.</p>
+<p class="note" style="margin-top:20px">공휴일 데이터: 한국천문연구원 특일정보(공공데이터포털). 축제 일정은 변경될 수 있으니 방문 전 공식 홈페이지를 확인하세요. 카드를 누르면 상세정보와 지도·검색 링크가 표시됩니다.</p>
 </div></main>`;
   const holJsonLd = upcoming.slice(0, 3).flatMap(b => apiFests.filter(f => yd(f.start) <= b.end && yd(f.end) >= b.start).slice(0, 5)).map(f => `<script type="application/ld+json">${JSON.stringify({ '@context': 'https://schema.org', '@type': 'Event', name: f.title, startDate: String(f.start).replace(/(\d{4})(\d{2})(\d{2})/, '$1-$2-$3'), endDate: String(f.end).replace(/(\d{4})(\d{2})(\d{2})/, '$1-$2-$3'), eventStatus: 'https://schema.org/EventScheduled', location: { '@type': 'Place', name: (f.sido || '') + (f.sigungu ? ' ' + f.sigungu : ''), address: { '@type': 'PostalAddress', addressRegion: f.sido, addressCountry: 'KR' } }, image: f.img ? [String(f.img).replace(/^http:/, 'https:')] : undefined, url: SITE + '/holiday/' })}</script>`).join('\n');
   writePage('holiday', layout('2026 연휴에 갈 축제 — 설날·추석·광복절 황금연휴 축제 총정리 | ' + SITE_NAME, '2026 공휴일·연휴에 열리는 전국 축제를 한눈에. 설날·추석·광복절·개천절·한글날 연휴 나들이 계획을 축제모아에서.', '/holiday/', holContent, { jsonld: holJsonLd }));
