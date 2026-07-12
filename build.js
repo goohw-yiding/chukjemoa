@@ -18,6 +18,9 @@ catch (e) { console.log('⚠ festivals_api.json 없음 — 검색 데이터 비�
 let apiPets = [];
 try { apiPets = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/pets.json'), 'utf8')); }
 catch (e) { console.log('⚠ pets.json 없음 — 반려견 여행지 데이터 비어있음 (node fetch-pets.js 먼저 실행)'); }
+let apiFestsEn = [];
+try { apiFestsEn = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/festivals_en.json'), 'utf8')); }
+catch (e) { console.log('⚠ festivals_en.json 없음 — 영문 데이터 비어있음 (node fetch-festivals-en.js 먼저 실행)'); }
 
 const MONTHS = [
   { key: '2026-07', months: [7], label: '2026년 7월', short: '7월', emoji: '💦' },
@@ -358,9 +361,25 @@ article ul{padding-left:20px}
 @media(max-width:600px){.hero h1{font-size:1.3rem}nav a{margin-left:9px;font-size:.85rem}}
 `;
 
-function layout(title, desc, urlPath, content) {
+function layout(title, desc, urlPath, content, opts) {
+  opts = opts || {};
+  const lang = opts.lang || 'ko';
+  const alts = (opts.alternates || []).map(a => `<link rel="alternate" hreflang="${a.hreflang}" href="${SITE}${a.href}">`).join('\n');
+  const logoHref = lang === 'en' ? '/en/' : '/';
+  const nav = lang === 'en'
+    ? `<nav><a href="/en/">Home</a><a href="/en/search/">🔎 Festivals</a><a href="/">🇰🇷 한국어</a></nav>`
+    : `<nav><a href="/2026-07/">월별 축제</a><a href="/search/">🔎 축제 검색</a><a href="/pet/">🐶 반려견 여행지</a><a href="/jangteo/">전국 오일장</a><a href="/test/">🔮 취향 테스트</a><a href="/blog/">축제 가이드</a><a href="/en/">EN</a></nav>`;
+  const footer = lang === 'en'
+    ? `<p>Chukjemoa — Korea Festivals &amp; Traditional Markets</p>
+<p>Schedules may change; please check the official website before visiting.</p>
+<p>Data: Korea Tourism Organization (TourAPI) · Contact: goohw593@gmail.com</p>
+<p>© 2026 Chukjemoa</p>`
+    : `<p>${SITE_NAME} — 전국 축제·오일장 일정 모음</p>
+<p>축제 일정은 주최 측 사정에 따라 변경될 수 있습니다. 방문 전 공식 홈페이지를 확인하세요.</p>
+<p><a href="/privacy/">개인정보처리방침</a> · 문의: goohw593@gmail.com</p>
+<p>© 2026 ${SITE_NAME}</p>`;
   return `<!DOCTYPE html>
-<html lang="ko">
+<html lang="${lang}">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -369,6 +388,7 @@ function layout(title, desc, urlPath, content) {
 <title>${esc(title)}</title>
 <meta name="description" content="${esc(desc)}">
 <link rel="canonical" href="${SITE}${urlPath}">
+${alts}
 <meta property="og:title" content="${esc(title)}">
 <meta property="og:description" content="${esc(desc)}">
 <meta property="og:url" content="${SITE}${urlPath}">
@@ -379,15 +399,12 @@ function layout(title, desc, urlPath, content) {
 </head>
 <body>
 <header><div class="wrap">
-<a class="logo" href="/">🎪 ${SITE_NAME}</a>
-<nav><a href="/2026-07/">월별 축제</a><a href="/search/">🔎 축제 검색</a><a href="/pet/">🐶 반려견 여행지</a><a href="/jangteo/">전국 오일장</a><a href="/test/">🔮 취향 테스트</a><a href="/blog/">축제 가이드</a></nav>
+<a class="logo" href="${logoHref}">🎪 ${SITE_NAME}</a>
+${nav}
 </div></header>
 ${content}
 <footer><div class="wrap">
-<p>${SITE_NAME} — 전국 축제·오일장 일정 모음</p>
-<p>축제 일정은 주최 측 사정에 따라 변경될 수 있습니다. 방문 전 공식 홈페이지를 확인하세요.</p>
-<p><a href="/privacy/">개인정보처리방침</a> · 문의: goohw593@gmail.com</p>
-<p>© 2026 ${SITE_NAME}</p>
+${footer}
 </div></footer>
 ${DDAY_JS}
 ${FAV_JS}
@@ -634,7 +651,7 @@ ${posts.map(p => `<a href="/blog/${p.slug}/">${esc(p.title)}<span>${p.date}</spa
 writePage('.', layout(
   `${SITE_NAME} — 전국 축제·오일장 일정 총정리 (2026)`,
   `2026 전국 축제 일정과 오일장(5일장) 날짜를 한눈에. 월별·지역별 축제 정보, 보령머드축제부터 화천산천어축제까지.`,
-  '/', indexContent));
+  '/', indexContent, { alternates:[{hreflang:'ko',href:'/'},{hreflang:'en',href:'/en/'},{hreflang:'x-default',href:'/'}] }));
 
 // ---------- 개인정보처리방침 ----------
 const privacyContent = `<main><div class="wrap"><article>
@@ -865,7 +882,7 @@ document.getElementById('fCount').textContent='불러오는 중…';
 fetch('/search/data.json').then(function(r){return r.json();}).then(function(data){F=data;byId={};F.forEach(function(f){byId[f.id]=f;});fillSg();apply();}).catch(function(){document.getElementById('fCount').textContent='데이터를 불러오지 못했습니다. 새로고침 해주세요.';});
 })();
 </script>`;
-writePage('search', layout('전국 축제 검색 — 날짜·지역·도시별 | ' + SITE_NAME, '전국 축제를 날짜·지역·도시로 검색하세요. 공공데이터 기반 최신 축제 ' + apiFests.length + '건. 진행중·이번 주말·이번 달·반려견 동반 축제를 한눈에.', '/search/', searchContent));
+writePage('search', layout('전국 축제 검색 — 날짜·지역·도시별 | ' + SITE_NAME, '전국 축제를 날짜·지역·도시로 검색하세요. 공공데이터 기반 최신 축제 ' + apiFests.length + '건. 진행중·이번 주말·이번 달·반려견 동반 축제를 한눈에.', '/search/', searchContent, { alternates:[{hreflang:'ko',href:'/search/'},{hreflang:'en',href:'/en/search/'},{hreflang:'x-default',href:'/search/'}] }));
 fs.writeFileSync(path.join(ROOT, 'search', 'data.json'), JSON.stringify(apiFests));
 
 // ---------- 킥⑥ 반려견 동반 여행지 (반려동물 동반여행 API) ----------
@@ -923,8 +940,102 @@ fetch('/pet/data.json').then(function(r){return r.json();}).then(function(data){
 writePage('pet', layout('반려견 동반 여행지 — 전국 반려동물 동반 관광지·맛집·숙소 | ' + SITE_NAME, '반려동물 동반 가능한 전국 관광지·음식점·숙박·레포츠를 지역별로. 공공데이터 기반 ' + apiPets.length + '곳. 강아지와 함께 갈 곳 찾기.', '/pet/', petContent));
 fs.writeFileSync(path.join(ROOT, 'pet', 'data.json'), JSON.stringify(apiPets));
 
+// ---------- 영문판 /en/ (EngService2) ----------
+if (apiFestsEn.length) {
+  const EN_ORDER = ['Seoul','Gyeonggi','Incheon','Gangwon','Chungbuk','Chungnam','Daejeon','Sejong','Jeonbuk','Jeonnam','Gwangju','Gyeongbuk','Gyeongnam','Daegu','Ulsan','Busan','Jeju'];
+  const enRegions = EN_ORDER.filter(r => apiFestsEn.some(f => f.region === r));
+  const enRegOpts = enRegions.map(r => `<option value="${r}">${r} (${apiFestsEn.filter(f => f.region === r).length})</option>`).join('');
+  const enStyle = `<style>
+.srchbar{background:#fff;border-radius:16px;padding:16px 18px;box-shadow:0 3px 14px rgba(31,41,55,.07);margin:14px 0 6px}
+.srchbar .row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.srchbar select,.srchbar input{padding:10px 13px;border:1.5px solid #dcefeb;border-radius:12px;font-size:.93rem;font-family:inherit;background:#f4faf8;color:#374151}
+.srchbar input#fKw{flex:1;min-width:150px}
+.srchbar .q{display:flex;flex-wrap:wrap;gap:7px;margin-top:12px}
+.srchbar .q button{border:1.5px solid #a9e5dd;background:#fff;color:#0c7d72;border-radius:20px;padding:8px 16px;font-size:.87rem;font-weight:800;cursor:pointer;font-family:inherit}
+.srchbar .q button.on{background:linear-gradient(135deg,#0f9d8f,#2dd4bf);color:#fff;border-color:transparent}
+#fReset{background:#f3f4f6;color:#374151;border:none;cursor:pointer;font-weight:700}
+.srch-count{margin:16px 0 12px;font-weight:800;color:#0a6c63;font-size:1.02rem}
+.page-h1{font-size:1.5rem;font-weight:900;letter-spacing:-.02em;margin:6px 0}.page-sub{color:#6b7280;font-size:.95rem;margin-bottom:6px}
+.fmodal{display:none;position:fixed;inset:0;z-index:100;background:rgba(17,24,39,.55);align-items:center;justify-content:center;padding:18px}.fmodal.show{display:flex}
+.fmbox{background:#fff;border-radius:18px;max-width:560px;width:100%;max-height:86vh;overflow:auto;padding:22px;position:relative;box-shadow:0 20px 50px rgba(0,0,0,.3)}
+.fmx{position:absolute;top:12px;right:12px;border:none;background:#f3f4f6;width:34px;height:34px;border-radius:50%;font-size:1rem;cursor:pointer;color:#374151}
+.fm-img{width:100%;max-height:240px;object-fit:cover;border-radius:12px;margin-bottom:14px}
+.fmbox h3{font-size:1.3rem;font-weight:900;letter-spacing:-.02em;margin:2px 40px 6px 0}
+#fm-meta{color:#0a6c63;font-weight:700;font-size:.92rem;margin-bottom:12px}#fm-ov{color:#374151;font-size:.95rem;line-height:1.65}
+.fm-links{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}.fm-links a{flex:1;min-width:140px;text-align:center;padding:12px;border-radius:12px;font-weight:800;font-size:.95rem}
+#fm-hp{background:#0f9d8f;color:#fff}#fm-naver{background:#f3f4f6;color:#374151;border:1.5px solid #dcefeb}
+</style>`;
+  const enSearch = `<main><div class="wrap">
+${enStyle}
+<h1 class="page-h1">Korea Festival Finder</h1>
+<p class="page-sub">Search ${apiFestsEn.length} festivals across South Korea by date and region — official data from the Korea Tourism Organization.</p>
+<div class="srchbar"><div class="row">
+<select id="fSido"><option value="">All regions</option>${enRegOpts}</select>
+<input type="text" id="fKw" placeholder="Search by name or place">
+<button id="fReset" class="q" style="border:none">Reset</button>
+</div>
+<div class="q" id="fQuick">
+<button data-q="all" class="on">All</button>
+<button data-q="now">Ongoing</button>
+<button data-q="weekend">This weekend</button>
+<button data-q="month">This month</button>
+<button data-q="past">Include past</button>
+</div></div>
+<div class="srch-count" id="fCount"></div>
+<div class="grid" id="fGrid"></div>
+<p class="note">Data: Korea Tourism Organization (TourAPI). Schedules may change — please check the official site. Tap a card for the overview, official website, and a Google search.</p>
+<div id="fmodal" class="fmodal"><div class="fmbox">
+<button class="fmx" id="fmx" aria-label="close">✕</button>
+<img id="fm-img" class="fm-img" alt="">
+<h3 id="fm-title"></h3><p id="fm-meta"></p><p id="fm-ov"></p>
+<div class="fm-links"><a id="fm-hp" target="_blank" rel="noopener">🏛️ Official website</a><a id="fm-naver" target="_blank" rel="noopener">🔎 Search on Google</a></div>
+</div></div>
+</div></main>
+<script>
+(function(){
+var F=[],byId={};var st={region:'',kw:'',quick:'all'};
+function td(){var d=new Date();d.setHours(0,0,0,0);return d;}
+function toD(y){return new Date(+y.slice(0,4),+y.slice(4,6)-1,+y.slice(6,8));}
+function ov(f,a,b){var s=toD(f.start),e=toD(f.end);return s<=b&&e>=a;}
+function fy(y){return y?y.slice(0,4)+'.'+(+y.slice(4,6))+'.'+(+y.slice(6,8)):'';}
+function esc(s){return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function dday(f){var t=td(),s=toD(f.start),e=toD(f.end);if(e<t)return{l:'Ended',c:'off'};if(s<=t)return{l:'Ongoing',c:'on'};return{l:'D-'+Math.round((s-t)/86400000),c:'on'};}
+function ranges(){var t=td(),w=t.getDay();var sat=new Date(t);sat.setDate(t.getDate()+((6-w+7)%7));var sun=new Date(sat);sun.setDate(sat.getDate()+1);var m0=new Date(t.getFullYear(),t.getMonth(),1),m1=new Date(t.getFullYear(),t.getMonth()+1,0);return{t:t,sat:sat,sun:sun,m0:m0,m1:m1};}
+function card(f){var d=dday(f),img=f.img||'/img/cat-culture.webp';return '<div class="card" data-id="'+esc(f.id)+'" style="cursor:pointer"><div class="thumb"><img loading="lazy" src="'+esc(img)+'" alt="'+esc(f.title)+'" onerror="this.src=&#39;/img/cat-culture.webp&#39;"><span class="dday '+d.c+'">'+d.l+'</span>'+(f.region?'<span class="cat">'+esc(f.region)+'</span>':'')+'</div><div class="card-body"><h3>'+esc(f.title)+'</h3><div class="date">'+fy(f.start)+' ~ '+fy(f.end)+'</div><div class="loc">'+esc(f.region)+'</div></div></div>';}
+function apply(){var r=ranges();var list=F.filter(function(f){if(st.quick!=='past'&&toD(f.end)<r.t)return false;if(st.region&&f.region!==st.region)return false;if(st.kw){var k=st.kw.toLowerCase();if((f.title||'').toLowerCase().indexOf(k)<0&&(f.addr||'').toLowerCase().indexOf(k)<0)return false;}if(st.quick==='now'&&!ov(f,r.t,r.t))return false;if(st.quick==='weekend'&&!ov(f,r.sat,r.sun))return false;if(st.quick==='month'&&!ov(f,r.m0,r.m1))return false;return true;});list.sort(function(a,b){return (a.start||'').localeCompare(b.start||'');});document.getElementById('fCount').textContent=list.length+' festivals';document.getElementById('fGrid').innerHTML=list.length?list.map(card).join(''):'<p style="grid-column:1/-1;color:#6b7280;padding:24px 0">No festivals match. Try other filters.</p>';}
+function openModal(f){var m=document.getElementById('fmodal');var img=document.getElementById('fm-img');if(f.img){img.src=f.img;img.style.display='block';}else{img.style.display='none';}document.getElementById('fm-title').textContent=f.title;document.getElementById('fm-meta').textContent=fy(f.start)+' ~ '+fy(f.end)+'  ·  '+(f.region||'')+(f.tel?'  ·  '+f.tel:'');document.getElementById('fm-ov').textContent=f.ov||'Overview coming soon. Please check the official website or Google.';var hp=document.getElementById('fm-hp');if(f.hp){hp.href=(f.hp.indexOf('http')===0?f.hp:'http://'+f.hp);hp.style.display='inline-block';}else{hp.style.display='none';}document.getElementById('fm-naver').href='https://www.google.com/search?q='+encodeURIComponent(f.title+' Korea festival');m.classList.add('show');}
+function closeModal(){document.getElementById('fmodal').classList.remove('show');}
+document.getElementById('fSido').addEventListener('change',function(e){st.region=e.target.value;apply();});
+document.getElementById('fKw').addEventListener('input',function(e){st.kw=e.target.value.trim();apply();});
+document.getElementById('fReset').addEventListener('click',function(){st={region:'',kw:'',quick:'all'};document.getElementById('fSido').value='';document.getElementById('fKw').value='';var bs=document.querySelectorAll('#fQuick button');for(var i=0;i<bs.length;i++)bs[i].classList.toggle('on',bs[i].getAttribute('data-q')==='all');apply();});
+var qbs=document.querySelectorAll('#fQuick button');for(var i=0;i<qbs.length;i++){qbs[i].addEventListener('click',function(){st.quick=this.getAttribute('data-q');for(var j=0;j<qbs.length;j++)qbs[j].classList.remove('on');this.classList.add('on');apply();});}
+document.getElementById('fmx').addEventListener('click',closeModal);
+document.getElementById('fmodal').addEventListener('click',function(e){if(e.target.id==='fmodal')closeModal();});
+document.addEventListener('keydown',function(e){if(e.key==='Escape')closeModal();});
+document.getElementById('fGrid').addEventListener('click',function(e){var c=e.target.closest('.card');if(!c)return;var f=byId[c.getAttribute('data-id')];if(f)openModal(f);});
+document.getElementById('fCount').textContent='Loading...';
+fetch('/en/search/data.json').then(function(r){return r.json();}).then(function(data){F=data;byId={};F.forEach(function(f){byId[f.id]=f;});apply();}).catch(function(){document.getElementById('fCount').textContent='Failed to load data.';});
+})();
+</script>`;
+  writePage('en/search', layout('Korea Festival Finder — Search Korean Festivals by Date & Region | Chukjemoa', 'Find festivals across South Korea by date and region. ' + apiFestsEn.length + ' festivals with official overviews from the Korea Tourism Organization.', '/en/search/', enSearch, { lang:'en', alternates:[{hreflang:'ko',href:'/search/'},{hreflang:'en',href:'/en/search/'},{hreflang:'x-default',href:'/en/search/'}] }));
+  fs.writeFileSync(path.join(ROOT, 'en', 'search', 'data.json'), JSON.stringify(apiFestsEn));
+
+  const enHome = `<main><div class="wrap">
+<div class="hero" style="background:linear-gradient(135deg,#0f9d8f,#2dd4bf);border-radius:18px;overflow:hidden;margin:14px 0">
+<div class="hero-inner" style="background:rgba(15,60,55,.18);padding:64px 20px">
+<h1>Korea Festivals &amp; Traditional Markets</h1>
+<p>Search festivals across South Korea by date and region — official data from the Korea Tourism Organization.</p>
+<div class="hero-cta"><a class="cta1" href="/en/search/">Browse all festivals →</a></div>
+</div></div>
+<h2 class="sec">Plan your trip around Korea's festivals</h2>
+<p style="color:#4b5563;line-height:1.75;margin-bottom:14px">South Korea hosts hundreds of festivals every year — summer mud and water festivals, autumn fireworks and fall-foliage events, and winter ice and light festivals. Chukjemoa lets you search ${apiFestsEn.length}+ festivals by date and region, read an official overview, and jump straight to each festival's official website. All schedules and descriptions come from the Korea Tourism Organization (TourAPI).</p>
+<div style="text-align:center;margin:26px 0"><a href="/en/search/" style="display:inline-block;background:#0f9d8f;color:#fff;padding:14px 30px;border-radius:28px;font-weight:800;text-decoration:none">🔎 Open the Festival Finder</a></div>
+</div></main>`;
+  writePage('en', layout('Korea Festivals Calendar 2026 — Festivals & Traditional Markets | Chukjemoa', 'Discover festivals and traditional markets across South Korea. Search by date and region with official Korea Tourism Organization data.', '/en/', enHome, { lang:'en', alternates:[{hreflang:'ko',href:'/'},{hreflang:'en',href:'/en/'},{hreflang:'x-default',href:'/en/'}] }));
+}
+
 // ---------- sitemap / robots ----------
-const urls = ['/', ...MONTHS.map(m => `/${m.key}/`), '/search/', '/pet/', '/jangteo/', '/test/', '/blog/', ...posts.map(p => `/blog/${p.slug}/`), '/privacy/'];
+const urls = ['/', ...MONTHS.map(m => `/${m.key}/`), '/search/', '/pet/', '/jangteo/', '/test/', '/blog/', ...posts.map(p => `/blog/${p.slug}/`), '/privacy/', ...(apiFestsEn.length ? ['/en/', '/en/search/'] : [])];
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${urls.map(u => `<url><loc>${SITE}${u}</loc><lastmod>${TODAY}</lastmod></url>`).join('\n')}

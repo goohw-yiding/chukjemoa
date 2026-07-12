@@ -4,3 +4,4 @@ vc.js
 tourapi.key
 *.key
 node_modules/
+_*.js
