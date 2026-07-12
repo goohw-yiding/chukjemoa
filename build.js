@@ -849,6 +849,15 @@ const visitorSection = (visitors.ranked && visitors.ranked.length) ? `
 ${visitors.ranked.slice(0, 9).map(r => { const w = Math.max(10, Math.round(r.num / vmax * 100)); const medal = r.rank <= 3 ? ['🥇', '🥈', '🥉'][r.rank - 1] : ('<span style="color:#9aa3af;font-weight:800">' + r.rank + '</span>'); return `<div style="display:flex;align-items:center;gap:10px"><div style="width:26px;text-align:center">${medal}</div><div style="flex:1;background:#eef5f3;border-radius:10px;overflow:hidden"><div style="width:${w}%;background:linear-gradient(90deg,#0f9d8f,#2dd4bf);color:#fff;font-weight:800;font-size:.86rem;padding:6px 11px;white-space:nowrap;border-radius:10px">${esc(r.name)}</div></div><div style="color:#6b7280;font-size:.82rem;font-weight:700;min-width:58px;text-align:right">${(r.num / 10000).toFixed(0)}만명</div></div>`; }).join('')}
 </div>` : '';
 
+const FAQ_HOME = [
+  ["이번 주말 내 주변에서 열리는 축제는 어떻게 찾나요?","축제모아 홈에서 '내 주변 축제(📍)' 버튼을 누르면 현재 위치 기준 가까운 순으로 정렬됩니다. 검색 페이지에서 지역과 날짜(이번 주말)로도 걸러 볼 수 있습니다."],
+  ["2026년 여름에 갈 만한 축제는 무엇이 있나요?","7~8월에는 보령머드축제, 강릉단오제, 부산바다축제처럼 물·불꽃·야시장 축제가 많습니다. 월별 페이지에서 진행 중·예정 축제를 D-day와 함께 볼 수 있습니다."],
+  ["반려견과 함께 갈 수 있는 곳도 있나요?","네. '반려견 동반' 필터와 반려동물 동반 여행지 페이지에서 동반 가능한 장소를 찾을 수 있습니다."],
+  ["오일장(5일장)은 언제 서나요?","장터 페이지에서 지역별 오일장의 다음 장날을 자동으로 계산해 보여줍니다. 상설시장도 함께 표시됩니다."]
+];
+const FAQ_HOME_HTML = `<div class="wrap"><section class="card"><h2>자주 묻는 질문</h2>${FAQ_HOME.map(q=>`<h3>${q[0]}</h3><p>${q[1]}</p>`).join('')}</section></div>`;
+const FAQ_HOME_LD = `<script type="application/ld+json">${JSON.stringify({'@context':'https://schema.org','@type':'FAQPage',mainEntity:FAQ_HOME.map(q=>({'@type':'Question',name:q[0],acceptedAnswer:{'@type':'Answer',text:q[1]}}))})}</script>`;
+
 const indexContent = `<div class="hero">
 <video class="hero-vid" autoplay muted loop playsinline poster="/img/hero.webp" aria-hidden="true"><source src="/img/hero.mp4" type="video/mp4"></video>
 <div class="hero-inner">
@@ -883,7 +892,7 @@ ${posts.map(p => `<a href="/blog/${p.slug}/">${esc(p.title)}<span>${p.date}</spa
 writePage('.', layout(
   `${SITE_NAME} — 전국 축제·오일장 일정 총정리 (2026)`,
   `2026 전국 축제 일정과 오일장(5일장) 날짜를 한눈에. 월별·지역별 축제 정보, 보령머드축제부터 화천산천어축제까지.`,
-  '/', indexContent, { jsonld: eventsJsonLd(upcoming), alternates: homeAlts() }));
+  '/', indexContent + FAQ_HOME_HTML, { jsonld: eventsJsonLd(upcoming) + FAQ_HOME_LD, alternates: homeAlts() }));
 
 // ---------- 개인정보처리방침 ----------
 const privacyContent = `<main><div class="wrap"><article>
