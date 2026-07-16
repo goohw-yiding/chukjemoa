@@ -91,14 +91,17 @@ async function main(){
   const fpath = path.join(dir, 'festivals_api.json');
   // ---- 상세 개요·공식홈페이지 enrich (KorService2/detailCommon2) : 캐시병합 + 부족분만, 하루한도 대비 CAP ----
   const fcache = {};
-  try { JSON.parse(fs.readFileSync(fpath,'utf8')).forEach(f=>{ if(f.ov||f.hp) fcache[f.id]={ov:f.ov||'',hp:f.hp||''}; }); } catch(e){}
-  out.forEach(f=>{ const c=fcache[f.id]; if(c){ if(c.ov)f.ov=c.ov; if(c.hp)f.hp=c.hp; } });
+  try { JSON.parse(fs.readFileSync(fpath,'utf8')).forEach(f=>{ if(f.ov||f.hp||f.enr) fcache[f.id]={ov:f.ov||'',hp:f.hp||'',enr:f.enr?1:0}; }); } catch(e){}
+  out.forEach(f=>{ const c=fcache[f.id]; if(c){ if(c.ov)f.ov=c.ov; if(c.hp)f.hp=c.hp; if(c.enr)f.enr=1; } });
   const DC='https://apis.data.go.kr/B551011/KorService2/detailCommon2';
   function hpUrl(s){ if(!s) return ''; const m=String(s).match(/href=["']([^"']+)["']/i); return m?m[1]:''; }
   async function common(cid){ const u=`${DC}?serviceKey=${KEY}&MobileOS=ETC&MobileApp=chukjemoa&_type=json&numOfRows=1&pageNo=1&contentId=${cid}`; try{ const j=JSON.parse(await get(u)); const it=j.response&&j.response.body&&j.response.body.items; const d=it&&it.item?(Array.isArray(it.item)?it.item[0]:it.item):null; if(!d)return null; return {ov:(d.overview||'').replace(/<[^>]+>/g,' ').replace(/&nbsp;/g,' ').replace(/\s{2,}/g,' ').trim().slice(0,600), hp:hpUrl(d.homepage)}; }catch(e){ return null; } }
-  const need = out.filter(f=>!(f.ov||f.hp)).slice(0, 900);
+  // CAP: 운영계정 승인(2026-07-16)으로 하루 10만회 → 기본 전량. 필요시 `set CAP=500`으로 제한 가능.
+  // enr 플래그 = 조회 시도 완료 표시(공식홈피 없는 축제를 매주 무한 재조회하지 않도록). 기존 데이터엔 없으므로 최초 1회 전량 재조회됨.
+  const CAP = Number(process.env.CAP || 100000);
+  const need = out.filter(f=>!f.enr).slice(0, CAP);
   let en=0; const CB2=10;
-  for(let i=0;i<need.length;i+=CB2){ const ch=need.slice(i,i+CB2); const ds=await Promise.all(ch.map(f=>common(f.id))); ds.forEach((d,k)=>{ if(d){ if(d.ov){ch[k].ov=d.ov;en++;} if(d.hp)ch[k].hp=d.hp; } }); process.stdout.write('\r개요 '+Math.min(i+CB2,need.length)+'/'+need.length+' (신규 '+en+')'); }
+  for(let i=0;i<need.length;i+=CB2){ const ch=need.slice(i,i+CB2); const ds=await Promise.all(ch.map(f=>common(f.id))); ds.forEach((d,k)=>{ if(d){ ch[k].enr=1; if(d.ov){ch[k].ov=d.ov;en++;} if(d.hp)ch[k].hp=d.hp; } }); process.stdout.write('\r개요 '+Math.min(i+CB2,need.length)+'/'+need.length+' (신규 '+en+')'); }
   console.log('');
   console.log('개요 보유:', out.filter(f=>f.ov).length, '/', out.length, '| 공식홈피:', out.filter(f=>f.hp).length);
   fs.writeFileSync(fpath, JSON.stringify(out));

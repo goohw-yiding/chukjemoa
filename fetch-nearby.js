@@ -27,7 +27,7 @@ async function main(){
   const outPath=path.join(__dirname,'data','nearby.json');
   let cache={}; try{ cache=JSON.parse(fs.readFileSync(outPath,'utf8')); }catch(e){}
   const targets=fests.filter(f=>f.x&&f.y&&!(cache[f.id]&&cache[f.id].length!==undefined));
-  const CAP=800;
+  const CAP=Number(process.env.CAP || 100000); // 운영계정 승인(2026-07-16) 하루 10만회 → 기본 전량
   const todo=targets.slice(0,CAP);
   let got=0; const CB=8;
   for(let i=0;i<todo.length;i+=CB){

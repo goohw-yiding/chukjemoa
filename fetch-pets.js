@@ -79,8 +79,8 @@ async function main(){
   // ---- 상세 반려동물 정보 enrich (KorPetTourService2/detailPetTour2) : 캐시 병합 + 부족분만, 하루한도 대비 캡 ----
   const petsPath = path.join(__dirname, 'data', 'pets.json');
   const cache = {};
-  try { JSON.parse(fs.readFileSync(petsPath,'utf8')).forEach(p=>{ if(p.psbl||p.type||p.need||p.note) cache[p.id]={psbl:p.psbl||'',type:p.type||'',need:p.need||'',note:p.note||''}; }); } catch(e){}
-  out.forEach(p=>{ const c=cache[p.id]; if(c){ if(c.psbl)p.psbl=c.psbl; if(c.type)p.type=c.type; if(c.need)p.need=c.need; if(c.note)p.note=c.note; } });
+  try { JSON.parse(fs.readFileSync(petsPath,'utf8')).forEach(p=>{ if(p.psbl||p.type||p.need||p.note||p.enr) cache[p.id]={psbl:p.psbl||'',type:p.type||'',need:p.need||'',note:p.note||'',enr:p.enr?1:0}; }); } catch(e){}
+  out.forEach(p=>{ const c=cache[p.id]; if(c){ if(c.psbl)p.psbl=c.psbl; if(c.type)p.type=c.type; if(c.need)p.need=c.need; if(c.note)p.note=c.note; if(c.enr)p.enr=1; } });
   const DET = 'https://apis.data.go.kr/B551011/KorPetTourService2/detailPetTour2';
   function clean(s){ return (s||'').replace(/^[\s\-·]+/,'').replace(/\s*\n\s*/g,' · ').replace(/\s{2,}/g,' ').trim(); }
   async function detail(cid){
@@ -88,13 +88,15 @@ async function main(){
     try { const j = JSON.parse(await get(u)); const it = j.response && j.response.body && j.response.body.items; const d = it && it.item ? (Array.isArray(it.item)?it.item[0]:it.item) : null; if(!d) return null;
       return { psbl:(d.acmpyPsblCpam||'').trim(), type:(d.acmpyTypeCd||'').trim(), need:(d.acmpyNeedMtr||'').trim(), note:clean(d.etcAcmpyInfo) }; } catch(e){ return null; }
   }
-  const CAP = 850; // 반려동물 API 개발계정 하루 1,000회 한도 대비(목록 102 + 상세 CAP)
-  const todo = out.filter(p=>!(p.psbl||p.type||p.need||p.note)).slice(0, CAP);
+  // 운영계정 승인(2026-07-16)으로 하루 10만회 → 기본 전량. 필요시 `set CAP=500`으로 제한 가능.
+  // enr 플래그 = 조회 시도 완료 표시(상세정보가 아예 없는 장소를 매주 무한 재조회하지 않도록).
+  const CAP = Number(process.env.CAP || 100000);
+  const todo = out.filter(p=>!p.enr).slice(0, CAP);
   let got=0; const CB = 8;
   for (let i=0;i<todo.length;i+=CB){
     const chunk = todo.slice(i,i+CB);
     const ds = await Promise.all(chunk.map(p=>detail(p.id)));
-    ds.forEach((d,k)=>{ if(d){ if(d.psbl){chunk[k].psbl=d.psbl;got++;} if(d.type)chunk[k].type=d.type; if(d.need)chunk[k].need=d.need; if(d.note)chunk[k].note=d.note; } });
+    ds.forEach((d,k)=>{ if(d){ chunk[k].enr=1; if(d.psbl){chunk[k].psbl=d.psbl;got++;} if(d.type)chunk[k].type=d.type; if(d.need)chunk[k].need=d.need; if(d.note)chunk[k].note=d.note; } });
     process.stdout.write('\r상세 '+Math.min(i+CB,todo.length)+'/'+todo.length+' (신규수집 '+got+')');
   }
   console.log('');

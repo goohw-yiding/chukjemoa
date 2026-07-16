@@ -86,20 +86,25 @@ async function main(){
   // ---- 접근성 상세 enrich (detailWithTour2) : 캐시 병합 + 부족분만, 하루한도 대비 CAP ----
   const outPath = path.join(__dirname, 'data', 'accessible.json');
   const cache = {};
-  try { JSON.parse(fs.readFileSync(outPath,'utf8')).forEach(p=>{ if(Array.isArray(p.acc)) cache[p.id]=p.acc; }); } catch(e){}
-  out.forEach(p=>{ if(cache[p.id]) p.acc = cache[p.id]; });
+  const encache = {};
+  try { JSON.parse(fs.readFileSync(outPath,'utf8')).forEach(p=>{ if(Array.isArray(p.acc)) cache[p.id]=p.acc; if(p.enr) encache[p.id]=1; }); } catch(e){}
+  out.forEach(p=>{ if(cache[p.id]) p.acc = cache[p.id]; if(encache[p.id]) p.enr = 1; });
   fs.writeFileSync(outPath, JSON.stringify(out)); // 목록 우선 저장(중단 대비)
   async function detail(cid){
     const u = `${DET}?serviceKey=${KEY}&MobileOS=ETC&MobileApp=chukjemoa&_type=json&numOfRows=1&pageNo=1&contentId=${cid}`;
-    try { const j=JSON.parse(await get(u)); const it=j.response&&j.response.body&&j.response.body.items; const d=it&&it.item?(Array.isArray(it.item)?it.item[0]:it.item):null; if(!d) return null; return badges(d); } catch(e){ return null; }
+    // 반환값 3종: 배열=접근성 데이터 있음 / false=API 정상응답인데 데이터 없음(영구) / null=통신·파싱 오류(다음에 재시도)
+    try { const j=JSON.parse(await get(u)); const it=j.response&&j.response.body&&j.response.body.items; const d=it&&it.item?(Array.isArray(it.item)?it.item[0]:it.item):null; if(!d) return false; return badges(d); } catch(e){ return null; }
   }
-  const CAP = 850;
-  const todo = out.filter(p=>!Array.isArray(p.acc)).slice(0, CAP);
+  // 운영계정 승인(2026-07-16) 하루 10만회 → 기본 전량(9천여건). 필요시 `set CAP=500`으로 제한 가능.
+  // enr 플래그 = 조회 시도 완료(정상응답). detailWithTour2는 9,128곳 중 1,390곳만 데이터가 있어
+  // 나머지 7,738곳을 매주 재조회하지 않도록 표시함. 통신오류(null)는 표시 안 해 다음 주에 재시도.
+  const CAP = Number(process.env.CAP || 100000);
+  const todo = out.filter(p=>!p.enr && !Array.isArray(p.acc)).slice(0, CAP);
   let got=0; const CB=8;
   for (let i=0;i<todo.length;i+=CB){
     const chunk = todo.slice(i,i+CB);
     const ds = await Promise.all(chunk.map(p=>detail(p.id)));
-    ds.forEach((d,k)=>{ if(d){ chunk[k].acc=d; got++; } });
+    ds.forEach((d,k)=>{ if(d!==null){ chunk[k].enr=1; if(d){ chunk[k].acc=d; got++; } } });
     process.stdout.write('\r상세 '+Math.min(i+CB,todo.length)+'/'+todo.length+' (신규 '+got+')');
     if ((i/CB) % 20 === 0) fs.writeFileSync(outPath, JSON.stringify(out)); // 주기적 저장
   }
