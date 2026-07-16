@@ -5,3 +5,4 @@ tourapi.key
 *.key
 node_modules/
 _*.js
+.fuse_hidden* 
