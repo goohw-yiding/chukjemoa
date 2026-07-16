@@ -602,6 +602,7 @@ function layout(title, desc, urlPath, content, opts) {
 <title>${esc(title)}</title>
 <meta name="description" content="${esc(desc)}">
 <link rel="canonical" href="${SITE}${urlPath}">
+<link rel="alternate" type="application/rss+xml" title="${SITE_NAME} 축제 가이드" href="${SITE}/rss.xml">
 ${alts}
 <meta property="og:title" content="${esc(title)}">
 <meta property="og:description" content="${esc(desc)}">
@@ -1629,6 +1630,35 @@ const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 ${urls.map(u => `<url><loc>${SITE}${u}</loc><lastmod>${TODAY}</lastmod></url>`).join('\n')}
 </urlset>`;
 fs.writeFileSync(path.join(ROOT, 'sitemap.xml'), sitemap);
+
+// ---------- RSS 2.0 피드 (네이버 서치어드바이저 RSS 제출 / 구글 뉴스 / 피드 구독) ----------
+// 원문 전체(content:encoded)를 실어 색인에 유리하게. 최신순 정렬.
+function rfc822(d) { return new Date(d + 'T09:00:00+09:00').toUTCString(); }
+function cdata(s) { return `<![CDATA[${String(s || '').replace(/\]\]>/g, ']]&gt;')}]]>`; }
+const rssPosts = [...posts].sort((a, b) => String(b.date).localeCompare(String(a.date)));
+const rss = `<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+<title>${SITE_NAME} — 전국 축제·오일장 가이드</title>
+<link>${SITE}/</link>
+<atom:link href="${SITE}/rss.xml" rel="self" type="application/rss+xml"/>
+<description>전국 축제·오일장 일정과 나들이 가이드. 월별 축제, 반려견 동반, 무장애 여행, 오일장 장날까지 한눈에.</description>
+<language>ko</language>
+<lastBuildDate>${rssPosts.length ? rfc822(rssPosts[0].date) : new Date().toUTCString()}</lastBuildDate>
+<generator>chukjemoa build.js</generator>
+${rssPosts.map(p => `<item>
+<title>${cdata(p.title)}</title>
+<link>${SITE}/blog/${p.slug}/</link>
+<guid isPermaLink="true">${SITE}/blog/${p.slug}/</guid>
+<pubDate>${rfc822(p.date)}</pubDate>
+<description>${cdata(p.desc)}</description>
+<content:encoded>${cdata(p.body)}</content:encoded>
+</item>`).join('\n')}
+</channel>
+</rss>`;
+fs.writeFileSync(path.join(ROOT, 'rss.xml'), rss);
+console.log('✓ rss.xml —', rssPosts.length, '개 글');
+
 fs.writeFileSync(path.join(ROOT, 'robots.txt'), `User-agent: *\nAllow: /\nSitemap: ${SITE}/sitemap.xml\n`);
 fs.writeFileSync(path.join(ROOT, 'ads.txt'), `google.com, pub-3293445488923111, DIRECT, f08c47fec0942fa0\n`);
 console.log('✓ sitemap.xml, robots.txt, ads.txt');

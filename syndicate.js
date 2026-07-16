@@ -1,0 +1,366 @@
+// 축제모아 배포(신디케이션) 엔진
+// 블로그 글 1편(data/posts.json) → 외부 노출용 5채널 복붙팩 자동 생성
+//
+// 사용법:
+//   node syndicate.js              # 전체 글 배포팩 생성
+//   node syndicate.js <slug>       # 특정 글만
+//   node syndicate.js --latest     # 최신 글 1편만
+//
+// 출력: ../축제모아_배포팩/{slug}.md   (사이트 폴더 밖 → 절대 배포 안 됨)
+//
+// 원칙: 원문(chukjemoa.co.kr)이 정본. 외부에는 '요약 + 원문 링크'만 내보내
+//       중복 콘텐츠를 피하고 백링크·유입을 원문으로 모은다.
+
+const fs = require('fs');
+const path = require('path');
+
+const ROOT = __dirname;
+const SITE = 'https://chukjemoa.co.kr';
+const OUT_DIR = path.join(ROOT, '..', '축제모아_배포팩');
+const posts = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/posts.json'), 'utf8'));
+
+// ---------- HTML 파서 (의존성 0) ----------
+const strip = h => String(h || '')
+  .replace(/<br\s*\/?>/gi, ' ')
+  .replace(/<[^>]+>/g, '')
+  .replace(/&nbsp;/g, ' ').replace(/&amp;/g, '&').replace(/&lt;/g, '<')
+  .replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#39;/g, "'")
+  .replace(/\s+/g, ' ').trim();
+
+// 본문을 <h2> 기준 섹션으로 쪼갠다
+function parseSections(body) {
+  const secs = [];
+  const parts = String(body).split(/<h2[^>]*>/i);
+  // 첫 조각은 h2 이전(리드)
+  secs.push({ h2: null, html: parts[0] || '' });
+  for (let i = 1; i < parts.length; i++) {
+    const m = parts[i].match(/^([\s\S]*?)<\/h2>([\s\S]*)$/i);
+    if (m) secs.push({ h2: strip(m[1]), html: m[2] });
+  }
+  return secs.map(s => {
+    // 원문 내부링크가 든 <li>는 사이트 안에서만 의미 있는 CTA(예: "…총정리에서 확인하세요").
+    // 외부 채널에선 링크가 죽어 문장만 남아 어색하므로 제외한다.
+    const items = [...String(s.html).matchAll(/<li[^>]*>([\s\S]*?)<\/li>/gi)]
+      .filter(m => !/<a\s[^>]*href=/i.test(m[1]))
+      .map(m => strip(m[1]));
+    const paras = [...String(s.html).matchAll(/<p[^>]*>([\s\S]*?)<\/p>/gi)].map(m => strip(m[1])).filter(Boolean);
+    // <strong> 강조어 = 핵심 키워드
+    const strongs = [...String(s.html).matchAll(/<strong[^>]*>([\s\S]*?)<\/strong>/gi)].map(m => strip(m[1])).filter(Boolean);
+    return { ...s, items, paras, strongs };
+  });
+}
+
+// 문장 단위로 자르기
+const sentences = t => String(t).split(/(?<=[.!?])\s+/).map(s => s.trim()).filter(Boolean);
+
+// 단어 경계에서 자르기(문장 중간 뚝 끊김 방지)
+function clip(t, n) {
+  const s = String(t).trim();
+  if (s.length <= n) return s;
+  const cut = s.slice(0, n);
+  const sp = cut.lastIndexOf(' ');
+  return (sp > n * 0.6 ? cut.slice(0, sp) : cut).replace(/[,·\-—\s]+$/, '') + '…';
+}
+
+// 훅 문장 뽑기: 첫 문장의 첫 절(쉼표 앞)이 적당하면 그걸 씀
+function hookOf(p, secs) {
+  const first = sentences(secs[0].paras[0] || p.desc)[0] || p.title;
+  const clause = first.split(/,\s*/)[0];
+  if (clause.length >= 6 && clause.length <= 34 && clause !== first) return clause;
+  return clip(first, 38);
+}
+
+// 제목에서 해시태그 후보 추출
+const STOP = new Set(['완벽', '가이드', '총정리', '정리', '방법', '보는', '읽는', '무슨', '뜻일까', '전국', '어떻게', '위한', '처음', '가는', '타고', '떠나는', '없이', '무엇', '이란', '이건', '까지', '부터']);
+function autoTags(title) {
+  const words = String(title)
+    .replace(/[^가-힣a-zA-Z0-9\s]/g, ' ')
+    .split(/\s+/)
+    // 조사 제거는 명사 끝소리와 겹치지 않는 것만 (이/가/도/만 제외 — '물놀이'→'물놀', '반딧불이'→'반딧불' 파손 방지)
+    .map(w => w.replace(/(을|를|은|는|의|에서|에|와|과|으로|로)$/, ''))
+    .filter(w => /[가-힣]/.test(w) && w.length >= 2 && w.length <= 8 && !STOP.has(w) && !/^\d+$/.test(w));
+  const uniq = [...new Set(words)].slice(0, 4);
+  return [...uniq, '축제모아', '주말나들이', '가볼만한곳'];
+}
+
+// 태그: posts.json에 tags 배열이 있으면 그걸 우선(수동 지정), 없으면 제목에서 자동 추출
+const tagsOf = p => (Array.isArray(p.tags) && p.tags.length) ? p.tags : autoTags(p.title);
+
+// 글 성격 감지 → 커뮤니티 타깃/링크 결정
+function detectKind(p) {
+  const t = p.title + ' ' + p.desc;
+  if (/오일장|5일장|장날|장터/.test(t)) return {
+    kind: '오일장',
+    hub: `${SITE}/jangteo/`, hubLabel: '전국 오일장 장날표',
+    targets: '지역 맘카페·동네카페, 5060 커뮤니티, 기차여행/당일치기 카페, 당근 동네생활, 네이버 밴드(지역)'
+  };
+  if (/물놀이|여름|워터/.test(t)) return {
+    kind: '여름축제',
+    hub: `${SITE}/2026-07/`, hubLabel: '7월 축제 일정',
+    targets: '지역 맘카페, 캠핑·나들이 카페, 당근 동네생활, 인스타 #여름축제'
+  };
+  return {
+    kind: '축제',
+    hub: `${SITE}/2026-07/`, hubLabel: '월별 축제 일정',
+    targets: '지역 맘카페·동네카페, 나들이/캠핑 카페, 당근 동네생활, 네이버 밴드(지역)'
+  };
+}
+
+// ---------- 채널별 생성기 ----------
+
+// 1) 네이버 블로그 — 요약본(중복콘텐츠 회피) + 원문 링크
+function naverBlog(p, secs, meta) {
+  const url = `${SITE}/blog/${p.slug}/`;
+  const real = secs.filter(s => s.h2);
+  const leadShort = sentences(secs[0].paras[0] || p.desc).slice(0, 2).join(' ');
+
+  // 티저 전략: 마지막 섹션은 통째로 남겨 원문 클릭 이유를 만든다 (섹션 3개 이상일 때)
+  const shown = real.length >= 3 ? real.slice(0, -1) : real;
+  const held = real.length >= 3 ? real.slice(-1) : [];
+
+  const body = shown.map(s => {
+    let line;
+    if (s.items.length) {
+      line = s.items.slice(0, 3).map(i => `· ${clip(i, 44)}`).join('\n');
+      if (s.items.length > 3) line += `\n· (그 외 ${s.items.length - 3}가지는 원문에)`;
+    } else {
+      line = sentences(s.paras.join(' ')).slice(0, 1).join(' ');
+    }
+    return `[ ${s.h2} ]\n${line}`;
+  }).join('\n\n');
+
+  const teaser = held.length
+    ? `\n\n[ ${held[0].h2} ]\n${held[0].items.length ? `${held[0].items.length}가지를 원문에 정리해 뒀어요.` : '원문에 정리해 뒀어요.'} 👇`
+    : '';
+
+  return `## 1) 네이버 블로그 — 복붙용
+
+> **왜**: 네이버 블로그는 도메인 파워가 이미 최상위라, 우리 사이트가 검색 100위일 때도 1페이지에 뜹니다.
+> **규칙**: 전문 복사 금지(중복 콘텐츠 → 양쪽 다 손해). 아래는 **요약 + 티저**로 짜여 있습니다 — 마지막 섹션(\`${held.length ? held[0].h2 : '—'}\`)은 일부러 비워 원문을 클릭할 이유를 남겼습니다.
+
+**제목**
+\`\`\`
+${p.title}
+\`\`\`
+
+**본문**
+\`\`\`
+${leadShort}
+
+${body}${teaser}
+
+▼ 나머지 상세 내용과 전국 축제 일정은 원문에서 확인하세요
+${url}
+
+* ${meta.hubLabel}: ${meta.hub}
+\`\`\`
+
+**태그**
+\`\`\`
+${tagsOf(p).map(t => '#' + t).join(' ')}
+\`\`\`
+
+**발행 후 체크**
+- [ ] 본문 하단 원문 링크가 **텍스트 링크**로 살아있는지(이미지 링크 X)
+- [ ] 카테고리·태그 저장
+- [ ] 티스토리/브런치에도 같은 요약본 재활용 가능 (제목만 살짝 변형)
+
+---
+`;
+}
+
+// 2) 스레드 / X
+function threads(p, secs, meta) {
+  const url = `${SITE}/blog/${p.slug}/`;
+  const hook = hookOf(p, secs);
+  const facts = secs.filter(s => s.h2).flatMap(s => s.items).slice(0, 3);
+  const body = facts.length
+    ? facts.map(f => '· ' + clip(f, 42)).join('\n')
+    : sentences(secs.filter(s => s.h2).flatMap(s => s.paras).join(' ')).slice(0, 2).map(t => clip(t, 60)).join('\n');
+  return `## 2) 스레드 / X — 복붙용
+
+\`\`\`
+${hook}
+
+${body}
+
+👉 ${url}
+${tagsOf(p).slice(0, 3).map(t => '#' + t).join(' ')}
+\`\`\`
+
+---
+`;
+}
+
+// 3) 인스타 카드뉴스 대본 (릴스와 별개 노출면 → 도달 2배)
+function instaCards(p, secs, meta) {
+  const real = secs.filter(s => s.h2);
+  const hook = hookOf(p, secs);
+  // 카드 1장에 4줄 이상 넣으면 모바일에서 안 읽힘 → 3줄·36자 상한
+  const cards = real.slice(0, 3).map((s, i) => {
+    const lines = s.items.length ? s.items.slice(0, 3) : sentences(s.paras.join(' ')).slice(0, 2);
+    return `**${i + 2}장 — ${s.h2}**\n${lines.map(l => '  · ' + clip(l, 36)).join('\n')}`;
+  }).join('\n\n');
+  return `## 3) 인스타 카드뉴스 (캐러셀) — 대본
+
+> 1080×1080, 브랜드색 \`#ff5a3c\`. 릴스와 **별개 노출면**이라 같은 소재로 도달이 2배가 됩니다.
+
+**1장 — 훅**
+  큰 글씨: ${clip(p.title.split(/[—(]/)[0].trim(), 24)}
+  작게: ${hook}
+
+${cards}
+
+**${Math.min(real.length, 3) + 2}장 — CTA**
+  "전국 축제 일정 한눈에 — 프로필 링크 🎪"
+  작게: chukjemoa.co.kr
+
+**캡션**
+\`\`\`
+${hook}
+
+자세한 내용은 프로필 링크에서 확인하세요 🎪
+${tagsOf(p).map(t => '#' + t).join(' ')}
+\`\`\`
+
+---
+`;
+}
+
+// 4) 커뮤니티 시딩 답변 (가치 90% + 링크 1개)
+function seeding(p, secs, meta) {
+  const url = `${SITE}/blog/${p.slug}/`;
+  const real = secs.filter(s => s.h2);
+  const lead = sentences(secs[0].paras[0] || p.desc).slice(0, 2).join(' ');
+
+  const answers = [];
+
+  // A. 개요형 — "○○ 언제/어디서 하나요?" 질문에
+  answers.push({
+    q: `"${meta.kind} 언제·어디서 하나요?" 류 질문에`,
+    a: `${lead}\n\n저도 궁금해서 찾아보다가 정리된 글이 있어서 공유해요 → ${url}`
+  });
+
+  // B. 리스트형 — 준비물/방법 등 li가 가장 많은 섹션 활용
+  const listSec = [...real].sort((a, b) => b.items.length - a.items.length)[0];
+  if (listSec && listSec.items.length >= 2) {
+    answers.push({
+      q: `"${listSec.h2}" 관련 질문에`,
+      a: `${listSec.h2} 쪽은 이렇게 챙기시면 돼요.\n\n${listSec.items.slice(0, 4).map(i => '· ' + i).join('\n')}\n\n저도 찾아보다가 정리된 글이 있어서 공유해요 → ${url}`
+    });
+  }
+
+  // C. 허브형 — "이번 주말 갈 만한 곳?" 류 (사이트 메인 기능 노출)
+  answers.push({
+    q: `"이번 주말 ○○ 근처 갈 만한 데 있나요?" 류 질문에`,
+    a: `지역별로 이번 달 ${meta.kind} 모아둔 데서 봤는데 무장애·반려동반 필터도 있어서 편했어요.\n일정이 자주 바뀌어서 방문 전에 한 번 더 확인하시는 게 좋아요 → ${meta.hub}`
+  });
+
+  return `## 4) 커뮤니티 시딩 — 복붙용 답변 ${answers.length}종
+
+> **원칙**: 질문글에만 · 하루 1~2곳 · 정보 90% + 링크 1개 · 가입 직후 첫 글에 링크 금지(순수 도움 댓글 2~3개로 계정 온기 먼저).
+> **타깃**: ${meta.targets}
+
+${answers.map((x, i) => `### ${String.fromCharCode(65 + i)}. ${x.q}
+\`\`\`
+${x.a}
+\`\`\`
+`).join('\n')}
+**하지 말 것**: 같은 문구 복붙 도배 · 여러 글에 같은 링크 연속 · 링크 금지 카페에서 우회 링크(강퇴 사유)
+
+---
+`;
+}
+
+// 5) 숏폼 대본 (숏폼자동화 파이프라인 소재로)
+function shortform(p, secs) {
+  const real = secs.filter(s => s.h2);
+  const hook = hookOf(p, secs);
+  const beats = real.slice(0, 3).flatMap(s => (s.items.length ? s.items.slice(0, 2) : sentences(s.paras.join(' ')).slice(0, 1)));
+  return `## 5) 숏폼 대본 (쇼츠·릴스·틱톡)
+
+> \`숏폼자동화/topic_chukje.json\`에 주제로 추가하면 기존 자동발행 파이프라인이 그대로 처리합니다.
+
+\`\`\`
+[훅 0~2초]  ${hook}
+
+${beats.slice(0, 4).map((b, i) => `[${i * 3 + 3}~${i * 3 + 6}초]  ${clip(b, 38)}`).join('\n')}
+
+[CTA 마지막]  "축제모아에서 전국 축제 한눈에"
+\`\`\`
+
+---
+`;
+}
+
+// ---------- 팩 조립 ----------
+function buildPack(p) {
+  const secs = parseSections(p.body);
+  const meta = detectKind(p);
+  const url = `${SITE}/blog/${p.slug}/`;
+  const head = `# 배포팩 — ${p.title}
+
+- **원문(정본)**: ${url}
+- **허브 링크**: ${meta.hub} (${meta.hubLabel})
+- **작성일**: ${p.date} · **생성일**: ${new Date().toISOString().slice(0, 10)}
+- **유형**: ${meta.kind}
+
+> 원문은 우리 사이트가 정본입니다. 외부에는 **요약 + 원문 링크**만 내보내
+> 중복 콘텐츠를 피하고 백링크·유입을 원문으로 모읍니다.
+
+### 이번 주 실행 순서 (총 20분)
+1. 네이버 블로그에 ①번 요약본 발행 (10분) — **효과 가장 큼**
+2. 스레드/X에 ②번 붙여넣기 (2분)
+3. 커뮤니티 질문글 찾아 ④번 답변 1건 (5분/일, 하루 1~2곳)
+4. 여유되면 ③번 카드뉴스 제작 (30분)
+
+---
+
+`;
+  return head
+    + naverBlog(p, secs, meta)
+    + threads(p, secs, meta)
+    + instaCards(p, secs, meta)
+    + seeding(p, secs, meta)
+    + shortform(p, secs);
+}
+
+// ---------- 실행 ----------
+const arg = process.argv[2];
+let targets = posts;
+if (arg === '--latest') targets = [[...posts].sort((a, b) => String(b.date).localeCompare(String(a.date)))[0]];
+else if (arg && !arg.startsWith('--')) {
+  targets = posts.filter(p => p.slug === arg);
+  if (!targets.length) { console.error(`✗ slug '${arg}' 없음. 사용 가능:\n  ` + posts.map(p => p.slug).join('\n  ')); process.exit(1); }
+}
+
+fs.mkdirSync(OUT_DIR, { recursive: true });
+targets.forEach(p => {
+  fs.writeFileSync(path.join(OUT_DIR, `${p.slug}.md`), buildPack(p));
+  console.log(`✓ ${p.slug}.md`);
+});
+
+// 인덱스(체크리스트) 갱신 — 전체 실행 시에만
+if (targets.length === posts.length) {
+  const idx = `# 축제모아 배포팩 — 전체 목록
+
+블로그 글 1편 = 외부 5채널. 아래 팩을 열어 **복붙만** 하면 됩니다.
+새 글 추가 후 \`node syndicate.js --latest\` 실행하면 팩이 자동 생성됩니다.
+
+| 글 | 발행일 | 배포팩 | 네이버 | 스레드 | 커뮤니티 |
+|---|---|---|---|---|---|
+${[...posts].sort((a, b) => String(b.date).localeCompare(String(a.date))).map(p =>
+    `| ${p.title.split(/[—(]/)[0].trim()} | ${p.date} | [${p.slug}.md](${p.slug}.md) | ☐ | ☐ | ☐ |`).join('\n')}
+
+## 주간 리듬 (솔로 최소부하)
+- **주 1회(10분)**: 최신 글 1편 → 네이버 블로그 요약본 발행 ← **효과 가장 큼**
+- **주 3~4회(각 5분)**: 커뮤니티 답변 1건 + 스레드 1개
+- **측정**: GA4 → 획득 → \`referral\` 유입에서 blog.naver.com / cafe.naver.com 확인
+
+## 자동 채널 (손 안 댐)
+- **RSS**: ${SITE}/rss.xml → 네이버 서치어드바이저 RSS 제출 1회 등록하면 새 글이 자동으로 네이버에 물림
+- **사이트맵**: ${SITE}/sitemap.xml
+`;
+  fs.writeFileSync(path.join(OUT_DIR, 'README.md'), idx);
+  console.log('✓ README.md (전체 목록)')}
+console.log(`\n📦 배포팩 위치: 축제모아_배포팩/  (사이트 폴더 밖 → 배포 안 됨)`);
