@@ -501,6 +501,17 @@ article h1{font-size:1.5rem;margin-bottom:14px}
 article h2{font-size:1.2rem;margin:22px 0 8px;color:#0a6c63}
 article p,article li{margin-bottom:10px;font-size:.96rem}
 article ul{padding-left:20px}
+.meta{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;border-top:1px solid #e6f0ec;border-bottom:1px solid #e6f0ec;padding:10px 0;margin:0 0 18px;font-size:.85rem;color:#6b7280}
+.meta .by{font-weight:800;color:#0a6c63}
+.meta a{color:#0f9d8f;font-weight:700;text-decoration:underline}
+.notice{background:#fff8ed;border:1.5px solid #f6dfb8;border-left:4px solid #e9a23b;border-radius:12px;padding:13px 16px;margin:20px 0;font-size:.9rem;color:#6b4f22;line-height:1.6}
+.notice b{color:#a86a12}
+.refs{background:#f4faf8;border:1.5px solid #dcefeb;border-radius:14px;padding:16px 19px;margin:24px 0 4px}
+.refs h3{font-size:1rem;font-weight:800;color:#0a6c63;margin-bottom:8px}
+.refs ul{margin:0;padding-left:19px}
+.refs li{font-size:.88rem;color:#4b5563;margin-bottom:5px}
+.refs a{color:#0c7d72;font-weight:700;text-decoration:underline}
+.srcnote{margin-top:14px;padding-top:12px;border-top:1px solid rgba(183,204,198,.28);font-size:.82rem;color:#9db3ad;line-height:1.7}
 .fav{position:absolute;top:8px;right:8px;z-index:3;width:34px;height:34px;border-radius:50%;border:none;background:rgba(255,255,255,.92);color:#d1d5db;font-size:1.15rem;line-height:1;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.18);transition:all .15s}
 .fav:hover{transform:scale(1.12)}
 .fav.on{color:#ff3b6b;background:#fff}
@@ -568,25 +579,35 @@ function layout(title, desc, urlPath, content, opts) {
   const FOOTERS = {
     en: `<p>Chukjemoa — Korea Festivals &amp; Traditional Markets</p>
 <p>Schedules may change; please check the official website before visiting.</p>
+<p><a href="/about/">About</a> · <a href="/editorial/">Editorial Policy</a> · <a href="/contact/">Contact</a> · <a href="/privacy/">Privacy</a></p>
 <p>Data: Korea Tourism Organization (TourAPI) · Contact: goohw593@gmail.com</p>
+<p class="srcnote">Festival data source: Korea Tourism Organization TourAPI and other open public data. Last updated ${TODAY}.</p>
 <p>© 2026 Chukjemoa</p>`,
     ja: `<p>Chukjemoa — 韓国のお祭り・伝統市場ガイド</p>
 <p>日程は変更される場合があります。訪問前に公式サイトをご確認ください。</p>
+<p><a href="/about/">サイト紹介</a> · <a href="/editorial/">編集方針</a> · <a href="/contact/">お問い合わせ</a> · <a href="/privacy/">プライバシー</a></p>
 <p>データ：韓国観光公社（TourAPI） · お問い合わせ：goohw593@gmail.com</p>
+<p class="srcnote">お祭り情報の出典：韓国観光公社 TourAPI ほか公共オープンデータ。最終更新 ${TODAY}。</p>
 <p>© 2026 Chukjemoa</p>`,
     es: `<p>Chukjemoa — Festivales y mercados tradicionales de Corea</p>
 <p>Los horarios pueden cambiar; consulte el sitio oficial antes de visitar.</p>
+<p><a href="/about/">Acerca de</a> · <a href="/editorial/">Política editorial</a> · <a href="/contact/">Contacto</a> · <a href="/privacy/">Privacidad</a></p>
 <p>Datos: Organización de Turismo de Corea (TourAPI) · Contacto: goohw593@gmail.com</p>
+<p class="srcnote">Fuente de los datos: TourAPI de la Organización de Turismo de Corea y otros datos públicos abiertos. Última actualización ${TODAY}.</p>
 <p>© 2026 Chukjemoa</p>`,
     zh: `<p>Chukjemoa — 韩国庆典·传统市场指南</p>
 <p>活动日程可能变动，出行前请确认官方网站。</p>
+<p><a href="/about/">关于我们</a> · <a href="/editorial/">编辑方针</a> · <a href="/contact/">联系</a> · <a href="/privacy/">隐私政策</a></p>
 <p>数据：韩国观光公社（TourAPI） · 联系：goohw593@gmail.com</p>
+<p class="srcnote">庆典信息来源：韩国观光公社 TourAPI 等公共开放数据。最后更新 ${TODAY}。</p>
 <p>© 2026 Chukjemoa</p>`
   };
   const footer = lang === 'ko'
     ? `<p>${SITE_NAME} — 전국 축제·오일장 일정 모음</p>
 <p>축제 일정은 주최 측 사정에 따라 변경될 수 있습니다. 방문 전 공식 홈페이지를 확인하세요.</p>
-<p><a href="/privacy/">개인정보처리방침</a> · 문의: goohw593@gmail.com</p>
+<p><a href="/about/">소개</a> · <a href="/editorial/">편집 원칙</a> · <a href="/contact/">문의</a> · <a href="/privacy/">개인정보처리방침</a></p>
+<p>문의: goohw593@gmail.com</p>
+<p class="srcnote">축제 정보 출처: 한국관광공사 TourAPI 등 <a href="https://www.data.go.kr/" target="_blank" rel="noopener nofollow">공공데이터포털</a> 개방 데이터. 최종 갱신 ${TODAY}.<br>일정·요금은 주최 측 사정으로 변경될 수 있으니 방문 전 주최 측 공식 채널에서 확인하시기 바랍니다. 잘못된 정보는 <a href="/contact/">문의</a>로 알려주시면 확인 후 정정합니다.</p>
 <p>© 2026 ${SITE_NAME}</p>`
     : FOOTERS[lang];
   return `<!DOCTYPE html>
@@ -734,17 +755,98 @@ writePage('jangteo', layout(
   `전국 유명 오일장 장날 한눈에 보기. 성남 모란장(4·9일), 정선아리랑시장(2·7일), 봉평장(2·7일) 등 27곳 5일장 날짜와 대표 먹거리 정리.`,
   '/jangteo/', jangteoContent));
 
+// ---------- 신뢰 요소(E-E-A-T) 공통 블록 ----------
+// 편집 원칙: /editorial/ · 저자 명의: 축제모아 편집팀
+const AUTHOR_NAME = '축제모아 편집팀';
+const EDITORIAL_URL = '/editorial/';
+const LAST_REVIEWED = '2026-07-27'; // 신뢰 블록(저자·출처·고지) 최종 검수일
+
+// 참고 자료 — 실존이 확인된 기관 도메인 루트만 사용한다. 세부 경로는 쓰지 않는다.
+const REF_NATIONAL = [
+  ['https://www.visitkorea.or.kr/', '한국관광공사', '전국 축제·관광 정보 원천 데이터(TourAPI) 제공 기관'],
+  ['https://www.mcst.go.kr/', '문화체육관광부', '문화관광축제 지정·관광 정책 주관 부처'],
+  ['https://www.data.go.kr/', '공공데이터포털', '축제·반려동물 동반·무장애 정보 개방 데이터 원본']
+];
+const POST_REFS = {
+  'boryeong-mud-guide': [
+    ['https://www.brcn.go.kr/', '보령시청', '보령머드축제 개최 지자체 공식 홈페이지']
+  ],
+  'muju-firefly-festival-guide': [
+    ['https://www.muju.go.kr/', '무주군청', '무주반딧불축제 개최 지자체 공식 홈페이지']
+  ],
+  'jangheung-water-festival-guide': [
+    ['https://www.jangheung.go.kr/', '장흥군청', '정남진 장흥 물축제 개최 지자체 공식 홈페이지']
+  ],
+  'andong-mask-dance-festival-guide': [
+    ['https://www.andong.go.kr/', '안동시청', '안동국제탈춤페스티벌 개최 지자체 공식 홈페이지']
+  ],
+  'summer-water-festivals-2026': [
+    ['https://www.jangheung.go.kr/', '장흥군청', '정남진 장흥 물축제 개최 지자체'],
+    ['https://www.brcn.go.kr/', '보령시청', '보령머드축제 개최 지자체'],
+    ['https://www.bonghwa.go.kr/', '봉화군청', '봉화 은어축제 개최 지자체']
+  ],
+  'ojang-train-trip-course': [
+    ['https://www.seongnam.go.kr/', '성남시청', '모란민속5일장 소재 지자체 공식 홈페이지'],
+    ['https://www.yesan.go.kr/', '예산군청', '예산장 소재 지자체 공식 홈페이지'],
+    ['https://www.korail.com/', '한국철도공사(코레일)', '열차 시각·승차권 확인']
+  ],
+  'pet-friendly-festival-guide': [
+    ['https://www.animal.go.kr/', '동물보호관리시스템(농림축산식품부)', '반려동물 등록·동반 관련 공식 정보']
+  ]
+};
+
+function metaBlock(date) {
+  return `<div class="meta">
+<span class="by">${AUTHOR_NAME}</span>
+<span>최초 작성 ${date}</span>
+<span>최종 수정 ${LAST_REVIEWED}</span>
+<span><a href="${EDITORIAL_URL}">편집 원칙 보기</a></span>
+</div>`;
+}
+
+const SCHEDULE_NOTICE = `<div class="notice">
+<b>일정 확인 안내</b> — 축제 일정·요금·프로그램은 기상 상황이나 주최 측 사정으로 변경되거나 취소될 수 있습니다. 이 글의 정보는 작성 시점을 기준으로 정리한 것이므로, <b>방문 전 반드시 주최 측 공식 채널(지자체 홈페이지·축제 공식 홈페이지·대표 전화)에서 최종 일정을 확인</b>하시기 바랍니다. 잘못된 정보를 발견하시면 <a href="/contact/">문의 페이지</a>로 알려주세요.
+</div>`;
+
+function refsBlock(slug) {
+  const list = REF_NATIONAL.concat(POST_REFS[slug] || []);
+  return `<div class="refs">
+<h3>참고 자료</h3>
+<ul>
+${list.map(r => `<li><a href="${r[0]}" target="_blank" rel="noopener nofollow">${esc(r[1])}</a> — ${esc(r[2])}</li>`).join('\n')}
+</ul>
+<p class="note" style="margin:10px 0 0">축제 일정·장소·요금·반려동물 동반·무장애 정보는 한국관광공사 TourAPI 등 공공데이터를 기준으로 정리하며 주기적으로 갱신합니다. 수집·검증 기준은 <a href="${EDITORIAL_URL}">편집 원칙</a>에 정리해 두었습니다.</p>
+</div>`;
+}
+
+function articleLd(p) {
+  return `<script type="application/ld+json">${JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: p.title,
+    description: p.desc,
+    inLanguage: 'ko',
+    datePublished: p.date,
+    dateModified: LAST_REVIEWED,
+    author: { '@type': 'Organization', name: AUTHOR_NAME, url: SITE + EDITORIAL_URL },
+    publisher: { '@type': 'Organization', name: SITE_NAME, url: SITE + '/' },
+    mainEntityOfPage: { '@type': 'WebPage', '@id': SITE + '/blog/' + p.slug + '/' }
+  })}</script>`;
+}
+
 // ---------- 블로그 ----------
 posts.forEach(p => {
   const content = `<main><div class="wrap"><article>
 <h1>${esc(p.title)}</h1>
-<p class="note">작성일: ${p.date}</p>
+${metaBlock(p.date)}
 ${p.body}
+${SCHEDULE_NOTICE}
+${refsBlock(p.slug)}
 </article>
 <h2 class="sec">월별 축제 일정 보기</h2>
 ${monthNavHtml}
 </div></main>`;
-  writePage(`blog/${p.slug}`, layout(`${p.title} | ${SITE_NAME}`, p.desc, `/blog/${p.slug}/`, content));
+  writePage(`blog/${p.slug}`, layout(`${p.title} | ${SITE_NAME}`, p.desc, `/blog/${p.slug}/`, content, { jsonld: articleLd(p) }));
 });
 
 const blogIndex = `<main><div class="wrap">
@@ -756,6 +858,94 @@ ${posts.map(p => `<a href="/blog/${p.slug}/">${esc(p.title)}<span>${p.date} · $
 ${monthNavHtml}
 </div></main>`;
 writePage('blog', layout(`축제·장터 가이드 | ${SITE_NAME}`, `축제 준비물, 오일장 이용 팁 등 축제·장터를 200% 즐기는 가이드 모음.`, '/blog/', blogIndex));
+
+// ---------- 편집 원칙 (/editorial/) ----------
+const editorialContent = `<main><div class="wrap"><article>
+<h1>편집 원칙</h1>
+<p class="desc" style="color:#6b7280;margin-bottom:16px">축제 정보는 틀리면 누군가의 하루를 헛걸음으로 만듭니다. 그래서 우리가 어디서 데이터를 가져오고, 무엇을 확인하며, 무엇은 하지 않는지 공개합니다.</p>
+
+<div class="meta">
+<span class="by">${AUTHOR_NAME}</span>
+<span>최종 수정 ${LAST_REVIEWED}</span>
+</div>
+
+<div class="notice">
+<b>가장 중요한 고지</b> — 축제 일정·요금·프로그램은 기상 상황과 주최 측 사정에 따라 <b>언제든 변경되거나 취소될 수 있습니다</b>. 축제모아의 정보는 수집 시점 기준이며, 주최 측 최신 공지를 실시간으로 반영하지 못할 수 있습니다. <b>방문 전에는 반드시 주최 측 공식 채널(지자체 홈페이지·축제 공식 홈페이지·대표 전화)에서 최종 일정을 다시 확인해 주세요.</b> 이동·숙박을 예약하기 전이라면 특히 그렇습니다.
+</div>
+
+<h2>1. 누가 만드나요</h2>
+<p>축제모아는 1인이 운영하는 무료 정보 사이트입니다. 기획·개발·데이터 수집·글 작성을 운영자가 직접 하며, 콘텐츠는 <b>${AUTHOR_NAME}</b> 이름으로 발행합니다. 우리는 축제 주최 측도, 지자체도, 관광 기관도 아닙니다. 그래서 스스로를 '공식'이라고 소개하지 않습니다.</p>
+<p>대신 우리가 맡은 역할은 분명합니다. <b>여러 기관에 흩어진 공공 축제 데이터를 한곳에 모아 읽기 쉽게 정리하고, 그 데이터가 어디서 왔는지 숨기지 않는 것</b>입니다. 현장 취재로 확인하지 않은 것은 확인한 것처럼 쓰지 않습니다.</p>
+
+<h2>2. 데이터를 어디서 가져오나요</h2>
+<p>축제모아의 축제·장소 정보는 대부분 정부와 공공기관이 공개한 개방 데이터(Open API)에서 자동으로 수집합니다. 항목별 출처는 다음과 같습니다.</p>
+<table class="rt" style="width:100%;border-collapse:collapse;margin:12px 0;font-size:.92rem">
+<tr><th style="text-align:left;padding:8px;border-bottom:2px solid #dcefeb;background:#f4faf8">정보 항목</th><th style="text-align:left;padding:8px;border-bottom:2px solid #dcefeb;background:#f4faf8">출처</th></tr>
+<tr><td style="padding:8px;border-bottom:1px solid #eef5f3">축제명·기간·장소·주소·대표 이미지·개요</td><td style="padding:8px;border-bottom:1px solid #eef5f3">한국관광공사 TourAPI (공공데이터포털)</td></tr>
+<tr><td style="padding:8px;border-bottom:1px solid #eef5f3">요금·문의 전화·공식 홈페이지 주소</td><td style="padding:8px;border-bottom:1px solid #eef5f3">한국관광공사 TourAPI 상세 정보</td></tr>
+<tr><td style="padding:8px;border-bottom:1px solid #eef5f3">반려동물 동반 가능 여부·동반 조건</td><td style="padding:8px;border-bottom:1px solid #eef5f3">한국관광공사 반려동물 동반 여행 정보</td></tr>
+<tr><td style="padding:8px;border-bottom:1px solid #eef5f3">무장애(휠체어·유아차) 접근 정보</td><td style="padding:8px;border-bottom:1px solid #eef5f3">한국관광공사 무장애 관광정보</td></tr>
+<tr><td style="padding:8px;border-bottom:1px solid #eef5f3">공휴일·연휴 날짜</td><td style="padding:8px;border-bottom:1px solid #eef5f3">한국천문연구원 특일정보 (공공데이터포털)</td></tr>
+<tr><td style="padding:8px;border-bottom:1px solid #eef5f3">걷기 여행길 코스</td><td style="padding:8px;border-bottom:1px solid #eef5f3">두루누비 걷기여행길 정보 (공공데이터포털)</td></tr>
+<tr><td style="padding:8px">오일장(5일장) 장날 주기</td><td style="padding:8px">각 지자체·시장 공개 자료를 정리</td></tr>
+</table>
+
+<h2>3. 얼마나 자주 갱신하나요</h2>
+<p>공공 API에서 가져오는 데이터는 <b>정기적으로 다시 내려받아 사이트 전체를 재생성</b>합니다. 모든 페이지 하단에는 그 사이트가 마지막으로 갱신된 날짜를 적어 두었습니다. 다만 갱신 주기 사이에 주최 측이 일정을 바꾸면 그 변경은 다음 갱신 때까지 반영되지 않습니다. 이것이 방문 전 재확인을 반복해서 안내하는 이유입니다.</p>
+<p>블로그 가이드 글에는 <b>최초 작성일과 최종 수정일</b>을 함께 표시합니다. 인용한 정보가 바뀌었거나 오류를 확인한 경우 글을 고치고 수정일을 갱신합니다.</p>
+
+<h2>4. 정확성의 한계 — 솔직하게 말씀드립니다</h2>
+<ul>
+<li><b>일정과 요금은 확정 정보가 아닙니다.</b> 공공 데이터에 등록된 시점의 예정 일정이며, 우천 취소·기간 연장·유료 전환 등은 반영이 늦을 수 있습니다.</li>
+<li><b>공공 데이터 자체에 빠진 항목이 있습니다.</b> 요금이나 반려동물 동반 정보가 비어 있는 축제가 적지 않습니다. 우리는 <b>없는 값을 추측해서 채우지 않습니다.</b> 모르면 비워 두거나 "정보 없음"으로 표시합니다.</li>
+<li><b>지난 축제의 정보가 남아 있을 수 있습니다.</b> 종료된 축제는 '종료' 표시로 구분하지만, 내년 일정이 아직 공개되지 않은 경우 작년 정보가 참고용으로 보일 수 있습니다.</li>
+<li><b>현장 상황은 우리가 알 수 없습니다.</b> 주차장 혼잡도, 대기 시간, 당일 날씨는 사이트에서 확인할 수 없는 영역입니다.</li>
+</ul>
+
+<h2>5. 하지 않는 것</h2>
+<ul>
+<li><b>확인되지 않은 일정을 게재하지 않습니다.</b> 출처가 불분명한 커뮤니티 글이나 SNS 게시물만 근거로 축제 일정을 올리지 않습니다. 공공 데이터나 주최 측 공식 발표가 근거여야 합니다.</li>
+<li><b>협찬 여부를 숨긴 추천을 하지 않습니다.</b> 지자체·주최 측의 요청이나 대가를 받고 작성한 글이 있다면 해당 글에 그 사실을 표시합니다. 현재까지 협찬을 받고 작성한 글은 없습니다.</li>
+<li><b>가보지 않은 축제의 후기를 창작하지 않습니다.</b> "직접 가보니 좋았다" 같은 문장은 실제 경험이 있을 때만 씁니다. 그 외에는 공개된 정보를 정리한 안내라는 점이 드러나게 씁니다.</li>
+<li><b>과장된 표현을 쓰지 않습니다.</b> "인생 축제", "무조건 가야 할" 같은 단정 대신 무엇이 있고 누구에게 맞는지를 씁니다.</li>
+<li><b>방문객 수·규모를 근거 없이 부풀리지 않습니다.</b> 수치를 쓸 때는 어느 기관의 몇 년 자료인지 밝힙니다.</li>
+</ul>
+
+<h2>6. 잘못된 정보를 발견하셨다면</h2>
+<p>정정 요청은 가장 높은 우선순위로 처리합니다. <a href="/contact/">문의 페이지</a>의 이메일로 아래 내용을 보내주세요.</p>
+<ul>
+<li>어느 페이지의 어떤 축제·장소인지 (가능하면 주소 링크)</li>
+<li>어떤 내용이 잘못되었는지, 올바른 정보는 무엇인지</li>
+<li>가능하다면 근거 (주최 측 공지 링크, 지자체 공고 등)</li>
+</ul>
+<p>확인 후 사실이면 즉시 수정하고 수정일을 갱신합니다. 원본 공공 데이터 자체가 틀린 경우에는 사이트에서 바로잡되, 데이터 제공 기관에도 정정을 요청합니다. 목록에 없는 축제·오일장 제보도 같은 경로로 받습니다.</p>
+
+<h2>7. 운영 재원</h2>
+<p>축제모아는 회원가입도 결제도 없는 무료 사이트입니다. 서버·도메인·데이터 운영비는 <b>광고 수익</b>으로 충당합니다. 광고는 콘텐츠와 분리되어 표시되며, <b>광고주는 어떤 축제를 싣고 어떻게 소개할지에 관여하지 않습니다.</b> 광고 때문에 특정 축제를 상단에 올리거나 부정적인 내용을 지우지 않습니다. 개인정보 처리에 관한 사항은 <a href="/privacy/">개인정보처리방침</a>에서 확인하실 수 있습니다.</p>
+
+<div class="refs">
+<h3>이 페이지에서 언급한 데이터의 출처</h3>
+<ul>
+${REF_NATIONAL.map(r => `<li><a href="${r[0]}" target="_blank" rel="noopener nofollow">${esc(r[1])}</a> — ${esc(r[2])}</li>`).join('\n')}
+</ul>
+<p class="note" style="margin:10px 0 0">축제모아는 위 기관의 개방 데이터를 이용해 만든 민간 사이트이며, 해당 기관과 제휴하거나 그 기관을 대표하지 않습니다.</p>
+</div>
+</article>
+</div></main>`;
+const editorialLd =`<script type="application/ld+json">${JSON.stringify({
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  name: '편집 원칙',
+  description: '축제모아가 축제 정보를 어떤 공공 데이터에서 수집하고, 어떻게 갱신·검증하며, 무엇은 하지 않는지에 대한 기준',
+  inLanguage: 'ko',
+  dateModified: LAST_REVIEWED,
+  url: SITE + EDITORIAL_URL,
+  publisher: { '@type': 'Organization', name: SITE_NAME, url: SITE + '/' }
+})}</script>`;
+writePage('editorial', layout(
+  `편집 원칙 — 축제 정보를 어디서 가져오고 어떻게 검증하는가 | ${SITE_NAME}`,
+  '축제모아가 축제 일정·요금·반려동물 동반·무장애 정보를 어떤 공공 데이터에서 수집하고 얼마나 자주 갱신하는지, 정확성의 한계와 정정 절차를 공개합니다.',
+  EDITORIAL_URL, editorialContent, { jsonld: editorialLd }));
 
 // ---------- 메인 페이지 ----------
 const upcoming = festivals
@@ -1624,7 +1814,7 @@ ${sections || '<p class="note">다가오는 연휴 정보를 준비 중이에요
 }
 
 // ---------- sitemap / robots ----------
-const urls = ['/', ...MONTHS.map(m => `/${m.key}/`), '/search/', ...(holidays.length ? ['/holiday/'] : []), '/pet/', ...(apiAccessible.length ? ['/accessible/'] : []), ...(apiTrails.length ? ['/trails/'] : []), '/jangteo/', '/test/', '/blog/', ...posts.map(p => `/blog/${p.slug}/`), '/privacy/', ...(apiFestsEn.length ? ['/en/', '/en/search/'] : []), ...(apiFestsJa.length ? ['/ja/', '/ja/search/'] : []), ...(apiFestsEs.length ? ['/es/', '/es/search/'] : []), ...(apiFestsZh.length ? ['/zh/', '/zh/search/'] : [])];
+const urls = ['/', ...MONTHS.map(m => `/${m.key}/`), '/search/', ...(holidays.length ? ['/holiday/'] : []), '/pet/', ...(apiAccessible.length ? ['/accessible/'] : []), ...(apiTrails.length ? ['/trails/'] : []), '/jangteo/', '/test/', '/blog/', ...posts.map(p => `/blog/${p.slug}/`), '/about/', EDITORIAL_URL, '/contact/', '/privacy/',...(apiFestsEn.length ? ['/en/', '/en/search/'] : []), ...(apiFestsJa.length ? ['/ja/', '/ja/search/'] : []), ...(apiFestsEs.length ? ['/es/', '/es/search/'] : []), ...(apiFestsZh.length ? ['/zh/', '/zh/search/'] : [])];
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${urls.map(u => `<url><loc>${SITE}${u}</loc><lastmod>${TODAY}</lastmod></url>`).join('\n')}
