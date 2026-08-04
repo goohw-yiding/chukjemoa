@@ -522,6 +522,12 @@ article ul{padding-left:20px}
 .nearby-btn.done{background:linear-gradient(135deg,#0f9d8f,#2dd4bf);color:#fff;border-color:transparent}
 .wkchip .wx{display:inline-block;margin-left:6px;font-size:.82rem;font-weight:700;color:#2b7fff;font-style:normal}
 .wkchip .wx:empty{display:none}
+.jt-home-chips{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+.jt-chip{display:inline-flex;align-items:center;gap:8px;background:#fff;border:1.5px solid #dcefeb;border-radius:20px;padding:8px 15px 8px 8px;font-size:.88rem;font-weight:700;color:#374151;box-shadow:0 2px 8px rgba(31,41,55,.06);transition:all .15s}
+.jt-chip:hover{border-color:#0f9d8f;transform:translateY(-2px)}
+.jt-chip .jtb{display:inline-block;padding:3px 10px;border-radius:14px;font-size:.78rem;font-weight:800;color:#fff}
+.jt-chip .jtb.j0{background:#15803d}.jt-chip .jtb.j1{background:#0d9488}.jt-chip .jtb.jjs{background:#7c3aed}
+.jt-chip .jtn{color:#9ca3af;font-weight:500}
 .testbanner{display:block;margin:34px 0 6px;background:linear-gradient(115deg,#3b1a5c,#7a2fbf 55%,#0f9d8f);color:#fff;border-radius:18px;padding:26px 28px;box-shadow:0 8px 24px rgba(122,47,191,.3);transition:transform .18s}
 .testbanner:hover{transform:translateY(-3px)}
 .testbanner strong{font-size:1.22rem;display:block;margin-bottom:4px}
@@ -1041,6 +1047,35 @@ const visitorSection = (visitors.ranked && visitors.ranked.length) ? `
 ${visitors.ranked.slice(0, 9).map(r => { const w = Math.max(10, Math.round(r.num / vmax * 100)); const medal = r.rank <= 3 ? ['🥇', '🥈', '🥉'][r.rank - 1] : ('<span style="color:#9aa3af;font-weight:800">' + r.rank + '</span>'); return `<div style="display:flex;align-items:center;gap:10px"><div style="width:26px;text-align:center">${medal}</div><div style="flex:1;background:#eef5f3;border-radius:10px;overflow:hidden"><div style="width:${w}%;background:linear-gradient(90deg,#0f9d8f,#2dd4bf);color:#fff;font-weight:800;font-size:.86rem;padding:6px 11px;white-space:nowrap;border-radius:10px">${esc(r.name)}</div></div><div style="color:#6b7280;font-size:.82rem;font-weight:700;min-width:58px;text-align:right">${(r.num / 10000).toFixed(0)}만명</div></div>`; }).join('')}
 </div>` : '';
 
+// ---------- 홈 오일장 위젯: 오늘/가까운 장날 자동 표시 ----------
+const marketsSlim = markets.map(m => ({ n: m.name, r: m.region, c: m.city, d: m.daysNum, f: m.famous }));
+const JANGTEO_HOME_JS = `<script>
+(function(){
+  var M = ${JSON.stringify(marketsSlim)};
+  var box = document.getElementById('jt-home-chips');
+  if (!box) return;
+  var t = new Date(); t.setHours(0,0,0,0);
+  function opensOn(days, dt) { if (!days.length) return true; var ld = dt.getDate() % 10; for (var i=0;i<days.length;i++){ if ((days[i]%10)===ld) return true; } return false; }
+  function nextOffset(days, base) { if (!days.length) return 0; for (var o=0;o<5;o++){ if (opensOn(days, new Date(base.getTime()+o*86400000))) return o; } return 0; }
+  var todayOpen = M.filter(function(m){ return m.d.length && opensOn(m.d, t); });
+  var perm = M.filter(function(m){ return !m.d.length; });
+  var list, label;
+  if (todayOpen.length) { list = todayOpen.slice(0, 6); label = '오늘'; }
+  else {
+    var withOff = M.filter(function(m){ return m.d.length; }).map(function(m){ return { m: m, o: nextOffset(m.d, t) }; });
+    withOff.sort(function(a,b){ return a.o - b.o; });
+    var minO = withOff.length ? withOff[0].o : 0;
+    list = withOff.filter(function(x){ return x.o === minO; }).slice(0, 6).map(function(x){ return x.m; });
+    label = minO === 1 ? '내일' : (minO + '일 후');
+  }
+  box.innerHTML = list.map(function(m){
+    return '<a class="jt-chip" href="/jangteo/"><span class="jtb j0">' + label + '</span>' + m.n + '<span class="jtn">' + m.r + ' ' + m.c + '</span></a>';
+  }).join('') + perm.slice(0, 2).map(function(m){
+    return '<a class="jt-chip" href="/jangteo/"><span class="jtb jjs">상설</span>' + m.n + '<span class="jtn">' + m.r + ' ' + m.c + '</span></a>';
+  }).join('');
+})();
+</script>`;
+
 const FAQ_HOME = [
   ["이번 주말 내 주변에서 열리는 축제는 어떻게 찾나요?","축제모아 홈에서 '내 주변 축제(📍)' 버튼을 누르면 현재 위치 기준 가까운 순으로 정렬됩니다. 검색 페이지에서 지역과 날짜(이번 주말)로도 걸러 볼 수 있습니다."],
   ["2026년 여름에 갈 만한 축제는 무엇이 있나요?","7~8월에는 보령머드축제, 강릉단오제, 부산바다축제처럼 물·불꽃·야시장 축제가 많습니다. 월별 페이지에서 진행 중·예정 축제를 D-day와 함께 볼 수 있습니다."],
@@ -1074,8 +1109,10 @@ ${WEEKEND_JS}
 ${monthNavHtml}
 ${visitorSection}
 <h2 class="sec">전국 오일장 — 오늘 서는 장은?</h2>
-<p class="note">성남 모란장, 정선아리랑시장, 봉평장 등 전국 유명 5일장 날짜를 정리했어요.</p>
-<p><a href="/jangteo/" style="display:inline-block;background:#ff6b4a;color:#fff;font-weight:700;padding:10px 22px;border-radius:24px">오일장 날짜 보러가기 →</a></p>
+<p class="note">날짜 끝자리 기준으로 서는 전국 5일장, 오늘(또는 가장 가까운 장날) 열리는 곳을 자동으로 보여드려요.</p>
+<div class="jt-home-chips" id="jt-home-chips"></div>
+${JANGTEO_HOME_JS}
+<p><a href="/jangteo/" style="display:inline-block;background:#ff6b4a;color:#fff;font-weight:700;padding:10px 22px;border-radius:24px;margin-top:6px">오일장 전체 날짜 보러가기 →</a></p>
 <h2 class="sec">축제 가이드</h2>
 <div class="bloglist">
 ${posts.map(p => `<a href="/blog/${p.slug}/">${esc(p.title)}<span>${p.date}</span></a>`).join('\n')}
