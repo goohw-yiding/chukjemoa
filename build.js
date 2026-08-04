@@ -88,6 +88,12 @@ function apiMatch(f) {
   for (const k in API_BY_NORM) { if (k.length >= 5 && n.length >= 5 && (k.includes(n) || n.includes(k))) return API_BY_NORM[k]; }
   return null;
 }
+// ---------- 개별 축제 상세페이지 대상 선정 (공공데이터 apiFests 중 진행중·예정 + 개요 충분한 것) ----------
+function iso8(s) { return String(s || '').replace(/(\d{4})(\d{2})(\d{2})/, '$1-$2-$3'); }
+const DETAIL_MIN_OV = 80;
+const detailFests = apiFests.filter(a => a.id && a.end && iso8(a.end) >= TODAY && a.ov && a.ov.length > DETAIL_MIN_OV);
+const DETAIL_ID_SET = new Set(detailFests.map(a => String(a.id)));
+
 // HTML 속성값 안전 이스케이프(따옴표 포함)
 function escA(s) { return esc(s).replace(/"/g, '&quot;'); }
 // 큐레이션 축제(festivals.json)의 실사진 URL을 반환. 확신 매칭만 실사진, 없으면 null.
@@ -211,7 +217,8 @@ function festCard(f) {
   const dOv = mm && mm.ov ? ` data-ov="${escA(mm.ov)}"` : '';
   const dHp = mm && mm.hp ? ` data-hp="${escA(mm.hp)}"` : '';
   const dNear = mm && Array.isArray(nearby[mm.id]) && nearby[mm.id].length ? ` data-near="${encodeURIComponent(JSON.stringify(nearby[mm.id]))}"` : '';
-  return `<div class="card" data-region="${esc(f.region)}" data-start="${f.start}" data-end="${f.end}" data-lat="${la}" data-lng="${lo}" data-name="${escA(f.name)}" data-city="${escA(f.city)}" data-place="${escA(f.place)}" data-desc="${escA(f.desc)}" data-cat="${escA(f.category)}" data-img="${escA(thumbOf(f))}"${dOv}${dHp}${dNear}>
+  const dFid = mm && DETAIL_ID_SET.has(String(mm.id)) ? ` data-fid="${mm.id}"` : '';
+  return `<div class="card" data-region="${esc(f.region)}" data-start="${f.start}" data-end="${f.end}" data-lat="${la}" data-lng="${lo}" data-name="${escA(f.name)}" data-city="${escA(f.city)}" data-place="${escA(f.place)}" data-desc="${escA(f.desc)}" data-cat="${escA(f.category)}" data-img="${escA(thumbOf(f))}"${dOv}${dHp}${dNear}${dFid}>
   <div class="thumb"><img src="${esc(thumbOf(f))}" alt="${esc(f.name)}" loading="lazy" onerror="this.src=&#39;/img/cat-${img}.webp&#39;"><span class="dday"></span><button class="fav" data-name="${esc(f.name)}" aria-label="찜하기">♡</button><span class="km"></span><span class="cat">${emoji} ${esc(f.category)}</span></div>
   <div class="card-body">
   <div class="card-top">${badge}</div>
@@ -253,7 +260,7 @@ const FEST_MODAL_HTML = `<div id="festmodal" class="fmodal"><div class="fmbox">
 <p id="fm2-meta"></p>
 <p id="fm2-ov"></p>
 <div id="fm2-near"></div>
-<div class="fm-links"><a id="fm2-hp" target="_blank" rel="noopener">🏛️ 공식 홈페이지</a><a id="fm2-naver" target="_blank" rel="noopener">🔎 네이버에서 보기</a></div>
+<div class="fm-links"><a id="fm2-detail" style="display:none">📋 상세정보 더보기</a><a id="fm2-hp" target="_blank" rel="noopener">🏛️ 공식 홈페이지</a><a id="fm2-naver" target="_blank" rel="noopener">🔎 네이버에서 보기</a></div>
 </div></div>`;
 const FEST_MODAL_JS = `<script>
 (function(){
@@ -273,6 +280,8 @@ const FEST_MODAL_JS = `<script>
     var hp=document.getElementById('fm2-hp');
     if(ds.hp){hp.href=(ds.hp.indexOf('http')===0?ds.hp:'http://'+ds.hp);hp.style.display='inline-block';}else{hp.style.display='none';}
     document.getElementById('fm2-naver').href='https://search.naver.com/search.naver?query='+encodeURIComponent((ds.name||'')+' 축제');
+    var det=document.getElementById('fm2-detail');
+    if(ds.fid){det.href='/festival/'+ds.fid+'/';det.style.display='inline-block';}else{det.style.display='none';}
     m.classList.add('show');
   };
   function close(){m.classList.remove('show');}
@@ -967,7 +976,8 @@ const slim = festivals.map(f => {
     k: (MONTHS.find(mm => f.month.some(m => mm.months.includes(m))) || MONTHS[0]).key,
     p: f.place, d: f.desc, img: thumbOf(f),
     ov: (mm2 && mm2.ov) || '', hp: (mm2 && mm2.hp) || '',
-    near: (mm2 && Array.isArray(nearby[mm2.id]) && nearby[mm2.id].length) ? encodeURIComponent(JSON.stringify(nearby[mm2.id])) : ''
+    near: (mm2 && Array.isArray(nearby[mm2.id]) && nearby[mm2.id].length) ? encodeURIComponent(JSON.stringify(nearby[mm2.id])) : '',
+    fid: (mm2 && DETAIL_ID_SET.has(String(mm2.id))) ? String(mm2.id) : ''
   };
 });
 
@@ -989,7 +999,7 @@ const WEEKEND_JS = `<script>
       box.innerHTML = list.map((f, i) =>
         '<a class="wkchip" data-i="' + i + '" style="cursor:pointer" href="https://search.naver.com/search.naver?query=' + encodeURIComponent(f.n + ' 축제') + '">' + (EMOJI[f.g]||'🎪') + ' <strong>' + f.n + '</strong><span>' + f.r + ' ' + f.c + ' <em class="wx"></em></span></a>'
       ).join('');
-      Array.prototype.forEach.call(box.querySelectorAll('.wkchip'), function(ch){ ch.addEventListener('click', function(ev){ if(!window.openFestModal) return; ev.preventDefault(); var f=list[+ch.getAttribute('data-i')]; if(f) window.openFestModal({name:f.n,start:f.s,end:f.e,region:f.r,city:f.c,place:f.p,desc:f.d,img:f.img,ov:f.ov,hp:f.hp,near:f.near}); }); });
+      Array.prototype.forEach.call(box.querySelectorAll('.wkchip'), function(ch){ ch.addEventListener('click', function(ev){ if(!window.openFestModal) return; ev.preventDefault(); var f=list[+ch.getAttribute('data-i')]; if(f) window.openFestModal({name:f.n,start:f.s,end:f.e,region:f.r,city:f.c,place:f.p,desc:f.d,img:f.img,ov:f.ov,hp:f.hp,near:f.near,fid:f.fid}); }); });
 
       // 킥② 주말 날씨 배지 (Open-Meteo, API 키 불필요)
       const WX = c =>
@@ -1033,7 +1043,7 @@ const WEEKEND_JS = `<script>
       return '<a class="wkchip" data-i="' + idx + '" style="cursor:pointer" href="https://search.naver.com/search.naver?query=' + encodeURIComponent(f.n + ' 축제') + '">' + (EMOJI[f.g]||'🎪') + ' <strong>' + f.n +
         '</strong> <em style="font-style:normal;font-weight:800;color:' + col + '">' + dd + '</em><span>' + f.r + ' ' + f.c + ' · ' + f.s.slice(5).replace('-','/') + ' 시작</span></a>';
     }).join('');
-    Array.prototype.forEach.call(fbox.querySelectorAll('.wkchip'), function(ch){ ch.addEventListener('click', function(ev){ if(!window.openFestModal) return; ev.preventDefault(); var f=mine[+ch.getAttribute('data-i')]; if(f) window.openFestModal({name:f.n,start:f.s,end:f.e,region:f.r,city:f.c,place:f.p,desc:f.d,img:f.img,ov:f.ov,hp:f.hp,near:f.near}); }); });
+    Array.prototype.forEach.call(fbox.querySelectorAll('.wkchip'), function(ch){ ch.addEventListener('click', function(ev){ if(!window.openFestModal) return; ev.preventDefault(); var f=mine[+ch.getAttribute('data-i')]; if(f) window.openFestModal({name:f.n,start:f.s,end:f.e,region:f.r,city:f.c,place:f.p,desc:f.d,img:f.img,ov:f.ov,hp:f.hp,near:f.near,fid:f.fid}); }); });
   };
   renderFavs();
 })();
@@ -1825,7 +1835,8 @@ if (holidays.length && apiFests.length) {
     const dOv = f.ov ? ` data-ov="${escA(f.ov)}"` : '';
     const dHp = f.hp ? ` data-hp="${escA(f.hp)}"` : '';
     const dNear = Array.isArray(nearby[f.id]) && nearby[f.id].length ? ` data-near="${encodeURIComponent(JSON.stringify(nearby[f.id]))}"` : '';
-    return `<div class="card" style="cursor:pointer" data-name="${escA(f.title)}" data-start="${iso(f.start)}" data-end="${iso(f.end)}" data-region="${escA(f.sido || '')}" data-city="${escA(f.sigungu || '')}" data-img="${escA(img)}"${dOv}${dHp}${dNear}><div class="thumb"><img loading="lazy" src="${esc(img)}" alt="${esc(f.title)}" onerror="this.src=&#39;/img/cat-culture.webp&#39;"><span class="dday"></span>${f.sido ? `<span class="cat">${esc(f.sido)}</span>` : ''}</div><div class="card-body"><h3>${esc(f.title)}</h3><div class="date">📅 ${fyy(f.start)} ~ ${fyy(f.end)}</div><div class="loc">📍 ${esc(loc)}</div></div></div>`;
+    const dFid = DETAIL_ID_SET.has(String(f.id)) ? ` data-fid="${f.id}"` : '';
+    return `<div class="card" style="cursor:pointer" data-name="${escA(f.title)}" data-start="${iso(f.start)}" data-end="${iso(f.end)}" data-region="${escA(f.sido || '')}" data-city="${escA(f.sigungu || '')}" data-img="${escA(img)}"${dOv}${dHp}${dNear}${dFid}><div class="thumb"><img loading="lazy" src="${esc(img)}" alt="${esc(f.title)}" onerror="this.src=&#39;/img/cat-culture.webp&#39;"><span class="dday"></span>${f.sido ? `<span class="cat">${esc(f.sido)}</span>` : ''}</div><div class="card-body"><h3>${esc(f.title)}</h3><div class="date">📅 ${fyy(f.start)} ~ ${fyy(f.end)}</div><div class="loc">📍 ${esc(loc)}</div></div></div>`;
   }
   const sections = upcoming.map(b => {
     const uniq = [...new Set(b.names)];
@@ -1850,8 +1861,69 @@ ${sections || '<p class="note">다가오는 연휴 정보를 준비 중이에요
   writePage('holiday', layout('2026 연휴에 갈 축제 — 설날·추석·광복절 황금연휴 축제 총정리 | ' + SITE_NAME, '2026 공휴일·연휴에 열리는 전국 축제를 한눈에. 설날·추석·광복절·개천절·한글날 연휴 나들이 계획을 축제모아에서.', '/holiday/', holContent, { jsonld: holJsonLd }));
 }
 
+// ---------- 개별 축제 상세페이지 (진행중·예정 + 개요 충분한 축제만, /festival/{id}/) ----------
+const DETAIL_URLS = [];
+detailFests.forEach(f => {
+  const s = iso8(f.start), e = iso8(f.end);
+  const dateTxt = s === e ? fmtDate(s) : (fmtDate(s) + ' ~ ' + fmtDate(e));
+  const loc = [f.sido, f.sigungu].filter(Boolean).join(' ');
+  const addr = f.addr || loc;
+  const img = f.img ? String(f.img).replace(/^http:/, 'https:') : (SITE + '/img/hero.webp');
+  const ongoing = TODAY >= s && TODAY <= e;
+  const status = ongoing
+    ? { text: '진행중 🔥', cls: 'ok' }
+    : { text: 'D-' + Math.max(1, Math.ceil((new Date(s) - new Date(TODAY)) / 86400000)), cls: 'est' };
+  const near = Array.isArray(nearby[f.id]) ? nearby[f.id] : [];
+  const nearHtml = near.length ? `
+<h2 class="sec" style="font-size:1.15rem">📍 근처 가볼 곳</h2>
+<div style="display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 4px">
+${near.slice(0, 6).map(n => `<a href="https://search.naver.com/search.naver?query=${encodeURIComponent(n.t)}" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;background:#f4faf8;border:1px solid #dcefeb;border-radius:20px;padding:6px 12px;font-size:.85rem;font-weight:700;color:#374151;text-decoration:none">${esc(n.t)} <span style="color:#9aa3af;font-weight:600">${esc(n.ty || '')}${n.d ? ' ' + n.d + 'km' : ''}</span></a>`).join('')}
+</div>` : '';
+  const faq = [
+    [`${f.title}은 언제 열리나요?`, `${dateTxt}에 열립니다. 축제는 주최 측 사정으로 일정이 바뀔 수 있으니 방문 전 공식 채널에서 다시 확인하는 것이 좋습니다.`],
+    [`${f.title}은 어디서 열리나요?`, `${addr || '위 정보'}에서 열립니다.${f.tel ? ' 문의 전화는 ' + f.tel + '입니다.' : ''}`]
+  ];
+  const faqHtml = `<h2 class="sec" style="font-size:1.15rem">자주 묻는 질문</h2>${faq.map(q => `<h3 style="font-size:1rem;margin-top:14px">${esc(q[0])}</h3><p>${esc(q[1])}</p>`).join('')}`;
+  const faqLd = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faq.map(q => ({ '@type': 'Question', name: q[0], acceptedAnswer: { '@type': 'Answer', text: q[1] } })) };
+  const eventLd = {
+    '@context': 'https://schema.org', '@type': 'Event', name: f.title, startDate: s, endDate: e,
+    eventStatus: 'https://schema.org/EventScheduled', eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+    location: { '@type': 'Place', name: addr || loc, address: { '@type': 'PostalAddress', streetAddress: f.addr, addressRegion: f.sido, addressLocality: f.sigungu, addressCountry: 'KR' } },
+    image: [img], description: (f.ov || '').slice(0, 300), url: SITE + '/festival/' + f.id + '/'
+  };
+  const monthKey = MONTHS.find(mm => mm.months.includes(new Date(s + 'T00:00:00').getMonth() + 1));
+  const content = `<main><div class="wrap">
+<p style="margin-bottom:10px"><a href="/search/" style="color:#0c7d72;font-weight:700;font-size:.88rem">← 전체 축제 검색으로</a></p>
+<div style="border-radius:14px;overflow:hidden;margin-bottom:16px"><img src="${esc(img)}" alt="${esc(f.title)}" style="width:100%;max-height:320px;object-fit:cover;display:block" onerror="this.src='/img/hero.webp'"></div>
+<span class="badge ${status.cls}">${status.text}</span>
+<h1 style="font-size:1.5rem;margin:8px 0 6px">${esc(f.title)}</h1>
+<p class="loc" style="font-size:1rem;margin-bottom:4px">📅 ${esc(dateTxt)}</p>
+<p class="loc" style="font-size:1rem;margin-bottom:14px">📍 ${esc(addr || loc)}${f.tel ? ' · ☎ ' + esc(f.tel) : ''}</p>
+<div class="fm-links" style="margin:10px 0 20px">
+${f.hp ? `<a href="${escA(f.hp.indexOf('http') === 0 ? f.hp : 'http://' + f.hp)}" target="_blank" rel="noopener">🏛️ 공식 홈페이지</a>` : ''}
+<a href="https://map.naver.com/p/search/${encodeURIComponent(addr || f.title)}" target="_blank" rel="noopener">🗺️ 지도에서 보기</a>
+<a href="https://search.naver.com/search.naver?query=${encodeURIComponent(f.title)}" target="_blank" rel="noopener">🔎 네이버에서 보기</a>
+</div>
+<h2 class="sec" style="font-size:1.15rem">축제 소개</h2>
+<p style="line-height:1.8;font-size:.98rem;color:#374151">${esc(f.ov)}</p>
+${nearHtml}
+${faqHtml}
+${monthKey ? `<p class="note" style="margin-top:20px"><a href="/${monthKey.key}/">${esc(monthKey.label)} 다른 축제도 보기 →</a></p>` : ''}
+<p class="srcnote" style="margin-top:22px">정보 제공: 한국관광공사(TourAPI) · 편집: ${AUTHOR_NAME} · 최종 확인 ${TODAY}<br>일정·장소는 주최 측 사정으로 변경될 수 있으니 방문 전 공식 채널에서 확인하세요. 정보가 틀렸다면 <a href="/contact/">문의</a>로 알려주세요.</p>
+</div></main>`;
+  writePage('festival/' + f.id, layout(
+    `${f.title} 일정·장소 정보 (${dateTxt}) | ${SITE_NAME}`,
+    `${f.title} 축제 정보 — ${dateTxt}, ${addr || loc}. ${(f.ov || '').slice(0, 70)}`,
+    '/festival/' + f.id + '/',
+    content,
+    { jsonld: `<script type="application/ld+json">${JSON.stringify(eventLd)}</script><script type="application/ld+json">${JSON.stringify(faqLd)}</script>` }
+  ));
+  DETAIL_URLS.push('/festival/' + f.id + '/');
+});
+console.log('✓ festival/*/ —', DETAIL_URLS.length, '개 상세페이지');
+
 // ---------- sitemap / robots ----------
-const urls = ['/', ...MONTHS.map(m => `/${m.key}/`), '/search/', ...(holidays.length ? ['/holiday/'] : []), '/pet/', ...(apiAccessible.length ? ['/accessible/'] : []), ...(apiTrails.length ? ['/trails/'] : []), '/jangteo/', '/test/', '/blog/', ...posts.map(p => `/blog/${p.slug}/`), '/about/', EDITORIAL_URL, '/contact/', '/privacy/',...(apiFestsEn.length ? ['/en/', '/en/search/'] : []), ...(apiFestsJa.length ? ['/ja/', '/ja/search/'] : []), ...(apiFestsEs.length ? ['/es/', '/es/search/'] : []), ...(apiFestsZh.length ? ['/zh/', '/zh/search/'] : [])];
+const urls = ['/', ...MONTHS.map(m => `/${m.key}/`), '/search/', ...(holidays.length ? ['/holiday/'] : []), '/pet/', ...(apiAccessible.length ? ['/accessible/'] : []), ...(apiTrails.length ? ['/trails/'] : []), '/jangteo/', '/test/', '/blog/', ...posts.map(p => `/blog/${p.slug}/`), '/about/', EDITORIAL_URL, '/contact/', '/privacy/', ...DETAIL_URLS, ...(apiFestsEn.length ? ['/en/', '/en/search/'] : []), ...(apiFestsJa.length ? ['/ja/', '/ja/search/'] : []), ...(apiFestsEs.length ? ['/es/', '/es/search/'] : []), ...(apiFestsZh.length ? ['/zh/', '/zh/search/'] : [])];
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${urls.map(u => `<url><loc>${SITE}${u}</loc><lastmod>${TODAY}</lastmod></url>`).join('\n')}

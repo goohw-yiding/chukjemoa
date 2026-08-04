@@ -6,3 +6,4 @@ tourapi.key
 node_modules/
 _*.js
 .fuse_hidden*
+.commitmsg.txt

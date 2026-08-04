@@ -236,7 +236,7 @@ fetch('/pet/data.json').then(function(r){return r.json();}).then(function(data){
 <p id="fm2-meta"></p>
 <p id="fm2-ov"></p>
 <div id="fm2-near"></div>
-<div class="fm-links"><a id="fm2-hp" target="_blank" rel="noopener">🏛️ 공식 홈페이지</a><a id="fm2-naver" target="_blank" rel="noopener">🔎 네이버에서 보기</a></div>
+<div class="fm-links"><a id="fm2-detail" style="display:none">📋 상세정보 더보기</a><a id="fm2-hp" target="_blank" rel="noopener">🏛️ 공식 홈페이지</a><a id="fm2-naver" target="_blank" rel="noopener">🔎 네이버에서 보기</a></div>
 </div></div><div id="placemodal" class="fmodal"><div class="fmbox">
 <button class="fmx" id="pm2x" aria-label="닫기">✕</button>
 <img id="pm2-img" class="fm-img" alt="">
@@ -336,6 +336,8 @@ fetch('/pet/data.json').then(function(r){return r.json();}).then(function(data){
     var hp=document.getElementById('fm2-hp');
     if(ds.hp){hp.href=(ds.hp.indexOf('http')===0?ds.hp:'http://'+ds.hp);hp.style.display='inline-block';}else{hp.style.display='none';}
     document.getElementById('fm2-naver').href='https://search.naver.com/search.naver?query='+encodeURIComponent((ds.name||'')+' 축제');
+    var det=document.getElementById('fm2-detail');
+    if(ds.fid){det.href='/festival/'+ds.fid+'/';det.style.display='inline-block';}else{det.style.display='none';}
     m.classList.add('show');
   };
   function close(){m.classList.remove('show');}
