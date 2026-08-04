@@ -1,6 +1,5 @@
-feat: 쿠팡파트너스 2 - "축제 준비물 체크리스트" 블로그 글 + 상품카드 슬롯 신설
+feat: 쿠팡파트너스 3 - /trails/, /jangteo/ 페이지에 상품카드 슬롯 추가
 
-- 신규 블로그 글 /blog/festival-gear-checklist/ 추가(계절별·상황별 준비물)
-- .buybox(대형 CTA)/.buysub(보조링크)/.bb-disc(고지문) CSS 신설(멍냥계산기 패턴 이식)
-- 쿠팡 검색링크 4곳(방수팩/양산우산/돗자리·보냉가방/핫팩) 임시 배치, 실제 제휴링크는 TODO 주석으로 표시해 추후 교체
-- 내부링크로 /jangteo/ /search/ /weekend/ /2026-08/ 연결
+- /trails/: 워킹폴·등산스틱(buybox), 경량 등산배낭(buysub)
+- /jangteo/: 장바구니·에코백(buybox), 접이식 장바구니 카트(buysub)
+- 임시 쿠팡 검색링크, 실제 제휴링크는 TODO 주석으로 표시해 추후 교체

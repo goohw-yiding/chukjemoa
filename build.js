@@ -718,6 +718,14 @@ const marketRows = markets.map(m =>
 const jangteoContent = `<main><div class="wrap">
 <div style="border-radius:12px;overflow:hidden;margin-bottom:16px"><img src="/img/jangteo.webp" alt="전통 오일장 풍경" style="width:100%;max-height:220px;object-fit:cover;display:block"></div>
 <h1 style="font-size:1.5rem;margin-bottom:6px">전국 유명 오일장(5일장) 날짜 총정리</h1>
+<a class="buybox" href="https://www.coupang.com/np/search?q=%EC%9E%A5%EB%B0%94%EA%B5%AC%EB%8B%88+%EC%97%90%EC%BD%94%EB%B0%B1" target="_blank" rel="noopener">
+<span class="bb-ico">🧺</span>
+<span class="bb-txt"><b>장바구니·에코백 보러가기</b><span class="bb-sub">오일장 나들이, 양손 자유롭게</span></span>
+<span class="bb-arrow">›</span>
+</a>
+<!-- TODO(쿠팡파트너스): 실제 제휴링크로 교체 예정, 교체 후 rel="nofollow sponsored noopener" + 고지문 추가 -->
+<a class="buysub" href="https://www.coupang.com/np/search?q=%EC%A0%91%EC%9D%B4%EC%8B%9D+%EC%B9%B4%ED%8A%B8" target="_blank" rel="noopener">🛒 접이식 장바구니 카트 보러가기</a>
+<!-- TODO(쿠팡파트너스): 실제 제휴링크로 교체 예정 -->
 <style>
 .datepick{background:#fff;border-radius:14px;padding:14px 16px;box-shadow:0 2px 10px rgba(31,41,55,.06);margin:12px 0 16px;display:flex;flex-wrap:wrap;gap:10px;align-items:center}
 .datepick label{font-weight:700;color:#374151;font-size:.95rem}
@@ -1774,6 +1782,14 @@ if (apiTrails.length) {
 </style>
 <h1 class="page-h1">🥾 걷기 여행 · 전국 걷기길</h1>
 <p class="page-sub">공공데이터(두루누비) 기반 전국 걷기여행 코스 ${apiTrails.length}개 — 해파랑길·서해랑길·남파랑길·DMZ 평화의길 등. 거리·난이도·지역으로 나에게 맞는 코스를 찾아보세요.</p>
+<a class="buybox" href="https://www.coupang.com/np/search?q=%EA%B2%BD%EB%9F%89+%ED%8A%B8%EB%A0%88%ED%82%B9+%EC%9B%8C%ED%82%B9%ED%8F%B4" target="_blank" rel="noopener">
+<span class="bb-ico">🥾</span>
+<span class="bb-txt"><b>워킹폴·등산스틱 보러가기</b><span class="bb-sub">장거리 걷기길, 무릎 부담 줄이기</span></span>
+<span class="bb-arrow">›</span>
+</a>
+<!-- TODO(쿠팡파트너스): 실제 제휴링크로 교체 예정, 교체 후 rel="nofollow sponsored noopener" + 고지문 추가 -->
+<a class="buysub" href="https://www.coupang.com/np/search?q=%EA%B2%BD%EB%9F%89+%EB%93%B1%EC%82%B0%EB%B0%B0%EB%82%AD" target="_blank" rel="noopener">🎒 경량 등산배낭 보러가기</a>
+<!-- TODO(쿠팡파트너스): 실제 제휴링크로 교체 예정 -->
 <div class="srchbar"><div class="row">
 <select id="tTheme"><option value="">전체 길</option>${trThemeOpts}</select>
 <select id="tSido"><option value="">전체 지역</option>${trSidoOpts}</select>
