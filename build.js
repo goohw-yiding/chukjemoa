@@ -27,6 +27,9 @@ catch (e) { console.log('⚠ accessible.json 없음 — 무장애 데이터 비�
 let apiTrails = [];
 try { apiTrails = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/trails.json'), 'utf8')); }
 catch (e) { console.log('⚠ trails.json 없음 — 걷기길 데이터 비어있음 (node fetch-trails.js 먼저 실행)'); }
+let apiValleys = [];
+try { apiValleys = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/valleys.json'), 'utf8')); }
+catch (e) { console.log('⚠ valleys.json 없음 — 계곡 데이터 비어있음 (node fetch-valleys.js 먼저 실행)'); }
 let apiFestsJa = [];
 try { apiFestsJa = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/festivals_ja.json'), 'utf8')); }
 catch (e) { console.log('⚠ festivals_ja.json 없음 — 일문 데이터 비어있음 (node fetch-festivals-ja.js 먼저 실행)'); }
@@ -574,7 +577,7 @@ function layout(title, desc, urlPath, content, opts) {
     zh: `<nav><a href="/zh/">首页</a><a href="/zh/search/">🔎 庆典搜索</a><a href="/">🇰🇷 한국어</a></nav>`
   };
   const nav = lang === 'ko'
-    ? `<nav><a href="/2026-07/">월별 축제</a><a href="/search/">🔎 축제 검색</a><a href="/holiday/">🎌 연휴 축제</a><a href="/pet/">🐶 반려견 여행지</a><a href="/accessible/">♿ 무장애 여행</a><a href="/trails/">🥾 걷기 여행</a><a href="/jangteo/">전국 오일장</a><a href="/test/">🔮 취향 테스트</a><a href="/blog/">축제 가이드</a><a href="/en/">EN</a><a href="/ja/">日本語</a><a href="/es/">ES</a><a href="/zh/">中文</a></nav>`
+    ? `<nav><a href="/2026-07/">월별 축제</a><a href="/search/">🔎 축제 검색</a><a href="/holiday/">🎌 연휴 축제</a><a href="/pet/">🐶 반려견 여행지</a><a href="/accessible/">♿ 무장애 여행</a><a href="/trails/">🥾 걷기 여행</a><a href="/valley/">💧 계곡명소</a><a href="/jangteo/">전국 오일장</a><a href="/test/">🔮 취향 테스트</a><a href="/blog/">축제 가이드</a><a href="/en/">EN</a><a href="/ja/">日本語</a><a href="/es/">ES</a><a href="/zh/">中文</a></nav>`
     : NAVS[lang];
   const FOOTERS = {
     en: `<p>Chukjemoa — Korea Festivals &amp; Traditional Markets</p>
@@ -1377,6 +1380,60 @@ fetch('/pet/data.json').then(function(r){return r.json();}).then(function(data){
 writePage('pet', layout('반려견 동반 여행지 — 전국 반려동물 동반 관광지·맛집·숙소 | ' + SITE_NAME, '반려동물 동반 가능한 전국 관광지·음식점·숙박·레포츠를 지역별로. 공공데이터 기반 ' + apiPets.length + '곳. 강아지와 함께 갈 곳 찾기.', '/pet/', petContent));
 fs.writeFileSync(path.join(ROOT, 'pet', 'data.json'), JSON.stringify(apiPets));
 
+// ---------- 계곡명소 ----------
+if (apiValleys.length) {
+  const vSidos = SIDO_ORDER.filter(s => apiValleys.some(p => p.sido === s));
+  const vSidoOpts = vSidos.map(s => `<option value="${s}">${s} (${apiValleys.filter(p => p.sido === s).length})</option>`).join('');
+  const valleyContent = `<main><div class="wrap">
+<style>
+.srchbar{background:#fff;border-radius:16px;padding:16px 18px;box-shadow:0 3px 14px rgba(31,41,55,.07);margin:14px 0 6px}
+.srchbar .row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.srchbar select,.srchbar input{padding:10px 13px;border:1.5px solid #cfe7f2;border-radius:12px;font-size:.93rem;font-family:inherit;background:#f2f9fc;color:#374151}
+.srchbar input#vKw{flex:1;min-width:150px}
+.srch-count{margin:16px 0 12px;font-weight:800;color:#0c6d9c;font-size:1.02rem}
+.page-h1{font-size:1.5rem;font-weight:900;letter-spacing:-.02em;margin:6px 0}
+.page-sub{color:#6b7280;font-size:.95rem;margin-bottom:6px}
+.vmore{background:#fff;border:1.5px solid #a9d8ec;color:#0c6d9c;border-radius:22px;padding:11px 26px;font-weight:800;font-size:.95rem;cursor:pointer;font-family:inherit;transition:all .15s}
+.vmore:hover{border-color:#1288b7;transform:translateY(-1px)}
+.card .vov{font-size:.82rem;color:#6b7280;margin-top:7px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+</style>
+<h1 class="page-h1">💧 전국 계곡명소</h1>
+<p class="page-sub">공공데이터(한국관광공사) 기반 전국 계곡 ${apiValleys.length}곳 — 여름 피서·물놀이 가기 좋은 계곡을 지역별로 찾아보세요. 카드를 누르면 상세정보와 지도·검색 링크가 열립니다.</p>
+<div class="srchbar"><div class="row">
+<select id="vSido"><option value="">전체 지역</option>${vSidoOpts}</select>
+<select id="vSigungu"><option value="">전체 시·군·구</option></select>
+<input type="text" id="vKw" placeholder="계곡명·주소 검색">
+<button id="vReset" class="vmore" style="border-color:#e6eef2;color:#374151">초기화</button>
+</div></div>
+<div class="srch-count" id="vCount"></div>
+<div class="grid" id="vGrid"></div>
+<div style="text-align:center;margin:22px 0"><button id="vMore" class="vmore" style="display:none">더 보기</button></div>
+<p class="note">데이터 출처: 한국관광공사(공공데이터포털). 계곡 개방 여부·수심·주차·취사 가능 여부는 계절과 현장 사정에 따라 다르니 방문 전 꼭 확인하세요. 안전한 물놀이를 위해 기상·계곡 수량을 반드시 살피시기 바랍니다.</p>
+</div></main>
+<script>
+(function(){
+var P=[];var byId={};var st={sido:'',sigungu:'',kw:''};var shown=60;
+function esc(s){return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function card(p){var loc=(p.sido||'')+(p.sigungu?' '+p.sigungu:'');var q=encodeURIComponent(p.title);var img=p.img||'/img/hero.webp';return '<a class="card" data-id="'+esc(p.id)+'" style="cursor:pointer" href="https://search.naver.com/search.naver?query='+q+'"><div class="thumb"><img loading="lazy" src="'+esc(img)+'" alt="'+esc(p.title)+'" onerror="this.src=&#39;/img/hero.webp&#39;"><span class="cat">💧 계곡</span></div><div class="card-body"><h3>'+esc(p.title)+'</h3><div class="loc">'+esc(loc)+'</div>'+(p.ov?'<div class="vov">'+esc(p.ov)+'</div>':'')+'</div></a>';}
+function openValley(p){if(!window.openPlaceModal){window.open('https://search.naver.com/search.naver?query='+encodeURIComponent(p.title),'_blank','noopener');return;}var loc=(p.sido||'')+(p.sigungu?' '+p.sigungu:'');var body=p.ov?'<div style="color:#374151;font-size:.92rem;line-height:1.6">'+esc(p.ov)+'</div>':'<div style="color:#6b7280;font-size:.9rem">계곡 개방·수심·주차 정보는 방문 전 확인하세요. 여름철 급류·수량 변화에 유의하시기 바랍니다.</div>';window.openPlaceModal({img:p.img,title:p.title,meta:['💧 계곡',loc,p.tel].filter(Boolean).join('  ·  '),body:body,naver:'https://search.naver.com/search.naver?query='+encodeURIComponent(p.title),map:'https://map.naver.com/p/search/'+encodeURIComponent(p.title)});}
+function filtered(){return P.filter(function(p){if(st.sido&&p.sido!==st.sido)return false;if(st.sigungu&&p.sigungu!==st.sigungu)return false;if(st.kw){var k=st.kw.toLowerCase();if((p.title||'').toLowerCase().indexOf(k)<0&&(p.addr||'').indexOf(st.kw)<0)return false;}return true;});}
+function render(){var list=filtered();document.getElementById('vCount').textContent='총 '+list.length+'곳';var g=document.getElementById('vGrid');g.innerHTML=list.length?list.slice(0,shown).map(card).join(''):'<p style="grid-column:1/-1;color:#6b7280;padding:24px 0">조건에 맞는 계곡이 없어요. 지역을 바꿔보세요.</p>';document.getElementById('vMore').style.display=list.length>shown?'inline-block':'none';}
+function fillSg(){var set={};P.forEach(function(p){if((!st.sido||p.sido===st.sido)&&p.sigungu)set[p.sigungu]=1;});var arr=Object.keys(set).sort();document.getElementById('vSigungu').innerHTML='<option value="">전체 시·군·구</option>'+arr.map(function(s){return '<option value="'+s+'">'+s+'</option>';}).join('');}
+document.getElementById('vSido').addEventListener('change',function(e){st.sido=e.target.value;st.sigungu='';shown=60;fillSg();render();});
+document.getElementById('vSigungu').addEventListener('change',function(e){st.sigungu=e.target.value;shown=60;render();});
+document.getElementById('vKw').addEventListener('input',function(e){st.kw=e.target.value.trim();shown=60;render();});
+document.getElementById('vReset').addEventListener('click',function(){st={sido:'',sigungu:'',kw:''};shown=60;document.getElementById('vSido').value='';document.getElementById('vKw').value='';fillSg();render();});
+document.getElementById('vMore').addEventListener('click',function(){shown+=60;render();});
+document.getElementById('vGrid').addEventListener('click',function(e){var c=e.target.closest('.card');if(!c||!window.openPlaceModal)return;e.preventDefault();var p=byId[c.getAttribute('data-id')];if(p)openValley(p);});
+document.getElementById('vCount').textContent='불러오는 중…';
+fetch('/valley/data.json').then(function(r){return r.json();}).then(function(data){P=data;byId={};P.forEach(function(p){byId[p.id]=p;});fillSg();render();}).catch(function(){document.getElementById('vCount').textContent='데이터를 불러오지 못했습니다. 새로고침 해주세요.';});
+})();
+</script>`;
+  writePage('valley', layout('전국 계곡명소 — 여름 피서·물놀이 좋은 전국 계곡 총정리 | ' + SITE_NAME, '여름 피서·물놀이 가기 좋은 전국 계곡 ' + apiValleys.length + '곳을 지역별로. 공공데이터 기반 계곡 명소 정보와 지도.', '/valley/', valleyContent));
+  fs.writeFileSync(path.join(ROOT, 'valley', 'data.json'), JSON.stringify(apiValleys));
+}
+
+
 // ---------- 영문판 /en/ (EngService2) ----------
 if (apiFestsEn.length) {
   const EN_ORDER = ['Seoul','Gyeonggi','Incheon','Gangwon','Chungbuk','Chungnam','Daejeon','Sejong','Jeonbuk','Jeonnam','Gwangju','Gyeongbuk','Gyeongnam','Daegu','Ulsan','Busan','Jeju'];
@@ -1814,7 +1871,7 @@ ${sections || '<p class="note">다가오는 연휴 정보를 준비 중이에요
 }
 
 // ---------- sitemap / robots ----------
-const urls = ['/', ...MONTHS.map(m => `/${m.key}/`), '/search/', ...(holidays.length ? ['/holiday/'] : []), '/pet/', ...(apiAccessible.length ? ['/accessible/'] : []), ...(apiTrails.length ? ['/trails/'] : []), '/jangteo/', '/test/', '/blog/', ...posts.map(p => `/blog/${p.slug}/`), '/about/', EDITORIAL_URL, '/contact/', '/privacy/',...(apiFestsEn.length ? ['/en/', '/en/search/'] : []), ...(apiFestsJa.length ? ['/ja/', '/ja/search/'] : []), ...(apiFestsEs.length ? ['/es/', '/es/search/'] : []), ...(apiFestsZh.length ? ['/zh/', '/zh/search/'] : [])];
+const urls = ['/', ...MONTHS.map(m => `/${m.key}/`), '/search/', ...(holidays.length ? ['/holiday/'] : []), '/pet/', ...(apiAccessible.length ? ['/accessible/'] : []), ...(apiTrails.length ? ['/trails/'] : []), ...(apiValleys.length ? ['/valley/'] : []), '/jangteo/', '/test/', '/blog/', ...posts.map(p => `/blog/${p.slug}/`), '/about/', EDITORIAL_URL, '/contact/', '/privacy/',...(apiFestsEn.length ? ['/en/', '/en/search/'] : []), ...(apiFestsJa.length ? ['/ja/', '/ja/search/'] : []), ...(apiFestsEs.length ? ['/es/', '/es/search/'] : []), ...(apiFestsZh.length ? ['/zh/', '/zh/search/'] : [])];
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${urls.map(u => `<url><loc>${SITE}${u}</loc><lastmod>${TODAY}</lastmod></url>`).join('\n')}
