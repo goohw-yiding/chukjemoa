@@ -6,6 +6,24 @@ const https = require('https');
 const KAKAO = process.env.KAKAO_REST_KEY || '';
 const ODSAY = process.env.ODSAY_KEY || '';
 
+// KTX 운임표(한국철도공사 공공데이터, 역167·요금쌍3231) — 정적 번들
+let KTX = { pairs: {}, stations: [] };
+try { KTX = require('../data/ktx_fare.json'); } catch (e) {}
+function haversine(x1, y1, x2, y2) {
+  const R = 6371, rad = Math.PI / 180;
+  const dLat = (y2 - y1) * rad, dLon = (x2 - x1) * rad;
+  const a = Math.sin(dLat / 2) ** 2 + Math.cos(y1 * rad) * Math.cos(y2 * rad) * Math.sin(dLon / 2) ** 2;
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+}
+function nearestStation(x, y, maxKm) {
+  let best = null;
+  for (const s of KTX.stations) {
+    const dist = haversine(x, y, s.x, s.y);
+    if (dist <= (maxKm || 20) && (!best || dist < best.dist)) best = { n: s.n, dist };
+  }
+  return best;
+}
+
 function get(host, path, headers) {
   return new Promise((resolve, reject) => {
     https.get({ host, path, headers: headers || {} }, r => {
@@ -60,6 +78,14 @@ module.exports = async (req, res) => {
     const [o, d] = await Promise.all([geocode(from), geocode(to)]);
     const [car, tr] = await Promise.all([carRoute(o, d), transit(o, d).catch(() => null)]);
 
+    // KTX: 출발·도착에서 가장 가까운 역(20km 내) + 운임표 조회
+    let ktx = null;
+    const kFrom = nearestStation(+o.x, +o.y), kTo = nearestStation(+d.x, +d.y);
+    if (kFrom && kTo && kFrom.n !== kTo.n) {
+      const fare = KTX.pairs[kFrom.n + '|' + kTo.n] != null ? KTX.pairs[kFrom.n + '|' + kTo.n] : KTX.pairs[kTo.n + '|' + kFrom.n];
+      if (fare != null) ktx = { fare, depStation: kFrom.n, arrStation: kTo.n, depKm: Math.round(kFrom.dist * 10) / 10, arrKm: Math.round(kTo.dist * 10) / 10 };
+    }
+
     const distanceKm = car.distanceM / 1000;
     const fuelCost = Math.round(distanceKm / kmpl * fuelPrice);
     const carTotal = fuelCost + car.toll + parking;
@@ -87,6 +113,7 @@ module.exports = async (req, res) => {
       transit: tr ? { fare: tr.fare, durationMin: tr.durationMin, transfer: tr.transfer } : null,
       // ODsay 실요금이 없을 때 쓸 시외/고속버스 추정 + 정확 확인 링크
       intercity: (tr && tr.fare) ? null : { busEstimate, busLabel, routeSearch },
+      ktx, // 가까운 KTX역이 있으면 실제 운임(한국철도공사)
       diff: (tr && tr.fare) ? (carTotal - tr.fare) : (carTotal - busEstimate)
     }));
   } catch (e) {
