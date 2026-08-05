@@ -24,6 +24,37 @@ function nearestStation(x, y, maxKm) {
   return best;
 }
 
+// 시외버스 터미널(TAGO) — 좌표 지오코딩본
+let BUS = [];
+try { BUS = require('../data/bus_terminals.json'); } catch (e) {}
+const TAGO = process.env.TAGO_KEY || '';
+function nearestTerminal(x, y, maxKm) {
+  let best = null;
+  for (const t of BUS) {
+    const dist = haversine(x, y, t.x, t.y);
+    if (dist <= (maxKm || 20) && (!best || dist < best.dist)) best = { id: t.id, nm: t.nm, dist };
+  }
+  return best;
+}
+function nextDates(n) {
+  const out = []; const now = Date.now();
+  for (let i = 1; i <= n; i++) { const t = new Date(now + i * 86400000); out.push('' + t.getFullYear() + String(t.getMonth() + 1).padStart(2, '0') + String(t.getDate()).padStart(2, '0')); }
+  return out;
+}
+// TAGO 시외버스 요금은 날짜별로 데이터가 들쭉날쭉 → 여러 날짜 병렬 조회 후 최저요금(=일반등급) 채택
+async function busFare(depId, arrId) {
+  if (!TAGO) return null;
+  const calls = nextDates(10).map(D =>
+    get('apis.data.go.kr', '/1613000/SuburbsBusInfo/GetStrtpntAlocFndSuberbsBusInfo?serviceKey=' + encodeURIComponent(TAGO) + '&depTerminalId=' + depId + '&arrTerminalId=' + arrId + '&depPlandTime=' + D + '&numOfRows=5&pageNo=1&_type=json')
+      .then(b => { try { const it = JSON.parse(b.body).response.body.items; const rows = it && it.item ? (Array.isArray(it.item) ? it.item : [it.item]) : []; return rows; } catch (e) { return []; } })
+      .catch(() => [])
+  );
+  const results = await Promise.all(calls);
+  let best = null;
+  for (const rows of results) for (const r of rows) { const c = +r.charge; if (c > 0 && (!best || c < best.fare)) best = { fare: c, grade: r.gradeNm }; }
+  return best;
+}
+
 function get(host, path, headers) {
   return new Promise((resolve, reject) => {
     https.get({ host, path, headers: headers || {} }, r => {
@@ -86,6 +117,18 @@ module.exports = async (req, res) => {
       if (fare != null) ktx = { fare, depStation: kFrom.n, arrStation: kTo.n, depKm: Math.round(kFrom.dist * 10) / 10, arrKm: Math.round(kTo.dist * 10) / 10 };
     }
 
+    // 시외버스: 터미널 편향 지오코딩("{지명} 시외버스터미널")으로 엉뚱한 POI 매칭 방지 → 가장 가까운 터미널
+    let intercityBus = null;
+    const [bo, bd] = await Promise.all([
+      geocode(from + ' 시외버스터미널').catch(() => o),
+      geocode(to + ' 시외버스터미널').catch(() => d)
+    ]);
+    const bFrom = nearestTerminal(+bo.x, +bo.y, 25), bTo = nearestTerminal(+bd.x, +bd.y, 25);
+    if (bFrom && bTo && bFrom.id !== bTo.id) {
+      const bf = await busFare(bFrom.id, bTo.id).catch(() => null);
+      if (bf) intercityBus = { fare: bf.fare, grade: bf.grade, dep: bFrom.nm, arr: bTo.nm, depKm: Math.round(bFrom.dist * 10) / 10, arrKm: Math.round(bTo.dist * 10) / 10 };
+    }
+
     const distanceKm = car.distanceM / 1000;
     const fuelCost = Math.round(distanceKm / kmpl * fuelPrice);
     const carTotal = fuelCost + car.toll + parking;
@@ -111,8 +154,10 @@ module.exports = async (req, res) => {
         formula: `연료 ${fuelCost.toLocaleString()}원(=${distanceKm.toFixed(1)}km ÷ ${kmpl}km/L × ${fuelPrice.toLocaleString()}원) + 통행료 ${car.toll.toLocaleString()}원${parking ? ' + 주차 ' + parking.toLocaleString() + '원' : ''}`
       },
       transit: tr ? { fare: tr.fare, durationMin: tr.durationMin, transfer: tr.transfer } : null,
-      // ODsay 실요금이 없을 때 쓸 시외/고속버스 추정 + 정확 확인 링크
-      intercity: (tr && tr.fare) ? null : { busEstimate, busLabel, routeSearch },
+      // 시외버스 실요금(TAGO) — 있으면 우선
+      intercityBus,
+      // ODsay·시외버스 실요금이 모두 없을 때 쓸 거리 추정 + 정확 확인 링크
+      intercity: (tr && tr.fare) || intercityBus ? null : { busEstimate, busLabel, routeSearch },
       ktx, // 가까운 KTX역이 있으면 실제 운임(한국철도공사)
       diff: (tr && tr.fare) ? (carTotal - tr.fare) : (carTotal - busEstimate)
     }));
