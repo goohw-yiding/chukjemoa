@@ -2190,6 +2190,127 @@ function levelChip(lv) {
 function hrs(m) { if (!m) return ''; const h = m / 60; return h >= 1 ? ('약 ' + (h % 1 === 0 ? h : h.toFixed(1)) + '시간') : (m + '분'); }
 const TRAIL_URLS = [];
 
+
+// ---------- 시도별 인기 여행지 랭킹 (/trend/{slug}/) ----------
+let rlte = { bySido: {} };
+try { rlte = require('./data/rlte.json'); } catch (e) {}
+const SIDO_SLUG = {};
+const SIDO_FULL = { 서울: '서울특별시', 부산: '부산광역시', 대구: '대구광역시', 인천: '인천광역시', 광주: '광주광역시', 대전: '대전광역시', 울산: '울산광역시', 세종: '세종특별자치시', 경기: '경기도', 충북: '충청북도', 충남: '충청남도', 전남: '전라남도', 경북: '경상북도', 경남: '경상남도', 제주: '제주특별자치도', 강원: '강원특별자치도', 전북: '전북특별자치도' };
+Object.keys(visitors.bySido || {}).forEach(nm => { SIDO_SLUG[nm] = romanizeRegion(nm).toLowerCase().replace(/[^a-z]/g, ''); });
+const SIDO_URLS = [];
+
+// 그 지역 축제 카드(공공데이터 apiFests 기준, 진행중·예정만)
+function sidoFestCard(f) {
+  const img = f.img ? String(f.img).replace(/^http:/, 'https:') : '/img/cat-culture.webp';
+  const fy = y => y ? y.slice(0, 4) + '.' + (+y.slice(4, 6)) + '.' + (+y.slice(6, 8)) : '';
+  return `<div class="card" data-name="${escA(f.title)}" data-start="${f.start}" data-end="${f.end}" data-region="${escA(f.sido || '')}" data-city="${escA(f.sigungu || '')}" data-place="${escA(f.addr || '')}" data-img="${escA(img)}"${f.ov ? ` data-ov="${escA(f.ov)}"` : ''}${f.hp ? ` data-hp="${escA(f.hp)}"` : ''}>
+  <div class="thumb"><img src="${esc(img)}" alt="${esc(f.title)}" loading="lazy" onerror="this.src='/img/cat-culture.webp'"><span class="dday"></span></div>
+  <div class="card-body"><h3>${esc(f.title)}</h3>
+  <p class="date">📅 ${fy(f.start)} ~ ${fy(f.end)}</p>
+  <p class="loc">📍 ${esc((f.sido || '') + ' ' + (f.sigungu || ''))}</p></div>
+</div>`;
+}
+function spotChips(list, emoji, href) {
+  if (!list.length) return '';
+  return `<div class="spotchips">` + list.slice(0, 8).map(p =>
+    `<a href="${href}" class="spotchip">${emoji} ${esc(p.title)}<span>${esc(p.sigungu || '')}</span></a>`).join('') + `</div>`;
+}
+
+// ---------- 전국 걷기길: 브랜드별 / 지역별 (/trails/{brand}/, /trails/area/{sido}/) ----------
+let stret = [];
+try { stret = require('./data/stret.json'); } catch (e) {}
+let WG = { brands: [], rest: [], korea: [] };
+try { if (stret.length) WG = require('./walkgroups').group(stret); } catch (e) { console.error('walkgroups 실패:', e.message); }
+const WALK_URLS = [];
+
+// 길 카드 한 장 (아코디언)
+function walkCard(t, i) {
+  const spots = (t.spots || []).slice(0, 24);
+  return `<details class="crs">
+<summary>
+  <span class="crs-no">${i + 1}</span>
+  <span class="crs-nm">${esc(t.name)}</span>
+  <span class="crs-meta">${t.kmOk ? t.km + 'km' : ''}${t.time ? (t.kmOk ? ' · ' : '') + esc(t.time) : ''}</span>
+</summary>
+<div class="crs-body">
+  <div class="meta">${t.sido ? `<span class="chip">📍 ${esc(t.sido)}${t.sigungu ? ' ' + esc(t.sigungu) : ''}</span>` : ''}${t.kmOk ? `<span class="chip">📏 ${t.km}km</span>` : ''}${t.time ? `<span class="chip">⏱ ${esc(t.time)}</span>` : ''}</div>
+  ${t.intro ? `<p>${esc(t.intro)}</p>` : ''}
+  ${(t.begin || t.end) ? `<p class="crs-se"><b>시작</b> ${esc(t.begin || '-')} &nbsp;→&nbsp; <b>도착</b> ${esc(t.end || '-')}${t.addr ? `<br><span class="ad">${esc(t.addr)}</span>` : ''}</p>` : ''}
+  ${spots.length ? `<p class="crs-tour"><b>지나는 곳</b><br>${spots.map(s => esc(s)).join(' › ')}</p>` : ''}
+  <p class="crs-links"><a href="https://search.naver.com/search.naver?query=${encodeURIComponent(t.name)}" target="_blank" rel="noopener">🔎 검색</a>
+  <a href="https://map.naver.com/p/search/${encodeURIComponent(t.begin || t.name)}" target="_blank" rel="noopener">🗺️ 시작점 지도</a>
+  ${t.sido ? `<a href="/search/?sido=${encodeURIComponent(t.sido)}">🎪 이 지역 축제</a>` : ''}</p>
+  ${(t.org || t.tel) ? `<p class="crs-org">${esc(t.org || '')}${t.tel ? ' · ' + esc(t.tel) : ''}${t.updated ? ' · 기준 ' + esc(t.updated) : ''}</p>` : ''}
+</div>
+</details>`;
+}
+const WALK_CSS = `<style>
+.crs{background:#fff;border:1px solid #e9f2ef;border-radius:12px;margin:7px 0;overflow:hidden}
+.crs[open]{border-color:#a9e5dd;box-shadow:0 3px 12px rgba(31,41,55,.07)}
+.crs summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:11px;padding:13px 16px}
+.crs summary::-webkit-details-marker{display:none}
+.crs summary:hover{background:#f4faf8}
+.crs-no{flex:none;width:30px;height:30px;border-radius:50%;background:#effaf8;color:#0a6c63;font-weight:900;font-size:.85rem;display:flex;align-items:center;justify-content:center;border:1px solid #dcefeb}
+.crs-nm{flex:1;font-weight:800;font-size:.98rem;color:#1f2937;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.crs-meta{flex:none;font-size:.83rem;color:#9aa3af;font-weight:700}
+.crs-body{padding:2px 16px 16px;border-top:1px solid #f1f6f4}
+.crs-body p{font-size:.92rem;color:#4b5563;line-height:1.75;margin:9px 0}
+.crs-body .meta{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 4px}
+.crs-body .chip{font-size:.78rem;font-weight:700;color:#374151;background:#f4faf8;border:1px solid #dcefeb;border-radius:20px;padding:3px 10px}
+.crs-se{background:#f4faf8;border-radius:10px;padding:11px 13px}
+.crs-se .ad{color:#9aa3af;font-size:.85rem}
+.crs-tour{background:#f9fafb;border-radius:10px;padding:11px 13px;font-size:.88rem;line-height:1.8}
+.crs-org{color:#9ca3af;font-size:.8rem}
+.crs-links{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px!important}
+.crs-links a{font-size:.85rem;font-weight:700;color:#0a6c63;border:1.5px dashed #dcefeb;border-radius:9px;padding:7px 13px}
+.crs-links a:hover{background:#f4faf8}
+@media(max-width:600px){.crs summary{padding:11px 12px;gap:9px}.crs-meta{display:none}}
+</style>`;
+
+// 브랜드/지역 공통 페이지 생성기
+function writeWalkPage(o) {
+  const km = Math.round(o.items.reduce((a, t) => a + (t.kmOk ? t.km : 0), 0));
+  const sidos = [...new Set(o.items.map(t => t.sido).filter(Boolean))];
+  const gus = [...new Set(o.items.map(t => t.sigungu).filter(Boolean))];
+  const sorted = [...o.items].sort((a, b) => (a.name || '').localeCompare(b.name || '', 'ko'));
+  const content = `<main><div class="wrap">
+${WALK_CSS}
+<p class="crumb"><a href="/trails/">🥾 걷기 여행</a> › ${esc(o.title)}</p>
+<h1 style="font-size:1.5rem;font-weight:900;letter-spacing:-.02em;margin:6px 0 4px">${o.emoji} ${esc(o.title)}</h1>
+<p class="note" style="margin-top:0">${o.lead}</p>
+<div class="rt-stats" style="display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 4px">
+<span>코스 <b>${o.items.length}개</b></span>${km ? `<span>총 거리 <b>${km.toLocaleString()}km</b></span>` : ''}${sidos.length > 1 ? `<span>지역 <b>${sidos.length}개 시·도</b></span>` : (gus.length ? `<span>지역 <b>${gus.length}개 시·군·구</b></span>` : '')}
+</div>
+<h2 class="sec">코스 안내 <span style="font-size:.9rem;font-weight:600;color:#9aa3af">${o.items.length}개 · 눌러서 펼치기</span></h2>
+<p class="note" style="margin-top:-4px">각 코스를 누르면 소개와 거리·소요 시간, 시작·도착 지점, 지나는 곳이 나옵니다.</p>
+${sorted.map(walkCard).join('\n')}
+${buyBox('trails')}
+${o.nav}
+<p class="note" style="margin-top:18px">데이터 출처: 행정안전부 <b>전국길관광정보 표준데이터</b>(공공데이터포털) — 각 지자체·관리기관이 등록한 정보입니다. 코스 통제·우회는 방문 전 관리기관에 확인하세요.</p>
+</div></main>`;
+  const ld = `<script type="application/ld+json">${JSON.stringify({
+    '@context': 'https://schema.org', '@type': 'ItemList', name: o.title,
+    numberOfItems: sorted.length,
+    itemListElement: sorted.slice(0, 50).map((t, i) => ({ '@type': 'ListItem', position: i + 1, name: t.name }))
+  })}</script>`;
+  writePage(o.path, layout(o.title2, o.desc, '/' + o.path + '/', content, { jsonld: ld }));
+  WALK_URLS.push('/' + o.path + '/');
+}
+
+// 내비게이션 조각
+function walkNav(curBrand, curSido) {
+  const bs = WG.brands.map(b => b.slug === curBrand
+    ? `<span class="on">${b.emoji} ${esc(b.label)}</span>`
+    : `<a href="/trails/${b.slug}/">${b.emoji} ${esc(b.label)}</a>`).join('');
+  const areaSidos = [...new Set(WG.rest.map(t => t.sido).filter(Boolean))].sort();
+  const as = areaSidos.map(s => s === curSido
+    ? `<span class="on">${esc(s)}</span>`
+    : `<a href="/trails/area/${SIDO_SLUG[s] || romanizeRegion(s).toLowerCase()}/">${esc(s)}</a>`).join('');
+  return `<h2 class="sec">이름난 길</h2><div class="sidonav">${bs}</div>
+<h2 class="sec">지역별 걷기길</h2><div class="sidonav">${as}</div>
+<p style="margin:14px 0 4px"><a href="/trails/" style="display:inline-block;background:#0f9d8f;color:#fff;font-weight:800;padding:10px 22px;border-radius:24px">🥾 걷기 여행 전체 보기 →</a></p>`;
+}
+
 // ---------- 걷기 여행 /trails/ (두루누비 걷기길) ----------
 if (apiTrails.length) {
   const trThemes = [...new Set(apiTrails.map(t => t.theme).filter(Boolean))];
@@ -2243,6 +2364,28 @@ if (apiTrails.length) {
   }).join('');
 })()}</div>
 <p class="note" style="margin:8px 0 2px">길 이름을 누르면 <b>코스별 거리·소요 시간·난이도와 구간 설명</b>을 볼 수 있어요. 아래에서는 전체 코스를 조건으로 검색할 수 있습니다.</p>
+${(() => {   /* 걷기길 허브 섹션 — 표준데이터 기반 이름난 길·지역별 */
+  if (!WG.brands.length) return '';
+  const bcards = WG.brands.map(b => {
+    const km = Math.round(b.items.reduce((a, t) => a + (t.kmOk ? t.km : 0), 0));
+    return `<a class="rt-card" href="/trails/${b.slug}/">
+<span class="e">${b.emoji}</span><b>${esc(b.label)}</b>
+<span class="ln">${esc(b.region || '')}</span>
+<span class="st">${b.items.length}개 코스${km ? ' · ' + km.toLocaleString() + 'km' : ''}</span></a>`;
+  }).join('');
+  const sidos = [...new Set(WG.rest.map(t => t.sido).filter(Boolean))].sort();
+  const areas = sidos.map(x => {
+    const c = WG.rest.filter(t => t.sido === x).length;
+    return `<a href="/trails/area/${SIDO_SLUG[x] || romanizeRegion(x).toLowerCase()}/">${esc(x)} <b style="color:#0f9d8f">${c}</b></a>`;
+  }).join('');
+  const totalW = WG.brands.reduce((a, b) => a + b.items.length, 0) + WG.rest.length;
+  return `<h2 class="sec">🚶 이름난 길</h2>
+<p class="note" style="margin-top:-4px">제주올레·갈맷길처럼 이름이 붙은 길은 따로 모았어요. 코리아둘레길 외에도 전국에 <b>${totalW.toLocaleString()}개</b>의 길이 있습니다.</p>
+<div class="rt-cards">${bcards}</div>
+<h2 class="sec">📍 지역별 걷기길</h2>
+<p class="note" style="margin-top:-4px">동네 둘레길·산책로·숲길을 시·도별로 모았습니다.</p>
+<div class="sidonav">${areas}</div>`;
+})()}
 <p class="page-sub">공공데이터(두루누비) 기반 전국 걷기여행 코스 ${apiTrails.length}개 — 해파랑길·서해랑길·남파랑길·DMZ 평화의길 등. 거리·난이도·지역으로 나에게 맞는 코스를 찾아보세요.</p>
 <div class="srchbar"><div class="row">
 <select id="tTheme"><option value="">전체 길</option>${trThemeOpts}</select>
@@ -2435,30 +2578,31 @@ ${buyBox('trails')}
   });
 }
 
-// ---------- 시도별 인기 여행지 랭킹 (/trend/{slug}/) ----------
-let rlte = { bySido: {} };
-try { rlte = require('./data/rlte.json'); } catch (e) {}
-const SIDO_SLUG = {};
-const SIDO_FULL = { 서울: '서울특별시', 부산: '부산광역시', 대구: '대구광역시', 인천: '인천광역시', 광주: '광주광역시', 대전: '대전광역시', 울산: '울산광역시', 세종: '세종특별자치시', 경기: '경기도', 충북: '충청북도', 충남: '충청남도', 전남: '전라남도', 경북: '경상북도', 경남: '경상남도', 제주: '제주특별자치도', 강원: '강원특별자치도', 전북: '전북특별자치도' };
-Object.keys(visitors.bySido || {}).forEach(nm => { SIDO_SLUG[nm] = romanizeRegion(nm).toLowerCase().replace(/[^a-z]/g, ''); });
-const SIDO_URLS = [];
+// ① 브랜드 페이지
+WG.brands.forEach(b => {
+  writeWalkPage({
+    path: 'trails/' + b.slug, title: b.label, emoji: b.emoji, items: b.items,
+    lead: `${esc(b.label)}의 코스를 한자리에 모았습니다. ${b.region ? esc(b.region) + ' 일대 ' : ''}총 ${b.items.length}개 코스의 거리·소요 시간과 지나는 곳을 확인하세요.`,
+    title2: `${b.label} 코스 총정리 — ${b.items.length}개 코스 거리·소요시간·경유지 | ${SITE_NAME}`,
+    desc: `${b.label} 전체 ${b.items.length}개 코스 안내. 코스별 거리와 소요 시간, 시작·도착 지점, 지나는 곳을 공공데이터 기준으로 정리했습니다.`,
+    nav: walkNav(b.slug, null)
+  });
+});
 
-// 그 지역 축제 카드(공공데이터 apiFests 기준, 진행중·예정만)
-function sidoFestCard(f) {
-  const img = f.img ? String(f.img).replace(/^http:/, 'https:') : '/img/cat-culture.webp';
-  const fy = y => y ? y.slice(0, 4) + '.' + (+y.slice(4, 6)) + '.' + (+y.slice(6, 8)) : '';
-  return `<div class="card" data-name="${escA(f.title)}" data-start="${f.start}" data-end="${f.end}" data-region="${escA(f.sido || '')}" data-city="${escA(f.sigungu || '')}" data-place="${escA(f.addr || '')}" data-img="${escA(img)}"${f.ov ? ` data-ov="${escA(f.ov)}"` : ''}${f.hp ? ` data-hp="${escA(f.hp)}"` : ''}>
-  <div class="thumb"><img src="${esc(img)}" alt="${esc(f.title)}" loading="lazy" onerror="this.src='/img/cat-culture.webp'"><span class="dday"></span></div>
-  <div class="card-body"><h3>${esc(f.title)}</h3>
-  <p class="date">📅 ${fy(f.start)} ~ ${fy(f.end)}</p>
-  <p class="loc">📍 ${esc((f.sido || '') + ' ' + (f.sigungu || ''))}</p></div>
-</div>`;
-}
-function spotChips(list, emoji, href) {
-  if (!list.length) return '';
-  return `<div class="spotchips">` + list.slice(0, 8).map(p =>
-    `<a href="${href}" class="spotchip">${emoji} ${esc(p.title)}<span>${esc(p.sigungu || '')}</span></a>`).join('') + `</div>`;
-}
+// ② 지역 페이지
+const bySidoWalk = {};
+WG.rest.forEach(t => { if (t.sido) (bySidoWalk[t.sido] = bySidoWalk[t.sido] || []).push(t); });
+Object.entries(bySidoWalk).forEach(([sd, items]) => {
+  const slug = SIDO_SLUG[sd] || romanizeRegion(sd).toLowerCase().replace(/[^a-z]/g, '');
+  if (!slug) return;
+  writeWalkPage({
+    path: 'trails/area/' + slug, title: `${sd} 걷기길`, emoji: '🚶', items,
+    lead: `${esc(sd)} 지역의 둘레길·산책로·숲길 ${items.length}개를 모았습니다. 가까운 곳부터 골라 보세요.`,
+    title2: `${sd} 걷기길 ${items.length}곳 — 둘레길·산책로·숲길 총정리 | ${SITE_NAME}`,
+    desc: `${sd}에서 걸을 수 있는 길 ${items.length}곳. 코스별 거리·소요 시간과 지나는 곳, 시작 지점을 공공데이터 기준으로 정리했습니다.`,
+    nav: walkNav(null, sd)
+  });
+});
 
 // ---------- 테마 랭킹 (/trend/valley·maple·flower·onsen/) ----------
 const THEME_URLS = [];
@@ -3195,7 +3339,7 @@ document.getElementById('tcFrom').addEventListener('keydown',function(e){if(e.ke
 writePage('trip-cost', layout('여행 비용 계산기 — 자동차 vs 대중교통 비용 비교 | ' + SITE_NAME, '축제·여행지까지 자동차(연료+통행료+주차)와 대중교통 비용을 비교 계산. 출발지·도착지만 넣으면 끝. 계산 과정도 투명하게 공개.', '/trip-cost/', tripCostContent));
 
 // ---------- sitemap / robots ----------
-const urls = ['/', ...MONTHS.map(m => `/${m.key}/`), '/search/', ...(holidays.length ? ['/holiday/'] : []), '/pet/', ...(apiAccessible.length ? ['/accessible/'] : []), ...(apiTrails.length ? ['/trails/'] : []), ...(apiValleys.length ? ['/valley/'] : []), ...(apiMaple.length ? ['/maple/'] : []), ...(apiFlower.length ? ['/flower/'] : []), ...(apiOnsen.length ? ['/onsen/'] : []), '/jangteo/', '/test/', '/trip-cost/', ...(visitors.kor && visitors.kor.length ? ['/trend/'] : []), ...SIDO_URLS, ...THEME_URLS, ...TRAIL_URLS, ...TREND_LANG_URLS, '/blog/', ...posts.map(p => `/blog/${p.slug}/`), '/about/', EDITORIAL_URL, '/contact/', '/privacy/',...(apiFestsEn.length ? ['/en/', '/en/search/'] : []), ...(apiFestsJa.length ? ['/ja/', '/ja/search/'] : []), ...(apiFestsEs.length ? ['/es/', '/es/search/'] : []), ...(apiFestsZh.length ? ['/zh/', '/zh/search/'] : [])];
+const urls = ['/', ...MONTHS.map(m => `/${m.key}/`), '/search/', ...(holidays.length ? ['/holiday/'] : []), '/pet/', ...(apiAccessible.length ? ['/accessible/'] : []), ...(apiTrails.length ? ['/trails/'] : []), ...(apiValleys.length ? ['/valley/'] : []), ...(apiMaple.length ? ['/maple/'] : []), ...(apiFlower.length ? ['/flower/'] : []), ...(apiOnsen.length ? ['/onsen/'] : []), '/jangteo/', '/test/', '/trip-cost/', ...(visitors.kor && visitors.kor.length ? ['/trend/'] : []), ...SIDO_URLS, ...THEME_URLS, ...TRAIL_URLS, ...WALK_URLS, ...TREND_LANG_URLS, '/blog/', ...posts.map(p => `/blog/${p.slug}/`), '/about/', EDITORIAL_URL, '/contact/', '/privacy/',...(apiFestsEn.length ? ['/en/', '/en/search/'] : []), ...(apiFestsJa.length ? ['/ja/', '/ja/search/'] : []), ...(apiFestsEs.length ? ['/es/', '/es/search/'] : []), ...(apiFestsZh.length ? ['/zh/', '/zh/search/'] : [])];
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${urls.map(u => `<url><loc>${SITE}${u}</loc><lastmod>${TODAY}</lastmod></url>`).join('\n')}
