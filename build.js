@@ -2168,6 +2168,28 @@ fetch('/accessible/data.json').then(function(r){return r.json();}).then(function
   fs.writeFileSync(path.join(ROOT, 'accessible', 'data.json'), JSON.stringify(apiAccessible));
 }
 
+// ---------- 걷기길 노선별 페이지 (/trails/{slug}/) ----------
+let trailRoutes = [];
+try { trailRoutes = require('./data/trail_routes.json'); } catch (e) {}
+const ROUTE_SLUG = { '해파랑길': 'haeparang', '남파랑길': 'namparang', '서해랑길': 'seohaerang', 'DMZ 평화의 길': 'dmz', 'DMZ': 'dmz' };
+const ROUTE_META = {
+  '해파랑길': { emoji: '🌅', color: '#e0502f', bg: '#fff6f3', bd: '#ffd9cf', tag: '동해안' },
+  '남파랑길': { emoji: '🌊', color: '#0c6d9c', bg: '#f2f9fc', bd: '#cfe7f2', tag: '남해안' },
+  '서해랑길': { emoji: '🌇', color: '#b45309', bg: '#fdf7ee', bd: '#f0dcc0', tag: '서해안' },
+  'DMZ': { emoji: '🕊️', color: '#0a6c63', bg: '#f2faf8', bd: '#cfe9e3', tag: '접경지역' }
+};
+// 코스명에서 번호 추출 → 정렬용 (해파랑길 29코스 → 29)
+function crsNo(n) {
+  const m = String(n || '').match(/(\d+)\s*코스/);
+  return m ? +m[1] : 999;
+}
+function levelChip(lv) {
+  const c = { '쉬움': '#15803d', '보통': '#0d9488', '어려움': '#b45309', '매우 어려움': '#b91c1c' }[lv] || '#374151';
+  return `<span class="chip" style="color:${c}">🥾 ${esc(lv || '-')}</span>`;
+}
+function hrs(m) { if (!m) return ''; const h = m / 60; return h >= 1 ? ('약 ' + (h % 1 === 0 ? h : h.toFixed(1)) + '시간') : (m + '분'); }
+const TRAIL_URLS = [];
+
 // ---------- 걷기 여행 /trails/ (두루누비 걷기길) ----------
 if (apiTrails.length) {
   const trThemes = [...new Set(apiTrails.map(t => t.theme).filter(Boolean))];
@@ -2197,6 +2219,30 @@ if (apiTrails.length) {
 .trcard .sm{font-size:.86rem;color:#6b7280;line-height:1.5;margin-top:6px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
 </style>
 <h1 class="page-h1">🥾 걷기 여행 · 전국 걷기길</h1>
+<style>
+.rt-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px;margin:14px 0 6px}
+.rt-card{display:block;background:#fff;border:1.5px solid #e9f2ef;border-radius:16px;padding:17px 19px;transition:all .18s}
+.rt-card:hover{transform:translateY(-3px);box-shadow:0 8px 22px rgba(31,41,55,.11)}
+.rt-card .e{font-size:1.7rem;display:block;margin-bottom:6px}
+.rt-card b{display:block;font-size:1.08rem;font-weight:900;letter-spacing:-.02em;margin-bottom:3px}
+.rt-card .ln{font-size:.86rem;color:#6b7280;line-height:1.5;display:block;margin-bottom:8px}
+.rt-card .st{font-size:.8rem;color:#9aa3af;font-weight:700}
+</style>
+<div class="rt-cards">${(() => {
+  const TH = [...new Set(apiTrails.map(t => t.theme).filter(Boolean))];
+  return TH.map(x => {
+    const M = ROUTE_META[x] || { emoji: '🥾', color: '#0f9d8f', bd: '#dcefeb' };
+    const L = apiTrails.filter(t => t.theme === x);
+    const km = Math.round(L.reduce((a, b) => a + (+b.dist || 0), 0));
+    const xk = x.replace(/\s/g, '');
+    const info = trailRoutes.find(r => { const k = r.name.replace(/\s/g, ''); return k === xk || k.startsWith(xk) || xk.startsWith(k); });
+    return `<a class="rt-card" href="/trails/${ROUTE_SLUG[x] || ''}/" style="border-color:${M.bd}">
+<span class="e">${M.emoji}</span><b style="color:${M.color}">${esc((info && info.name) || x)}</b>
+<span class="ln">${esc(info && info.line ? info.line : M.tag + ' 걷기길')}</span>
+<span class="st">${L.length}개 코스 · ${km.toLocaleString()}km</span></a>`;
+  }).join('');
+})()}</div>
+<p class="note" style="margin:8px 0 2px">길 이름을 누르면 <b>코스별 거리·소요 시간·난이도와 구간 설명</b>을 볼 수 있어요. 아래에서는 전체 코스를 조건으로 검색할 수 있습니다.</p>
 <p class="page-sub">공공데이터(두루누비) 기반 전국 걷기여행 코스 ${apiTrails.length}개 — 해파랑길·서해랑길·남파랑길·DMZ 평화의길 등. 거리·난이도·지역으로 나에게 맞는 코스를 찾아보세요.</p>
 <div class="srchbar"><div class="row">
 <select id="tTheme"><option value="">전체 길</option>${trThemeOpts}</select>
@@ -2292,6 +2338,101 @@ ${sections || '<p class="note">다가오는 연휴 정보를 준비 중이에요
 </div></main>`;
   const holJsonLd = upcoming.slice(0, 3).flatMap(b => apiFests.filter(f => yd(f.start) <= b.end && yd(f.end) >= b.start).slice(0, 5)).map(f => `<script type="application/ld+json">${JSON.stringify({ '@context': 'https://schema.org', '@type': 'Event', name: f.title, startDate: String(f.start).replace(/(\d{4})(\d{2})(\d{2})/, '$1-$2-$3'), endDate: String(f.end).replace(/(\d{4})(\d{2})(\d{2})/, '$1-$2-$3'), eventStatus: 'https://schema.org/EventScheduled', location: { '@type': 'Place', name: (f.sido || '') + (f.sigungu ? ' ' + f.sigungu : ''), address: { '@type': 'PostalAddress', addressRegion: f.sido, addressCountry: 'KR' } }, image: f.img ? [String(f.img).replace(/^http:/, 'https:')] : undefined, url: SITE + '/holiday/' })}</script>`).join('\n');
   writePage('holiday', layout('2026 연휴에 갈 축제 — 설날·추석·광복절 황금연휴 축제 총정리 | ' + SITE_NAME, '2026 공휴일·연휴에 열리는 전국 축제를 한눈에. 설날·추석·광복절·개천절·한글날 연휴 나들이 계획을 축제모아에서.', '/holiday/', holContent, { jsonld: holJsonLd }));
+}
+
+if (apiTrails.length) {
+  const themes = [...new Set(apiTrails.map(t => t.theme).filter(Boolean))];
+  themes.forEach(TH => {
+    const slug = ROUTE_SLUG[TH] || romanizeRegion(TH).toLowerCase().replace(/[^a-z]/g, '');
+    const M = ROUTE_META[TH] || { emoji: '🥾', color: '#0f9d8f', bg: '#f4faf8', bd: '#dcefeb', tag: '걷기길' };
+    const key = TH.replace(/\s/g, '');
+    const info = trailRoutes.find(r => { const k = r.name.replace(/\s/g, ''); return k === key || k.startsWith(key) || key.startsWith(k); });
+    const TITLE = (info && info.name) || TH;   // 공식 노선명 우선(예: 'DMZ' → 'DMZ 평화의 길')
+    const list = apiTrails.filter(t => t.theme === TH).sort((a, b) => crsNo(a.name) - crsNo(b.name));
+    const totalKm = Math.round(list.reduce((s, t) => s + (+t.dist || 0), 0));
+    const totalH = Math.round(list.reduce((s, t) => s + (+t.min || 0), 0) / 60);
+    const sidos = [...new Set(list.map(t => t.sido).filter(Boolean))];
+    const guides = [...new Set(list.map(t => t.sigun).filter(Boolean))];
+
+    const courseCards = list.map(t => `<details class="crs">
+<summary>
+  <span class="crs-no">${crsNo(t.name) === 999 ? '·' : crsNo(t.name)}</span>
+  <span class="crs-nm">${esc(t.name)}</span>
+  <span class="crs-meta">${t.dist ? t.dist + 'km' : ''}${t.min ? ' · ' + hrs(t.min) : ''}</span>
+</summary>
+<div class="crs-body">
+  <div class="meta">${t.sigun ? `<span class="chip">📍 ${esc(t.sigun)}</span>` : ''}${t.dist ? `<span class="chip">📏 ${t.dist}km</span>` : ''}${t.min ? `<span class="chip">⏱ ${hrs(t.min)}</span>` : ''}${levelChip(t.level)}${t.cycle ? `<span class="chip">${esc(t.cycle)}</span>` : ''}</div>
+  ${t.summary ? `<p class="crs-sum">${esc(t.summary)}</p>` : ''}
+  ${t.desc ? `<p>${esc(t.desc)}</p>` : ''}
+  ${t.tour ? `<p class="crs-tour"><b>주변 볼거리</b><br>${esc(t.tour)}</p>` : ''}
+  <p class="crs-links"><a href="https://search.naver.com/search.naver?query=${encodeURIComponent(t.name)}" target="_blank" rel="noopener">🔎 코스 검색</a>
+  <a href="https://map.naver.com/p/search/${encodeURIComponent(t.name)}" target="_blank" rel="noopener">🗺️ 지도</a>
+  ${t.sigun ? `<a href="/search/?sido=${encodeURIComponent(t.sido || '')}">🎪 이 지역 축제</a>` : ''}</p>
+</div>
+</details>`).join('\n');
+
+    const content = `<main><div class="wrap">
+<style>
+.rt-hero{background:${M.bg};border:1.5px solid ${M.bd};border-radius:18px;padding:22px 24px;margin:10px 0 6px}
+.rt-hero h1{font-size:1.5rem;font-weight:900;letter-spacing:-.02em;margin:0 0 4px;color:${M.color}}
+.rt-hero .line{font-size:1rem;font-weight:700;color:#374151;margin-bottom:10px}
+.rt-hero p{font-size:.93rem;color:#4b5563;line-height:1.75;margin:6px 0}
+.rt-stats{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.rt-stats span{background:#fff;border:1px solid ${M.bd};border-radius:20px;padding:7px 14px;font-size:.86rem;font-weight:700;color:#374151}
+.rt-stats b{color:${M.color}}
+.crs{background:#fff;border:1px solid #e9f2ef;border-radius:12px;margin:7px 0;overflow:hidden}
+.crs[open]{border-color:${M.bd};box-shadow:0 3px 12px rgba(31,41,55,.07)}
+.crs summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:11px;padding:13px 16px}
+.crs summary::-webkit-details-marker{display:none}
+.crs summary:hover{background:${M.bg}}
+.crs-no{flex:none;width:30px;height:30px;border-radius:50%;background:${M.bg};color:${M.color};font-weight:900;font-size:.85rem;display:flex;align-items:center;justify-content:center;border:1px solid ${M.bd}}
+.crs-nm{flex:1;font-weight:800;font-size:.98rem;color:#1f2937;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.crs-meta{flex:none;font-size:.83rem;color:#9aa3af;font-weight:700}
+.crs-body{padding:2px 16px 16px;border-top:1px solid #f1f6f4}
+.crs-body p{font-size:.92rem;color:#4b5563;line-height:1.75;margin:9px 0}
+.crs-sum{white-space:pre-line;color:#374151}
+.crs-tour{background:#f9fafb;border-radius:10px;padding:11px 13px;font-size:.88rem}
+.crs-body .meta{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 4px}
+.crs-body .chip{font-size:.78rem;font-weight:700;color:#374151;background:#f4faf8;border:1px solid #dcefeb;border-radius:20px;padding:3px 10px}
+.crs-links{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px!important}
+.crs-links a{font-size:.85rem;font-weight:700;color:${M.color};border:1.5px dashed ${M.bd};border-radius:9px;padding:7px 13px}
+.crs-links a:hover{background:${M.bg}}
+@media(max-width:600px){.rt-hero{padding:18px 16px}.crs summary{padding:11px 12px;gap:9px}.crs-meta{display:none}}
+</style>
+<p class="crumb"><a href="/trails/">🥾 걷기 여행</a> › ${esc(TITLE)}</p>
+<div class="rt-hero">
+<h1>${M.emoji} ${esc(TITLE)}</h1>
+${info && info.line ? `<div class="line">${esc(info.line)}</div>` : ''}
+${info && info.paras.length ? info.paras.map(p => `<p>${esc(p)}</p>`).join('') : `<p>${esc(TITLE)}는 코리아둘레길을 이루는 노선 중 하나입니다. 아래에서 코스별 거리·소요 시간·난이도와 상세 안내를 확인하세요.</p>`}
+<div class="rt-stats"><span>총 <b>${list.length}개</b> 코스</span><span>총 거리 <b>${totalKm.toLocaleString()}km</b></span><span>총 소요 <b>약 ${totalH.toLocaleString()}시간</b></span><span>지나는 지역 <b>${sidos.length}개 시·도</b></span></div>
+</div>
+<p class="note">지나는 지역: ${esc(sidos.join(' · '))}</p>
+
+<h2 class="sec">코스별 안내 <span style="font-size:.9rem;font-weight:600;color:#9aa3af">${list.length}개 · 눌러서 펼치기</span></h2>
+<p class="note" style="margin-top:-4px">각 코스를 누르면 거리·소요 시간·난이도와 함께 구간 설명, 주변 볼거리가 나옵니다.</p>
+${courseCards}
+
+${buyBox('trails')}
+
+<h2 class="sec">다른 길 보기</h2>
+<div class="sidonav">${themes.map(x => x === TH
+      ? `<span class="on">${(ROUTE_META[x] || {}).emoji || '🥾'} ${esc(TITLE)}</span>`
+      : `<a href="/trails/${ROUTE_SLUG[x] || ''}/">${(ROUTE_META[x] || {}).emoji || '🥾'} ${esc((trailRoutes.find(r => r.name.replace(/\s/g, '').startsWith(x.replace(/\s/g, ''))) || {}).name || x)}</a>`).join('')}</div>
+<p style="margin:14px 0 4px"><a href="/trails/" style="display:inline-block;background:#0f9d8f;color:#fff;font-weight:800;padding:10px 22px;border-radius:24px">🥾 전국 걷기길 ${apiTrails.length}개 코스 전체 검색 →</a></p>
+<p class="note" style="margin-top:16px">데이터 출처: 한국관광공사 두루누비 걷기여행 정보(공공데이터포털). 코스 통제·우회 여부는 방문 전 <a href="https://www.durunubi.kr/" target="_blank" rel="noopener nofollow">두루누비</a>에서 확인하세요.</p>
+</div></main>`;
+
+    const ld = `<script type="application/ld+json">${JSON.stringify({
+      '@context': 'https://schema.org', '@type': 'ItemList', name: TITLE + ' 코스 안내',
+      numberOfItems: list.length,
+      itemListElement: list.slice(0, 50).map((t, i) => ({ '@type': 'ListItem', position: i + 1, name: t.name }))
+    })}</script>`;
+    writePage('trails/' + slug, layout(
+      `${TITLE} 코스 총정리 — ${list.length}개 코스 거리·난이도·상세 안내 | ${SITE_NAME}`,
+      `${TITLE} 전체 ${list.length}개 코스를 한눈에. 코스별 거리(총 ${totalKm}km)·소요 시간·난이도와 구간 설명, 주변 볼거리까지 정리했습니다.`,
+      `/trails/${slug}/`, content, { jsonld: ld }));
+    TRAIL_URLS.push(`/trails/${slug}/`);
+  });
 }
 
 // ---------- 시도별 인기 여행지 랭킹 (/trend/{slug}/) ----------
@@ -3054,7 +3195,7 @@ document.getElementById('tcFrom').addEventListener('keydown',function(e){if(e.ke
 writePage('trip-cost', layout('여행 비용 계산기 — 자동차 vs 대중교통 비용 비교 | ' + SITE_NAME, '축제·여행지까지 자동차(연료+통행료+주차)와 대중교통 비용을 비교 계산. 출발지·도착지만 넣으면 끝. 계산 과정도 투명하게 공개.', '/trip-cost/', tripCostContent));
 
 // ---------- sitemap / robots ----------
-const urls = ['/', ...MONTHS.map(m => `/${m.key}/`), '/search/', ...(holidays.length ? ['/holiday/'] : []), '/pet/', ...(apiAccessible.length ? ['/accessible/'] : []), ...(apiTrails.length ? ['/trails/'] : []), ...(apiValleys.length ? ['/valley/'] : []), ...(apiMaple.length ? ['/maple/'] : []), ...(apiFlower.length ? ['/flower/'] : []), ...(apiOnsen.length ? ['/onsen/'] : []), '/jangteo/', '/test/', '/trip-cost/', ...(visitors.kor && visitors.kor.length ? ['/trend/'] : []), ...SIDO_URLS, ...THEME_URLS, ...TREND_LANG_URLS, '/blog/', ...posts.map(p => `/blog/${p.slug}/`), '/about/', EDITORIAL_URL, '/contact/', '/privacy/',...(apiFestsEn.length ? ['/en/', '/en/search/'] : []), ...(apiFestsJa.length ? ['/ja/', '/ja/search/'] : []), ...(apiFestsEs.length ? ['/es/', '/es/search/'] : []), ...(apiFestsZh.length ? ['/zh/', '/zh/search/'] : [])];
+const urls = ['/', ...MONTHS.map(m => `/${m.key}/`), '/search/', ...(holidays.length ? ['/holiday/'] : []), '/pet/', ...(apiAccessible.length ? ['/accessible/'] : []), ...(apiTrails.length ? ['/trails/'] : []), ...(apiValleys.length ? ['/valley/'] : []), ...(apiMaple.length ? ['/maple/'] : []), ...(apiFlower.length ? ['/flower/'] : []), ...(apiOnsen.length ? ['/onsen/'] : []), '/jangteo/', '/test/', '/trip-cost/', ...(visitors.kor && visitors.kor.length ? ['/trend/'] : []), ...SIDO_URLS, ...THEME_URLS, ...TRAIL_URLS, ...TREND_LANG_URLS, '/blog/', ...posts.map(p => `/blog/${p.slug}/`), '/about/', EDITORIAL_URL, '/contact/', '/privacy/',...(apiFestsEn.length ? ['/en/', '/en/search/'] : []), ...(apiFestsJa.length ? ['/ja/', '/ja/search/'] : []), ...(apiFestsEs.length ? ['/es/', '/es/search/'] : []), ...(apiFestsZh.length ? ['/zh/', '/zh/search/'] : [])];
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${urls.map(u => `<url><loc>${SITE}${u}</loc><lastmod>${TODAY}</lastmod></url>`).join('\n')}
