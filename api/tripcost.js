@@ -64,6 +64,11 @@ module.exports = async (req, res) => {
     const fuelCost = Math.round(distanceKm / kmpl * fuelPrice);
     const carTotal = fuelCost + car.toll + parking;
 
+    // 시외/기차 요금은 공개 API가 없어(코레일 API 미제공, 시외버스는 제휴 승인 필요)
+    // ODsay 요금이 없을 때 고속버스 거리 기반 추정치를 제공(약 90원/km, 최소 3천원). 추정임을 명시.
+    const busEstimate = Math.max(3000, Math.round(distanceKm * 90 / 100) * 100);
+    const routeSearch = 'https://search.naver.com/search.naver?query=' + encodeURIComponent(o.name + ' ' + d.name + ' 고속버스');
+
     res.statusCode = 200;
     res.end(JSON.stringify({
       from: { q: from, name: o.name, addr: o.addr },
@@ -76,7 +81,9 @@ module.exports = async (req, res) => {
         formula: `연료 ${fuelCost.toLocaleString()}원(=${distanceKm.toFixed(1)}km ÷ ${kmpl}km/L × ${fuelPrice.toLocaleString()}원) + 통행료 ${car.toll.toLocaleString()}원${parking ? ' + 주차 ' + parking.toLocaleString() + '원' : ''}`
       },
       transit: tr ? { fare: tr.fare, durationMin: tr.durationMin, transfer: tr.transfer } : null,
-      diff: (tr && tr.fare) ? (carTotal - tr.fare) : null
+      // ODsay 실요금이 없을 때 쓸 시외/고속버스 추정 + 정확 확인 링크
+      intercity: (tr && tr.fare) ? null : { busEstimate, routeSearch },
+      diff: (tr && tr.fare) ? (carTotal - tr.fare) : (carTotal - busEstimate)
     }));
   } catch (e) {
     res.statusCode = 200; // 사용자에겐 부드럽게
