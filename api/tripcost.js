@@ -50,6 +50,12 @@ module.exports = async (req, res) => {
   try {
     if (!KAKAO || !ODSAY) { res.statusCode = 500; return res.end(JSON.stringify({ error: '서버 키 미설정(관리자: Vercel 환경변수 KAKAO_REST_KEY·ODSAY_KEY 등록 필요)' })); }
     const q = req.query || {};
+    if (q.debug === '1') { // 임시 진단: ODsay 원응답·리전 확인
+      let dbg;
+      try { const r = await get('api.odsay.com', '/v1/api/searchPubTransPathT?SX=126.9779&SY=37.5663&EX=127.0286&EY=37.4979&apiKey=' + encodeURIComponent(ODSAY), { Referer: 'https://chukjemoa.co.kr/' }); dbg = { sc: r.sc, body: r.body.slice(0, 220) }; }
+      catch (e) { dbg = { err: e.message }; }
+      res.statusCode = 200; return res.end(JSON.stringify({ region: process.env.VERCEL_REGION || '(unknown)', odsay: dbg }));
+    }
     const from = (q.from || '').trim(), to = (q.to || '').trim();
     if (!from || !to) { res.statusCode = 400; return res.end(JSON.stringify({ error: '출발지와 도착지를 입력해주세요.' })); }
     // 가정값(사용자가 조정 가능, 기본값 노출)
