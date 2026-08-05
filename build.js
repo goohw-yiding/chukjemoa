@@ -583,7 +583,7 @@ function layout(title, desc, urlPath, content, opts) {
     zh: `<nav><a href="/zh/">首页</a><a href="/zh/search/">🔎 庆典搜索</a><a href="/">🇰🇷 한국어</a></nav>`
   };
   const nav = lang === 'ko'
-    ? `<nav><a href="/2026-07/">월별 축제</a><a href="/search/">🔎 축제 검색</a><a href="/holiday/">🎌 연휴 축제</a><a href="/pet/">🐶 반려견 여행지</a><a href="/accessible/">♿ 무장애 여행</a><a href="/trails/">🥾 걷기 여행</a><a href="/valley/">💧 계곡명소</a><a href="/maple/">🍁 단풍명소</a><a href="/flower/">🌸 봄꽃명소</a><a href="/onsen/">♨️ 온천</a><a href="/jangteo/">전국 오일장</a><a href="/test/">🔮 취향 테스트</a><a href="/blog/">축제 가이드</a><a href="/en/">EN</a><a href="/ja/">日本語</a><a href="/es/">ES</a><a href="/zh/">中文</a></nav>`
+    ? `<nav><a href="/2026-07/">월별 축제</a><a href="/search/">🔎 축제 검색</a><a href="/holiday/">🎌 연휴 축제</a><a href="/pet/">🐶 반려견 여행지</a><a href="/accessible/">♿ 무장애 여행</a><a href="/trails/">🥾 걷기 여행</a><a href="/valley/">💧 계곡명소</a><a href="/maple/">🍁 단풍명소</a><a href="/flower/">🌸 봄꽃명소</a><a href="/onsen/">♨️ 온천</a><a href="/trip-cost/">🧮 여행비용</a><a href="/jangteo/">전국 오일장</a><a href="/test/">🔮 취향 테스트</a><a href="/blog/">축제 가이드</a><a href="/en/">EN</a><a href="/ja/">日本語</a><a href="/es/">ES</a><a href="/zh/">中文</a></nav>`
     : NAVS[lang];
   const FOOTERS = {
     en: `<p>Chukjemoa — Korea Festivals &amp; Traditional Markets</p>
@@ -1949,8 +1949,96 @@ ${sections || '<p class="note">다가오는 연휴 정보를 준비 중이에요
   writePage('holiday', layout('2026 연휴에 갈 축제 — 설날·추석·광복절 황금연휴 축제 총정리 | ' + SITE_NAME, '2026 공휴일·연휴에 열리는 전국 축제를 한눈에. 설날·추석·광복절·개천절·한글날 연휴 나들이 계획을 축제모아에서.', '/holiday/', holContent, { jsonld: holJsonLd }));
 }
 
+// ---------- 여행 비용 계산기 (/trip-cost/) ----------
+const tripCostContent = `<main><div class="wrap">
+<style>
+.tc-wrap{max-width:720px;margin:0 auto}
+.tc-h1{font-size:1.5rem;font-weight:900;letter-spacing:-.02em;margin:8px 0 4px}
+.tc-sub{color:#6b7280;font-size:.95rem;margin-bottom:16px}
+.tc-card{background:#fff;border-radius:16px;box-shadow:0 3px 14px rgba(31,41,55,.08);padding:20px;margin-bottom:16px}
+.tc-row{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+.tc-field{flex:1;min-width:180px}
+.tc-field label{display:block;font-weight:800;font-size:.9rem;color:#374151;margin-bottom:6px}
+.tc-field input{width:100%;padding:12px 14px;border:1.5px solid #ffd9cf;border-radius:12px;font-size:1rem;font-family:inherit;background:#fff8f6;box-sizing:border-box}
+.tc-adv{margin:6px 0 4px}
+.tc-adv summary{cursor:pointer;font-weight:700;font-size:.88rem;color:#e0502f;list-style:none}
+.tc-adv summary::-webkit-details-marker{display:none}
+.tc-adv .tc-row{margin-top:12px}
+.tc-adv input{font-size:.92rem;padding:10px 12px}
+.tc-adv label{font-size:.82rem}
+.tc-btn{width:100%;background:#ff5a3c;color:#fff;border:none;border-radius:14px;padding:15px;font-weight:800;font-size:1.05rem;cursor:pointer;font-family:inherit;box-shadow:0 6px 18px rgba(255,90,60,.35)}
+.tc-btn:disabled{opacity:.6;cursor:default}
+.tc-res{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:4px}
+@media(max-width:560px){.tc-res{grid-template-columns:1fr}}
+.tc-box{border-radius:14px;padding:18px;border:2px solid}
+.tc-box.car{border-color:#ffd9cf;background:#fff8f6}
+.tc-box.pt{border-color:#cfe7f2;background:#f2f9fc}
+.tc-box .mode{font-weight:800;font-size:.95rem;margin-bottom:2px}
+.tc-box .amt{font-size:1.7rem;font-weight:900;letter-spacing:-.02em}
+.tc-box.car .amt{color:#e0502f}.tc-box.pt .amt{color:#0c6d9c}
+.tc-box .sub{font-size:.82rem;color:#6b7280;margin-top:2px}
+.tc-break{background:#f9fafb;border-radius:12px;padding:14px 16px;margin-top:14px;font-size:.88rem;color:#374151;line-height:1.7}
+.tc-break b{color:#111827}
+.tc-verdict{text-align:center;font-weight:800;margin-top:14px;font-size:1.02rem}
+.tc-note{color:#9ca3af;font-size:.8rem;margin-top:10px;line-height:1.6}
+.tc-err{color:#dc2626;font-weight:700;padding:12px;text-align:center}
+</style>
+<div class="tc-wrap">
+<h1 class="tc-h1">🧮 여행 비용 계산기 — 자동차 vs 대중교통</h1>
+<p class="tc-sub">출발지와 도착지를 넣으면 <b>자동차(연료+통행료+주차)</b>와 <b>대중교통(요금)</b> 비용을 비교해 드려요. 어떻게 계산했는지도 다 보여드립니다.</p>
+<div class="tc-card">
+<div class="tc-row">
+<div class="tc-field"><label>출발지</label><input id="tcFrom" type="text" placeholder="예: 서울역, 강남역, 수원시청"></div>
+<div class="tc-field"><label>도착지</label><input id="tcTo" type="text" placeholder="예: 보령머드축제, 해운대, 가평"></div>
+</div>
+<details class="tc-adv"><summary>⚙️ 계산 기준 바꾸기 (연비·유가·주차)</summary>
+<div class="tc-row">
+<div class="tc-field"><label>연비 (km/L)</label><input id="tcKmpl" type="number" value="12" min="1"></div>
+<div class="tc-field"><label>유가 (원/L)</label><input id="tcFuel" type="number" value="1700" min="1"></div>
+<div class="tc-field"><label>주차비 (원)</label><input id="tcPark" type="number" value="0" min="0"></div>
+</div></details>
+<button id="tcGo" class="tc-btn">비용 계산하기</button>
+</div>
+<div id="tcOut"></div>
+<p class="tc-note">거리·통행료는 카카오내비, 대중교통 요금은 ODsay 기준입니다. 실제 요금은 차종·유종·실시간 유가·할인·정체 등에 따라 달라질 수 있어 <b>비교 참고용</b>입니다. 시외버스·기차(KTX 등) 요금은 ODsay가 제공하지 않아 <b>요금 정보 없음</b>으로 표시돼요. 이땐 코레일·시외버스 앱에서 확인하세요.</p>
+</div>
+</div></main>
+<script>
+(function(){
+var out=document.getElementById('tcOut');var btn=document.getElementById('tcGo');
+function won(n){return (n||0).toLocaleString()+'원';}
+function run(){
+  var from=document.getElementById('tcFrom').value.trim();var to=document.getElementById('tcTo').value.trim();
+  if(!from||!to){out.innerHTML='<div class="tc-err">출발지와 도착지를 모두 입력해주세요.</div>';return;}
+  var kmpl=document.getElementById('tcKmpl').value||12;var fuel=document.getElementById('tcFuel').value||1700;var park=document.getElementById('tcPark').value||0;
+  btn.disabled=true;btn.textContent='계산 중…';out.innerHTML='';
+  var qs='?from='+encodeURIComponent(from)+'&to='+encodeURIComponent(to)+'&kmpl='+kmpl+'&fuel='+fuel+'&parking='+park;
+  fetch('/api/tripcost'+qs).then(function(r){return r.json();}).then(function(d){
+    btn.disabled=false;btn.textContent='비용 계산하기';
+    if(d.error){out.innerHTML='<div class="tc-err">'+d.error+'</div>';return;}
+    var car=d.car;var pt=d.transit;
+    var html='<div class="tc-card">';
+    html+='<div style="font-size:.9rem;color:#6b7280;margin-bottom:10px">📍 <b>'+d.from.name+'</b> → <b>'+d.to.name+'</b> · 자동차 '+car.distanceKm+'km·'+car.durationMin+'분</div>';
+    html+='<div class="tc-res">';
+    html+='<div class="tc-box car"><div class="mode">🚗 자동차</div><div class="amt">'+won(car.total)+'</div><div class="sub">편도 기준</div></div>';
+    if(pt&&pt.fare) html+='<div class="tc-box pt"><div class="mode">🚌 대중교통</div><div class="amt">'+won(pt.fare)+'</div><div class="sub">'+pt.durationMin+'분'+(pt.transfer?' · 환승 '+pt.transfer+'회':'')+'</div></div>';
+    else if(pt) html+='<div class="tc-box pt"><div class="mode">🚌 대중교통</div><div class="amt" style="font-size:1.05rem">요금 정보 없음</div><div class="sub">시외버스·기차 요금은 별도 확인<br>(소요 약 '+pt.durationMin+'분)</div></div>';
+    else html+='<div class="tc-box pt"><div class="mode">🚌 대중교통</div><div class="amt" style="font-size:1.1rem">경로 없음</div><div class="sub">이 구간은 대중교통 안내가 어려워요</div></div>';
+    html+='</div>';
+    html+='<div class="tc-break"><b>🧮 이렇게 계산했어요</b><br>· 자동차: '+car.formula+'<br>· 기준: 연비 '+d.assumptions.kmpl+'km/L, 유가 '+won(d.assumptions.fuelPrice)+'/L'+(d.assumptions.parking?', 주차 '+won(d.assumptions.parking):'')+((pt&&pt.fare)?'<br>· 대중교통: ODsay 최적경로 요금 '+won(pt.fare):'')+'</div>';
+    if(pt&&pt.fare){var diff=d.diff;if(diff>0)html+='<div class="tc-verdict">🚌 대중교통이 '+won(diff)+' 더 저렴해요</div>';else if(diff<0)html+='<div class="tc-verdict">🚗 자동차가 '+won(-diff)+' 더 저렴해요</div>';else html+='<div class="tc-verdict">두 방법 비용이 비슷해요</div>';}
+    html+='</div>';
+    out.innerHTML=html;
+  }).catch(function(){btn.disabled=false;btn.textContent='비용 계산하기';out.innerHTML='<div class="tc-err">계산에 실패했어요. 잠시 후 다시 시도해주세요.</div>';});
+}
+btn.addEventListener('click',run);
+document.getElementById('tcTo').addEventListener('keydown',function(e){if(e.key==='Enter')run();});
+})();
+</script>`;
+writePage('trip-cost', layout('여행 비용 계산기 — 자동차 vs 대중교통 비용 비교 | ' + SITE_NAME, '축제·여행지까지 자동차(연료+통행료+주차)와 대중교통 비용을 비교 계산. 출발지·도착지만 넣으면 끝. 계산 과정도 투명하게 공개.', '/trip-cost/', tripCostContent));
+
 // ---------- sitemap / robots ----------
-const urls = ['/', ...MONTHS.map(m => `/${m.key}/`), '/search/', ...(holidays.length ? ['/holiday/'] : []), '/pet/', ...(apiAccessible.length ? ['/accessible/'] : []), ...(apiTrails.length ? ['/trails/'] : []), ...(apiValleys.length ? ['/valley/'] : []), ...(apiMaple.length ? ['/maple/'] : []), ...(apiFlower.length ? ['/flower/'] : []), ...(apiOnsen.length ? ['/onsen/'] : []), '/jangteo/', '/test/', '/blog/', ...posts.map(p => `/blog/${p.slug}/`), '/about/', EDITORIAL_URL, '/contact/', '/privacy/',...(apiFestsEn.length ? ['/en/', '/en/search/'] : []), ...(apiFestsJa.length ? ['/ja/', '/ja/search/'] : []), ...(apiFestsEs.length ? ['/es/', '/es/search/'] : []), ...(apiFestsZh.length ? ['/zh/', '/zh/search/'] : [])];
+const urls = ['/', ...MONTHS.map(m => `/${m.key}/`), '/search/', ...(holidays.length ? ['/holiday/'] : []), '/pet/', ...(apiAccessible.length ? ['/accessible/'] : []), ...(apiTrails.length ? ['/trails/'] : []), ...(apiValleys.length ? ['/valley/'] : []), ...(apiMaple.length ? ['/maple/'] : []), ...(apiFlower.length ? ['/flower/'] : []), ...(apiOnsen.length ? ['/onsen/'] : []), '/jangteo/', '/test/', '/trip-cost/', '/blog/', ...posts.map(p => `/blog/${p.slug}/`), '/about/', EDITORIAL_URL, '/contact/', '/privacy/',...(apiFestsEn.length ? ['/en/', '/en/search/'] : []), ...(apiFestsJa.length ? ['/ja/', '/ja/search/'] : []), ...(apiFestsEs.length ? ['/es/', '/es/search/'] : []), ...(apiFestsZh.length ? ['/zh/', '/zh/search/'] : [])];
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${urls.map(u => `<url><loc>${SITE}${u}</loc><lastmod>${TODAY}</lastmod></url>`).join('\n')}

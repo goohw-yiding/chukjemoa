@@ -6,3 +6,5 @@ tourapi.key
 node_modules/
 _*.js
 .fuse_hidden*
+apikeys.json
+apikeys.local.json
