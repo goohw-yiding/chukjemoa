@@ -212,6 +212,8 @@ function esc(s) {
   return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
 
+[apiValleys, apiMaple, apiFlower, apiOnsen].forEach(normalizeSido);
+
 // ---------- 쿠팡 파트너스 ----------
 // ★ 제휴링크 교체는 아래 items[].url 한 줄씩만 바꾸면 전 사이트에 반영됩니다.
 //   url이 비어 있으면 일반 쿠팡 검색 URL로 폴백(=수수료 없음). 발급 후 반드시 채울 것.
@@ -246,6 +248,15 @@ function buyBox(key) {
     + `<div class="bb-disc">${COUPANG.disc}</div>`;
 }
 
+// ★ 전남광주통합 보정: TourAPI가 전남 시·군을 '광주'로 주는 경우가 있다.
+//   둘째 토큰이 '구'로 끝나면 진짜 광주광역시, '시/군'이면 전라남도다.
+//   (축제·반려동물 수집기는 이미 처리하지만 계절명소 수집기는 안 해서 여기서 한 번 더 거른다)
+function normalizeSido(list) {
+  (list || []).forEach(p => {
+    if (p && p.sido === '광주' && p.sigungu && !String(p.sigungu).endsWith('구')) p.sido = '전남';
+  });
+  return list;
+}
 function festCard(f) {
   const emoji = CAT_EMOJI[f.category] || '🎪';
   const img = CAT_IMG[f.category] || 'etc';
@@ -2294,6 +2305,39 @@ function spotChips(list, emoji, href) {
     `<a href="${href}" class="spotchip">${emoji} ${esc(p.title)}<span>${esc(p.sigungu || '')}</span></a>`).join('') + `</div>`;
 }
 
+// ---------- 테마 랭킹 (/trend/valley·maple·flower·onsen/) ----------
+const THEME_URLS = [];
+const SBM = (visitors.seasonByMonth && visitors.seasonByMonth.months) || {};
+const SBM_YEAR = (visitors.seasonByMonth && visitors.seasonByMonth.year) || SEASON_Y;
+// '시도|시군구' → 성수기 배수
+function seasonIdxMap(month) {
+  const m = {};
+  (SBM[month] || []).forEach(r => { m[r.sido + '|' + r.name] = r.idx; });
+  return m;
+}
+function themeBars(rows, cls, unit) {
+  if (!rows.length) return '<p class="note">해당하는 지역이 없어요.</p>';
+  const max = rows[0].v || 1;
+  return `<div class="ranklist">` + rows.map((r, i) => {
+    const w = Math.max(14, Math.round(r.v / max * 100));
+    const medal = i < 3 ? ['🥇', '🥈', '🥉'][i] : (i + 1);
+    return `<div class="rankrow ${cls}"><div class="no">${medal}</div>`
+      + `<div class="bar"><a href="/search/?sido=${encodeURIComponent(r.sido)}&sigungu=${encodeURIComponent(r.name)}" title="${esc(r.sido)} ${esc(r.name)} 축제 보기">${esc(r.sido)} ${esc(r.name)}</a></div>`
+      + `<div class="val">${unit === 'x' ? `<em>${r.v}배</em>` : `${r.v}${unit}`}</div></div>`;
+  }).join('') + `</div>`;
+}
+const THEMES = [
+  { slug: 'valley', data: apiValleys, emoji: '💧', name: '계곡', many: '계곡이 많은 지역', month: 8, listUrl: '/valley/', cp: 'valley',
+    lead: '여름 물놀이 계곡을 지역별로 정리했어요. 계곡이 많은 곳, 성수기에 붐비는 곳, 그리고 사람이 적어 한적한 곳까지 나눠서 봅니다.' },
+  { slug: 'maple', data: apiMaple, emoji: '🍁', name: '단풍', many: '단풍 명소가 많은 지역', month: 10, listUrl: '/maple/', cp: 'maple',
+    lead: '가을 단풍 명소를 지역별로 정리했어요. 단풍 명소가 많은 곳과 단풍철에 사람이 몰리는 곳을 나눠서 봅니다.' },
+  { slug: 'flower', data: apiFlower, emoji: '🌸', name: '봄꽃', many: '봄꽃 명소가 많은 지역', month: 4, listUrl: '/flower/', cp: 'flower',
+    lead: '봄꽃·수목원 명소를 지역별로 정리했어요. 꽃 구경 갈 곳이 많은 지역과 봄철에 붐비는 지역을 나눠서 봅니다.' },
+  { slug: 'onsen', data: apiOnsen, emoji: '♨️', name: '온천', many: '온천이 많은 지역', month: 1, listUrl: '/onsen/', cp: 'onsen',
+    lead: '전국 온천을 지역별로 정리했어요. 온천이 많은 지역과 한겨울에 사람이 몰리는 지역을 나눠서 봅니다.' }
+];
+const MONTH_SEASON = { 1: '한겨울', 4: '봄', 8: '한여름', 10: '가을' };
+
 // ---------- 인기 여행지 랭킹 (/trend/) ----------
 function rankBars(list, cls, mode) {
   if (!list || !list.length) return '<p class="note">데이터를 준비 중이에요.</p>';
@@ -2387,6 +2431,9 @@ ${TREND_TABS.map((t, i) => `<section class="trendpane" data-p="${t.id}"${i === 0
 <p class="note" style="margin-top:-4px">${t.desc}</p>
 ${rankBars(t.list, t.cls, t.mode)}
 </section>`).join('\n')}
+<h2 class="sec">🗺️ 테마별로 보기</h2>
+<p class="note" style="margin-top:-4px">계절 명소는 테마별 랭킹이 따로 있어요. 어디가 붐비고 어디가 한적한지 나눠서 볼 수 있습니다.</p>
+<div class="sidonav">${THEMES.filter(x => x.data && x.data.length).map(x => `<a href="/trend/${x.slug}/">${x.emoji} ${x.name}</a>`).join('')}</div>
 <h2 class="sec">📍 지역별로 자세히 보기</h2>
 <p class="note" style="margin-top:-4px">시·도를 고르면 그 안에서 어느 시·군·구에 사람이 몰리는지, 한국인과 외국인이 어떻게 다른지 볼 수 있어요.</p>
 <div class="sidonav">${Object.entries(visitors.bySido || {}).filter(([, o]) => o.total >= 2).map(([x]) => `<a href="/trend/${SIDO_SLUG[x]}/">${esc(x)}</a>`).join('')}</div>
@@ -2575,6 +2622,77 @@ ${buyBox('festival')}
     `${full} 시·군·구별 방문자 랭킹. 한국인이 많이 가는 곳, 외국인이 많이 가는 곳, ${SEASON_M}월 성수기 지역을 관광 빅데이터로 정리하고 ${SD} 축제·계절 명소까지 한눈에.`,
     `/trend/${slug}/`, content, { jsonld: ld }));
   SIDO_URLS.push(`/trend/${slug}/`);
+});
+
+THEMES.forEach(T => {
+  if (!T.data || !T.data.length) return;
+  const idxMap = seasonIdxMap(T.month);
+  // 시군구별 집계
+  const byGu = {};
+  T.data.forEach(p => {
+    if (!p.sido || !p.sigungu) return;
+    const k = p.sido + '|' + p.sigungu;
+    if (!byGu[k]) byGu[k] = { sido: p.sido, name: p.sigungu, spots: [] };
+    byGu[k].spots.push(p.title);
+  });
+  const all = Object.entries(byGu).map(([k, o]) => ({ ...o, key: k, cnt: o.spots.length, idx: idxMap[k] || 0 }));
+  if (!all.length) return;
+
+  const many = [...all].sort((a, b) => b.cnt - a.cnt || a.sido.localeCompare(b.sido)).slice(0, 15)
+    .map(r => ({ sido: r.sido, name: r.name, v: r.cnt, spots: r.spots }));
+  const busy = all.filter(r => r.idx > 1).sort((a, b) => b.idx - a.idx).slice(0, 15)
+    .map(r => ({ sido: r.sido, name: r.name, v: r.idx, spots: r.spots }));
+  const manyKeys = new Set([...all].sort((a, b) => b.cnt - a.cnt).slice(0, 5).map(r => r.key));
+  const calm = all.filter(r => r.cnt >= 2 && !r.idx && !manyKeys.has(r.key)).sort((a, b) => b.cnt - a.cnt).slice(0, 15)
+    .map(r => ({ sido: r.sido, name: r.name, v: r.cnt, spots: r.spots }));
+
+  const chips = rows => rows.slice(0, 6).map(r =>
+    `<a class="spotchip" href="${T.listUrl}">${T.emoji} ${esc(r.spots[0])}<span>${esc(r.sido)} ${esc(r.name)}</span></a>`).join('');
+
+  const content = `<main><div class="wrap">
+<p class="crumb"><a href="/trend/">🔥 인기 여행지 랭킹</a> › ${T.emoji} ${T.name} 랭킹</p>
+<h1 style="font-size:1.5rem;font-weight:900;letter-spacing:-.02em;margin:6px 0 4px">${T.emoji} 전국 ${T.name} 랭킹 — ${T.month}월엔 어디로 갈까</h1>
+<p class="note" style="margin-top:0">${T.lead} 공공데이터 ${T.name} 명소 <b>${T.data.length}곳</b>과 한국관광공사 방문자 데이터를 겹쳐 만들었습니다.</p>
+<div class="datebadge">📅 붐빔 정도는 <b>${SBM_YEAR}년 ${T.month}월</b>(${MONTH_SEASON[T.month]}) 실적 기준 · ${T.name} 명소는 한국관광공사 관광정보<br><span>방문 데이터는 약 한 달 늦게 공개돼서, ${T.month}월 상황은 작년 같은 달 실적으로 봅니다. <a href="/trend/#howto">숫자 읽는 법 →</a></span></div>
+
+<h2 class="sec">${T.emoji} ${T.many}</h2>
+<p class="note" style="margin-top:-4px">선택지가 많은 곳입니다. 한 지역에서 여러 곳을 둘러보려면 여기가 유리해요.</p>
+${themeBars(many, '', '곳')}
+<div class="spotchips">${chips(many)}</div>
+
+${busy.length >= 3 ? `<h2 class="sec">🔥 ${T.month}월에 붐비는 ${T.name} 지역</h2>
+<p class="note" style="margin-top:-4px">${T.month}월에 평소보다 방문자가 많이 늘어난 지역입니다. 그만큼 인기 있다는 뜻이지만, 주차·숙소는 미리 잡는 게 좋아요.</p>
+${themeBars(busy, 'hot', 'x')}
+<div class="spotchips">${chips(busy)}</div>` : ''}
+
+${calm.length >= 3 ? `<h2 class="sec">😌 사람이 덜 몰리는 ${T.name} 지역</h2>
+<p class="note" style="margin-top:-4px">${T.name} 명소가 2곳 이상 있는데도 ${T.month}월 방문자가 <b>평소 수준에 머무는</b> 지역입니다. 붐비는 걸 싫어하신다면 여기를 보세요.</p>
+${themeBars(calm, '', '곳')}
+<div class="spotchips">${chips(calm)}</div>` : ''}
+
+${buyBox(T.cp)}
+
+<h2 class="sec">${T.name} 명소 전체 보기</h2>
+<p style="margin:6px 0 4px"><a href="${T.listUrl}" style="display:inline-block;background:#0f9d8f;color:#fff;font-weight:800;padding:10px 22px;border-radius:24px">${T.emoji} 전국 ${T.name} ${T.data.length}곳 보러가기 →</a></p>
+
+<h2 class="sec">다른 테마 랭킹</h2>
+<div class="sidonav">${THEMES.filter(x => x.data && x.data.length).map(x => x.slug === T.slug
+    ? `<span class="on">${x.emoji} ${x.name}</span>`
+    : `<a href="/trend/${x.slug}/">${x.emoji} ${x.name}</a>`).join('')}</div>
+<h2 class="sec">지역별 랭킹</h2>
+<div class="sidonav">${Object.entries(visitors.bySido || {}).filter(([, o]) => o.total >= 2).map(([x]) => `<a href="/trend/${SIDO_SLUG[x]}/">${esc(x)}</a>`).join('')}</div>
+<p class="note" style="margin-top:18px">출처: ${T.name} 명소 — 한국관광공사 국문관광정보(공공데이터포털) / 방문자 — 한국관광공사 «한국관광 데이터랩». 통신·카드 기반 추계치이며, 계산 방식은 <a href="/trend/#howto">숫자 읽는 법</a>에 있습니다.</p>
+</div></main>`;
+  const ld = `<script type="application/ld+json">${JSON.stringify({
+    '@context': 'https://schema.org', '@type': 'ItemList', name: `전국 ${T.name} 지역 랭킹`,
+    itemListOrder: 'https://schema.org/ItemListOrderDescending', numberOfItems: many.length,
+    itemListElement: many.map((r, i) => ({ '@type': 'ListItem', position: i + 1, name: r.sido + ' ' + r.name }))
+  })}</script>`;
+  writePage('trend/' + T.slug, layout(
+    `전국 ${T.name} 랭킹 — ${T.month}월에 붐비는 곳·한적한 곳 | ${SITE_NAME}`,
+    `전국 ${T.name} 명소 ${T.data.length}곳을 지역별로 정리. ${T.name}이 많은 지역, ${T.month}월에 사람이 몰리는 지역, 상대적으로 한적한 지역을 관광 빅데이터로 비교해 보세요.`,
+    `/trend/${T.slug}/`, content, { jsonld: ld }));
+  THEME_URLS.push(`/trend/${T.slug}/`);
 });
 
 // ---------- 다국어 랭킹 숫자 해설 ----------
@@ -2913,7 +3031,7 @@ document.getElementById('tcFrom').addEventListener('keydown',function(e){if(e.ke
 writePage('trip-cost', layout('여행 비용 계산기 — 자동차 vs 대중교통 비용 비교 | ' + SITE_NAME, '축제·여행지까지 자동차(연료+통행료+주차)와 대중교통 비용을 비교 계산. 출발지·도착지만 넣으면 끝. 계산 과정도 투명하게 공개.', '/trip-cost/', tripCostContent));
 
 // ---------- sitemap / robots ----------
-const urls = ['/', ...MONTHS.map(m => `/${m.key}/`), '/search/', ...(holidays.length ? ['/holiday/'] : []), '/pet/', ...(apiAccessible.length ? ['/accessible/'] : []), ...(apiTrails.length ? ['/trails/'] : []), ...(apiValleys.length ? ['/valley/'] : []), ...(apiMaple.length ? ['/maple/'] : []), ...(apiFlower.length ? ['/flower/'] : []), ...(apiOnsen.length ? ['/onsen/'] : []), '/jangteo/', '/test/', '/trip-cost/', ...(visitors.kor && visitors.kor.length ? ['/trend/'] : []), ...SIDO_URLS, ...TREND_LANG_URLS, '/blog/', ...posts.map(p => `/blog/${p.slug}/`), '/about/', EDITORIAL_URL, '/contact/', '/privacy/',...(apiFestsEn.length ? ['/en/', '/en/search/'] : []), ...(apiFestsJa.length ? ['/ja/', '/ja/search/'] : []), ...(apiFestsEs.length ? ['/es/', '/es/search/'] : []), ...(apiFestsZh.length ? ['/zh/', '/zh/search/'] : [])];
+const urls = ['/', ...MONTHS.map(m => `/${m.key}/`), '/search/', ...(holidays.length ? ['/holiday/'] : []), '/pet/', ...(apiAccessible.length ? ['/accessible/'] : []), ...(apiTrails.length ? ['/trails/'] : []), ...(apiValleys.length ? ['/valley/'] : []), ...(apiMaple.length ? ['/maple/'] : []), ...(apiFlower.length ? ['/flower/'] : []), ...(apiOnsen.length ? ['/onsen/'] : []), '/jangteo/', '/test/', '/trip-cost/', ...(visitors.kor && visitors.kor.length ? ['/trend/'] : []), ...SIDO_URLS, ...THEME_URLS, ...TREND_LANG_URLS, '/blog/', ...posts.map(p => `/blog/${p.slug}/`), '/about/', EDITORIAL_URL, '/contact/', '/privacy/',...(apiFestsEn.length ? ['/en/', '/en/search/'] : []), ...(apiFestsJa.length ? ['/ja/', '/ja/search/'] : []), ...(apiFestsEs.length ? ['/es/', '/es/search/'] : []), ...(apiFestsZh.length ? ['/zh/', '/zh/search/'] : [])];
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${urls.map(u => `<url><loc>${SITE}${u}</loc><lastmod>${TODAY}</lastmod></url>`).join('\n')}

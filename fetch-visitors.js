@@ -91,7 +91,42 @@ function fmtRange(a, b) {
   return f(ymd(a)) + '~' + f(ymd(b));
 }
 
-// 계절 랭킹: 작년 같은 달 일평균 ÷ 작년 연 일평균 = 성수기 배수
+// ── 계절 랭킹 ──
+// 성수기 배수 = 대상 월 일평균 ÷ 그 해 평소 일평균.
+// 기준선(12개월 표본)은 한 번만 받아서 여러 달에 재사용한다(계곡 8월·단풍 10월·봄꽃 4월·온천 1월).
+async function buildBaseline(year) {
+  const base = {}; let baseDays = 0;
+  for (let m = 1; m <= 12; m++) {
+    const st = new Date(year, m - 1, 1), en = new Date(year, m - 1, 7);
+    const got = await collect('locgoRegnVisitrDDList', st, en, r => {
+      if (skipDup(r.signguCode, r.signguNm)) return;
+      bump(base, r.signguCode, r.signguNm, '', r);
+    }, true);
+    if (got > 0) baseDays += 7;
+    process.stdout.write('\r  기준선 ' + year + '년 ' + m + '/12   ');
+  }
+  process.stdout.write('\n');
+  return { base, baseDays };
+}
+async function monthIndex(year, month, B) {
+  if (!B.baseDays) return [];
+  const cur = {};
+  const mStart = new Date(year, month - 1, 1), mEnd = new Date(year, month, 0);
+  await collect('locgoRegnVisitrDDList', mStart, mEnd, r => {
+    if (skipDup(r.signguCode, r.signguNm)) return;
+    bump(cur, r.signguCode, r.signguNm, '', r);
+  }, true);
+  const mDays = mEnd.getDate(), out = [];
+  for (const k of Object.keys(cur)) {
+    const b = B.base[k]; if (!b || b.kor <= 0) continue;
+    const curDaily = cur[k].kor / mDays, baseDaily = b.kor / B.baseDays;
+    if (curDaily < 5000) continue;
+    out.push({ code: k, name: cur[k].name, idx: +(curDaily / baseDaily).toFixed(2), num: Math.round(cur[k].kor) });
+  }
+  process.stdout.write('  ' + year + '-' + month + '월 성수기 ' + out.length + '곳\n');
+  return out.sort((a, b) => b.idx - a.idx);
+}
+// (구버전 호환)
 async function seasonRank(year, month) {
   const cur = {}, base = {};
   const mStart = new Date(year, month - 1, 1), mEnd = new Date(year, month, 0);
@@ -142,8 +177,16 @@ async function main() {
 
   // 계절 랭킹 — 작년 같은 달
   const now = new Date(), month = now.getMonth() + 1, sYear = now.getFullYear() - 1;
-  const seasonAll = (await seasonRank(sYear, month)).map((r, i) => ({
-    rank: i + 1, code: r.code, name: r.name, sido: sidoNm[String(r.code).slice(0, 2)] || '', idx: r.idx, num: r.num
+  const BASE = await buildBaseline(sYear);
+  const THEME_MONTHS = { valley: 8, maple: 10, flower: 4, onsen: 1 };
+  const seasonByMonth = {};
+  for (const m of [...new Set([month, ...Object.values(THEME_MONTHS)])]) {
+    seasonByMonth[m] = (await monthIndex(sYear, m, BASE))
+      .filter(r => r.idx > 1)
+      .map((r, i) => ({ rank: i + 1, code: r.code, name: r.name, sido: sidoNm[String(r.code).slice(0, 2)] || '', idx: r.idx, num: r.num }));
+  }
+  const seasonAll = (seasonByMonth[month] || []).map((r, i) => ({
+    rank: i + 1, code: r.code, name: r.name, sido: r.sido, idx: r.idx, num: r.num
   }));
   const season = seasonAll.slice(0, 25);
 
@@ -153,6 +196,7 @@ async function main() {
     latest: ymd(last),
     lagDays: Math.round((Date.now() - last) / 86400000),
     season: { year: sYear, month, list: season },
+    seasonByMonth: { year: sYear, themeMonths: { valley: 8, maple: 10, flower: 4, onsen: 1 }, months: seasonByMonth },
     kor: rank(sgArr, r => r.kor).slice(0, 40),
     fgn: rank(sgArr, r => r.fgn).slice(0, 40),
     sido: rank(sidoArr, r => r.kor + r.fgn),
@@ -178,6 +222,7 @@ async function main() {
   console.log('저장 완료 | 기준', out.period, '| 지연', out.lagDays, '일');
   console.log(' 한국인 TOP5 :', out.kor.slice(0, 5).map(r => r.sido + ' ' + r.name + '(' + (r.num / 10000).toFixed(0) + '만)').join('  '));
   console.log(' 외국인 TOP5 :', out.fgn.slice(0, 5).map(r => r.sido + ' ' + r.name + '(' + (r.num / 10000).toFixed(0) + '만)').join('  '));
+  console.log(' 월별 성수기 :', Object.entries(seasonByMonth).map(([m, l]) => m + '월(' + l.length + ')').join(' '));
   console.log(' 시도별 그룹 :', Object.keys(out.bySido).length, '개 |', Object.entries(out.bySido).slice(0, 4).map(([k, v]) => k + '(' + v.total + '개 시군구)').join(' '));
   console.log(' ' + month + '월 성수기 TOP8 :', season.slice(0, 8).map(r => r.sido + ' ' + r.name + '(x' + r.idx + ')').join('  '));
 }
