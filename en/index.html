@@ -162,14 +162,56 @@ article ul{padding-left:20px}
 .fm-links a{flex:1;min-width:140px;text-align:center;padding:12px;border-radius:12px;font-weight:800;font-size:.95rem}
 #fm-hp,#fm2-hp{background:#0f9d8f;color:#fff}
 #fm-naver,#fm2-naver{background:#f3f4f6;color:#374151;border:1.5px solid #dcefeb}
-@media(max-width:600px){.hero h1{font-size:1.3rem}nav a{margin-left:9px;font-size:.85rem}}
+.fmcalc{margin-top:18px;border:1.5px solid #ffd9cf;background:#fff8f6;border-radius:14px;padding:14px}
+.fmcalc h4{font-size:.98rem;font-weight:900;color:#e0502f;margin-bottom:9px}
+.fmcalc .row{display:flex;gap:8px;flex-wrap:wrap}
+.fmcalc input{flex:1;min-width:150px;padding:11px 13px;border:1.5px solid #ffd0c4;border-radius:11px;font-size:.95rem;font-family:inherit;background:#fff;box-sizing:border-box}
+.fmcalc button{background:#ff5a3c;color:#fff;border:none;border-radius:11px;padding:11px 20px;font-weight:800;font-size:.95rem;cursor:pointer;font-family:inherit;white-space:nowrap}
+.fmcalc button:disabled{opacity:.6;cursor:default}
+.fmcalc .hint{font-size:.78rem;color:#9ca3af;margin-top:8px;line-height:1.55}
+.fmcalc .res{display:flex;gap:8px;flex-wrap:wrap;margin-top:11px}
+.fmcalc .rbox{flex:1;min-width:104px;background:#fff;border:1.5px solid #ffd9cf;border-radius:11px;padding:11px 10px;text-align:center}
+.fmcalc .rbox .m{font-size:.79rem;font-weight:700;color:#6b7280}
+.fmcalc .rbox .v{font-size:1.16rem;font-weight:900;color:#e0502f;letter-spacing:-.02em}
+.fmcalc .rbox .s{font-size:.72rem;color:#9ca3af}
+.fmcalc .best{margin-top:10px;font-weight:800;font-size:.9rem;color:#0a6c63;text-align:center}
+.fmcalc .err{color:#dc2626;font-weight:700;font-size:.88rem;margin-top:9px;text-align:center}
+nav{display:flex;align-items:center;gap:2px}
+nav>a{margin-left:18px;font-weight:600;font-size:.95rem;color:#4b5563}
+.ndrop{position:relative}
+.nbtn{display:inline-flex;align-items:center;gap:5px;border:none;background:none;font-family:inherit;font-weight:700;font-size:.95rem;color:#4b5563;padding:8px 12px;border-radius:10px;cursor:pointer;transition:all .15s}
+.nbtn:hover,.ndrop:hover .nbtn,.ndrop:focus-within .nbtn{color:#0f9d8f;background:#effaf8}
+.nbtn .arw{font-size:.6rem;opacity:.5}
+.nmenu{display:none;position:absolute;top:calc(100% + 9px);right:0;min-width:198px;background:#fff;border:1px solid #e4f2ee;border-radius:14px;box-shadow:0 14px 34px rgba(17,24,39,.15);padding:7px;z-index:60}
+.nmenu::before{content:'';position:absolute;top:-11px;left:0;right:0;height:11px}
+.ndrop:hover .nmenu,.ndrop:focus-within .nmenu{display:block}
+.nmenu a{display:block;margin:0;padding:9px 12px;border-radius:9px;font-size:.92rem;font-weight:600;color:#374151;white-space:nowrap}
+.nmenu a:hover{background:#effaf8;color:#0a6c63}
+nav>a.nhot{margin-left:8px;padding:8px 15px;border-radius:20px;background:linear-gradient(135deg,#ff5a3c,#ff8a5c);color:#fff;font-weight:800;font-size:.92rem;box-shadow:0 4px 12px rgba(255,90,60,.3)}
+nav>a.nhot:hover{filter:brightness(1.06)}
+.navtoggle{display:none;border:1.5px solid #dcefeb;background:#fff;color:#0f9d8f;font-size:1.15rem;width:44px;height:38px;border-radius:11px;cursor:pointer;line-height:1;font-family:inherit}
+@media(max-width:880px){
+.navtoggle{display:block}
+nav{display:none;order:3;width:100%;flex-direction:column;align-items:stretch;gap:0;padding-top:10px;margin-top:10px;border-top:1px solid #e4f2ee}
+nav.open{display:flex}
+nav>a{display:block;margin:0;padding:10px 4px}
+nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
+.ndrop{position:static}
+.nbtn{width:100%;justify-content:flex-start;font-size:.8rem;color:#9aa3af;padding:11px 4px 4px;letter-spacing:.03em;cursor:default}
+.nbtn:hover,.ndrop:hover .nbtn{background:none;color:#9aa3af}
+.nbtn .arw{display:none}
+.nmenu{display:block;position:static;border:none;box-shadow:none;padding:0 0 6px;min-width:0}
+.nmenu::before{display:none}
+.nmenu a{display:inline-block;padding:7px 12px;margin:3px 6px 3px 0;background:#f4faf8;border:1px solid #e4f2ee;font-size:.88rem}
+}
+@media(max-width:600px){.hero h1{font-size:1.3rem}}
 </style>
 <script>window.__onesignalAppId="8d4d29df-1dba-4f43-9efb-0c3745441e1f";(function(){var id=window.__onesignalAppId;if(!id||id.indexOf("PASTE")===0)return;if(location.protocol!=="https:")return;var s=document.createElement("script");s.src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js";s.defer=true;document.head.appendChild(s);window.OneSignalDeferred=window.OneSignalDeferred||[];window.OneSignalDeferred.push(function(OneSignal){OneSignal.init({appId:id});});})();</script>
 </head>
 <body>
 <header><div class="wrap">
 <a class="logo" href="/en/">🎪 축제모아</a>
-<nav><a href="/en/">Home</a><a href="/en/search/">🔎 Festivals</a><a href="/">🇰🇷 한국어</a></nav>
+<button class="navtoggle" id="navtoggle" aria-label="menu" aria-expanded="false">☰</button><nav id="mainnav"><a href="/en/">Home</a><a href="/en/search/">🔎 Festivals</a><a href="/">🇰🇷 한국어</a></nav>
 </div></header>
 <main><div class="wrap">
 <div class="hero" style="background:linear-gradient(135deg,#0f9d8f,#2dd4bf);border-radius:18px;overflow:hidden;margin:14px 0">
@@ -191,6 +233,17 @@ article ul{padding-left:20px}
 <p>© 2026 Chukjemoa</p>
 </div></footer>
 
+<script>
+(function(){
+  var t=document.getElementById('navtoggle'),n=document.getElementById('mainnav');
+  if(!t||!n)return;
+  t.addEventListener('click',function(){
+    var o=n.classList.toggle('open');
+    t.setAttribute('aria-expanded',o?'true':'false');
+    t.textContent=o?'✕':'☰';
+  });
+})();
+</script>
 <script>
 (function(){
   const t = new Date(); t.setHours(0,0,0,0);

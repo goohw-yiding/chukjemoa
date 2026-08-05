@@ -157,14 +157,82 @@ article ul{padding-left:20px}
 .fm-links a{flex:1;min-width:140px;text-align:center;padding:12px;border-radius:12px;font-weight:800;font-size:.95rem}
 #fm-hp,#fm2-hp{background:#0f9d8f;color:#fff}
 #fm-naver,#fm2-naver{background:#f3f4f6;color:#374151;border:1.5px solid #dcefeb}
-@media(max-width:600px){.hero h1{font-size:1.3rem}nav a{margin-left:9px;font-size:.85rem}}
+.fmcalc{margin-top:18px;border:1.5px solid #ffd9cf;background:#fff8f6;border-radius:14px;padding:14px}
+.fmcalc h4{font-size:.98rem;font-weight:900;color:#e0502f;margin-bottom:9px}
+.fmcalc .row{display:flex;gap:8px;flex-wrap:wrap}
+.fmcalc input{flex:1;min-width:150px;padding:11px 13px;border:1.5px solid #ffd0c4;border-radius:11px;font-size:.95rem;font-family:inherit;background:#fff;box-sizing:border-box}
+.fmcalc button{background:#ff5a3c;color:#fff;border:none;border-radius:11px;padding:11px 20px;font-weight:800;font-size:.95rem;cursor:pointer;font-family:inherit;white-space:nowrap}
+.fmcalc button:disabled{opacity:.6;cursor:default}
+.fmcalc .hint{font-size:.78rem;color:#9ca3af;margin-top:8px;line-height:1.55}
+.fmcalc .res{display:flex;gap:8px;flex-wrap:wrap;margin-top:11px}
+.fmcalc .rbox{flex:1;min-width:104px;background:#fff;border:1.5px solid #ffd9cf;border-radius:11px;padding:11px 10px;text-align:center}
+.fmcalc .rbox .m{font-size:.79rem;font-weight:700;color:#6b7280}
+.fmcalc .rbox .v{font-size:1.16rem;font-weight:900;color:#e0502f;letter-spacing:-.02em}
+.fmcalc .rbox .s{font-size:.72rem;color:#9ca3af}
+.fmcalc .best{margin-top:10px;font-weight:800;font-size:.9rem;color:#0a6c63;text-align:center}
+.fmcalc .err{color:#dc2626;font-weight:700;font-size:.88rem;margin-top:9px;text-align:center}
+nav{display:flex;align-items:center;gap:2px}
+nav>a{margin-left:18px;font-weight:600;font-size:.95rem;color:#4b5563}
+.ndrop{position:relative}
+.nbtn{display:inline-flex;align-items:center;gap:5px;border:none;background:none;font-family:inherit;font-weight:700;font-size:.95rem;color:#4b5563;padding:8px 12px;border-radius:10px;cursor:pointer;transition:all .15s}
+.nbtn:hover,.ndrop:hover .nbtn,.ndrop:focus-within .nbtn{color:#0f9d8f;background:#effaf8}
+.nbtn .arw{font-size:.6rem;opacity:.5}
+.nmenu{display:none;position:absolute;top:calc(100% + 9px);right:0;min-width:198px;background:#fff;border:1px solid #e4f2ee;border-radius:14px;box-shadow:0 14px 34px rgba(17,24,39,.15);padding:7px;z-index:60}
+.nmenu::before{content:'';position:absolute;top:-11px;left:0;right:0;height:11px}
+.ndrop:hover .nmenu,.ndrop:focus-within .nmenu{display:block}
+.nmenu a{display:block;margin:0;padding:9px 12px;border-radius:9px;font-size:.92rem;font-weight:600;color:#374151;white-space:nowrap}
+.nmenu a:hover{background:#effaf8;color:#0a6c63}
+nav>a.nhot{margin-left:8px;padding:8px 15px;border-radius:20px;background:linear-gradient(135deg,#ff5a3c,#ff8a5c);color:#fff;font-weight:800;font-size:.92rem;box-shadow:0 4px 12px rgba(255,90,60,.3)}
+nav>a.nhot:hover{filter:brightness(1.06)}
+.navtoggle{display:none;border:1.5px solid #dcefeb;background:#fff;color:#0f9d8f;font-size:1.15rem;width:44px;height:38px;border-radius:11px;cursor:pointer;line-height:1;font-family:inherit}
+@media(max-width:880px){
+.navtoggle{display:block}
+nav{display:none;order:3;width:100%;flex-direction:column;align-items:stretch;gap:0;padding-top:10px;margin-top:10px;border-top:1px solid #e4f2ee}
+nav.open{display:flex}
+nav>a{display:block;margin:0;padding:10px 4px}
+nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
+.ndrop{position:static}
+.nbtn{width:100%;justify-content:flex-start;font-size:.8rem;color:#9aa3af;padding:11px 4px 4px;letter-spacing:.03em;cursor:default}
+.nbtn:hover,.ndrop:hover .nbtn{background:none;color:#9aa3af}
+.nbtn .arw{display:none}
+.nmenu{display:block;position:static;border:none;box-shadow:none;padding:0 0 6px;min-width:0}
+.nmenu::before{display:none}
+.nmenu a{display:inline-block;padding:7px 12px;margin:3px 6px 3px 0;background:#f4faf8;border:1px solid #e4f2ee;font-size:.88rem}
+}
+@media(max-width:600px){.hero h1{font-size:1.3rem}}
 </style>
 <script>window.__onesignalAppId="8d4d29df-1dba-4f43-9efb-0c3745441e1f";(function(){var id=window.__onesignalAppId;if(!id||id.indexOf("PASTE")===0)return;if(location.protocol!=="https:")return;var s=document.createElement("script");s.src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js";s.defer=true;document.head.appendChild(s);window.OneSignalDeferred=window.OneSignalDeferred||[];window.OneSignalDeferred.push(function(OneSignal){OneSignal.init({appId:id});});})();</script>
 </head>
 <body>
 <header><div class="wrap">
 <a class="logo" href="/">🎪 축제모아</a>
-<nav><a href="/2026-07/">월별 축제</a><a href="/search/">🔎 축제 검색</a><a href="/holiday/">🎌 연휴 축제</a><a href="/pet/">🐶 반려견 여행지</a><a href="/accessible/">♿ 무장애 여행</a><a href="/trails/">🥾 걷기 여행</a><a href="/valley/">💧 계곡명소</a><a href="/maple/">🍁 단풍명소</a><a href="/flower/">🌸 봄꽃명소</a><a href="/onsen/">♨️ 온천</a><a href="/trip-cost/">🧮 여행비용</a><a href="/jangteo/">전국 오일장</a><a href="/test/">🔮 취향 테스트</a><a href="/blog/">축제 가이드</a><a href="/en/">EN</a><a href="/ja/">日本語</a><a href="/es/">ES</a><a href="/zh/">中文</a></nav>
+<button class="navtoggle" id="navtoggle" aria-label="메뉴 열기" aria-expanded="false">☰</button>
+<nav id="mainnav">
+<div class="ndrop"><button class="nbtn" type="button">🎪 축제<span class="arw">▼</span></button><div class="nmenu">
+<a href="/search/">🔎 축제 검색</a>
+<a href="/2026-08/">📅 월별 축제</a>
+<a href="/holiday/">🎌 연휴 축제</a>
+<a href="/blog/">📖 축제 가이드</a>
+<a href="/test/">🔮 취향 테스트</a>
+</div></div>
+<div class="ndrop"><button class="nbtn" type="button">🗺️ 여행지<span class="arw">▼</span></button><div class="nmenu">
+<a href="/valley/">💧 계곡명소</a>
+<a href="/maple/">🍁 단풍명소</a>
+<a href="/flower/">🌸 봄꽃명소</a>
+<a href="/onsen/">♨️ 온천</a>
+<a href="/trails/">🥾 걷기 여행</a>
+<a href="/pet/">🐶 반려견 여행지</a>
+<a href="/accessible/">♿ 무장애 여행</a>
+<a href="/jangteo/">🏮 전국 오일장</a>
+</div></div>
+<a class="nhot" href="/trip-cost/">🧮 여행비용 계산기</a>
+<div class="ndrop"><button class="nbtn" type="button">🌐<span class="arw">▼</span></button><div class="nmenu">
+<a href="/en/">English</a>
+<a href="/ja/">日本語</a>
+<a href="/es/">Español</a>
+<a href="/zh/">中文</a>
+</div></div>
+</nav>
 </div></header>
 <main><div class="wrap"><article>
 <h1>2026 가을 축제 총정리 — 9·10월 전국 대표 축제 BEST와 고르는 법</h1>
@@ -239,6 +307,12 @@ article ul{padding-left:20px}
 <p id="fm2-meta"></p>
 <p id="fm2-ov"></p>
 <div id="fm2-near"></div>
+<div class="fmcalc">
+<h4>🧮 여기까지 가는 비용, 얼마나 들까?</h4>
+<div class="row"><input id="fmc-from" type="text" placeholder="출발지 (예: 서울역, 수원시청)" autocomplete="off"><button id="fmc-go" type="button">계산</button></div>
+<div id="fmc-out"></div>
+<p class="hint">자동차(연료+통행료+주차) vs 대중교통·KTX 편도 비용 비교 · <a href="/trip-cost/" style="color:#e0502f;font-weight:700">연비·유가 바꿔서 자세히 계산 →</a></p>
+</div>
 <div class="fm-links"><a id="fm2-hp" target="_blank" rel="noopener">🏛️ 공식 홈페이지</a><a id="fm2-naver" target="_blank" rel="noopener">🔎 네이버에서 보기</a></div>
 </div></div><div id="placemodal" class="fmodal"><div class="fmbox">
 <button class="fmx" id="pm2x" aria-label="닫기">✕</button>
@@ -246,8 +320,25 @@ article ul{padding-left:20px}
 <h3 id="pm2-title"></h3>
 <p id="pm2-meta"></p>
 <div id="pm2-body"></div>
+<div class="fmcalc">
+<h4>🧮 여기까지 가는 비용, 얼마나 들까?</h4>
+<div class="row"><input id="pmc-from" type="text" placeholder="출발지 (예: 서울역, 수원시청)" autocomplete="off"><button id="pmc-go" type="button">계산</button></div>
+<div id="pmc-out"></div>
+<p class="hint">자동차(연료+통행료+주차) vs 대중교통·KTX 편도 비용 비교 · <a href="/trip-cost/" style="color:#e0502f;font-weight:700">연비·유가 바꿔서 자세히 계산 →</a></p>
+</div>
 <div class="fm-links"><a id="pm2-map" target="_blank" rel="noopener">🗺️ 지도</a><a id="pm2-naver" target="_blank" rel="noopener">🔎 네이버에서 보기</a></div>
 </div></div>
+<script>
+(function(){
+  var t=document.getElementById('navtoggle'),n=document.getElementById('mainnav');
+  if(!t||!n)return;
+  t.addEventListener('click',function(){
+    var o=n.classList.toggle('open');
+    t.setAttribute('aria-expanded',o?'true':'false');
+    t.textContent=o?'✕':'☰';
+  });
+})();
+</script>
 <script>
 (function(){
   const t = new Date(); t.setHours(0,0,0,0);
@@ -323,6 +414,60 @@ article ul{padding-left:20px}
 </script>
 <script>
 (function(){
+  var KEY='cjm_from';
+  window.cjmDest={};
+  function won(n){return (n||0).toLocaleString()+'원';}
+  function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+  window.cjmResetCalc=function(p,dest,alt){
+    window.cjmDest[p]={d:dest||'',a:alt||''};
+    var o=document.getElementById(p+'-out'); if(o)o.innerHTML='';
+  };
+  window.cjmBindCalc=function(p){
+    var i=document.getElementById(p+'-from'),b=document.getElementById(p+'-go'),o=document.getElementById(p+'-out');
+    if(!i||!b||!o)return;
+    try{var sv=localStorage.getItem(KEY);if(sv)i.value=sv;}catch(e){}
+    function render(d){
+      var opts=[],h='<div class="res">',c=d.car;
+      if(c){h+='<div class="rbox"><div class="m">🚗 자동차</div><div class="v">'+won(c.total)+'</div><div class="s">'+c.distanceKm+'km · '+c.durationMin+'분</div></div>';opts.push({n:'🚗 자동차',c:c.total});}
+      var pt=d.transit;
+      if(pt&&pt.fare){h+='<div class="rbox"><div class="m">🚌 대중교통</div><div class="v">'+won(pt.fare)+'</div><div class="s">'+pt.durationMin+'분'+(pt.transfer?' · 환승'+pt.transfer:'')+'</div></div>';opts.push({n:'🚌 대중교통',c:pt.fare});}
+      else if(d.intercityBus){h+='<div class="rbox"><div class="m">🚌 시외버스</div><div class="v">'+won(d.intercityBus.fare)+'</div><div class="s">'+esc(d.intercityBus.dep)+'→'+esc(d.intercityBus.arr)+'</div></div>';opts.push({n:'🚌 시외버스',c:d.intercityBus.fare});}
+      else if(d.intercity){h+='<div class="rbox"><div class="m">🚌 '+esc(d.intercity.busLabel||'대중교통')+'</div><div class="v">'+won(d.intercity.busEstimate)+'</div><div class="s">거리 추정</div></div>';opts.push({n:'🚌 대중교통(추정)',c:d.intercity.busEstimate});}
+      if(d.ktx){h+='<div class="rbox"><div class="m">🚄 KTX</div><div class="v">'+won(d.ktx.fare)+'</div><div class="s">'+esc(d.ktx.depStation)+'→'+esc(d.ktx.arrStation)+'</div></div>';opts.push({n:'🚄 KTX',c:d.ktx.fare});}
+      h+='</div>';
+      opts.sort(function(a,b2){return a.c-b2.c;});
+      if(opts.length>1)h+='<div class="best">💰 가장 저렴: '+opts[0].n+' '+won(opts[0].c)+' (편도 1인 기준)</div>';
+      o.innerHTML=h;
+    }
+    function done(){b.disabled=false;b.textContent='계산';}
+    function ask(from,to,onFail){
+      return fetch('/api/tripcost?from='+encodeURIComponent(from)+'&to='+encodeURIComponent(to))
+        .then(function(r){return r.json();})
+        .then(function(d){
+          if(d.error){ if(onFail){onFail(d.error);return;} done();o.innerHTML='<div class="err">'+esc(d.error)+'</div>';return; }
+          done();render(d);
+        });
+    }
+    function run(){
+      var from=i.value.trim(),t=window.cjmDest[p]||{};
+      if(!from){o.innerHTML='<div class="err">출발지를 입력해주세요.</div>';i.focus();return;}
+      if(!t.d){o.innerHTML='<div class="err">도착지를 확인할 수 없어요.</div>';return;}
+      try{localStorage.setItem(KEY,from);}catch(e){}
+      b.disabled=true;b.textContent='계산 중…';o.innerHTML='';
+      ask(from,t.d,function(err){
+        if(t.a&&t.a!==t.d){ ask(from,t.a).catch(function(){done();o.innerHTML='<div class="err">계산에 실패했어요. 잠시 후 다시 시도해주세요.</div>';}); }
+        else{done();o.innerHTML='<div class="err">'+esc(err)+'</div>';}
+      }).catch(function(){done();o.innerHTML='<div class="err">계산에 실패했어요. 잠시 후 다시 시도해주세요.</div>';});
+    }
+    b.addEventListener('click',run);
+    i.addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();run();}});
+  };
+  window.cjmBindCalc('fmc');
+  window.cjmBindCalc('pmc');
+  window.cjmBindCalc('smc');
+})();
+</script><script>
+(function(){
   var m=document.getElementById('festmodal'); if(!m) return;
   function esc(s){return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
   function fy(y){y=String(y||'').replace(/[^0-9]/g,'');if(y.length<8)return '';return y.slice(0,4)+'.'+(+y.slice(4,6))+'.'+(+y.slice(6,8));}
@@ -339,6 +484,7 @@ article ul{padding-left:20px}
     var hp=document.getElementById('fm2-hp');
     if(ds.hp){hp.href=(ds.hp.indexOf('http')===0?ds.hp:'http://'+ds.hp);hp.style.display='inline-block';}else{hp.style.display='none';}
     document.getElementById('fm2-naver').href='https://search.naver.com/search.naver?query='+encodeURIComponent((ds.name||'')+' 축제');
+    if(window.cjmResetCalc)window.cjmResetCalc('fmc',ds.name||ds.place||'',[ds.city,ds.place].filter(Boolean).join(' ')||ds.place||'');
     m.classList.add('show');
   };
   function close(){m.classList.remove('show');}
@@ -356,6 +502,7 @@ article ul{padding-left:20px}
     document.getElementById('pm2-body').innerHTML=o.body||'';
     document.getElementById('pm2-naver').href=o.naver||('https://search.naver.com/search.naver?query='+encodeURIComponent(o.title||''));
     var mp=document.getElementById('pm2-map'); if(o.map){mp.href=o.map;mp.style.display='inline-block';}else{mp.style.display='none';}
+    if(window.cjmResetCalc)window.cjmResetCalc('pmc',o.title||'',o.dest||'');
     m.classList.add('show');
   };
   function close(){m.classList.remove('show');}
