@@ -226,9 +226,9 @@ const COUPANG = {
     trails:   { ico: '🥾', t: '걷기 여행 준비물', s: '발 편한 등산화', q: '등산화', url: 'https://link.coupang.com/a/fXNZ2GivM4' },
     car:      { ico: '🚗', t: '장거리 운전 전에', s: '차량용 휴대폰 거치대', q: '차량용 휴대폰 거치대', url: 'https://link.coupang.com/a/fXN2IYC66m' },
     jangteo:  { ico: '🛍️', t: '장 보러 갈 때', s: '접이식 장바구니', q: '접이식 장바구니', url: 'https://link.coupang.com/a/fXN6sYwwNg' },
-    valley:   { ico: '🩴', t: '계곡에서 미끄러지지 않으려면', s: '아쿠아슈즈 · 방수 가방', q: '아쿠아슈즈', url: '' },
-    onsen:    { ico: '🧖', t: '온천 갈 때 필요한 것', s: '여행용 타월 · 세면 파우치', q: '여행용 타월 세면파우치', url: '' },
-    pet:      { ico: '🐾', t: '반려견과 떠난다면', s: '이동가방 · 차량 안전벨트', q: '강아지 이동가방', url: '' }
+    valley:   { ico: '🩴', t: '계곡에서 미끄러지지 않으려면', s: '미끄럼 방지 아쿠아슈즈', q: '아쿠아슈즈', url: 'https://link.coupang.com/a/fXOzzPw6mW' },
+    onsen:    { ico: '🧖', t: '온천 갈 때 챙기면 좋은 것', s: '가볍게 마르는 여행용 타월', q: '여행용 타월', url: 'https://link.coupang.com/a/fXOCpczJqC' },
+    pet:      { ico: '🐾', t: '반려견과 떠난다면', s: '강아지 이동가방', q: '강아지 이동가방', url: 'https://link.coupang.com/a/fXOFfqmH4S' }
   }
 };
 function cpHref(key) {
