@@ -120,22 +120,6 @@ article ul{padding-left:20px}
 .nearby-btn.done{background:linear-gradient(135deg,#0f9d8f,#2dd4bf);color:#fff;border-color:transparent}
 .wkchip .wx{display:inline-block;margin-left:6px;font-size:.82rem;font-weight:700;color:#2b7fff;font-style:normal}
 .wkchip .wx:empty{display:none}
-.jt-home-chips{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
-.jt-chip{display:inline-flex;align-items:center;gap:8px;background:#fff;border:1.5px solid #dcefeb;border-radius:20px;padding:8px 15px 8px 8px;font-size:.88rem;font-weight:700;color:#374151;box-shadow:0 2px 8px rgba(31,41,55,.06);transition:all .15s}
-.jt-chip:hover{border-color:#0f9d8f;transform:translateY(-2px)}
-.jt-chip .jtb{display:inline-block;padding:3px 10px;border-radius:14px;font-size:.78rem;font-weight:800;color:#fff}
-.jt-chip .jtb.j0{background:#15803d}.jt-chip .jtb.j1{background:#0d9488}.jt-chip .jtb.jjs{background:#7c3aed}
-.jt-chip .jtn{color:#9ca3af;font-weight:500}
-.buybox{display:flex;align-items:center;gap:12px;background:linear-gradient(135deg,#0f9d8f,#0d7d72);color:#fff;border-radius:14px;padding:14px 18px;margin:14px 0;text-decoration:none;box-shadow:0 6px 18px rgba(15,157,143,.28);transition:transform .15s}
-.buybox:hover{transform:translateY(-2px)}
-.buybox .bb-ico{font-size:1.5rem}
-.buybox .bb-txt{flex:1;display:flex;flex-direction:column;gap:2px}
-.buybox .bb-txt b{font-size:.98rem}
-.buybox .bb-sub{font-size:.8rem;opacity:.85}
-.buybox .bb-arrow{font-size:1.3rem;opacity:.8}
-.buysub{display:inline-block;margin:8px 0 2px;padding:9px 16px;border:1.5px dashed #0f9d8f;border-radius:10px;color:#0f9d8f;font-weight:700;font-size:.88rem;text-decoration:none}
-.buysub:hover{background:#f0fbf9}
-.bb-disc{font-size:.76rem;color:#9ca3af;margin:2px 0 16px}
 .testbanner{display:block;margin:34px 0 6px;background:linear-gradient(115deg,#3b1a5c,#7a2fbf 55%,#0f9d8f);color:#fff;border-radius:18px;padding:26px 28px;box-shadow:0 8px 24px rgba(122,47,191,.3);transition:transform .18s}
 .testbanner:hover{transform:translateY(-3px)}
 .testbanner strong{font-size:1.22rem;display:block;margin-bottom:4px}
@@ -204,7 +188,7 @@ article ul{padding-left:20px}
 <p>축제 일정은 주최 측 사정에 따라 변경될 수 있습니다. 방문 전 공식 홈페이지를 확인하세요.</p>
 <p><a href="/about/">소개</a> · <a href="/editorial/">편집 원칙</a> · <a href="/contact/">문의</a> · <a href="/privacy/">개인정보처리방침</a></p>
 <p>문의: goohw593@gmail.com</p>
-<p class="srcnote">축제 정보 출처: 한국관광공사 TourAPI 등 <a href="https://www.data.go.kr/" target="_blank" rel="noopener nofollow">공공데이터포털</a> 개방 데이터. 최종 갱신 2026-08-04.<br>일정·요금은 주최 측 사정으로 변경될 수 있으니 방문 전 주최 측 공식 채널에서 확인하시기 바랍니다. 잘못된 정보는 <a href="/contact/">문의</a>로 알려주시면 확인 후 정정합니다.</p>
+<p class="srcnote">축제 정보 출처: 한국관광공사 TourAPI 등 <a href="https://www.data.go.kr/" target="_blank" rel="noopener nofollow">공공데이터포털</a> 개방 데이터. 최종 갱신 2026-08-05.<br>일정·요금은 주최 측 사정으로 변경될 수 있으니 방문 전 주최 측 공식 채널에서 확인하시기 바랍니다. 잘못된 정보는 <a href="/contact/">문의</a>로 알려주시면 확인 후 정정합니다.</p>
 <p>© 2026 축제모아</p>
 </div></footer>
 <div id="festmodal" class="fmodal"><div class="fmbox">
@@ -214,7 +198,7 @@ article ul{padding-left:20px}
 <p id="fm2-meta"></p>
 <p id="fm2-ov"></p>
 <div id="fm2-near"></div>
-<div class="fm-links"><a id="fm2-detail" style="display:none">📋 상세정보 더보기</a><a id="fm2-hp" target="_blank" rel="noopener">🏛️ 공식 홈페이지</a><a id="fm2-naver" target="_blank" rel="noopener">🔎 네이버에서 보기</a></div>
+<div class="fm-links"><a id="fm2-hp" target="_blank" rel="noopener">🏛️ 공식 홈페이지</a><a id="fm2-naver" target="_blank" rel="noopener">🔎 네이버에서 보기</a></div>
 </div></div><div id="placemodal" class="fmodal"><div class="fmbox">
 <button class="fmx" id="pm2x" aria-label="닫기">✕</button>
 <img id="pm2-img" class="fm-img" alt="">
@@ -314,8 +298,6 @@ article ul{padding-left:20px}
     var hp=document.getElementById('fm2-hp');
     if(ds.hp){hp.href=(ds.hp.indexOf('http')===0?ds.hp:'http://'+ds.hp);hp.style.display='inline-block';}else{hp.style.display='none';}
     document.getElementById('fm2-naver').href='https://search.naver.com/search.naver?query='+encodeURIComponent((ds.name||'')+' 축제');
-    var det=document.getElementById('fm2-detail');
-    if(ds.fid){det.href='/festival/'+ds.fid+'/';det.style.display='inline-block';}else{det.style.display='none';}
     m.classList.add('show');
   };
   function close(){m.classList.remove('show');}
