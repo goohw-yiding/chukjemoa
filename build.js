@@ -2337,8 +2337,11 @@ function langSearchLink(lang, name) {
   const base = romanizeRegion(name).split(' ').pop().split('-')[0];
   if (base.length < 3) return `/${lang}/search/`;
   const k = base.toLowerCase();
+  // 종료되지 않은 축제가 있을 때만 딥링크 (검색 기본값이 '지난 축제 제외'라 0건 착지 방지)
+  const today = TODAY.replace(/-/g, '');
   const hit = (LANG_DATA[lang] || []).some(f =>
-    String(f.title || '').toLowerCase().includes(k) || String(f.addr || '').toLowerCase().includes(k));
+    String(f.end || '') >= today &&
+    (String(f.title || '').toLowerCase().includes(k) || String(f.addr || '').toLowerCase().includes(k)));
   return hit ? `/${lang}/search/?kw=${encodeURIComponent(base)}` : `/${lang}/search/`;
 }
 function bigNum(n, lang) {
