@@ -673,6 +673,32 @@ article ul{padding-left:20px}
 .fmcalc .rbox .s{font-size:.72rem;color:#9ca3af}
 .fmcalc .best{margin-top:10px;font-weight:800;font-size:.9rem;color:#0a6c63;text-align:center}
 .fmcalc .err{color:#dc2626;font-weight:700;font-size:.88rem;margin-top:9px;text-align:center}
+.faqbox{background:#fff;border-radius:18px;box-shadow:0 3px 14px rgba(31,41,55,.08);padding:26px 30px 22px;margin:10px 0 34px}
+.faqbox h2{font-size:1.3rem;font-weight:900;letter-spacing:-.02em;margin-bottom:6px;color:#0a6c63}
+.faqbox details{border-top:1px solid #eef5f3;padding:2px 0}
+.faqbox details:first-of-type{border-top:none}
+.faqbox summary{list-style:none;cursor:pointer;font-weight:800;font-size:1rem;color:#1f2937;padding:14px 30px 14px 0;position:relative}
+.faqbox summary::-webkit-details-marker{display:none}
+.faqbox summary::after{content:'+';position:absolute;right:4px;top:50%;transform:translateY(-50%);font-size:1.25rem;font-weight:700;color:#0f9d8f;line-height:1}
+.faqbox details[open] summary::after{content:'−'}
+.faqbox summary:hover{color:#0f9d8f}
+.faqbox details p{font-size:.94rem;color:#4b5563;line-height:1.75;padding:0 8px 16px 0;margin-top:-2px}
+@media(max-width:600px){.faqbox{padding:20px 18px 16px;border-radius:14px}.faqbox summary{font-size:.95rem;padding:13px 26px 13px 0}}
+.rank-tabs{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 18px}
+.rank-tabs button{border:1.5px solid #a9e5dd;background:#fff;color:#0c7d72;border-radius:20px;padding:9px 18px;font-size:.9rem;font-weight:800;cursor:pointer;font-family:inherit;transition:all .15s}
+.rank-tabs button:hover{border-color:#0f9d8f}
+.rank-tabs button.on{background:linear-gradient(135deg,#0f9d8f,#2dd4bf);color:#fff;border-color:transparent;box-shadow:0 4px 12px rgba(15,157,143,.32)}
+.ranklist{display:flex;flex-direction:column;gap:9px;margin:6px 0 4px}
+.rankrow{display:flex;align-items:center;gap:11px}
+.rankrow .no{width:28px;text-align:center;font-weight:800;color:#9aa3af;flex:none}
+.rankrow .bar{flex:1;background:#eef5f3;border-radius:10px;overflow:hidden;min-width:0}
+.rankrow .bar>a{display:block;background:linear-gradient(90deg,#0f9d8f,#2dd4bf);color:#fff;font-weight:800;font-size:.88rem;padding:8px 13px;white-space:nowrap;border-radius:10px;overflow:hidden;text-overflow:ellipsis}
+.rankrow .bar>a:hover{filter:brightness(1.07)}
+.rankrow.fgn .bar>a{background:linear-gradient(90deg,#6d28d9,#a78bfa)}
+.rankrow.hot .bar>a{background:linear-gradient(90deg,#ff5a3c,#ff9a5c)}
+.rankrow .val{color:#6b7280;font-size:.82rem;font-weight:800;min-width:70px;text-align:right;flex:none}
+.rankrow .val em{font-style:normal;color:#e0502f}
+@media(max-width:600px){.rankrow .val{min-width:58px;font-size:.76rem}.rankrow .bar>a{font-size:.82rem;padding:7px 10px}}
 nav{display:flex;align-items:center;gap:2px}
 nav>a{margin-left:18px;font-weight:600;font-size:.95rem;color:#4b5563}
 .ndrop{position:relative}
@@ -711,6 +737,7 @@ const KO_NAV = `<button class="navtoggle" id="navtoggle" aria-label="메뉴 열�
 <div class="ndrop"><button class="nbtn" type="button">🎪 축제<span class="arw">▼</span></button><div class="nmenu">
 <a href="/search/">🔎 축제 검색</a>
 <a href="/${CUR_MONTH_KEY}/">📅 월별 축제</a>
+<a href="/trend/">🔥 인기 여행지 랭킹</a>
 <a href="/holiday/">🎌 연휴 축제</a>
 <a href="/blog/">📖 축제 가이드</a>
 <a href="/test/">🔮 취향 테스트</a>
@@ -1217,13 +1244,29 @@ const WEEKEND_JS = `<script>
 })();
 </script>`;
 
-const vmax = visitors.ranked && visitors.ranked.length ? visitors.ranked[0].num : 1;
-const visitorSection = (visitors.ranked && visitors.ranked.length) ? `
-<h2 class="sec">🔥 요즘 방문자 많은 여행지</h2>
-<p class="note" style="margin-top:-2px">한국관광공사 관광 빅데이터 기준(외지인+외국인 방문자, ${visitors.updated || '최근'}). 사람이 많이 찾은 지역일수록 축제·볼거리도 풍성해요.</p>
-<div style="display:flex;flex-direction:column;gap:8px;margin:12px 0 6px">
-${visitors.ranked.slice(0, 9).map(r => { const w = Math.max(10, Math.round(r.num / vmax * 100)); const medal = r.rank <= 3 ? ['🥇', '🥈', '🥉'][r.rank - 1] : ('<span style="color:#9aa3af;font-weight:800">' + r.rank + '</span>'); return `<div style="display:flex;align-items:center;gap:10px"><div style="width:26px;text-align:center">${medal}</div><div style="flex:1;background:#eef5f3;border-radius:10px;overflow:hidden"><div style="width:${w}%;background:linear-gradient(90deg,#0f9d8f,#2dd4bf);color:#fff;font-weight:800;font-size:.86rem;padding:6px 11px;white-space:nowrap;border-radius:10px">${esc(r.name)}</div></div><div style="color:#6b7280;font-size:.82rem;font-weight:700;min-width:58px;text-align:right">${(r.num / 10000).toFixed(0)}만명</div></div>`; }).join('')}
-</div>` : '';
+// 홈 요약: 한국인·외국인·급상승 TOP5 3열 + /trend/ 전체보기
+function homeMini(list, cls, mode) {
+  if (!list || !list.length) return '';
+  const max = mode === 'hot' ? list[0].pct : list[0].num;
+  return list.slice(0, 5).map(r => {
+    const v = mode === 'hot' ? r.pct : r.num;
+    const w = Math.max(18, Math.round(v / max * 100));
+    const label = r.sido ? esc(r.sido) + ' ' + esc(r.name) : esc(r.name);
+    const q = r.sido ? `/search/?sido=${encodeURIComponent(r.sido)}&sigungu=${encodeURIComponent(r.name)}`
+      : `/search/?sido=${encodeURIComponent(r.name)}`;
+    const val = mode === 'hot' ? `<em>+${r.pct}%</em>` : `${(r.num / 10000).toFixed(0)}만`;
+    return `<div class="rankrow ${cls}"><div class="no">${r.rank}</div><div class="bar" style="max-width:${w}%"><a href="${q}">${label}</a></div><div class="val">${val}</div></div>`;
+  }).join('');
+}
+const visitorSection = (visitors.kor && visitors.kor.length) ? `
+<h2 class="sec">🔥 요즘 사람들이 많이 가는 곳</h2>
+<p class="note" style="margin-top:-2px">한국관광공사 관광 빅데이터 기준. 지역을 누르면 그곳에서 열리는 축제를 볼 수 있어요.</p>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(272px,1fr));gap:18px;margin:14px 0 6px">
+<div><div style="font-weight:800;color:#0a6c63;margin-bottom:8px">🇰🇷 한국인이 많이 가는 곳</div><div class="ranklist">${homeMini(visitors.kor, '', 'num')}</div></div>
+<div><div style="font-weight:800;color:#6d28d9;margin-bottom:8px">🌏 외국인이 많이 가는 곳</div><div class="ranklist">${homeMini(visitors.fgn, 'fgn', 'num')}</div></div>
+<div><div style="font-weight:800;color:#e0502f;margin-bottom:8px">📈 요즘 뜨는 곳</div><div class="ranklist">${homeMini(visitors.hot, 'hot', 'hot')}</div></div>
+</div>
+<p style="margin:10px 0 4px"><a href="/trend/" style="display:inline-block;background:#0f9d8f;color:#fff;font-weight:800;padding:10px 22px;border-radius:24px">인기 여행지 랭킹 전체 보기 →</a></p>` : '';
 
 const FAQ_HOME = [
   ["이번 주말 내 주변에서 열리는 축제는 어떻게 찾나요?","축제모아 홈에서 '내 주변 축제(📍)' 버튼을 누르면 현재 위치 기준 가까운 순으로 정렬됩니다. 검색 페이지에서 지역과 날짜(이번 주말)로도 걸러 볼 수 있습니다."],
@@ -1231,7 +1274,7 @@ const FAQ_HOME = [
   ["반려견과 함께 갈 수 있는 곳도 있나요?","네. '반려견 동반' 필터와 반려동물 동반 여행지 페이지에서 동반 가능한 장소를 찾을 수 있습니다."],
   ["오일장(5일장)은 언제 서나요?","장터 페이지에서 지역별 오일장의 다음 장날을 자동으로 계산해 보여줍니다. 상설시장도 함께 표시됩니다."]
 ];
-const FAQ_HOME_HTML = `<div class="wrap"><section class="card"><h2>자주 묻는 질문</h2>${FAQ_HOME.map(q=>`<h3>${q[0]}</h3><p>${q[1]}</p>`).join('')}</section></div>`;
+const FAQ_HOME_HTML = `<div class="wrap"><section class="faqbox"><h2>❓ 자주 묻는 질문</h2>${FAQ_HOME.map(q=>`<details><summary>${q[0]}</summary><p>${q[1]}</p></details>`).join('')}</section></div>`;
 const FAQ_HOME_LD = `<script type="application/ld+json">${JSON.stringify({'@context':'https://schema.org','@type':'FAQPage',mainEntity:FAQ_HOME.map(q=>({'@type':'Question',name:q[0],acceptedAnswer:{'@type':'Answer',text:q[1]}}))})}</script>`;
 
 const indexContent = `<div class="hero">
@@ -1503,7 +1546,15 @@ document.getElementById('fmodal').addEventListener('click',function(e){if(e.targ
 document.addEventListener('keydown',function(e){if(e.key==='Escape')closeModal();});
 document.getElementById('fGrid').addEventListener('click',function(e){var c=e.target.closest('.card');if(!c)return;var f=byId[c.getAttribute('data-id')];if(f)openModal(f);});
 document.getElementById('fCount').textContent='불러오는 중…';
-fetch('/search/data.json').then(function(r){return r.json();}).then(function(data){F=data;byId={};F.forEach(function(f){byId[f.id]=f;});fillSg();apply();}).catch(function(){document.getElementById('fCount').textContent='데이터를 불러오지 못했습니다. 새로고침 해주세요.';});
+function applyQuery(){ // 인기 여행지 랭킹 등에서 넘어온 ?sido=&sigungu=&kw= 반영
+  var q=new URLSearchParams(location.search), sd=q.get('sido'), sg=q.get('sigungu'), kw=q.get('kw'), touched=false;
+  if(sd){var opts=document.getElementById('fSido').options;for(var i=0;i<opts.length;i++){if(opts[i].value.indexOf(sd)===0||sd.indexOf(opts[i].value)===0){st.sido=opts[i].value;document.getElementById('fSido').value=opts[i].value;touched=true;break;}}}
+  fillSg();
+  if(sg){var o2=document.getElementById('fSigungu').options;for(var j=0;j<o2.length;j++){if(o2[j].value===sg){st.sigungu=sg;document.getElementById('fSigungu').value=sg;touched=true;break;}}}
+  if(kw){st.kw=kw;document.getElementById('fKw').value=kw;touched=true;}
+  if(touched){st.quick='all';var bs=document.querySelectorAll('#fQuick button');for(var k=0;k<bs.length;k++)bs[k].classList.toggle('on',bs[k].getAttribute('data-q')==='all');}
+}
+fetch('/search/data.json').then(function(r){return r.json();}).then(function(data){F=data;byId={};F.forEach(function(f){byId[f.id]=f;});applyQuery();apply();}).catch(function(){document.getElementById('fCount').textContent='데이터를 불러오지 못했습니다. 새로고침 해주세요.';});
 })();
 </script>`;
 writePage('search', layout('전국 축제 검색 — 날짜·지역·도시별 | ' + SITE_NAME, '전국 축제를 날짜·지역·도시로 검색하세요. 공공데이터 기반 최신 축제 ' + apiFests.length + '건. 진행중·이번 주말·이번 달·반려견 동반 축제를 한눈에.', '/search/', searchContent, { alternates: searchAlts() }));
@@ -2130,6 +2181,71 @@ ${sections || '<p class="note">다가오는 연휴 정보를 준비 중이에요
   writePage('holiday', layout('2026 연휴에 갈 축제 — 설날·추석·광복절 황금연휴 축제 총정리 | ' + SITE_NAME, '2026 공휴일·연휴에 열리는 전국 축제를 한눈에. 설날·추석·광복절·개천절·한글날 연휴 나들이 계획을 축제모아에서.', '/holiday/', holContent, { jsonld: holJsonLd }));
 }
 
+// ---------- 인기 여행지 랭킹 (/trend/) ----------
+function rankBars(list, cls, mode) {
+  if (!list || !list.length) return '<p class="note">데이터를 준비 중이에요.</p>';
+  const max = mode === 'hot' ? list[0].pct : list[0].num;
+  return `<div class="ranklist">` + list.map(r => {
+    const v = mode === 'hot' ? r.pct : r.num;
+    const w = Math.max(14, Math.round(v / max * 100));
+    const medal = r.rank <= 3 ? ['🥇', '🥈', '🥉'][r.rank - 1] : r.rank;
+    const label = r.sido ? `${esc(r.sido)} ${esc(r.name)}` : esc(r.name);
+    const q = r.sido ? `/search/?sido=${encodeURIComponent(r.sido)}&sigungu=${encodeURIComponent(r.name)}`
+      : `/search/?sido=${encodeURIComponent(r.name)}`;
+    const val = mode === 'hot'
+      ? `<em>+${r.pct}%</em>`
+      : `${(r.num / 10000).toFixed(0)}만명`;
+    return `<div class="rankrow ${cls}"><div class="no">${medal}</div>`
+      + `<div class="bar"><a href="${q}" title="${label} 축제 보기">${label}</a></div>`
+      + `<div class="val">${val}</div></div>`;
+  }).join('') + `</div>`;
+}
+const TREND_TABS = [
+  { id: 'kor', label: '🇰🇷 한국인이 많이 가는 곳', cls: '', mode: 'num', list: visitors.kor || [],
+    desc: '해당 지역 주민이 아닌 <b>국내 방문객(외지인)</b> 수 기준입니다. 수도권 대도시는 통근·쇼핑 방문이 함께 잡혀 상위에 오릅니다.' },
+  { id: 'fgn', label: '🌏 외국인이 많이 가는 곳', cls: 'fgn', mode: 'num', list: visitors.fgn || [],
+    desc: '외국인 방문자 수 기준입니다. 명동·인사동이 있는 서울 중구·종로구, 공항이 있는 인천 중구, 제주가 강세입니다.' },
+  { id: 'hot', label: '🔥 요즘 뜨는 곳', cls: 'hot', mode: 'hot', list: visitors.hot || [],
+    desc: '직전 30일 대비 국내 방문객 <b>증가율</b>이 높은 곳입니다. 지역 축제·꽃 시즌이 열린 곳이 주로 올라옵니다.' },
+  { id: 'sido', label: '🗺️ 시·도 종합', cls: '', mode: 'num', list: visitors.sido || [],
+    desc: '시·도 단위 전체 방문자(국내 여행객 + 외국인) 합계입니다.' }
+];
+const trendUpdated = visitors.updated ? String(visitors.updated).replace(/^(\d{4})(\d{2})(\d{2})~(\d{4})(\d{2})(\d{2})$/, '$1.$2.$3~$4.$5.$6') : '최근';
+const trendContent = `<main><div class="wrap">
+<h1 style="font-size:1.5rem;font-weight:900;letter-spacing:-.02em;margin:8px 0 4px">🔥 인기 여행지 랭킹</h1>
+<p class="note" style="margin-top:0">한국관광공사 관광 빅데이터(${trendUpdated} 30일)를 기준으로 <b>한국인·외국인이 실제로 많이 찾은 시·군·구</b>와 <b>요즘 급상승 중인 지역</b>을 정리했어요. 막대를 누르면 그 지역에서 열리는 축제를 바로 볼 수 있습니다.</p>
+<div class="rank-tabs" id="trendTabs">
+${TREND_TABS.map((t, i) => `<button type="button" data-t="${t.id}"${i === 0 ? ' class="on"' : ''}>${t.label}</button>`).join('')}
+</div>
+${TREND_TABS.map((t, i) => `<section class="trendpane" data-p="${t.id}"${i === 0 ? '' : ' style="display:none"'}>
+<h2 class="sec" style="margin-top:6px">${t.label}</h2>
+<p class="note" style="margin-top:-4px">${t.desc}</p>
+${rankBars(t.list, t.cls, t.mode)}
+</section>`).join('\n')}
+<p class="note" style="margin-top:22px">출처: 한국관광공사 «한국관광 데이터랩» 지역별 방문자 수(공공데이터포털 DataLabService). 통신사·카드 기반 추계치로 실제 관광객 수와 차이가 있을 수 있으며, 데이터 특성상 약 2개월 전 구간이 최신입니다. 매주 자동 갱신됩니다.</p>
+</div></main>
+<script>
+(function(){
+  var tabs=document.getElementById('trendTabs'); if(!tabs)return;
+  tabs.addEventListener('click',function(e){
+    var b=e.target.closest('button[data-t]'); if(!b)return;
+    var id=b.getAttribute('data-t');
+    tabs.querySelectorAll('button').forEach(function(x){x.classList.toggle('on',x===b);});
+    document.querySelectorAll('.trendpane').forEach(function(p){p.style.display=(p.getAttribute('data-p')===id)?'':'none';});
+  });
+})();
+</script>`;
+const trendLd = (visitors.kor && visitors.kor.length) ? `<script type="application/ld+json">${JSON.stringify({
+  '@context': 'https://schema.org', '@type': 'ItemList', name: '한국인이 많이 가는 여행지 랭킹',
+  itemListOrder: 'https://schema.org/ItemListOrderDescending',
+  numberOfItems: Math.min(20, visitors.kor.length),
+  itemListElement: visitors.kor.slice(0, 20).map(r => ({ '@type': 'ListItem', position: r.rank, name: (r.sido ? r.sido + ' ' : '') + r.name }))
+})}</script>` : '';
+writePage('trend', layout(
+  '인기 여행지 랭킹 — 한국인·외국인이 많이 가는 곳, 요즘 뜨는 곳 | ' + SITE_NAME,
+  '한국관광공사 관광 빅데이터 기준 인기 여행지 랭킹. 한국인이 많이 가는 시·군·구, 외국인이 많이 가는 곳, 방문자가 급상승 중인 지역을 한눈에 보고 그 지역 축제까지 바로 확인하세요.',
+  '/trend/', trendContent, { jsonld: trendLd }));
+
 // ---------- 여행 비용 계산기 (/trip-cost/) ----------
 const tripCostContent = `<main><div class="wrap">
 <style>
@@ -2237,7 +2353,7 @@ document.getElementById('tcFrom').addEventListener('keydown',function(e){if(e.ke
 writePage('trip-cost', layout('여행 비용 계산기 — 자동차 vs 대중교통 비용 비교 | ' + SITE_NAME, '축제·여행지까지 자동차(연료+통행료+주차)와 대중교통 비용을 비교 계산. 출발지·도착지만 넣으면 끝. 계산 과정도 투명하게 공개.', '/trip-cost/', tripCostContent));
 
 // ---------- sitemap / robots ----------
-const urls = ['/', ...MONTHS.map(m => `/${m.key}/`), '/search/', ...(holidays.length ? ['/holiday/'] : []), '/pet/', ...(apiAccessible.length ? ['/accessible/'] : []), ...(apiTrails.length ? ['/trails/'] : []), ...(apiValleys.length ? ['/valley/'] : []), ...(apiMaple.length ? ['/maple/'] : []), ...(apiFlower.length ? ['/flower/'] : []), ...(apiOnsen.length ? ['/onsen/'] : []), '/jangteo/', '/test/', '/trip-cost/', '/blog/', ...posts.map(p => `/blog/${p.slug}/`), '/about/', EDITORIAL_URL, '/contact/', '/privacy/',...(apiFestsEn.length ? ['/en/', '/en/search/'] : []), ...(apiFestsJa.length ? ['/ja/', '/ja/search/'] : []), ...(apiFestsEs.length ? ['/es/', '/es/search/'] : []), ...(apiFestsZh.length ? ['/zh/', '/zh/search/'] : [])];
+const urls = ['/', ...MONTHS.map(m => `/${m.key}/`), '/search/', ...(holidays.length ? ['/holiday/'] : []), '/pet/', ...(apiAccessible.length ? ['/accessible/'] : []), ...(apiTrails.length ? ['/trails/'] : []), ...(apiValleys.length ? ['/valley/'] : []), ...(apiMaple.length ? ['/maple/'] : []), ...(apiFlower.length ? ['/flower/'] : []), ...(apiOnsen.length ? ['/onsen/'] : []), '/jangteo/', '/test/', '/trip-cost/', ...(visitors.kor && visitors.kor.length ? ['/trend/'] : []), '/blog/', ...posts.map(p => `/blog/${p.slug}/`), '/about/', EDITORIAL_URL, '/contact/', '/privacy/',...(apiFestsEn.length ? ['/en/', '/en/search/'] : []), ...(apiFestsJa.length ? ['/ja/', '/ja/search/'] : []), ...(apiFestsEs.length ? ['/es/', '/es/search/'] : []), ...(apiFestsZh.length ? ['/zh/', '/zh/search/'] : [])];
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${urls.map(u => `<url><loc>${SITE}${u}</loc><lastmod>${TODAY}</lastmod></url>`).join('\n')}
