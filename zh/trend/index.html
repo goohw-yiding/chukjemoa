@@ -187,6 +187,20 @@ article ul{padding-left:20px}
 .faqbox summary:hover{color:#0f9d8f}
 .faqbox details p{font-size:.94rem;color:#4b5563;line-height:1.75;padding:0 8px 16px 0;margin-top:-2px}
 @media(max-width:600px){.faqbox{padding:20px 18px 16px;border-radius:14px}.faqbox summary{font-size:.95rem;padding:13px 26px 13px 0}}
+.ranklegend{font-size:.82rem;color:#9ca3af;margin:-8px 0 14px;line-height:1.6}
+.ranklegend b{color:#6b7280}
+.ranklegend a{color:#0f9d8f;font-weight:700;text-decoration:underline}
+.explain{background:#fff;border-radius:18px;box-shadow:0 3px 14px rgba(31,41,55,.08);padding:28px 30px 24px;margin:34px 0 10px;scroll-margin-top:80px}
+.explain h2{font-size:1.22rem;font-weight:900;letter-spacing:-.02em;color:#0a6c63;margin-bottom:4px}
+.explain h3{font-size:1rem;font-weight:800;color:#1f2937;margin:20px 0 6px;padding-top:16px;border-top:1px solid #eef5f3}
+.explain h3:first-of-type{border-top:none;padding-top:8px}
+.explain p{font-size:.93rem;color:#4b5563;line-height:1.78;margin:6px 0}
+.explain b{color:#111827}
+.explain ul{margin:8px 0 6px;padding-left:2px;list-style:none}
+.explain li{font-size:.93rem;color:#4b5563;line-height:1.75;padding:3px 0 3px 16px;position:relative}
+.explain li::before{content:'·';position:absolute;left:4px;color:#0f9d8f;font-weight:900}
+.explain a{color:#0f9d8f;font-weight:700;text-decoration:underline}
+@media(max-width:600px){.explain{padding:22px 18px 18px;border-radius:14px}.explain h2{font-size:1.1rem}}
 .datebadge{background:#f4faf8;border:1px solid #dcefeb;border-radius:12px;padding:12px 15px;font-size:.85rem;color:#374151;line-height:1.6;margin:12px 0 4px}
 .datebadge b{color:#0a6c63}
 .datebadge span{color:#9ca3af;font-size:.8rem}
@@ -250,6 +264,7 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 <div class="rank-tabs" id="trendTabs">
 <button type="button" data-t="season" class="on">🌞 8月最热闹的地方</button><button type="button" data-t="kor">🇰🇷 韩国人常去的地方</button><button type="button" data-t="fgn">🌏 外国人常去的地方</button><button type="button" data-t="sido">🗺️ 按道·广域市</button>
 </div>
+<p class="ranklegend">条形长度＝访问规模 · 右侧数字＝旺季标签为<b>倍数</b>，其余为<b>30天访客人次合计</b>。<a href="#howto">数字怎么看 ↓</a></p>
 <section class="trendpane" data-p="season">
 <h2 class="sec" style="margin-top:6px">🌞 8月最热闹的地方</h2>
 <p class="note" style="margin-top:-4px">将 <b>2025年8月</b> 的实际人流与该年平常水平（年均）相比得出的<b>旺季倍数</b>。×1.5 表示比平时热闹 1.5 倍。海水浴场、溪谷、山岳等季节性强的地方会上榜。</p>
@@ -270,7 +285,40 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 <p class="note" style="margin-top:-4px">按道·广域市统计的访客总数（国内＋外国）。</p>
 <div class="ranklist"><div class="rankrow "><div class="no">🥇</div><div class="bar"><a href="/zh/search/">Seoul <span class="kr">서울</span></a></div><div class="val">5671万</div></div><div class="rankrow "><div class="no">🥈</div><div class="bar"><a href="/zh/search/">Gyeonggi <span class="kr">경기</span></a></div><div class="val">5512万</div></div><div class="rankrow "><div class="no">🥉</div><div class="bar"><a href="/zh/search/">Incheon <span class="kr">인천</span></a></div><div class="val">1759万</div></div><div class="rankrow "><div class="no">4</div><div class="bar"><a href="/zh/search/">Gyeongbuk <span class="kr">경북</span></a></div><div class="val">1460万</div></div><div class="rankrow "><div class="no">5</div><div class="bar"><a href="/zh/search/">Busan <span class="kr">부산</span></a></div><div class="val">1429万</div></div><div class="rankrow "><div class="no">6</div><div class="bar"><a href="/zh/search/">Chungnam <span class="kr">충남</span></a></div><div class="val">1429万</div></div><div class="rankrow "><div class="no">7</div><div class="bar"><a href="/zh/search/">Gyeongnam <span class="kr">경남</span></a></div><div class="val">1323万</div></div><div class="rankrow "><div class="no">8</div><div class="bar"><a href="/zh/search/">Gangwon <span class="kr">강원</span></a></div><div class="val">1254万</div></div><div class="rankrow "><div class="no">9</div><div class="bar"><a href="/zh/search/">Chungbuk <span class="kr">충북</span></a></div><div class="val">1014万</div></div><div class="rankrow "><div class="no">10</div><div class="bar"><a href="/zh/search/">Dae-gu <span class="kr">대구</span></a></div><div class="val">868万</div></div><div class="rankrow "><div class="no">11</div><div class="bar"><a href="/zh/search/">Jeonnam <span class="kr">전남</span></a></div><div class="val">866万</div></div><div class="rankrow "><div class="no">12</div><div class="bar"><a href="/zh/search/">Jeonbuk <span class="kr">전북</span></a></div><div class="val">775万</div></div><div class="rankrow "><div class="no">13</div><div class="bar"><a href="/zh/search/">Daejeon <span class="kr">대전</span></a></div><div class="val">718万</div></div><div class="rankrow "><div class="no">14</div><div class="bar"><a href="/zh/search/">Jeju <span class="kr">제주</span></a></div><div class="val">604万</div></div><div class="rankrow "><div class="no">15</div><div class="bar"><a href="/zh/search/">Gwangju <span class="kr">광주</span></a></div><div class="val">451万</div></div><div class="rankrow "><div class="no">16</div><div class="bar"><a href="/zh/search/">Ulsan <span class="kr">울산</span></a></div><div class="val">429万</div></div><div class="rankrow "><div class="no">17</div><div class="bar"><a href="/zh/search/">Sejong <span class="kr">세종</span></a></div><div class="val">247万</div></div><div class="rankrow "><div class="no">18</div><div class="bar"><a href="/zh/search/">Jeonnamgwangjutonghap <span class="kr">전남광주통합</span></a></div><div class="val">182万</div></div></div>
 </section>
-<p class="note" style="margin-top:22px">数据来源：韩国观光公社《韩国观光数据实验室》地区访客数（公共数据门户）。基于通信与卡片数据的推算值，每周更新。</p>
+<section class="explain" id="howto">
+<h2>📖 这些数字怎么看</h2>
+<h3>1. 统计的是什么</h3>
+<p>由<b>韩国观光公社</b>结合<b>通信基站数据与刷卡消费数据</b>推算的<b>各地区访客人数</b>。并非问卷调查或门票统计，而是对实际在该地区停留人群的估算。</p>
+<ul>
+<li><b>本地居民</b> — 居住在该市·郡·区的人，本排行<b>不计入</b>。</li>
+<li><b>外地国内访客</b> — 不住在当地的韩国人，本站标记为<b>「韩国人」</b>。</li>
+<li><b>外国访客</b> — <b>「外国人」</b>排行的统计口径。</li>
+</ul>
+<h3>2.「1787万」是指1787万人来过吗</h3>
+<p>不是。这是<b>人次</b>。把每日访客数累加30天所得，<b>同一人来5天就算5人次。</b>因此高于实际人数，请作为<b>地区之间规模比较</b>的参考。</p>
+<h3>3. 为什么江南区、水原市这类大城市排在前面</h3>
+<p>因为「外地访客」不仅包括游客，还包括<b>通勤、上学、购物、出差</b>。每天从邻近城市通勤的人也会被计入。所以<b>作为纯粹的旅游地排名，大城市被高估了</b>。</p>
+<p>若想看旅游吸引力，请看<b>8月旺季</b>标签页——通勤人口不随季节变化，会自动被抵消。</p>
+<h3>4. 旺季倍数（如 ×1.54）如何计算</h3>
+<p style="text-align:center;background:#f4faf8;border:1px solid #dcefeb;border-radius:10px;padding:13px;font-weight:700;color:#0a6c63;margin:10px 0">
+旺季倍数 ＝ 2025年8月日均访客 ÷ 2025年平常日均访客
+</p>
+<p><b>郁陵郡 ×1.54</b> 表示郁陵郡在2025年8月接待的人流是<b>该年平常水平的1.54倍</b>。衡量的是<b>「比平时热闹多少」</b>而非绝对人数，因此小地方在自己的旺季也能登上榜首。</p>
+<p>作为基准的「平常」，取2025年12个月均匀抽样得出的日均值。日均访客不足5,000人的地区已剔除，因为基数过小会让倍数剧烈波动。</p>
+<h3>5. 为什么用去年的数据</h3>
+<p>该数据<b>约延迟一个月公开</b>（当前最新统计日：2026.07.06）。若用延迟的最新数据回答「现在8月哪里热闹」，得到的会是<b>完全不同季节的结果</b>。改用<b>去年同月实绩</b>，季节才能对得上。</p>
+<p>韩国人·外国人·道别排行以规模比较为目的而非季节，因此直接使用<b>最新30天（2026.06.07~2026.07.06）</b>。</p>
+<h3>6. 需要了解的局限</h3>
+<ul>
+<li>基于通信与卡片数据的<b>推算值</b>，与实际游客数存在差异。</li>
+<li>存在同名的市·郡·区（首尔中区与仁川中区等），故<b>一律标注道·广域市</b>。</li>
+<li>统计到市·郡·区一级，无法得知区域内具体哪个景点热闹。</li>
+</ul>
+<h3>📌 数据来源</h3>
+<p>韩国观光公社 <a href="https://datalab.visitkorea.or.kr/" target="_blank" rel="noopener">韩国观光数据实验室</a> — 各地区（市郡区·道）每日访客数<br>
+经公共数据门户 <a href="https://www.data.go.kr/data/15100731/openapi.do" target="_blank" rel="noopener">韩国观光公社_观光大数据信息服务</a>（DataLabService）采集<br>
+统计期间：旺季排行 2025年8月 / 访客排行 2026.06.07~2026.07.06 · 每周一自动更新</p>
+</section>
 </div></main>
 <script>
 (function(){

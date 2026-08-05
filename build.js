@@ -687,6 +687,20 @@ article ul{padding-left:20px}
 .faqbox summary:hover{color:#0f9d8f}
 .faqbox details p{font-size:.94rem;color:#4b5563;line-height:1.75;padding:0 8px 16px 0;margin-top:-2px}
 @media(max-width:600px){.faqbox{padding:20px 18px 16px;border-radius:14px}.faqbox summary{font-size:.95rem;padding:13px 26px 13px 0}}
+.ranklegend{font-size:.82rem;color:#9ca3af;margin:-8px 0 14px;line-height:1.6}
+.ranklegend b{color:#6b7280}
+.ranklegend a{color:#0f9d8f;font-weight:700;text-decoration:underline}
+.explain{background:#fff;border-radius:18px;box-shadow:0 3px 14px rgba(31,41,55,.08);padding:28px 30px 24px;margin:34px 0 10px;scroll-margin-top:80px}
+.explain h2{font-size:1.22rem;font-weight:900;letter-spacing:-.02em;color:#0a6c63;margin-bottom:4px}
+.explain h3{font-size:1rem;font-weight:800;color:#1f2937;margin:20px 0 6px;padding-top:16px;border-top:1px solid #eef5f3}
+.explain h3:first-of-type{border-top:none;padding-top:8px}
+.explain p{font-size:.93rem;color:#4b5563;line-height:1.78;margin:6px 0}
+.explain b{color:#111827}
+.explain ul{margin:8px 0 6px;padding-left:2px;list-style:none}
+.explain li{font-size:.93rem;color:#4b5563;line-height:1.75;padding:3px 0 3px 16px;position:relative}
+.explain li::before{content:'·';position:absolute;left:4px;color:#0f9d8f;font-weight:900}
+.explain a{color:#0f9d8f;font-weight:700;text-decoration:underline}
+@media(max-width:600px){.explain{padding:22px 18px 18px;border-radius:14px}.explain h2{font-size:1.1rem}}
 .datebadge{background:#f4faf8;border:1px solid #dcefeb;border-radius:12px;padding:12px 15px;font-size:.85rem;color:#374151;line-height:1.6;margin:12px 0 4px}
 .datebadge b{color:#0a6c63}
 .datebadge span{color:#9ca3af;font-size:.8rem}
@@ -2222,6 +2236,53 @@ const TREND_TABS = [
     desc: '시·도 단위 전체 방문자(국내 여행객 + 외국인) 합계입니다.' }
 ];
 const trendUpdated = visitors.updated ? String(visitors.updated).replace(/^(\d{4})(\d{2})(\d{2})~(\d{4})(\d{2})(\d{2})$/, '$1.$2.$3~$4.$5.$6') : '최근';
+// ---------- 랭킹 숫자 해설 + 출처 (한국어) ----------
+const DL_URL = 'https://datalab.visitkorea.or.kr/';
+const DATAGO_URL = 'https://www.data.go.kr/data/15100731/openapi.do';
+const trendLegend = `<p class="ranklegend">막대 길이 = 방문 규모 · 오른쪽 숫자 = <b>성수기 탭은 배수</b>, 나머지 탭은 <b>30일 방문자 합계</b>입니다. <a href="#howto">숫자 읽는 법 자세히 ↓</a></p>`;
+const trendExplain = `<section class="explain" id="howto">
+<h2>📖 이 숫자는 어떻게 나온 건가요?</h2>
+
+<h3>1. 무엇을 센 숫자인가요</h3>
+<p>한국관광공사가 <b>통신사 기지국 데이터와 카드 결제 데이터</b>를 조합해 추계한 <b>지역별 방문자 수</b>입니다. 설문이나 입장권 집계가 아니라, 실제로 그 지역에 머문 사람을 추정한 값이에요.</p>
+<p>방문자는 세 갈래로 나뉘는데, 이 랭킹에서는 <b>여행객에 해당하는 두 가지만</b> 씁니다.</p>
+<ul>
+<li><b>현지인</b> — 그 시·군·구에 사는 사람. <b>랭킹에서 제외</b>합니다.</li>
+<li><b>외지인</b> — 그 지역에 살지 않는 국내 방문자. 이 사이트에서 <b>'한국인'</b>으로 표기합니다.</li>
+<li><b>외국인</b> — 외국인 방문자. <b>'외국인'</b> 랭킹의 기준입니다.</li>
+</ul>
+
+<h3>2. '1,787만명'은 1,787만 명이 다녀갔다는 뜻인가요?</h3>
+<p>아닙니다. <b>연인원</b>입니다. 하루 단위 방문자 수를 30일간 더한 값이라, <b>같은 사람이 5일 방문하면 5명으로 셉니다.</b> 그래서 실제 방문한 사람 수보다 큽니다. 지역끼리 규모를 <b>비교</b>하는 용도로 보시면 됩니다.</p>
+
+<h3>3. 왜 강남구·수원시 같은 대도시가 1위인가요?</h3>
+<p>'외지인'에는 여행객뿐 아니라 <b>출퇴근·통학·쇼핑·업무 방문</b>이 모두 포함되기 때문입니다. 옆 동네에서 매일 출근하는 사람도 외지인으로 잡힙니다. 그래서 <b>순수한 여행지 순위로 보기에는 대도시가 과대평가</b>돼요.</p>
+<p>여행지로서 어디가 좋은지 보고 싶다면 <b>${SEASON_M}월 성수기 탭</b>을 보세요. 통근 인구는 계절을 타지 않아서 자동으로 걸러집니다.</p>
+
+<h3>4. 성수기 배수(예: 1.54배)는 어떻게 계산했나요</h3>
+<p style="text-align:center;background:#f4faf8;border:1px solid #dcefeb;border-radius:10px;padding:13px;font-weight:700;color:#0a6c63;margin:10px 0">
+성수기 배수 = ${SEASON_Y}년 ${SEASON_M}월 하루 평균 방문자 ÷ ${SEASON_Y}년 평소 하루 평균 방문자
+</p>
+<p>예를 들어 <b>경북 울릉군 1.54배</b>는, 울릉군이 ${SEASON_Y}년 ${SEASON_M}월에 <b>그 해 평소보다 하루 1.54배 많은 사람</b>을 받았다는 뜻입니다. 절대 방문자 수가 아니라 <b>'평소 대비 얼마나 붐볐나'</b>라서, 작은 지역도 성수기만 되면 상위에 오를 수 있어요.</p>
+<p>기준선이 되는 '평소'는 ${SEASON_Y}년 <b>12개월치를 골고루 표본 추출</b>해 구한 하루 평균입니다. 방문자가 너무 적어 배수가 크게 튀는 곳(하루 평균 5,000명 미만)은 제외했습니다.</p>
+
+<h3>5. 왜 작년 데이터인가요?</h3>
+<p>이 데이터는 <b>약 한 달 늦게 공개</b>됩니다(현재 최신 집계일 ${visitors.latest ? String(visitors.latest).replace(/^(\d{4})(\d{2})(\d{2})$/, '$1년 $2월 $3일') : '-'}). 그래서 "지금 ${SEASON_M}월에 어디가 붐비나"를 지연된 최신 데이터로 답하면 <b>엉뚱한 계절의 결과</b>가 나옵니다. 대신 <b>작년 같은 달 실적</b>을 쓰면 계절이 정확히 맞습니다.</p>
+<p>한국인·외국인·시·도 랭킹은 계절보다 규모 비교가 목적이라 <b>최신 30일(${trendUpdated})</b>을 그대로 씁니다.</p>
+
+<h3>6. 알아두실 한계</h3>
+<ul>
+<li>통신·카드 기반 <b>추계치</b>라 실제 관광객 수와 차이가 있습니다.</li>
+<li>같은 이름의 시·군·구가 있어(서울 중구·인천 중구 등) <b>시·도를 함께 표기</b>했습니다.</li>
+<li>시·군·구 단위라, 한 지역 안에서 어느 명소가 붐볐는지까지는 알 수 없습니다.</li>
+</ul>
+
+<h3>📌 데이터 출처</h3>
+<p>한국관광공사 <a href="${DL_URL}" target="_blank" rel="noopener">한국관광 데이터랩</a> — 지역별(시군구·시도) 일자별 방문자 수<br>
+공공데이터포털 <a href="${DATAGO_URL}" target="_blank" rel="noopener">한국관광공사_관광 빅데이터 정보 서비스</a> (DataLabService) 를 통해 수집<br>
+집계 기간: 성수기 랭킹 ${SEASON_Y}년 ${SEASON_M}월 / 방문자 랭킹 ${trendUpdated} · 매주 월요일 자동 갱신</p>
+</section>`;
+
 const trendContent = `<main><div class="wrap">
 <h1 style="font-size:1.5rem;font-weight:900;letter-spacing:-.02em;margin:8px 0 4px">🔥 인기 여행지 랭킹</h1>
 <p class="note" style="margin-top:0">한국관광공사 관광 빅데이터로 <b>사람이 실제로 많이 간 시·군·구</b>를 정리했어요. 막대를 누르면 그 지역에서 열리는 축제를 바로 볼 수 있습니다.</p>
@@ -2229,12 +2290,13 @@ const trendContent = `<main><div class="wrap">
 <div class="rank-tabs" id="trendTabs">
 ${TREND_TABS.map((t, i) => `<button type="button" data-t="${t.id}"${i === 0 ? ' class="on"' : ''}>${t.label}</button>`).join('')}
 </div>
+${trendLegend}
 ${TREND_TABS.map((t, i) => `<section class="trendpane" data-p="${t.id}"${i === 0 ? '' : ' style="display:none"'}>
 <h2 class="sec" style="margin-top:6px">${t.label}</h2>
 <p class="note" style="margin-top:-4px">${t.desc}</p>
 ${rankBars(t.list, t.cls, t.mode)}
 </section>`).join('\n')}
-<p class="note" style="margin-top:22px">출처: 한국관광공사 «한국관광 데이터랩» 지역별 방문자 수(공공데이터포털 DataLabService). 통신사·카드 기반 추계치라 실제 관광객 수와 차이가 있을 수 있습니다. 최신 집계일은 ${visitors.latest ? String(visitors.latest).replace(/^(\d{4})(\d{2})(\d{2})$/, '$1.$2.$3') : '-'}(약 ${visitors.lagDays || 30}일 지연)이며, 매주 월요일 자동 갱신됩니다.</p>
+${trendExplain}
 </div></main>
 <script>
 (function(){
@@ -2273,7 +2335,7 @@ const TREND_L = {
       fgn: 'By number of <b>international visitors</b>. Jung-gu and Jongno-gu in Seoul (Myeongdong, Insadong), Jung-gu in Incheon (airport) and Jeju lead.',
       sido: 'Total visitors (domestic + international) by province.'
     },
-    unit: '', times: '×', src: 'Source: Korea Tourism Organization «Korea Tourism Data Lab» regional visitor counts (data.go.kr). Estimates based on telecom and card data. Updated weekly.',
+    unit: '', times: '×', legend: `Bar length = visit volume · right-hand figure = <b>multiplier</b> on the peak-season tab, <b>30-day visitor total</b> on the others. <a href="#howto">How to read these numbers ↓</a>`, src: 'Source: Korea Tourism Organization «Korea Tourism Data Lab» regional visitor counts (data.go.kr). Estimates based on telecom and card data. Updated weekly.',
     title: m => `Where People Actually Travel in Korea — ${['','January','February','March','April','May','June','July','August','September','October','November','December'][m]} Peak Season Ranking | Chukjemoa`,
     metad: 'Korea travel destination rankings from official tourism big data — peak-season hotspots this month, where Koreans go, and where international visitors go, with festivals in each area.'
   },
@@ -2289,7 +2351,7 @@ const TREND_L = {
       fgn: '<b>外国人訪問者</b>数基準です。明洞・仁寺洞のあるソウル中区・鍾路区、空港のある仁川中区、済州が強いです。',
       sido: '道・広域市単位の総訪問者（国内＋外国人）です。'
     },
-    unit: '', times: '×', src: '出典：韓国観光公社「韓国観光データラボ」地域別訪問者数（公共データポータル）。通信・カードデータに基づく推計値です。毎週更新。',
+    unit: '', times: '×', legend: `バーの長さ＝訪問規模 · 右の数字＝繁忙期タブは<b>倍率</b>、その他は<b>30日間の延べ訪問者</b>です。<a href="#howto">数字の読み方 ↓</a>`, src: '出典：韓国観光公社「韓国観光データラボ」地域別訪問者数（公共データポータル）。通信・カードデータに基づく推計値です。毎週更新。',
     title: m => `韓国で実際に人が多く行く場所 — ${m}月の繁忙期ランキング | チュクチェモア`,
     metad: '韓国観光公社の観光ビッグデータによる人気旅行先ランキング。今月の繁忙期スポット、韓国人が多く行く場所、外国人が多く行く場所を市・郡・区単位で。'
   },
@@ -2305,7 +2367,7 @@ const TREND_L = {
       fgn: 'Por número de <b>visitantes internacionales</b>. Destacan Jung-gu y Jongno-gu en Seúl (Myeongdong, Insadong), Jung-gu en Incheon (aeropuerto) y Jeju.',
       sido: 'Visitantes totales (nacionales + internacionales) por provincia.'
     },
-    unit: '', times: '×', src: 'Fuente: Organización de Turismo de Corea «Korea Tourism Data Lab», visitantes por región (data.go.kr). Estimaciones basadas en datos de telefonía y tarjetas. Actualización semanal.',
+    unit: '', times: '×', legend: `Longitud de la barra = volumen de visitas · cifra de la derecha = <b>multiplicador</b> en la pestaña de temporada alta, <b>total de 30 días</b> en las demás. <a href="#howto">Cómo leer estas cifras ↓</a>`, src: 'Fuente: Organización de Turismo de Corea «Korea Tourism Data Lab», visitantes por región (data.go.kr). Estimaciones basadas en datos de telefonía y tarjetas. Actualización semanal.',
     title: m => `Adónde viaja la gente en Corea — Ranking de temporada alta de ${['','enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'][m]} | Chukjemoa`,
     metad: 'Ranking de destinos en Corea según los datos oficiales de turismo: puntos de temporada alta de este mes, adónde van los coreanos y adónde van los extranjeros, con los festivales de cada zona.'
   },
@@ -2321,10 +2383,151 @@ const TREND_L = {
       fgn: '以<b>外国访客</b>人数为准。明洞·仁寺洞所在的首尔中区·钟路区、机场所在的仁川中区以及济州名列前茅。',
       sido: '按道·广域市统计的访客总数（国内＋外国）。'
     },
-    unit: '', times: '×', src: '数据来源：韩国观光公社《韩国观光数据实验室》地区访客数（公共数据门户）。基于通信与卡片数据的推算值，每周更新。',
+    unit: '', times: '×', legend: `条形长度＝访问规模 · 右侧数字＝旺季标签为<b>倍数</b>，其余为<b>30天访客人次合计</b>。<a href="#howto">数字怎么看 ↓</a>`, src: '数据来源：韩国观光公社《韩国观光数据实验室》地区访客数（公共数据门户）。基于通信与卡片数据的推算值，每周更新。',
     title: m => `韩国人气目的地排行 — ${m}月旺季榜 | 庆典集`,
     metad: '基于韩国观光公社旅游大数据的人气目的地排行：本月旺季热点、韩国人常去与外国人常去的市·郡·区，并可直接查看当地庆典。'
   }
+};
+
+
+// ---------- 다국어 랭킹 숫자 해설 ----------
+const EXPLAIN_L = {
+  en: (Y, M, P, LAT, MN) => `<section class="explain" id="howto">
+<h2>📖 How to read these numbers</h2>
+<h3>1. What is being counted</h3>
+<p>Visitor estimates published by the <b>Korea Tourism Organization</b>, derived from <b>mobile network and card payment data</b>. They are not survey answers or ticket sales — they estimate who actually spent time in an area.</p>
+<ul>
+<li><b>Residents</b> — people who live in that district. <b>Excluded</b> from these rankings.</li>
+<li><b>Domestic visitors from elsewhere</b> — Koreans who do not live there. Shown here as <b>"Koreans"</b>.</li>
+<li><b>International visitors</b> — the basis of the <b>"visitors"</b> ranking.</li>
+</ul>
+<h3>2. Does "17.9M" mean 17.9 million different people?</h3>
+<p>No. It is a <b>person-day total</b>: daily counts added up over 30 days. <b>Someone who visits on five days is counted five times.</b> Use it to <b>compare scale between districts</b>, not as a headcount.</p>
+<h3>3. Why do big cities like Gangnam-gu top the list?</h3>
+<p>Because "visitors from elsewhere" also includes <b>commuting, school, shopping and business trips</b>. Someone who drives in from the next town every morning counts too. So large metro districts are <b>overstated as travel destinations</b>.</p>
+<p>For actual travel appeal, use the <b>${MN[M]} peak-season tab</b> — commuters don't change with the seasons, so they cancel out.</p>
+<h3>4. How the peak-season multiplier (e.g. ×1.54) is calculated</h3>
+<p style="text-align:center;background:#f4faf8;border:1px solid #dcefeb;border-radius:10px;padding:13px;font-weight:700;color:#0a6c63;margin:10px 0">
+multiplier = average daily visitors in ${MN[M]} ${Y} ÷ average daily visitors across ${Y}
+</p>
+<p><b>Ulleung-gun ×1.54</b> means Ulleung-gun received <b>1.54 times its usual daily crowd</b> during ${MN[M]} ${Y}. It measures <b>how much busier than normal</b> a place gets, not raw size — so small towns can rank high in their season.</p>
+<p>The "usual" baseline is a daily average sampled evenly across all 12 months of ${Y}. Districts averaging under 5,000 visitors a day are excluded, since tiny bases produce wild multipliers.</p>
+<h3>5. Why last year's data?</h3>
+<p>This data is <b>published about a month late</b> (latest available day: ${LAT}). Answering "where is busy in ${MN[M]}?" with delayed data would return <b>the wrong season entirely</b>. Using the <b>same month of last year</b> matches the season correctly.</p>
+<p>The Koreans / international / province rankings compare scale rather than season, so they use the <b>latest 30 days (${P})</b>.</p>
+<h3>6. Limitations worth knowing</h3>
+<ul>
+<li>These are <b>estimates</b> from telecom and card data, not exact tourist counts.</li>
+<li>Several districts share a name (Jung-gu in Seoul and in Incheon), so the <b>province is always shown</b>.</li>
+<li>Data is per district — it cannot tell you which specific attraction was busy.</li>
+</ul>
+<h3>📌 Data source</h3>
+<p>Korea Tourism Organization — <a href="${DL_URL}" target="_blank" rel="noopener">Korea Tourism Data Lab</a>, daily visitor counts by district and province<br>
+Collected via <a href="${DATAGO_URL}" target="_blank" rel="noopener">Tourism Big Data Service (DataLabService)</a> on Korea's public data portal<br>
+Periods: peak season ${MN[M]} ${Y} · visitor rankings ${P} · refreshed automatically every Monday</p>
+</section>`,
+  ja: (Y, M, P, LAT, MN) => `<section class="explain" id="howto">
+<h2>📖 この数字の読み方</h2>
+<h3>1. 何を数えた数字か</h3>
+<p><b>韓国観光公社</b>が<b>通信キャリアの基地局データとカード決済データ</b>から推計した<b>地域別訪問者数</b>です。アンケートや入場券の集計ではなく、実際にその地域に滞在した人を推定した値です。</p>
+<ul>
+<li><b>地元住民</b> — その市・郡・区に住む人。ランキングからは<b>除外</b>しています。</li>
+<li><b>域外からの国内訪問者</b> — そこに住んでいない韓国人。本サイトでは<b>「韓国人」</b>と表記します。</li>
+<li><b>外国人訪問者</b> — <b>「外国人」</b>ランキングの基準です。</li>
+</ul>
+<h3>2. 「1,787万」は1,787万人が訪れたという意味ですか</h3>
+<p>いいえ。<b>延べ人数</b>です。1日ごとの訪問者数を30日分合計した値なので、<b>同じ人が5日訪れれば5人として数えます。</b>実際の人数より大きくなります。<b>地域どうしの規模を比べる</b>目安としてご覧ください。</p>
+<h3>3. なぜ江南区・水原市のような大都市が上位なのですか</h3>
+<p>「域外からの訪問者」には旅行者だけでなく<b>通勤・通学・買い物・出張</b>も全て含まれるからです。隣町から毎朝通勤する人も1人として数えられます。そのため<b>純粋な旅行先ランキングとしては大都市が過大評価</b>されます。</p>
+<p>旅行先として見たい場合は<b>${M}月の繁忙期タブ</b>をご覧ください。通勤人口は季節で変わらないため自動的に相殺されます。</p>
+<h3>4. 繁忙期倍率（例：×1.54）の計算方法</h3>
+<p style="text-align:center;background:#f4faf8;border:1px solid #dcefeb;border-radius:10px;padding:13px;font-weight:700;color:#0a6c63;margin:10px 0">
+繁忙期倍率 ＝ ${Y}年${M}月の1日平均訪問者 ÷ ${Y}年の平常時1日平均訪問者
+</p>
+<p><b>鬱陵郡 ×1.54</b> は、鬱陵郡が${Y}年${M}月に<b>その年の平常時より1日あたり1.54倍多い人</b>を迎えたという意味です。訪問者の絶対数ではなく<b>「普段よりどれだけ混んだか」</b>なので、小さな地域でも季節になれば上位に来ます。</p>
+<p>基準となる「平常時」は${Y}年の12か月分をまんべんなく標本抽出した1日平均です。母数が小さく倍率が大きく振れる地域（1日平均5,000人未満）は除外しました。</p>
+<h3>5. なぜ昨年のデータなのですか</h3>
+<p>このデータは<b>約1か月遅れて公開</b>されます（現在の最新集計日：${LAT}）。「今の${M}月にどこが混むか」を遅れた最新データで答えると<b>まったく違う季節の結果</b>になります。<b>昨年同月の実績</b>を使えば季節が正確に一致します。</p>
+<p>韓国人・外国人・道別ランキングは季節より規模の比較が目的なので、<b>最新30日（${P}）</b>をそのまま使っています。</p>
+<h3>6. 知っておきたい限界</h3>
+<ul>
+<li>通信・カードデータに基づく<b>推計値</b>で、実際の観光客数とは差があります。</li>
+<li>同名の市・郡・区があるため（ソウル中区・仁川中区など）、<b>道・広域市を併記</b>しています。</li>
+<li>市・郡・区単位のため、地域内のどの名所が混んだかまでは分かりません。</li>
+</ul>
+<h3>📌 データ出典</h3>
+<p>韓国観光公社 <a href="${DL_URL}" target="_blank" rel="noopener">韓国観光データラボ</a> — 地域別（市郡区・道）日別訪問者数<br>
+公共データポータル <a href="${DATAGO_URL}" target="_blank" rel="noopener">韓国観光公社_観光ビッグデータ情報サービス</a>（DataLabService）経由で収集<br>
+集計期間：繁忙期ランキング ${Y}年${M}月 / 訪問者ランキング ${P} · 毎週月曜に自動更新</p>
+</section>`,
+  es: (Y, M, P, LAT, MN) => `<section class="explain" id="howto">
+<h2>📖 Cómo leer estas cifras</h2>
+<h3>1. Qué se está contando</h3>
+<p>Estimaciones de visitantes publicadas por la <b>Organización de Turismo de Corea</b>, obtenidas a partir de <b>datos de antenas de telefonía móvil y pagos con tarjeta</b>. No son encuestas ni venta de entradas: estiman quién estuvo realmente en la zona.</p>
+<ul>
+<li><b>Residentes</b> — quienes viven en ese distrito. <b>Excluidos</b> de estos rankings.</li>
+<li><b>Visitantes nacionales de fuera</b> — coreanos que no viven allí. Aquí aparecen como <b>«coreanos»</b>.</li>
+<li><b>Visitantes internacionales</b> — base del ranking de <b>«extranjeros»</b>.</li>
+</ul>
+<h3>2. ¿«17,9M» significa 17,9 millones de personas distintas?</h3>
+<p>No. Es un total de <b>personas-día</b>: la suma de los recuentos diarios durante 30 días. <b>Quien visita cinco días cuenta cinco veces.</b> Sirve para <b>comparar la escala entre distritos</b>, no como número de personas.</p>
+<h3>3. ¿Por qué encabezan la lista grandes ciudades como Gangnam-gu?</h3>
+<p>Porque «visitantes de fuera» incluye también los desplazamientos por <b>trabajo, estudios, compras y negocios</b>. Quien entra cada mañana desde el pueblo vecino también cuenta. Por eso los grandes distritos metropolitanos están <b>sobrevalorados como destinos turísticos</b>.</p>
+<p>Para ver el atractivo turístico real, use la pestaña de <b>temporada alta de ${MN[M]}</b>: los desplazamientos diarios no cambian con las estaciones, así que se anulan.</p>
+<h3>4. Cómo se calcula el multiplicador de temporada alta (p. ej. ×1,54)</h3>
+<p style="text-align:center;background:#f4faf8;border:1px solid #dcefeb;border-radius:10px;padding:13px;font-weight:700;color:#0a6c63;margin:10px 0">
+multiplicador = media diaria de visitantes en ${MN[M]} de ${Y} ÷ media diaria de visitantes en todo ${Y}
+</p>
+<p><b>Ulleung-gun ×1,54</b> significa que Ulleung-gun recibió <b>1,54 veces su afluencia diaria habitual</b> durante ${MN[M]} de ${Y}. Mide <b>cuánto más concurrido de lo normal</b> está un lugar, no su tamaño — por eso municipios pequeños pueden encabezar la lista en su temporada.</p>
+<p>La base «habitual» es una media diaria muestreada de forma uniforme en los 12 meses de ${Y}. Se excluyen los distritos con menos de 5.000 visitantes diarios de media, porque una base pequeña dispara el multiplicador.</p>
+<h3>5. ¿Por qué datos del año pasado?</h3>
+<p>Estos datos se <b>publican con un mes de retraso</b> (último día disponible: ${LAT}). Responder «¿dónde hay ambiente en ${MN[M]}?» con datos retrasados daría <b>resultados de otra estación</b>. Usar el <b>mismo mes del año anterior</b> encaja con la temporada.</p>
+<p>Los rankings de coreanos, extranjeros y provincias comparan escala, no estacionalidad, así que usan los <b>últimos 30 días (${P})</b>.</p>
+<h3>6. Limitaciones a tener en cuenta</h3>
+<ul>
+<li>Son <b>estimaciones</b> basadas en datos de telefonía y tarjetas, no recuentos exactos de turistas.</li>
+<li>Varios distritos comparten nombre (Jung-gu en Seúl y en Incheon), por eso <b>siempre se indica la provincia</b>.</li>
+<li>El dato es por distrito: no indica qué atracción concreta estuvo concurrida.</li>
+</ul>
+<h3>📌 Fuente de los datos</h3>
+<p>Organización de Turismo de Corea — <a href="${DL_URL}" target="_blank" rel="noopener">Korea Tourism Data Lab</a>, visitantes diarios por distrito y provincia<br>
+Recopilado mediante el <a href="${DATAGO_URL}" target="_blank" rel="noopener">Servicio de Big Data Turístico (DataLabService)</a> del portal de datos abiertos de Corea<br>
+Periodos: temporada alta ${MN[M]} de ${Y} · rankings de visitantes ${P} · actualización automática cada lunes</p>
+</section>`,
+  zh: (Y, M, P, LAT, MN) => `<section class="explain" id="howto">
+<h2>📖 这些数字怎么看</h2>
+<h3>1. 统计的是什么</h3>
+<p>由<b>韩国观光公社</b>结合<b>通信基站数据与刷卡消费数据</b>推算的<b>各地区访客人数</b>。并非问卷调查或门票统计，而是对实际在该地区停留人群的估算。</p>
+<ul>
+<li><b>本地居民</b> — 居住在该市·郡·区的人，本排行<b>不计入</b>。</li>
+<li><b>外地国内访客</b> — 不住在当地的韩国人，本站标记为<b>「韩国人」</b>。</li>
+<li><b>外国访客</b> — <b>「外国人」</b>排行的统计口径。</li>
+</ul>
+<h3>2.「1787万」是指1787万人来过吗</h3>
+<p>不是。这是<b>人次</b>。把每日访客数累加30天所得，<b>同一人来5天就算5人次。</b>因此高于实际人数，请作为<b>地区之间规模比较</b>的参考。</p>
+<h3>3. 为什么江南区、水原市这类大城市排在前面</h3>
+<p>因为「外地访客」不仅包括游客，还包括<b>通勤、上学、购物、出差</b>。每天从邻近城市通勤的人也会被计入。所以<b>作为纯粹的旅游地排名，大城市被高估了</b>。</p>
+<p>若想看旅游吸引力，请看<b>${M}月旺季</b>标签页——通勤人口不随季节变化，会自动被抵消。</p>
+<h3>4. 旺季倍数（如 ×1.54）如何计算</h3>
+<p style="text-align:center;background:#f4faf8;border:1px solid #dcefeb;border-radius:10px;padding:13px;font-weight:700;color:#0a6c63;margin:10px 0">
+旺季倍数 ＝ ${Y}年${M}月日均访客 ÷ ${Y}年平常日均访客
+</p>
+<p><b>郁陵郡 ×1.54</b> 表示郁陵郡在${Y}年${M}月接待的人流是<b>该年平常水平的1.54倍</b>。衡量的是<b>「比平时热闹多少」</b>而非绝对人数，因此小地方在自己的旺季也能登上榜首。</p>
+<p>作为基准的「平常」，取${Y}年12个月均匀抽样得出的日均值。日均访客不足5,000人的地区已剔除，因为基数过小会让倍数剧烈波动。</p>
+<h3>5. 为什么用去年的数据</h3>
+<p>该数据<b>约延迟一个月公开</b>（当前最新统计日：${LAT}）。若用延迟的最新数据回答「现在${M}月哪里热闹」，得到的会是<b>完全不同季节的结果</b>。改用<b>去年同月实绩</b>，季节才能对得上。</p>
+<p>韩国人·外国人·道别排行以规模比较为目的而非季节，因此直接使用<b>最新30天（${P}）</b>。</p>
+<h3>6. 需要了解的局限</h3>
+<ul>
+<li>基于通信与卡片数据的<b>推算值</b>，与实际游客数存在差异。</li>
+<li>存在同名的市·郡·区（首尔中区与仁川中区等），故<b>一律标注道·广域市</b>。</li>
+<li>统计到市·郡·区一级，无法得知区域内具体哪个景点热闹。</li>
+</ul>
+<h3>📌 数据来源</h3>
+<p>韩国观光公社 <a href="${DL_URL}" target="_blank" rel="noopener">韩国观光数据实验室</a> — 各地区（市郡区·道）每日访客数<br>
+经公共数据门户 <a href="${DATAGO_URL}" target="_blank" rel="noopener">韩国观光公社_观光大数据信息服务</a>（DataLabService）采集<br>
+统计期间：旺季排行 ${Y}年${M}月 / 访客排行 ${P} · 每周一自动更新</p>
+</section>`
 };
 
 // 지역명: 로마자 + 한글 병기 (외국인이 현지에서 검색·길찾기 할 때 한글이 실제로 도움됨)
@@ -2375,6 +2578,11 @@ LANGS.forEach(lang => {
     { id: 'fgn', label: L.tabs.fgn, cls: 'fgn', mode: 'num', list: visitors.fgn || [], desc: L.desc.fgn },
     { id: 'sido', label: L.tabs.sido, cls: '', mode: 'num', list: visitors.sido || [], desc: L.desc.sido }
   ];
+  const MN = (lang === 'es')
+    ? ['','enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre']
+    : ['','January','February','March','April','May','June','July','August','September','October','November','December'];
+  const LATD = visitors.latest ? String(visitors.latest).replace(/^(\d{4})(\d{2})(\d{2})$/, '$1.$2.$3') : '-';
+  L.explainHtml = EXPLAIN_L[lang](Y, M, trendUpdated, LATD, MN);
   const content = `<main><div class="wrap">
 <style>.rankrow .kr{font-weight:600;opacity:.72;font-size:.86em}</style>
 <h1 style="font-size:1.5rem;font-weight:900;letter-spacing:-.02em;margin:8px 0 4px">${L.h1}</h1>
@@ -2383,12 +2591,13 @@ LANGS.forEach(lang => {
 <div class="rank-tabs" id="trendTabs">
 ${tabs.map((t, i) => `<button type="button" data-t="${t.id}"${i === 0 ? ' class="on"' : ''}>${t.label}</button>`).join('')}
 </div>
+<p class="ranklegend">${L.legend}</p>
 ${tabs.map((t, i) => `<section class="trendpane" data-p="${t.id}"${i === 0 ? '' : ' style="display:none"'}>
 <h2 class="sec" style="margin-top:6px">${t.label}</h2>
 <p class="note" style="margin-top:-4px">${t.desc}</p>
 ${rankBarsLang(t.list, t.cls, t.mode, lang, L)}
 </section>`).join('\n')}
-<p class="note" style="margin-top:22px">${L.src}</p>
+${L.explainHtml}
 </div></main>
 <script>
 (function(){

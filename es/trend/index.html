@@ -187,6 +187,20 @@ article ul{padding-left:20px}
 .faqbox summary:hover{color:#0f9d8f}
 .faqbox details p{font-size:.94rem;color:#4b5563;line-height:1.75;padding:0 8px 16px 0;margin-top:-2px}
 @media(max-width:600px){.faqbox{padding:20px 18px 16px;border-radius:14px}.faqbox summary{font-size:.95rem;padding:13px 26px 13px 0}}
+.ranklegend{font-size:.82rem;color:#9ca3af;margin:-8px 0 14px;line-height:1.6}
+.ranklegend b{color:#6b7280}
+.ranklegend a{color:#0f9d8f;font-weight:700;text-decoration:underline}
+.explain{background:#fff;border-radius:18px;box-shadow:0 3px 14px rgba(31,41,55,.08);padding:28px 30px 24px;margin:34px 0 10px;scroll-margin-top:80px}
+.explain h2{font-size:1.22rem;font-weight:900;letter-spacing:-.02em;color:#0a6c63;margin-bottom:4px}
+.explain h3{font-size:1rem;font-weight:800;color:#1f2937;margin:20px 0 6px;padding-top:16px;border-top:1px solid #eef5f3}
+.explain h3:first-of-type{border-top:none;padding-top:8px}
+.explain p{font-size:.93rem;color:#4b5563;line-height:1.78;margin:6px 0}
+.explain b{color:#111827}
+.explain ul{margin:8px 0 6px;padding-left:2px;list-style:none}
+.explain li{font-size:.93rem;color:#4b5563;line-height:1.75;padding:3px 0 3px 16px;position:relative}
+.explain li::before{content:'·';position:absolute;left:4px;color:#0f9d8f;font-weight:900}
+.explain a{color:#0f9d8f;font-weight:700;text-decoration:underline}
+@media(max-width:600px){.explain{padding:22px 18px 18px;border-radius:14px}.explain h2{font-size:1.1rem}}
 .datebadge{background:#f4faf8;border:1px solid #dcefeb;border-radius:12px;padding:12px 15px;font-size:.85rem;color:#374151;line-height:1.6;margin:12px 0 4px}
 .datebadge b{color:#0a6c63}
 .datebadge span{color:#9ca3af;font-size:.8rem}
@@ -250,6 +264,7 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 <div class="rank-tabs" id="trendTabs">
 <button type="button" data-t="season" class="on">🌞 Más concurrido en agosto</button><button type="button" data-t="kor">🇰🇷 Adónde van los coreanos</button><button type="button" data-t="fgn">🌏 Adónde van los extranjeros</button><button type="button" data-t="sido">🗺️ Por provincia</button>
 </div>
+<p class="ranklegend">Longitud de la barra = volumen de visitas · cifra de la derecha = <b>multiplicador</b> en la pestaña de temporada alta, <b>total de 30 días</b> en las demás. <a href="#howto">Cómo leer estas cifras ↓</a></p>
 <section class="trendpane" data-p="season">
 <h2 class="sec" style="margin-top:6px">🌞 Más concurrido en agosto</h2>
 <p class="note" style="margin-top:-4px">Cuánto más concurrido estuvo un distrito en <b>agosto de 2025</b> frente a su propia media anual — un <b>multiplicador de temporada alta</b>. ×1,5 significa 1,5 veces más concurrido de lo habitual. Playas, valles y montañas destacan aquí.</p>
@@ -270,7 +285,40 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 <p class="note" style="margin-top:-4px">Visitantes totales (nacionales + internacionales) por provincia.</p>
 <div class="ranklist"><div class="rankrow "><div class="no">🥇</div><div class="bar"><a href="/es/search/">Seoul <span class="kr">서울</span></a></div><div class="val">56.7M</div></div><div class="rankrow "><div class="no">🥈</div><div class="bar"><a href="/es/search/?kw=Gyeonggi">Gyeonggi <span class="kr">경기</span></a></div><div class="val">55.1M</div></div><div class="rankrow "><div class="no">🥉</div><div class="bar"><a href="/es/search/?kw=Incheon">Incheon <span class="kr">인천</span></a></div><div class="val">17.6M</div></div><div class="rankrow "><div class="no">4</div><div class="bar"><a href="/es/search/">Gyeongbuk <span class="kr">경북</span></a></div><div class="val">14.6M</div></div><div class="rankrow "><div class="no">5</div><div class="bar"><a href="/es/search/?kw=Busan">Busan <span class="kr">부산</span></a></div><div class="val">14.3M</div></div><div class="rankrow "><div class="no">6</div><div class="bar"><a href="/es/search/">Chungnam <span class="kr">충남</span></a></div><div class="val">14.3M</div></div><div class="rankrow "><div class="no">7</div><div class="bar"><a href="/es/search/">Gyeongnam <span class="kr">경남</span></a></div><div class="val">13.2M</div></div><div class="rankrow "><div class="no">8</div><div class="bar"><a href="/es/search/?kw=Gangwon">Gangwon <span class="kr">강원</span></a></div><div class="val">12.5M</div></div><div class="rankrow "><div class="no">9</div><div class="bar"><a href="/es/search/">Chungbuk <span class="kr">충북</span></a></div><div class="val">10.1M</div></div><div class="rankrow "><div class="no">10</div><div class="bar"><a href="/es/search/?kw=Dae">Dae-gu <span class="kr">대구</span></a></div><div class="val">8.7M</div></div><div class="rankrow "><div class="no">11</div><div class="bar"><a href="/es/search/?kw=Jeonnam">Jeonnam <span class="kr">전남</span></a></div><div class="val">8.7M</div></div><div class="rankrow "><div class="no">12</div><div class="bar"><a href="/es/search/?kw=Jeonbuk">Jeonbuk <span class="kr">전북</span></a></div><div class="val">7.8M</div></div><div class="rankrow "><div class="no">13</div><div class="bar"><a href="/es/search/">Daejeon <span class="kr">대전</span></a></div><div class="val">7.2M</div></div><div class="rankrow "><div class="no">14</div><div class="bar"><a href="/es/search/?kw=Jeju">Jeju <span class="kr">제주</span></a></div><div class="val">6.0M</div></div><div class="rankrow "><div class="no">15</div><div class="bar"><a href="/es/search/?kw=Gwangju">Gwangju <span class="kr">광주</span></a></div><div class="val">4.5M</div></div><div class="rankrow "><div class="no">16</div><div class="bar"><a href="/es/search/">Ulsan <span class="kr">울산</span></a></div><div class="val">4.3M</div></div><div class="rankrow "><div class="no">17</div><div class="bar"><a href="/es/search/?kw=Sejong">Sejong <span class="kr">세종</span></a></div><div class="val">2.5M</div></div><div class="rankrow "><div class="no">18</div><div class="bar"><a href="/es/search/">Jeonnamgwangjutonghap <span class="kr">전남광주통합</span></a></div><div class="val">1.8M</div></div></div>
 </section>
-<p class="note" style="margin-top:22px">Fuente: Organización de Turismo de Corea «Korea Tourism Data Lab», visitantes por región (data.go.kr). Estimaciones basadas en datos de telefonía y tarjetas. Actualización semanal.</p>
+<section class="explain" id="howto">
+<h2>📖 Cómo leer estas cifras</h2>
+<h3>1. Qué se está contando</h3>
+<p>Estimaciones de visitantes publicadas por la <b>Organización de Turismo de Corea</b>, obtenidas a partir de <b>datos de antenas de telefonía móvil y pagos con tarjeta</b>. No son encuestas ni venta de entradas: estiman quién estuvo realmente en la zona.</p>
+<ul>
+<li><b>Residentes</b> — quienes viven en ese distrito. <b>Excluidos</b> de estos rankings.</li>
+<li><b>Visitantes nacionales de fuera</b> — coreanos que no viven allí. Aquí aparecen como <b>«coreanos»</b>.</li>
+<li><b>Visitantes internacionales</b> — base del ranking de <b>«extranjeros»</b>.</li>
+</ul>
+<h3>2. ¿«17,9M» significa 17,9 millones de personas distintas?</h3>
+<p>No. Es un total de <b>personas-día</b>: la suma de los recuentos diarios durante 30 días. <b>Quien visita cinco días cuenta cinco veces.</b> Sirve para <b>comparar la escala entre distritos</b>, no como número de personas.</p>
+<h3>3. ¿Por qué encabezan la lista grandes ciudades como Gangnam-gu?</h3>
+<p>Porque «visitantes de fuera» incluye también los desplazamientos por <b>trabajo, estudios, compras y negocios</b>. Quien entra cada mañana desde el pueblo vecino también cuenta. Por eso los grandes distritos metropolitanos están <b>sobrevalorados como destinos turísticos</b>.</p>
+<p>Para ver el atractivo turístico real, use la pestaña de <b>temporada alta de agosto</b>: los desplazamientos diarios no cambian con las estaciones, así que se anulan.</p>
+<h3>4. Cómo se calcula el multiplicador de temporada alta (p. ej. ×1,54)</h3>
+<p style="text-align:center;background:#f4faf8;border:1px solid #dcefeb;border-radius:10px;padding:13px;font-weight:700;color:#0a6c63;margin:10px 0">
+multiplicador = media diaria de visitantes en agosto de 2025 ÷ media diaria de visitantes en todo 2025
+</p>
+<p><b>Ulleung-gun ×1,54</b> significa que Ulleung-gun recibió <b>1,54 veces su afluencia diaria habitual</b> durante agosto de 2025. Mide <b>cuánto más concurrido de lo normal</b> está un lugar, no su tamaño — por eso municipios pequeños pueden encabezar la lista en su temporada.</p>
+<p>La base «habitual» es una media diaria muestreada de forma uniforme en los 12 meses de 2025. Se excluyen los distritos con menos de 5.000 visitantes diarios de media, porque una base pequeña dispara el multiplicador.</p>
+<h3>5. ¿Por qué datos del año pasado?</h3>
+<p>Estos datos se <b>publican con un mes de retraso</b> (último día disponible: 2026.07.06). Responder «¿dónde hay ambiente en agosto?» con datos retrasados daría <b>resultados de otra estación</b>. Usar el <b>mismo mes del año anterior</b> encaja con la temporada.</p>
+<p>Los rankings de coreanos, extranjeros y provincias comparan escala, no estacionalidad, así que usan los <b>últimos 30 días (2026.06.07~2026.07.06)</b>.</p>
+<h3>6. Limitaciones a tener en cuenta</h3>
+<ul>
+<li>Son <b>estimaciones</b> basadas en datos de telefonía y tarjetas, no recuentos exactos de turistas.</li>
+<li>Varios distritos comparten nombre (Jung-gu en Seúl y en Incheon), por eso <b>siempre se indica la provincia</b>.</li>
+<li>El dato es por distrito: no indica qué atracción concreta estuvo concurrida.</li>
+</ul>
+<h3>📌 Fuente de los datos</h3>
+<p>Organización de Turismo de Corea — <a href="https://datalab.visitkorea.or.kr/" target="_blank" rel="noopener">Korea Tourism Data Lab</a>, visitantes diarios por distrito y provincia<br>
+Recopilado mediante el <a href="https://www.data.go.kr/data/15100731/openapi.do" target="_blank" rel="noopener">Servicio de Big Data Turístico (DataLabService)</a> del portal de datos abiertos de Corea<br>
+Periodos: temporada alta agosto de 2025 · rankings de visitantes 2026.06.07~2026.07.06 · actualización automática cada lunes</p>
+</section>
 </div></main>
 <script>
 (function(){
