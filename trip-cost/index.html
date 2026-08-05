@@ -238,12 +238,12 @@ function run(){
     html+='<div class="tc-res">';
     html+='<div class="tc-box car"><div class="mode">🚗 자동차</div><div class="amt">'+won(car.total)+'</div><div class="sub">편도 기준</div></div>';
     if(pt&&pt.fare) html+='<div class="tc-box pt"><div class="mode">🚌 대중교통</div><div class="amt">'+won(pt.fare)+'</div><div class="sub">'+pt.durationMin+'분'+(pt.transfer?' · 환승 '+pt.transfer+'회':'')+'</div></div>';
-    else if(d.intercity){var ic=d.intercity;html+='<div class="tc-box pt"><div class="mode">🚌 고속버스</div><div class="amt">'+won(ic.busEstimate)+'</div><div class="sub">거리 기반 추정 · <a href="'+ic.routeSearch+'" target="_blank" rel="noopener" style="color:#0c6d9c;font-weight:700">정확히 보기 🔎</a></div></div>';}
+    else if(d.intercity){var ic=d.intercity;html+='<div class="tc-box pt"><div class="mode">🚌 '+(ic.busLabel||'대중교통')+'</div><div class="amt">'+won(ic.busEstimate)+'</div><div class="sub">거리 기반 추정 · <a href="'+ic.routeSearch+'" target="_blank" rel="noopener" style="color:#0c6d9c;font-weight:700">정확히 보기 🔎</a></div></div>';}
     else html+='<div class="tc-box pt"><div class="mode">🚌 대중교통</div><div class="amt" style="font-size:1.1rem">경로 없음</div><div class="sub">이 구간은 대중교통 안내가 어려워요</div></div>';
     html+='</div>';
     html+='<div class="tc-break"><b>🧮 이렇게 계산했어요</b><br>· 자동차: '+car.formula+'<br>· 기준: 연비 '+d.assumptions.kmpl+'km/L, 유가 '+won(d.assumptions.fuelPrice)+'/L'+(d.assumptions.parking?', 주차 '+won(d.assumptions.parking):'')+((pt&&pt.fare)?'<br>· 대중교통: ODsay 최적경로 요금 '+won(pt.fare):(d.intercity?'<br>· 고속버스: 거리 추정(약 90원/km) — 시외버스·기차는 공개 요금 API가 없어 추정값이에요':''))+'</div>';
     if(pt&&pt.fare){var diff=d.diff;if(diff>0)html+='<div class="tc-verdict">🚌 대중교통이 '+won(diff)+' 더 저렴해요</div>';else if(diff<0)html+='<div class="tc-verdict">🚗 자동차가 '+won(-diff)+' 더 저렴해요</div>';else html+='<div class="tc-verdict">두 방법 비용이 비슷해요</div>';}
-    else if(d.intercity){var df=d.diff;if(df>0)html+='<div class="tc-verdict">🚌 고속버스(추정)가 '+won(df)+' 더 저렴해요</div>';else if(df<0)html+='<div class="tc-verdict">🚗 자동차가 '+won(-df)+' 더 저렴해요 (추정 대비)</div>';}
+    else if(d.intercity){var df=d.diff;if(df>0)html+='<div class="tc-verdict">🚌 '+(d.intercity.busLabel||'대중교통')+'(추정)이 '+won(df)+' 더 저렴해요</div>';else if(df<0)html+='<div class="tc-verdict">🚗 자동차가 '+won(-df)+' 더 저렴해요 (추정 대비)</div>';}
     html+='</div>';
     out.innerHTML=html;
   }).catch(function(){btn.disabled=false;btn.textContent='비용 계산하기';out.innerHTML='<div class="tc-err">계산에 실패했어요. 잠시 후 다시 시도해주세요.</div>';});

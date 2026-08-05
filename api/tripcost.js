@@ -50,12 +50,6 @@ module.exports = async (req, res) => {
   try {
     if (!KAKAO || !ODSAY) { res.statusCode = 500; return res.end(JSON.stringify({ error: '서버 키 미설정(관리자: Vercel 환경변수 KAKAO_REST_KEY·ODSAY_KEY 등록 필요)' })); }
     const q = req.query || {};
-    if (q.debug === '1') { // 임시 진단: ODsay 원응답·리전 확인
-      let dbg;
-      try { const r = await get('api.odsay.com', '/v1/api/searchPubTransPathT?SX=126.9779&SY=37.5663&EX=127.0286&EY=37.4979&apiKey=' + encodeURIComponent(ODSAY), { Referer: 'https://chukjemoa.co.kr/' }); dbg = { sc: r.sc, body: r.body.slice(0, 220) }; }
-      catch (e) { dbg = { err: e.message }; }
-      res.statusCode = 200; return res.end(JSON.stringify({ region: process.env.VERCEL_REGION || '(unknown)', odsay: dbg }));
-    }
     const from = (q.from || '').trim(), to = (q.to || '').trim();
     if (!from || !to) { res.statusCode = 400; return res.end(JSON.stringify({ error: '출발지와 도착지를 입력해주세요.' })); }
     // 가정값(사용자가 조정 가능, 기본값 노출)
@@ -70,10 +64,14 @@ module.exports = async (req, res) => {
     const fuelCost = Math.round(distanceKm / kmpl * fuelPrice);
     const carTotal = fuelCost + car.toll + parking;
 
-    // 시외/기차 요금은 공개 API가 없어(코레일 API 미제공, 시외버스는 제휴 승인 필요)
-    // ODsay 요금이 없을 때 고속버스 거리 기반 추정치를 제공(약 90원/km, 최소 3천원). 추정임을 명시.
-    const busEstimate = Math.max(3000, Math.round(distanceKm * 90 / 100) * 100);
-    const routeSearch = 'https://search.naver.com/search.naver?query=' + encodeURIComponent(o.name + ' ' + d.name + ' 고속버스');
+    // 대중교통 실요금 API(ODsay)가 서버 호출을 거부(ApiKeyAuthFailed) → 거리 기반 추정으로 폴백.
+    // 거리대별 추정: 40km 미만은 시내·수도권 대중교통(버스·지하철), 그 이상은 시외/고속버스.
+    const isCity = distanceKm < 40;
+    const rate = isCity ? 80 : 90;                 // 원/km
+    const floor = isCity ? 1400 : 3000;            // 최소 요금
+    const busEstimate = Math.max(floor, Math.round(distanceKm * rate / 100) * 100);
+    const busLabel = isCity ? '대중교통' : '고속버스';
+    const routeSearch = 'https://search.naver.com/search.naver?query=' + encodeURIComponent(o.name + ' ' + d.name + ' ' + (isCity ? '대중교통 길찾기' : '고속버스'));
 
     res.statusCode = 200;
     res.end(JSON.stringify({
@@ -88,7 +86,7 @@ module.exports = async (req, res) => {
       },
       transit: tr ? { fare: tr.fare, durationMin: tr.durationMin, transfer: tr.transfer } : null,
       // ODsay 실요금이 없을 때 쓸 시외/고속버스 추정 + 정확 확인 링크
-      intercity: (tr && tr.fare) ? null : { busEstimate, routeSearch },
+      intercity: (tr && tr.fare) ? null : { busEstimate, busLabel, routeSearch },
       diff: (tr && tr.fare) ? (carTotal - tr.fare) : (carTotal - busEstimate)
     }));
   } catch (e) {
