@@ -2264,7 +2264,7 @@ const TREND_L = {
   en: {
     h1: '🔥 Where Koreans and Visitors Actually Go',
     intro: 'Rankings built from Korea Tourism Organization big data — the districts people really visited. Tap a bar to see festivals held there.',
-    badgeA: 'peak-season ranking is based on', badgeB: 'actuals · visitor rankings are based on',
+    badge: (Y, M, P) => `The <b>${['','January','February','March','April','May','June','July','August','September','October','November','December'][M]}</b> peak-season ranking uses <b>${['','January','February','March','April','May','June','July','August','September','October','November','December'][M]} ${Y}</b> actuals · the visitor rankings use <b>${P}</b>`,
     badgeNote: 'Visit data is published about a month late, so the seasonal ranking uses the same month of last year.',
     tabs: { season: m => `🌞 Busiest in ${['','January','February','March','April','May','June','July','August','September','October','November','December'][m]}`, kor: '🇰🇷 Where Koreans go', fgn: '🌏 Where visitors go', sido: '🗺️ By province' },
     desc: {
@@ -2280,7 +2280,7 @@ const TREND_L = {
   ja: {
     h1: '🔥 実際に人が多く行く場所ランキング',
     intro: '韓国観光公社の観光ビッグデータをもとに、実際に人が多く訪れた市・郡・区をまとめました。バーを押すとその地域のお祭りが見られます。',
-    badgeA: '月の繁忙期ランキングは', badgeB: 'の実績基準 · 訪問者ランキングは',
+    badge: (Y, M, P) => `<b>${M}月</b>の繁忙期ランキングは <b>${Y}年${M}月</b> の実績基準 · 訪問者ランキングは <b>${P}</b> 基準`,
     badgeNote: '訪問データは約1か月遅れて公開されるため、季節ランキングは昨年同月の実績を使っています。',
     tabs: { season: m => `🌞 ${m}月に混む場所`, kor: '🇰🇷 韓国人が多く行く場所', fgn: '🌏 外国人が多く行く場所', sido: '🗺️ 道・広域市別' },
     desc: {
@@ -2296,7 +2296,7 @@ const TREND_L = {
   es: {
     h1: '🔥 Adónde va realmente la gente en Corea',
     intro: 'Rankings elaborados con los datos oficiales de turismo de Corea — los distritos que la gente visitó de verdad. Pulsa una barra para ver los festivales de esa zona.',
-    badgeA: 'el ranking de temporada alta se basa en', badgeB: 'reales · los rankings de visitantes se basan en',
+    badge: (Y, M, P) => `El ranking de temporada alta de <b>${['','enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'][M]}</b> se basa en datos reales de <b>${['','enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'][M]} de ${Y}</b> · los rankings de visitantes, en <b>${P}</b>`,
     badgeNote: 'Los datos de visitas se publican con un mes de retraso, por eso el ranking estacional usa el mismo mes del año pasado.',
     tabs: { season: m => `🌞 Más concurrido en ${['','enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'][m]}`, kor: '🇰🇷 Adónde van los coreanos', fgn: '🌏 Adónde van los extranjeros', sido: '🗺️ Por provincia' },
     desc: {
@@ -2312,7 +2312,7 @@ const TREND_L = {
   zh: {
     h1: '🔥 韩国人气目的地排行',
     intro: '基于韩国观光公社旅游大数据，整理出人们实际前往最多的市·郡·区。点击条形即可查看当地庆典。',
-    badgeA: '月旺季排行以', badgeB: '实绩为准 · 访客排行以',
+    badge: (Y, M, P) => `<b>${M}月</b>旺季排行以 <b>${Y}年${M}月</b> 实绩为准 · 访客排行以 <b>${P}</b> 为准`,
     badgeNote: '访问数据约延迟一个月公开，因此季节排行采用去年同月的实绩。',
     tabs: { season: m => `🌞 ${m}月最热闹的地方`, kor: '🇰🇷 韩国人常去的地方', fgn: '🌏 外国人常去的地方', sido: '🗺️ 按道·广域市' },
     desc: {
@@ -2376,7 +2376,7 @@ LANGS.forEach(lang => {
 <style>.rankrow .kr{font-weight:600;opacity:.72;font-size:.86em}</style>
 <h1 style="font-size:1.5rem;font-weight:900;letter-spacing:-.02em;margin:8px 0 4px">${L.h1}</h1>
 <p class="note" style="margin-top:0">${L.intro}</p>
-<div class="datebadge">📅 <b>${M}</b>${L.badgeA} <b>${Y}.${String(M).padStart(2, '0')}</b> ${L.badgeB} <b>${trendUpdated}</b><br><span>${L.badgeNote}</span></div>
+<div class="datebadge">📅 ${L.badge(Y, M, trendUpdated)}<br><span>${L.badgeNote}</span></div>
 <div class="rank-tabs" id="trendTabs">
 ${tabs.map((t, i) => `<button type="button" data-t="${t.id}"${i === 0 ? ' class="on"' : ''}>${t.label}</button>`).join('')}
 </div>
