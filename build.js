@@ -1548,7 +1548,7 @@ document.getElementById('fGrid').addEventListener('click',function(e){var c=e.ta
 document.getElementById('fCount').textContent='불러오는 중…';
 function applyQuery(){ // 인기 여행지 랭킹 등에서 넘어온 ?sido=&sigungu=&kw= 반영
   var q=new URLSearchParams(location.search), sd=q.get('sido'), sg=q.get('sigungu'), kw=q.get('kw'), touched=false;
-  if(sd){var opts=document.getElementById('fSido').options;for(var i=0;i<opts.length;i++){if(opts[i].value.indexOf(sd)===0||sd.indexOf(opts[i].value)===0){st.sido=opts[i].value;document.getElementById('fSido').value=opts[i].value;touched=true;break;}}}
+  if(sd){var opts=document.getElementById('fSido').options;for(var i=0;i<opts.length;i++){var ov=opts[i].value;if(!ov)continue;if(ov===sd||ov.indexOf(sd)===0||sd.indexOf(ov)===0){st.sido=ov;document.getElementById('fSido').value=ov;touched=true;break;}}}
   fillSg();
   if(sg){var o2=document.getElementById('fSigungu').options;for(var j=0;j<o2.length;j++){if(o2[j].value===sg){st.sigungu=sg;document.getElementById('fSigungu').value=sg;touched=true;break;}}}
   if(kw){st.kw=kw;document.getElementById('fKw').value=kw;touched=true;}
