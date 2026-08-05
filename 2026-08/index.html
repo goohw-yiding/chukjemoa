@@ -234,6 +234,24 @@ article ul{padding-left:20px}
 .explain li::before{content:'·';position:absolute;left:4px;color:#0f9d8f;font-weight:900}
 .explain a{color:#0f9d8f;font-weight:700;text-decoration:underline}
 @media(max-width:600px){.explain{padding:22px 18px 18px;border-radius:14px}.explain h2{font-size:1.1rem}}
+.crumb{font-size:.84rem;color:#9aa3af;margin:6px 0 2px}
+.crumb a{color:#0f9d8f;font-weight:700}
+.insight{display:flex;align-items:stretch;gap:10px;background:#fff;border:1.5px solid #dcefeb;border-radius:16px;padding:16px;margin:14px 0 8px}
+.insight .ins-col{flex:1;display:flex;flex-direction:column;gap:2px;min-width:0}
+.insight .ins-h{font-size:.8rem;font-weight:800;color:#0a6c63}
+.insight .ins-col.fgn .ins-h{color:#6d28d9}
+.insight .ins-col b{font-size:1.22rem;font-weight:900;letter-spacing:-.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.insight .ins-s{font-size:.8rem;color:#9aa3af}
+.insight .ins-vs{align-self:center;font-weight:900;color:#cbd5d1;font-size:.9rem;flex:none}
+.spotchips{display:flex;flex-wrap:wrap;gap:7px;margin:6px 0 4px}
+.spotchip{display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #dcefeb;border-radius:20px;padding:7px 13px;font-size:.87rem;font-weight:700;color:#374151;transition:all .15s}
+.spotchip:hover{border-color:#7fd8ce;color:#0a6c63;transform:translateY(-1px)}
+.spotchip span{color:#9aa3af;font-weight:600;font-size:.8rem}
+.sidonav{display:flex;flex-wrap:wrap;gap:7px;margin:10px 0 4px}
+.sidonav a,.sidonav span{display:inline-block;padding:8px 15px;border-radius:20px;font-size:.9rem;font-weight:700;border:1.5px solid #dcefeb;background:#fff;color:#374151;transition:all .15s}
+.sidonav a:hover{border-color:#0f9d8f;color:#0f9d8f}
+.sidonav span.on{background:linear-gradient(135deg,#0f9d8f,#2dd4bf);color:#fff;border-color:transparent}
+@media(max-width:600px){.insight{flex-direction:column;gap:6px}.insight .ins-vs{display:none}.insight .ins-col b{font-size:1.1rem}}
 .datebadge{background:#f4faf8;border:1px solid #dcefeb;border-radius:12px;padding:12px 15px;font-size:.85rem;color:#374151;line-height:1.6;margin:12px 0 4px}
 .datebadge b{color:#0a6c63}
 .datebadge span{color:#9ca3af;font-size:.8rem}

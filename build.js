@@ -747,6 +747,24 @@ article ul{padding-left:20px}
 .explain li::before{content:'·';position:absolute;left:4px;color:#0f9d8f;font-weight:900}
 .explain a{color:#0f9d8f;font-weight:700;text-decoration:underline}
 @media(max-width:600px){.explain{padding:22px 18px 18px;border-radius:14px}.explain h2{font-size:1.1rem}}
+.crumb{font-size:.84rem;color:#9aa3af;margin:6px 0 2px}
+.crumb a{color:#0f9d8f;font-weight:700}
+.insight{display:flex;align-items:stretch;gap:10px;background:#fff;border:1.5px solid #dcefeb;border-radius:16px;padding:16px;margin:14px 0 8px}
+.insight .ins-col{flex:1;display:flex;flex-direction:column;gap:2px;min-width:0}
+.insight .ins-h{font-size:.8rem;font-weight:800;color:#0a6c63}
+.insight .ins-col.fgn .ins-h{color:#6d28d9}
+.insight .ins-col b{font-size:1.22rem;font-weight:900;letter-spacing:-.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.insight .ins-s{font-size:.8rem;color:#9aa3af}
+.insight .ins-vs{align-self:center;font-weight:900;color:#cbd5d1;font-size:.9rem;flex:none}
+.spotchips{display:flex;flex-wrap:wrap;gap:7px;margin:6px 0 4px}
+.spotchip{display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #dcefeb;border-radius:20px;padding:7px 13px;font-size:.87rem;font-weight:700;color:#374151;transition:all .15s}
+.spotchip:hover{border-color:#7fd8ce;color:#0a6c63;transform:translateY(-1px)}
+.spotchip span{color:#9aa3af;font-weight:600;font-size:.8rem}
+.sidonav{display:flex;flex-wrap:wrap;gap:7px;margin:10px 0 4px}
+.sidonav a,.sidonav span{display:inline-block;padding:8px 15px;border-radius:20px;font-size:.9rem;font-weight:700;border:1.5px solid #dcefeb;background:#fff;color:#374151;transition:all .15s}
+.sidonav a:hover{border-color:#0f9d8f;color:#0f9d8f}
+.sidonav span.on{background:linear-gradient(135deg,#0f9d8f,#2dd4bf);color:#fff;border-color:transparent}
+@media(max-width:600px){.insight{flex-direction:column;gap:6px}.insight .ins-vs{display:none}.insight .ins-col b{font-size:1.1rem}}
 .datebadge{background:#f4faf8;border:1px solid #dcefeb;border-radius:12px;padding:12px 15px;font-size:.85rem;color:#374151;line-height:1.6;margin:12px 0 4px}
 .datebadge b{color:#0a6c63}
 .datebadge span{color:#9ca3af;font-size:.8rem}
@@ -2251,6 +2269,31 @@ ${sections || '<p class="note">다가오는 연휴 정보를 준비 중이에요
   writePage('holiday', layout('2026 연휴에 갈 축제 — 설날·추석·광복절 황금연휴 축제 총정리 | ' + SITE_NAME, '2026 공휴일·연휴에 열리는 전국 축제를 한눈에. 설날·추석·광복절·개천절·한글날 연휴 나들이 계획을 축제모아에서.', '/holiday/', holContent, { jsonld: holJsonLd }));
 }
 
+// ---------- 시도별 인기 여행지 랭킹 (/trend/{slug}/) ----------
+let rlte = { bySido: {} };
+try { rlte = require('./data/rlte.json'); } catch (e) {}
+const SIDO_SLUG = {};
+const SIDO_FULL = { 서울: '서울특별시', 부산: '부산광역시', 대구: '대구광역시', 인천: '인천광역시', 광주: '광주광역시', 대전: '대전광역시', 울산: '울산광역시', 세종: '세종특별자치시', 경기: '경기도', 충북: '충청북도', 충남: '충청남도', 전남: '전라남도', 경북: '경상북도', 경남: '경상남도', 제주: '제주특별자치도', 강원: '강원특별자치도', 전북: '전북특별자치도' };
+Object.keys(visitors.bySido || {}).forEach(nm => { SIDO_SLUG[nm] = romanizeRegion(nm).toLowerCase().replace(/[^a-z]/g, ''); });
+const SIDO_URLS = [];
+
+// 그 지역 축제 카드(공공데이터 apiFests 기준, 진행중·예정만)
+function sidoFestCard(f) {
+  const img = f.img ? String(f.img).replace(/^http:/, 'https:') : '/img/cat-culture.webp';
+  const fy = y => y ? y.slice(0, 4) + '.' + (+y.slice(4, 6)) + '.' + (+y.slice(6, 8)) : '';
+  return `<div class="card" data-name="${escA(f.title)}" data-start="${f.start}" data-end="${f.end}" data-region="${escA(f.sido || '')}" data-city="${escA(f.sigungu || '')}" data-place="${escA(f.addr || '')}" data-img="${escA(img)}"${f.ov ? ` data-ov="${escA(f.ov)}"` : ''}${f.hp ? ` data-hp="${escA(f.hp)}"` : ''}>
+  <div class="thumb"><img src="${esc(img)}" alt="${esc(f.title)}" loading="lazy" onerror="this.src='/img/cat-culture.webp'"><span class="dday"></span></div>
+  <div class="card-body"><h3>${esc(f.title)}</h3>
+  <p class="date">📅 ${fy(f.start)} ~ ${fy(f.end)}</p>
+  <p class="loc">📍 ${esc((f.sido || '') + ' ' + (f.sigungu || ''))}</p></div>
+</div>`;
+}
+function spotChips(list, emoji, href) {
+  if (!list.length) return '';
+  return `<div class="spotchips">` + list.slice(0, 8).map(p =>
+    `<a href="${href}" class="spotchip">${emoji} ${esc(p.title)}<span>${esc(p.sigungu || '')}</span></a>`).join('') + `</div>`;
+}
+
 // ---------- 인기 여행지 랭킹 (/trend/) ----------
 function rankBars(list, cls, mode) {
   if (!list || !list.length) return '<p class="note">데이터를 준비 중이에요.</p>';
@@ -2344,6 +2387,9 @@ ${TREND_TABS.map((t, i) => `<section class="trendpane" data-p="${t.id}"${i === 0
 <p class="note" style="margin-top:-4px">${t.desc}</p>
 ${rankBars(t.list, t.cls, t.mode)}
 </section>`).join('\n')}
+<h2 class="sec">📍 지역별로 자세히 보기</h2>
+<p class="note" style="margin-top:-4px">시·도를 고르면 그 안에서 어느 시·군·구에 사람이 몰리는지, 한국인과 외국인이 어떻게 다른지 볼 수 있어요.</p>
+<div class="sidonav">${Object.entries(visitors.bySido || {}).filter(([, o]) => o.total >= 2).map(([x]) => `<a href="/trend/${SIDO_SLUG[x]}/">${esc(x)}</a>`).join('')}</div>
 ${trendExplain}
 </div></main>
 <script>
@@ -2437,6 +2483,99 @@ const TREND_L = {
   }
 };
 
+
+Object.entries(visitors.bySido || {}).forEach(([SD, G]) => {
+  const slug = SIDO_SLUG[SD]; if (!slug) return;
+  // 시군구가 1개뿐인 곳(세종)은 '지역 내 순위'가 성립하지 않아 페이지를 만들지 않는다
+  if (!G.total || G.total < 2) return;
+  const full = SIDO_FULL[SD] || SD;
+  const k1 = G.kor[0], f1 = G.fgn[0], s1 = (G.season || [])[0];
+  const diff = k1 && f1 && k1.name !== f1.name;
+
+  // 이 지역 축제(진행중·예정)
+  const today = TODAY.replace(/-/g, '');
+  const fests = apiFests.filter(f => f.sido === SD && String(f.end || '') >= today)
+    .sort((a, b) => String(a.start).localeCompare(String(b.start))).slice(0, 12);
+  // 이 지역 계절 명소
+  const vv = apiValleys.filter(p => p.sido === SD);
+  const mm2 = apiMaple.filter(p => p.sido === SD);
+  const ff = apiFlower.filter(p => p.sido === SD);
+  const oo = apiOnsen.filter(p => p.sido === SD);
+  const R = rlte.bySido[SD] || { hot: [], pairs: [] };
+
+  const tabs = [
+    { id: 'kor', label: '🇰🇷 한국인이 많이 가는 곳', cls: '', mode: 'num', list: G.kor.slice(0, 20),
+      desc: `${esc(SD)} 안에서 <b>그 지역 주민이 아닌 국내 방문객</b>이 많았던 시·군·구 순위입니다.` },
+    { id: 'fgn', label: '🌏 외국인이 많이 가는 곳', cls: 'fgn', mode: 'num', list: G.fgn.slice(0, 20),
+      desc: `${esc(SD)} 안에서 <b>외국인 방문자</b>가 많았던 시·군·구 순위입니다. 한국인 순위와 비교해 보세요.` },
+    { id: 'season', label: `🌞 ${SEASON_M}월엔 여기가 붐벼요`, cls: 'hot', mode: 'season', list: (G.season || []).slice(0, 20),
+      desc: `${SEASON_Y}년 ${SEASON_M}월에 <b>평소보다 몇 배 붐볐는지</b>(성수기 배수)로 매긴 순위입니다.` }
+  ].filter(t => t.list.length);
+
+  const insight = (k1 && f1) ? `<div class="insight">
+<div class="ins-col"><span class="ins-h">🇰🇷 한국인 1위</span><b>${esc(k1.name)}</b><span class="ins-s">${(k1.num / 10000).toFixed(0)}만명</span></div>
+<div class="ins-vs">vs</div>
+<div class="ins-col fgn"><span class="ins-h">🌏 외국인 1위</span><b>${esc(f1.name)}</b><span class="ins-s">${(f1.num / 10000).toFixed(0)}만명</span></div>
+</div>
+<p class="note">${diff
+    ? `${esc(SD)}에서는 한국인과 외국인이 <b>서로 다른 곳</b>으로 갑니다. 한국인은 <b>${esc(k1.name)}</b>, 외국인은 <b>${esc(f1.name)}</b>가 1위예요. 현지인이 가는 곳이 궁금하다면 한국인 탭을, 관광객이 몰리는 곳이 궁금하다면 외국인 탭을 보세요.`
+    : `${esc(SD)}에서는 한국인과 외국인 모두 <b>${esc(k1.name)}</b>를 가장 많이 찾았습니다.`}${s1 ? ` ${SEASON_M}월 기준으로 평소보다 가장 붐비는 곳은 <b>${esc(s1.name)}</b>(${s1.idx}배)입니다.` : ''}</p>` : '';
+
+  const content = `<main><div class="wrap">
+<p class="crumb"><a href="/trend/">🔥 인기 여행지 랭킹</a> › ${esc(full)}</p>
+<h1 style="font-size:1.5rem;font-weight:900;letter-spacing:-.02em;margin:6px 0 4px">${esc(SD)}에서 사람들이 가장 많이 가는 곳</h1>
+<p class="note" style="margin-top:0">한국관광공사 관광 빅데이터로 본 <b>${esc(full)}</b> 안 ${G.total}개 시·군·구 방문 순위입니다. 한국인·외국인을 나눠서 보고, 그 지역에서 열리는 축제까지 바로 확인하세요.</p>
+<div class="datebadge">📅 <b>${SEASON_M}월 성수기</b>는 <b>${SEASON_Y}년 ${SEASON_M}월</b> 실적 기준 · <b>한국인·외국인</b>은 <b>${trendUpdated}</b> 기준<br><span>방문 데이터는 약 한 달 늦게 공개돼요. <a href="/trend/#howto">숫자 읽는 법 →</a></span></div>
+${insight}
+<div class="rank-tabs" id="trendTabs">
+${tabs.map((t, i) => `<button type="button" data-t="${t.id}"${i === 0 ? ' class="on"' : ''}>${t.label}</button>`).join('')}
+</div>
+${tabs.map((t, i) => `<section class="trendpane" data-p="${t.id}"${i === 0 ? '' : ' style="display:none"'}>
+<h2 class="sec" style="margin-top:6px">${t.label}</h2>
+<p class="note" style="margin-top:-4px">${t.desc}</p>
+${rankBars(t.list, t.cls, t.mode)}
+</section>`).join('\n')}
+${R.hot && R.hot.length ? `<h2 class="sec">🔗 ${esc(SD)}에서 함께 많이 가는 곳</h2>
+<p class="note" style="margin-top:-4px">한 곳을 방문한 사람들이 같은 여행에서 자주 함께 들른 장소입니다. 동선을 짤 때 참고하세요.</p>
+<div class="spotchips">${R.hot.slice(0, 12).map(h => `<a class="spotchip" href="https://search.naver.com/search.naver?query=${encodeURIComponent(h.name)}" target="_blank" rel="noopener">${esc(h.name)}<span>${esc(h.cat || '')}</span></a>`).join('')}</div>` : ''}
+${fests.length ? `<h2 class="sec">🎪 ${esc(SD)}에서 열리는 축제 <span style="font-size:.9rem;font-weight:600;color:#9aa3af">${fests.length}곳</span></h2>
+<div class="grid">${fests.map(sidoFestCard).join('\n')}</div>
+<p style="margin:14px 0 4px"><a href="/search/?sido=${encodeURIComponent(SD)}" style="display:inline-block;background:#0f9d8f;color:#fff;font-weight:800;padding:10px 22px;border-radius:24px">${esc(SD)} 축제 전체 보기 →</a></p>` : ''}
+${(vv.length || mm2.length || ff.length || oo.length) ? `<h2 class="sec">🗺️ ${esc(SD)}의 계절 명소</h2>
+${vv.length ? `<p class="note" style="margin:10px 0 4px"><b>💧 계곡 ${vv.length}곳</b></p>${spotChips(vv, '💧', '/valley/')}` : ''}
+${oo.length ? `<p class="note" style="margin:10px 0 4px"><b>♨️ 온천 ${oo.length}곳</b></p>${spotChips(oo, '♨️', '/onsen/')}` : ''}
+${mm2.length ? `<p class="note" style="margin:10px 0 4px"><b>🍁 단풍 명소 ${mm2.length}곳</b></p>${spotChips(mm2, '🍁', '/maple/')}` : ''}
+${ff.length ? `<p class="note" style="margin:10px 0 4px"><b>🌸 봄꽃 명소 ${ff.length}곳</b></p>${spotChips(ff, '🌸', '/flower/')}` : ''}` : ''}
+${buyBox('festival')}
+<h2 class="sec">다른 지역 랭킹 보기</h2>
+<div class="sidonav">${Object.keys(visitors.bySido).filter(x => (visitors.bySido[x].total || 0) >= 2).map(x => x === SD
+    ? `<span class="on">${esc(x)}</span>`
+    : `<a href="/trend/${SIDO_SLUG[x]}/">${esc(x)}</a>`).join('')}</div>
+<p class="note" style="margin-top:18px">출처: 한국관광공사 «한국관광 데이터랩» 지역별 방문자 수(공공데이터포털). 통신·카드 기반 추계치입니다. 계산 방식과 한계는 <a href="/trend/#howto">숫자 읽는 법</a>에서 자세히 설명합니다.</p>
+</div></main>
+<script>
+(function(){
+  var tabs=document.getElementById('trendTabs'); if(!tabs)return;
+  tabs.addEventListener('click',function(e){
+    var b=e.target.closest('button[data-t]'); if(!b)return;
+    var id=b.getAttribute('data-t');
+    tabs.querySelectorAll('button').forEach(function(x){x.classList.toggle('on',x===b);});
+    document.querySelectorAll('.trendpane').forEach(function(p){p.style.display=(p.getAttribute('data-p')===id)?'':'none';});
+  });
+})();
+</script>`;
+  const ld = `<script type="application/ld+json">${JSON.stringify({
+    '@context': 'https://schema.org', '@type': 'ItemList',
+    name: `${SD} 인기 여행지 랭킹`, itemListOrder: 'https://schema.org/ItemListOrderDescending',
+    numberOfItems: Math.min(20, G.kor.length),
+    itemListElement: G.kor.slice(0, 20).map(r => ({ '@type': 'ListItem', position: r.rank, name: SD + ' ' + r.name }))
+  })}</script>`;
+  writePage('trend/' + slug, layout(
+    `${SD} 인기 여행지 랭킹 — 한국인·외국인이 많이 가는 곳 (${SEASON_M}월) | ${SITE_NAME}`,
+    `${full} 시·군·구별 방문자 랭킹. 한국인이 많이 가는 곳, 외국인이 많이 가는 곳, ${SEASON_M}월 성수기 지역을 관광 빅데이터로 정리하고 ${SD} 축제·계절 명소까지 한눈에.`,
+    `/trend/${slug}/`, content, { jsonld: ld }));
+  SIDO_URLS.push(`/trend/${slug}/`);
+});
 
 // ---------- 다국어 랭킹 숫자 해설 ----------
 const EXPLAIN_L = {
@@ -2774,7 +2913,7 @@ document.getElementById('tcFrom').addEventListener('keydown',function(e){if(e.ke
 writePage('trip-cost', layout('여행 비용 계산기 — 자동차 vs 대중교통 비용 비교 | ' + SITE_NAME, '축제·여행지까지 자동차(연료+통행료+주차)와 대중교통 비용을 비교 계산. 출발지·도착지만 넣으면 끝. 계산 과정도 투명하게 공개.', '/trip-cost/', tripCostContent));
 
 // ---------- sitemap / robots ----------
-const urls = ['/', ...MONTHS.map(m => `/${m.key}/`), '/search/', ...(holidays.length ? ['/holiday/'] : []), '/pet/', ...(apiAccessible.length ? ['/accessible/'] : []), ...(apiTrails.length ? ['/trails/'] : []), ...(apiValleys.length ? ['/valley/'] : []), ...(apiMaple.length ? ['/maple/'] : []), ...(apiFlower.length ? ['/flower/'] : []), ...(apiOnsen.length ? ['/onsen/'] : []), '/jangteo/', '/test/', '/trip-cost/', ...(visitors.kor && visitors.kor.length ? ['/trend/'] : []), ...TREND_LANG_URLS, '/blog/', ...posts.map(p => `/blog/${p.slug}/`), '/about/', EDITORIAL_URL, '/contact/', '/privacy/',...(apiFestsEn.length ? ['/en/', '/en/search/'] : []), ...(apiFestsJa.length ? ['/ja/', '/ja/search/'] : []), ...(apiFestsEs.length ? ['/es/', '/es/search/'] : []), ...(apiFestsZh.length ? ['/zh/', '/zh/search/'] : [])];
+const urls = ['/', ...MONTHS.map(m => `/${m.key}/`), '/search/', ...(holidays.length ? ['/holiday/'] : []), '/pet/', ...(apiAccessible.length ? ['/accessible/'] : []), ...(apiTrails.length ? ['/trails/'] : []), ...(apiValleys.length ? ['/valley/'] : []), ...(apiMaple.length ? ['/maple/'] : []), ...(apiFlower.length ? ['/flower/'] : []), ...(apiOnsen.length ? ['/onsen/'] : []), '/jangteo/', '/test/', '/trip-cost/', ...(visitors.kor && visitors.kor.length ? ['/trend/'] : []), ...SIDO_URLS, ...TREND_LANG_URLS, '/blog/', ...posts.map(p => `/blog/${p.slug}/`), '/about/', EDITORIAL_URL, '/contact/', '/privacy/',...(apiFestsEn.length ? ['/en/', '/en/search/'] : []), ...(apiFestsJa.length ? ['/ja/', '/ja/search/'] : []), ...(apiFestsEs.length ? ['/es/', '/es/search/'] : []), ...(apiFestsZh.length ? ['/zh/', '/zh/search/'] : [])];
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${urls.map(u => `<url><loc>${SITE}${u}</loc><lastmod>${TODAY}</lastmod></url>`).join('\n')}

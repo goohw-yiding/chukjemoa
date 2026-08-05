@@ -66,14 +66,22 @@ async function latestDay() {
   return lo;
 }
 
+// ── 중복 집계 제거 ──
+// ① areaCode 12 = '전남광주통합특별시' 레거시 계열. 광주(29)·전남(46)이 따로 있어 이중 집계됨 → 버림
+// ② '청주시 흥덕구'처럼 공백이 든 일반구는 상위 '청주시'가 이미 집계돼 있어 이중 → 버림
+function skipDup(code, name) {
+  if (String(code).slice(0, 2) === '12') return true;
+  if (String(name || '').includes(' ')) return true;
+  return false;
+}
 function bump(agg, key, name, sido, row) {
-  if (!agg[key]) agg[key] = { name, sido, kor: 0, fgn: 0 };
+  if (!agg[key]) agg[key] = { code: key, name, sido, kor: 0, fgn: 0 };
   const n = +row.touNum || 0;
   if (String(row.touDivCd) === '2') agg[key].kor += n;
   else if (String(row.touDivCd) === '3') agg[key].fgn += n;
 }
 function rank(list, pick) {
-  return list.map(r => ({ name: r.name, sido: r.sido, num: Math.round(pick(r)) }))
+  return list.map(r => ({ code: r.code, name: r.name, sido: r.sido, num: Math.round(pick(r)) }))
     .filter(r => r.num > 0)
     .sort((a, b) => b.num - a.num)
     .map((r, i) => Object.assign({ rank: i + 1 }, r));
@@ -89,6 +97,7 @@ async function seasonRank(year, month) {
   const mStart = new Date(year, month - 1, 1), mEnd = new Date(year, month, 0);
   process.stdout.write('  계절: ' + year + '-' + month + '월 수집');
   await collect('locgoRegnVisitrDDList', mStart, mEnd, r => {
+    if (skipDup(r.signguCode, r.signguNm)) return;
     bump(cur, r.signguCode, r.signguNm, '', r);
   }, true);
   const mDays = mEnd.getDate();
@@ -97,6 +106,7 @@ async function seasonRank(year, month) {
   for (let m = 1; m <= 12; m++) {
     const s = new Date(year, m - 1, 1), e = new Date(year, m - 1, 7);
     const got = await collect('locgoRegnVisitrDDList', s, e, r => {
+      if (skipDup(r.signguCode, r.signguNm)) return;
       bump(base, r.signguCode, r.signguNm, '', r);
     }, true);
     if (got > 0) baseDays += 7;
@@ -121,18 +131,21 @@ async function main() {
 
   const sido = {}, sg = {}, sidoNm = {};
   await collect('metcoRegnVisitrDDList', curStart, last, r => {
+    if (String(r.areaCode) === '12') return;
     sidoNm[r.areaCode] = shortSido(r.areaNm);
     bump(sido, r.areaCode, shortSido(r.areaNm), '', r);
   });
   await collect('locgoRegnVisitrDDList', curStart, last, r => {
+    if (skipDup(r.signguCode, r.signguNm)) return;
     bump(sg, r.signguCode, r.signguNm, sidoNm[String(r.signguCode).slice(0, 2)] || '', r);
   });
 
   // 계절 랭킹 — 작년 같은 달
   const now = new Date(), month = now.getMonth() + 1, sYear = now.getFullYear() - 1;
-  const season = (await seasonRank(sYear, month)).slice(0, 25).map((r, i) => ({
-    rank: i + 1, name: r.name, sido: sidoNm[String(r.code).slice(0, 2)] || '', idx: r.idx, num: r.num
+  const seasonAll = (await seasonRank(sYear, month)).map((r, i) => ({
+    rank: i + 1, code: r.code, name: r.name, sido: sidoNm[String(r.code).slice(0, 2)] || '', idx: r.idx, num: r.num
   }));
+  const season = seasonAll.slice(0, 25);
 
   const sidoArr = Object.values(sido), sgArr = Object.values(sg);
   const out = {
@@ -143,13 +156,29 @@ async function main() {
     kor: rank(sgArr, r => r.kor).slice(0, 40),
     fgn: rank(sgArr, r => r.fgn).slice(0, 40),
     sido: rank(sidoArr, r => r.kor + r.fgn),
-    ranked: rank(sidoArr, r => r.kor + r.fgn)
+    ranked: rank(sidoArr, r => r.kor + r.fgn),
+    bySido: {}
   };
+  // ── 시도별 드릴다운: 그 시도 안의 시군구만 모아 자체 순위를 매긴다 ──
+  for (const [code, nm] of Object.entries(sidoNm)) {
+    const mine = sgArr.filter(r => String(r.code).slice(0, 2) === code);
+    if (!mine.length) continue;
+    const reRank = a => a.map((r, i) => Object.assign({}, r, { rank: i + 1 }));
+    out.bySido[nm] = {
+      code,
+      total: mine.length,
+      kor: reRank(rank(mine, r => r.kor)),
+      fgn: reRank(rank(mine, r => r.fgn)),
+      season: reRank(seasonAll.filter(r => String(r.code).slice(0, 2) === code)
+        .map(r => ({ code: r.code, name: r.name, sido: r.sido, idx: r.idx, num: r.num })))
+    };
+  }
   out.updated = out.period;
   fs.writeFileSync(path.join(__dirname, 'data', 'visitors.json'), JSON.stringify(out));
   console.log('저장 완료 | 기준', out.period, '| 지연', out.lagDays, '일');
   console.log(' 한국인 TOP5 :', out.kor.slice(0, 5).map(r => r.sido + ' ' + r.name + '(' + (r.num / 10000).toFixed(0) + '만)').join('  '));
   console.log(' 외국인 TOP5 :', out.fgn.slice(0, 5).map(r => r.sido + ' ' + r.name + '(' + (r.num / 10000).toFixed(0) + '만)').join('  '));
+  console.log(' 시도별 그룹 :', Object.keys(out.bySido).length, '개 |', Object.entries(out.bySido).slice(0, 4).map(([k, v]) => k + '(' + v.total + '개 시군구)').join(' '));
   console.log(' ' + month + '월 성수기 TOP8 :', season.slice(0, 8).map(r => r.sido + ' ' + r.name + '(x' + r.idx + ')').join('  '));
 }
 main();
