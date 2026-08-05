@@ -783,17 +783,29 @@ article ul{padding-left:20px}
 .rank-tabs button{border:1.5px solid #a9e5dd;background:#fff;color:#0c7d72;border-radius:20px;padding:9px 18px;font-size:.9rem;font-weight:800;cursor:pointer;font-family:inherit;transition:all .15s}
 .rank-tabs button:hover{border-color:#0f9d8f}
 .rank-tabs button.on{background:linear-gradient(135deg,#0f9d8f,#2dd4bf);color:#fff;border-color:transparent;box-shadow:0 4px 12px rgba(15,157,143,.32)}
-.ranklist{display:flex;flex-direction:column;gap:9px;margin:6px 0 4px}
-.rankrow{display:flex;align-items:center;gap:11px}
-.rankrow .no{width:28px;text-align:center;font-weight:800;color:#9aa3af;flex:none}
-.rankrow .bar{flex:1;background:#eef5f3;border-radius:10px;overflow:hidden;min-width:0}
-.rankrow .bar>a{display:block;background:linear-gradient(90deg,#0f9d8f,#2dd4bf);color:#fff;font-weight:800;font-size:.88rem;padding:8px 13px;white-space:nowrap;border-radius:10px;overflow:hidden;text-overflow:ellipsis}
-.rankrow .bar>a:hover{filter:brightness(1.07)}
-.rankrow.fgn .bar>a{background:linear-gradient(90deg,#6d28d9,#a78bfa)}
-.rankrow.hot .bar>a{background:linear-gradient(90deg,#ff5a3c,#ff9a5c)}
-.rankrow .val{color:#6b7280;font-size:.82rem;font-weight:800;min-width:70px;text-align:right;flex:none}
+.ranklist{display:flex;flex-direction:column;gap:7px;margin:6px 0 4px}
+.rankrow{display:flex;align-items:center;gap:10px}
+.rankrow .no{width:26px;text-align:center;font-weight:800;color:#9aa3af;flex:none;font-size:.9rem}
+.rankrow .nm{flex:none;width:134px;font-weight:700;font-size:.9rem;color:#374151;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rankrow .nm:hover{color:#0f9d8f;text-decoration:underline}
+.rankrow.wide .nm{width:212px}
+.rankrow.mini .nm{width:104px;font-size:.85rem}
+.rankrow .bar{flex:1;background:#eef5f3;border-radius:7px;height:20px;overflow:hidden;min-width:0}
+.rankrow .bar>i{display:block;height:100%;border-radius:7px;background:linear-gradient(90deg,#0f9d8f,#2dd4bf)}
+.rankrow.fgn .bar>i{background:linear-gradient(90deg,#6d28d9,#a78bfa)}
+.rankrow.hot .bar>i{background:linear-gradient(90deg,#ff5a3c,#ff9a5c)}
+.rankrow.mini .bar{height:16px}
+.rankrow .val{color:#4b5563;font-size:.82rem;font-weight:800;min-width:64px;text-align:right;flex:none}
 .rankrow .val em{font-style:normal;color:#e0502f}
-@media(max-width:600px){.rankrow .val{min-width:58px;font-size:.76rem}.rankrow .bar>a{font-size:.82rem;padding:7px 10px}}
+@media(max-width:600px){
+.rankrow{gap:7px}
+.rankrow .no{width:20px;font-size:.82rem}
+.rankrow .nm{width:96px;font-size:.82rem}
+.rankrow.wide .nm{width:118px}
+.rankrow.mini .nm{width:86px;font-size:.8rem}
+.rankrow .val{min-width:52px;font-size:.76rem}
+.rankrow .bar{height:16px}
+}
 nav{display:flex;align-items:center;gap:2px}
 nav>a{margin-left:18px;font-weight:600;font-size:.95rem;color:#4b5563}
 .ndrop{position:relative}
@@ -1342,15 +1354,17 @@ const WEEKEND_JS = `<script>
 // 홈 요약: 한국인·외국인·급상승 TOP5 3열 + /trend/ 전체보기
 function homeMini(list, cls, mode) {
   if (!list || !list.length) return '';
-  const max = mode === 'season' ? list[0].idx : list[0].num;
+  const isS = mode === 'season';
+  const top = isS ? list[0].idx : list[0].num;
+  const span = isS ? Math.max(0.01, top - 1) : top;
   return list.slice(0, 5).map(r => {
-    const v = mode === 'season' ? r.idx : r.num;
-    const w = Math.max(18, Math.round(v / max * 100));
+    const v = isS ? (r.idx - 1) : r.num;
+    const w = Math.max(6, Math.min(100, Math.round(v / span * 100)));
     const label = r.sido ? esc(r.sido) + ' ' + esc(r.name) : esc(r.name);
     const q = r.sido ? `/search/?sido=${encodeURIComponent(r.sido)}&sigungu=${encodeURIComponent(r.name)}`
       : `/search/?sido=${encodeURIComponent(r.name)}`;
-    const val = mode === 'season' ? `<em>${r.idx}배</em>` : `${(r.num / 10000).toFixed(0)}만`;
-    return `<div class="rankrow ${cls}"><div class="no">${r.rank}</div><div class="bar" style="max-width:${w}%"><a href="${q}">${label}</a></div><div class="val">${val}</div></div>`;
+    const val = isS ? `<em>${r.idx}배</em>` : `${(r.num / 10000).toFixed(0)}만`;
+    return `<div class="rankrow mini ${cls}"><div class="no">${r.rank}</div><a class="nm" href="${q}">${label}</a><div class="bar"><i style="width:${w}%"></i></div><div class="val">${val}</div></div>`;
   }).join('');
 }
 const HOME_M = (visitors.season && visitors.season.month) || (new Date().getMonth() + 1);
@@ -2317,13 +2331,17 @@ function seasonIdxMap(month) {
 }
 function themeBars(rows, cls, unit) {
   if (!rows.length) return '<p class="note">해당하는 지역이 없어요.</p>';
-  const max = rows[0].v || 1;
+  const isX = unit === 'x';
+  const top = rows[0].v || 1;
+  const span = isX ? Math.max(0.01, top - 1) : top;
   return `<div class="ranklist">` + rows.map((r, i) => {
-    const w = Math.max(14, Math.round(r.v / max * 100));
+    const v = isX ? (r.v - 1) : r.v;
+    const w = Math.max(6, Math.min(100, Math.round(v / span * 100)));
     const medal = i < 3 ? ['🥇', '🥈', '🥉'][i] : (i + 1);
     return `<div class="rankrow ${cls}"><div class="no">${medal}</div>`
-      + `<div class="bar"><a href="/search/?sido=${encodeURIComponent(r.sido)}&sigungu=${encodeURIComponent(r.name)}" title="${esc(r.sido)} ${esc(r.name)} 축제 보기">${esc(r.sido)} ${esc(r.name)}</a></div>`
-      + `<div class="val">${unit === 'x' ? `<em>${r.v}배</em>` : `${r.v}${unit}`}</div></div>`;
+      + `<a class="nm" href="/search/?sido=${encodeURIComponent(r.sido)}&sigungu=${encodeURIComponent(r.name)}" title="${esc(r.sido)} ${esc(r.name)} 축제 보기">${esc(r.sido)} ${esc(r.name)}</a>`
+      + `<div class="bar"><i style="width:${w}%"></i></div>`
+      + `<div class="val">${isX ? `<em>${r.v}배</em>` : `${r.v}${unit}`}</div></div>`;
   }).join('') + `</div>`;
 }
 const THEMES = [
@@ -2341,19 +2359,21 @@ const MONTH_SEASON = { 1: '한겨울', 4: '봄', 8: '한여름', 10: '가을' };
 // ---------- 인기 여행지 랭킹 (/trend/) ----------
 function rankBars(list, cls, mode) {
   if (!list || !list.length) return '<p class="note">데이터를 준비 중이에요.</p>';
-  const max = mode === 'season' ? list[0].idx : list[0].num;
+  // 성수기 배수는 '1.0 = 평소'가 기준점이라 0부터 재면 차이가 안 보인다 → 초과분만 스케일링
+  const isS = mode === 'season';
+  const top = isS ? list[0].idx : list[0].num;
+  const span = isS ? Math.max(0.01, top - 1) : top;
   return `<div class="ranklist">` + list.map(r => {
-    const v = mode === 'season' ? r.idx : r.num;
-    const w = Math.max(14, Math.round(v / max * 100));
+    const v = isS ? (r.idx - 1) : r.num;
+    const w = Math.max(6, Math.min(100, Math.round(v / span * 100)));
     const medal = r.rank <= 3 ? ['🥇', '🥈', '🥉'][r.rank - 1] : r.rank;
     const label = r.sido ? `${esc(r.sido)} ${esc(r.name)}` : esc(r.name);
     const q = r.sido ? `/search/?sido=${encodeURIComponent(r.sido)}&sigungu=${encodeURIComponent(r.name)}`
       : `/search/?sido=${encodeURIComponent(r.name)}`;
-    const val = mode === 'season'
-      ? `<em>${r.idx}배</em>`
-      : `${(r.num / 10000).toFixed(0)}만명`;
+    const val = isS ? `<em>${r.idx}배</em>` : `${(r.num / 10000).toFixed(0)}만명`;
     return `<div class="rankrow ${cls}"><div class="no">${medal}</div>`
-      + `<div class="bar"><a href="${q}" title="${label} 축제 보기">${label}</a></div>`
+      + `<a class="nm" href="${q}" title="${label} 축제 보기">${label}</a>`
+      + `<div class="bar"><i style="width:${w}%"></i></div>`
       + `<div class="val">${val}</div></div>`;
   }).join('') + `</div>`;
 }
@@ -2859,15 +2879,18 @@ function bigNum(n, lang) {
 }
 function rankBarsLang(list, cls, mode, lang, L) {
   if (!list || !list.length) return '<p class="note">-</p>';
-  const max = mode === 'season' ? list[0].idx : list[0].num;
+  const isS = mode === 'season';
+  const top = isS ? list[0].idx : list[0].num;
+  const span = isS ? Math.max(0.01, top - 1) : top;
   return `<div class="ranklist">` + list.map(r => {
-    const v = mode === 'season' ? r.idx : r.num;
-    const w = Math.max(14, Math.round(v / max * 100));
+    const v = isS ? (r.idx - 1) : r.num;
+    const w = Math.max(6, Math.min(100, Math.round(v / span * 100)));
     const medal = r.rank <= 3 ? ['🥇', '🥈', '🥉'][r.rank - 1] : r.rank;
     const label = r.sido ? `${bilingual(r.sido)} ${bilingual(r.name)}` : bilingual(r.name);
-    const val = mode === 'season' ? `<em>${L.times}${r.idx}</em>` : bigNum(r.num, lang);
-    return `<div class="rankrow ${cls}"><div class="no">${medal}</div>`
-      + `<div class="bar"><a href="${langSearchLink(lang, r.name)}">${label}</a></div>`
+    const val = isS ? `<em>${L.times}${r.idx}</em>` : bigNum(r.num, lang);
+    return `<div class="rankrow wide ${cls}"><div class="no">${medal}</div>`
+      + `<a class="nm" href="${langSearchLink(lang, r.name)}">${label}</a>`
+      + `<div class="bar"><i style="width:${w}%"></i></div>`
       + `<div class="val">${val}</div></div>`;
   }).join('') + `</div>`;
 }
