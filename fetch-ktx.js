@@ -10,7 +10,7 @@ function readKeys() {
 }
 const KAKAO = (readKeys().kakao_rest || '').trim();
 const src = JSON.parse(fs.readFileSync(path.join(__dirname, 'data/ktx_pairs.json'), 'utf8'));
-function get(host, p, h) { return new Promise((res, rej) => { https.get({ host, path: p, headers: h || {} }, r => { let d = ''; r.on('data', c => d += c); r.on('end', () => res(d)); }).on('error', rej); }); }
+function get(host, p, h) { return new Promise((res, rej) => { https.get({ host, path: p, headers: h || {} }, r => { r.setEncoding('utf8'); let d = ''; r.on('data', c => d += c); r.on('end', () => res(d)); }).on('error', rej); }); }
 // 역 이름 → 카카오 검색어 보정
 function q(name) {
   const map = { '여수EXPO': '여수엑스포역', '광주송정': '광주송정역', '서울': '서울역', '센텀': '센텀역' };

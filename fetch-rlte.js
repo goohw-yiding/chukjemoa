@@ -11,7 +11,7 @@ const KEEP = Number(process.env.KEEP || 12);               // 시도당 보관�
 function get(u) {
   return new Promise((res, rej) => {
     https.get(u, { headers: { 'User-Agent': 'chukjemoa' } }, r => {
-      let d = ''; r.on('data', c => d += c); r.on('end', () => res(d));
+      r.setEncoding('utf8'); let d = ''; r.on('data', c => d += c); r.on('end', () => res(d));
     }).on('error', rej);
   });
 }

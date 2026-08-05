@@ -3,7 +3,7 @@ const fs=require('fs'), path=require('path'), https=require('https');
 const KEY=fs.readFileSync(path.join(__dirname,'tourapi.key'),'utf8').trim();
 const BASE='https://apis.data.go.kr/B551011/EngService2';
 const RMAP={'11':'Seoul','26':'Busan','27':'Daegu','28':'Incheon','29':'Gwangju','30':'Daejeon','31':'Ulsan','36':'Sejong','41':'Gyeonggi','43':'Chungbuk','44':'Chungnam','46':'Jeonnam','47':'Gyeongbuk','48':'Gyeongnam','50':'Jeju','51':'Gangwon','52':'Jeonbuk'};
-function get(u){return new Promise((res,rej)=>{https.get(u,{headers:{'User-Agent':'chukjemoa'}},r=>{let d='';r.on('data',c=>d+=c);r.on('end',()=>res(d));}).on('error',rej);});}
+function get(u){return new Promise((res,rej)=>{https.get(u,{headers:{'User-Agent':'chukjemoa'}},r=>{r.setEncoding('utf8'); let d='';r.on('data',c=>d+=c);r.on('end',()=>res(d));}).on('error',rej);});}
 function ymd(d){return d.toISOString().slice(0,10).replace(/-/g,'');}
 function cleanEn(t){ t=(t||'').trim(); const i=t.indexOf('('); if(i>0 && /[가-힣]/.test(t.slice(i))) return t.slice(0,i).trim(); return t; }
 function hpUrl(s){ if(!s) return ''; const m=String(s).match(/href=["']?([^"'\s>]+)/i); return m?m[1]:''; }

@@ -58,7 +58,7 @@ async function busFare(depId, arrId) {
 function get(host, path, headers) {
   return new Promise((resolve, reject) => {
     https.get({ host, path, headers: headers || {} }, r => {
-      let d = ''; r.on('data', c => d += c); r.on('end', () => resolve({ sc: r.statusCode, body: d }));
+      r.setEncoding('utf8'); let d = ''; r.on('data', c => d += c); r.on('end', () => resolve({ sc: r.statusCode, body: d }));
     }).on('error', reject);
   });
 }

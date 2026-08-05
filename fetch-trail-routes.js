@@ -10,7 +10,7 @@ const URL = 'https://apis.data.go.kr/B551011/Durunubi/routeList'
 function get(u) {
   return new Promise((res, rej) => {
     https.get(u, { headers: { 'User-Agent': 'chukjemoa' } }, r => {
-      let d = ''; r.on('data', c => d += c); r.on('end', () => res(d));
+      r.setEncoding('utf8'); let d = ''; r.on('data', c => d += c); r.on('end', () => res(d));
     }).on('error', rej);
   });
 }

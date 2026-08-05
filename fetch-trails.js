@@ -27,7 +27,7 @@ function clean(s){
 function get(url){
   return new Promise((resolve, reject) => {
     https.get(url, { headers: { 'User-Agent': 'chukjemoa' } }, res => {
-      let d=''; res.on('data', c => d += c); res.on('end', () => resolve(d));
+      res.setEncoding('utf8'); let d=''; res.on('data', c => d += c); res.on('end', () => resolve(d));
     }).on('error', reject);
   });
 }
@@ -63,8 +63,25 @@ async function main(){
       tour: clean(it.crsTourInfo).slice(0, 200)
     });
   }
-  out.sort((a,b)=> (a.sido||'힣').localeCompare(b.sido||'힣') || (a.name||'').localeCompare(b.name||''));
-  fs.writeFileSync(path.join(__dirname, 'data', 'trails.json'), JSON.stringify(out));
+  // ★ 기존 데이터와 병합 — 덮어쓰지 않는다.
+  //   두루누비 API가 시기에 따라 코스를 적게 주는 일이 있다(2026-08 실측: 262개 → 152개).
+  //   그대로 덮어쓰면 멀쩡한 코스가 사라지므로, id 기준으로 갱신·추가만 하고 기존 항목은 남긴다.
+  const P = path.join(__dirname, 'data', 'trails.json');
+  let prev = [];
+  try { prev = JSON.parse(fs.readFileSync(P, 'utf8')); } catch (e) {}
+  const merged = {};
+  prev.forEach(t => { if (t && t.id) merged[t.id] = t; });
+  let added = 0, updated = 0;
+  out.forEach(t => { if (merged[t.id]) updated++; else added++; merged[t.id] = t; });
+  const final = Object.values(merged);
+  final.sort((a,b)=> (a.sido||'힣').localeCompare(b.sido||'힣') || (a.name||'').localeCompare(b.name||''));
+  if (prev.length && final.length < prev.length) {
+    console.error('⚠ 병합 후 개수가 줄었습니다(' + prev.length + '→' + final.length + '). 저장을 중단합니다.');
+    return;
+  }
+  fs.writeFileSync(P, JSON.stringify(final));
+  console.log('병합: 기존', prev.length, '+ 신규', added, '(갱신', updated, ') →', final.length, '코스');
+  const out2 = final; out.length = 0; out.push(...out2);
   const byTheme = {}; out.forEach(t=> byTheme[t.theme]=(byTheme[t.theme]||0)+1);
   const bySido = {}; out.forEach(t=> bySido[t.sido||'전국']=(bySido[t.sido||'전국']||0)+1);
   console.log('저장:', out.length, '코스');

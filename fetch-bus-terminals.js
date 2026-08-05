@@ -10,7 +10,7 @@ function readKeys() {
 }
 const K = readKeys(), TAGO = (K.tago || '').trim(), KAKAO = (K.kakao_rest || '').trim();
 const CITY = { 11: '서울', 12: '세종', 21: '부산', 22: '대구', 23: '인천', 24: '광주', 25: '대전', 26: '울산', 31: '경기', 32: '강원', 33: '충북', 34: '충남', 35: '전북', 36: '전남', 37: '경북', 38: '경남', 39: '제주' };
-function get(host, p, h) { return new Promise((res, rej) => { https.get({ host, path: p, headers: h || {} }, r => { let d = ''; r.on('data', c => d += c); r.on('end', () => res(d)); }).on('error', rej); }); }
+function get(host, p, h) { return new Promise((res, rej) => { https.get({ host, path: p, headers: h || {} }, r => { r.setEncoding('utf8'); let d = ''; r.on('data', c => d += c); r.on('end', () => res(d)); }).on('error', rej); }); }
 async function terminals(code) {
   const j = JSON.parse(await get('apis.data.go.kr', '/1613000/SuburbsBusInfo/GetSuberbsBusTrminlList?serviceKey=' + encodeURIComponent(TAGO) + '&_type=json&numOfRows=500&cityCode=' + code));
   const it = j.response && j.response.body && j.response.body.items && j.response.body.items.item;

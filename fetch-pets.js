@@ -32,7 +32,7 @@ const SKIP_TYPE = new Set(['15','25','38']); // 축제·여행코스·쇼핑(약
 function get(url){
   return new Promise((resolve,reject)=>{
     https.get(url,{headers:{'User-Agent':'chukjemoa'}},res=>{
-      let d=''; res.on('data',c=>d+=c); res.on('end',()=>resolve(d));
+      res.setEncoding('utf8'); let d=''; res.on('data',c=>d+=c); res.on('end',()=>resolve(d));
     }).on('error',reject);
   });
 }

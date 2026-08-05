@@ -3,7 +3,7 @@
 const fs=require('fs'), path=require('path'), https=require('https');
 const KEY=fs.readFileSync(path.join(__dirname,'tourapi.key'),'utf8').trim();
 const BASE='https://apis.data.go.kr/B090041/openapi/service/SpcdeInfoService/getRestDeInfo';
-function get(u){return new Promise((res,rej)=>{https.get(u,{headers:{'User-Agent':'chukjemoa'}},r=>{let d='';r.on('data',c=>d+=c);r.on('end',()=>res(d));}).on('error',rej);});}
+function get(u){return new Promise((res,rej)=>{https.get(u,{headers:{'User-Agent':'chukjemoa'}},r=>{r.setEncoding('utf8'); let d='';r.on('data',c=>d+=c);r.on('end',()=>res(d));}).on('error',rej);});}
 async function year(y){
   const out=[];
   for(let m=1;m<=12;m++){

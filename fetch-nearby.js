@@ -5,7 +5,7 @@ const KEY=fs.readFileSync(path.join(__dirname,'tourapi.key'),'utf8').trim();
 const BASE='https://apis.data.go.kr/B551011/KorService2/locationBasedList2';
 const TYPE={'12':'관광지','14':'문화시설','28':'레포츠','32':'숙소','39':'맛집'};
 const SKIP=new Set(['15','25','38']); // 축제·코스·쇼핑 제외
-function get(u){return new Promise((res,rej)=>{https.get(u,{headers:{'User-Agent':'chukjemoa'}},r=>{let d='';r.on('data',c=>d+=c);r.on('end',()=>res(d));}).on('error',rej);});}
+function get(u){return new Promise((res,rej)=>{https.get(u,{headers:{'User-Agent':'chukjemoa'}},r=>{r.setEncoding('utf8'); let d='';r.on('data',c=>d+=c);r.on('end',()=>res(d));}).on('error',rej);});}
 async function near(f){
   const u=`${BASE}?serviceKey=${KEY}&MobileOS=ETC&MobileApp=chukjemoa&_type=json&numOfRows=15&pageNo=1&mapX=${f.x}&mapY=${f.y}&radius=6000&arrange=E`;
   try{

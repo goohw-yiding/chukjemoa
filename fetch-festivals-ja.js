@@ -3,7 +3,7 @@ const fs=require('fs'), path=require('path'), https=require('https');
 const KEY=fs.readFileSync(path.join(__dirname,'tourapi.key'),'utf8').trim();
 const BASE='https://apis.data.go.kr/B551011/JpnService2';
 const RMAP={'11':'ソウル','26':'釜山','27':'大邱','28':'仁川','29':'光州','30':'大田','31':'蔚山','36':'世宗','41':'京畿','43':'忠北','44':'忠南','46':'全南','47':'慶北','48':'慶南','50':'済州','51':'江原','52':'全北'};
-function get(u){return new Promise((res,rej)=>{https.get(u,{headers:{'User-Agent':'chukjemoa'}},r=>{let d='';r.on('data',c=>d+=c);r.on('end',()=>res(d));}).on('error',rej);});}
+function get(u){return new Promise((res,rej)=>{https.get(u,{headers:{'User-Agent':'chukjemoa'}},r=>{r.setEncoding('utf8'); let d='';r.on('data',c=>d+=c);r.on('end',()=>res(d));}).on('error',rej);});}
 function ymd(d){return d.toISOString().slice(0,10).replace(/-/g,'');}
 function cleanTitle(t){ t=(t||'').trim(); const i=t.indexOf('('); if(i>0 && /[가-힣]/.test(t.slice(i))) return t.slice(0,i).trim(); const j=t.indexOf('（'); if(j>0 && /[가-힣]/.test(t.slice(j))) return t.slice(0,j).trim(); return t; }
 function hpUrl(s){ if(!s) return ''; const m=String(s).match(/href=["']?([^"'\s>]+)/i); return m?m[1]:''; }

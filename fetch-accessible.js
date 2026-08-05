@@ -27,7 +27,7 @@ const CAT = {'12':'관광지','14':'문화시설','15':'축제·행사','25':'�
 function get(url){
   return new Promise((resolve,reject)=>{
     https.get(url,{headers:{'User-Agent':'chukjemoa'}},res=>{
-      let d=''; res.on('data',c=>d+=c); res.on('end',()=>resolve(d));
+      res.setEncoding('utf8'); let d=''; res.on('data',c=>d+=c); res.on('end',()=>resolve(d));
     }).on('error',reject);
   });
 }
