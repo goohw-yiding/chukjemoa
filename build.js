@@ -1,6 +1,9 @@
 // 축제모아 정적 사이트 빌드 스크립트
 // 사용법: node build.js  (data/*.json 수정 후 재실행하면 페이지 재생성)
 const fs = require('fs');
+const romanize = require('./romanize');
+const romanizeRegion = romanize.romanizeRegion;
+
 const path = require('path');
 
 const ROOT = __dirname;
@@ -781,10 +784,10 @@ function layout(title, desc, urlPath, content, opts) {
   const alts = (opts.alternates || []).map(a => `<link rel="alternate" hreflang="${a.hreflang}" href="${SITE}${a.href}">`).join('\n');
   const logoHref = lang === 'ko' ? '/' : '/' + lang + '/';
   const NAVS = {
-    en: `<nav><a href="/en/">Home</a><a href="/en/search/">🔎 Festivals</a><a href="/">🇰🇷 한국어</a></nav>`,
-    ja: `<nav><a href="/ja/">ホーム</a><a href="/ja/search/">🔎 お祭り検索</a><a href="/">🇰🇷 한국어</a></nav>`,
-    es: `<nav><a href="/es/">Inicio</a><a href="/es/search/">🔎 Buscar festivales</a><a href="/">🇰🇷 한국어</a></nav>`,
-    zh: `<nav><a href="/zh/">首页</a><a href="/zh/search/">🔎 庆典搜索</a><a href="/">🇰🇷 한국어</a></nav>`
+    en: `<nav><a href="/en/">Home</a><a href="/en/search/">🔎 Festivals</a><a href="/en/trend/">🔥 Rankings</a><a href="/">🇰🇷 한국어</a></nav>`,
+    ja: `<nav><a href="/ja/">ホーム</a><a href="/ja/search/">🔎 お祭り検索</a><a href="/ja/trend/">🔥 人気ランキング</a><a href="/">🇰🇷 한국어</a></nav>`,
+    es: `<nav><a href="/es/">Inicio</a><a href="/es/search/">🔎 Buscar festivales</a><a href="/es/trend/">🔥 Rankings</a><a href="/">🇰🇷 한국어</a></nav>`,
+    zh: `<nav><a href="/zh/">首页</a><a href="/zh/search/">🔎 庆典搜索</a><a href="/zh/trend/">🔥 人气排行</a><a href="/">🇰🇷 한국어</a></nav>`
   };
   const nav = lang === 'ko'
     ? KO_NAV
@@ -1824,7 +1827,7 @@ document.getElementById('fmodal').addEventListener('click',function(e){if(e.targ
 document.addEventListener('keydown',function(e){if(e.key==='Escape')closeModal();});
 document.getElementById('fGrid').addEventListener('click',function(e){var c=e.target.closest('.card');if(!c)return;var f=byId[c.getAttribute('data-id')];if(f)openModal(f);});
 document.getElementById('fCount').textContent='Loading...';
-fetch('/en/search/data.json').then(function(r){return r.json();}).then(function(data){F=data;byId={};F.forEach(function(f){byId[f.id]=f;});apply();}).catch(function(){document.getElementById('fCount').textContent='Failed to load data.';});
+(function(){var q=new URLSearchParams(location.search),kw=q.get('kw'),rg=q.get('region');if(kw){st.kw=kw;var e1=document.getElementById('fKw');if(e1)e1.value=kw;}if(rg){st.region=rg;var e2=document.getElementById('fSido');if(e2)e2.value=rg;}if(kw||rg){st.quick='all';var bs=document.querySelectorAll('#fQuick button');for(var i=0;i<bs.length;i++)bs[i].classList.toggle('on',bs[i].getAttribute('data-q')==='all');}})();fetch('/en/search/data.json').then(function(r){return r.json();}).then(function(data){F=data;byId={};F.forEach(function(f){byId[f.id]=f;});apply();}).catch(function(){document.getElementById('fCount').textContent='Failed to load data.';});
 })();
 </script>`;
   writePage('en/search', layout('Korea Festival Finder — Search Korean Festivals by Date & Region | Chukjemoa', 'Find festivals across South Korea by date and region. ' + apiFestsEn.length + ' festivals with official overviews from the Korea Tourism Organization.', '/en/search/', enSearch, { lang:'en', alternates: searchAlts() }));
@@ -1920,7 +1923,7 @@ document.getElementById('fmodal').addEventListener('click',function(e){if(e.targ
 document.addEventListener('keydown',function(e){if(e.key==='Escape')closeModal();});
 document.getElementById('fGrid').addEventListener('click',function(e){var c=e.target.closest('.card');if(!c)return;var f=byId[c.getAttribute('data-id')];if(f)openModal(f);});
 document.getElementById('fCount').textContent=LBL.loading;
-fetch('/${lang}/search/data.json').then(function(r){return r.json();}).then(function(data){F=data;byId={};F.forEach(function(f){byId[f.id]=f;});apply();}).catch(function(){document.getElementById('fCount').textContent=LBL.fail;});
+(function(){var q=new URLSearchParams(location.search),kw=q.get('kw'),rg=q.get('region');if(kw){st.kw=kw;var e1=document.getElementById('fKw');if(e1)e1.value=kw;}if(rg){st.region=rg;var e2=document.getElementById('fSido');if(e2)e2.value=rg;}if(kw||rg){st.quick='all';var bs=document.querySelectorAll('#fQuick button');for(var i=0;i<bs.length;i++)bs[i].classList.toggle('on',bs[i].getAttribute('data-q')==='all');}})();fetch('/${lang}/search/data.json').then(function(r){return r.json();}).then(function(data){F=data;byId={};F.forEach(function(f){byId[f.id]=f;});apply();}).catch(function(){document.getElementById('fCount').textContent=LBL.fail;});
 })();
 </script>`;
   writePage(lang + '/search', layout(L.metaTitleSearch, L.metaDescSearch, '/' + lang + '/search/', searchContent, { lang, alternates: searchAlts() }));
@@ -2255,6 +2258,154 @@ writePage('trend', layout(
   `한국관광공사 관광 빅데이터 기준 인기 여행지 랭킹. ${SEASON_M}월에 평소보다 붐비는 성수기 여행지, 한국인이 많이 가는 시·군·구, 외국인이 많이 가는 곳을 한눈에 보고 그 지역 축제까지 바로 확인하세요.`,
   '/trend/', trendContent, { jsonld: trendLd }));
 
+const TREND_LANG_URLS = [];
+// ---------- 다국어 인기 여행지 랭킹 (/{lang}/trend/) ----------
+const TREND_L = {
+  en: {
+    h1: '🔥 Where Koreans and Visitors Actually Go',
+    intro: 'Rankings built from Korea Tourism Organization big data — the districts people really visited. Tap a bar to see festivals held there.',
+    badgeA: 'peak-season ranking is based on', badgeB: 'actuals · visitor rankings are based on',
+    badgeNote: 'Visit data is published about a month late, so the seasonal ranking uses the same month of last year.',
+    tabs: { season: m => `🌞 Busiest in ${['','January','February','March','April','May','June','July','August','September','October','November','December'][m]}`, kor: '🇰🇷 Where Koreans go', fgn: '🌏 Where visitors go', sido: '🗺️ By province' },
+    desc: {
+      season: (y, m) => `How much busier a district was in <b>${['','January','February','March','April','May','June','July','August','September','October','November','December'][m]} ${y}</b> compared with its own yearly average — a <b>peak-season multiplier</b>. ×1.5 means 1.5× busier than usual. Beaches, valleys and mountains rise here.`,
+      kor: 'By number of <b>domestic visitors from outside the district</b>. Commuting and shopping trips are included, so large metro districts rank high.',
+      fgn: 'By number of <b>international visitors</b>. Jung-gu and Jongno-gu in Seoul (Myeongdong, Insadong), Jung-gu in Incheon (airport) and Jeju lead.',
+      sido: 'Total visitors (domestic + international) by province.'
+    },
+    unit: '', times: '×', src: 'Source: Korea Tourism Organization «Korea Tourism Data Lab» regional visitor counts (data.go.kr). Estimates based on telecom and card data. Updated weekly.',
+    title: m => `Where People Actually Travel in Korea — ${['','January','February','March','April','May','June','July','August','September','October','November','December'][m]} Peak Season Ranking | Chukjemoa`,
+    metad: 'Korea travel destination rankings from official tourism big data — peak-season hotspots this month, where Koreans go, and where international visitors go, with festivals in each area.'
+  },
+  ja: {
+    h1: '🔥 実際に人が多く行く場所ランキング',
+    intro: '韓国観光公社の観光ビッグデータをもとに、実際に人が多く訪れた市・郡・区をまとめました。バーを押すとその地域のお祭りが見られます。',
+    badgeA: '月の繁忙期ランキングは', badgeB: 'の実績基準 · 訪問者ランキングは',
+    badgeNote: '訪問データは約1か月遅れて公開されるため、季節ランキングは昨年同月の実績を使っています。',
+    tabs: { season: m => `🌞 ${m}月に混む場所`, kor: '🇰🇷 韓国人が多く行く場所', fgn: '🌏 外国人が多く行く場所', sido: '🗺️ 道・広域市別' },
+    desc: {
+      season: (y, m) => `<b>${y}年${m}月</b>に実際どれだけ人が集まったかを、その年の平常時（年平均）と比べた<b>繁忙期倍率</b>です。×1.5なら普段の1.5倍混んでいたという意味。海水浴場・渓谷・山など季節性の高い場所が上位に来ます。`,
+      kor: 'その地域の住民以外の<b>国内訪問者</b>数基準です。通勤・買い物も含まれるため首都圏の大都市が上位に来ます。',
+      fgn: '<b>外国人訪問者</b>数基準です。明洞・仁寺洞のあるソウル中区・鍾路区、空港のある仁川中区、済州が強いです。',
+      sido: '道・広域市単位の総訪問者（国内＋外国人）です。'
+    },
+    unit: '', times: '×', src: '出典：韓国観光公社「韓国観光データラボ」地域別訪問者数（公共データポータル）。通信・カードデータに基づく推計値です。毎週更新。',
+    title: m => `韓国で実際に人が多く行く場所 — ${m}月の繁忙期ランキング | チュクチェモア`,
+    metad: '韓国観光公社の観光ビッグデータによる人気旅行先ランキング。今月の繁忙期スポット、韓国人が多く行く場所、外国人が多く行く場所を市・郡・区単位で。'
+  },
+  es: {
+    h1: '🔥 Adónde va realmente la gente en Corea',
+    intro: 'Rankings elaborados con los datos oficiales de turismo de Corea — los distritos que la gente visitó de verdad. Pulsa una barra para ver los festivales de esa zona.',
+    badgeA: 'el ranking de temporada alta se basa en', badgeB: 'reales · los rankings de visitantes se basan en',
+    badgeNote: 'Los datos de visitas se publican con un mes de retraso, por eso el ranking estacional usa el mismo mes del año pasado.',
+    tabs: { season: m => `🌞 Más concurrido en ${['','enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'][m]}`, kor: '🇰🇷 Adónde van los coreanos', fgn: '🌏 Adónde van los extranjeros', sido: '🗺️ Por provincia' },
+    desc: {
+      season: (y, m) => `Cuánto más concurrido estuvo un distrito en <b>${['','enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'][m]} de ${y}</b> frente a su propia media anual — un <b>multiplicador de temporada alta</b>. ×1,5 significa 1,5 veces más concurrido de lo habitual. Playas, valles y montañas destacan aquí.`,
+      kor: 'Por número de <b>visitantes nacionales de fuera del distrito</b>. Incluye desplazamientos por trabajo y compras, por eso los grandes distritos metropolitanos encabezan la lista.',
+      fgn: 'Por número de <b>visitantes internacionales</b>. Destacan Jung-gu y Jongno-gu en Seúl (Myeongdong, Insadong), Jung-gu en Incheon (aeropuerto) y Jeju.',
+      sido: 'Visitantes totales (nacionales + internacionales) por provincia.'
+    },
+    unit: '', times: '×', src: 'Fuente: Organización de Turismo de Corea «Korea Tourism Data Lab», visitantes por región (data.go.kr). Estimaciones basadas en datos de telefonía y tarjetas. Actualización semanal.',
+    title: m => `Adónde viaja la gente en Corea — Ranking de temporada alta de ${['','enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'][m]} | Chukjemoa`,
+    metad: 'Ranking de destinos en Corea según los datos oficiales de turismo: puntos de temporada alta de este mes, adónde van los coreanos y adónde van los extranjeros, con los festivales de cada zona.'
+  },
+  zh: {
+    h1: '🔥 韩国人气目的地排行',
+    intro: '基于韩国观光公社旅游大数据，整理出人们实际前往最多的市·郡·区。点击条形即可查看当地庆典。',
+    badgeA: '月旺季排行以', badgeB: '实绩为准 · 访客排行以',
+    badgeNote: '访问数据约延迟一个月公开，因此季节排行采用去年同月的实绩。',
+    tabs: { season: m => `🌞 ${m}月最热闹的地方`, kor: '🇰🇷 韩国人常去的地方', fgn: '🌏 外国人常去的地方', sido: '🗺️ 按道·广域市' },
+    desc: {
+      season: (y, m) => `将 <b>${y}年${m}月</b> 的实际人流与该年平常水平（年均）相比得出的<b>旺季倍数</b>。×1.5 表示比平时热闹 1.5 倍。海水浴场、溪谷、山岳等季节性强的地方会上榜。`,
+      kor: '以<b>非本地居民的国内访客</b>人数为准。因包含通勤与购物出行，首都圈大城市排名靠前。',
+      fgn: '以<b>外国访客</b>人数为准。明洞·仁寺洞所在的首尔中区·钟路区、机场所在的仁川中区以及济州名列前茅。',
+      sido: '按道·广域市统计的访客总数（国内＋外国）。'
+    },
+    unit: '', times: '×', src: '数据来源：韩国观光公社《韩国观光数据实验室》地区访客数（公共数据门户）。基于通信与卡片数据的推算值，每周更新。',
+    title: m => `韩国人气目的地排行 — ${m}月旺季榜 | 庆典集`,
+    metad: '基于韩国观光公社旅游大数据的人气目的地排行：本月旺季热点、韩国人常去与外国人常去的市·郡·区，并可直接查看当地庆典。'
+  }
+};
+
+// 지역명: 로마자 + 한글 병기 (외국인이 현지에서 검색·길찾기 할 때 한글이 실제로 도움됨)
+function bilingual(name) {
+  return `${esc(romanizeRegion(name))} <span class="kr">${esc(name)}</span>`;
+}
+// 로마자 지명이 해당 언어 축제 데이터(제목·주소)에 실제로 존재할 때만 검색 딥링크를 건다.
+// (영문·서문 주소는 로마자, 일문·중문 주소는 가나/한자라 매칭이 안 됨)
+function langSearchLink(lang, name) {
+  const base = romanizeRegion(name).split(' ').pop().split('-')[0];
+  if (base.length < 3) return `/${lang}/search/`;
+  const k = base.toLowerCase();
+  const hit = (LANG_DATA[lang] || []).some(f =>
+    String(f.title || '').toLowerCase().includes(k) || String(f.addr || '').toLowerCase().includes(k));
+  return hit ? `/${lang}/search/?kw=${encodeURIComponent(base)}` : `/${lang}/search/`;
+}
+function bigNum(n, lang) {
+  return (lang === 'ja' || lang === 'zh')
+    ? (n / 10000).toFixed(0) + '万'
+    : (n / 1000000).toFixed(1) + 'M';
+}
+function rankBarsLang(list, cls, mode, lang, L) {
+  if (!list || !list.length) return '<p class="note">-</p>';
+  const max = mode === 'season' ? list[0].idx : list[0].num;
+  return `<div class="ranklist">` + list.map(r => {
+    const v = mode === 'season' ? r.idx : r.num;
+    const w = Math.max(14, Math.round(v / max * 100));
+    const medal = r.rank <= 3 ? ['🥇', '🥈', '🥉'][r.rank - 1] : r.rank;
+    const label = r.sido ? `${bilingual(r.sido)} ${bilingual(r.name)}` : bilingual(r.name);
+    const val = mode === 'season' ? `<em>${L.times}${r.idx}</em>` : bigNum(r.num, lang);
+    return `<div class="rankrow ${cls}"><div class="no">${medal}</div>`
+      + `<div class="bar"><a href="${langSearchLink(lang, r.name)}">${label}</a></div>`
+      + `<div class="val">${val}</div></div>`;
+  }).join('') + `</div>`;
+}
+
+LANGS.forEach(lang => {
+  if (!LANG_DATA[lang] || !LANG_DATA[lang].length) return;
+  if (!visitors.kor || !visitors.kor.length) return;
+  const L = TREND_L[lang]; if (!L) return;
+  const M = SEASON_M, Y = SEASON_Y;
+  const tabs = [
+    { id: 'season', label: L.tabs.season(M), cls: 'hot', mode: 'season', list: SEASON_LIST, desc: L.desc.season(Y, M) },
+    { id: 'kor', label: L.tabs.kor, cls: '', mode: 'num', list: visitors.kor || [], desc: L.desc.kor },
+    { id: 'fgn', label: L.tabs.fgn, cls: 'fgn', mode: 'num', list: visitors.fgn || [], desc: L.desc.fgn },
+    { id: 'sido', label: L.tabs.sido, cls: '', mode: 'num', list: visitors.sido || [], desc: L.desc.sido }
+  ];
+  const content = `<main><div class="wrap">
+<style>.rankrow .kr{font-weight:600;opacity:.72;font-size:.86em}</style>
+<h1 style="font-size:1.5rem;font-weight:900;letter-spacing:-.02em;margin:8px 0 4px">${L.h1}</h1>
+<p class="note" style="margin-top:0">${L.intro}</p>
+<div class="datebadge">📅 <b>${M}</b>${L.badgeA} <b>${Y}.${String(M).padStart(2, '0')}</b> ${L.badgeB} <b>${trendUpdated}</b><br><span>${L.badgeNote}</span></div>
+<div class="rank-tabs" id="trendTabs">
+${tabs.map((t, i) => `<button type="button" data-t="${t.id}"${i === 0 ? ' class="on"' : ''}>${t.label}</button>`).join('')}
+</div>
+${tabs.map((t, i) => `<section class="trendpane" data-p="${t.id}"${i === 0 ? '' : ' style="display:none"'}>
+<h2 class="sec" style="margin-top:6px">${t.label}</h2>
+<p class="note" style="margin-top:-4px">${t.desc}</p>
+${rankBarsLang(t.list, t.cls, t.mode, lang, L)}
+</section>`).join('\n')}
+<p class="note" style="margin-top:22px">${L.src}</p>
+</div></main>
+<script>
+(function(){
+  var tabs=document.getElementById('trendTabs'); if(!tabs)return;
+  tabs.addEventListener('click',function(e){
+    var b=e.target.closest('button[data-t]'); if(!b)return;
+    var id=b.getAttribute('data-t');
+    tabs.querySelectorAll('button').forEach(function(x){x.classList.toggle('on',x===b);});
+    document.querySelectorAll('.trendpane').forEach(function(p){p.style.display=(p.getAttribute('data-p')===id)?'':'none';});
+  });
+})();
+</script>`;
+  const alts = [{ hreflang: 'ko', href: '/trend/' }]
+    .concat(LANGS.filter(l => LANG_DATA[l] && LANG_DATA[l].length && TREND_L[l])
+      .map(l => ({ hreflang: l === 'zh' ? 'zh-Hans' : l, href: '/' + l + '/trend/' })))
+    .concat([{ hreflang: 'x-default', href: '/trend/' }]);
+  writePage(lang + '/trend', layout(L.title(M), L.metad, `/${lang}/trend/`, content, { lang, alternates: alts }));
+  TREND_LANG_URLS.push(`/${lang}/trend/`);
+});
+
 // ---------- 여행 비용 계산기 (/trip-cost/) ----------
 const tripCostContent = `<main><div class="wrap">
 <style>
@@ -2362,7 +2513,7 @@ document.getElementById('tcFrom').addEventListener('keydown',function(e){if(e.ke
 writePage('trip-cost', layout('여행 비용 계산기 — 자동차 vs 대중교통 비용 비교 | ' + SITE_NAME, '축제·여행지까지 자동차(연료+통행료+주차)와 대중교통 비용을 비교 계산. 출발지·도착지만 넣으면 끝. 계산 과정도 투명하게 공개.', '/trip-cost/', tripCostContent));
 
 // ---------- sitemap / robots ----------
-const urls = ['/', ...MONTHS.map(m => `/${m.key}/`), '/search/', ...(holidays.length ? ['/holiday/'] : []), '/pet/', ...(apiAccessible.length ? ['/accessible/'] : []), ...(apiTrails.length ? ['/trails/'] : []), ...(apiValleys.length ? ['/valley/'] : []), ...(apiMaple.length ? ['/maple/'] : []), ...(apiFlower.length ? ['/flower/'] : []), ...(apiOnsen.length ? ['/onsen/'] : []), '/jangteo/', '/test/', '/trip-cost/', ...(visitors.kor && visitors.kor.length ? ['/trend/'] : []), '/blog/', ...posts.map(p => `/blog/${p.slug}/`), '/about/', EDITORIAL_URL, '/contact/', '/privacy/',...(apiFestsEn.length ? ['/en/', '/en/search/'] : []), ...(apiFestsJa.length ? ['/ja/', '/ja/search/'] : []), ...(apiFestsEs.length ? ['/es/', '/es/search/'] : []), ...(apiFestsZh.length ? ['/zh/', '/zh/search/'] : [])];
+const urls = ['/', ...MONTHS.map(m => `/${m.key}/`), '/search/', ...(holidays.length ? ['/holiday/'] : []), '/pet/', ...(apiAccessible.length ? ['/accessible/'] : []), ...(apiTrails.length ? ['/trails/'] : []), ...(apiValleys.length ? ['/valley/'] : []), ...(apiMaple.length ? ['/maple/'] : []), ...(apiFlower.length ? ['/flower/'] : []), ...(apiOnsen.length ? ['/onsen/'] : []), '/jangteo/', '/test/', '/trip-cost/', ...(visitors.kor && visitors.kor.length ? ['/trend/'] : []), ...TREND_LANG_URLS, '/blog/', ...posts.map(p => `/blog/${p.slug}/`), '/about/', EDITORIAL_URL, '/contact/', '/privacy/',...(apiFestsEn.length ? ['/en/', '/en/search/'] : []), ...(apiFestsJa.length ? ['/ja/', '/ja/search/'] : []), ...(apiFestsEs.length ? ['/es/', '/es/search/'] : []), ...(apiFestsZh.length ? ['/zh/', '/zh/search/'] : [])];
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${urls.map(u => `<url><loc>${SITE}${u}</loc><lastmod>${TODAY}</lastmod></url>`).join('\n')}

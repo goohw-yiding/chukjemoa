@@ -240,7 +240,7 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 <body>
 <header><div class="wrap">
 <a class="logo" href="/ja/">🎪 축제모아</a>
-<button class="navtoggle" id="navtoggle" aria-label="menu" aria-expanded="false">☰</button><nav id="mainnav"><a href="/ja/">ホーム</a><a href="/ja/search/">🔎 お祭り検索</a><a href="/">🇰🇷 한국어</a></nav>
+<button class="navtoggle" id="navtoggle" aria-label="menu" aria-expanded="false">☰</button><nav id="mainnav"><a href="/ja/">ホーム</a><a href="/ja/search/">🔎 お祭り検索</a><a href="/ja/trend/">🔥 人気ランキング</a><a href="/">🇰🇷 한국어</a></nav>
 </div></header>
 <main><div class="wrap">
 <style>
@@ -311,7 +311,7 @@ document.getElementById('fmodal').addEventListener('click',function(e){if(e.targ
 document.addEventListener('keydown',function(e){if(e.key==='Escape')closeModal();});
 document.getElementById('fGrid').addEventListener('click',function(e){var c=e.target.closest('.card');if(!c)return;var f=byId[c.getAttribute('data-id')];if(f)openModal(f);});
 document.getElementById('fCount').textContent=LBL.loading;
-fetch('/ja/search/data.json').then(function(r){return r.json();}).then(function(data){F=data;byId={};F.forEach(function(f){byId[f.id]=f;});apply();}).catch(function(){document.getElementById('fCount').textContent=LBL.fail;});
+(function(){var q=new URLSearchParams(location.search),kw=q.get('kw'),rg=q.get('region');if(kw){st.kw=kw;var e1=document.getElementById('fKw');if(e1)e1.value=kw;}if(rg){st.region=rg;var e2=document.getElementById('fSido');if(e2)e2.value=rg;}if(kw||rg){st.quick='all';var bs=document.querySelectorAll('#fQuick button');for(var i=0;i<bs.length;i++)bs[i].classList.toggle('on',bs[i].getAttribute('data-q')==='all');}})();fetch('/ja/search/data.json').then(function(r){return r.json();}).then(function(data){F=data;byId={};F.forEach(function(f){byId[f.id]=f;});apply();}).catch(function(){document.getElementById('fCount').textContent=LBL.fail;});
 })();
 </script>
 <footer><div class="wrap">
