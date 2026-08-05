@@ -2251,8 +2251,8 @@ const trendLd = (visitors.kor && visitors.kor.length) ? `<script type="applicati
   itemListElement: visitors.kor.slice(0, 20).map(r => ({ '@type': 'ListItem', position: r.rank, name: (r.sido ? r.sido + ' ' : '') + r.name }))
 })}</script>` : '';
 writePage('trend', layout(
-  '인기 여행지 랭킹 — 한국인·외국인이 많이 가는 곳, 요즘 뜨는 곳 | ' + SITE_NAME,
-  '한국관광공사 관광 빅데이터 기준 인기 여행지 랭킹. 한국인이 많이 가는 시·군·구, 외국인이 많이 가는 곳, 방문자가 급상승 중인 지역을 한눈에 보고 그 지역 축제까지 바로 확인하세요.',
+  `인기 여행지 랭킹 — ${SEASON_M}월 성수기, 한국인·외국인이 많이 가는 곳 | ` + SITE_NAME,
+  `한국관광공사 관광 빅데이터 기준 인기 여행지 랭킹. ${SEASON_M}월에 평소보다 붐비는 성수기 여행지, 한국인이 많이 가는 시·군·구, 외국인이 많이 가는 곳을 한눈에 보고 그 지역 축제까지 바로 확인하세요.`,
   '/trend/', trendContent, { jsonld: trendLd }));
 
 // ---------- 여행 비용 계산기 (/trip-cost/) ----------
