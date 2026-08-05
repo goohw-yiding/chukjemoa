@@ -212,6 +212,40 @@ function esc(s) {
   return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
 
+// ---------- 쿠팡 파트너스 ----------
+// ★ 제휴링크 교체는 아래 items[].url 한 줄씩만 바꾸면 전 사이트에 반영됩니다.
+//   url이 비어 있으면 일반 쿠팡 검색 URL로 폴백(=수수료 없음). 발급 후 반드시 채울 것.
+//   발급법: partners.coupang.com → 링크 생성 → '검색결과 링크'에 q 값 입력 → 생성된 https://link.coupang.com/a/XXXX 붙여넣기
+const COUPANG = {
+  enabled: true,
+  disc: '※ 이 링크는 쿠팡 파트너스 활동의 일환으로, 구매 시 일정 수수료를 제공받습니다.',
+  items: {
+    festival: { ico: '🎒', t: '축제 갈 때 챙기면 좋은 것', s: '휴대폰 방수팩 · 접이식 돗자리', q: '축제 방수팩 돗자리', url: '' },
+    valley:   { ico: '🩴', t: '계곡에서 미끄러지지 않으려면', s: '아쿠아슈즈 · 방수 가방', q: '아쿠아슈즈', url: '' },
+    onsen:    { ico: '🧖', t: '온천 갈 때 필요한 것', s: '여행용 타월 · 세면 파우치', q: '여행용 타월 세면파우치', url: '' },
+    maple:    { ico: '🥾', t: '단풍 산행 준비물', s: '경등산화 · 등산 스틱', q: '경등산화', url: '' },
+    flower:   { ico: '🧺', t: '봄꽃 나들이 준비물', s: '피크닉 매트 · 보냉가방', q: '피크닉 매트', url: '' },
+    trails:   { ico: '🎒', t: '걷기 여행 준비물', s: '경량 배낭 · 워킹폴', q: '경량 배낭 워킹폴', url: '' },
+    pet:      { ico: '🐾', t: '반려견과 떠난다면', s: '이동가방 · car 안전벨트', q: '강아지 이동가방', url: '' },
+    jangteo:  { ico: '🧺', t: '장 보러 갈 때', s: '접이식 장바구니 · 보냉백', q: '접이식 장바구니', url: '' },
+    car:      { ico: '🚗', t: '장거리 운전 전에', s: '차량용 거치대 · 휴대용 충전기', q: '차량용 휴대폰 거치대', url: '' }
+  }
+};
+function cpHref(key) {
+  const it = COUPANG.items[key];
+  return (it && it.url) ? it.url : 'https://www.coupang.com/np/search?q=' + encodeURIComponent(it ? it.q : '여행용품');
+}
+// 페이지당 1개 원칙. 클릭 시 중간 페이지 없이 바로 쿠팡으로 이동.
+function buyBox(key) {
+  if (!COUPANG.enabled) return '';
+  const it = COUPANG.items[key]; if (!it) return '';
+  return `<a class="buybox" href="${cpHref(key)}" target="_blank" rel="nofollow sponsored noopener">`
+    + `<span class="bb-ico">${it.ico}</span>`
+    + `<span class="bb-txt"><b>${esc(it.t)}</b><span class="bb-sub">${esc(it.s)}</span></span>`
+    + `<span class="bb-arrow">›</span></a>`
+    + `<div class="bb-disc">${COUPANG.disc}</div>`;
+}
+
 function festCard(f) {
   const emoji = CAT_EMOJI[f.category] || '🎪';
   const img = CAT_IMG[f.category] || 'etc';
@@ -348,6 +382,7 @@ const FEST_MODAL_HTML = `<div id="festmodal" class="fmodal"><div class="fmbox">
 <div id="fmc-out"></div>
 <p class="hint">자동차(연료+통행료+주차) vs 대중교통·KTX 편도 비용 비교 · <a href="/trip-cost/" style="color:#e0502f;font-weight:700">연비·유가 바꿔서 자세히 계산 →</a></p>
 </div>
+${buyBox('festival')}
 <div class="fm-links"><a id="fm2-hp" target="_blank" rel="noopener">🏛️ 공식 홈페이지</a><a id="fm2-naver" target="_blank" rel="noopener">🔎 네이버에서 보기</a></div>
 </div></div>`;
 const FEST_MODAL_JS = `<script>
@@ -391,6 +426,7 @@ const PLACE_MODAL_HTML = `<div id="placemodal" class="fmodal"><div class="fmbox"
 <div id="pmc-out"></div>
 <p class="hint">자동차(연료+통행료+주차) vs 대중교통·KTX 편도 비용 비교 · <a href="/trip-cost/" style="color:#e0502f;font-weight:700">연비·유가 바꿔서 자세히 계산 →</a></p>
 </div>
+<div id="pmc-buy"></div>
 <div class="fm-links"><a id="pm2-map" target="_blank" rel="noopener">🗺️ 지도</a><a id="pm2-naver" target="_blank" rel="noopener">🔎 네이버에서 보기</a></div>
 </div></div>`;
 const PLACE_MODAL_JS = `<script>
@@ -404,6 +440,7 @@ const PLACE_MODAL_JS = `<script>
     document.getElementById('pm2-naver').href=o.naver||('https://search.naver.com/search.naver?query='+encodeURIComponent(o.title||''));
     var mp=document.getElementById('pm2-map'); if(o.map){mp.href=o.map;mp.style.display='inline-block';}else{mp.style.display='none';}
     if(window.cjmResetCalc)window.cjmResetCalc('pmc',window.cjmCands(o.title,window.cjmClean(o.title),o.dest,o.meta));
+    var pb=document.getElementById('pmc-buy'); if(pb) pb.innerHTML=window.CJM_BUYBOX||'';
     m.classList.add('show');
   };
   function close(){m.classList.remove('show');}
@@ -676,6 +713,15 @@ article ul{padding-left:20px}
 .fmcalc .rbox .s{font-size:.72rem;color:#9ca3af}
 .fmcalc .best{margin-top:10px;font-weight:800;font-size:.9rem;color:#0a6c63;text-align:center}
 .fmcalc .err{color:#dc2626;font-weight:700;font-size:.88rem;margin-top:9px;text-align:center}
+.buybox{display:flex;align-items:center;gap:12px;background:linear-gradient(135deg,#0f9d8f,#0d7d72);color:#fff;border-radius:14px;padding:14px 18px;margin:16px 0 0;text-decoration:none;box-shadow:0 6px 18px rgba(15,157,143,.28);transition:transform .15s}
+.buybox:hover{transform:translateY(-2px)}
+.buybox .bb-ico{font-size:1.5rem;flex:none}
+.buybox .bb-txt{flex:1;display:flex;flex-direction:column;gap:2px;min-width:0}
+.buybox .bb-txt b{font-size:.98rem;font-weight:800}
+.buybox .bb-sub{font-size:.82rem;opacity:.88}
+.buybox .bb-arrow{font-size:1.5rem;opacity:.75;flex:none}
+.bb-disc{font-size:.74rem;color:#9ca3af;margin:6px 2px 2px;line-height:1.5}
+@media(max-width:600px){.buybox{padding:13px 15px;gap:10px}.buybox .bb-txt b{font-size:.92rem}}
 .faqbox{background:#fff;border-radius:18px;box-shadow:0 3px 14px rgba(31,41,55,.08);padding:26px 30px 22px;margin:10px 0 34px}
 .faqbox h2{font-size:1.3rem;font-weight:900;letter-spacing:-.02em;margin-bottom:6px;color:#0a6c63}
 .faqbox details{border-top:1px solid #eef5f3;padding:2px 0}
@@ -984,7 +1030,7 @@ render();
 writePage('jangteo', layout(
   `전국 오일장(5일장) 날짜 총정리 — 모란장·정선장·봉평장 장날 | ${SITE_NAME}`,
   `전국 유명 오일장 장날 한눈에 보기. 성남 모란장(4·9일), 정선아리랑시장(2·7일), 봉평장(2·7일) 등 27곳 5일장 날짜와 대표 먹거리 정리.`,
-  '/jangteo/', jangteoContent));
+  '/jangteo/', jangteoContent + buyBox('jangteo')));
 
 // ---------- 신뢰 요소(E-E-A-T) 공통 블록 ----------
 // 편집 원칙: /editorial/ · 저자 명의: 축제모아 편집팀
@@ -1324,6 +1370,7 @@ ${monthNavHtml}
 ${visitorSection}
 <h2 class="sec">전국 오일장 — 오늘 서는 장은?</h2>
 <p class="note">성남 모란장, 정선아리랑시장, 봉평장 등 전국 유명 5일장 날짜를 정리했어요.</p>
+${buyBox('jangteo')}
 <p><a href="/jangteo/" style="display:inline-block;background:#ff6b4a;color:#fff;font-weight:700;padding:10px 22px;border-radius:24px">오일장 날짜 보러가기 →</a></p>
 <h2 class="sec">축제 가이드</h2>
 <div class="bloglist">
@@ -1537,6 +1584,7 @@ const searchContent = `<main><div class="wrap">
 <div id="smc-out"></div>
 <p class="hint">자동차(연료+통행료+주차) vs 대중교통·KTX 편도 비용 비교 · <a href="/trip-cost/" style="color:#e0502f;font-weight:700">연비·유가 바꿔서 자세히 계산 →</a></p>
 </div>
+${buyBox('festival')}
 <div class="fm-links"><a id="fm-hp" target="_blank" rel="noopener">🏛️ 공식 홈페이지</a><a id="fm-naver" target="_blank" rel="noopener">🔎 네이버에서 보기</a></div>
 </div></div>
 </div></main>
@@ -1637,7 +1685,7 @@ document.getElementById('pCount').textContent='불러오는 중…';
 fetch('/pet/data.json').then(function(r){return r.json();}).then(function(data){P=data;byId={};P.forEach(function(p){byId[p.id]=p;});fillSg();render();}).catch(function(){document.getElementById('pCount').textContent='데이터를 불러오지 못했습니다. 새로고침 해주세요.';});
 })();
 </script>`;
-writePage('pet', layout('반려견 동반 여행지 — 전국 반려동물 동반 관광지·맛집·숙소 | ' + SITE_NAME, '반려동물 동반 가능한 전국 관광지·음식점·숙박·레포츠를 지역별로. 공공데이터 기반 ' + apiPets.length + '곳. 강아지와 함께 갈 곳 찾기.', '/pet/', petContent));
+writePage('pet', layout('반려견 동반 여행지 — 전국 반려동물 동반 관광지·맛집·숙소 | ' + SITE_NAME, '반려동물 동반 가능한 전국 관광지·음식점·숙박·레포츠를 지역별로. 공공데이터 기반 ' + apiPets.length + '곳. 강아지와 함께 갈 곳 찾기.', '/pet/', petContent + '<script>window.CJM_BUYBOX=' + JSON.stringify(buyBox('pet')) + ';</script>'));
 fs.writeFileSync(path.join(ROOT, 'pet', 'data.json'), JSON.stringify(apiPets));
 
 // ---------- 계곡명소 ----------
@@ -1689,7 +1737,7 @@ document.getElementById('vCount').textContent='불러오는 중…';
 fetch('/valley/data.json').then(function(r){return r.json();}).then(function(data){P=data;byId={};P.forEach(function(p){byId[p.id]=p;});fillSg();render();}).catch(function(){document.getElementById('vCount').textContent='데이터를 불러오지 못했습니다. 새로고침 해주세요.';});
 })();
 </script>`;
-  writePage('valley', layout('전국 계곡명소 — 여름 피서·물놀이 좋은 전국 계곡 총정리 | ' + SITE_NAME, '여름 피서·물놀이 가기 좋은 전국 계곡 ' + apiValleys.length + '곳을 지역별로. 공공데이터 기반 계곡 명소 정보와 지도.', '/valley/', valleyContent));
+  writePage('valley', layout('전국 계곡명소 — 여름 피서·물놀이 좋은 전국 계곡 총정리 | ' + SITE_NAME, '여름 피서·물놀이 가기 좋은 전국 계곡 ' + apiValleys.length + '곳을 지역별로. 공공데이터 기반 계곡 명소 정보와 지도.', '/valley/', valleyContent + '<script>window.CJM_BUYBOX=' + JSON.stringify(buyBox('valley')) + ';</script>'));
   fs.writeFileSync(path.join(ROOT, 'valley', 'data.json'), JSON.stringify(apiValleys));
 // ---------- 계절 명소(단풍·꽃·온천) — 범용 루프 ----------
 const SPOT_THEMES = [
@@ -1760,7 +1808,7 @@ document.getElementById('sCount').textContent='불러오는 중…';
 fetch(DURL).then(function(r){return r.json();}).then(function(data){P=data;byId={};P.forEach(function(p){byId[p.id]=p;});fillSg();render();}).catch(function(){document.getElementById('sCount').textContent='데이터를 불러오지 못했습니다. 새로고침 해주세요.';});
 })();
 </script>`;
-  writePage(T.slug, layout(T.title, T.metaDesc, '/' + T.slug + '/', content));
+  writePage(T.slug, layout(T.title, T.metaDesc, '/' + T.slug + '/', content + '<script>window.CJM_BUYBOX=' + JSON.stringify(buyBox(T.slug)) + ';</script>'));
   fs.writeFileSync(path.join(ROOT, T.slug, 'data.json'), JSON.stringify(T.data));
 });
 
@@ -2073,7 +2121,7 @@ document.getElementById('aCount').textContent='불러오는 중…';
 fetch('/accessible/data.json').then(function(r){return r.json();}).then(function(data){A=data;byId={};A.forEach(function(p){byId[p.id]=p;});fillSg();render();}).catch(function(){document.getElementById('aCount').textContent='데이터를 불러오지 못했습니다. 새로고침 해주세요.';});
 })();
 </script>`;
-  writePage('accessible', layout('무장애 여행지 — 휠체어·유아차·고령자 접근 가능 관광지 | ' + SITE_NAME, '휠체어·유아차·고령자도 편하게 갈 수 있는 전국 무장애 관광지·문화시설·맛집·숙소를 지역별로. 공공데이터 기반 ' + apiAccessible.length.toLocaleString() + '곳.', '/accessible/', accContent));
+  writePage('accessible', layout('무장애 여행지 — 휠체어·유아차·고령자 접근 가능 관광지 | ' + SITE_NAME, '휠체어·유아차·고령자도 편하게 갈 수 있는 전국 무장애 관광지·문화시설·맛집·숙소를 지역별로. 공공데이터 기반 ' + apiAccessible.length.toLocaleString() + '곳.', '/accessible/', accContent + '<script>window.CJM_BUYBOX=' + JSON.stringify(buyBox('trails')) + ';</script>'));
   fs.writeFileSync(path.join(ROOT, 'accessible', 'data.json'), JSON.stringify(apiAccessible));
 }
 
@@ -2141,7 +2189,7 @@ document.getElementById('tCount').textContent='불러오는 중…';
 fetch('/trails/data.json').then(function(r){return r.json();}).then(function(data){T=data;byId={};T.forEach(function(t){byId[t.id]=t;});render();}).catch(function(){document.getElementById('tCount').textContent='데이터를 불러오지 못했습니다. 새로고침 해주세요.';});
 })();
 </script>`;
-  writePage('trails', layout('걷기 여행 — 전국 걷기길 코스(해파랑길·서해랑길·남파랑길) | ' + SITE_NAME, '전국 걷기여행 코스를 거리·난이도·지역별로. 두루누비 공공데이터 기반 ' + apiTrails.length + '개 코스 — 해파랑길·서해랑길·남파랑길·DMZ 평화의길.', '/trails/', trailContent));
+  writePage('trails', layout('걷기 여행 — 전국 걷기길 코스(해파랑길·서해랑길·남파랑길) | ' + SITE_NAME, '전국 걷기여행 코스를 거리·난이도·지역별로. 두루누비 공공데이터 기반 ' + apiTrails.length + '개 코스 — 해파랑길·서해랑길·남파랑길·DMZ 평화의길.', '/trails/', trailContent + '<script>window.CJM_BUYBOX=' + JSON.stringify(buyBox('trails')) + ';</script>'));
   fs.writeFileSync(path.join(ROOT, 'trails', 'data.json'), JSON.stringify(apiTrails));
 }
 
@@ -2705,6 +2753,7 @@ function run(){
     opts.sort(function(a,b){return a.c-b.c;});
     if(opts.length>1)html+='<div class="tc-verdict">가장 저렴: '+opts[0].n+' '+won(opts[0].c)+'</div>';
     html+='</div>';
+    html+=${JSON.stringify(buyBox('car'))};
     out.innerHTML=html;
   }).catch(function(){btn.disabled=false;btn.textContent='비용 계산하기';out.innerHTML='<div class="tc-err">계산에 실패했어요. 잠시 후 다시 시도해주세요.</div>';});
 }
