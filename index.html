@@ -577,8 +577,24 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
   window.cjmDest={};
   function won(n){return (n||0).toLocaleString()+'원';}
   function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
-  window.cjmResetCalc=function(p,dest,alt){
-    window.cjmDest[p]={d:dest||'',a:alt||''};
+  // 장소 문자열 정리: 괄호·구분자·꼬리말 제거 → 카카오 검색이 찾을 수 있는 형태로
+  function clean(s){
+    s=String(s||'').replace(/\(.*?\)|\[.*?\]/g,' ').split(/[·,\/]/)[0];
+    s=s.replace(/\s*(일원|일대|인근|주변|앞|내|정문|등)\s*$/,'');
+    return s.replace(/\s+/g,' ').trim();
+  }
+  // 후보 목록(앞에서부터 시도) 만들기 — 중복·빈값 제거
+  window.cjmCands=function(){
+    var out=[],seen={};
+    for(var i=0;i<arguments.length;i++){
+      var v=String(arguments[i]||'').replace(/\s+/g,' ').trim();
+      if(v&&v.length>1&&!seen[v]){seen[v]=1;out.push(v);}
+    }
+    return out;
+  };
+  window.cjmClean=clean;
+  window.cjmResetCalc=function(p,cands){
+    window.cjmDest[p]=Array.isArray(cands)?cands:[cands].filter(Boolean);
     var o=document.getElementById(p+'-out'); if(o)o.innerHTML='';
   };
   window.cjmBindCalc=function(p){
@@ -599,24 +615,28 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
       o.innerHTML=h;
     }
     function done(){b.disabled=false;b.textContent='계산';}
-    function ask(from,to,onFail){
-      return fetch('/api/tripcost?from='+encodeURIComponent(from)+'&to='+encodeURIComponent(to))
+    function fail(){
+      done();
+      o.innerHTML='<div class="err">이 장소는 자동으로 못 찾았어요.<br><a href="/trip-cost/" style="color:#e0502f;text-decoration:underline">계산기에서 직접 입력해 보기 →</a></div>';
+    }
+    // 도착지 후보를 앞에서부터 순서대로 시도 (축제명 → 정리된 장소명 → 시·군)
+    function tryList(from,list,k){
+      if(k>=list.length){fail();return;}
+      fetch('/api/tripcost?from='+encodeURIComponent(from)+'&to='+encodeURIComponent(list[k]))
         .then(function(r){return r.json();})
         .then(function(d){
-          if(d.error){ if(onFail){onFail(d.error);return;} done();o.innerHTML='<div class="err">'+esc(d.error)+'</div>';return; }
+          if(d.error||!d.car){tryList(from,list,k+1);return;}
           done();render(d);
-        });
+        })
+        .catch(function(){tryList(from,list,k+1);});
     }
     function run(){
-      var from=i.value.trim(),t=window.cjmDest[p]||{};
+      var from=i.value.trim(),list=window.cjmDest[p]||[];
       if(!from){o.innerHTML='<div class="err">출발지를 입력해주세요.</div>';i.focus();return;}
-      if(!t.d){o.innerHTML='<div class="err">도착지를 확인할 수 없어요.</div>';return;}
+      if(!list.length){o.innerHTML='<div class="err">도착지를 확인할 수 없어요.</div>';return;}
       try{localStorage.setItem(KEY,from);}catch(e){}
       b.disabled=true;b.textContent='계산 중…';o.innerHTML='';
-      ask(from,t.d,function(err){
-        if(t.a&&t.a!==t.d){ ask(from,t.a).catch(function(){done();o.innerHTML='<div class="err">계산에 실패했어요. 잠시 후 다시 시도해주세요.</div>';}); }
-        else{done();o.innerHTML='<div class="err">'+esc(err)+'</div>';}
-      }).catch(function(){done();o.innerHTML='<div class="err">계산에 실패했어요. 잠시 후 다시 시도해주세요.</div>';});
+      tryList(from,list,0);
     }
     b.addEventListener('click',run);
     i.addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();run();}});
@@ -643,7 +663,7 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
     var hp=document.getElementById('fm2-hp');
     if(ds.hp){hp.href=(ds.hp.indexOf('http')===0?ds.hp:'http://'+ds.hp);hp.style.display='inline-block';}else{hp.style.display='none';}
     document.getElementById('fm2-naver').href='https://search.naver.com/search.naver?query='+encodeURIComponent((ds.name||'')+' 축제');
-    if(window.cjmResetCalc)window.cjmResetCalc('fmc',ds.name||ds.place||'',[ds.city,ds.place].filter(Boolean).join(' ')||ds.place||'');
+    if(window.cjmResetCalc){var cp=window.cjmClean(ds.place);window.cjmResetCalc('fmc',window.cjmCands(ds.name,(ds.city?ds.city+' ':'')+cp,cp,(ds.region||'')+' '+(ds.city||''),ds.city));}
     m.classList.add('show');
   };
   function close(){m.classList.remove('show');}
@@ -661,7 +681,7 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
     document.getElementById('pm2-body').innerHTML=o.body||'';
     document.getElementById('pm2-naver').href=o.naver||('https://search.naver.com/search.naver?query='+encodeURIComponent(o.title||''));
     var mp=document.getElementById('pm2-map'); if(o.map){mp.href=o.map;mp.style.display='inline-block';}else{mp.style.display='none';}
-    if(window.cjmResetCalc)window.cjmResetCalc('pmc',o.title||'',o.dest||'');
+    if(window.cjmResetCalc)window.cjmResetCalc('pmc',window.cjmCands(o.title,window.cjmClean(o.title),o.dest,o.meta));
     m.classList.add('show');
   };
   function close(){m.classList.remove('show');}
