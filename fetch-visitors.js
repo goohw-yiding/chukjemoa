@@ -2,7 +2,12 @@
 //  - metcoRegnVisitrDDList : 시도 단위 일별 방문자
 //  - locgoRegnVisitrDDList : 시군구 단위 일별 방문자
 //  touDivCd  1=현지인(제외)  2=외지인(국내 여행객)  3=외국인
-//  최근 30일 vs 그 이전 30일을 나눠 담아 급상승률까지 계산한다. 실행: node fetch-visitors.js
+//
+//  ★ 이 API는 약 30일 지연 발행된다(실측). 그래서 "요즘"을 말할 때는
+//     반드시 최신 가용일을 먼저 탐색해 그 구간을 쓰고, 화면에도 기간을 명시한다.
+//  ★ 계절 랭킹: 작년 같은 달 실제 방문 데이터 ÷ 작년 연 평균 = "평소 대비 몇 배 붐비는가".
+//     지연 데이터로 '지금'을 말하는 대신, 지난 데이터로 '이번 달'을 예고하는 방식.
+//  실행: node fetch-visitors.js
 const fs = require('fs'), path = require('path'), https = require('https');
 const KEY = fs.readFileSync(path.join(__dirname, 'tourapi.key'), 'utf8').trim();
 const BASE = 'https://apis.data.go.kr/B551011/DataLabService/';
@@ -22,7 +27,7 @@ function shortSido(n) {
 }
 
 // 한 오퍼레이션을 기간별로 전량 페이지네이션 수집 → rows 콜백
-async function collect(op, startD, endD, onRow) {
+async function collect(op, startD, endD, onRow, quiet) {
   let page = 1, total = Infinity, got = 0;
   while ((page - 1) * 1000 < total) {
     const u = `${BASE}${op}?serviceKey=${KEY}&MobileOS=ETC&MobileApp=chukjemoa&_type=json`
@@ -36,75 +41,115 @@ async function collect(op, startD, endD, onRow) {
     let it = b.items && b.items.item; if (!it) break; if (!Array.isArray(it)) it = [it];
     for (const r of it) onRow(r);
     got += it.length;
-    process.stdout.write('\r  ' + op + ' ' + got + '/' + total);
+    if (!quiet) process.stdout.write('\r  ' + op + ' ' + got + '/' + total + '   ');
     if (it.length < 1000) break;
-    page++; if (page > 200) break;
+    page++; if (page > 300) break;
   }
-  process.stdout.write('\n');
+  if (!quiet) process.stdout.write('\n');
+  return got;
 }
 
-// 집계 버킷: key → {name, sido, cur:{kor,fgn}, prev:{kor,fgn}}
-function bump(agg, key, name, sido, win, row) {
-  if (!agg[key]) agg[key] = { name, sido, cur: { kor: 0, fgn: 0 }, prev: { kor: 0, fgn: 0 } };
+// 최신 가용일 탐색(이진). 공공데이터 발행 지연이 바뀌어도 자동 추종.
+async function latestDay() {
+  async function has(d) {
+    const s = ymd(d);
+    const u = `${BASE}locgoRegnVisitrDDList?serviceKey=${KEY}&MobileOS=ETC&MobileApp=chukjemoa&_type=json&numOfRows=1&pageNo=1&startYmd=${s}&endYmd=${s}`;
+    try { return Number(JSON.parse(await get(u)).response.body.totalCount) > 0; } catch (e) { return false; }
+  }
+  let lo = new Date(); lo.setDate(lo.getDate() - 150);
+  let hi = new Date();
+  while ((hi - lo) > 86400000) {
+    const mid = new Date((+lo + +hi) / 2); mid.setHours(12, 0, 0, 0);
+    if (await has(mid)) lo = mid; else hi = mid;
+  }
+  lo.setHours(0, 0, 0, 0);
+  return lo;
+}
+
+function bump(agg, key, name, sido, row) {
+  if (!agg[key]) agg[key] = { name, sido, kor: 0, fgn: 0 };
   const n = +row.touNum || 0;
-  if (String(row.touDivCd) === '2') agg[key][win].kor += n;
-  else if (String(row.touDivCd) === '3') agg[key][win].fgn += n;
+  if (String(row.touDivCd) === '2') agg[key].kor += n;
+  else if (String(row.touDivCd) === '3') agg[key].fgn += n;
 }
-
 function rank(list, pick) {
   return list.map(r => ({ name: r.name, sido: r.sido, num: Math.round(pick(r)) }))
     .filter(r => r.num > 0)
     .sort((a, b) => b.num - a.num)
     .map((r, i) => Object.assign({ rank: i + 1 }, r));
 }
+function fmtRange(a, b) {
+  const f = s => s.slice(0, 4) + '.' + s.slice(4, 6) + '.' + s.slice(6, 8);
+  return f(ymd(a)) + '~' + f(ymd(b));
+}
+
+// 계절 랭킹: 작년 같은 달 일평균 ÷ 작년 연 일평균 = 성수기 배수
+async function seasonRank(year, month) {
+  const cur = {}, base = {};
+  const mStart = new Date(year, month - 1, 1), mEnd = new Date(year, month, 0);
+  process.stdout.write('  계절: ' + year + '-' + month + '월 수집');
+  await collect('locgoRegnVisitrDDList', mStart, mEnd, r => {
+    bump(cur, r.signguCode, r.signguNm, '', r);
+  }, true);
+  const mDays = mEnd.getDate();
+  // 기준선: 같은 해 12개월 각 1~7일 샘플
+  let baseDays = 0;
+  for (let m = 1; m <= 12; m++) {
+    const s = new Date(year, m - 1, 1), e = new Date(year, m - 1, 7);
+    const got = await collect('locgoRegnVisitrDDList', s, e, r => {
+      bump(base, r.signguCode, r.signguNm, '', r);
+    }, true);
+    if (got > 0) baseDays += 7;
+    process.stdout.write('\r  계절: ' + year + '-' + month + '월 기준선 ' + m + '/12   ');
+  }
+  process.stdout.write('\n');
+  if (!baseDays) return [];
+  const out = [];
+  for (const k of Object.keys(cur)) {
+    const b = base[k]; if (!b || b.kor <= 0) continue;
+    const curDaily = cur[k].kor / mDays, baseDaily = b.kor / baseDays;
+    if (curDaily < 5000) continue;              // 규모가 너무 작은 곳 제외
+    out.push({ code: k, name: cur[k].name, idx: +(curDaily / baseDaily).toFixed(2), num: Math.round(cur[k].kor) });
+  }
+  return out.filter(r => r.idx > 1).sort((a, b) => b.idx - a.idx);
+}
 
 async function main() {
-  // 관광 빅데이터는 2개월가량 지연 발행 → 오늘-70일을 기준점으로 잡는다
-  const curEnd = new Date(); curEnd.setDate(curEnd.getDate() - 70);
-  const curStart = new Date(curEnd); curStart.setDate(curStart.getDate() - 29);
-  const prevEnd = new Date(curStart); prevEnd.setDate(prevEnd.getDate() - 1);
-  const prevStart = new Date(prevEnd); prevStart.setDate(prevStart.getDate() - 29);
+  const last = await latestDay();
+  const curStart = new Date(last); curStart.setDate(curStart.getDate() - 29);
+  console.log('최신 가용일:', ymd(last), '| 집계구간', fmtRange(curStart, last));
 
-  const sido = {}, sigungu = {}, sidoNm = {}, dates = new Set();
+  const sido = {}, sg = {}, sidoNm = {};
+  await collect('metcoRegnVisitrDDList', curStart, last, r => {
+    sidoNm[r.areaCode] = shortSido(r.areaNm);
+    bump(sido, r.areaCode, shortSido(r.areaNm), '', r);
+  });
+  await collect('locgoRegnVisitrDDList', curStart, last, r => {
+    bump(sg, r.signguCode, r.signguNm, sidoNm[String(r.signguCode).slice(0, 2)] || '', r);
+  });
 
-  for (const [win, s, e] of [['cur', curStart, curEnd], ['prev', prevStart, prevEnd]]) {
-    console.log(win + ': ' + ymd(s) + '~' + ymd(e));
-    await collect('metcoRegnVisitrDDList', s, e, r => {
-      if (win === 'cur') dates.add(r.baseYmd);
-      sidoNm[r.areaCode] = shortSido(r.areaNm);
-      bump(sido, r.areaCode, shortSido(r.areaNm), '', win, r);
-    });
-    await collect('locgoRegnVisitrDDList', s, e, r => {
-      const sd = sidoNm[String(r.signguCode).slice(0, 2)] || '';
-      bump(sigungu, r.signguCode, r.signguNm, sd, win, r);
-    });
-  }
+  // 계절 랭킹 — 작년 같은 달
+  const now = new Date(), month = now.getMonth() + 1, sYear = now.getFullYear() - 1;
+  const season = (await seasonRank(sYear, month)).slice(0, 25).map((r, i) => ({
+    rank: i + 1, name: r.name, sido: sidoNm[String(r.code).slice(0, 2)] || '', idx: r.idx, num: r.num
+  }));
 
-  const sidoArr = Object.values(sido), sgArr = Object.values(sigungu);
-
-  // 급상승: 현재 30일 외지인 방문자가 일정 규모 이상인 시군구만 대상(소규모 지역 노이즈 제거)
-  const MIN = 300000;
-  const hot = sgArr
-    .filter(r => r.cur.kor >= MIN && r.prev.kor >= MIN)
-    .map(r => ({ name: r.name, sido: r.sido, num: Math.round(r.cur.kor), pct: +(((r.cur.kor - r.prev.kor) / r.prev.kor) * 100).toFixed(1) }))
-    .filter(r => r.pct > 0)
-    .sort((a, b) => b.pct - a.pct)
-    .map((r, i) => Object.assign({ rank: i + 1 }, r));
-
-  const ds = [...dates].sort();
+  const sidoArr = Object.values(sido), sgArr = Object.values(sg);
   const out = {
-    updated: ds.length ? ds[0] + '~' + ds[ds.length - 1] : '',
-    kor: rank(sgArr, r => r.cur.kor).slice(0, 40),      // 한국인(외지인)이 많이 가는 시군구
-    fgn: rank(sgArr, r => r.cur.fgn).slice(0, 40),      // 외국인이 많이 가는 시군구
-    hot: hot.slice(0, 30),                              // 급상승 시군구
-    sido: rank(sidoArr, r => r.cur.kor + r.cur.fgn),    // 시도 종합
-    ranked: rank(sidoArr, r => r.cur.kor + r.cur.fgn)   // 하위호환(기존 홈 섹션용)
+    period: fmtRange(curStart, last),
+    latest: ymd(last),
+    lagDays: Math.round((Date.now() - last) / 86400000),
+    season: { year: sYear, month, list: season },
+    kor: rank(sgArr, r => r.kor).slice(0, 40),
+    fgn: rank(sgArr, r => r.fgn).slice(0, 40),
+    sido: rank(sidoArr, r => r.kor + r.fgn),
+    ranked: rank(sidoArr, r => r.kor + r.fgn)
   };
+  out.updated = out.period;
   fs.writeFileSync(path.join(__dirname, 'data', 'visitors.json'), JSON.stringify(out));
-  console.log('저장 완료 | 기간', out.updated);
-  console.log(' 한국인 TOP5 :', out.kor.slice(0, 5).map(r => r.name + '(' + (r.num / 10000).toFixed(0) + '만)').join(' '));
-  console.log(' 외국인 TOP5 :', out.fgn.slice(0, 5).map(r => r.name + '(' + (r.num / 10000).toFixed(0) + '만)').join(' '));
-  console.log(' 급상승 TOP5 :', out.hot.slice(0, 5).map(r => r.name + '(+' + r.pct + '%)').join(' '));
-  console.log(' 시도   TOP5 :', out.sido.slice(0, 5).map(r => r.name).join(' '));
+  console.log('저장 완료 | 기준', out.period, '| 지연', out.lagDays, '일');
+  console.log(' 한국인 TOP5 :', out.kor.slice(0, 5).map(r => r.sido + ' ' + r.name + '(' + (r.num / 10000).toFixed(0) + '만)').join('  '));
+  console.log(' 외국인 TOP5 :', out.fgn.slice(0, 5).map(r => r.sido + ' ' + r.name + '(' + (r.num / 10000).toFixed(0) + '만)').join('  '));
+  console.log(' ' + month + '월 성수기 TOP8 :', season.slice(0, 8).map(r => r.sido + ' ' + r.name + '(x' + r.idx + ')').join('  '));
 }
 main();

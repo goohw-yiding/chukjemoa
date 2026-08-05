@@ -684,6 +684,9 @@ article ul{padding-left:20px}
 .faqbox summary:hover{color:#0f9d8f}
 .faqbox details p{font-size:.94rem;color:#4b5563;line-height:1.75;padding:0 8px 16px 0;margin-top:-2px}
 @media(max-width:600px){.faqbox{padding:20px 18px 16px;border-radius:14px}.faqbox summary{font-size:.95rem;padding:13px 26px 13px 0}}
+.datebadge{background:#f4faf8;border:1px solid #dcefeb;border-radius:12px;padding:12px 15px;font-size:.85rem;color:#374151;line-height:1.6;margin:12px 0 4px}
+.datebadge b{color:#0a6c63}
+.datebadge span{color:#9ca3af;font-size:.8rem}
 .rank-tabs{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 18px}
 .rank-tabs button{border:1.5px solid #a9e5dd;background:#fff;color:#0c7d72;border-radius:20px;padding:9px 18px;font-size:.9rem;font-weight:800;cursor:pointer;font-family:inherit;transition:all .15s}
 .rank-tabs button:hover{border-color:#0f9d8f}
@@ -1247,24 +1250,26 @@ const WEEKEND_JS = `<script>
 // 홈 요약: 한국인·외국인·급상승 TOP5 3열 + /trend/ 전체보기
 function homeMini(list, cls, mode) {
   if (!list || !list.length) return '';
-  const max = mode === 'hot' ? list[0].pct : list[0].num;
+  const max = mode === 'season' ? list[0].idx : list[0].num;
   return list.slice(0, 5).map(r => {
-    const v = mode === 'hot' ? r.pct : r.num;
+    const v = mode === 'season' ? r.idx : r.num;
     const w = Math.max(18, Math.round(v / max * 100));
     const label = r.sido ? esc(r.sido) + ' ' + esc(r.name) : esc(r.name);
     const q = r.sido ? `/search/?sido=${encodeURIComponent(r.sido)}&sigungu=${encodeURIComponent(r.name)}`
       : `/search/?sido=${encodeURIComponent(r.name)}`;
-    const val = mode === 'hot' ? `<em>+${r.pct}%</em>` : `${(r.num / 10000).toFixed(0)}만`;
+    const val = mode === 'season' ? `<em>${r.idx}배</em>` : `${(r.num / 10000).toFixed(0)}만`;
     return `<div class="rankrow ${cls}"><div class="no">${r.rank}</div><div class="bar" style="max-width:${w}%"><a href="${q}">${label}</a></div><div class="val">${val}</div></div>`;
   }).join('');
 }
+const HOME_M = (visitors.season && visitors.season.month) || (new Date().getMonth() + 1);
+const HOME_SEASON = (visitors.season && visitors.season.list) || [];
 const visitorSection = (visitors.kor && visitors.kor.length) ? `
-<h2 class="sec">🔥 요즘 사람들이 많이 가는 곳</h2>
-<p class="note" style="margin-top:-2px">한국관광공사 관광 빅데이터 기준. 지역을 누르면 그곳에서 열리는 축제를 볼 수 있어요.</p>
+<h2 class="sec">🔥 사람들이 많이 가는 곳</h2>
+<p class="note" style="margin-top:-2px">한국관광공사 관광 빅데이터 기준 · 지역을 누르면 그곳에서 열리는 축제를 볼 수 있어요.</p>
 <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(272px,1fr));gap:18px;margin:14px 0 6px">
-<div><div style="font-weight:800;color:#0a6c63;margin-bottom:8px">🇰🇷 한국인이 많이 가는 곳</div><div class="ranklist">${homeMini(visitors.kor, '', 'num')}</div></div>
-<div><div style="font-weight:800;color:#6d28d9;margin-bottom:8px">🌏 외국인이 많이 가는 곳</div><div class="ranklist">${homeMini(visitors.fgn, 'fgn', 'num')}</div></div>
-<div><div style="font-weight:800;color:#e0502f;margin-bottom:8px">📈 요즘 뜨는 곳</div><div class="ranklist">${homeMini(visitors.hot, 'hot', 'hot')}</div></div>
+<div><div style="font-weight:800;color:#0a6c63;margin-bottom:8px">🇰🇷 한국인이 많이 가는 곳</div><div class="ranklist">${homeMini(visitors.kor, '', 'num')}</div><div style="font-size:.75rem;color:#9ca3af;margin-top:6px">${visitors.period || ''} 기준</div></div>
+<div><div style="font-weight:800;color:#6d28d9;margin-bottom:8px">🌏 외국인이 많이 가는 곳</div><div class="ranklist">${homeMini(visitors.fgn, 'fgn', 'num')}</div><div style="font-size:.75rem;color:#9ca3af;margin-top:6px">${visitors.period || ''} 기준</div></div>
+<div><div style="font-weight:800;color:#e0502f;margin-bottom:8px">🌞 ${HOME_M}월엔 여기가 붐벼요</div><div class="ranklist">${homeMini(HOME_SEASON, 'hot', 'season')}</div><div style="font-size:.75rem;color:#9ca3af;margin-top:6px">평소 대비 배수 · 작년 ${HOME_M}월 실적</div></div>
 </div>
 <p style="margin:10px 0 4px"><a href="/trend/" style="display:inline-block;background:#0f9d8f;color:#fff;font-weight:800;padding:10px 22px;border-radius:24px">인기 여행지 랭킹 전체 보기 →</a></p>` : '';
 
@@ -2184,36 +2189,40 @@ ${sections || '<p class="note">다가오는 연휴 정보를 준비 중이에요
 // ---------- 인기 여행지 랭킹 (/trend/) ----------
 function rankBars(list, cls, mode) {
   if (!list || !list.length) return '<p class="note">데이터를 준비 중이에요.</p>';
-  const max = mode === 'hot' ? list[0].pct : list[0].num;
+  const max = mode === 'season' ? list[0].idx : list[0].num;
   return `<div class="ranklist">` + list.map(r => {
-    const v = mode === 'hot' ? r.pct : r.num;
+    const v = mode === 'season' ? r.idx : r.num;
     const w = Math.max(14, Math.round(v / max * 100));
     const medal = r.rank <= 3 ? ['🥇', '🥈', '🥉'][r.rank - 1] : r.rank;
     const label = r.sido ? `${esc(r.sido)} ${esc(r.name)}` : esc(r.name);
     const q = r.sido ? `/search/?sido=${encodeURIComponent(r.sido)}&sigungu=${encodeURIComponent(r.name)}`
       : `/search/?sido=${encodeURIComponent(r.name)}`;
-    const val = mode === 'hot'
-      ? `<em>+${r.pct}%</em>`
+    const val = mode === 'season'
+      ? `<em>${r.idx}배</em>`
       : `${(r.num / 10000).toFixed(0)}만명`;
     return `<div class="rankrow ${cls}"><div class="no">${medal}</div>`
       + `<div class="bar"><a href="${q}" title="${label} 축제 보기">${label}</a></div>`
       + `<div class="val">${val}</div></div>`;
   }).join('') + `</div>`;
 }
+const SEASON_M = (visitors.season && visitors.season.month) || (new Date().getMonth() + 1);
+const SEASON_Y = (visitors.season && visitors.season.year) || (new Date().getFullYear() - 1);
+const SEASON_LIST = (visitors.season && visitors.season.list) || [];
 const TREND_TABS = [
+  { id: 'season', label: `🌞 ${SEASON_M}월엔 여기가 붐벼요`, cls: 'hot', mode: 'season', list: SEASON_LIST,
+    desc: `<b>${SEASON_Y}년 ${SEASON_M}월</b>에 실제로 사람이 몰린 정도를 그 해 평소(연 일평균)와 비교한 <b>성수기 배수</b>입니다. ×1.5면 평소보다 1.5배 붐볐다는 뜻이에요. 방문 데이터는 한 달가량 늦게 공개되기 때문에, '지금 어디가 붐비는지'는 <b>작년 같은 달 실적</b>으로 보는 편이 더 정확합니다. 해수욕장·계곡·산처럼 계절을 타는 곳이 올라옵니다.` },
   { id: 'kor', label: '🇰🇷 한국인이 많이 가는 곳', cls: '', mode: 'num', list: visitors.kor || [],
-    desc: '해당 지역 주민이 아닌 <b>국내 방문객(외지인)</b> 수 기준입니다. 수도권 대도시는 통근·쇼핑 방문이 함께 잡혀 상위에 오릅니다.' },
+    desc: '해당 지역 주민이 아닌 <b>국내 방문객(외지인)</b> 수 기준입니다. 통근·쇼핑 방문도 함께 잡혀 수도권 대도시가 상위에 오릅니다.' },
   { id: 'fgn', label: '🌏 외국인이 많이 가는 곳', cls: 'fgn', mode: 'num', list: visitors.fgn || [],
     desc: '외국인 방문자 수 기준입니다. 명동·인사동이 있는 서울 중구·종로구, 공항이 있는 인천 중구, 제주가 강세입니다.' },
-  { id: 'hot', label: '🔥 요즘 뜨는 곳', cls: 'hot', mode: 'hot', list: visitors.hot || [],
-    desc: '직전 30일 대비 국내 방문객 <b>증가율</b>이 높은 곳입니다. 지역 축제·꽃 시즌이 열린 곳이 주로 올라옵니다.' },
   { id: 'sido', label: '🗺️ 시·도 종합', cls: '', mode: 'num', list: visitors.sido || [],
     desc: '시·도 단위 전체 방문자(국내 여행객 + 외국인) 합계입니다.' }
 ];
 const trendUpdated = visitors.updated ? String(visitors.updated).replace(/^(\d{4})(\d{2})(\d{2})~(\d{4})(\d{2})(\d{2})$/, '$1.$2.$3~$4.$5.$6') : '최근';
 const trendContent = `<main><div class="wrap">
 <h1 style="font-size:1.5rem;font-weight:900;letter-spacing:-.02em;margin:8px 0 4px">🔥 인기 여행지 랭킹</h1>
-<p class="note" style="margin-top:0">한국관광공사 관광 빅데이터(${trendUpdated} 30일)를 기준으로 <b>한국인·외국인이 실제로 많이 찾은 시·군·구</b>와 <b>요즘 급상승 중인 지역</b>을 정리했어요. 막대를 누르면 그 지역에서 열리는 축제를 바로 볼 수 있습니다.</p>
+<p class="note" style="margin-top:0">한국관광공사 관광 빅데이터로 <b>사람이 실제로 많이 간 시·군·구</b>를 정리했어요. 막대를 누르면 그 지역에서 열리는 축제를 바로 볼 수 있습니다.</p>
+<div class="datebadge">📅 <b>${SEASON_M}월 성수기</b> 랭킹은 <b>${SEASON_Y}년 ${SEASON_M}월</b> 실적 기준 · <b>한국인·외국인·시도</b> 랭킹은 <b>${trendUpdated}</b> 기준<br><span>방문 데이터는 공공데이터 특성상 약 한 달 늦게 공개돼요. 그래서 계절 랭킹은 작년 같은 달 실적으로 보여드립니다.</span></div>
 <div class="rank-tabs" id="trendTabs">
 ${TREND_TABS.map((t, i) => `<button type="button" data-t="${t.id}"${i === 0 ? ' class="on"' : ''}>${t.label}</button>`).join('')}
 </div>
@@ -2222,7 +2231,7 @@ ${TREND_TABS.map((t, i) => `<section class="trendpane" data-p="${t.id}"${i === 0
 <p class="note" style="margin-top:-4px">${t.desc}</p>
 ${rankBars(t.list, t.cls, t.mode)}
 </section>`).join('\n')}
-<p class="note" style="margin-top:22px">출처: 한국관광공사 «한국관광 데이터랩» 지역별 방문자 수(공공데이터포털 DataLabService). 통신사·카드 기반 추계치로 실제 관광객 수와 차이가 있을 수 있으며, 데이터 특성상 약 2개월 전 구간이 최신입니다. 매주 자동 갱신됩니다.</p>
+<p class="note" style="margin-top:22px">출처: 한국관광공사 «한국관광 데이터랩» 지역별 방문자 수(공공데이터포털 DataLabService). 통신사·카드 기반 추계치라 실제 관광객 수와 차이가 있을 수 있습니다. 최신 집계일은 ${visitors.latest ? String(visitors.latest).replace(/^(\d{4})(\d{2})(\d{2})$/, '$1.$2.$3') : '-'}(약 ${visitors.lagDays || 30}일 지연)이며, 매주 월요일 자동 갱신됩니다.</p>
 </div></main>
 <script>
 (function(){
