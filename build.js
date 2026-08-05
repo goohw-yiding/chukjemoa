@@ -220,15 +220,15 @@ const COUPANG = {
   enabled: true,
   disc: '※ 이 링크는 쿠팡 파트너스 활동의 일환으로, 구매 시 일정 수수료를 제공받습니다.',
   items: {
-    festival: { ico: '🎒', t: '축제 갈 때 챙기면 좋은 것', s: '휴대폰 방수팩 · 접이식 돗자리', q: '축제 방수팩 돗자리', url: '' },
+    festival: { ico: '🧺', t: '축제 가서 앉을 자리, 챙기셨나요', s: '휴대용 접이식 돗자리', q: '접이식 돗자리', url: 'https://link.coupang.com/a/fXNSDlRDwa' },
+    flower:   { ico: '🧺', t: '봄꽃 나들이 준비물', s: '피크닉 돗자리', q: '접이식 돗자리', url: 'https://link.coupang.com/a/fXNSDlRDwa' },
+    maple:    { ico: '🥾', t: '단풍 산행 준비물', s: '가벼운 등산화', q: '등산화', url: 'https://link.coupang.com/a/fXNZ2GivM4' },
+    trails:   { ico: '🥾', t: '걷기 여행 준비물', s: '발 편한 등산화', q: '등산화', url: 'https://link.coupang.com/a/fXNZ2GivM4' },
+    car:      { ico: '🚗', t: '장거리 운전 전에', s: '차량용 휴대폰 거치대', q: '차량용 휴대폰 거치대', url: 'https://link.coupang.com/a/fXN2IYC66m' },
+    jangteo:  { ico: '🛍️', t: '장 보러 갈 때', s: '접이식 장바구니', q: '접이식 장바구니', url: 'https://link.coupang.com/a/fXN6sYwwNg' },
     valley:   { ico: '🩴', t: '계곡에서 미끄러지지 않으려면', s: '아쿠아슈즈 · 방수 가방', q: '아쿠아슈즈', url: '' },
     onsen:    { ico: '🧖', t: '온천 갈 때 필요한 것', s: '여행용 타월 · 세면 파우치', q: '여행용 타월 세면파우치', url: '' },
-    maple:    { ico: '🥾', t: '단풍 산행 준비물', s: '경등산화 · 등산 스틱', q: '경등산화', url: '' },
-    flower:   { ico: '🧺', t: '봄꽃 나들이 준비물', s: '피크닉 매트 · 보냉가방', q: '피크닉 매트', url: '' },
-    trails:   { ico: '🎒', t: '걷기 여행 준비물', s: '경량 배낭 · 워킹폴', q: '경량 배낭 워킹폴', url: '' },
-    pet:      { ico: '🐾', t: '반려견과 떠난다면', s: '이동가방 · car 안전벨트', q: '강아지 이동가방', url: '' },
-    jangteo:  { ico: '🧺', t: '장 보러 갈 때', s: '접이식 장바구니 · 보냉백', q: '접이식 장바구니', url: '' },
-    car:      { ico: '🚗', t: '장거리 운전 전에', s: '차량용 거치대 · 휴대용 충전기', q: '차량용 휴대폰 거치대', url: '' }
+    pet:      { ico: '🐾', t: '반려견과 떠난다면', s: '이동가방 · 차량 안전벨트', q: '강아지 이동가방', url: '' }
   }
 };
 function cpHref(key) {
