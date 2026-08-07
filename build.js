@@ -230,6 +230,7 @@ const COUPANG = {
     flower:   { ico: '🧺', t: '봄꽃 나들이 준비물', s: '피크닉 돗자리', q: '접이식 돗자리', url: 'https://link.coupang.com/a/fXNSDlRDwa' },
     maple:    { ico: '🥾', t: '단풍 산행 준비물', s: '가벼운 등산화', q: '등산화', url: 'https://link.coupang.com/a/fXNZ2GivM4' },
     trails:   { ico: '🥾', t: '걷기 여행 준비물', s: '발 편한 등산화', q: '등산화', url: 'https://link.coupang.com/a/fXNZ2GivM4' },
+    tripcost: { ico: '🧳', t: '떠나기 전에, 가방부터', s: '깃털 초경량 캐리어 24인치 (쿠웅샵)', own: true, q: '초경량 캐리어', url: 'https://brand.naver.com/guung/products/13161005647' },
     car:      { ico: '🚗', t: '장거리 운전 전에', s: '차량용 휴대폰 거치대', q: '차량용 휴대폰 거치대', url: 'https://link.coupang.com/a/fXN2IYC66m' },
     jangteo:  { ico: '🛒', t: '장 보러 갈 때 손이 편하려면', s: '바퀴달린 방수 장바구니 카트 (쿠웅샵)', own: true, q: '바퀴달린 장바구니', url: 'https://brand.naver.com/guung/products/12580509879' },
     valley:   { ico: '⛱️', t: '계곡 자리에 그늘 하나', s: '감성 텐트쉐이드 파라솔 (쿠웅샵)', own: true, q: '그늘막 파라솔', url: 'https://brand.naver.com/guung/products/10413587358' },
@@ -3377,7 +3378,7 @@ function run(){
     opts.sort(function(a,b){return a.c-b.c;});
     if(opts.length>1)html+='<div class="tc-verdict">가장 저렴: '+opts[0].n+' '+won(opts[0].c)+'</div>';
     html+='</div>';
-    html+=${JSON.stringify(buyBox('car'))};
+    html+=${JSON.stringify(buyBox('tripcost'))};
     out.innerHTML=html;
   }).catch(function(){btn.disabled=false;btn.textContent='비용 계산하기';out.innerHTML='<div class="tc-err">계산에 실패했어요. 잠시 후 다시 시도해주세요.</div>';});
 }
