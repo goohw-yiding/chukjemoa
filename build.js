@@ -231,7 +231,7 @@ const COUPANG = {
     maple:    { ico: '🥾', t: '단풍 산행 준비물', s: '가벼운 등산화', q: '등산화', url: 'https://link.coupang.com/a/fXNZ2GivM4' },
     trails:   { ico: '🥾', t: '걷기 여행 준비물', s: '발 편한 등산화', q: '등산화', url: 'https://link.coupang.com/a/fXNZ2GivM4' },
     car:      { ico: '🚗', t: '장거리 운전 전에', s: '차량용 휴대폰 거치대', q: '차량용 휴대폰 거치대', url: 'https://link.coupang.com/a/fXN2IYC66m' },
-    jangteo:  { ico: '🛍️', t: '장 보러 갈 때', s: '접이식 장바구니', q: '접이식 장바구니', url: 'https://link.coupang.com/a/fXN6sYwwNg' },
+    jangteo:  { ico: '🛒', t: '장 보러 갈 때 손이 편하려면', s: '바퀴달린 방수 장바구니 카트 (쿠웅샵)', own: true, q: '바퀴달린 장바구니', url: 'https://brand.naver.com/guung/products/12580509879' },
     valley:   { ico: '⛱️', t: '계곡 자리에 그늘 하나', s: '감성 텐트쉐이드 파라솔 (쿠웅샵)', own: true, q: '그늘막 파라솔', url: 'https://brand.naver.com/guung/products/10413587358' },
     onsen:    { ico: '🧖', t: '온천 갈 때 챙기면 좋은 것', s: '가볍게 마르는 여행용 타월', q: '여행용 타월', url: 'https://link.coupang.com/a/fXOCpczJqC' },
     pet:      { ico: '🐾', t: '반려견과 떠난다면', s: '강아지 이동가방', q: '강아지 이동가방', url: 'https://link.coupang.com/a/fXOFfqmH4S' }
