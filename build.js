@@ -3592,6 +3592,30 @@ ${sitemapUrls.map(u => `<url><loc>${SITE}${u}</loc><lastmod>${lastmodOf(u)}</las
 </urlset>`;
 fs.writeFileSync(path.join(ROOT, 'sitemap.xml'), sitemap);
 fs.writeFileSync(LM_PATH, JSON.stringify(LM_NEW, null, 0));
+
+// ---------- 섹션별 사이트맵 + 사이트맵 인덱스 ----------
+// 왜 쪼개나: 2026-08-08 서치콘솔 확인 결과 구글이 sitemap.xml을 **7/16에 마지막으로 읽고 29개**만
+// 알고 있었다. 그 뒤에 만든 걷기길 39페이지 등이 통째로 미발견 상태였다.
+// ① 새 URL(sitemap-index.xml)을 제출하면 같은 URL 재제출보다 확실하게 다시 읽는다.
+// ② 섹션별로 나눠 두면 서치콘솔에서 "어느 묶음이 발견/색인이 안 되는지"를 따로 볼 수 있다.
+const SEC = {
+  'sitemap-trails.xml': sitemapUrls.filter(u => /^\/trails\//.test(u)),
+  'sitemap-blog.xml': sitemapUrls.filter(u => /^\/blog\//.test(u)),
+  'sitemap-lang.xml': sitemapUrls.filter(u => /^\/(en|ja|es|zh)\//.test(u))
+};
+SEC['sitemap-core.xml'] = sitemapUrls.filter(u =>
+  !SEC['sitemap-trails.xml'].includes(u) && !SEC['sitemap-blog.xml'].includes(u) && !SEC['sitemap-lang.xml'].includes(u));
+Object.entries(SEC).forEach(([file, list]) => {
+  fs.writeFileSync(path.join(ROOT, file), `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${list.map(u => `<url><loc>${SITE}${u}</loc><lastmod>${(LM_NEW[u] || {}).d || TODAY}</lastmod></url>`).join('\n')}
+</urlset>`);
+});
+fs.writeFileSync(path.join(ROOT, 'sitemap-index.xml'), `<?xml version="1.0" encoding="UTF-8"?>
+<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${Object.keys(SEC).map(f => `<sitemap><loc>${SITE}/${f}</loc><lastmod>${TODAY}</lastmod></sitemap>`).join('\n')}
+</sitemapindex>`);
+console.log('✓ 섹션 사이트맵 —', Object.entries(SEC).map(([f, l]) => f.replace('sitemap-', '').replace('.xml', '') + ':' + l.length).join(' · '));
 {
   const kept = Object.keys(LM_NEW).filter(u => LM_NEW[u].d !== TODAY).length;
   console.log('✓ sitemap —', sitemapUrls.length, '개(noindex', NOINDEX_URLS.size, '개 제외) · 내용 그대로라 이전 날짜 유지', kept, '개 / 갱신', sitemapUrls.length - kept, '개');
@@ -3625,7 +3649,8 @@ ${rssPosts.map(p => `<item>
 fs.writeFileSync(path.join(ROOT, 'rss.xml'), rss);
 console.log('✓ rss.xml —', rssPosts.length, '개 글');
 
-fs.writeFileSync(path.join(ROOT, 'robots.txt'), `User-agent: *\nAllow: /\nSitemap: ${SITE}/sitemap.xml\n`);
+fs.writeFileSync(path.join(ROOT, 'robots.txt'), `User-agent: *\nAllow: /\nSitemap: ${SITE}/sitemap-index.xml
+Sitemap: ${SITE}/sitemap.xml\n`);
 fs.writeFileSync(path.join(ROOT, 'ads.txt'), `google.com, pub-3293445488923111, DIRECT, f08c47fec0942fa0\n`);
 console.log('✓ sitemap.xml, robots.txt, ads.txt');
 console.log('빌드 완료:', urls.length, '페이지');

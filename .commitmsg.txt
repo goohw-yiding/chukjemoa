@@ -1,34 +1,18 @@
-노출 개선: Event 스키마 수정 · og:image 전 페이지 · lastmod 실제 변경일 · 트렌드 20p noindex
+색인 병목 해소: 섹션별 사이트맵 + sitemap-index 신설
 
-서치콘솔 경고 1건 + 2026-08-08 노출진단(109페이지 전수)에서 나온 조치.
+서치콘솔 실측(2026-08-08)에서 원인이 확정됐다.
+  제출 2026.7.11 · **마지막으로 읽은 날짜 2026.7.16** · 발견된 페이지 **29개**
+즉 구글은 7/16자 사이트맵 사본만 들고 있었고, 그 뒤에 만든 걷기길 39페이지 등
+60개 가까이가 통째로 미발견 상태였다. 사이트 구조 문제가 아니다 —
+홈 기준 크롤 깊이는 최대 2단계, 도달 불가 페이지 0개로 확인.
 
-1) 서치콘솔 '이벤트: description 입력란이 누락되었습니다' 15건 해소
-   - /holiday/ Event JSON-LD에 description·eventAttendanceMode 추가
-   - 공공데이터에 개요(ov)가 없는 축제가 많아, 없으면 일정·장소로 한 문장을 만드는
-     evDesc() 폴백을 두었다. /search/ 쪽 eventsJsonLd도 같은 함수로 통일
-   - image·addressLocality·streetAddress도 함께 채움. 검증: Event 15건 전부 통과
+- sitemap-index.xml 신설 + 섹션별 4개
+  core 23 · trails 39 · blog 15 · lang 12 (= 89, noindex 20개 제외)
+  ① 새 URL을 제출하면 같은 URL 재제출보다 확실하게 다시 읽는다
+  ② 서치콘솔에서 "어느 묶음이 발견·색인이 안 되는지"를 섹션별로 볼 수 있다
+- robots.txt에 sitemap-index.xml을 먼저 선언(기존 sitemap.xml도 호환 유지)
+- 섹션 사이트맵도 lastmod는 해시 기반 실제 변경일을 그대로 사용
 
-2) og:image — 109페이지 전부 없던 것을 전부 채움
-   - ogImageFor()가 URL 성격에 맞는 대표 이미지를 자동 선택(계곡·단풍·봄꽃·온천·
-     오일장·걷기길·연휴·겨울/여름 월별), 기본값 hero.webp
-   - og:site_name·og:locale·og:image:width/height·twitter:card(summary_large_image) 동반
-   - /about/·/contact/는 build.js가 아닌 정적 파일이라 직접 삽입
-   → 카톡·SNS·숏폼에 링크 붙일 때 썸네일이 뜬다(그동안 전부 안 떴음)
-
-3) sitemap lastmod를 진짜 변경일로
-   - 매 빌드 109개 전부 오늘 날짜로 찍으면 크롤러가 lastmod를 무시하게 된다
-   - 페이지 해시를 data/lastmod.json에 저장, 내용 그대로면 이전 날짜 유지
-   - 해시 전에 날짜·D-day 배지처럼 매일 바뀌는 부분은 제거
-
-4) 트렌드 랭킹 20페이지(지역16+테마4) noindex,follow
-   - 고유 콘텐츠 평균 680자짜리 양산형 페이지가 사이트 전체 품질 평가를 끌어내림
-     (애드센스 '가치 없는 콘텐츠' 반려 사유와 겹침)
-   - 사이트맵에서도 제외 — noindex와 sitemap 동시 등재는 모순 신호
-   - 허브 /trend/는 유지(메인 내비 진입점). 두껍게 고치면 옵션만 지우면 됨
-   → sitemap 109 → 89개
-
-5) 이미지 alt — JS로 그리는 '근처 가볼 곳' 칩과 모달 사진에 alt 부여
-   - 앞선 진단의 '291개 누락'은 인라인 스크립트 안의 문자열까지 센 과대집계였다.
-     실제 DOM 기준으로 다시 세니 1,072개 중 누락 0개(수정 후)
+남은 사용자 액션: 서치콘솔 Sitemaps에 /sitemap-index.xml 제출.
 
 Co-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>
