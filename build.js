@@ -218,6 +218,17 @@ function esc(s) {
 // ★ 제휴링크 교체는 아래 items[].url 한 줄씩만 바꾸면 전 사이트에 반영됩니다.
 //   url이 비어 있으면 일반 쿠팡 검색 URL로 폴백(=수수료 없음). 발급 후 반드시 채울 것.
 //   발급법: partners.coupang.com → 링크 생성 → '검색결과 링크'에 q 값 입력 → 생성된 https://link.coupang.com/a/XXXX 붙여넣기
+//   own:true      자사(쿠웅샵) 판매 — 제휴가 아니므로 고지문구·rel이 다르고 nt_* 유입 파라미터가 붙는다.
+//   bySeason:{}   계절별로 다른 상품을 노출한다(값 = items의 다른 키). 없으면 연중 동일.
+//   up:[]         함께 파는 부속품(업셀). 메인 버튼 아래 작은 알약 링크로 붙는다. upT = 그 링크 문구.
+
+// 빌드 시각을 KST로 고정한다. Vercel 빌드는 UTC라 그냥 getMonth()를 쓰면 월말·월초에 한 달 밀린다.
+const KST_NOW = new Date(Date.now() + 9 * 3600 * 1000);
+const NOW_MONTH = KST_NOW.getUTCMonth() + 1;
+const NOW_SEASON = NOW_MONTH >= 3 && NOW_MONTH <= 5 ? 'spring'
+  : NOW_MONTH >= 6 && NOW_MONTH <= 8 ? 'summer'
+    : NOW_MONTH >= 9 && NOW_MONTH <= 11 ? 'autumn' : 'winter';
+
 const COUPANG = {
   enabled: true,
   disc: '※ 이 링크는 쿠팡 파트너스 활동의 일환으로, 구매 시 일정 수수료를 제공받습니다.',
@@ -226,37 +237,64 @@ const COUPANG = {
   // 스마트스토어 통계 > 마케팅분석 > 사용자정의채널 에서 유입을 구분하는 값
   nt: { source: 'chukjemoa', medium: 'site' },
   items: {
-    festival: { ico: '🪵', t: '축제·나들이 갈 때', s: '3단 폴딩 캠핑테이블 (쿠웅샵)', own: true, q: '캠핑테이블', url: 'https://brand.naver.com/guung/products/4972833368' },
+    festival: { ico: '🪵', t: '축제·나들이 갈 때', s: '3단 폴딩 캠핑테이블 (쿠웅샵)', own: true, q: '캠핑테이블', url: 'https://brand.naver.com/guung/products/4972833368',
+                bySeason: { summer: 'suncap', winter: 'tripcost', spring: 'flower' } },
     flower:   { ico: '🧺', t: '봄꽃 나들이 준비물', s: '피크닉 돗자리', q: '접이식 돗자리', url: 'https://link.coupang.com/a/fXNSDlRDwa' },
     maple:    { ico: '🪑', t: '단풍 보면서 앉아 쉴 자리', s: '착착 접는 캠핑의자 (쿠웅샵)', own: true, q: '캠핑의자', url: 'https://brand.naver.com/guung/products/13026204364' },
     trails:   { ico: '🥾', t: '걷기 여행 준비물', s: '발 편한 등산화', q: '등산화', url: 'https://link.coupang.com/a/fXNZ2GivM4' },
     tripcost: { ico: '🧳', t: '떠나기 전에, 가방부터', s: '깃털 초경량 캐리어 24인치 (쿠웅샵)', own: true, q: '초경량 캐리어', url: 'https://brand.naver.com/guung/products/13161005647' },
     car:      { ico: '🚗', t: '장거리 운전 전에', s: '차량용 휴대폰 거치대', q: '차량용 휴대폰 거치대', url: 'https://link.coupang.com/a/fXN2IYC66m' },
     jangteo:  { ico: '🛒', t: '장 보러 갈 때 손이 편하려면', s: '바퀴달린 방수 장바구니 카트 (쿠웅샵)', own: true, q: '바퀴달린 장바구니', url: 'https://brand.naver.com/guung/products/12580509879' },
-    valley:   { ico: '⛱️', t: '계곡 자리에 그늘 하나', s: '감성 텐트쉐이드 파라솔 (쿠웅샵)', own: true, q: '그늘막 파라솔', url: 'https://brand.naver.com/guung/products/10413587358' },
+    valley:   { ico: '⛱️', t: '계곡 자리에 그늘 하나', s: '감성 텐트쉐이드 파라솔 (쿠웅샵)', own: true, q: '그늘막 파라솔', url: 'https://brand.naver.com/guung/products/10413587358',
+                up: ['psbase', 'aqua'], bySeason: { autumn: 'maple', winter: 'tripcost' } },
     onsen:    { ico: '🧖', t: '온천 갈 때 챙기면 좋은 것', s: '가볍게 마르는 여행용 타월', q: '여행용 타월', url: 'https://link.coupang.com/a/fXOCpczJqC' },
-    pet:      { ico: '🐾', t: '반려견과 떠난다면', s: '강아지 이동가방', q: '강아지 이동가방', url: 'https://link.coupang.com/a/fXOFfqmH4S' }
+    pet:      { ico: '🐾', t: '반려견과 떠난다면', s: '강아지 이동가방', q: '강아지 이동가방', url: 'https://link.coupang.com/a/fXOFfqmH4S' },
+    // ↓ 아래 3종은 단독 페이지가 없고 bySeason·up 을 통해서만 노출된다(쿠웅샵 자사상품)
+    suncap:   { ico: '🧢', t: '물축제 가는 날, 얼굴은 지키고', s: '투명썬캡 · 자외선 86.3% 차단 (쿠웅샵)', own: true, q: '투명썬캡', url: 'https://brand.naver.com/guung/products/4545903063' },
+    psbase:   { ico: '🪣', t: '계곡 바닥엔 파라솔이 안 꽂힙니다', s: '물 채우는 파라솔 받침대 20kg (쿠웅샵)', own: true, q: '파라솔 물통 받침대', url: 'https://brand.naver.com/guung/products/10227650214',
+                upT: '🪣 물통 받침대 20kg — 돌바닥·모래에도 세워집니다' },
+    aqua:     { ico: '🩴', t: '계곡 돌바닥, 맨발은 위험합니다', s: '미끄럼 방지 아쿠아슈즈 (쿠웅샵)', own: true, q: '아쿠아슈즈', url: 'https://brand.naver.com/guung/products/13302370033',
+                upT: '🩴 아쿠아슈즈 — 이끼 낀 돌에서 안 미끄러집니다' }
   }
 };
-function cpHref(key) {
+// 페이지 키 → 이번 달에 실제로 노출할 상품 키 (bySeason 이 없으면 그대로)
+function seasonKey(pageKey) {
+  const it = COUPANG.items[pageKey];
+  const alt = it && it.bySeason && it.bySeason[NOW_SEASON];
+  return (alt && COUPANG.items[alt]) ? alt : pageKey;
+}
+// detail = 스마트스토어 유입 통계에 남길 값. 계절 로테이션·업셀에서는 "어느 페이지에서 눌렀는지"를
+//          남겨야 하므로 호출부가 페이지 키를 넘긴다. 안 넘기면 예전처럼 상품 키를 쓴다.
+function cpHref(key, detail) {
   const it = COUPANG.items[key];
   if (!it) return 'https://www.coupang.com/np/search?q=' + encodeURIComponent('여행용품');
   if (!it.url) return 'https://www.coupang.com/np/search?q=' + encodeURIComponent(it.q);
   if (!it.own) return it.url;
   const sep = it.url.indexOf('?') >= 0 ? '&' : '?';
   return it.url + sep + 'nt_source=' + COUPANG.nt.source
-    + '&nt_medium=' + COUPANG.nt.medium + '&nt_detail=' + key;
+    + '&nt_medium=' + COUPANG.nt.medium + '&nt_detail=' + (detail || key);
 }
 // 페이지당 1개 원칙. 클릭 시 중간 페이지 없이 바로 쿠팡으로 이동.
-function buyBox(key) {
+function buyBox(pageKey) {
   if (!COUPANG.enabled) return '';
+  const key = seasonKey(pageKey);
   const it = COUPANG.items[key]; if (!it) return '';
+  const ups = (it.up || []).map(uk => {
+    const u = COUPANG.items[uk]; if (!u) return '';
+    const urel = u.own ? 'nofollow noopener' : 'nofollow sponsored noopener';
+    return `<a class="bb-up" href="${cpHref(uk, pageKey + '-' + uk)}" target="_blank" rel="${urel}">${esc(u.upT || u.s)}</a>`;
+  }).filter(Boolean).join('');
+  // 메인·업셀에 자사상품과 제휴상품이 섞일 수 있으므로 고지문구도 섞어서 낸다
+  const hasOwn = it.own || (it.up || []).some(uk => COUPANG.items[uk] && COUPANG.items[uk].own);
+  const hasAff = !it.own || (it.up || []).some(uk => COUPANG.items[uk] && !COUPANG.items[uk].own);
+  const disc = [hasOwn ? COUPANG.discOwn : '', hasAff ? COUPANG.disc : ''].filter(Boolean).join(' ');
   const rel = it.own ? 'nofollow noopener' : 'nofollow sponsored noopener';
-  return `<a class="buybox" href="${cpHref(key)}" target="_blank" rel="${rel}">`
+  return `<a class="buybox" href="${cpHref(key, pageKey)}" target="_blank" rel="${rel}">`
     + `<span class="bb-ico">${it.ico}</span>`
     + `<span class="bb-txt"><b>${esc(it.t)}</b><span class="bb-sub">${esc(it.s)}</span></span>`
     + `<span class="bb-arrow">›</span></a>`
-    + `<div class="bb-disc">${it.own ? COUPANG.discOwn : COUPANG.disc}</div>`;
+    + (ups ? `<div class="bb-ups">${ups}</div>` : '')
+    + `<div class="bb-disc">${disc}</div>`;
 }
 
 // ★ 전남광주통합 보정: TourAPI가 전남 시·군을 '광주'로 주는 경우가 있다.
@@ -756,6 +794,9 @@ article ul{padding-left:20px}
 .buybox .bb-txt b{font-size:.98rem;font-weight:800}
 .buybox .bb-sub{font-size:.82rem;opacity:.88}
 .buybox .bb-arrow{font-size:1.5rem;opacity:.75;flex:none}
+.bb-ups{display:flex;flex-wrap:wrap;gap:8px;margin:9px 0 0}
+.bb-up{display:inline-block;background:#f2fbfa;border:1.5px solid #b9e4de;color:#0a6c63;border-radius:999px;padding:7px 13px;font-size:.82rem;font-weight:700;text-decoration:none;line-height:1.35;transition:all .15s}
+.bb-up:hover{background:#e3f6f3;border-color:#0f9d8f;transform:translateY(-1px)}
 .bb-disc{font-size:.74rem;color:#9ca3af;margin:6px 2px 2px;line-height:1.5}
 @media(max-width:600px){.buybox{padding:13px 15px;gap:10px}.buybox .bb-txt b{font-size:.92rem}}
 .faqbox{background:#fff;border-radius:18px;box-shadow:0 3px 14px rgba(31,41,55,.08);padding:26px 30px 22px;margin:10px 0 34px}
