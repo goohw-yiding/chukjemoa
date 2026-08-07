@@ -237,23 +237,23 @@ const COUPANG = {
   // 스마트스토어 통계 > 마케팅분석 > 사용자정의채널 에서 유입을 구분하는 값
   nt: { source: 'chukjemoa', medium: 'site' },
   items: {
-    festival: { ico: '🪵', t: '축제·나들이 갈 때', s: '3단 폴딩 캠핑테이블 (쿠웅샵)', own: true, q: '캠핑테이블', url: 'https://brand.naver.com/guung/products/4972833368',
+    festival: { ico: '🪵', t: '축제·나들이 갈 때', s: '3단 폴딩 캠핑테이블 · 120x60cm', own: true, q: '캠핑테이블', url: 'https://brand.naver.com/guung/products/4972833368',
                 bySeason: { summer: 'suncap', winter: 'tripcost', spring: 'flower' } },
     flower:   { ico: '🧺', t: '봄꽃 나들이 준비물', s: '피크닉 돗자리', q: '접이식 돗자리', url: 'https://link.coupang.com/a/fXNSDlRDwa' },
-    maple:    { ico: '🪑', t: '단풍 보면서 앉아 쉴 자리', s: '착착 접는 캠핑의자 (쿠웅샵)', own: true, q: '캠핑의자', url: 'https://brand.naver.com/guung/products/13026204364' },
+    maple:    { ico: '🪑', t: '단풍 보면서 앉아 쉴 자리', s: '접어서 드는 폴딩 스툴 + 메쉬백', own: true, q: '캠핑의자', url: 'https://brand.naver.com/guung/products/13026204364' },
     trails:   { ico: '🥾', t: '걷기 여행 준비물', s: '발 편한 등산화', q: '등산화', url: 'https://link.coupang.com/a/fXNZ2GivM4' },
-    tripcost: { ico: '🧳', t: '떠나기 전에, 가방부터', s: '깃털 초경량 캐리어 24인치 (쿠웅샵)', own: true, q: '초경량 캐리어', url: 'https://brand.naver.com/guung/products/13161005647' },
+    tripcost: { ico: '🧳', t: '떠나기 전에, 가방부터', s: '초경량 여행 캐리어 24인치', own: true, q: '초경량 캐리어', url: 'https://brand.naver.com/guung/products/13161005647' },
     car:      { ico: '🚗', t: '장거리 운전 전에', s: '차량용 휴대폰 거치대', q: '차량용 휴대폰 거치대', url: 'https://link.coupang.com/a/fXN2IYC66m' },
-    jangteo:  { ico: '🛒', t: '장 보러 갈 때 손이 편하려면', s: '바퀴달린 방수 장바구니 카트 (쿠웅샵)', own: true, q: '바퀴달린 장바구니', url: 'https://brand.naver.com/guung/products/12580509879' },
-    valley:   { ico: '⛱️', t: '계곡 자리에 그늘 하나', s: '감성 텐트쉐이드 파라솔 (쿠웅샵)', own: true, q: '그늘막 파라솔', url: 'https://brand.naver.com/guung/products/10413587358',
+    jangteo:  { ico: '🛒', t: '장 보러 갈 때 손이 편하려면', s: '바퀴달린 접이식 장보기 카트', own: true, q: '바퀴달린 장바구니', url: 'https://brand.naver.com/guung/products/12580509879' },
+    valley:   { ico: '⛱️', t: '계곡 자리에 그늘 하나', s: '각도·높이 조절 UV차단 파라솔', own: true, q: '그늘막 파라솔', url: 'https://brand.naver.com/guung/products/10413587358',
                 up: ['psbase', 'aqua'], bySeason: { autumn: 'maple', winter: 'tripcost' } },
     onsen:    { ico: '🧖', t: '온천 갈 때 챙기면 좋은 것', s: '가볍게 마르는 여행용 타월', q: '여행용 타월', url: 'https://link.coupang.com/a/fXOCpczJqC' },
     pet:      { ico: '🐾', t: '반려견과 떠난다면', s: '강아지 이동가방', q: '강아지 이동가방', url: 'https://link.coupang.com/a/fXOFfqmH4S' },
     // ↓ 아래 3종은 단독 페이지가 없고 bySeason·up 을 통해서만 노출된다(쿠웅샵 자사상품)
-    suncap:   { ico: '🧢', t: '물축제 가는 날, 얼굴은 지키고', s: '투명썬캡 · 자외선 86.3% 차단 (쿠웅샵)', own: true, q: '투명썬캡', url: 'https://brand.naver.com/guung/products/4545903063' },
-    psbase:   { ico: '🪣', t: '계곡 바닥엔 파라솔이 안 꽂힙니다', s: '물 채우는 파라솔 받침대 20kg (쿠웅샵)', own: true, q: '파라솔 물통 받침대', url: 'https://brand.naver.com/guung/products/10227650214',
+    suncap:   { ico: '🧢', t: '물축제 가는 날, 얼굴은 지키고', s: '투명썬캡 · 자외선 86.3% 차단(FITI 시험 성적)', own: true, q: '투명썬캡', url: 'https://brand.naver.com/guung/products/4545903063' },
+    psbase:   { ico: '🪣', t: '계곡 바닥엔 파라솔이 안 꽂힙니다', s: '물·모래 채우는 파라솔 받침대 20kg', own: true, q: '파라솔 물통 받침대', url: 'https://brand.naver.com/guung/products/10227650214',
                 upT: '🪣 물통 받침대 20kg — 돌바닥·모래에도 세워집니다' },
-    aqua:     { ico: '🩴', t: '계곡 돌바닥, 맨발은 위험합니다', s: '미끄럼 방지 아쿠아슈즈 (쿠웅샵)', own: true, q: '아쿠아슈즈', url: 'https://brand.naver.com/guung/products/13302370033',
+    aqua:     { ico: '🩴', t: '계곡 돌바닥, 맨발은 위험합니다', s: '미끄럼 방지 아쿠아슈즈 230~270', own: true, q: '아쿠아슈즈', url: 'https://brand.naver.com/guung/products/13302370033',
                 upT: '🩴 아쿠아슈즈 — 이끼 낀 돌에서 안 미끄러집니다' }
   }
 };
