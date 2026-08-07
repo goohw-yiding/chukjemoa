@@ -221,6 +221,10 @@ function esc(s) {
 const COUPANG = {
   enabled: true,
   disc: '※ 이 링크는 쿠팡 파트너스 활동의 일환으로, 구매 시 일정 수수료를 제공받습니다.',
+  // own:true 인 항목은 자사(쿠웅샵) 판매 상품 — 제휴가 아니므로 고지문구·rel이 다르다
+  discOwn: '※ 축제모아를 운영하는 쿠웅샵에서 직접 판매하는 상품입니다.',
+  // 스마트스토어 통계 > 마케팅분석 > 사용자정의채널 에서 유입을 구분하는 값
+  nt: { source: 'chukjemoa', medium: 'site' },
   items: {
     festival: { ico: '🧺', t: '축제 가서 앉을 자리, 챙기셨나요', s: '휴대용 접이식 돗자리', q: '접이식 돗자리', url: 'https://link.coupang.com/a/fXNSDlRDwa' },
     flower:   { ico: '🧺', t: '봄꽃 나들이 준비물', s: '피크닉 돗자리', q: '접이식 돗자리', url: 'https://link.coupang.com/a/fXNSDlRDwa' },
@@ -228,24 +232,30 @@ const COUPANG = {
     trails:   { ico: '🥾', t: '걷기 여행 준비물', s: '발 편한 등산화', q: '등산화', url: 'https://link.coupang.com/a/fXNZ2GivM4' },
     car:      { ico: '🚗', t: '장거리 운전 전에', s: '차량용 휴대폰 거치대', q: '차량용 휴대폰 거치대', url: 'https://link.coupang.com/a/fXN2IYC66m' },
     jangteo:  { ico: '🛍️', t: '장 보러 갈 때', s: '접이식 장바구니', q: '접이식 장바구니', url: 'https://link.coupang.com/a/fXN6sYwwNg' },
-    valley:   { ico: '🩴', t: '계곡에서 미끄러지지 않으려면', s: '미끄럼 방지 아쿠아슈즈', q: '아쿠아슈즈', url: 'https://link.coupang.com/a/fXOzzPw6mW' },
+    valley:   { ico: '⛱️', t: '계곡 자리에 그늘 하나', s: '감성 텐트쉐이드 파라솔 (쿠웅샵)', own: true, q: '그늘막 파라솔', url: 'https://brand.naver.com/guung/products/10413587358' },
     onsen:    { ico: '🧖', t: '온천 갈 때 챙기면 좋은 것', s: '가볍게 마르는 여행용 타월', q: '여행용 타월', url: 'https://link.coupang.com/a/fXOCpczJqC' },
     pet:      { ico: '🐾', t: '반려견과 떠난다면', s: '강아지 이동가방', q: '강아지 이동가방', url: 'https://link.coupang.com/a/fXOFfqmH4S' }
   }
 };
 function cpHref(key) {
   const it = COUPANG.items[key];
-  return (it && it.url) ? it.url : 'https://www.coupang.com/np/search?q=' + encodeURIComponent(it ? it.q : '여행용품');
+  if (!it) return 'https://www.coupang.com/np/search?q=' + encodeURIComponent('여행용품');
+  if (!it.url) return 'https://www.coupang.com/np/search?q=' + encodeURIComponent(it.q);
+  if (!it.own) return it.url;
+  const sep = it.url.indexOf('?') >= 0 ? '&' : '?';
+  return it.url + sep + 'nt_source=' + COUPANG.nt.source
+    + '&nt_medium=' + COUPANG.nt.medium + '&nt_detail=' + key;
 }
 // 페이지당 1개 원칙. 클릭 시 중간 페이지 없이 바로 쿠팡으로 이동.
 function buyBox(key) {
   if (!COUPANG.enabled) return '';
   const it = COUPANG.items[key]; if (!it) return '';
-  return `<a class="buybox" href="${cpHref(key)}" target="_blank" rel="nofollow sponsored noopener">`
+  const rel = it.own ? 'nofollow noopener' : 'nofollow sponsored noopener';
+  return `<a class="buybox" href="${cpHref(key)}" target="_blank" rel="${rel}">`
     + `<span class="bb-ico">${it.ico}</span>`
     + `<span class="bb-txt"><b>${esc(it.t)}</b><span class="bb-sub">${esc(it.s)}</span></span>`
     + `<span class="bb-arrow">›</span></a>`
-    + `<div class="bb-disc">${COUPANG.disc}</div>`;
+    + `<div class="bb-disc">${it.own ? COUPANG.discOwn : COUPANG.disc}</div>`;
 }
 
 // ★ 전남광주통합 보정: TourAPI가 전남 시·군을 '광주'로 주는 경우가 있다.
