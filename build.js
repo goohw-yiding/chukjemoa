@@ -125,6 +125,36 @@ function absImgOf(f) {
   if (r) return r.replace(/^http:/, 'https:');
   return SITE + '/img/cat-' + (CAT_IMG[f.category] || 'etc') + '.webp';
 }
+// ---------- og:image ----------
+// 109페이지 전부 og:image가 없어서 카톡·SNS·숏폼에 링크를 붙여도 썸네일이 안 떴다.
+// 페이지 성격에 맞는 대표 이미지를 자동으로 물린다. 개별 지정은 layout opts.ogImage로.
+function ogImageFor(urlPath) {
+  const u = String(urlPath || '/');
+  if (/^\/valley\//.test(u) || /\/trend\/valley\//.test(u)) return '/img/cat-water.webp';
+  if (/^\/maple\//.test(u) || /\/trend\/maple\//.test(u)) return '/img/cat-tradition.webp';
+  if (/^\/flower\//.test(u) || /\/trend\/flower\//.test(u)) return '/img/cat-flower.webp';
+  if (/^\/onsen\//.test(u) || /\/trend\/onsen\//.test(u)) return '/img/cat-light.webp';
+  if (/^\/jangteo\//.test(u)) return '/img/jangteo.webp';
+  if (/^\/trails\//.test(u)) return '/img/olle1-07-coast.webp';
+  if (/^\/blog\/jeju-olle/.test(u)) return '/img/olle1-01-daepyo.webp';
+  if (/^\/2026-1[12]\//.test(u)) return '/img/cat-snow.webp';
+  if (/^\/2026-0[678]\//.test(u)) return '/img/cat-water.webp';
+  if (/^\/holiday\//.test(u)) return '/img/cat-firework.webp';
+  if (/^\/pet\//.test(u)) return '/img/cat-etc.webp';
+  return '/img/hero.webp';
+}
+
+// Event 스키마의 description — 서치콘솔이 '누락되었습니다'로 잡던 항목(2026-08-06, 15건).
+// 공공데이터에 개요(ov)가 없는 축제가 많아 없으면 일정·장소로 한 문장을 만들어 채운다.
+function evDesc(f) {
+  const ov = String(f.ov || f.desc || '').trim();
+  if (ov.length >= 10) return ov;
+  const loc = [f.sido, f.sigungu].filter(Boolean).join(' ');
+  const d = String(f.start || '').replace(/(\d{4})(\d{2})(\d{2})/, '$1년 $2월 $3일');
+  const e = String(f.end || '').replace(/(\d{4})(\d{2})(\d{2})/, '$1년 $2월 $3일');
+  return `${f.title || f.name}${loc ? ' — ' + loc + '에서' : ''} ${d}${e && e !== d ? '부터 ' + e + '까지' : ''} 열리는 축제입니다. 일정·장소·요금은 주최 측 사정으로 변경될 수 있으니 방문 전 확인하세요.`;
+}
+
 // schema.org Event JSON-LD 배열 문자열 생성
 function eventsJsonLd(list) {
   const items = list.map(f => {
@@ -148,7 +178,7 @@ function eventsJsonLd(list) {
         }
       },
       image: [absImgOf(f)],
-      description: f.desc,
+      description: evDesc(f),
       url: SITE + '/search/'
     };
     return o;
@@ -531,7 +561,7 @@ const FEST_MODAL_JS = `<script>
   function fy(y){y=String(y||'').replace(/[^0-9]/g,'');if(y.length<8)return '';return y.slice(0,4)+'.'+(+y.slice(4,6))+'.'+(+y.slice(6,8));}
   window.openFestModal=function(ds){
     var img=document.getElementById('fm2-img');
-    if(ds.img){img.src=ds.img;img.style.display='block';}else{img.style.display='none';}
+    if(ds.img){img.src=ds.img;img.alt=(ds.name||'')+' 사진';img.style.display='block';}else{img.alt='';img.style.display='none';}
     document.getElementById('fm2-title').textContent=ds.name||'';
     if(window.cjmFestBB)window.cjmFestBB('fm2-bb',ds.name,ds.place);
     var loc=[ds.region,ds.city,ds.place].filter(Boolean).join(' ');
@@ -539,7 +569,7 @@ const FEST_MODAL_JS = `<script>
     document.getElementById('fm2-meta').textContent=[dr,loc].filter(Boolean).join('  ·  ');
     document.getElementById('fm2-ov').textContent=ds.ov||ds.desc||'상세 개요는 아래 네이버·공식 홈페이지에서 확인하세요.';
     var nearEl=document.getElementById('fm2-near');nearEl.innerHTML='';
-    if(ds.near){try{var arr=JSON.parse(decodeURIComponent(ds.near));if(arr&&arr.length){nearEl.innerHTML='<div style="font-weight:800;color:#0a6c63;margin:16px 0 8px">📍 근처 가볼 곳</div><div style="display:flex;flex-wrap:wrap;gap:8px">'+arr.map(function(n){return '<a href="https://search.naver.com/search.naver?query='+encodeURIComponent(n.t)+'" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;background:#f4faf8;border:1px solid #dcefeb;border-radius:20px;padding:6px 12px;font-size:.85rem;font-weight:700;color:#374151;text-decoration:none">'+(n.img?'<img src="'+esc(n.img)+'" style="width:22px;height:22px;border-radius:50%;object-fit:cover" onerror="this.style.display=&#39;none&#39;">':'')+esc(n.t)+' <span style="color:#9aa3af;font-weight:600">'+esc(n.ty)+(n.d?' '+n.d+'km':'')+'</span></a>';}).join('')+'</div>';}}catch(e){}}
+    if(ds.near){try{var arr=JSON.parse(decodeURIComponent(ds.near));if(arr&&arr.length){nearEl.innerHTML='<div style="font-weight:800;color:#0a6c63;margin:16px 0 8px">📍 근처 가볼 곳</div><div style="display:flex;flex-wrap:wrap;gap:8px">'+arr.map(function(n){return '<a href="https://search.naver.com/search.naver?query='+encodeURIComponent(n.t)+'" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;background:#f4faf8;border:1px solid #dcefeb;border-radius:20px;padding:6px 12px;font-size:.85rem;font-weight:700;color:#374151;text-decoration:none">'+(n.img?'<img src="'+esc(n.img)+'" alt="'+esc(n.t)+'" loading="lazy" style="width:22px;height:22px;border-radius:50%;object-fit:cover" onerror="this.style.display=&#39;none&#39;">':'')+esc(n.t)+' <span style="color:#9aa3af;font-weight:600">'+esc(n.ty)+(n.d?' '+n.d+'km':'')+'</span></a>';}).join('')+'</div>';}}catch(e){}}
     var hp=document.getElementById('fm2-hp');
     if(ds.hp){hp.href=(ds.hp.indexOf('http')===0?ds.hp:'http://'+ds.hp);hp.style.display='inline-block';}else{hp.style.display='none';}
     document.getElementById('fm2-naver').href='https://search.naver.com/search.naver?query='+encodeURIComponent((ds.name||'')+' 축제');
@@ -1082,6 +1112,16 @@ ${alts}
 <meta property="og:description" content="${esc(desc)}">
 <meta property="og:url" content="${SITE}${urlPath}">
 <meta property="og:type" content="website">
+<meta property="og:site_name" content="${SITE_NAME}">
+<meta property="og:locale" content="${lang === 'ko' ? 'ko_KR' : lang === 'ja' ? 'ja_JP' : lang === 'zh' ? 'zh_CN' : lang === 'es' ? 'es_ES' : 'en_US'}">
+<meta property="og:image" content="${SITE}${opts.ogImage || ogImageFor(urlPath)}">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="${esc(title)}">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="${esc(title)}">
+<meta name="twitter:description" content="${esc(desc)}">
+<meta name="twitter:image" content="${SITE}${opts.ogImage || ogImageFor(urlPath)}">${opts.noindex ? '\n<meta name="robots" content="noindex, follow">' : ''}
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE}" crossorigin="anonymous"></script>
 ${opts.jsonld || ''}
@@ -1804,7 +1844,7 @@ document.getElementById('fReset').addEventListener('click',function(){st={sido:'
 var qbs=document.querySelectorAll('#fQuick button');for(var i=0;i<qbs.length;i++){qbs[i].addEventListener('click',function(){st.quick=this.getAttribute('data-q');for(var j=0;j<qbs.length;j++)qbs[j].classList.remove('on');this.classList.add('on');apply();});}
 document.getElementById('fPet').addEventListener('change',function(e){st.pet=e.target.checked;apply();});
 document.getElementById('fPast').addEventListener('change',function(e){st.past=e.target.checked;apply();});
-function openModal(f){var m=document.getElementById('fmodal');var img=document.getElementById('fm-img');if(f.img){img.src=f.img;img.style.display='block';}else{img.style.display='none';}document.getElementById('fm-title').textContent=f.title;if(window.cjmFestBB)window.cjmFestBB('fm-bb',f.title,f.addr);document.getElementById('fm-meta').textContent=fy(f.start)+' ~ '+fy(f.end)+'  ·  '+((f.sido||'')+(f.sigungu?' '+f.sigungu:''))+(f.tel?'  ·  '+f.tel:'');document.getElementById('fm-ov').textContent=f.ov||'상세 개요는 아직 준비 중이에요. 아래 네이버·공식 홈페이지에서 확인하세요.';var nearEl=document.getElementById('fm-near');if(f.near&&f.near.length){nearEl.innerHTML='<div style="font-weight:800;color:#0a6c63;margin:16px 0 8px">📍 근처 가볼 곳</div><div style="display:flex;flex-wrap:wrap;gap:8px">'+f.near.map(function(n){return '<a href="https://search.naver.com/search.naver?query='+encodeURIComponent(n.t)+'" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;background:#f4faf8;border:1px solid #dcefeb;border-radius:20px;padding:6px 12px;font-size:.85rem;font-weight:700;color:#374151;text-decoration:none">'+(n.img?'<img src="'+esc(n.img)+'" style="width:22px;height:22px;border-radius:50%;object-fit:cover" onerror="this.style.display=&#39;none&#39;">':'')+esc(n.t)+' <span style="color:#9aa3af;font-weight:600">'+esc(n.ty)+(n.d?' '+n.d+'km':'')+'</span></a>';}).join('')+'</div>';}else{nearEl.innerHTML='';}var hp=document.getElementById('fm-hp');if(f.hp){hp.href=f.hp;hp.style.display='inline-block';}else{hp.style.display='none';}document.getElementById('fm-naver').href='https://search.naver.com/search.naver?query='+encodeURIComponent(f.title+' 축제');if(window.cjmResetCalc)window.cjmResetCalc('smc',window.cjmCands(f.title,window.cjmClean(f.addr),f.addr,((f.sido||'')+' '+(f.sigungu||'')).trim(),f.sigungu));m.classList.add('show');}
+function openModal(f){var m=document.getElementById('fmodal');var img=document.getElementById('fm-img');if(f.img){img.src=f.img;img.alt=(f.title||'')+' 사진';img.style.display='block';}else{img.alt='';img.style.display='none';}document.getElementById('fm-title').textContent=f.title;if(window.cjmFestBB)window.cjmFestBB('fm-bb',f.title,f.addr);document.getElementById('fm-meta').textContent=fy(f.start)+' ~ '+fy(f.end)+'  ·  '+((f.sido||'')+(f.sigungu?' '+f.sigungu:''))+(f.tel?'  ·  '+f.tel:'');document.getElementById('fm-ov').textContent=f.ov||'상세 개요는 아직 준비 중이에요. 아래 네이버·공식 홈페이지에서 확인하세요.';var nearEl=document.getElementById('fm-near');if(f.near&&f.near.length){nearEl.innerHTML='<div style="font-weight:800;color:#0a6c63;margin:16px 0 8px">📍 근처 가볼 곳</div><div style="display:flex;flex-wrap:wrap;gap:8px">'+f.near.map(function(n){return '<a href="https://search.naver.com/search.naver?query='+encodeURIComponent(n.t)+'" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;background:#f4faf8;border:1px solid #dcefeb;border-radius:20px;padding:6px 12px;font-size:.85rem;font-weight:700;color:#374151;text-decoration:none">'+(n.img?'<img src="'+esc(n.img)+'" alt="'+esc(n.t)+'" loading="lazy" style="width:22px;height:22px;border-radius:50%;object-fit:cover" onerror="this.style.display=&#39;none&#39;">':'')+esc(n.t)+' <span style="color:#9aa3af;font-weight:600">'+esc(n.ty)+(n.d?' '+n.d+'km':'')+'</span></a>';}).join('')+'</div>';}else{nearEl.innerHTML='';}var hp=document.getElementById('fm-hp');if(f.hp){hp.href=f.hp;hp.style.display='inline-block';}else{hp.style.display='none';}document.getElementById('fm-naver').href='https://search.naver.com/search.naver?query='+encodeURIComponent(f.title+' 축제');if(window.cjmResetCalc)window.cjmResetCalc('smc',window.cjmCands(f.title,window.cjmClean(f.addr),f.addr,((f.sido||'')+' '+(f.sigungu||'')).trim(),f.sigungu));m.classList.add('show');}
 function closeModal(){document.getElementById('fmodal').classList.remove('show');}
 document.getElementById('fmx').addEventListener('click',closeModal);
 document.getElementById('fmodal').addEventListener('click',function(e){if(e.target.id==='fmodal')closeModal();});
@@ -2073,7 +2113,7 @@ function dday(f){var t=td(),s=toD(f.start),e=toD(f.end);if(e<t)return{l:'Ended',
 function ranges(){var t=td(),w=t.getDay();var sat=new Date(t);sat.setDate(t.getDate()+((6-w+7)%7));var sun=new Date(sat);sun.setDate(sat.getDate()+1);var m0=new Date(t.getFullYear(),t.getMonth(),1),m1=new Date(t.getFullYear(),t.getMonth()+1,0);return{t:t,sat:sat,sun:sun,m0:m0,m1:m1};}
 function card(f){var d=dday(f),img=f.img||'/img/cat-culture.webp';return '<div class="card" data-id="'+esc(f.id)+'" style="cursor:pointer"><div class="thumb"><img loading="lazy" src="'+esc(img)+'" alt="'+esc(f.title)+'" onerror="this.src=&#39;/img/cat-culture.webp&#39;"><span class="dday '+d.c+'">'+d.l+'</span>'+(f.region?'<span class="cat">'+esc(f.region)+'</span>':'')+'</div><div class="card-body"><h3>'+esc(f.title)+'</h3><div class="date">'+fy(f.start)+' ~ '+fy(f.end)+'</div><div class="loc">'+esc(f.region)+'</div></div></div>';}
 function apply(){var r=ranges();var list=F.filter(function(f){if(st.quick!=='past'&&toD(f.end)<r.t)return false;if(st.region&&f.region!==st.region)return false;if(st.kw){var k=st.kw.toLowerCase();if((f.title||'').toLowerCase().indexOf(k)<0&&(f.addr||'').toLowerCase().indexOf(k)<0)return false;}if(st.quick==='now'&&!ov(f,r.t,r.t))return false;if(st.quick==='weekend'&&!ov(f,r.sat,r.sun))return false;if(st.quick==='month'&&!ov(f,r.m0,r.m1))return false;return true;});list.sort(function(a,b){return (a.start||'').localeCompare(b.start||'');});document.getElementById('fCount').textContent=list.length+' festivals';document.getElementById('fGrid').innerHTML=list.length?list.map(card).join(''):'<p style="grid-column:1/-1;color:#6b7280;padding:24px 0">No festivals match. Try other filters.</p>';}
-function openModal(f){var m=document.getElementById('fmodal');var img=document.getElementById('fm-img');if(f.img){img.src=f.img;img.style.display='block';}else{img.style.display='none';}document.getElementById('fm-title').textContent=f.title;if(window.cjmFestBB)window.cjmFestBB('fm-bb',f.title,f.addr);document.getElementById('fm-meta').textContent=fy(f.start)+' ~ '+fy(f.end)+'  ·  '+(f.region||'')+(f.tel?'  ·  '+f.tel:'');document.getElementById('fm-ov').textContent=f.ov||'Overview coming soon. Please check the official website or Google.';var hp=document.getElementById('fm-hp');if(f.hp){hp.href=(f.hp.indexOf('http')===0?f.hp:'http://'+f.hp);hp.style.display='inline-block';}else{hp.style.display='none';}document.getElementById('fm-naver').href='https://www.google.com/search?q='+encodeURIComponent(f.title+' Korea festival');m.classList.add('show');}
+function openModal(f){var m=document.getElementById('fmodal');var img=document.getElementById('fm-img');if(f.img){img.src=f.img;img.alt=(f.title||'')+' 사진';img.style.display='block';}else{img.alt='';img.style.display='none';}document.getElementById('fm-title').textContent=f.title;if(window.cjmFestBB)window.cjmFestBB('fm-bb',f.title,f.addr);document.getElementById('fm-meta').textContent=fy(f.start)+' ~ '+fy(f.end)+'  ·  '+(f.region||'')+(f.tel?'  ·  '+f.tel:'');document.getElementById('fm-ov').textContent=f.ov||'Overview coming soon. Please check the official website or Google.';var hp=document.getElementById('fm-hp');if(f.hp){hp.href=(f.hp.indexOf('http')===0?f.hp:'http://'+f.hp);hp.style.display='inline-block';}else{hp.style.display='none';}document.getElementById('fm-naver').href='https://www.google.com/search?q='+encodeURIComponent(f.title+' Korea festival');m.classList.add('show');}
 function closeModal(){document.getElementById('fmodal').classList.remove('show');}
 document.getElementById('fSido').addEventListener('change',function(e){st.region=e.target.value;apply();});
 document.getElementById('fKw').addEventListener('input',function(e){st.kw=e.target.value.trim();apply();});
@@ -2171,7 +2211,7 @@ function dday(f){var t=td(),s=toD(f.start),e=toD(f.end);if(e<t)return{l:LBL.ende
 function ranges(){var t=td(),w=t.getDay();var sat=new Date(t);sat.setDate(t.getDate()+((6-w+7)%7));var sun=new Date(sat);sun.setDate(sat.getDate()+1);var m0=new Date(t.getFullYear(),t.getMonth(),1),m1=new Date(t.getFullYear(),t.getMonth()+1,0);return{t:t,sat:sat,sun:sun,m0:m0,m1:m1};}
 function card(f){var d=dday(f),img=f.img||'/img/cat-culture.webp';return '<div class="card" data-id="'+esc(f.id)+'" style="cursor:pointer"><div class="thumb"><img loading="lazy" src="'+esc(img)+'" alt="'+esc(f.title)+'" onerror="this.src=&#39;/img/cat-culture.webp&#39;"><span class="dday '+d.c+'">'+d.l+'</span>'+(f.region?'<span class="cat">'+esc(f.region)+'</span>':'')+'</div><div class="card-body"><h3>'+esc(f.title)+'</h3><div class="date">'+fy(f.start)+' ~ '+fy(f.end)+'</div><div class="loc">'+esc(f.region)+'</div></div></div>';}
 function apply(){var r=ranges();var list=F.filter(function(f){if(st.quick!=='past'&&toD(f.end)<r.t)return false;if(st.region&&f.region!==st.region)return false;if(st.kw){var k=st.kw.toLowerCase();if((f.title||'').toLowerCase().indexOf(k)<0&&(f.addr||'').toLowerCase().indexOf(k)<0)return false;}if(st.quick==='now'&&!ov(f,r.t,r.t))return false;if(st.quick==='weekend'&&!ov(f,r.sat,r.sun))return false;if(st.quick==='month'&&!ov(f,r.m0,r.m1))return false;return true;});list.sort(function(a,b){return (a.start||'').localeCompare(b.start||'');});document.getElementById('fCount').textContent=LBL.count.replace('%d',list.length);document.getElementById('fGrid').innerHTML=list.length?list.map(card).join(''):'<p style="grid-column:1/-1;color:#6b7280;padding:24px 0">'+LBL.noMatch+'</p>';}
-function openModal(f){var m=document.getElementById('fmodal');var img=document.getElementById('fm-img');if(f.img){img.src=f.img;img.style.display='block';}else{img.style.display='none';}document.getElementById('fm-title').textContent=f.title;if(window.cjmFestBB)window.cjmFestBB('fm-bb',f.title,f.addr);document.getElementById('fm-meta').textContent=fy(f.start)+' ~ '+fy(f.end)+'  ·  '+(f.region||'')+(f.tel?'  ·  '+f.tel:'');document.getElementById('fm-ov').textContent=f.ov||LBL.modalFallback;var hp=document.getElementById('fm-hp');if(f.hp){hp.href=(f.hp.indexOf('http')===0?f.hp:'http://'+f.hp);hp.style.display='inline-block';}else{hp.style.display='none';}document.getElementById('fm-naver').href='https://www.google.com/search?q='+encodeURIComponent(f.title+LBL.googleSuffix);m.classList.add('show');}
+function openModal(f){var m=document.getElementById('fmodal');var img=document.getElementById('fm-img');if(f.img){img.src=f.img;img.alt=(f.title||'')+' 사진';img.style.display='block';}else{img.alt='';img.style.display='none';}document.getElementById('fm-title').textContent=f.title;if(window.cjmFestBB)window.cjmFestBB('fm-bb',f.title,f.addr);document.getElementById('fm-meta').textContent=fy(f.start)+' ~ '+fy(f.end)+'  ·  '+(f.region||'')+(f.tel?'  ·  '+f.tel:'');document.getElementById('fm-ov').textContent=f.ov||LBL.modalFallback;var hp=document.getElementById('fm-hp');if(f.hp){hp.href=(f.hp.indexOf('http')===0?f.hp:'http://'+f.hp);hp.style.display='inline-block';}else{hp.style.display='none';}document.getElementById('fm-naver').href='https://www.google.com/search?q='+encodeURIComponent(f.title+LBL.googleSuffix);m.classList.add('show');}
 function closeModal(){document.getElementById('fmodal').classList.remove('show');}
 document.getElementById('fSido').addEventListener('change',function(e){st.region=e.target.value;apply();});
 document.getElementById('fKw').addEventListener('input',function(e){st.kw=e.target.value.trim();apply();});
@@ -2635,7 +2675,7 @@ if (holidays.length && apiFests.length) {
 ${sections || '<p class="note">다가오는 연휴 정보를 준비 중이에요.</p>'}
 <p class="note" style="margin-top:20px">공휴일 데이터: 한국천문연구원 특일정보(공공데이터포털). 축제 일정은 변경될 수 있으니 방문 전 공식 홈페이지를 확인하세요. 카드를 누르면 상세정보와 지도·검색 링크가 표시됩니다.</p>
 </div></main>`;
-  const holJsonLd = upcoming.slice(0, 3).flatMap(b => apiFests.filter(f => yd(f.start) <= b.end && yd(f.end) >= b.start).slice(0, 5)).map(f => `<script type="application/ld+json">${JSON.stringify({ '@context': 'https://schema.org', '@type': 'Event', name: f.title, startDate: String(f.start).replace(/(\d{4})(\d{2})(\d{2})/, '$1-$2-$3'), endDate: String(f.end).replace(/(\d{4})(\d{2})(\d{2})/, '$1-$2-$3'), eventStatus: 'https://schema.org/EventScheduled', location: { '@type': 'Place', name: (f.sido || '') + (f.sigungu ? ' ' + f.sigungu : ''), address: { '@type': 'PostalAddress', addressRegion: f.sido, addressCountry: 'KR' } }, image: f.img ? [String(f.img).replace(/^http:/, 'https:')] : undefined, url: SITE + '/holiday/' })}</script>`).join('\n');
+  const holJsonLd = upcoming.slice(0, 3).flatMap(b => apiFests.filter(f => yd(f.start) <= b.end && yd(f.end) >= b.start).slice(0, 5)).map(f => `<script type="application/ld+json">${JSON.stringify({ '@context': 'https://schema.org', '@type': 'Event', name: f.title, startDate: String(f.start).replace(/(\d{4})(\d{2})(\d{2})/, '$1-$2-$3'), endDate: String(f.end).replace(/(\d{4})(\d{2})(\d{2})/, '$1-$2-$3'), eventStatus: 'https://schema.org/EventScheduled', eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode', description: evDesc(f), location: { '@type': 'Place', name: (f.sido || '') + (f.sigungu ? ' ' + f.sigungu : ''), address: { '@type': 'PostalAddress', addressRegion: f.sido, addressLocality: f.sigungu || undefined, streetAddress: f.addr || undefined, addressCountry: 'KR' } }, image: [f.img ? String(f.img).replace(/^http:/, 'https:') : SITE + '/img/cat-firework.webp'], url: SITE + '/holiday/' })}</script>`).join('\n');
   writePage('holiday', layout('2026 연휴에 갈 축제 — 설날·추석·광복절 황금연휴 축제 총정리 | ' + SITE_NAME, '2026 공휴일·연휴에 열리는 전국 축제를 한눈에. 설날·추석·광복절·개천절·한글날 연휴 나들이 계획을 축제모아에서.', '/holiday/', holContent, { jsonld: holJsonLd }));
 }
 
@@ -3081,7 +3121,10 @@ ${buyBox('festival')}
   writePage('trend/' + slug, layout(
     `${SD} 인기 여행지 랭킹 — 한국인·외국인이 많이 가는 곳 (${SEASON_M}월) | ${SITE_NAME}`,
     `${full} 시·군·구별 방문자 랭킹. 한국인이 많이 가는 곳, 외국인이 많이 가는 곳, ${SEASON_M}월 성수기 지역을 관광 빅데이터로 정리하고 ${SD} 축제·계절 명소까지 한눈에.`,
-    `/trend/${slug}/`, content, { jsonld: ld }));
+    // noindex: 고유 콘텐츠 평균 680자짜리 양산형 페이지 20개(지역16+테마4)가 사이트 전체 품질
+    // 평가를 끌어내리고 있다(2026-08-08 진단). 색인에서만 빼고 링크는 살린다(follow).
+    // 나중에 '이번 주말 ○○ 갈 만한 곳'으로 두껍게 고치면 이 옵션만 지우면 된다.
+    `/trend/${slug}/`, content, { jsonld: ld, noindex: true }));
   SIDO_URLS.push(`/trend/${slug}/`);
 });
 
@@ -3152,7 +3195,7 @@ ${buyBox(T.cp)}
   writePage('trend/' + T.slug, layout(
     `전국 ${T.name} 랭킹 — ${T.month}월에 붐비는 곳·한적한 곳 | ${SITE_NAME}`,
     `전국 ${T.name} 명소 ${T.data.length}곳을 지역별로 정리. ${T.name}이 많은 지역, ${T.month}월에 사람이 몰리는 지역, 상대적으로 한적한 지역을 관광 빅데이터로 비교해 보세요.`,
-    `/trend/${T.slug}/`, content, { jsonld: ld }));
+    `/trend/${T.slug}/`, content, { jsonld: ld, noindex: true }));   // 위 지역 랭킹과 같은 이유
   THEME_URLS.push(`/trend/${T.slug}/`);
 });
 
@@ -3512,11 +3555,47 @@ writePage('trip-cost', layout('여행 비용 계산기 — 자동차 vs 대중�
 
 // ---------- sitemap / robots ----------
 const urls = ['/', ...MONTHS.map(m => `/${m.key}/`), '/search/', ...(holidays.length ? ['/holiday/'] : []), '/pet/', ...(apiAccessible.length ? ['/accessible/'] : []), ...(apiTrails.length ? ['/trails/'] : []), ...(apiValleys.length ? ['/valley/'] : []), ...(apiMaple.length ? ['/maple/'] : []), ...(apiFlower.length ? ['/flower/'] : []), ...(apiOnsen.length ? ['/onsen/'] : []), '/jangteo/', '/test/', '/trip-cost/', ...(visitors.kor && visitors.kor.length ? ['/trend/'] : []), ...SIDO_URLS, ...THEME_URLS, ...TRAIL_URLS, ...WALK_URLS, ...TREND_LANG_URLS, '/blog/', ...posts.map(p => `/blog/${p.slug}/`), '/about/', EDITORIAL_URL, '/contact/', '/privacy/',...(apiFestsEn.length ? ['/en/', '/en/search/'] : []), ...(apiFestsJa.length ? ['/ja/', '/ja/search/'] : []), ...(apiFestsEs.length ? ['/es/', '/es/search/'] : []), ...(apiFestsZh.length ? ['/zh/', '/zh/search/'] : [])];
+// noindex 페이지는 사이트맵에서 뺀다 — "색인해라(사이트맵) + 하지마라(noindex)"는 모순 신호다.
+const NOINDEX_URLS = new Set([...SIDO_URLS, ...THEME_URLS]);
+const sitemapUrls = urls.filter(u => !NOINDEX_URLS.has(u));
+
+// ---------- lastmod: 진짜 바뀐 날짜만 ----------
+// 매 빌드마다 109개 전부 오늘 날짜로 찍으면 크롤러가 "이 사이트는 매일 전체가 바뀐다"고 학습하고
+// 결국 lastmod를 무시한다. 페이지 내용 해시를 저장해 두고, 내용이 그대로면 이전 날짜를 유지한다.
+// (날짜·시간이 박히는 부분은 해시 전에 지운다 — 안 그러면 매일 전부 '변경됨'이 된다)
+const LM_PATH = path.join(ROOT, 'data', 'lastmod.json');
+let LM = {};
+try { LM = JSON.parse(fs.readFileSync(LM_PATH, 'utf8')); } catch (e) { LM = {}; }
+const crypto = require('crypto');
+function pageHash(u) {
+  const f = path.join(ROOT, u === '/' ? 'index.html' : u.replace(/^\/|\/$/g, '') + '/index.html');
+  let h;
+  try { h = fs.readFileSync(f, 'utf8'); } catch (e) { return null; }
+  h = h.replace(new RegExp(TODAY, 'g'), '')          // 최종 갱신 표기
+    .replace(/D-\d+|진행중|종료/g, '')                // D-day 배지
+    .replace(/<lastmod>.*?<\/lastmod>/g, '');
+  return crypto.createHash('sha1').update(h).digest('hex');
+}
+const LM_NEW = {};
+function lastmodOf(u) {
+  const h = pageHash(u);
+  if (!h) return TODAY;
+  const prev = LM[u];
+  const date = (prev && prev.h === h) ? prev.d : TODAY;
+  LM_NEW[u] = { h, d: date };
+  return date;
+}
+
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${urls.map(u => `<url><loc>${SITE}${u}</loc><lastmod>${TODAY}</lastmod></url>`).join('\n')}
+${sitemapUrls.map(u => `<url><loc>${SITE}${u}</loc><lastmod>${lastmodOf(u)}</lastmod></url>`).join('\n')}
 </urlset>`;
 fs.writeFileSync(path.join(ROOT, 'sitemap.xml'), sitemap);
+fs.writeFileSync(LM_PATH, JSON.stringify(LM_NEW, null, 0));
+{
+  const kept = Object.keys(LM_NEW).filter(u => LM_NEW[u].d !== TODAY).length;
+  console.log('✓ sitemap —', sitemapUrls.length, '개(noindex', NOINDEX_URLS.size, '개 제외) · 내용 그대로라 이전 날짜 유지', kept, '개 / 갱신', sitemapUrls.length - kept, '개');
+}
 
 // ---------- RSS 2.0 피드 (네이버 서치어드바이저 RSS 제출 / 구글 뉴스 / 피드 구독) ----------
 // 원문 전체(content:encoded)를 실어 색인에 유리하게. 최신순 정렬.

@@ -21,6 +21,16 @@
 <meta property="og:description" content="2026년 11월 전국 축제 일정 한눈에 보기 — 지역별 축제 날짜, 장소, 볼거리 정리. 금남로 차 없는 거리 걷자잉, 정읍 내장산단풍축제, 순천만갈대축제 등 6개 축제.">
 <meta property="og:url" content="https://chukjemoa.co.kr/2026-11/">
 <meta property="og:type" content="website">
+<meta property="og:site_name" content="축제모아">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:image" content="https://chukjemoa.co.kr/img/cat-snow.webp">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="2026년 11월 축제 일정 총정리 (6개) | 축제모아">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="2026년 11월 축제 일정 총정리 (6개) | 축제모아">
+<meta name="twitter:description" content="2026년 11월 전국 축제 일정 한눈에 보기 — 지역별 축제 날짜, 장소, 볼거리 정리. 금남로 차 없는 거리 걷자잉, 정읍 내장산단풍축제, 순천만갈대축제 등 6개 축제.">
+<meta name="twitter:image" content="https://chukjemoa.co.kr/img/cat-snow.webp">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3293445488923111" crossorigin="anonymous"></script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Event","name":"금남로 차 없는 거리 걷자잉","startDate":"2026-04-04","endDate":"2026-11-07","eventStatus":"https://schema.org/EventScheduled","eventAttendanceMode":"https://schema.org/OfflineEventAttendanceMode","location":{"@type":"Place","name":"금남로공원·전일빌딩245 일원","address":{"@type":"PostalAddress","addressRegion":"광주","addressLocality":"동구","streetAddress":"금남로공원·전일빌딩245 일원","addressCountry":"KR"}},"image":["https://chukjemoa.co.kr/img/cat-culture.webp"],"description":"주말 금남로에서 즐기는 거리 문화행사","url":"https://chukjemoa.co.kr/search/"}</script>
@@ -628,7 +638,7 @@ window.cjmFestBB=function(elId,name,place){
   function fy(y){y=String(y||'').replace(/[^0-9]/g,'');if(y.length<8)return '';return y.slice(0,4)+'.'+(+y.slice(4,6))+'.'+(+y.slice(6,8));}
   window.openFestModal=function(ds){
     var img=document.getElementById('fm2-img');
-    if(ds.img){img.src=ds.img;img.style.display='block';}else{img.style.display='none';}
+    if(ds.img){img.src=ds.img;img.alt=(ds.name||'')+' 사진';img.style.display='block';}else{img.alt='';img.style.display='none';}
     document.getElementById('fm2-title').textContent=ds.name||'';
     if(window.cjmFestBB)window.cjmFestBB('fm2-bb',ds.name,ds.place);
     var loc=[ds.region,ds.city,ds.place].filter(Boolean).join(' ');
@@ -636,7 +646,7 @@ window.cjmFestBB=function(elId,name,place){
     document.getElementById('fm2-meta').textContent=[dr,loc].filter(Boolean).join('  ·  ');
     document.getElementById('fm2-ov').textContent=ds.ov||ds.desc||'상세 개요는 아래 네이버·공식 홈페이지에서 확인하세요.';
     var nearEl=document.getElementById('fm2-near');nearEl.innerHTML='';
-    if(ds.near){try{var arr=JSON.parse(decodeURIComponent(ds.near));if(arr&&arr.length){nearEl.innerHTML='<div style="font-weight:800;color:#0a6c63;margin:16px 0 8px">📍 근처 가볼 곳</div><div style="display:flex;flex-wrap:wrap;gap:8px">'+arr.map(function(n){return '<a href="https://search.naver.com/search.naver?query='+encodeURIComponent(n.t)+'" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;background:#f4faf8;border:1px solid #dcefeb;border-radius:20px;padding:6px 12px;font-size:.85rem;font-weight:700;color:#374151;text-decoration:none">'+(n.img?'<img src="'+esc(n.img)+'" style="width:22px;height:22px;border-radius:50%;object-fit:cover" onerror="this.style.display=&#39;none&#39;">':'')+esc(n.t)+' <span style="color:#9aa3af;font-weight:600">'+esc(n.ty)+(n.d?' '+n.d+'km':'')+'</span></a>';}).join('')+'</div>';}}catch(e){}}
+    if(ds.near){try{var arr=JSON.parse(decodeURIComponent(ds.near));if(arr&&arr.length){nearEl.innerHTML='<div style="font-weight:800;color:#0a6c63;margin:16px 0 8px">📍 근처 가볼 곳</div><div style="display:flex;flex-wrap:wrap;gap:8px">'+arr.map(function(n){return '<a href="https://search.naver.com/search.naver?query='+encodeURIComponent(n.t)+'" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;background:#f4faf8;border:1px solid #dcefeb;border-radius:20px;padding:6px 12px;font-size:.85rem;font-weight:700;color:#374151;text-decoration:none">'+(n.img?'<img src="'+esc(n.img)+'" alt="'+esc(n.t)+'" loading="lazy" style="width:22px;height:22px;border-radius:50%;object-fit:cover" onerror="this.style.display=&#39;none&#39;">':'')+esc(n.t)+' <span style="color:#9aa3af;font-weight:600">'+esc(n.ty)+(n.d?' '+n.d+'km':'')+'</span></a>';}).join('')+'</div>';}}catch(e){}}
     var hp=document.getElementById('fm2-hp');
     if(ds.hp){hp.href=(ds.hp.indexOf('http')===0?ds.hp:'http://'+ds.hp);hp.style.display='inline-block';}else{hp.style.display='none';}
     document.getElementById('fm2-naver').href='https://search.naver.com/search.naver?query='+encodeURIComponent((ds.name||'')+' 축제');
