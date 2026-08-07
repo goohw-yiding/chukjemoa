@@ -257,6 +257,20 @@ function normalizeSido(list) {
   });
   return list;
 }
+// 목록 페이지 첫 화면을 HTML에 실어두는 서버 렌더 카드
+// (JS가 로드 후 같은 데이터로 다시 그리므로 내용은 동일하다)
+function ssrCards(list, n, f) {
+  return (list || []).slice(0, n || 60).map(p => {
+    const o = f(p);
+    const img = o.img ? String(o.img).replace(/^http:/, 'https:') : '';
+    return '<div class="card">'
+      + (img ? '<div class="thumb"><img src="' + escA(img) + '" alt="' + escA(o.title) + '" loading="lazy"></div>' : '')
+      + '<div class="card-body"><h3>' + esc(o.title) + '</h3>'
+      + (o.loc ? '<p class="loc">📍 ' + esc(o.loc) + '</p>' : '')
+      + (o.desc ? '<p class="desc">' + esc(String(o.desc).slice(0, 120)) + '</p>' : '')
+      + '</div></div>';
+  }).join('');
+}
 function festCard(f) {
   const emoji = CAT_EMOJI[f.category] || '🎪';
   const img = CAT_IMG[f.category] || 'etc';
@@ -1550,6 +1564,21 @@ const testContent = `<main><div class="wrap" style="padding-top:10px">
 <p class="note" style="margin-top:4px">4가지 질문으로 나에게 딱 맞는 전국 축제를 찾아드려요.</p>
 </div>
 <div class="quiz" id="quiz"></div>
+<section class="explain" style="margin-top:30px">
+<h2>어떤 테스트인가요</h2>
+<p>축제는 취향을 많이 탑니다. 사람 많은 곳에서 신나게 노는 걸 좋아하는 사람이 있고, 조용한 곳에서 야경이나 꽃을 보며 걷는 걸 좋아하는 사람이 있습니다. 같은 주말에 같은 지역을 가도 어떤 축제를 고르느냐에 따라 만족도가 완전히 달라집니다.</p>
+<p>이 테스트는 <b>네 가지 질문</b>으로 취향을 가늠해 <b>10가지 유형</b> 중 하나를 알려드리고, 그 유형에 맞는 축제 세 곳을 추천합니다. 30초면 끝나고, 결과는 링크로 친구에게 공유할 수 있습니다.</p>
+<h3>이런 걸 물어봅니다</h3>
+<ul>
+<li>북적이는 분위기가 좋은지, 한적한 곳이 편한지</li>
+<li>낮에 활동하는 편인지, 밤 풍경을 좋아하는지</li>
+<li>먹거리·공연·체험 중 무엇을 우선하는지</li>
+<li>가까운 곳 위주인지, 멀어도 괜찮은지</li>
+</ul>
+<h3>추천은 무엇을 기준으로 하나요</h3>
+<p>결과 유형에 맞는 카테고리(물놀이·음악·음식·꽃·문화·불꽃·전통·빛·눈)를 골라, 지금 진행 중이거나 곧 열리는 축제 중에서 추천합니다. 축제 정보는 한국관광공사 공공데이터 기준이라 일정이 지난 축제는 빠집니다.</p>
+<p>결과가 마음에 안 들면 다시 해보셔도 됩니다. 취향은 계절과 같이 가는 사람에 따라 바뀌니까요. 추천받은 축제를 눌러 상세 정보와 <a href="/trip-cost/">가는 비용</a>까지 바로 확인해 보세요.</p>
+</section>
 ${QUIZ_JS}
 <h2 class="sec">월별 축제 일정 보기</h2>
 ${monthNavHtml}
@@ -1612,7 +1641,7 @@ const searchContent = `<main><div class="wrap">
 </div>
 </div>
 <div class="srch-count" id="fCount"></div>
-<div class="grid" id="fGrid"></div>
+<div class="grid" id="fGrid">${ssrCards(apiFests.filter(f => String(f.end || '') >= TODAY.replace(/-/g, '')), 60, p => ({ title: p.title, img: p.img, loc: (p.sido || '') + ' ' + (p.sigungu || ''), desc: p.ov }))}</div>
 <p class="note">데이터 출처: 한국관광공사 국문관광정보 서비스(공공데이터포털). 일정은 변동될 수 있으니 방문 전 공식 정보를 확인하세요. 축제 카드를 누르면 <strong>상세 개요·공식 홈페이지·네이버</strong>를 볼 수 있어요.</p>
 <div id="fmodal" class="fmodal"><div class="fmbox">
 <button class="fmx" id="fmx" aria-label="닫기">✕</button>
@@ -1703,7 +1732,7 @@ const petContent = `<main><div class="wrap">
 <button id="pReset" class="pmore" style="border-color:#f0e6dc;color:#374151">초기화</button>
 </div></div>
 <div class="srch-count" id="pCount"></div>
-<div class="grid" id="pGrid"></div>
+<div class="grid" id="pGrid">${ssrCards(apiPets, 60, p => ({ title: p.title, img: p.img, loc: (p.sido || '') + ' ' + (p.sigungu || ''), desc: p.cat }))}</div>
 <div style="text-align:center;margin:22px 0"><button id="pMore" class="pmore" style="display:none">더 보기</button></div>
 <p class="note">데이터 출처: 한국관광공사 반려동물 동반여행 서비스(공공데이터포털). 반려동물 동반 조건·이용가능 시설은 방문 전 각 장소에 꼭 확인하세요. 카드를 누르면 상세정보와 지도·검색 링크가 표시됩니다.</p>
 </div></main>
@@ -1757,7 +1786,7 @@ if (apiValleys.length) {
 <button id="vReset" class="vmore" style="border-color:#e6eef2;color:#374151">초기화</button>
 </div></div>
 <div class="srch-count" id="vCount"></div>
-<div class="grid" id="vGrid"></div>
+<div class="grid" id="vGrid">${ssrCards(apiValleys, 60, p => ({ title: p.title, img: p.img, loc: (p.sido || '') + ' ' + (p.sigungu || ''), desc: p.ov }))}</div>
 <div style="text-align:center;margin:22px 0"><button id="vMore" class="vmore" style="display:none">더 보기</button></div>
 <p class="note">데이터 출처: 한국관광공사(공공데이터포털). 계곡 개방 여부·수심·주차·취사 가능 여부는 계절과 현장 사정에 따라 다르니 방문 전 꼭 확인하세요. 안전한 물놀이를 위해 기상·계곡 수량을 반드시 살피시기 바랍니다.</p>
 </div></main>
@@ -1827,7 +1856,7 @@ SPOT_THEMES.forEach(function (T) {
 <button id="sReset" class="smore" style="border-color:#e6eef2;color:#374151">초기화</button>
 </div></div>
 <div class="srch-count" id="sCount"></div>
-<div class="grid" id="sGrid"></div>
+<div class="grid" id="sGrid">${ssrCards(T.data, 60, p => ({ title: p.title, img: p.img, loc: (p.sido || '') + ' ' + (p.sigungu || ''), desc: p.ov }))}</div>
 <div style="text-align:center;margin:22px 0"><button id="sMore" class="smore" style="display:none">더 보기</button></div>
 <p class="note">${T.note} 카드를 누르면 상세정보와 지도·검색 링크가 표시됩니다.</p>
 </div></main>
@@ -1900,7 +1929,7 @@ ${enStyle}
 <button data-q="past">Include past</button>
 </div></div>
 <div class="srch-count" id="fCount"></div>
-<div class="grid" id="fGrid"></div>
+<div class="grid" id="fGrid">${ssrCards(apiFestsEn.filter(f => String(f.end || '') >= TODAY.replace(/-/g, '')), 40, p => ({ title: p.title, img: p.img, loc: p.region || '', desc: p.ov }))}</div>
 <p class="note">Data: Korea Tourism Organization (TourAPI). Schedules may change — please check the official site. Tap a card for the overview, official website, and a Google search.</p>
 <div id="fmodal" class="fmodal"><div class="fmbox">
 <button class="fmx" id="fmx" aria-label="close">✕</button>
@@ -1947,6 +1976,8 @@ document.getElementById('fCount').textContent='Loading...';
 </div></div>
 <h2 class="sec">Plan your trip around Korea's festivals</h2>
 <p style="color:#4b5563;line-height:1.75;margin-bottom:14px">South Korea hosts hundreds of festivals every year — summer mud and water festivals, autumn fireworks and fall-foliage events, and winter ice and light festivals. Chukjemoa lets you search ${apiFestsEn.length}+ festivals by date and region, read an official overview, and jump straight to each festival's official website. All schedules and descriptions come from the Korea Tourism Organization (TourAPI).</p>
+<h2 class="sec">Upcoming festivals</h2>
+${ssrCards(apiFestsEn.filter(f => String(f.end || '') >= TODAY.replace(/-/g, '')).sort((a,b)=>String(a.start).localeCompare(String(b.start))), 24, p => ({ title: p.title, img: p.img, loc: p.region || '', desc: p.ov })) ? '<div class="grid">' + ssrCards(apiFestsEn.filter(f => String(f.end || '') >= TODAY.replace(/-/g, '')).sort((a,b)=>String(a.start).localeCompare(String(b.start))), 24, p => ({ title: p.title, img: p.img, loc: p.region || '', desc: p.ov })) + '</div>' : ''}
 <div style="text-align:center;margin:26px 0"><a href="/en/search/" style="display:inline-block;background:#0f9d8f;color:#fff;padding:14px 30px;border-radius:28px;font-weight:800;text-decoration:none">🔎 Open the Festival Finder</a></div>
 </div></main>`;
   writePage('en', layout('Korea Festivals Calendar 2026 — Festivals & Traditional Markets | Chukjemoa', 'Discover festivals and traditional markets across South Korea. Search by date and region with official Korea Tourism Organization data.', '/en/', enHome, { lang:'en', alternates: homeAlts() }));
@@ -1995,7 +2026,7 @@ ${style}
 <button data-q="past">${L.q.past}</button>
 </div></div>
 <div class="srch-count" id="fCount"></div>
-<div class="grid" id="fGrid"></div>
+<div class="grid" id="fGrid">${ssrCards(data.filter(f => String(f.end || '') >= TODAY.replace(/-/g, '')), 40, p => ({ title: p.title, img: p.img, loc: p.region || '', desc: p.ov }))}</div>
 <p class="note">${L.note}</p>
 <div id="fmodal" class="fmodal"><div class="fmbox">
 <button class="fmx" id="fmx" aria-label="close">✕</button>
@@ -2043,6 +2074,8 @@ document.getElementById('fCount').textContent=LBL.loading;
 </div></div>
 <h2 class="sec">${L.sec}</h2>
 <p style="color:#4b5563;line-height:1.75;margin-bottom:14px">${L.lead}</p>
+<h2 class="sec">${L.upcoming || "Upcoming festivals"}</h2>
+${ssrCards(data.filter(f => String(f.end || '') >= TODAY.replace(/-/g, '')).sort((a,b)=>String(a.start).localeCompare(String(b.start))), 24, p => ({ title: p.title, img: p.img, loc: p.region || '', desc: p.ov })) ? '<div class="grid">' + ssrCards(data.filter(f => String(f.end || '') >= TODAY.replace(/-/g, '')).sort((a,b)=>String(a.start).localeCompare(String(b.start))), 24, p => ({ title: p.title, img: p.img, loc: p.region || '', desc: p.ov })) + '</div>' : ''}
 <div style="text-align:center;margin:26px 0"><a href="/${lang}/search/" style="display:inline-block;background:#0f9d8f;color:#fff;padding:14px 30px;border-radius:28px;font-weight:800;text-decoration:none">${L.ctaBtn}</a></div>
 </div></main>`;
   writePage(lang, layout(L.metaTitleHome, L.metaDescHome, '/' + lang + '/', home, { lang, alternates: homeAlts() }));
@@ -2138,7 +2171,7 @@ if (apiAccessible.length) {
 <button id="aReset" class="pmore" style="border-color:#f0e6dc;color:#374151">초기화</button>
 </div></div>
 <div class="srch-count" id="aCount"></div>
-<div class="grid" id="aGrid"></div>
+<div class="grid" id="aGrid">${ssrCards(apiAccessible, 60, p => ({ title: p.title, img: p.img, loc: (p.sido || '') + ' ' + (p.sigungu || ''), desc: p.cat }))}</div>
 <div style="text-align:center;margin:22px 0"><button id="aMore" class="pmore" style="display:none">더 보기</button></div>
 <p class="note">데이터 출처: 한국관광공사 무장애여행 서비스(공공데이터포털). 편의시설 정보는 순차적으로 채워지고 있으며, 방문 전 각 시설에 접근성을 꼭 확인하세요. 카드를 누르면 상세정보와 지도·검색 링크가 표시됩니다.</p>
 </div></main>
@@ -2395,7 +2428,7 @@ ${(() => {   /* 걷기길 허브 섹션 — 표준데이터 기반 이름난 길
 <button id="tReset" class="pmore" style="border-color:#f0e6dc;color:#374151">초기화</button>
 </div></div>
 <div class="srch-count" id="tCount"></div>
-<div class="trgrid" id="tGrid"></div>
+<div class="trgrid" id="tGrid">${ssrCards(apiTrails, 60, p => ({ title: p.name, loc: p.sigun || p.sido, desc: p.summary }))}</div>
 <div style="text-align:center;margin:22px 0"><button id="tMore" class="pmore" style="display:none">더 보기</button></div>
 <p class="note">데이터 출처: 한국관광공사 두루누비 걷기여행 정보. 코스 상황·통제는 방문 전 두루누비(durunubi.kr)에서 확인하세요. 카드를 누르면 상세정보와 지도·검색 링크가 표시됩니다.</p>
 </div></main>
@@ -3282,6 +3315,22 @@ const tripCostContent = `<main><div class="wrap">
 <button id="tcGo" class="tc-btn">비용 계산하기</button>
 </div>
 <div id="tcOut"></div>
+<section class="explain" style="margin-top:26px">
+<h2>🧮 여행 비용, 어떻게 계산하나요</h2>
+<h3>무엇을 비교해 주나요</h3>
+<p>출발지에서 목적지까지 <b>자동차로 갈 때</b>와 <b>대중교통으로 갈 때</b>의 편도 비용을 나란히 보여드립니다. 자동차는 연료비에 통행료와 주차비를 더하고, 대중교통은 실제 요금을 가져옵니다. 기차 구간이 있으면 KTX 운임도 함께 계산합니다.</p>
+<h3>자동차 비용은 이렇게 나옵니다</h3>
+<p style="text-align:center;background:#f4faf8;border:1px solid #dcefeb;border-radius:10px;padding:13px;font-weight:700;color:#0a6c63;margin:10px 0">
+자동차 비용 = (주행거리 ÷ 연비) × 유가 + 통행료 + 주차비
+</p>
+<p>주행거리와 통행료는 실제 내비게이션 경로를 기준으로 합니다. 연비는 12km/L, 유가는 1,700원/L을 기본값으로 두었는데, <b>'계산 기준 바꾸기'</b>를 열면 본인 차에 맞게 고칠 수 있습니다. 경차나 하이브리드라면 연비를 올리고, 대형차라면 낮춰서 계산해 보세요.</p>
+<h3>대중교통은 어떻게 되나요</h3>
+<p>시내 구간은 버스·지하철 최적 경로의 실제 요금을, 시외 구간은 시외버스 실요금을 우선 사용합니다. 요금 데이터가 없는 구간은 거리를 기준으로 추정하며, 이 경우 화면에 '거리 추정'이라고 표시됩니다. 기차역이 가까우면 KTX 운임표 기준 요금도 같이 보여드립니다.</p>
+<h3>왜 실제와 다를 수 있나요</h3>
+<p>유가는 매일 바뀌고, 통행료는 차종에 따라 다릅니다. 정체가 심하면 연료가 더 들고, 주말·명절에는 대중교통 요금이 달라지기도 합니다. 그래서 이 계산은 <b>'자동차가 나을까, 대중교통이 나을까'를 가늠하는 용도</b>로 보시는 게 맞습니다. 정확한 금액이 필요하면 각 운송사 앱에서 확인하세요.</p>
+<h3>혼자 가면? 넷이 가면?</h3>
+<p>여기 나오는 금액은 <b>편도 1대·1인 기준</b>입니다. 자동차는 몇 명이 타든 비용이 같지만 대중교통은 인원수만큼 곱해야 합니다. 그래서 <b>혼자면 대중교통, 셋 이상이면 자동차</b>가 유리해지는 경우가 많습니다. 왕복이라면 두 배로 보시면 됩니다.</p>
+</section>
 <p class="tc-note">거리·통행료는 카카오내비, 대중교통 요금은 ODsay 기준입니다. 실제 요금은 차종·유종·실시간 유가·할인·정체 등에 따라 달라질 수 있어 <b>비교 참고용</b>입니다. 시외버스·기차(KTX 등) 요금은 ODsay가 제공하지 않아 <b>요금 정보 없음</b>으로 표시돼요. 이땐 코레일·시외버스 앱에서 확인하세요.</p>
 </div>
 </div></main>
