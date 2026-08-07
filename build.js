@@ -959,6 +959,10 @@ function layout(title, desc, urlPath, content, opts) {
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="google-site-verification" content="yaGGvBqUsyeq_wrJvUrsiCBcGYtHZA_HBFHdSKlD1GU" />
 <meta name="naver-site-verification" content="5eaaca3f7a2290de756df104664ced1f008e71eb" />
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<meta name="theme-color" content="#E0502F">
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-GXJQ4SXMWY"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-GXJQ4SXMWY');</script>
