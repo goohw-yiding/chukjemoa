@@ -226,7 +226,7 @@ const COUPANG = {
   // 스마트스토어 통계 > 마케팅분석 > 사용자정의채널 에서 유입을 구분하는 값
   nt: { source: 'chukjemoa', medium: 'site' },
   items: {
-    festival: { ico: '🧺', t: '축제 가서 앉을 자리, 챙기셨나요', s: '휴대용 접이식 돗자리', q: '접이식 돗자리', url: 'https://link.coupang.com/a/fXNSDlRDwa' },
+    festival: { ico: '🪵', t: '축제·나들이 갈 때', s: '3단 폴딩 캠핑테이블 (쿠웅샵)', own: true, q: '캠핑테이블', url: 'https://brand.naver.com/guung/products/4972833368' },
     flower:   { ico: '🧺', t: '봄꽃 나들이 준비물', s: '피크닉 돗자리', q: '접이식 돗자리', url: 'https://link.coupang.com/a/fXNSDlRDwa' },
     maple:    { ico: '🪑', t: '단풍 보면서 앉아 쉴 자리', s: '착착 접는 캠핑의자 (쿠웅샵)', own: true, q: '캠핑의자', url: 'https://brand.naver.com/guung/products/13026204364' },
     trails:   { ico: '🥾', t: '걷기 여행 준비물', s: '발 편한 등산화', q: '등산화', url: 'https://link.coupang.com/a/fXNZ2GivM4' },
