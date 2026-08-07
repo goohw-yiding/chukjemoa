@@ -10,7 +10,9 @@ const ROOT = __dirname;
 const SITE = 'https://chukjemoa.co.kr';
 const SITE_NAME = '축제모아';
 const ADSENSE = 'ca-pub-3293445488923111';
-const TODAY = new Date().toISOString().slice(0, 10);
+// ⚠️ toISOString()은 UTC라 KST 오전 9시 이전에 빌드하면 날짜가 하루 밀린다(지난 축제가 남고 sitemap lastmod가 어제로 찍힘).
+//    그래서 KST로 고정해서 뽑는다.
+const TODAY = new Date(Date.now() + 9 * 3600 * 1000).toISOString().slice(0, 10);
 
 const festivals = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/festivals.json'), 'utf8'));
 const markets = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/markets.json'), 'utf8'));
@@ -275,21 +277,55 @@ function cpHref(key, detail) {
     + '&nt_medium=' + COUPANG.nt.medium + '&nt_detail=' + (detail || key);
 }
 // 페이지당 1개 원칙. 클릭 시 중간 페이지 없이 바로 쿠팡으로 이동.
+// ---------- 블로그 글별 고정 매칭 ----------
+// 블로그는 "이 축제에 뭘 챙겨가지"를 이미 읽고 있는 사람이라 구매의도가 가장 높다.
+// 그래서 계절 로테이션에 맡기지 않고 글 내용에 맞는 상품을 고정으로 붙인다.
+// 배열 = [메인상품키, 업셀키...]  · 없는 slug는 아무것도 안 붙는다.
+const BLOG_BUYBOX = {
+  // 여름 물놀이 — 본문에 이미 "아쿠아슈즈"·"방수팩 필수"라고 써 있는 글들
+  'boryeong-mud-guide':               ['aqua', 'suncap'],
+  'summer-water-festivals-2026':      ['suncap', 'aqua'],
+  'jangheung-water-festival-guide':   ['suncap', 'aqua'],
+  'valley-summer-guide-2026':         ['valley', 'psbase', 'aqua'],
+  'busan-sea-festival-guide':         ['valley', 'psbase', 'suncap'],
+  // 가을·야간 축제 — 앉을 자리가 관건
+  'muju-firefly-festival-guide':      ['maple'],
+  'andong-mask-dance-festival-guide': ['maple'],
+  'bongpyeong-buckwheat-festival-guide': ['maple', 'jangteo'],   // 봉평장 연계 코스가 본문에 있음
+  'autumn-festivals-2026':            ['maple', 'festival'],
+  // 오일장
+  'ojang-day-guide':                  ['jangteo'],
+  'ojang-train-trip-course':          ['jangteo'],
+  // 반려견 (여름 준비물 글)
+  'pet-friendly-festival-guide':      ['pet', 'suncap'],
+  // 걷기 — 현재 자사 걷기용품이 없어 제휴 등산화. 소싱 완료되면 교체할 것
+  'jeju-olle-course-guide':           ['trails'],
+  'jeju-olle-course-1':               ['trails']
+};
 function buyBox(pageKey) {
-  if (!COUPANG.enabled) return '';
   const key = seasonKey(pageKey);
+  return renderBuyBox(key, (COUPANG.items[key] || {}).up, pageKey);
+}
+function blogBuyBox(slug) {
+  const m = BLOG_BUYBOX[slug];
+  if (!m || !m.length) return '';
+  return renderBuyBox(m[0], m.slice(1), 'blog-' + slug);
+}
+function renderBuyBox(mainKey, upKeys, detail) {
+  if (!COUPANG.enabled) return '';
+  const key = mainKey;
   const it = COUPANG.items[key]; if (!it) return '';
-  const ups = (it.up || []).map(uk => {
+  const ups = (upKeys || []).map(uk => {
     const u = COUPANG.items[uk]; if (!u) return '';
     const urel = u.own ? 'nofollow noopener' : 'nofollow sponsored noopener';
-    return `<a class="bb-up" href="${cpHref(uk, pageKey + '-' + uk)}" target="_blank" rel="${urel}">${esc(u.upT || u.s)}</a>`;
+    return `<a class="bb-up" href="${cpHref(uk, detail + '-' + uk)}" target="_blank" rel="${urel}">${esc(u.upT || u.s)}</a>`;
   }).filter(Boolean).join('');
   // 메인·업셀에 자사상품과 제휴상품이 섞일 수 있으므로 고지문구도 섞어서 낸다
-  const hasOwn = it.own || (it.up || []).some(uk => COUPANG.items[uk] && COUPANG.items[uk].own);
-  const hasAff = !it.own || (it.up || []).some(uk => COUPANG.items[uk] && !COUPANG.items[uk].own);
+  const hasOwn = it.own || (upKeys || []).some(uk => COUPANG.items[uk] && COUPANG.items[uk].own);
+  const hasAff = !it.own || (upKeys || []).some(uk => COUPANG.items[uk] && !COUPANG.items[uk].own);
   const disc = [hasOwn ? COUPANG.discOwn : '', hasAff ? COUPANG.disc : ''].filter(Boolean).join(' ');
   const rel = it.own ? 'nofollow noopener' : 'nofollow sponsored noopener';
-  return `<a class="buybox" href="${cpHref(key, pageKey)}" target="_blank" rel="${rel}">`
+  return `<a class="buybox" href="${cpHref(key, detail)}" target="_blank" rel="${rel}">`
     + `<span class="bb-ico">${it.ico}</span>`
     + `<span class="bb-txt"><b>${esc(it.t)}</b><span class="bb-sub">${esc(it.s)}</span></span>`
     + `<span class="bb-arrow">›</span></a>`
@@ -1228,6 +1264,7 @@ posts.forEach(p => {
 <h1>${esc(p.title)}</h1>
 ${metaBlock(p.date)}
 ${p.body}
+${blogBuyBox(p.slug)}
 ${SCHEDULE_NOTICE}
 ${refsBlock(p.slug)}
 </article>
