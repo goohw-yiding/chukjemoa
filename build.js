@@ -240,7 +240,8 @@ const COUPANG = {
   nt: { source: 'chukjemoa', medium: 'site' },
   items: {
     festival: { ico: '🪵', t: '축제·나들이 갈 때', s: '3단 폴딩 캠핑테이블 · 120x60cm', own: true, q: '캠핑테이블', url: 'https://brand.naver.com/guung/products/4972833368',
-                bySeason: { summer: 'suncap', winter: 'tripcost', spring: 'flower' } },
+                // 여름은 bySeason으로 일괄 교체하지 않는다 — 물축제만 썬캡, 나머지는 캠핑테이블(FEST_BB_WATER 참고)
+                bySeason: { winter: 'tripcost', spring: 'flower' } },
     flower:   { ico: '🧺', t: '봄꽃 나들이 준비물', s: '피크닉 돗자리', q: '접이식 돗자리', url: 'https://link.coupang.com/a/fXNSDlRDwa' },
     maple:    { ico: '🪑', t: '단풍 보면서 앉아 쉴 자리', s: '접어서 드는 폴딩 스툴 + 메쉬백', own: true, q: '캠핑의자', url: 'https://brand.naver.com/guung/products/13026204364' },
     trails:   { ico: '🥾', t: '걷기 여행 준비물', s: '발 편한 등산화', q: '등산화', url: 'https://link.coupang.com/a/fXNZ2GivM4' },
@@ -401,6 +402,34 @@ const DDAY_JS = `<script>
 })();
 </script>`;
 
+// ---------- 축제 모달 버이박스: 물축제 분기 ----------
+// 여름이라고 모든 축제에 썬캡을 띄우면 실내·야간 축제에서 어색하다.
+// 축제 이름이 물축제 계열일 때만 썬캡+아쿠아슈즈, 아니면 계절 기본값(여름·가을=캠핑테이블)을 쓴다.
+// ⚠️ '물' 한 글자로 매칭하면 '박물관축제'가 걸린다 — 반드시 아래 토큰 목록으로만 판정할 것.
+const FEST_BB_BASE = buyBox('festival');
+const FEST_BB_WATER = NOW_SEASON === 'summer'
+  ? renderBuyBox('suncap', ['aqua'], 'festival-water')
+  : FEST_BB_BASE;
+const FEST_BB_JS = `<script>
+window.CJM_FEST_BB={base:${JSON.stringify(FEST_BB_BASE)},water:${JSON.stringify(FEST_BB_WATER)}};
+// 축제명에 나오면 물축제로 보는 말 (바다·해변 같은 낱말은 '여수밤바다 불꽃축제'까지 걸려서 뺐다)
+window.CJM_WATER_RE=/물축제|물놀이|물싸움|머드|워터밤|워터파크|해수욕|해변축제|바다축제|비치페스티벌|계곡|서핑|썸머|피서|모래축제|백사장/;
+// 장소·주소는 '진짜 물가'인 것만 본다
+window.CJM_WATER_VENUE_RE=/해수욕장|워터파크|계곡|수영장|물놀이장/;
+// 이게 걸리면 물가에 있어도 썬캡이 아니다 (야간·실내·겨울)
+// ⚠️ '물축제'는 반려동'물축제'·수산'물축제'·산나'물축제'에도 들어간다. 한글엔 단어 경계가 없어
+//    정규식으로 못 막으니, 걸리는 앞말을 여기에 모아 제외한다. 새 오탐이 보이면 여기에 추가할 것.
+window.CJM_NOTWATER_RE=/반려동물|수산물|농산물|특산물|해산물|임산물|나물|먹거리|야행|야시장|나이트|나잇|불꽃|밤바다|야간|실내|박물관|미술관|겨울|동장군|눈꽃|얼음|성탄|크리스마스|해넘이|해돋이/;
+// 축제명만 보면 '해운대 모래축제'처럼 해변인데 못 잡는 게 생긴다 → 장소·주소까지 같이 판정한다.
+window.cjmFestBB=function(elId,name,place){
+  var el=document.getElementById(elId); if(!el||!window.CJM_FEST_BB) return;
+  var n=String(name||''), p=String(place||'');
+  var water=(window.CJM_WATER_RE.test(n)||window.CJM_WATER_VENUE_RE.test(p))
+            && !window.CJM_NOTWATER_RE.test(n+' '+p);
+  el.innerHTML=water?window.CJM_FEST_BB.water:window.CJM_FEST_BB.base;
+};
+</script>`;
+
 // 모달 안 인라인 여행비용 계산기 (도착지=카드에서 자동, 출발지=localStorage 기억) — /api/tripcost 호출
 const MODAL_CALC_JS = `<script>
 (function(){
@@ -492,7 +521,7 @@ const FEST_MODAL_HTML = `<div id="festmodal" class="fmodal"><div class="fmbox">
 <div id="fmc-out"></div>
 <p class="hint">자동차(연료+통행료+주차) vs 대중교통·KTX 편도 비용 비교 · <a href="/trip-cost/" style="color:#e0502f;font-weight:700">연비·유가 바꿔서 자세히 계산 →</a></p>
 </div>
-${buyBox('festival')}
+<div id="fm2-bb">${FEST_BB_BASE}</div>
 <div class="fm-links"><a id="fm2-hp" target="_blank" rel="noopener">🏛️ 공식 홈페이지</a><a id="fm2-naver" target="_blank" rel="noopener">🔎 네이버에서 보기</a></div>
 </div></div>`;
 const FEST_MODAL_JS = `<script>
@@ -504,6 +533,7 @@ const FEST_MODAL_JS = `<script>
     var img=document.getElementById('fm2-img');
     if(ds.img){img.src=ds.img;img.style.display='block';}else{img.style.display='none';}
     document.getElementById('fm2-title').textContent=ds.name||'';
+    if(window.cjmFestBB)window.cjmFestBB('fm2-bb',ds.name,ds.place);
     var loc=[ds.region,ds.city,ds.place].filter(Boolean).join(' ');
     var dr=fy(ds.start)+(ds.end&&String(ds.end).replace(/[^0-9]/g,'')!==String(ds.start).replace(/[^0-9]/g,'')?' ~ '+fy(ds.end):'');
     document.getElementById('fm2-meta').textContent=[dr,loc].filter(Boolean).join('  ·  ');
@@ -1072,7 +1102,7 @@ ${NAV_JS}
 ${DDAY_JS}
 ${FAV_JS}
 ${NEARBY_JS}
-${lang === 'ko' ? MODAL_CALC_JS + FEST_MODAL_JS + PLACE_MODAL_JS : ''}
+${lang === 'ko' ? FEST_BB_JS + MODAL_CALC_JS + FEST_MODAL_JS + PLACE_MODAL_JS : ''}
 ${urlPath === '/' ? FIREWORKS_JS : ''}
 </body>
 </html>`;
@@ -1749,7 +1779,7 @@ const searchContent = `<main><div class="wrap">
 <div id="smc-out"></div>
 <p class="hint">자동차(연료+통행료+주차) vs 대중교통·KTX 편도 비용 비교 · <a href="/trip-cost/" style="color:#e0502f;font-weight:700">연비·유가 바꿔서 자세히 계산 →</a></p>
 </div>
-${buyBox('festival')}
+<div id="fm-bb">${FEST_BB_BASE}</div>
 <div class="fm-links"><a id="fm-hp" target="_blank" rel="noopener">🏛️ 공식 홈페이지</a><a id="fm-naver" target="_blank" rel="noopener">🔎 네이버에서 보기</a></div>
 </div></div>
 </div></main>
@@ -1774,7 +1804,7 @@ document.getElementById('fReset').addEventListener('click',function(){st={sido:'
 var qbs=document.querySelectorAll('#fQuick button');for(var i=0;i<qbs.length;i++){qbs[i].addEventListener('click',function(){st.quick=this.getAttribute('data-q');for(var j=0;j<qbs.length;j++)qbs[j].classList.remove('on');this.classList.add('on');apply();});}
 document.getElementById('fPet').addEventListener('change',function(e){st.pet=e.target.checked;apply();});
 document.getElementById('fPast').addEventListener('change',function(e){st.past=e.target.checked;apply();});
-function openModal(f){var m=document.getElementById('fmodal');var img=document.getElementById('fm-img');if(f.img){img.src=f.img;img.style.display='block';}else{img.style.display='none';}document.getElementById('fm-title').textContent=f.title;document.getElementById('fm-meta').textContent=fy(f.start)+' ~ '+fy(f.end)+'  ·  '+((f.sido||'')+(f.sigungu?' '+f.sigungu:''))+(f.tel?'  ·  '+f.tel:'');document.getElementById('fm-ov').textContent=f.ov||'상세 개요는 아직 준비 중이에요. 아래 네이버·공식 홈페이지에서 확인하세요.';var nearEl=document.getElementById('fm-near');if(f.near&&f.near.length){nearEl.innerHTML='<div style="font-weight:800;color:#0a6c63;margin:16px 0 8px">📍 근처 가볼 곳</div><div style="display:flex;flex-wrap:wrap;gap:8px">'+f.near.map(function(n){return '<a href="https://search.naver.com/search.naver?query='+encodeURIComponent(n.t)+'" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;background:#f4faf8;border:1px solid #dcefeb;border-radius:20px;padding:6px 12px;font-size:.85rem;font-weight:700;color:#374151;text-decoration:none">'+(n.img?'<img src="'+esc(n.img)+'" style="width:22px;height:22px;border-radius:50%;object-fit:cover" onerror="this.style.display=&#39;none&#39;">':'')+esc(n.t)+' <span style="color:#9aa3af;font-weight:600">'+esc(n.ty)+(n.d?' '+n.d+'km':'')+'</span></a>';}).join('')+'</div>';}else{nearEl.innerHTML='';}var hp=document.getElementById('fm-hp');if(f.hp){hp.href=f.hp;hp.style.display='inline-block';}else{hp.style.display='none';}document.getElementById('fm-naver').href='https://search.naver.com/search.naver?query='+encodeURIComponent(f.title+' 축제');if(window.cjmResetCalc)window.cjmResetCalc('smc',window.cjmCands(f.title,window.cjmClean(f.addr),f.addr,((f.sido||'')+' '+(f.sigungu||'')).trim(),f.sigungu));m.classList.add('show');}
+function openModal(f){var m=document.getElementById('fmodal');var img=document.getElementById('fm-img');if(f.img){img.src=f.img;img.style.display='block';}else{img.style.display='none';}document.getElementById('fm-title').textContent=f.title;if(window.cjmFestBB)window.cjmFestBB('fm-bb',f.title,f.addr);document.getElementById('fm-meta').textContent=fy(f.start)+' ~ '+fy(f.end)+'  ·  '+((f.sido||'')+(f.sigungu?' '+f.sigungu:''))+(f.tel?'  ·  '+f.tel:'');document.getElementById('fm-ov').textContent=f.ov||'상세 개요는 아직 준비 중이에요. 아래 네이버·공식 홈페이지에서 확인하세요.';var nearEl=document.getElementById('fm-near');if(f.near&&f.near.length){nearEl.innerHTML='<div style="font-weight:800;color:#0a6c63;margin:16px 0 8px">📍 근처 가볼 곳</div><div style="display:flex;flex-wrap:wrap;gap:8px">'+f.near.map(function(n){return '<a href="https://search.naver.com/search.naver?query='+encodeURIComponent(n.t)+'" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;background:#f4faf8;border:1px solid #dcefeb;border-radius:20px;padding:6px 12px;font-size:.85rem;font-weight:700;color:#374151;text-decoration:none">'+(n.img?'<img src="'+esc(n.img)+'" style="width:22px;height:22px;border-radius:50%;object-fit:cover" onerror="this.style.display=&#39;none&#39;">':'')+esc(n.t)+' <span style="color:#9aa3af;font-weight:600">'+esc(n.ty)+(n.d?' '+n.d+'km':'')+'</span></a>';}).join('')+'</div>';}else{nearEl.innerHTML='';}var hp=document.getElementById('fm-hp');if(f.hp){hp.href=f.hp;hp.style.display='inline-block';}else{hp.style.display='none';}document.getElementById('fm-naver').href='https://search.naver.com/search.naver?query='+encodeURIComponent(f.title+' 축제');if(window.cjmResetCalc)window.cjmResetCalc('smc',window.cjmCands(f.title,window.cjmClean(f.addr),f.addr,((f.sido||'')+' '+(f.sigungu||'')).trim(),f.sigungu));m.classList.add('show');}
 function closeModal(){document.getElementById('fmodal').classList.remove('show');}
 document.getElementById('fmx').addEventListener('click',closeModal);
 document.getElementById('fmodal').addEventListener('click',function(e){if(e.target.id==='fmodal')closeModal();});
@@ -2043,7 +2073,7 @@ function dday(f){var t=td(),s=toD(f.start),e=toD(f.end);if(e<t)return{l:'Ended',
 function ranges(){var t=td(),w=t.getDay();var sat=new Date(t);sat.setDate(t.getDate()+((6-w+7)%7));var sun=new Date(sat);sun.setDate(sat.getDate()+1);var m0=new Date(t.getFullYear(),t.getMonth(),1),m1=new Date(t.getFullYear(),t.getMonth()+1,0);return{t:t,sat:sat,sun:sun,m0:m0,m1:m1};}
 function card(f){var d=dday(f),img=f.img||'/img/cat-culture.webp';return '<div class="card" data-id="'+esc(f.id)+'" style="cursor:pointer"><div class="thumb"><img loading="lazy" src="'+esc(img)+'" alt="'+esc(f.title)+'" onerror="this.src=&#39;/img/cat-culture.webp&#39;"><span class="dday '+d.c+'">'+d.l+'</span>'+(f.region?'<span class="cat">'+esc(f.region)+'</span>':'')+'</div><div class="card-body"><h3>'+esc(f.title)+'</h3><div class="date">'+fy(f.start)+' ~ '+fy(f.end)+'</div><div class="loc">'+esc(f.region)+'</div></div></div>';}
 function apply(){var r=ranges();var list=F.filter(function(f){if(st.quick!=='past'&&toD(f.end)<r.t)return false;if(st.region&&f.region!==st.region)return false;if(st.kw){var k=st.kw.toLowerCase();if((f.title||'').toLowerCase().indexOf(k)<0&&(f.addr||'').toLowerCase().indexOf(k)<0)return false;}if(st.quick==='now'&&!ov(f,r.t,r.t))return false;if(st.quick==='weekend'&&!ov(f,r.sat,r.sun))return false;if(st.quick==='month'&&!ov(f,r.m0,r.m1))return false;return true;});list.sort(function(a,b){return (a.start||'').localeCompare(b.start||'');});document.getElementById('fCount').textContent=list.length+' festivals';document.getElementById('fGrid').innerHTML=list.length?list.map(card).join(''):'<p style="grid-column:1/-1;color:#6b7280;padding:24px 0">No festivals match. Try other filters.</p>';}
-function openModal(f){var m=document.getElementById('fmodal');var img=document.getElementById('fm-img');if(f.img){img.src=f.img;img.style.display='block';}else{img.style.display='none';}document.getElementById('fm-title').textContent=f.title;document.getElementById('fm-meta').textContent=fy(f.start)+' ~ '+fy(f.end)+'  ·  '+(f.region||'')+(f.tel?'  ·  '+f.tel:'');document.getElementById('fm-ov').textContent=f.ov||'Overview coming soon. Please check the official website or Google.';var hp=document.getElementById('fm-hp');if(f.hp){hp.href=(f.hp.indexOf('http')===0?f.hp:'http://'+f.hp);hp.style.display='inline-block';}else{hp.style.display='none';}document.getElementById('fm-naver').href='https://www.google.com/search?q='+encodeURIComponent(f.title+' Korea festival');m.classList.add('show');}
+function openModal(f){var m=document.getElementById('fmodal');var img=document.getElementById('fm-img');if(f.img){img.src=f.img;img.style.display='block';}else{img.style.display='none';}document.getElementById('fm-title').textContent=f.title;if(window.cjmFestBB)window.cjmFestBB('fm-bb',f.title,f.addr);document.getElementById('fm-meta').textContent=fy(f.start)+' ~ '+fy(f.end)+'  ·  '+(f.region||'')+(f.tel?'  ·  '+f.tel:'');document.getElementById('fm-ov').textContent=f.ov||'Overview coming soon. Please check the official website or Google.';var hp=document.getElementById('fm-hp');if(f.hp){hp.href=(f.hp.indexOf('http')===0?f.hp:'http://'+f.hp);hp.style.display='inline-block';}else{hp.style.display='none';}document.getElementById('fm-naver').href='https://www.google.com/search?q='+encodeURIComponent(f.title+' Korea festival');m.classList.add('show');}
 function closeModal(){document.getElementById('fmodal').classList.remove('show');}
 document.getElementById('fSido').addEventListener('change',function(e){st.region=e.target.value;apply();});
 document.getElementById('fKw').addEventListener('input',function(e){st.kw=e.target.value.trim();apply();});
@@ -2141,7 +2171,7 @@ function dday(f){var t=td(),s=toD(f.start),e=toD(f.end);if(e<t)return{l:LBL.ende
 function ranges(){var t=td(),w=t.getDay();var sat=new Date(t);sat.setDate(t.getDate()+((6-w+7)%7));var sun=new Date(sat);sun.setDate(sat.getDate()+1);var m0=new Date(t.getFullYear(),t.getMonth(),1),m1=new Date(t.getFullYear(),t.getMonth()+1,0);return{t:t,sat:sat,sun:sun,m0:m0,m1:m1};}
 function card(f){var d=dday(f),img=f.img||'/img/cat-culture.webp';return '<div class="card" data-id="'+esc(f.id)+'" style="cursor:pointer"><div class="thumb"><img loading="lazy" src="'+esc(img)+'" alt="'+esc(f.title)+'" onerror="this.src=&#39;/img/cat-culture.webp&#39;"><span class="dday '+d.c+'">'+d.l+'</span>'+(f.region?'<span class="cat">'+esc(f.region)+'</span>':'')+'</div><div class="card-body"><h3>'+esc(f.title)+'</h3><div class="date">'+fy(f.start)+' ~ '+fy(f.end)+'</div><div class="loc">'+esc(f.region)+'</div></div></div>';}
 function apply(){var r=ranges();var list=F.filter(function(f){if(st.quick!=='past'&&toD(f.end)<r.t)return false;if(st.region&&f.region!==st.region)return false;if(st.kw){var k=st.kw.toLowerCase();if((f.title||'').toLowerCase().indexOf(k)<0&&(f.addr||'').toLowerCase().indexOf(k)<0)return false;}if(st.quick==='now'&&!ov(f,r.t,r.t))return false;if(st.quick==='weekend'&&!ov(f,r.sat,r.sun))return false;if(st.quick==='month'&&!ov(f,r.m0,r.m1))return false;return true;});list.sort(function(a,b){return (a.start||'').localeCompare(b.start||'');});document.getElementById('fCount').textContent=LBL.count.replace('%d',list.length);document.getElementById('fGrid').innerHTML=list.length?list.map(card).join(''):'<p style="grid-column:1/-1;color:#6b7280;padding:24px 0">'+LBL.noMatch+'</p>';}
-function openModal(f){var m=document.getElementById('fmodal');var img=document.getElementById('fm-img');if(f.img){img.src=f.img;img.style.display='block';}else{img.style.display='none';}document.getElementById('fm-title').textContent=f.title;document.getElementById('fm-meta').textContent=fy(f.start)+' ~ '+fy(f.end)+'  ·  '+(f.region||'')+(f.tel?'  ·  '+f.tel:'');document.getElementById('fm-ov').textContent=f.ov||LBL.modalFallback;var hp=document.getElementById('fm-hp');if(f.hp){hp.href=(f.hp.indexOf('http')===0?f.hp:'http://'+f.hp);hp.style.display='inline-block';}else{hp.style.display='none';}document.getElementById('fm-naver').href='https://www.google.com/search?q='+encodeURIComponent(f.title+LBL.googleSuffix);m.classList.add('show');}
+function openModal(f){var m=document.getElementById('fmodal');var img=document.getElementById('fm-img');if(f.img){img.src=f.img;img.style.display='block';}else{img.style.display='none';}document.getElementById('fm-title').textContent=f.title;if(window.cjmFestBB)window.cjmFestBB('fm-bb',f.title,f.addr);document.getElementById('fm-meta').textContent=fy(f.start)+' ~ '+fy(f.end)+'  ·  '+(f.region||'')+(f.tel?'  ·  '+f.tel:'');document.getElementById('fm-ov').textContent=f.ov||LBL.modalFallback;var hp=document.getElementById('fm-hp');if(f.hp){hp.href=(f.hp.indexOf('http')===0?f.hp:'http://'+f.hp);hp.style.display='inline-block';}else{hp.style.display='none';}document.getElementById('fm-naver').href='https://www.google.com/search?q='+encodeURIComponent(f.title+LBL.googleSuffix);m.classList.add('show');}
 function closeModal(){document.getElementById('fmodal').classList.remove('show');}
 document.getElementById('fSido').addEventListener('change',function(e){st.region=e.target.value;apply();});
 document.getElementById('fKw').addEventListener('input',function(e){st.kw=e.target.value.trim();apply();});

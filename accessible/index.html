@@ -396,7 +396,7 @@ fetch('/accessible/data.json').then(function(r){return r.json();}).then(function
 <div id="fmc-out"></div>
 <p class="hint">자동차(연료+통행료+주차) vs 대중교통·KTX 편도 비용 비교 · <a href="/trip-cost/" style="color:#e0502f;font-weight:700">연비·유가 바꿔서 자세히 계산 →</a></p>
 </div>
-<a class="buybox" href="https://brand.naver.com/guung/products/4545903063?nt_source=chukjemoa&nt_medium=site&nt_detail=festival" target="_blank" rel="nofollow noopener"><span class="bb-ico">🧢</span><span class="bb-txt"><b>물축제 가는 날, 얼굴은 지키고</b><span class="bb-sub">투명썬캡 · 자외선 86.3% 차단(FITI 시험 성적)</span></span><span class="bb-arrow">›</span></a><div class="bb-disc">※ 축제모아를 운영하는 쿠웅샵에서 직접 판매하는 상품입니다.</div>
+<div id="fm2-bb"><a class="buybox" href="https://brand.naver.com/guung/products/4972833368?nt_source=chukjemoa&nt_medium=site&nt_detail=festival" target="_blank" rel="nofollow noopener"><span class="bb-ico">🪵</span><span class="bb-txt"><b>축제·나들이 갈 때</b><span class="bb-sub">3단 폴딩 캠핑테이블 · 120x60cm</span></span><span class="bb-arrow">›</span></a><div class="bb-disc">※ 축제모아를 운영하는 쿠웅샵에서 직접 판매하는 상품입니다.</div></div>
 <div class="fm-links"><a id="fm2-hp" target="_blank" rel="noopener">🏛️ 공식 홈페이지</a><a id="fm2-naver" target="_blank" rel="noopener">🔎 네이버에서 보기</a></div>
 </div></div><div id="placemodal" class="fmodal"><div class="fmbox">
 <button class="fmx" id="pm2x" aria-label="닫기">✕</button>
@@ -498,6 +498,24 @@ fetch('/accessible/data.json').then(function(r){return r.json();}).then(function
 })();
 </script>
 <script>
+window.CJM_FEST_BB={base:"<a class=\"buybox\" href=\"https://brand.naver.com/guung/products/4972833368?nt_source=chukjemoa&nt_medium=site&nt_detail=festival\" target=\"_blank\" rel=\"nofollow noopener\"><span class=\"bb-ico\">🪵</span><span class=\"bb-txt\"><b>축제·나들이 갈 때</b><span class=\"bb-sub\">3단 폴딩 캠핑테이블 · 120x60cm</span></span><span class=\"bb-arrow\">›</span></a><div class=\"bb-disc\">※ 축제모아를 운영하는 쿠웅샵에서 직접 판매하는 상품입니다.</div>",water:"<a class=\"buybox\" href=\"https://brand.naver.com/guung/products/4545903063?nt_source=chukjemoa&nt_medium=site&nt_detail=festival-water\" target=\"_blank\" rel=\"nofollow noopener\"><span class=\"bb-ico\">🧢</span><span class=\"bb-txt\"><b>물축제 가는 날, 얼굴은 지키고</b><span class=\"bb-sub\">투명썬캡 · 자외선 86.3% 차단(FITI 시험 성적)</span></span><span class=\"bb-arrow\">›</span></a><div class=\"bb-ups\"><a class=\"bb-up\" href=\"https://brand.naver.com/guung/products/13302370033?nt_source=chukjemoa&nt_medium=site&nt_detail=festival-water-aqua\" target=\"_blank\" rel=\"nofollow noopener\">🩴 아쿠아슈즈 — 이끼 낀 돌에서 안 미끄러집니다</a></div><div class=\"bb-disc\">※ 축제모아를 운영하는 쿠웅샵에서 직접 판매하는 상품입니다.</div>"};
+// 축제명에 나오면 물축제로 보는 말 (바다·해변 같은 낱말은 '여수밤바다 불꽃축제'까지 걸려서 뺐다)
+window.CJM_WATER_RE=/물축제|물놀이|물싸움|머드|워터밤|워터파크|해수욕|해변축제|바다축제|비치페스티벌|계곡|서핑|썸머|피서|모래축제|백사장/;
+// 장소·주소는 '진짜 물가'인 것만 본다
+window.CJM_WATER_VENUE_RE=/해수욕장|워터파크|계곡|수영장|물놀이장/;
+// 이게 걸리면 물가에 있어도 썬캡이 아니다 (야간·실내·겨울)
+// ⚠️ '물축제'는 반려동'물축제'·수산'물축제'·산나'물축제'에도 들어간다. 한글엔 단어 경계가 없어
+//    정규식으로 못 막으니, 걸리는 앞말을 여기에 모아 제외한다. 새 오탐이 보이면 여기에 추가할 것.
+window.CJM_NOTWATER_RE=/반려동물|수산물|농산물|특산물|해산물|임산물|나물|먹거리|야행|야시장|나이트|나잇|불꽃|밤바다|야간|실내|박물관|미술관|겨울|동장군|눈꽃|얼음|성탄|크리스마스|해넘이|해돋이/;
+// 축제명만 보면 '해운대 모래축제'처럼 해변인데 못 잡는 게 생긴다 → 장소·주소까지 같이 판정한다.
+window.cjmFestBB=function(elId,name,place){
+  var el=document.getElementById(elId); if(!el||!window.CJM_FEST_BB) return;
+  var n=String(name||''), p=String(place||'');
+  var water=(window.CJM_WATER_RE.test(n)||window.CJM_WATER_VENUE_RE.test(p))
+            && !window.CJM_NOTWATER_RE.test(n+' '+p);
+  el.innerHTML=water?window.CJM_FEST_BB.water:window.CJM_FEST_BB.base;
+};
+</script><script>
 (function(){
   var KEY='cjm_from';
   window.cjmDest={};
@@ -580,6 +598,7 @@ fetch('/accessible/data.json').then(function(r){return r.json();}).then(function
     var img=document.getElementById('fm2-img');
     if(ds.img){img.src=ds.img;img.style.display='block';}else{img.style.display='none';}
     document.getElementById('fm2-title').textContent=ds.name||'';
+    if(window.cjmFestBB)window.cjmFestBB('fm2-bb',ds.name,ds.place);
     var loc=[ds.region,ds.city,ds.place].filter(Boolean).join(' ');
     var dr=fy(ds.start)+(ds.end&&String(ds.end).replace(/[^0-9]/g,'')!==String(ds.start).replace(/[^0-9]/g,'')?' ~ '+fy(ds.end):'');
     document.getElementById('fm2-meta').textContent=[dr,loc].filter(Boolean).join('  ·  ');
