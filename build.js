@@ -228,7 +228,7 @@ const COUPANG = {
   items: {
     festival: { ico: '🧺', t: '축제 가서 앉을 자리, 챙기셨나요', s: '휴대용 접이식 돗자리', q: '접이식 돗자리', url: 'https://link.coupang.com/a/fXNSDlRDwa' },
     flower:   { ico: '🧺', t: '봄꽃 나들이 준비물', s: '피크닉 돗자리', q: '접이식 돗자리', url: 'https://link.coupang.com/a/fXNSDlRDwa' },
-    maple:    { ico: '🥾', t: '단풍 산행 준비물', s: '가벼운 등산화', q: '등산화', url: 'https://link.coupang.com/a/fXNZ2GivM4' },
+    maple:    { ico: '🪑', t: '단풍 보면서 앉아 쉴 자리', s: '착착 접는 캠핑의자 (쿠웅샵)', own: true, q: '캠핑의자', url: 'https://brand.naver.com/guung/products/13026204364' },
     trails:   { ico: '🥾', t: '걷기 여행 준비물', s: '발 편한 등산화', q: '등산화', url: 'https://link.coupang.com/a/fXNZ2GivM4' },
     tripcost: { ico: '🧳', t: '떠나기 전에, 가방부터', s: '깃털 초경량 캐리어 24인치 (쿠웅샵)', own: true, q: '초경량 캐리어', url: 'https://brand.naver.com/guung/products/13161005647' },
     car:      { ico: '🚗', t: '장거리 운전 전에', s: '차량용 휴대폰 거치대', q: '차량용 휴대폰 거치대', url: 'https://link.coupang.com/a/fXN2IYC66m' },
