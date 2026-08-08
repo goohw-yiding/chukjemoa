@@ -285,7 +285,7 @@ const COUPANG = {
     car:      { ico: '🚗', t: '장거리 운전 전에', s: '차량용 휴대폰 거치대', q: '차량용 휴대폰 거치대', url: 'https://link.coupang.com/a/fXN2IYC66m' },
     jangteo:  { ico: '🛒', t: '장 보러 갈 때 손이 편하려면', s: '바퀴달린 접이식 장보기 카트', own: true, q: '바퀴달린 장바구니', url: 'https://brand.naver.com/guung/products/12580509879' },
     valley:   { ico: '⛱️', t: '계곡 자리에 그늘 하나', s: '각도·높이 조절 UV차단 파라솔', own: true, q: '그늘막 파라솔', url: 'https://brand.naver.com/guung/products/10413587358',
-                up: ['psbase', 'aqua'], bySeason: { autumn: 'maple', winter: 'tripcost' } },
+                up: ['psbase', 'aqua', 'pstray'], bySeason: { autumn: 'maple', winter: 'tripcost' } },
     onsen:    { ico: '🧖', t: '온천 갈 때 챙기면 좋은 것', s: '가볍게 마르는 여행용 타월', q: '여행용 타월', url: 'https://link.coupang.com/a/fXOCpczJqC' },
     pet:      { ico: '🐾', t: '반려견과 떠난다면', s: '강아지 이동가방', q: '강아지 이동가방', url: 'https://link.coupang.com/a/fXOFfqmH4S' },
     // ↓ 아래 3종은 단독 페이지가 없고 bySeason·up 을 통해서만 노출된다(쿠웅샵 자사상품)
@@ -293,7 +293,14 @@ const COUPANG = {
     psbase:   { ico: '🪣', t: '계곡 바닥엔 파라솔이 안 꽂힙니다', s: '물·모래 채우는 파라솔 받침대 20kg', own: true, q: '파라솔 물통 받침대', url: 'https://brand.naver.com/guung/products/10227650214',
                 upT: '🪣 물통 받침대 20kg — 돌바닥·모래에도 세워집니다' },
     aqua:     { ico: '🩴', t: '계곡 돌바닥, 맨발은 위험합니다', s: '미끄럼 방지 아쿠아슈즈 230~270', own: true, q: '아쿠아슈즈', url: 'https://brand.naver.com/guung/products/13302370033',
-                upT: '🩴 아쿠아슈즈 — 이끼 낀 돌에서 안 미끄러집니다' }
+                upT: '🩴 아쿠아슈즈 — 이끼 낀 돌에서 안 미끄러집니다' },
+    pstray:   { ico: '🥤', t: '파라솔에 끼우는 테이블', s: '다용도 파라솔 트레이 · 컵홀더', own: true, q: '파라솔 트레이', url: 'https://brand.naver.com/guung/products/10258766453',
+                upT: '🥤 파라솔 트레이 — 음료·핸드폰 놓을 데가 생깁니다' },
+    // 잔디·모래처럼 단단한 바닥용. 물통받침대와 성격이 달라 별도 항목으로 둔다.
+    psteel:   { ico: '🔩', t: '단단한 바닥이라면', s: '스틸 사각 파라솔 받침대 · 3단 지름조절', own: true, q: '스틸 파라솔 받침대', url: 'https://brand.naver.com/guung/products/10240115222',
+                upT: '🔩 스틸 사각 받침대 — 잔디·데크에 고정' },
+    // ⛰️ 명산 페이지용(가을 등산). 걷기길 자사상품이 없어 우선 스툴로 대응 — 걷기용품 소싱되면 교체
+    mountain: { ico: '🪑', t: '정상에서 앉아 쉴 자리', s: '접어서 드는 폴딩 스툴 + 메쉬백', own: true, q: '폴딩 스툴', url: 'https://brand.naver.com/guung/products/13026204364' }
   }
 };
 // 페이지 키 → 이번 달에 실제로 노출할 상품 키 (bySeason 이 없으면 그대로)
@@ -1023,6 +1030,7 @@ const KO_NAV = `<button class="navtoggle" id="navtoggle" aria-label="메뉴 열�
 <a href="/flower/">🌸 봄꽃명소</a>
 <a href="/onsen/">♨️ 온천</a>
 <a href="/trails/">🥾 걷기 여행</a>
+<a href="/mountains/">⛰️ 전국 명산</a>
 <a href="/pet/">🐶 반려견 여행지</a>
 <a href="/accessible/">♿ 무장애 여행</a>
 <a href="/jangteo/">🏮 전국 오일장</a>
@@ -1054,10 +1062,12 @@ function layout(title, desc, urlPath, content, opts) {
   const alts = (opts.alternates || []).map(a => `<link rel="alternate" hreflang="${a.hreflang}" href="${SITE}${a.href}">`).join('\n');
   const logoHref = lang === 'ko' ? '/' : '/' + lang + '/';
   const NAVS = {
-    en: `<nav><a href="/en/">Home</a><a href="/en/search/">🔎 Festivals</a><a href="/en/trend/">🔥 Rankings</a><a href="/">🇰🇷 한국어</a></nav>`,
-    ja: `<nav><a href="/ja/">ホーム</a><a href="/ja/search/">🔎 お祭り検索</a><a href="/ja/trend/">🔥 人気ランキング</a><a href="/">🇰🇷 한국어</a></nav>`,
+    en: `<nav><a href="/en/">Home</a><a href="/en/search/">🔎 Festivals</a><a href="/en/mountains/">⛰️ Mountains</a><a href="/en/trend/">🔥 Rankings</a><a href="/">🇰🇷 한국어</a></nav>`,
+    ja: `<nav><a href="/ja/">ホーム</a><a href="/ja/search/">🔎 お祭り検索</a><a href="/ja/mountains/">⛰️ 名山</a><a href="/ja/trend/">🔥 人気ランキング</a><a href="/">🇰🇷 한국어</a></nav>`,
     es: `<nav><a href="/es/">Inicio</a><a href="/es/search/">🔎 Buscar festivales</a><a href="/es/trend/">🔥 Rankings</a><a href="/">🇰🇷 한국어</a></nav>`,
-    zh: `<nav><a href="/zh/">首页</a><a href="/zh/search/">🔎 庆典搜索</a><a href="/zh/trend/">🔥 人气排行</a><a href="/">🇰🇷 한국어</a></nav>`
+    zh: `<nav><a href="/zh/">首页</a><a href="/zh/search/">🔎 庆典搜索</a><a href="/zh/mountains/">⛰️ 名山</a><a href="/zh/trend/">🔥 人气排行</a><a href="/">🇰🇷 한국어</a></nav>`,
+    // 번체는 오일장이 주력 콘텐츠라 내비에 올린다(간체엔 없음 — 언어별 무기가 다르다)
+    tw: `<nav><a href="/tw/">首頁</a><a href="/tw/search/">🔎 慶典搜尋</a><a href="/tw/jangteo/">🏮 五日市集</a><a href="/tw/mountains/">⛰️ 名山</a><a href="/tw/trend/">🔥 人氣排行</a><a href="/">🇰🇷 한국어</a></nav>`
   };
   const nav = lang === 'ko'
     ? KO_NAV
@@ -1086,6 +1096,12 @@ function layout(title, desc, urlPath, content, opts) {
 <p><a href="/about/">关于我们</a> · <a href="/editorial/">编辑方针</a> · <a href="/contact/">联系</a> · <a href="/privacy/">隐私政策</a></p>
 <p>数据：韩国观光公社（TourAPI） · 联系：goohw593@gmail.com</p>
 <p class="srcnote">庆典信息来源：韩国观光公社 TourAPI 等公共开放数据。最后更新 ${TODAY}。</p>
+<p>© 2026 Chukjemoa</p>`,
+    tw: `<p>Chukjemoa — 韓國慶典・五日市集指南</p>
+<p>活動日程可能變動，出發前請確認官方網站。</p>
+<p><a href="/about/">關於我們</a> · <a href="/editorial/">編輯方針</a> · <a href="/contact/">聯絡</a> · <a href="/privacy/">隱私權政策</a></p>
+<p>資料：韓國觀光公社（TourAPI） · 聯絡：goohw593@gmail.com</p>
+<p class="srcnote">慶典資訊來源：韓國觀光公社 TourAPI 等公共開放資料。最後更新 ${TODAY}。</p>
 <p>© 2026 Chukjemoa</p>`
   };
   const footer = lang === 'ko'
@@ -1097,7 +1113,7 @@ function layout(title, desc, urlPath, content, opts) {
 <p>© 2026 ${SITE_NAME}</p>`
     : FOOTERS[lang];
   return `<!DOCTYPE html>
-<html lang="${lang}">
+<html lang="${lang === 'tw' ? 'zh-Hant' : lang === 'zh' ? 'zh-Hans' : lang}">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -3177,6 +3193,23 @@ const TREND_L = {
     unit: '', times: '×', legend: `条形长度＝访问规模 · 右侧数字＝旺季标签为<b>倍数</b>，其余为<b>30天访客人次合计</b>。<a href="#howto">数字怎么看 ↓</a>`, src: '数据来源：韩国观光公社《韩国观光数据实验室》地区访客数（公共数据门户）。基于通信与卡片数据的推算值，每周更新。',
     title: m => `韩国人气目的地排行 — ${m}月旺季榜 | 庆典集`,
     metad: '基于韩国观光公社旅游大数据的人气目的地排行：本月旺季热点、韩国人常去与外国人常去的市·郡·区，并可直接查看当地庆典。'
+  },
+  // 번체 — "외국인이 적은 곳 = 로컬" 각도를 전면에 세운다. 재방문객이 원하는 게 그거다.
+  tw: {
+    h1: '🔥 韓國人自己會去的地方',
+    intro: '用韓國觀光公社的觀光大數據整理出「實際上人去最多」的市・郡・區。外國遊客少的地方，通常更有生活感。點擊長條可查看當地慶典。',
+    badge: (Y, M, P) => `<b>${M}月</b>旺季排行以 <b>${Y}年${M}月</b> 實績為準 · 訪客排行以 <b>${P}</b> 為準`,
+    badgeNote: '訪問資料約延遲一個月公開，因此季節排行採用去年同月的實績。',
+    tabs: { season: m => `🌞 ${m}月最熱鬧的地方`, kor: '🇰🇷 韓國人常去的地方', fgn: '🌏 外國人常去的地方', sido: '🗺️ 依道・廣域市' },
+    desc: {
+      season: (y, m) => `把 <b>${y}年${m}月</b> 的實際人流跟該年平常水準（年平均）相比得出的<b>旺季倍數</b>。×1.5 就是比平常熱鬧 1.5 倍。海水浴場、溪谷、山岳這類季節性強的地方會上榜。`,
+      kor: '以<b>非當地居民的國內訪客</b>人次為準。因為包含通勤與購物移動，首都圈大城市排名會偏前。',
+      fgn: '以<b>外國訪客</b>人次為準。明洞・仁寺洞所在的首爾中區・鍾路區、機場所在的仁川中區以及濟州名列前茅。<b>反過來說，沒出現在這張榜上的地方，就是外國人少的地方。</b>',
+      sido: '依道・廣域市統計的訪客總數（國內＋外國）。'
+    },
+    unit: '', times: '×', legend: `長條長度＝造訪規模 · 右邊數字＝旺季標籤是<b>倍數</b>，其餘是<b>30天訪客人次合計</b>。<a href="#howto">數字怎麼看 ↓</a>`, src: '資料來源：韓國觀光公社《韓國觀光數據實驗室》地區訪客數（公共資料入口網）。基於通信與信用卡資料的推估值，每週更新。',
+    title: m => `韓國人氣旅遊地排行 — ${m}月旺季榜・在地人常去的地方 | Chukjemoa`,
+    metad: '用韓國觀光公社觀光大數據做的人氣旅遊地排行：本月旺季熱點、韓國人常去與外國人常去的市・郡・區對照。想避開觀光客、找有生活感的地方時看這個。'
   }
 };
 
@@ -3485,6 +3518,40 @@ Periodos: temporada alta ${MN[M]} de ${Y} · rankings de visitantes ${P} · actu
 <p>韩国观光公社 <a href="${DL_URL}" target="_blank" rel="noopener">韩国观光数据实验室</a> — 各地区（市郡区·道）每日访客数<br>
 经公共数据门户 <a href="${DATAGO_URL}" target="_blank" rel="noopener">韩国观光公社_观光大数据信息服务</a>（DataLabService）采集<br>
 统计期间：旺季排行 ${Y}年${M}月 / 访客排行 ${P} · 每周一自动更新</p>
+</section>`,
+  tw: (Y, M, P, LAT, MN) => `<section class="explain" id="howto">
+<h2>📖 這些數字怎麼看</h2>
+<h3>1. 統計的是什麼</h3>
+<p><b>韓國觀光公社</b>公開的訪客推估值，來源是<b>通信與信用卡資料</b>。不是問卷、也不是門票數，而是推估「實際上有多少人待在那個地區」。</p>
+<ul>
+<li><b>韓國人</b>：非該地區居民的國內訪客</li>
+<li><b>外國人</b>：使用國外電信漫遊或外國卡的訪客</li>
+<li>單位是<b>人次</b> — 同一個人去兩次算兩次</li>
+</ul>
+<h3>2. 為什麼首爾・京畿總是在前面</h3>
+<p>因為「外地訪客」不只有觀光客，還包含<b>通勤、通學、購物、出差</b>。每天從鄰近城市通勤的人也會被算進去。所以<b>單看這張榜，大城市是被高估的</b>。</p>
+<p>想看純粹的旅遊吸引力，請看 <b>${M}月旺季</b> 分頁 — 通勤人口不隨季節變動，會自動被抵銷。</p>
+<h3>3. 想找「觀光客少的地方」的話</h3>
+<p>這是重點。<b>外國人榜上沒出現的地區，就是外國遊客少的地方。</b>首爾中區（明洞）、鍾路區（仁寺洞）、仁川中區（機場）、濟州以外的地方，多半還維持著在地生活的樣子。第二次、第三次來韓國的話，可以用這張榜<b>反過來挑</b>。</p>
+<h3>4. 旺季倍數（例如 ×1.54）怎麼算</h3>
+<p style="text-align:center;background:#f4faf8;border:1px solid #dcefeb;border-radius:10px;padding:13px;font-weight:700;color:#0a6c63;margin:10px 0">
+旺季倍數 ＝ ${Y}年${M}月的日均訪客 ÷ ${Y}年平常的日均訪客
+</p>
+<p><b>鬱陵郡 ×1.54</b> 表示鬱陵郡在 ${Y}年${M}月的人流是<b>該年平常水準的 1.54 倍</b>。衡量的是<b>「比平常熱鬧多少」</b>而不是絕對人數，所以小地方在自己的旺季也能排第一。</p>
+<p>作為基準的「平常」，是用 ${Y} 年 12 個月平均抽樣得到的日均值。日均訪客不到 5,000 人的地區已排除，因為母數太小會讓倍數劇烈跳動。</p>
+<h3>5. 為什麼用去年的資料</h3>
+<p>這份資料<b>大約延遲一個月才公開</b>（目前最新統計日：${LAT}）。如果用延遲的最新資料回答「現在 ${M} 月哪裡熱鬧」，得到的會是<b>完全不同季節的答案</b>。改用<b>去年同月的實績</b>，季節才對得上。</p>
+<p>韓國人・外國人・道別排行是為了比較規模而非季節，所以直接使用<b>最新 30 天（${P}）</b>。</p>
+<h3>6. 要知道的限制</h3>
+<ul>
+<li>基於通信與信用卡資料的<b>推估值</b>，與實際旅客數有落差。</li>
+<li>有同名的市・郡・區（首爾中區與仁川中區等），所以<b>一律標註道・廣域市</b>。</li>
+<li>統計只到市・郡・區層級，看不出區域內具體哪個景點熱鬧。</li>
+</ul>
+<h3>📌 資料來源</h3>
+<p>韓國觀光公社 <a href="${DL_URL}" target="_blank" rel="noopener">韓國觀光數據實驗室</a> — 各地區（市郡區・道）每日訪客數<br>
+透過公共資料入口網 <a href="${DATAGO_URL}" target="_blank" rel="noopener">韓國觀光公社_觀光大數據資訊服務</a>（DataLabService）採集<br>
+統計期間：旺季排行 ${Y}年${M}月 / 訪客排行 ${P} · 每週一自動更新</p>
 </section>`
 };
 
@@ -3702,8 +3769,183 @@ document.getElementById('tcFrom').addEventListener('keydown',function(e){if(e.ke
 </script>`;
 writePage('trip-cost', layout('여행 비용 계산기 — 자동차 vs 대중교통 비용 비교 | ' + SITE_NAME, '축제·여행지까지 자동차(연료+통행료+주차)와 대중교통 비용을 비교 계산. 출발지·도착지만 넣으면 끝. 계산 과정도 투명하게 공개.', '/trip-cost/', tripCostContent));
 
+// ---------- 전국 명산 /mountains/ + 다국어 ----------
+// 요즘 외국인의 한국 등산 수요가 늘고 있는데, 산 목록 자체는 어디에나 있다.
+// 우리만 할 수 있는 건 "그 산이 있는 지역이 지금 붐비는가 / 외국인이 많은가"를 얹는 것.
+// 관광 빅데이터(visitors.json)를 시군구 코드로 조인해서 붐빔 지표를 붙인다.
+const MOUNTAIN_URLS = [];
+{
+  const MT = {};
+  ['ko', 'en', 'ja', 'zh', 'tw'].forEach(l => {
+    try { MT[l] = JSON.parse(fs.readFileSync(path.join(ROOT, `data/mountains_${l}.json`), 'utf8')); }
+    catch (e) { MT[l] = []; }
+  });
+  // 시군구 코드 → 10월 성수기 배수 / 외국인 상위 여부
+  const OCT = {}; ((visitors.seasonByMonth && visitors.seasonByMonth.months && visitors.seasonByMonth.months['10']) || [])
+    .forEach(r => { OCT[r.code] = r.idx; });
+  const FGN = {}; (visitors.fgn || []).forEach(r => { FGN[r.code] = r.rank; });
+  const KOR = {}; (visitors.kor || []).forEach(r => { KOR[r.code] = r.rank; });
+
+  const ML = {
+    ko: { h1: '⛰️ 전국 명산', sub: n => `공공데이터(한국관광공사) 기반 전국 산 ${n}곳 — 어느 산이 단풍철에 붐비고 어디가 한적한지까지 함께 봅니다.`,
+      title: n => `전국 명산 ${n}곳 — 단풍철 붐비는 산·한적한 산 | ${SITE_NAME}`,
+      desc: n => `전국 산 ${n}곳을 지역별로. 한국관광공사 공공데이터 기반 정보에 관광 빅데이터로 본 "10월 성수기 배수"와 외국인 방문 지표를 더했습니다.`,
+      all: '전체 지역', kw: '산 이름·주소 검색', reset: '초기화', cnt: n => `총 ${n}곳`,
+      none: '조건에 맞는 산이 없어요. 지역을 바꿔보세요.',
+      oct: v => `🍁 10월엔 이 지역이 평소의 ×${v}배`, quiet: '🤫 외국인 발길이 적은 편',
+      busy: '🌏 외국인이 많이 찾는 지역', korbusy: '🇰🇷 한국인이 많이 찾는 지역',
+      walkCta: '이 지역 걷기길 보기 →', walkH: '산 말고 완만한 길을 찾는다면',
+      note: '데이터 출처: 한국관광공사(공공데이터포털) 관광지 정보 · 붐빔 지표는 한국관광공사 「한국관광 데이터랩」 지역별 방문자 수를 시·군·구 단위로 조인한 것입니다. 산 자체가 아니라 <b>그 산이 속한 시·군·구</b>의 수치라는 점에 유의하세요. 등산로 상태·입산 통제·기상은 반드시 국립공원공단·산림청·지자체 공지를 확인하시기 바랍니다.',
+      hundred: '※ 산림청이 2002년 세계 산의 해를 기념해 선정한 「100대 명산」 공식 목록은 <a href="https://www.forest.go.kr/kfsweb/kfi/kfs/foreston/main/contents/FmmntSrch/selectFmmntSrchList.do?mn=AR02_02_05_01" target="_blank" rel="noopener nofollow">산림청 홈페이지</a>에서 확인하실 수 있습니다.' },
+    en: { h1: '⛰️ Mountains of Korea', sub: n => `${n} mountains across South Korea — with a crowd index showing which areas fill up in autumn and which stay quiet.`,
+      title: n => `Mountains of Korea — ${n} Peaks, Crowded vs Quiet in Autumn | Chukjemoa`,
+      desc: n => `Browse ${n} mountains across South Korea by region. Official Korea Tourism Organization data plus a peak-season multiplier and foreign-visitor index from tourism big data.`,
+      all: 'All regions', kw: 'Search by name or address', reset: 'Reset', cnt: n => `${n} mountains`,
+      none: 'No mountains match. Try another region.',
+      oct: v => `🍁 ×${v} busier than usual in October`, quiet: '🤫 Few foreign visitors here',
+      busy: '🌏 Popular with foreign visitors', korbusy: '🇰🇷 Popular with Koreans',
+      walkCta: 'See walking trails in this region →', walkH: 'Prefer a gentler walk?',
+      note: 'Source: Korea Tourism Organization (Open Data Portal). The crowd index joins KTO "Korea Tourism Data Lab" visitor counts at the city/county level — it describes <b>the district the mountain sits in</b>, not the mountain itself. Always check the Korea National Park Service, Korea Forest Service or the local authority for trail closures and weather before you go.',
+      hundred: '※ The official "100 Famous Mountains" list selected by the Korea Forest Service in 2002 is published on the <a href="https://www.forest.go.kr/kfsweb/kfi/kfs/foreston/main/contents/FmmntSrch/selectFmmntSrchList.do?mn=AR02_02_05_01" target="_blank" rel="noopener nofollow">Korea Forest Service website</a>.' },
+    ja: { h1: '⛰️ 韓国の名山', sub: n => `韓国全国の山 ${n}か所 — 紅葉シーズンに混む地域と、静かな地域まで一緒に見られます。`,
+      title: n => `韓国の名山 ${n}か所 — 紅葉期に混む山・静かな山 | Chukjemoa`,
+      desc: n => `韓国全国の山 ${n}か所を地域別に。韓国観光公社の公共データに、観光ビッグデータによる「10月の繁忙倍率」と外国人訪問指標を加えました。`,
+      all: 'すべての地域', kw: '山名・住所で検索', reset: 'リセット', cnt: n => `全 ${n}か所`,
+      none: '該当する山がありません。地域を変えてみてください。',
+      oct: v => `🍁 10月はこの地域が普段の ×${v} 倍`, quiet: '🤫 外国人が少なめのエリア',
+      busy: '🌏 外国人に人気のエリア', korbusy: '🇰🇷 韓国人に人気のエリア',
+      walkCta: 'この地域の歩く道を見る →', walkH: '山より穏やかな道をお探しなら',
+      note: '出典：韓国観光公社（公共データポータル）観光地情報 · 混雑指標は韓国観光公社「韓国観光データラボ」の地域別訪問者数を市・郡・区単位で結合したものです。山そのものではなく<b>その山が属する市・郡・区</b>の数値である点にご注意ください。登山道の状況・入山規制・天候は必ず国立公園公団・山林庁・自治体の告知をご確認ください。',
+      hundred: '※ 山林庁が2002年「国際山岳年」を記念して選定した「100大名山」の公式リストは<a href="https://www.forest.go.kr/kfsweb/kfi/kfs/foreston/main/contents/FmmntSrch/selectFmmntSrchList.do?mn=AR02_02_05_01" target="_blank" rel="noopener nofollow">山林庁ホームページ</a>で確認できます。' },
+    zh: { h1: '⛰️ 韩国名山', sub: n => `韩国全国 ${n} 座山 — 还能看到哪些地区在红叶季拥挤、哪些地区清静。`,
+      title: n => `韩国名山 ${n}座 — 红叶季拥挤的山与清静的山 | Chukjemoa`,
+      desc: n => `按地区浏览韩国全国 ${n} 座山。韩国观光公社公共数据，另加旅游大数据的「10月旺季倍数」与外国人访问指标。`,
+      all: '所有地区', kw: '按名称或地址搜索', reset: '重置', cnt: n => `共 ${n} 座`,
+      none: '没有符合条件的山，请更换地区。',
+      oct: v => `🍁 10月该地区是平时的 ×${v} 倍`, quiet: '🤫 外国游客较少的地区',
+      busy: '🌏 外国游客较多的地区', korbusy: '🇰🇷 韩国人常去的地区',
+      walkCta: '查看该地区的步道 →', walkH: '想找比登山更平缓的路线',
+      note: '数据来源：韩国观光公社（公共数据门户）景点信息 · 拥挤指标是把韩国观光公社《韩国观光数据实验室》的地区访客数按市·郡·区结合而成。请注意这是<b>该山所在市·郡·区</b>的数值，而非山本身。登山道状况、入山管制与天气请务必查阅国立公园公团、山林厅或当地政府公告。',
+      hundred: '※ 山林厅于2002年国际山岳年评选的「100大名山」官方名单，可在<a href="https://www.forest.go.kr/kfsweb/kfi/kfs/foreston/main/contents/FmmntSrch/selectFmmntSrchList.do?mn=AR02_02_05_01" target="_blank" rel="noopener nofollow">山林厅官网</a>查看。' },
+    tw: { h1: '⛰️ 韓國名山', sub: n => `韓國全國 ${n} 座山 — 還能看到哪些地區在楓葉季會擠、哪些地區還很安靜。`,
+      title: n => `韓國名山 ${n}座 — 楓葉季會擠的山與安靜的山 | Chukjemoa`,
+      desc: n => `依地區瀏覽韓國全國 ${n} 座山。韓國觀光公社公共資料，再加上觀光大數據的「10月旺季倍數」與外國遊客指標 — 想避開人潮的話特別好用。`,
+      all: '所有地區', kw: '以名稱或地址搜尋', reset: '重設', cnt: n => `共 ${n} 座`,
+      none: '沒有符合條件的山，請換個地區。',
+      oct: v => `🍁 10月這一帶是平常的 ×${v} 倍`, quiet: '🤫 外國遊客少的地區',
+      busy: '🌏 外國遊客多的地區', korbusy: '🇰🇷 韓國人常去的地區',
+      walkCta: '看看這個地區的步道 →', walkH: '想找比登山更平緩的路',
+      note: '資料來源：韓國觀光公社（公共資料入口網）景點資訊 · 擁擠指標是把韓國觀光公社《韓國觀光數據實驗室》的地區訪客數以市・郡・區為單位結合而成。請注意那是<b>該座山所在的市・郡・區</b>的數字，不是山本身。登山道狀況、入山管制與天氣，出發前務必확認國立公園公團・山林廳或當地政府公告。',
+      hundred: '※ 山林廳在2002年國際山岳年選出的「100大名山」官方名單，可在<a href="https://www.forest.go.kr/kfsweb/kfi/kfs/foreston/main/contents/FmmntSrch/selectFmmntSrchList.do?mn=AR02_02_05_01" target="_blank" rel="noopener nofollow">山林廳官網</a>查看。' }
+  };
+  const SIDO_TXT = {
+    en: { '서울': 'Seoul', '부산': 'Busan', '대구': 'Daegu', '인천': 'Incheon', '광주': 'Gwangju', '대전': 'Daejeon', '울산': 'Ulsan', '세종': 'Sejong', '경기': 'Gyeonggi', '충북': 'Chungbuk', '충남': 'Chungnam', '전남': 'Jeonnam', '경북': 'Gyeongbuk', '경남': 'Gyeongnam', '제주': 'Jeju', '강원': 'Gangwon', '전북': 'Jeonbuk' },
+    ja: { '서울': 'ソウル', '부산': '釜山', '대구': '大邱', '인천': '仁川', '광주': '光州', '대전': '大田', '울산': '蔚山', '세종': '世宗', '경기': '京畿', '충북': '忠北', '충남': '忠南', '전남': '全南', '경북': '慶北', '경남': '慶南', '제주': '済州', '강원': '江原', '전북': '全北' },
+    zh: { '서울': '首尔', '부산': '釜山', '대구': '大邱', '인천': '仁川', '광주': '光州', '대전': '大田', '울산': '蔚山', '세종': '世宗', '경기': '京畿', '충북': '忠北', '충남': '忠南', '전남': '全南', '경북': '庆北', '경남': '庆南', '제주': '济州', '강원': '江原', '전북': '全北' },
+    tw: { '서울': '首爾', '부산': '釜山', '대구': '大邱', '인천': '仁川', '광주': '光州', '대전': '大田', '울산': '蔚山', '세종': '世宗', '경기': '京畿', '충북': '忠北', '충남': '忠南', '전남': '全南', '경북': '慶北', '경남': '慶南', '제주': '濟州', '강원': '江原', '전북': '全北' }
+  };
+  const mtAlts = () => {
+    const a = [{ hreflang: 'ko', href: '/mountains/' }];
+    ['en', 'ja', 'zh', 'tw'].forEach(l => { if ((MT[l] || []).length) a.push({ hreflang: HREFLANG[l] || l, href: '/' + l + '/mountains/' }); });
+    a.push({ hreflang: 'x-default', href: '/mountains/' }); return a;
+  };
+
+  ['ko', 'en', 'ja', 'zh', 'tw'].forEach(lang => {
+    const list = MT[lang] || []; if (!list.length) return;
+    const L = ML[lang]; const ST = SIDO_TXT[lang];
+    const sidoName = s => (ST && ST[s]) || s;
+    const sidos = SIDO_ORDER.filter(s => list.some(m => m.sido === s));
+    const opts = sidos.map(s => `<option value="${s}">${esc(sidoName(s))} (${list.filter(m => m.sido === s).length})</option>`).join('');
+    const card = m => {
+      const code = String(m.regnCd || '') + String(m.signguCd || '');
+      const oct = OCT[code], fgn = FGN[code], kor = KOR[code];
+      const badges = [
+        oct ? `<span class="mb hot">${L.oct(oct)}</span>` : '',
+        fgn ? `<span class="mb fgn">${L.busy}</span>` : (kor ? `<span class="mb kr">${L.korbusy}</span>` : `<span class="mb qt">${L.quiet}</span>`)
+      ].filter(Boolean).join('');
+      const img = m.img ? String(m.img).replace(/^http:/, 'https:') : '/img/hero.webp';
+      const q = encodeURIComponent(m.title);
+      return `<a class="mcard" href="https://search.naver.com/search.naver?query=${q}" target="_blank" rel="noopener" data-sido="${esc(m.sido)}" data-kw="${esc((m.title + ' ' + (m.addr || '')).toLowerCase())}">
+<div class="mthumb"><img loading="lazy" src="${esc(img)}" alt="${esc(m.title)}" onerror="this.src='/img/hero.webp'"></div>
+<div class="mbody"><h3>${esc(m.title)}</h3>
+<div class="mloc">📍 ${esc(sidoName(m.sido))}${m.addr ? ' · ' + esc(String(m.addr).slice(0, 40)) : ''}</div>
+${badges ? `<div class="mbs">${badges}</div>` : ''}
+${m.ov ? `<p class="mov">${esc(String(m.ov).slice(0, 110))}…</p>` : ''}
+</div></a>`;
+    };
+    const content = `<main><div class="wrap">
+<style>
+.mgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;margin:16px 0}
+.mcard{background:#fff;border-radius:16px;box-shadow:0 3px 14px rgba(31,41,55,.08);overflow:hidden;text-decoration:none;color:inherit;display:block;transition:transform .15s}
+.mcard:hover{transform:translateY(-2px)}
+.mthumb{aspect-ratio:16/10;background:#eef4f3;overflow:hidden}
+.mthumb img{width:100%;height:100%;object-fit:cover}
+.mbody{padding:14px 16px 16px}
+.mbody h3{font-size:1.02rem;font-weight:900;color:#0a6c63}
+.mloc{font-size:.83rem;color:#6b7280;margin-top:5px}
+.mbs{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px}
+.mb{font-size:.76rem;font-weight:800;border-radius:999px;padding:4px 10px}
+.mb.hot{background:#fff1e8;color:#c2410c}
+.mb.fgn{background:#eef2ff;color:#4338ca}
+.mb.kr{background:#f0fdf4;color:#15803d}
+.mb.qt{background:#f2fbfa;color:#0a6c63}
+.mov{margin-top:9px;font-size:.85rem;color:#4b5563;line-height:1.55;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.srchbar{background:#fff;border-radius:16px;padding:16px 18px;box-shadow:0 3px 14px rgba(31,41,55,.07);margin:14px 0 6px}
+.srchbar .row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.srchbar select,.srchbar input{padding:10px 13px;border:1.5px solid #dcefeb;border-radius:12px;font-size:.93rem;font-family:inherit;background:#f4faf8;color:#374151}
+.srchbar input{flex:1;min-width:150px}
+.srch-count{margin:16px 0 12px;font-weight:800;color:#0a6c63;font-size:1.02rem}
+</style>
+<h1 style="font-size:1.5rem;font-weight:900;margin:8px 0 4px">${L.h1}</h1>
+<p style="color:#6b7280;font-size:.95rem;margin-bottom:6px">${L.sub(list.length)}</p>
+<div class="srchbar"><div class="row">
+<select id="mSido"><option value="">${esc(L.all)}</option>${opts}</select>
+<input type="text" id="mKw" placeholder="${esc(L.kw)}">
+<button id="mReset" type="button" style="background:#f3f4f6;color:#374151;border:none;border-radius:12px;padding:10px 18px;font-weight:700;cursor:pointer;font-family:inherit">${esc(L.reset)}</button>
+</div></div>
+<div class="srch-count" id="mCount">${L.cnt(list.length)}</div>
+<div class="mgrid" id="mGrid">${list.map(card).join('\n')}</div>
+<p class="note" id="mNone" style="display:none">${esc(L.none)}</p>
+<h2 class="sec">${esc(L.walkH)}</h2>
+<p><a href="${lang === 'ko' ? '/trails/' : '/trails/'}" style="display:inline-block;background:#0f9d8f;color:#fff;font-weight:700;padding:11px 22px;border-radius:22px;text-decoration:none">${esc(L.walkCta)}</a></p>
+${lang === 'ko' ? buyBox('mountain') : ''}
+<p class="note" style="margin-top:18px">${L.note}</p>
+<p class="note">${L.hundred}</p>
+</div></main>
+<script>
+(function(){
+  var g=document.getElementById('mGrid'); if(!g) return;
+  var sel=document.getElementById('mSido'), kw=document.getElementById('mKw'), rs=document.getElementById('mReset');
+  var cnt=document.getElementById('mCount'), none=document.getElementById('mNone');
+  var cards=[].slice.call(g.querySelectorAll('.mcard'));
+  var TPL=${JSON.stringify(String(L.cnt(0)).replace('0','%d'))};
+  function apply(){
+    var s=sel.value, k=(kw.value||'').trim().toLowerCase(), n=0;
+    cards.forEach(function(c){
+      var ok=(!s||c.getAttribute('data-sido')===s)&&(!k||c.getAttribute('data-kw').indexOf(k)>=0);
+      c.style.display=ok?'':'none'; if(ok)n++;
+    });
+    cnt.textContent=TPL.replace('%d',n); none.style.display=n?'none':'';
+  }
+  sel.addEventListener('change',apply); kw.addEventListener('input',apply);
+  rs.addEventListener('click',function(){sel.value='';kw.value='';apply();});
+})();
+</script>`;
+    const ld = `<script type="application/ld+json">${JSON.stringify({
+      '@context': 'https://schema.org', '@type': 'ItemList', name: L.h1.replace(/^\S+\s/, ''),
+      numberOfItems: list.length,
+      itemListElement: list.slice(0, 50).map((m, i) => ({ '@type': 'ListItem', position: i + 1, name: m.title }))
+    })}</script>`;
+    const url = lang === 'ko' ? '/mountains/' : `/${lang}/mountains/`;
+    writePage(lang === 'ko' ? 'mountains' : `${lang}/mountains`,
+      layout(L.title(list.length), L.desc(list.length), url, content,
+        { lang, jsonld: ld, alternates: mtAlts(), ogImage: '/img/hero.webp' }));
+    MOUNTAIN_URLS.push(url);
+  });
+}
+
 // ---------- sitemap / robots ----------
-const urls = ['/', ...MONTHS.map(m => `/${m.key}/`), '/search/', ...(holidays.length ? ['/holiday/'] : []), '/pet/', ...(apiAccessible.length ? ['/accessible/'] : []), ...(apiTrails.length ? ['/trails/'] : []), ...(apiValleys.length ? ['/valley/'] : []), ...(apiMaple.length ? ['/maple/'] : []), ...(apiFlower.length ? ['/flower/'] : []), ...(apiOnsen.length ? ['/onsen/'] : []), '/jangteo/', '/test/', '/trip-cost/', ...(visitors.kor && visitors.kor.length ? ['/trend/'] : []), ...SIDO_URLS, ...THEME_URLS, ...TRAIL_URLS, ...WALK_URLS, ...TREND_LANG_URLS, '/blog/', ...posts.map(p => `/blog/${p.slug}/`), '/about/', EDITORIAL_URL, '/contact/', '/privacy/',...(apiFestsEn.length ? ['/en/', '/en/search/'] : []), ...(apiFestsJa.length ? ['/ja/', '/ja/search/'] : []), ...(apiFestsEs.length ? ['/es/', '/es/search/'] : []), ...(apiFestsZh.length ? ['/zh/', '/zh/search/'] : []), ...(apiFestsTw.length ? ['/tw/', '/tw/search/'] : []), ...TW_EXTRA_URLS];
+const urls = ['/', ...MONTHS.map(m => `/${m.key}/`), '/search/', ...(holidays.length ? ['/holiday/'] : []), '/pet/', ...(apiAccessible.length ? ['/accessible/'] : []), ...(apiTrails.length ? ['/trails/'] : []), ...(apiValleys.length ? ['/valley/'] : []), ...(apiMaple.length ? ['/maple/'] : []), ...(apiFlower.length ? ['/flower/'] : []), ...(apiOnsen.length ? ['/onsen/'] : []), '/jangteo/', '/test/', '/trip-cost/', ...(visitors.kor && visitors.kor.length ? ['/trend/'] : []), ...SIDO_URLS, ...THEME_URLS, ...TRAIL_URLS, ...WALK_URLS, ...TREND_LANG_URLS, '/blog/', ...posts.map(p => `/blog/${p.slug}/`), '/about/', EDITORIAL_URL, '/contact/', '/privacy/',...(apiFestsEn.length ? ['/en/', '/en/search/'] : []), ...(apiFestsJa.length ? ['/ja/', '/ja/search/'] : []), ...(apiFestsEs.length ? ['/es/', '/es/search/'] : []), ...(apiFestsZh.length ? ['/zh/', '/zh/search/'] : []), ...(apiFestsTw.length ? ['/tw/', '/tw/search/'] : []), ...TW_EXTRA_URLS, ...MOUNTAIN_URLS];
 // noindex 페이지는 사이트맵에서 뺀다 — "색인해라(사이트맵) + 하지마라(noindex)"는 모순 신호다.
 const NOINDEX_URLS = new Set([...SIDO_URLS, ...THEME_URLS]);
 const sitemapUrls = urls.filter(u => !NOINDEX_URLS.has(u));
@@ -3750,7 +3992,7 @@ fs.writeFileSync(LM_PATH, JSON.stringify(LM_NEW, null, 0));
 const SEC = {
   'sitemap-trails.xml': sitemapUrls.filter(u => /^\/trails\//.test(u)),
   'sitemap-blog.xml': sitemapUrls.filter(u => /^\/blog\//.test(u)),
-  'sitemap-lang.xml': sitemapUrls.filter(u => /^\/(en|ja|es|zh)\//.test(u))
+  'sitemap-lang.xml': sitemapUrls.filter(u => /^\/(en|ja|es|zh|tw)\//.test(u))
 };
 SEC['sitemap-core.xml'] = sitemapUrls.filter(u =>
   !SEC['sitemap-trails.xml'].includes(u) && !SEC['sitemap-blog.xml'].includes(u) && !SEC['sitemap-lang.xml'].includes(u));
