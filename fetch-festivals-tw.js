@@ -1,7 +1,14 @@
 // 중문 번체(대만·홍콩) 축제(ChtService2 searchFestival2 + detailCommon2) → data/festivals_tw.json
 // ※ 간체(zh)와 별개 서비스다. 대만은 2026 방한 3위(연 193만)인데 번체판이 없어서 신설.
 const fs=require('fs'), path=require('path'), https=require('https');
-const KEY=fs.readFileSync(path.join(__dirname,'tourapi.key'),'utf8').trim();
+// ⚠️ 번체는 인증키가 따로다. 공공데이터포털에서 ChtService2를 별도 활용신청하면서 받은 키를
+//    tourapi-tw.key 에 넣어 둔다(없으면 공용 tourapi.key로 폴백 — 그 키로는 미신청 오류가 난다).
+const KEY=(function(){
+  for(const f of ['tourapi-tw.key','tourapi.key']){
+    try{ const k=fs.readFileSync(path.join(__dirname,f),'utf8').trim(); if(k) return k; }catch(e){}
+  }
+  throw new Error('tourapi-tw.key 또는 tourapi.key 가 필요합니다');
+})();
 const BASE='https://apis.data.go.kr/B551011/ChtService2';
 const RMAP={'11':'首爾','26':'釜山','27':'大邱','28':'仁川','29':'光州','30':'大田','31':'蔚山','36':'世宗','41':'京畿','43':'忠北','44':'忠南','46':'全南','47':'慶北','48':'慶南','50':'濟州','51':'江原','52':'全北'};
 function get(u){return new Promise((res,rej)=>{https.get(u,{headers:{'User-Agent':'chukjemoa'}},r=>{r.setEncoding('utf8'); let d='';r.on('data',c=>d+=c);r.on('end',()=>res(d));}).on('error',rej);});}
