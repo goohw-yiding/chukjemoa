@@ -50,6 +50,9 @@ catch (e) { console.log('⚠ festivals_es.json 없음 — 스페인어 데이터
 let apiFestsZh = [];
 try { apiFestsZh = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/festivals_zh.json'), 'utf8')); }
 catch (e) { console.log('⚠ festivals_zh.json 없음 — 중문 데이터 비어있음 (node fetch-festivals-zh.js 먼저 실행)'); }
+let apiFestsTw = [];
+try { apiFestsTw = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/festivals_tw.json'), 'utf8')); }
+catch (e) { console.log('⚠ festivals_tw.json 없음 — 번체(대만) 데이터 비어있음 (공공데이터포털에서 ChtService2 활용신청 후 node fetch-festivals-tw.js)'); }
 let holidays = [];
 try { holidays = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/holidays.json'), 'utf8')); }
 catch (e) { console.log('⚠ holidays.json 없음 — 공휴일 데이터 비어있음 (node fetch-holidays.js 먼저 실행)'); }
@@ -61,10 +64,13 @@ try { visitors = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/visitors.json'
 catch (e) { console.log('⚠ visitors.json 없음 — 방문자수 데이터 비어있음 (node fetch-visitors.js 먼저 실행)'); }
 
 // 다국어 hreflang 세트(데이터 있는 언어만 포함)
-const LANGS = ['en','ja','es','zh'];
-const LANG_DATA = { en: apiFestsEn, ja: apiFestsJa, es: apiFestsEs, zh: apiFestsZh };
-function homeAlts() { const a = [{ hreflang: 'ko', href: '/' }]; LANGS.forEach(l => { if (LANG_DATA[l].length) a.push({ hreflang: l === 'zh' ? 'zh-Hans' : l, href: '/' + l + '/' }); }); a.push({ hreflang: 'x-default', href: '/' }); return a; }
-function searchAlts() { const a = [{ hreflang: 'ko', href: '/search/' }]; LANGS.forEach(l => { if (LANG_DATA[l].length) a.push({ hreflang: l === 'zh' ? 'zh-Hans' : l, href: '/' + l + '/search/' }); }); a.push({ hreflang: 'x-default', href: '/search/' }); return a; }
+// tw = 중국어 번체(대만·홍콩). 대만은 2026 방한 3위(연 193만)인데 번체판이 없어서 신설.
+// ⚠️ ChtService2는 공공데이터포털에서 별도 활용신청이 필요하다(키는 같아도 서비스별 승인).
+const LANGS = ['en','ja','es','zh','tw'];
+const LANG_DATA = { en: apiFestsEn, ja: apiFestsJa, es: apiFestsEs, zh: apiFestsZh, tw: apiFestsTw };
+const HREFLANG = { zh: 'zh-Hans', tw: 'zh-Hant' };
+function homeAlts() { const a = [{ hreflang: 'ko', href: '/' }]; LANGS.forEach(l => { if (LANG_DATA[l].length) a.push({ hreflang: HREFLANG[l] || l, href: '/' + l + '/' }); }); a.push({ hreflang: 'x-default', href: '/' }); return a; }
+function searchAlts() { const a = [{ hreflang: 'ko', href: '/search/' }]; LANGS.forEach(l => { if (LANG_DATA[l].length) a.push({ hreflang: HREFLANG[l] || l, href: '/' + l + '/search/' }); }); a.push({ hreflang: 'x-default', href: '/search/' }); return a; }
 
 const MONTHS = [
   { key: '2026-07', months: [7], label: '2026년 7월', short: '7월', emoji: '💦' },
@@ -1026,7 +1032,8 @@ const KO_NAV = `<button class="navtoggle" id="navtoggle" aria-label="메뉴 열�
 <a href="/en/">English</a>
 <a href="/ja/">日本語</a>
 <a href="/es/">Español</a>
-<a href="/zh/">中文</a>
+<a href="/zh/">简体中文</a>
+<a href="/tw/">繁體中文</a>
 </div></div>
 </nav>`;
 const NAV_JS = `<script>
@@ -2302,6 +2309,148 @@ writeLangSite('zh', apiFestsZh, ZH_ORDER, {
   client: { count: '%d个庆典', loading: '加载中...', fail: '数据加载失败。', noMatch: '没有符合条件的庆典，请尝试其他筛选。', modalFallback: '简介即将上线，请查看官方网站或谷歌。', ended: '已结束', ongoing: '进行中', dpre: '还有', dpost: '天', googleSuffix: ' 韩国 庆典' }
 });
 
+// ---------- 중국어 번체(대만·홍콩) ----------
+// 간체(zh)와 문구를 따로 쓴다. 번체권은 재방문율이 높아 "관광지"보다 "현지인이 가는 곳"을 찾는다 →
+// 홍보 문구도 그 각도로 쓰고, 차별화 콘텐츠로 오일장(5일장)을 따로 붙인다(/tw/jangteo/).
+const TW_ORDER = ['首爾','京畿','仁川','江原','忠北','忠南','大田','世宗','全北','全南','光州','慶北','慶南','大邱','蔚山','釜山','濟州'];
+const TW_EXTRA_URLS = [];   // 번체 전용 추가 페이지(오일장 등) — 사이트맵에 넣는다
+writeLangSite('tw', apiFestsTw, TW_ORDER, {
+  h1: '韓國慶典搜尋',
+  sub: `依日期與地區搜尋全韓國${apiFestsTw.length}場慶典 — 韓國觀光公社官方資料。`,
+  allRegions: '所有地區', kwPh: '以名稱或地點搜尋', reset: '重設',
+  q: { all: '全部', now: '進行中', weekend: '本週末', month: '本月', past: '含已結束' },
+  note: '資料來源：韓國觀光公社（TourAPI）。日程可能變動，出發前請確認官方網站。點選卡片可查看簡介、官方網站與 Google 搜尋。',
+  official: '🏛️ 官方網站', google: '🔎 Google 搜尋',
+  metaTitleSearch: '韓國慶典搜尋 — 依日期與地區查詢韓國慶典 | Chukjemoa',
+  metaDescSearch: `依日期與地區搜尋全韓國${apiFestsTw.length}場慶典，附韓國觀光公社官方簡介。`,
+  heroH1: '韓國慶典・傳統市場',
+  heroP: '依日期與地區搜尋全韓國的慶典 — 韓國觀光公社官方資料。',
+  heroCta: '瀏覽所有慶典 →', sec: '把行程排在慶典上',
+  lead: `第二次、第三次來韓國的話，明洞和弘大大概已經走過了。韓國每年舉辦數百場慶典 — 夏天的泥漿節與水戰、秋天的煙火與楓葉、冬天的冰雪與燈節，而且大多在首爾以外的地方。Chukjemoa 可以依日期與地區搜尋${apiFestsTw.length}場以上的慶典，閱讀官方簡介，並直接前往各慶典的官方網站。所有日程與介紹皆來自韓國觀光公社（TourAPI）。想更貼近在地生活，可以看看<a href="/tw/jangteo/">全韓國的五日市集</a>。`,
+  ctaBtn: '🔎 開啟慶典搜尋',
+  metaTitleHome: '韓國慶典行事曆 2026 — 慶典・五日市集指南 | Chukjemoa',
+  metaDescHome: '依日期與地區搜尋全韓國的慶典與傳統市場。韓國觀光公社官方資料，另有五日市集（五日場）開市日查詢。',
+  client: { count: '%d 場慶典', loading: '載入中...', fail: '資料載入失敗。', noMatch: '沒有符合條件的慶典，請調整篩選。', modalFallback: '簡介準備中，請參考官方網站或 Google。', ended: '已結束', ongoing: '進行中', dpre: '還有', dpost: '天', googleSuffix: ' 韓國 慶典' }
+});
+
+// ---------- 번체 전용: 오일장(五日市集) /tw/jangteo/ ----------
+// 이게 번체판의 차별화 콘텐츠다. 축제 목록은 어디에나 있지만 5일장 개념을 번체로 설명하고
+// 다음 개시일까지 계산해 주는 곳은 없다. 대만·홍콩은 야시장 문화가 있어 "장날"이라는 개념이 바로 통한다.
+if (apiFestsTw.length) {
+  const TWM = require('./twmarkets');
+  const twRows = markets.map(m => {
+    const t = TWM.market[m.name] || {};
+    return {
+      ko: m.name, tw: t.n || m.name, desc: t.d || '', famous: t.f || m.famous,
+      region: TWM.region[m.region] || m.region, city: TWM.city[m.city] || m.city,
+      days: m.days, daysNum: m.daysNum || []
+    };
+  });
+  const twRegions = [...new Set(twRows.map(r => r.region))];
+  const card = r => `<div class="jcard" data-days="${(r.daysNum || []).join(',')}" data-region="${esc(r.region)}">
+<div class="jhead"><h3>${esc(r.tw)}</h3><span class="jko">${esc(r.ko)}</span></div>
+<div class="jmeta">📍 ${esc(r.region)} ${esc(r.city)}</div>
+<div class="jdays">${(r.daysNum || []).length ? `逢 <b>${(r.daysNum || []).join('・')}</b> 日開市` : '<b>每日開市</b>'}<span class="jnext"></span></div>
+${r.desc ? `<p class="jdesc">${esc(r.desc)}</p>` : ''}
+<div class="jfam">🛒 ${esc(r.famous)}</div>
+</div>`;
+  const content = `<main><div class="wrap">
+<style>
+.jgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;margin:16px 0}
+.jcard{background:#fff;border-radius:16px;box-shadow:0 3px 14px rgba(31,41,55,.08);padding:18px 20px}
+.jhead{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+.jhead h3{font-size:1.08rem;font-weight:900;color:#0a6c63}
+.jko{font-size:.78rem;color:#9aa3af}
+.jmeta{font-size:.85rem;color:#6b7280;margin-top:5px}
+.jdays{margin-top:9px;font-size:.92rem;color:#374151}
+.jdays b{color:#e0502f}
+.jnext{display:block;margin-top:5px;font-size:.85rem;color:#0f9d8f;font-weight:800}
+.jdesc{margin-top:9px;font-size:.9rem;color:#4b5563;line-height:1.6}
+.jfam{margin-top:9px;font-size:.85rem;color:#0a6c63;background:#f2fbfa;border-radius:10px;padding:7px 11px}
+.twbox{background:#fff;border-radius:18px;box-shadow:0 3px 14px rgba(31,41,55,.08);padding:24px 28px;margin:18px 0}
+.twbox h2{font-size:1.22rem;font-weight:900;color:#0a6c63;margin-bottom:10px}
+.twbox p{margin:9px 0;line-height:1.75;color:#374151}
+.twbox li{margin:7px 0 7px 18px;line-height:1.7;color:#374151}
+.jfilter{display:flex;flex-wrap:wrap;gap:7px;margin:14px 0}
+.jfilter button{border:1.5px solid #a9e5dd;background:#fff;color:#0c7d72;border-radius:20px;padding:8px 15px;font-size:.87rem;font-weight:800;cursor:pointer;font-family:inherit}
+.jfilter button.on{background:linear-gradient(135deg,#0f9d8f,#2dd4bf);color:#fff;border-color:transparent}
+</style>
+<h1 style="font-size:1.55rem;font-weight:900;margin:10px 0 6px">🏮 韓國五日市集（오일장）完整指南</h1>
+<p style="color:#6b7280;margin-bottom:6px">台灣有夜市，韓國有「五日市集」。全韓國 ${twRows.length} 處，每5天開市一次 — 附下次開市日自動計算。</p>
+
+<div class="twbox">
+<h2>什麼是「五日市集」？</h2>
+<p>韓國的傳統市集大多不是天天開，而是<b>每5天開一次</b>。例如標示「2・7」的市集，就是每月 2、7、12、17、22、27 日開市。這種市集叫做 <b>오일장（五日場）</b>。</p>
+<p>對第二次、第三次來韓國的人來說，這是最容易碰到「真正的當地生活」的場合。攤販是附近的農民和漁民，價格是當地人的價格，賣的東西隨季節換。明洞和弘大看不到這些。</p>
+<h2>去之前先知道這幾件</h2>
+<ul>
+<li><b>帶現金。</b> 大攤位能刷卡或用行動支付，但小攤位還是收現金為主。</li>
+<li><b>上午去。</b> 通常清晨開始，中午前後最熱鬧，傍晚就陸續收攤了。</li>
+<li><b>小吃是重點。</b> 煎餅（전）、血腸（순대）、湯飯（국밥）在市集現做，比市區便宜也更道地。</li>
+<li><b>下雨天會縮小規模。</b> 露天攤位多，天氣不好時攤數會明顯減少。</li>
+<li><b>日期與農曆無關。</b> 「2・7日」指的是國曆（陽曆）日期的尾數，不是農曆。</li>
+</ul>
+</div>
+
+<div class="jfilter" id="jf"><button data-r="" class="on">全部</button>${twRegions.map(r => `<button data-r="${esc(r)}">${esc(r)}</button>`).join('')}</div>
+<div class="jgrid" id="jg">${twRows.map(card).join('\n')}</div>
+
+<div class="twbox">
+<h2>把慶典和市集排在同一天</h2>
+<p>五日市集的開市日如果剛好碰上附近的慶典，一天可以走兩個地方。可以先用 <a href="/tw/search/">慶典搜尋</a> 找出當天的活動，再對照上面的開市日。</p>
+<p>想知道哪些地區<b>韓國人自己常去、外國遊客反而少</b>，可以看 <a href="/tw/trend/">人氣旅遊地排行</a> — 那是用韓國觀光公社的觀光大數據做的，外國人比例低的地方通常更有生活感。</p>
+</div>
+<p class="note" style="margin-top:18px">資料來源：各地方政府公告與韓國觀光公社資料。開市日可能因節日（春節・中秋）調整，出發前請再確認。</p>
+</div></main>
+<script>
+(function(){
+  var g=document.getElementById('jg'); if(!g) return;
+  // 다음 장날 계산 — 5일장은 음력이 아니라 양력 날짜의 끝자리 기준으로 선다
+  var now=new Date(Date.now()+9*3600*1000); // KST
+  var y=now.getUTCFullYear(), mo=now.getUTCMonth(), d=now.getUTCDate();
+  function nextDay(days){
+    if(!days.length) return null;
+    for(var add=0; add<40; add++){
+      var t=new Date(Date.UTC(y,mo,d+add));
+      var dd=t.getUTCDate();
+      if(days.indexOf(dd)>=0) return {add:add,date:t};
+    }
+    return null;
+  }
+  Array.prototype.forEach.call(g.querySelectorAll('.jcard'),function(c){
+    var raw=c.getAttribute('data-days');
+    var days=raw?raw.split(',').map(Number).filter(function(n){return n>0;}):[];
+    var el=c.querySelector('.jnext');
+    if(!days.length){ el.textContent='✅ 每日開市'; return; }
+    var r=nextDay(days);
+    if(!r){ el.textContent=''; return; }
+    var label=(r.date.getUTCMonth()+1)+'月'+r.date.getUTCDate()+'日';
+    el.textContent = r.add===0 ? '🔥 今天開市！' : (r.add===1 ? '👉 明天（'+label+'）' : '👉 下次 '+label+'（還有'+r.add+'天）');
+  });
+  var fb=document.getElementById('jf');
+  fb.addEventListener('click',function(e){
+    var b=e.target.closest('button'); if(!b) return;
+    Array.prototype.forEach.call(fb.querySelectorAll('button'),function(x){x.classList.remove('on');});
+    b.classList.add('on');
+    var r=b.getAttribute('data-r');
+    Array.prototype.forEach.call(g.querySelectorAll('.jcard'),function(c){
+      c.style.display = (!r || c.getAttribute('data-region')===r) ? '' : 'none';
+    });
+  });
+})();
+</script>`;
+  const twJangteoLd = `<script type="application/ld+json">${JSON.stringify({
+    '@context': 'https://schema.org', '@type': 'ItemList', name: '韓國五日市集',
+    numberOfItems: twRows.length,
+    itemListElement: twRows.map((r, i) => ({ '@type': 'ListItem', position: i + 1, name: r.tw }))
+  })}</script>`;
+  writePage('tw/jangteo', layout(
+    '韓國五日市集完整指南 — 全韓國27處開市日查詢 | Chukjemoa',
+    '韓國傳統五日市集（오일장）全韓國27處：開市日、位置、必吃小吃與特產一次看。附下次開市日自動計算，適合第二次以上來韓國、想看當地生活的旅客。',
+    '/tw/jangteo/', content, { lang: 'tw', jsonld: twJangteoLd, ogImage: '/img/jangteo.webp' }));
+  TW_EXTRA_URLS.push('/tw/jangteo/');
+}
+
 // ---------- 무장애 여행 /accessible/ (KorWithService2) ----------
 if (apiAccessible.length) {
   const accSidos = SIDO_ORDER.filter(s => apiAccessible.some(p => p.sido === s));
@@ -3554,7 +3703,7 @@ document.getElementById('tcFrom').addEventListener('keydown',function(e){if(e.ke
 writePage('trip-cost', layout('여행 비용 계산기 — 자동차 vs 대중교통 비용 비교 | ' + SITE_NAME, '축제·여행지까지 자동차(연료+통행료+주차)와 대중교통 비용을 비교 계산. 출발지·도착지만 넣으면 끝. 계산 과정도 투명하게 공개.', '/trip-cost/', tripCostContent));
 
 // ---------- sitemap / robots ----------
-const urls = ['/', ...MONTHS.map(m => `/${m.key}/`), '/search/', ...(holidays.length ? ['/holiday/'] : []), '/pet/', ...(apiAccessible.length ? ['/accessible/'] : []), ...(apiTrails.length ? ['/trails/'] : []), ...(apiValleys.length ? ['/valley/'] : []), ...(apiMaple.length ? ['/maple/'] : []), ...(apiFlower.length ? ['/flower/'] : []), ...(apiOnsen.length ? ['/onsen/'] : []), '/jangteo/', '/test/', '/trip-cost/', ...(visitors.kor && visitors.kor.length ? ['/trend/'] : []), ...SIDO_URLS, ...THEME_URLS, ...TRAIL_URLS, ...WALK_URLS, ...TREND_LANG_URLS, '/blog/', ...posts.map(p => `/blog/${p.slug}/`), '/about/', EDITORIAL_URL, '/contact/', '/privacy/',...(apiFestsEn.length ? ['/en/', '/en/search/'] : []), ...(apiFestsJa.length ? ['/ja/', '/ja/search/'] : []), ...(apiFestsEs.length ? ['/es/', '/es/search/'] : []), ...(apiFestsZh.length ? ['/zh/', '/zh/search/'] : [])];
+const urls = ['/', ...MONTHS.map(m => `/${m.key}/`), '/search/', ...(holidays.length ? ['/holiday/'] : []), '/pet/', ...(apiAccessible.length ? ['/accessible/'] : []), ...(apiTrails.length ? ['/trails/'] : []), ...(apiValleys.length ? ['/valley/'] : []), ...(apiMaple.length ? ['/maple/'] : []), ...(apiFlower.length ? ['/flower/'] : []), ...(apiOnsen.length ? ['/onsen/'] : []), '/jangteo/', '/test/', '/trip-cost/', ...(visitors.kor && visitors.kor.length ? ['/trend/'] : []), ...SIDO_URLS, ...THEME_URLS, ...TRAIL_URLS, ...WALK_URLS, ...TREND_LANG_URLS, '/blog/', ...posts.map(p => `/blog/${p.slug}/`), '/about/', EDITORIAL_URL, '/contact/', '/privacy/',...(apiFestsEn.length ? ['/en/', '/en/search/'] : []), ...(apiFestsJa.length ? ['/ja/', '/ja/search/'] : []), ...(apiFestsEs.length ? ['/es/', '/es/search/'] : []), ...(apiFestsZh.length ? ['/zh/', '/zh/search/'] : []), ...(apiFestsTw.length ? ['/tw/', '/tw/search/'] : []), ...TW_EXTRA_URLS];
 // noindex 페이지는 사이트맵에서 뺀다 — "색인해라(사이트맵) + 하지마라(noindex)"는 모순 신호다.
 const NOINDEX_URLS = new Set([...SIDO_URLS, ...THEME_URLS]);
 const sitemapUrls = urls.filter(u => !NOINDEX_URLS.has(u));
