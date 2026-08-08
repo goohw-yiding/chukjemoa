@@ -14,6 +14,13 @@ const LANGS = [
 ];
 // lDongRegnCd → 시도명(국문 기준). 다국어는 주소에서 못 뽑을 때가 있어 코드로 맞춘다.
 const RCODE = { '11': '서울', '26': '부산', '27': '대구', '28': '인천', '29': '광주', '30': '대전', '31': '울산', '36': '세종', '41': '경기', '43': '충북', '44': '충남', '46': '전남', '47': '경북', '48': '경남', '50': '제주', '51': '강원', '52': '전북' };
+// ⚠️ TourAPI가 최근 전남·광주를 '전남광주통합특별시'(regnCd 12)로 묶어서 준다.
+//    그대로 두면 시도가 비어 지역 필터에서 통째로 빠진다(실측 25건).
+//    광주 자치구(동/서/남/북/광산)만 시군구 코드가 100·200·300·400·500 형태라 그걸로 가른다.
+function sidoOf(regnCd, signguCd) {
+  if (String(regnCd) === '12') return /^[1-5]00$/.test(String(signguCd)) ? '광주' : '전남';
+  return RCODE[regnCd] || '';
+}
 
 function get(u) {
   return new Promise((res, rej) => {
@@ -48,7 +55,7 @@ async function run(L) {
     const addr = clean(it.addr1);
     out.push({
       id: it.contentid, title: clean(it.title), addr,
-      sido: RCODE[it.lDongRegnCd] || '', sigungu: clean(it.lDongSignguCd ? '' : ''),
+      sido: sidoOf(it.lDongRegnCd, it.lDongSignguCd), sigungu: '',
       regnCd: it.lDongRegnCd || '', signguCd: it.lDongSignguCd || '',
       img: it.firstimage || '', x: it.mapx || '', y: it.mapy || '', tel: clean(it.tel)
     });
