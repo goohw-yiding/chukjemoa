@@ -1057,9 +1057,7 @@ function layout(title, desc, urlPath, content, opts) {
     en: `<nav><a href="/en/">Home</a><a href="/en/search/">🔎 Festivals</a><a href="/en/trend/">🔥 Rankings</a><a href="/">🇰🇷 한국어</a></nav>`,
     ja: `<nav><a href="/ja/">ホーム</a><a href="/ja/search/">🔎 お祭り検索</a><a href="/ja/trend/">🔥 人気ランキング</a><a href="/">🇰🇷 한국어</a></nav>`,
     es: `<nav><a href="/es/">Inicio</a><a href="/es/search/">🔎 Buscar festivales</a><a href="/es/trend/">🔥 Rankings</a><a href="/">🇰🇷 한국어</a></nav>`,
-    zh: `<nav><a href="/zh/">首页</a><a href="/zh/search/">🔎 庆典搜索</a><a href="/zh/trend/">🔥 人气排行</a><a href="/">🇰🇷 한국어</a></nav>`,
-    // 번체는 오일장이 주력 콘텐츠라 내비에 올린다(간체엔 없음 — 언어별 무기가 다르다)
-    tw: `<nav><a href="/tw/">首頁</a><a href="/tw/search/">🔎 慶典搜尋</a><a href="/tw/jangteo/">🏮 五日市集</a><a href="/tw/trend/">🔥 人氣排行</a><a href="/">🇰🇷 한국어</a></nav>`
+    zh: `<nav><a href="/zh/">首页</a><a href="/zh/search/">🔎 庆典搜索</a><a href="/zh/trend/">🔥 人气排行</a><a href="/">🇰🇷 한국어</a></nav>`
   };
   const nav = lang === 'ko'
     ? KO_NAV
@@ -1088,12 +1086,6 @@ function layout(title, desc, urlPath, content, opts) {
 <p><a href="/about/">关于我们</a> · <a href="/editorial/">编辑方针</a> · <a href="/contact/">联系</a> · <a href="/privacy/">隐私政策</a></p>
 <p>数据：韩国观光公社（TourAPI） · 联系：goohw593@gmail.com</p>
 <p class="srcnote">庆典信息来源：韩国观光公社 TourAPI 等公共开放数据。最后更新 ${TODAY}。</p>
-<p>© 2026 Chukjemoa</p>`,
-    tw: `<p>Chukjemoa — 韓國慶典・五日市集指南</p>
-<p>活動日程可能變動，出發前請確認官方網站。</p>
-<p><a href="/about/">關於我們</a> · <a href="/editorial/">編輯方針</a> · <a href="/contact/">聯絡</a> · <a href="/privacy/">隱私權政策</a></p>
-<p>資料：韓國觀光公社（TourAPI） · 聯絡：goohw593@gmail.com</p>
-<p class="srcnote">慶典資訊來源：韓國觀光公社 TourAPI 等公共開放資料。最後更新 ${TODAY}。</p>
 <p>© 2026 Chukjemoa</p>`
   };
   const footer = lang === 'ko'
@@ -1105,7 +1097,7 @@ function layout(title, desc, urlPath, content, opts) {
 <p>© 2026 ${SITE_NAME}</p>`
     : FOOTERS[lang];
   return `<!DOCTYPE html>
-<html lang="${lang === 'tw' ? 'zh-Hant' : lang === 'zh' ? 'zh-Hans' : lang}">
+<html lang="${lang}">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -3185,23 +3177,6 @@ const TREND_L = {
     unit: '', times: '×', legend: `条形长度＝访问规模 · 右侧数字＝旺季标签为<b>倍数</b>，其余为<b>30天访客人次合计</b>。<a href="#howto">数字怎么看 ↓</a>`, src: '数据来源：韩国观光公社《韩国观光数据实验室》地区访客数（公共数据门户）。基于通信与卡片数据的推算值，每周更新。',
     title: m => `韩国人气目的地排行 — ${m}月旺季榜 | 庆典集`,
     metad: '基于韩国观光公社旅游大数据的人气目的地排行：本月旺季热点、韩国人常去与外国人常去的市·郡·区，并可直接查看当地庆典。'
-  },
-  // 번체 — "외국인이 적은 곳 = 로컬" 각도를 전면에 세운다. 재방문객이 원하는 게 그거다.
-  tw: {
-    h1: '🔥 韓國人自己會去的地方',
-    intro: '用韓國觀光公社的觀光大數據整理出「實際上人去最多」的市・郡・區。外國遊客少的地方，通常更有生活感。點擊長條可查看當地慶典。',
-    badge: (Y, M, P) => `<b>${M}月</b>旺季排行以 <b>${Y}年${M}月</b> 實績為準 · 訪客排行以 <b>${P}</b> 為準`,
-    badgeNote: '訪問資料約延遲一個月公開，因此季節排行採用去年同月的實績。',
-    tabs: { season: m => `🌞 ${m}月最熱鬧的地方`, kor: '🇰🇷 韓國人常去的地方', fgn: '🌏 外國人常去的地方', sido: '🗺️ 依道・廣域市' },
-    desc: {
-      season: (y, m) => `把 <b>${y}年${m}月</b> 的實際人流跟該年平常水準（年平均）相比得出的<b>旺季倍數</b>。×1.5 就是比平常熱鬧 1.5 倍。海水浴場、溪谷、山岳這類季節性強的地方會上榜。`,
-      kor: '以<b>非當地居民的國內訪客</b>人次為準。因為包含通勤與購物移動，首都圈大城市排名會偏前。',
-      fgn: '以<b>外國訪客</b>人次為準。明洞・仁寺洞所在的首爾中區・鍾路區、機場所在的仁川中區以及濟州名列前茅。<b>反過來說，沒出現在這張榜上的地方，就是外國人少的地方。</b>',
-      sido: '依道・廣域市統計的訪客總數（國內＋外國）。'
-    },
-    unit: '', times: '×', legend: `長條長度＝造訪規模 · 右邊數字＝旺季標籤是<b>倍數</b>，其餘是<b>30天訪客人次合計</b>。<a href="#howto">數字怎麼看 ↓</a>`, src: '資料來源：韓國觀光公社《韓國觀光數據實驗室》地區訪客數（公共資料入口網）。基於通信與信用卡資料的推估值，每週更新。',
-    title: m => `韓國人氣旅遊地排行 — ${m}月旺季榜・在地人常去的地方 | Chukjemoa`,
-    metad: '用韓國觀光公社觀光大數據做的人氣旅遊地排行：本月旺季熱點、韓國人常去與外國人常去的市・郡・區對照。想避開觀光客、找有生活感的地方時看這個。'
   }
 };
 
@@ -3510,40 +3485,6 @@ Periodos: temporada alta ${MN[M]} de ${Y} · rankings de visitantes ${P} · actu
 <p>韩国观光公社 <a href="${DL_URL}" target="_blank" rel="noopener">韩国观光数据实验室</a> — 各地区（市郡区·道）每日访客数<br>
 经公共数据门户 <a href="${DATAGO_URL}" target="_blank" rel="noopener">韩国观光公社_观光大数据信息服务</a>（DataLabService）采集<br>
 统计期间：旺季排行 ${Y}年${M}月 / 访客排行 ${P} · 每周一自动更新</p>
-</section>`,
-  tw: (Y, M, P, LAT, MN) => `<section class="explain" id="howto">
-<h2>📖 這些數字怎麼看</h2>
-<h3>1. 統計的是什麼</h3>
-<p><b>韓國觀光公社</b>公開的訪客推估值，來源是<b>通信與信用卡資料</b>。不是問卷、也不是門票數，而是推估「實際上有多少人待在那個地區」。</p>
-<ul>
-<li><b>韓國人</b>：非該地區居民的國內訪客</li>
-<li><b>外國人</b>：使用國外電信漫遊或外國卡的訪客</li>
-<li>單位是<b>人次</b> — 同一個人去兩次算兩次</li>
-</ul>
-<h3>2. 為什麼首爾・京畿總是在前面</h3>
-<p>因為「外地訪客」不只有觀光客，還包含<b>通勤、通學、購物、出差</b>。每天從鄰近城市通勤的人也會被算進去。所以<b>單看這張榜，大城市是被高估的</b>。</p>
-<p>想看純粹的旅遊吸引力，請看 <b>${M}月旺季</b> 分頁 — 通勤人口不隨季節變動，會自動被抵銷。</p>
-<h3>3. 想找「觀光客少的地方」的話</h3>
-<p>這是重點。<b>外國人榜上沒出現的地區，就是外國遊客少的地方。</b>首爾中區（明洞）、鍾路區（仁寺洞）、仁川中區（機場）、濟州以外的地方，多半還維持著在地生活的樣子。第二次、第三次來韓國的話，可以用這張榜<b>反過來挑</b>。</p>
-<h3>4. 旺季倍數（例如 ×1.54）怎麼算</h3>
-<p style="text-align:center;background:#f4faf8;border:1px solid #dcefeb;border-radius:10px;padding:13px;font-weight:700;color:#0a6c63;margin:10px 0">
-旺季倍數 ＝ ${Y}年${M}月的日均訪客 ÷ ${Y}年平常的日均訪客
-</p>
-<p><b>鬱陵郡 ×1.54</b> 表示鬱陵郡在 ${Y}年${M}月的人流是<b>該年平常水準的 1.54 倍</b>。衡量的是<b>「比平常熱鬧多少」</b>而不是絕對人數，所以小地方在自己的旺季也能排第一。</p>
-<p>作為基準的「平常」，是用 ${Y} 年 12 個月平均抽樣得到的日均值。日均訪客不到 5,000 人的地區已排除，因為母數太小會讓倍數劇烈跳動。</p>
-<h3>5. 為什麼用去年的資料</h3>
-<p>這份資料<b>大約延遲一個月才公開</b>（目前最新統計日：${LAT}）。如果用延遲的最新資料回答「現在 ${M} 月哪裡熱鬧」，得到的會是<b>完全不同季節的答案</b>。改用<b>去年同月的實績</b>，季節才對得上。</p>
-<p>韓國人・外國人・道別排行是為了比較規模而非季節，所以直接使用<b>最新 30 天（${P}）</b>。</p>
-<h3>6. 要知道的限制</h3>
-<ul>
-<li>基於通信與信用卡資料的<b>推估值</b>，與實際旅客數有落差。</li>
-<li>有同名的市・郡・區（首爾中區與仁川中區等），所以<b>一律標註道・廣域市</b>。</li>
-<li>統計只到市・郡・區層級，看不出區域內具體哪個景點熱鬧。</li>
-</ul>
-<h3>📌 資料來源</h3>
-<p>韓國觀光公社 <a href="${DL_URL}" target="_blank" rel="noopener">韓國觀光數據實驗室</a> — 各地區（市郡區・道）每日訪客數<br>
-透過公共資料入口網 <a href="${DATAGO_URL}" target="_blank" rel="noopener">韓國觀光公社_觀光大數據資訊服務</a>（DataLabService）採集<br>
-統計期間：旺季排行 ${Y}年${M}月 / 訪客排行 ${P} · 每週一自動更新</p>
 </section>`
 };
 
@@ -3809,7 +3750,7 @@ fs.writeFileSync(LM_PATH, JSON.stringify(LM_NEW, null, 0));
 const SEC = {
   'sitemap-trails.xml': sitemapUrls.filter(u => /^\/trails\//.test(u)),
   'sitemap-blog.xml': sitemapUrls.filter(u => /^\/blog\//.test(u)),
-  'sitemap-lang.xml': sitemapUrls.filter(u => /^\/(en|ja|es|zh|tw)\//.test(u))
+  'sitemap-lang.xml': sitemapUrls.filter(u => /^\/(en|ja|es|zh)\//.test(u))
 };
 SEC['sitemap-core.xml'] = sitemapUrls.filter(u =>
   !SEC['sitemap-trails.xml'].includes(u) && !SEC['sitemap-blog.xml'].includes(u) && !SEC['sitemap-lang.xml'].includes(u));
