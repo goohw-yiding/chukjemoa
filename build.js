@@ -281,9 +281,14 @@ const COUPANG = {
     flower:   { ico: '🧺', t: '봄꽃 나들이 준비물', s: '피크닉 돗자리', q: '접이식 돗자리', url: 'https://link.coupang.com/a/fXNSDlRDwa' },
     maple:    { ico: '🪑', t: '단풍 보면서 앉아 쉴 자리', s: '접어서 드는 폴딩 스툴 + 메쉬백', own: true, q: '캠핑의자', url: 'https://brand.naver.com/guung/products/13026204364' },
     trails:   { ico: '🥾', t: '걷기 여행 준비물', s: '발 편한 등산화', q: '등산화', url: 'https://link.coupang.com/a/fXNZ2GivM4' },
-    tripcost: { ico: '🧳', t: '떠나기 전에, 가방부터', s: '초경량 여행 캐리어 24인치', own: true, q: '초경량 캐리어', url: 'https://brand.naver.com/guung/products/13161005647' },
+    // 20인치가 24인치보다 잘 팔린다(64개·177만 vs 34개·108만). 사이즈 선택은 검색 업셀로.
+    tripcost: { ico: '🧳', t: '떠나기 전에, 가방부터', s: '초경량 여행 캐리어 20인치', own: true, q: '초경량 캐리어', url: 'https://brand.naver.com/guung/products/13159625424',
+                up: ['carriers', 'passport', 'nametag'] },
     car:      { ico: '🚗', t: '장거리 운전 전에', s: '차량용 휴대폰 거치대', q: '차량용 휴대폰 거치대', url: 'https://link.coupang.com/a/fXN2IYC66m' },
-    jangteo:  { ico: '🛒', t: '장 보러 갈 때 손이 편하려면', s: '바퀴달린 접이식 장보기 카트', own: true, q: '바퀴달린 장바구니', url: 'https://brand.naver.com/guung/products/12580509879' },
+    // 5색 동일가(12,900)인데 엑셀은 레드 119개=222만으로 계산이 안 맞는다(과거 고가 시절 매출로 추정).
+    //   리뷰 수(네이비70 · 블루28 · 블랙17 · 레드13 · 와인9)와 최근 판매일 모두 네이비 우위 → 메인은 네이비 유지.
+    jangteo:  { ico: '🛒', t: '장 보러 갈 때 손이 편하려면', s: '바퀴달린 접이식 장보기 카트 · 5색', own: true, q: '바퀴달린 장바구니', url: 'https://brand.naver.com/guung/products/12580509879',
+                up: ['jangcolors', 'foldbox'] },
     // 파라솔 3색 중 레드 스트라이프가 최다판매(161개·346만) — 베이지/옐로우는 스토어 검색으로 흡수
     valley:   { ico: '⛱️', t: '계곡 자리에 그늘 하나', s: '각도·높이 조절 UV차단 파라솔 · 3색', own: true, q: '그늘막 파라솔', url: 'https://brand.naver.com/guung/products/10181585601',
                 up: ['psbases', 'aqua', 'pstray'], bySeason: { autumn: 'maple', winter: 'tripcost' } },
@@ -311,6 +316,20 @@ const COUPANG = {
     // 2026년 입고했는데 노출 자리가 없어 2개 판매. 여름 축제 모달 업셀로 8월 남은 기간 판단한다.
     necool:   { ico: '❄️', t: '더위, 목부터 식히세요', s: 'PCM 넥쿨러 아이스넥링 · 28도에서 다시 언다', own: true, q: '넥쿨러', url: 'https://brand.naver.com/guung/products/13490127630',
                 upT: '❄️ PCM 넥쿨러 — 28도에서 다시 얼어 반복 사용' },
+    // 오일장 — 카트 5색은 검색 한 칸으로, 폴딩박스는 '장 본 걸 담아 온다'는 다음 행동
+    jangcolors: { ico: '🎨', t: '색상 고르기', s: '장보기카트 5색 · 네이비/레드/블랙/블루/와인', own: true, q: '장보기카트',
+                url: 'https://brand.naver.com/guung/search?q=' + encodeURIComponent('장보기카트'),
+                upT: '🎨 색상 고르기 — 네이비 · 레드 · 블랙 · 블루 · 와인' },
+    foldbox:  { ico: '📦', t: '장 본 것 담아 올 통', s: '접이식 폴딩박스 30L / 55L', own: true, q: '폴딩박스', url: 'https://brand.naver.com/guung/products/8090430037',
+                upT: '📦 접이식 폴딩박스 30L·55L — 접으면 납작해집니다' },
+    // 여행준비 — 20/24/세트는 검색 한 칸, 네임택·여권지갑은 2026년 입고인데 노출 자리가 없던 것
+    carriers: { ico: '📏', t: '사이즈 고르기', s: '20인치 · 24인치 · 20+24 세트', own: true, q: '여행캐리어',
+                url: 'https://brand.naver.com/guung/search?q=' + encodeURIComponent('캐리어'),
+                upT: '📏 사이즈 고르기 — 20인치 · 24인치 · 두 개 세트' },
+    passport: { ico: '🛂', t: '여권은 따로 챙기세요', s: '여권지갑 케이스 · RFID 차단 자석형', own: true, q: '여권지갑', url: 'https://brand.naver.com/guung/products/13302183883',
+                upT: '🛂 여권지갑 RFID 차단 — 스캔 도난을 막습니다' },
+    nametag:  { ico: '🏷️', t: '수하물 찾을 때', s: '캐리어 네임택 러기지택', own: true, q: '캐리어 네임택', url: 'https://brand.naver.com/guung/products/13302496481',
+                upT: '🏷️ 네임택 — 컨베이어에서 내 가방을 바로 찾습니다' },
     // ⛰️ 명산 페이지용(가을 등산). 걷기길 자사상품이 없어 우선 스툴로 대응 — 걷기용품 소싱되면 교체
     mountain: { ico: '🪑', t: '정상에서 앉아 쉴 자리', s: '접어서 드는 폴딩 스툴 + 메쉬백', own: true, q: '폴딩 스툴', url: 'https://brand.naver.com/guung/products/13026204364' }
   }
@@ -350,8 +369,8 @@ const BLOG_BUYBOX = {
   'bongpyeong-buckwheat-festival-guide': ['maple', 'jangteo'],   // 봉평장 연계 코스가 본문에 있음
   'autumn-festivals-2026':            ['maple', 'festival'],
   // 오일장
-  'ojang-day-guide':                  ['jangteo'],
-  'ojang-train-trip-course':          ['jangteo'],
+  'ojang-day-guide':                  ['jangteo', 'jangcolors'],
+  'ojang-train-trip-course':          ['jangteo', 'foldbox'],
   // 반려견 (여름 준비물 글)
   'pet-friendly-festival-guide':      ['pet', 'suncap'],
   // 걷기 — 현재 자사 걷기용품이 없어 제휴 등산화. 소싱 완료되면 교체할 것
