@@ -4441,8 +4441,15 @@ ${rssPosts.map(p => `<item>
 fs.writeFileSync(path.join(ROOT, 'rss.xml'), rss);
 console.log('✓ rss.xml —', rssPosts.length, '개 글');
 
-fs.writeFileSync(path.join(ROOT, 'robots.txt'), `User-agent: *\nAllow: /\nSitemap: ${SITE}/sitemap-index.xml
-Sitemap: ${SITE}/sitemap.xml\n`);
+// ⚠️ /api/ 는 반드시 막는다. 2026-08-09 서치콘솔에 "다른 4xx 문제로 차단됨"이 뜬 원인이
+//    /api/tripcost 였다 — 페이지 JS가 부르는 주소를 구글이 따라가 GET으로 크롤링했고 400을 받았다.
+//    API는 색인 대상이 아니므로 크롤 자체를 막는 게 맞다(그래야 4xx 오류가 아니라 '의도된 차단'이 된다).
+fs.writeFileSync(path.join(ROOT, 'robots.txt'), `User-agent: *
+Allow: /
+Disallow: /api/
+Sitemap: ${SITE}/sitemap-index.xml
+Sitemap: ${SITE}/sitemap.xml
+`);
 fs.writeFileSync(path.join(ROOT, 'ads.txt'), `google.com, pub-3293445488923111, DIRECT, f08c47fec0942fa0\n`);
 console.log('✓ sitemap.xml, robots.txt, ads.txt');
 console.log('빌드 완료:', urls.length, '페이지');
