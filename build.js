@@ -284,8 +284,9 @@ const COUPANG = {
     tripcost: { ico: '🧳', t: '떠나기 전에, 가방부터', s: '초경량 여행 캐리어 24인치', own: true, q: '초경량 캐리어', url: 'https://brand.naver.com/guung/products/13161005647' },
     car:      { ico: '🚗', t: '장거리 운전 전에', s: '차량용 휴대폰 거치대', q: '차량용 휴대폰 거치대', url: 'https://link.coupang.com/a/fXN2IYC66m' },
     jangteo:  { ico: '🛒', t: '장 보러 갈 때 손이 편하려면', s: '바퀴달린 접이식 장보기 카트', own: true, q: '바퀴달린 장바구니', url: 'https://brand.naver.com/guung/products/12580509879' },
-    valley:   { ico: '⛱️', t: '계곡 자리에 그늘 하나', s: '각도·높이 조절 UV차단 파라솔', own: true, q: '그늘막 파라솔', url: 'https://brand.naver.com/guung/products/10413587358',
-                up: ['psbase', 'aqua', 'pstray'], bySeason: { autumn: 'maple', winter: 'tripcost' } },
+    // 파라솔 3색 중 레드 스트라이프가 최다판매(161개·346만) — 베이지/옐로우는 스토어 검색으로 흡수
+    valley:   { ico: '⛱️', t: '계곡 자리에 그늘 하나', s: '각도·높이 조절 UV차단 파라솔 · 3색', own: true, q: '그늘막 파라솔', url: 'https://brand.naver.com/guung/products/10181585601',
+                up: ['psbases', 'aqua', 'pstray'], bySeason: { autumn: 'maple', winter: 'tripcost' } },
     onsen:    { ico: '🧖', t: '온천 갈 때 챙기면 좋은 것', s: '가볍게 마르는 여행용 타월', q: '여행용 타월', url: 'https://link.coupang.com/a/fXOCpczJqC' },
     pet:      { ico: '🐾', t: '반려견과 떠난다면', s: '강아지 이동가방', q: '강아지 이동가방', url: 'https://link.coupang.com/a/fXOFfqmH4S' },
     // ↓ 아래 3종은 단독 페이지가 없고 bySeason·up 을 통해서만 노출된다(쿠웅샵 자사상품)
@@ -299,6 +300,17 @@ const COUPANG = {
     // 잔디·모래처럼 단단한 바닥용. 물통받침대와 성격이 달라 별도 항목으로 둔다.
     psteel:   { ico: '🔩', t: '단단한 바닥이라면', s: '스틸 사각 파라솔 받침대 · 3단 지름조절', own: true, q: '스틸 파라솔 받침대', url: 'https://brand.naver.com/guung/products/10240115222',
                 upT: '🔩 스틸 사각 받침대 — 잔디·데크에 고정' },
+    // 받침대는 바닥에 따라 골라야 해서 3종(물통20kg·스틸고정·튜브8.5kg)을 스토어 검색 한 칸으로 묶는다.
+    //   페이지당 업셀 2~3칸 원칙을 지키면서 3개 상품을 다 노출하는 방법. 개별키(psbase/psteel)는 블로그용으로 남겨둠.
+    psbases:  { ico: '🪣', t: '계곡 바닥엔 파라솔이 안 꽂힙니다', s: '파라솔 받침대 3종 · 물통 20kg / 스틸 고정 / 튜브 8.5kg', own: true, q: '파라솔 받침대',
+                url: 'https://brand.naver.com/guung/search?q=' + encodeURIComponent('파라솔 받침대'),
+                upT: '🪣 받침대 고르기 — 물통 20kg · 스틸 고정 · 튜브 8.5kg' },
+    // 투명(86.3%)이 345개로 더 팔린다 = 사람들은 차단율보다 투명을 고른다. 그래서 98.1%는 메인이 아닌 업셀.
+    suncap98: { ico: '🧢', t: '더 강하게 막고 싶다면', s: '썬캡 워터밤 · 자외선 98.1% 차단(FITI 시험 성적)', own: true, q: '썬캡', url: 'https://brand.naver.com/guung/products/4545903062',
+                upT: '🧢 98.1% 차단형 — 자외선을 더 막습니다' },
+    // 2026년 입고했는데 노출 자리가 없어 2개 판매. 여름 축제 모달 업셀로 8월 남은 기간 판단한다.
+    necool:   { ico: '❄️', t: '더위, 목부터 식히세요', s: 'PCM 넥쿨러 아이스넥링 · 28도에서 다시 언다', own: true, q: '넥쿨러', url: 'https://brand.naver.com/guung/products/13490127630',
+                upT: '❄️ PCM 넥쿨러 — 28도에서 다시 얼어 반복 사용' },
     // ⛰️ 명산 페이지용(가을 등산). 걷기길 자사상품이 없어 우선 스툴로 대응 — 걷기용품 소싱되면 교체
     mountain: { ico: '🪑', t: '정상에서 앉아 쉴 자리', s: '접어서 드는 폴딩 스툴 + 메쉬백', own: true, q: '폴딩 스툴', url: 'https://brand.naver.com/guung/products/13026204364' }
   }
@@ -330,8 +342,8 @@ const BLOG_BUYBOX = {
   'boryeong-mud-guide':               ['aqua', 'suncap'],
   'summer-water-festivals-2026':      ['suncap', 'aqua'],
   'jangheung-water-festival-guide':   ['suncap', 'aqua'],
-  'valley-summer-guide-2026':         ['valley', 'psbase', 'aqua'],
-  'busan-sea-festival-guide':         ['valley', 'psbase', 'suncap'],
+  'valley-summer-guide-2026':         ['valley', 'psbases', 'aqua'],
+  'busan-sea-festival-guide':         ['valley', 'psbases', 'suncap'],
   // 가을·야간 축제 — 앉을 자리가 관건
   'muju-firefly-festival-guide':      ['maple'],
   'andong-mask-dance-festival-guide': ['maple'],
@@ -449,9 +461,13 @@ const DDAY_JS = `<script>
 // 여름이라고 모든 축제에 썬캡을 띄우면 실내·야간 축제에서 어색하다.
 // 축제 이름이 물축제 계열일 때만 썬캡+아쿠아슈즈, 아니면 계절 기본값(여름·가을=캠핑테이블)을 쓴다.
 // ⚠️ '물' 한 글자로 매칭하면 '박물관축제'가 걸린다 — 반드시 아래 토큰 목록으로만 판정할 것.
-const FEST_BB_BASE = buyBox('festival');
+// 여름 축제는 물축제가 아니어도 덥다 → 기본값(캠핑테이블)에 넥쿨러를 업셀로 붙인다.
+// 물축제 13건보다 일반 여름축제가 훨씬 많아서 넥쿨러 노출은 여기가 맞다.
+const FEST_BB_BASE = NOW_SEASON === 'summer'
+  ? renderBuyBox('festival', ['necool'], 'festival')
+  : buyBox('festival');
 const FEST_BB_WATER = NOW_SEASON === 'summer'
-  ? renderBuyBox('suncap', ['aqua'], 'festival-water')
+  ? renderBuyBox('suncap', ['suncap98', 'aqua'], 'festival-water')
   : FEST_BB_BASE;
 const FEST_BB_JS = `<script>
 window.CJM_FEST_BB={base:${JSON.stringify(FEST_BB_BASE)},water:${JSON.stringify(FEST_BB_WATER)}};
