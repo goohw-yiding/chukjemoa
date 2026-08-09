@@ -18,8 +18,10 @@ const RCODE = { '11': '서울', '26': '부산', '27': '대구', '28': '인천', 
 //    그대로 두면 시도가 비어 지역 필터에서 통째로 빠진다(실측 25건).
 //    광주 자치구(동/서/남/북/광산)만 시군구 코드가 100·200·300·400·500 형태라 그걸로 가른다.
 function sidoOf(regnCd, signguCd) {
-  if (String(regnCd) === '12') return /^[1-5]00$/.test(String(signguCd)) ? '광주' : '전남';
-  return RCODE[regnCd] || '';
+  const r = String(regnCd || '');
+  if (r === '12') return /^[1-5]00$/.test(String(signguCd)) ? '광주' : '전남';
+  // ⚠️ 세종처럼 regnCd를 5자리 전체코드(36110)로 주는 경우가 있다 → 앞 2자리로 폴백
+  return RCODE[r] || RCODE[r.slice(0, 2)] || '';
 }
 
 function get(u) {

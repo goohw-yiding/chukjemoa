@@ -1031,10 +1031,12 @@ const KO_NAV = `<button class="navtoggle" id="navtoggle" aria-label="메뉴 열�
 <a href="/onsen/">♨️ 온천</a>
 <a href="/trails/">🥾 걷기 여행</a>
 <a href="/mountains/">⛰️ 전국 명산</a>
+<a href="/cafe/">☕ 요즘 가는 카페</a>
 <a href="/pet/">🐶 반려견 여행지</a>
 <a href="/accessible/">♿ 무장애 여행</a>
 <a href="/jangteo/">🏮 전국 오일장</a>
 </div></div>
+<a class="nhot" href="/hot/">🔥 요즘 어디 가지</a>
 <a class="nhot" href="/trip-cost/">🧮 여행비용 계산기</a>
 <div class="ndrop"><button class="nbtn" type="button">🌐<span class="arw">▼</span></button><div class="nmenu">
 <a href="/en/">English</a>
@@ -1062,12 +1064,12 @@ function layout(title, desc, urlPath, content, opts) {
   const alts = (opts.alternates || []).map(a => `<link rel="alternate" hreflang="${a.hreflang}" href="${SITE}${a.href}">`).join('\n');
   const logoHref = lang === 'ko' ? '/' : '/' + lang + '/';
   const NAVS = {
-    en: `<nav><a href="/en/">Home</a><a href="/en/search/">🔎 Festivals</a><a href="/en/mountains/">⛰️ Mountains</a><a href="/en/trend/">🔥 Rankings</a><a href="/">🇰🇷 한국어</a></nav>`,
-    ja: `<nav><a href="/ja/">ホーム</a><a href="/ja/search/">🔎 お祭り検索</a><a href="/ja/mountains/">⛰️ 名山</a><a href="/ja/trend/">🔥 人気ランキング</a><a href="/">🇰🇷 한국어</a></nav>`,
+    en: `<nav><a href="/en/">Home</a><a href="/en/search/">🔎 Festivals</a><a href="/en/mountains/">⛰️ Mountains</a><a href="/en/cafe/">☕ Cafés</a><a href="/en/trend/">🔥 Rankings</a><a href="/">🇰🇷 한국어</a></nav>`,
+    ja: `<nav><a href="/ja/">ホーム</a><a href="/ja/search/">🔎 お祭り検索</a><a href="/ja/mountains/">⛰️ 名山</a><a href="/ja/cafe/">☕ カフェ</a><a href="/ja/trend/">🔥 人気ランキング</a><a href="/">🇰🇷 한국어</a></nav>`,
     es: `<nav><a href="/es/">Inicio</a><a href="/es/search/">🔎 Buscar festivales</a><a href="/es/trend/">🔥 Rankings</a><a href="/">🇰🇷 한국어</a></nav>`,
-    zh: `<nav><a href="/zh/">首页</a><a href="/zh/search/">🔎 庆典搜索</a><a href="/zh/mountains/">⛰️ 名山</a><a href="/zh/trend/">🔥 人气排行</a><a href="/">🇰🇷 한국어</a></nav>`,
+    zh: `<nav><a href="/zh/">首页</a><a href="/zh/search/">🔎 庆典搜索</a><a href="/zh/mountains/">⛰️ 名山</a><a href="/zh/cafe/">☕ 咖啡馆</a><a href="/zh/trend/">🔥 人气排行</a><a href="/">🇰🇷 한국어</a></nav>`,
     // 번체는 오일장이 주력 콘텐츠라 내비에 올린다(간체엔 없음 — 언어별 무기가 다르다)
-    tw: `<nav><a href="/tw/">首頁</a><a href="/tw/search/">🔎 慶典搜尋</a><a href="/tw/jangteo/">🏮 五日市集</a><a href="/tw/mountains/">⛰️ 名山</a><a href="/tw/trend/">🔥 人氣排行</a><a href="/">🇰🇷 한국어</a></nav>`
+    tw: `<nav><a href="/tw/">首頁</a><a href="/tw/search/">🔎 慶典搜尋</a><a href="/tw/jangteo/">🏮 五日市集</a><a href="/tw/mountains/">⛰️ 名山</a><a href="/tw/cafe/">☕ 咖啡廳</a><a href="/tw/trend/">🔥 人氣排行</a><a href="/">🇰🇷 한국어</a></nav>`
   };
   const nav = lang === 'ko'
     ? KO_NAV
@@ -3944,8 +3946,350 @@ ${lang === 'ko' ? buyBox('mountain') : ''}
   });
 }
 
+// ---------- ☕ 요즘 가는 카페 /cafe/ (5개 언어) + 🔥 요즘 어디 가지 /hot/ (국문) ----------
+// 카페 목록은 어디에나 있다. 우리만 얹을 수 있는 건 "그 동네가 지금 붐비는가 / 외국인이 많은가"다.
+// /hot/ 은 감사에서 지적된 '상황별 랜딩'(사람이 실제로 검색하는 문장)의 첫 페이지다.
+const CAFE_URLS = [];
+const HOT_URLS = [];
+{
+  const CF = {};
+  ['ko', 'en', 'ja', 'zh', 'tw'].forEach(l => {
+    try { CF[l] = JSON.parse(fs.readFileSync(path.join(ROOT, `data/cafes_${l}.json`), 'utf8')); }
+    catch (e) { CF[l] = []; }
+  });
+  const MONTH_LIST = (visitors.seasonByMonth && visitors.seasonByMonth.months && visitors.seasonByMonth.months[String(SEASON_M)]) || SEASON_LIST;
+  const NOWIDX = {}; (MONTH_LIST || []).forEach(r => { NOWIDX[r.code] = r.idx; });
+  const CFGN = {}; (visitors.fgn || []).forEach(r => { CFGN[r.code] = r.rank; });
+  const CKOR = {}; (visitors.kor || []).forEach(r => { CKOR[r.code] = r.rank; });
+
+  const CSIDO = {
+    en: { '서울': 'Seoul', '부산': 'Busan', '대구': 'Daegu', '인천': 'Incheon', '광주': 'Gwangju', '대전': 'Daejeon', '울산': 'Ulsan', '세종': 'Sejong', '경기': 'Gyeonggi', '충북': 'Chungbuk', '충남': 'Chungnam', '전남': 'Jeonnam', '경북': 'Gyeongbuk', '경남': 'Gyeongnam', '제주': 'Jeju', '강원': 'Gangwon', '전북': 'Jeonbuk' },
+    ja: { '서울': 'ソウル', '부산': '釜山', '대구': '大邱', '인천': '仁川', '광주': '光州', '대전': '大田', '울산': '蔚山', '세종': '世宗', '경기': '京畿', '충북': '忠北', '충남': '忠南', '전남': '全南', '경북': '慶北', '경남': '慶南', '제주': '済州', '강원': '江原', '전북': '全北' },
+    zh: { '서울': '首尔', '부산': '釜山', '대구': '大邱', '인천': '仁川', '광주': '光州', '대전': '大田', '울산': '蔚山', '세종': '世宗', '경기': '京畿', '충북': '忠北', '충남': '忠南', '전남': '全南', '경북': '庆北', '경남': '庆南', '제주': '济州', '강원': '江原', '전북': '全北' },
+    tw: { '서울': '首爾', '부산': '釜山', '대구': '大邱', '인천': '仁川', '광주': '光州', '대전': '大田', '울산': '蔚山', '세종': '世宗', '경기': '京畿', '충북': '忠北', '충남': '忠南', '전남': '全南', '경북': '慶北', '경남': '慶南', '제주': '濟州', '강원': '江原', '전북': '全北' }
+  };
+
+  const CL = {
+    ko: {
+      h1: '☕ 요즘 가는 카페',
+      sub: n => `공공데이터(한국관광공사) 기반 전국 카페·베이커리 ${n}곳 — 어느 동네가 지금 붐비고 어디가 아직 한적한지까지 같이 봅니다.`,
+      title: n => `요즘 가는 카페 ${n}곳 — 지역별 대형카페·감성카페 지도 | ${SITE_NAME}`,
+      desc: n => `전국 카페·베이커리 ${n}곳을 지역별로. 한국관광공사 공공데이터에 관광 빅데이터로 본 "${SEASON_M}월 성수기 배수"와 외국인 방문 지표를 더해, 붐비는 동네와 한적한 동네를 갈라서 보여줍니다.`,
+      all: '전체 지역', kw: '카페 이름·주소 검색', reset: '초기화', cnt: n => `총 ${n}곳`,
+      none: '조건에 맞는 카페가 없어요. 지역을 바꿔보세요.',
+      hot: v => `🔥 ${SEASON_M}월엔 이 동네가 평소의 ×${v}배`, quiet: '🤫 외국인 발길이 적은 편',
+      busy: '🌏 외국인이 많이 찾는 지역', korbusy: '🇰🇷 한국인이 많이 찾는 지역',
+      hotH: '지금 사람이 몰리는 동네부터 보고 싶다면',
+      hotCta: `${SEASON_M}월 요즘 뜨는 동네 보기 →`, hotHref: '/hot/',
+      note: `데이터 출처: 한국관광공사(공공데이터포털) 음식점·카페 정보 · 붐빔 지표는 한국관광공사 「한국관광 데이터랩」 지역별 방문자 수를 시·군·구 단위로 조인한 것입니다. 카페 자체가 아니라 <b>그 카페가 있는 시·군·구</b>의 수치라는 점에 유의하세요. 영업시간·휴무일·메뉴는 방문 전 반드시 매장에 확인하시기 바랍니다.`
+    },
+    en: {
+      h1: '☕ Cafés in Korea',
+      sub: n => `${n} cafés and bakeries across South Korea — with a crowd index showing which neighbourhoods are packed right now and which are still quiet.`,
+      title: n => `Cafés in Korea — ${n} Spots, Busy vs Quiet Neighbourhoods | Chukjemoa`,
+      desc: n => `Browse ${n} cafés and bakeries across South Korea by region. Official Korea Tourism Organization data plus a peak-season multiplier and a foreign-visitor index from tourism big data.`,
+      all: 'All regions', kw: 'Search by name or address', reset: 'Reset', cnt: n => `${n} cafés`,
+      none: 'No cafés match. Try another region.',
+      hot: v => `🔥 ×${v} busier than usual this month`, quiet: '🤫 Few foreign visitors here',
+      busy: '🌏 Popular with foreign visitors', korbusy: '🇰🇷 Popular with Koreans',
+      hotH: 'Want the quiet ones?',
+      hotCta: 'See mountains and trails →', hotHref: '/en/mountains/',
+      note: 'Source: Korea Tourism Organization (Open Data Portal) restaurant and café listings. The crowd index joins KTO "Korea Tourism Data Lab" visitor counts at the city/county level — it describes <b>the district the café sits in</b>, not the café itself. Always check opening hours with the venue before you go.'
+    },
+    ja: {
+      h1: '☕ 韓国のいまのカフェ',
+      sub: n => `韓国全国のカフェ・ベーカリー ${n}か所 — いまどの街が混んでいて、どこがまだ静かなのかも一緒に見られます。`,
+      title: n => `韓国のカフェ ${n}か所 — 混んでいる街・静かな街で選ぶ | Chukjemoa`,
+      desc: n => `韓国全国のカフェ・ベーカリー ${n}か所を地域別に。韓国観光公社の公共データに、観光ビッグデータによる「今月の繁忙倍率」と外国人訪問指標を加えました。`,
+      all: 'すべての地域', kw: '店名・住所で検索', reset: 'リセット', cnt: n => `全 ${n}か所`,
+      none: '該当するカフェがありません。地域を変えてみてください。',
+      hot: v => `🔥 今月はこの街が普段の ×${v} 倍`, quiet: '🤫 外国人が少なめのエリア',
+      busy: '🌏 外国人に人気のエリア', korbusy: '🇰🇷 韓国人に人気のエリア',
+      hotH: '静かな場所をお探しなら',
+      hotCta: '名山・歩く道を見る →', hotHref: '/ja/mountains/',
+      note: '出典：韓国観光公社（公共データポータル）飲食店・カフェ情報 · 混雑指標は韓国観光公社「韓国観光データラボ」の地域別訪問者数を市・郡・区単位で結合したものです。カフェそのものではなく<b>そのカフェがある市・郡・区</b>の数値である点にご注意ください。営業時間・定休日は訪問前に店舗へご確認ください。'
+    },
+    zh: {
+      h1: '☕ 韩国最近在去的咖啡馆',
+      sub: n => `韩国全国咖啡馆·烘焙店 ${n} 家 — 还能看到现在哪些街区人多、哪些还清静。`,
+      title: n => `韩国咖啡馆 ${n}家 — 按拥挤街区与清静街区挑选 | Chukjemoa`,
+      desc: n => `按地区浏览韩国全国 ${n} 家咖啡馆与烘焙店。韩国观光公社公共数据，另加旅游大数据的「本月旺季倍数」与外国人访问指标。`,
+      all: '所有地区', kw: '按名称或地址搜索', reset: '重置', cnt: n => `共 ${n} 家`,
+      none: '没有符合条件的咖啡馆，请更换地区。',
+      hot: v => `🔥 本月该街区是平时的 ×${v} 倍`, quiet: '🤫 外国游客较少的地区',
+      busy: '🌏 外国游客较多的地区', korbusy: '🇰🇷 韩国人常去的地区',
+      hotH: '想避开人潮',
+      hotCta: '看名山与步道 →', hotHref: '/zh/mountains/',
+      note: '数据来源：韩国观光公社（公共数据门户）餐饮·咖啡馆信息 · 拥挤指标是把韩国观光公社《韩国观光数据实验室》的地区访客数按市·郡·区结合而成。请注意这是<b>该咖啡馆所在市·郡·区</b>的数值，而非店铺本身。营业时间与休息日请出行前向店家确认。'
+    },
+    tw: {
+      h1: '☕ 韓國人最近在去的咖啡廳',
+      sub: n => `韓國全國咖啡廳・烘焙坊 ${n} 家 — 還能看到現在哪一帶人多、哪一帶還很安靜。`,
+      title: n => `韓國咖啡廳 ${n}家 — 分成會擠的區與安靜的區 | Chukjemoa`,
+      desc: n => `依地區瀏覽韓國全國 ${n} 家咖啡廳與烘焙坊。韓國觀光公社公共資料，再加上觀光大數據的「本月旺季倍數」與外國遊客指標 — 想避開人潮時特別好用。`,
+      all: '所有地區', kw: '以店名或地址搜尋', reset: '重設', cnt: n => `共 ${n} 家`,
+      none: '沒有符合條件的咖啡廳，請換個地區。',
+      hot: v => `🔥 本月這一帶是平常的 ×${v} 倍`, quiet: '🤫 外國遊客少的地區',
+      busy: '🌏 外國遊客多的地區', korbusy: '🇰🇷 韓國人常去的地區',
+      hotH: '想找韓國人自己會去的地方',
+      hotCta: '看五日市集 →', hotHref: '/tw/jangteo/',
+      note: '資料來源：韓國觀光公社（公共資料入口網）餐飲・咖啡廳資訊 · 擁擠指標是把韓國觀光公社《韓國觀光數據實驗室》的地區訪客數以市・郡・區為單位結合而成。請注意那是<b>該咖啡廳所在的市・郡・區</b>的數字，不是店家本身。營業時間與公休日出發前請向店家確認。'
+    }
+  };
+
+  const cfAlts = () => {
+    const a = [{ hreflang: 'ko', href: '/cafe/' }];
+    ['en', 'ja', 'zh', 'tw'].forEach(l => { if ((CF[l] || []).length) a.push({ hreflang: HREFLANG[l] || l, href: '/' + l + '/cafe/' }); });
+    a.push({ hreflang: 'x-default', href: '/cafe/' }); return a;
+  };
+
+  const CAFE_CSS = `
+.cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px;margin:16px 0}
+.ccard{background:#fff;border-radius:16px;box-shadow:0 3px 14px rgba(31,41,55,.08);overflow:hidden;text-decoration:none;color:inherit;display:block;transition:transform .15s}
+.ccard:hover{transform:translateY(-2px)}
+.cthumb{aspect-ratio:16/10;background:#f6f1ea;overflow:hidden}
+.cthumb img{width:100%;height:100%;object-fit:cover}
+.cbody{padding:13px 15px 15px}
+.cbody h3{font-size:1rem;font-weight:900;color:#0a6c63}
+.cloc{font-size:.82rem;color:#6b7280;margin-top:5px}
+.cbs{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px}
+.cb{font-size:.75rem;font-weight:800;border-radius:999px;padding:4px 10px}
+.cb.hot{background:#fff1e8;color:#c2410c}
+.cb.fgn{background:#eef2ff;color:#4338ca}
+.cb.kr{background:#f0fdf4;color:#15803d}
+.cb.qt{background:#f2fbfa;color:#0a6c63}
+.cov{margin-top:9px;font-size:.84rem;color:#4b5563;line-height:1.55;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.srchbar{background:#fff;border-radius:16px;padding:16px 18px;box-shadow:0 3px 14px rgba(31,41,55,.07);margin:14px 0 6px}
+.srchbar .row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.srchbar select,.srchbar input{padding:10px 13px;border:1.5px solid #dcefeb;border-radius:12px;font-size:.93rem;font-family:inherit;background:#f4faf8;color:#374151}
+.srchbar input{flex:1;min-width:150px}
+.srch-count{margin:16px 0 12px;font-weight:800;color:#0a6c63;font-size:1.02rem}
+.cmore{display:block;margin:8px auto 0;background:#f3f4f6;color:#374151;border:none;border-radius:14px;padding:13px 26px;font-weight:800;cursor:pointer;font-family:inherit;font-size:.95rem}`;
+
+  ['ko', 'en', 'ja', 'zh', 'tw'].forEach(lang => {
+    const list = CF[lang] || []; if (!list.length) return;
+    const L = CL[lang]; const ST = CSIDO[lang];
+    const sidoName = s => (ST && ST[s]) || s;
+    const sidos = SIDO_ORDER.filter(s => list.some(c => c.sido === s));
+    const opts = sidos.map(s => `<option value="${s}">${esc(sidoName(s))} (${list.filter(c => c.sido === s).length})</option>`).join('');
+    const card = c => {
+      const code = String(c.regnCd || '') + String(c.signguCd || '');
+      const idx = NOWIDX[code], fgn = CFGN[code], kor = CKOR[code];
+      const badges = [
+        idx ? `<span class="cb hot">${L.hot(idx)}</span>` : '',
+        fgn ? `<span class="cb fgn">${L.busy}</span>` : (kor ? `<span class="cb kr">${L.korbusy}</span>` : `<span class="cb qt">${L.quiet}</span>`)
+      ].filter(Boolean).join('');
+      const img = c.img ? String(c.img).replace(/^http:/, 'https:') : '/img/hero.webp';
+      const q = encodeURIComponent(c.title);
+      return `<a class="ccard" href="https://search.naver.com/search.naver?query=${q}" target="_blank" rel="noopener" data-sido="${esc(c.sido)}" data-kw="${esc((c.title + ' ' + (c.addr || '')).toLowerCase())}">
+<div class="cthumb"><img loading="lazy" src="${esc(img)}" alt="${esc(c.title)}" onerror="this.src='/img/hero.webp'"></div>
+<div class="cbody"><h3>${esc(c.title)}</h3>
+<div class="cloc">📍 ${esc(sidoName(c.sido))}${c.addr ? ' · ' + esc(String(c.addr).slice(0, 38)) : ''}</div>
+${badges ? `<div class="cbs">${badges}</div>` : ''}
+${c.ov ? `<p class="cov">${esc(String(c.ov).slice(0, 105))}…</p>` : ''}
+</div></a>`;
+    };
+    const SSR_N = 240;
+    const IMGPFX = 'http://tong.visitkorea.or.kr/cms/resource/';
+    const packed = c => [c.title, String(c.addr || '').slice(0, 38), c.sido,
+      c.img ? String(c.img).replace(IMGPFX, '~') : '',
+      String(c.regnCd || '') + String(c.signguCd || '')];
+    const badgeSpec = code => {
+      const idx = NOWIDX[code], fgn = CFGN[code], kor = CKOR[code];
+      return [idx || 0, fgn ? 1 : (kor ? 2 : 0)];
+    };
+    const BADGE_TXT = { hot: String(L.hot('%v')), busy: L.busy, kor: L.korbusy, quiet: L.quiet };
+    const CODEMAP = {};
+    (CF[lang] || []).forEach(c => { const k = String(c.regnCd || '') + String(c.signguCd || ''); if (!(k in CODEMAP)) CODEMAP[k] = badgeSpec(k); });
+    const content = `<main><div class="wrap">
+<style>${CAFE_CSS}</style>
+<h1 style="font-size:1.5rem;font-weight:900;margin:8px 0 4px">${L.h1}</h1>
+<p style="color:#6b7280;font-size:.95rem;margin-bottom:6px">${L.sub(list.length)}</p>
+<div class="srchbar"><div class="row">
+<select id="cSido"><option value="">${esc(L.all)}</option>${opts}</select>
+<input type="text" id="cKw" placeholder="${esc(L.kw)}">
+<button id="cReset" type="button" style="background:#f3f4f6;color:#374151;border:none;border-radius:12px;padding:10px 18px;font-weight:700;cursor:pointer;font-family:inherit">${esc(L.reset)}</button>
+</div></div>
+<div class="srch-count" id="cCount">${L.cnt(list.length)}</div>
+<div class="cgrid" id="cGrid">${list.slice(0, SSR_N).map(card).join('\n')}</div>
+<script type="application/json" id="cRest">${JSON.stringify(list.slice(SSR_N).map(packed)).replace(/</g, '\\u003c')}</script>
+<button class="cmore" id="cMore" type="button" style="display:none">＋</button>
+<p class="note" id="cNone" style="display:none">${esc(L.none)}</p>
+<h2 class="sec">${esc(L.hotH)}</h2>
+<p><a href="${L.hotHref}" style="display:inline-block;background:#0f9d8f;color:#fff;font-weight:700;padding:11px 22px;border-radius:22px;text-decoration:none">${esc(L.hotCta)}</a></p>
+<p class="note" style="margin-top:18px">${L.note}</p>
+</div></main>
+<script>
+(function(){
+  var g=document.getElementById('cGrid'); if(!g) return;
+  var sel=document.getElementById('cSido'), kw=document.getElementById('cKw'), rs=document.getElementById('cReset');
+  var cnt=document.getElementById('cCount'), none=document.getElementById('cNone'), more=document.getElementById('cMore');
+  var cards=[].slice.call(g.querySelectorAll('.ccard'));
+  try{
+    var raw=document.getElementById('cRest');
+    if(raw&&raw.textContent.trim()){
+      var rest=JSON.parse(raw.textContent), CM=${JSON.stringify(CODEMAP)}, BT=${JSON.stringify(BADGE_TXT)};
+      var frag=document.createDocumentFragment();
+      rest.forEach(function(r){
+        var b=CM[r[4]]||[0,0], bs='';
+        if(b[0]) bs+='<span class="cb hot">'+BT.hot.replace('%v',b[0])+'</span>';
+        bs+= b[1]===1?'<span class="cb fgn">'+BT.busy+'</span>':(b[1]===2?'<span class="cb kr">'+BT.kor+'</span>':'<span class="cb qt">'+BT.quiet+'</span>');
+        var img=r[3]?r[3].replace('~','https://tong.visitkorea.or.kr/cms/resource/'):'/img/hero.webp';
+        var a=document.createElement('a');
+        a.className='ccard'; a.target='_blank'; a.rel='noopener';
+        a.href='https://search.naver.com/search.naver?query='+encodeURIComponent(r[0]);
+        a.setAttribute('data-sido',r[2]||'');
+        a.setAttribute('data-kw',((r[0]||'')+' '+(r[1]||'')).toLowerCase());
+        a.style.display='none';
+        a.innerHTML='<div class="cthumb"><img loading="lazy" src="'+img+'" alt="'+String(r[0]).replace(/"/g,'&quot;')+'" onerror="this.src=\\'/img/hero.webp\\'"></div><div class="cbody"><h3>'+r[0]+'</h3><div class="cloc">📍 '+(r[2]||'')+(r[1]?' · '+r[1]:'')+'</div><div class="cbs">'+bs+'</div></div>';
+        frag.appendChild(a); cards.push(a);
+      });
+      g.appendChild(frag);
+      raw.parentNode.removeChild(raw);
+    }
+  }catch(e){}
+  var TPL=${JSON.stringify(String(L.cnt(0)).replace('0', '%d'))};
+  var STEP=60, shown=STEP, matched=cards;
+  function paint(){
+    cards.forEach(function(c){c.style.display='none';});
+    matched.slice(0,shown).forEach(function(c){c.style.display='';});
+    more.style.display=(matched.length>shown)?'':'none';
+    if(more.style.display==='') more.textContent='＋ '+(matched.length-shown);
+    cnt.textContent=TPL.replace('%d',matched.length); none.style.display=matched.length?'none':'';
+  }
+  function apply(){
+    var s=sel.value, k=(kw.value||'').trim().toLowerCase();
+    matched=cards.filter(function(c){
+      return (!s||c.getAttribute('data-sido')===s)&&(!k||c.getAttribute('data-kw').indexOf(k)>=0);
+    });
+    shown=STEP; paint();
+  }
+  sel.addEventListener('change',apply); kw.addEventListener('input',apply);
+  rs.addEventListener('click',function(){sel.value='';kw.value='';apply();});
+  more.addEventListener('click',function(){shown+=STEP;paint();});
+  try{
+    var q=new URLSearchParams(location.search), qs=q.get('sido'), qk=q.get('kw');
+    if(qs){sel.value=qs;} if(qk){kw.value=qk;}
+  }catch(e){}
+  apply();
+})();
+</script>`;
+    const ld = `<script type="application/ld+json">${JSON.stringify({
+      '@context': 'https://schema.org', '@type': 'ItemList', name: L.h1.replace(/^\S+\s/, ''),
+      numberOfItems: list.length,
+      itemListElement: list.slice(0, 50).map((c, i) => ({ '@type': 'ListItem', position: i + 1, name: c.title }))
+    })}</script>`;
+    const url = lang === 'ko' ? '/cafe/' : `/${lang}/cafe/`;
+    writePage(lang === 'ko' ? 'cafe' : `${lang}/cafe`,
+      layout(L.title(list.length), L.desc(list.length), url, content,
+        { lang, jsonld: ld, alternates: cfAlts(), ogImage: '/img/hero.webp' }));
+    CAFE_URLS.push(url);
+  });
+
+  // ---------- 🔥 /hot/ — 요즘 어디 가지 (국문 전용) ----------
+  // 「부산 인기 여행지 랭킹」처럼 아무도 안 치는 제목 대신, 사람이 실제로 검색하는 문장으로 간다.
+  // 성수기 배수 상위 동네를 뽑고, 그 동네의 축제·카페·계곡·단풍·걷기길을 한 장에 묶는다.
+  if ((MONTH_LIST || []).length) {
+    const TD = TODAY.replace(/-/g, '');
+    const cafesKo = CF.ko || [];
+    const top = MONTH_LIST.slice(0, 20);
+
+    const blocks = top.map((d, i) => {
+      const code = String(d.code);
+      const fests = apiFests
+        .filter(f => f.sido === d.sido && f.sigungu === d.name && String(f.end || '') >= TD)
+        .sort((a, b) => String(a.start).localeCompare(String(b.start)))
+        .slice(0, 3);
+      const cafes = cafesKo.filter(c => (String(c.regnCd || '') + String(c.signguCd || '')) === code).slice(0, 4);
+      const valleys = apiValleys.filter(v => v.sido === d.sido && v.sigungu === d.name);
+      const maples = apiMaple.filter(v => v.sido === d.sido && v.sigungu === d.name);
+      const trails = apiTrails.filter(t => String(t.sigun || '').indexOf(d.name) >= 0);
+
+      const festHtml = fests.length
+        ? `<div class="hrow"><span class="hlab">🎪 축제</span><span class="hval">${fests.map(f => `${esc(f.title)} <em>(${String(f.start).replace(/^(\d{4})(\d{2})(\d{2})$/, '$2.$3')}~)</em>`).join(' · ')}</span></div>`
+        : '';
+      const cafeHtml = cafes.length
+        ? `<div class="hrow"><span class="hlab">☕ 카페</span><span class="hval">${cafes.map(c => esc(c.title)).join(' · ')}${cafes.length >= 4 ? ' 등' : ''}</span></div>`
+        : '';
+      const natHtml = (valleys.length || maples.length)
+        ? `<div class="hrow"><span class="hlab">🌿 자연</span><span class="hval">${[
+          valleys.length ? `계곡 ${valleys.length}곳(${valleys.slice(0, 2).map(v => esc(v.title)).join(', ')})` : '',
+          maples.length ? `단풍 ${maples.length}곳(${maples.slice(0, 2).map(v => esc(v.title)).join(', ')})` : ''
+        ].filter(Boolean).join(' · ')}</span></div>`
+        : '';
+      const trailHtml = trails.length
+        ? `<div class="hrow"><span class="hlab">🥾 걷기길</span><span class="hval">${trails.slice(0, 3).map(t => esc(t.name)).join(' · ')}${trails.length > 3 ? ` 외 ${trails.length - 3}코스` : ''}</span></div>`
+        : '';
+
+      const links = [
+        `<a href="/search/?kw=${encodeURIComponent(d.name)}">이 동네 축제 검색 →</a>`,
+        cafes.length ? `<a href="/cafe/?sido=${encodeURIComponent(d.sido)}&kw=${encodeURIComponent(d.name)}">카페 보기 →</a>` : '',
+        trails.length ? `<a href="/trails/">걷기길 →</a>` : ''
+      ].filter(Boolean).join('');
+
+      return `<section class="hcard">
+<div class="hhead"><span class="hrank">${i + 1}</span>
+<div><h3>${esc(d.sido)} ${esc(d.name)}</h3>
+<div class="hidx">🔥 평소의 <b>×${d.idx}</b>배 · ${SEASON_Y}년 ${SEASON_M}월 방문 ${Number(d.num || 0).toLocaleString('ko-KR')}명</div></div></div>
+${festHtml}${cafeHtml}${natHtml}${trailHtml}
+<div class="hlinks">${links}</div>
+</section>`;
+    }).join('\n');
+
+    const quiet = (MONTH_LIST || []).slice(-8).reverse();
+    const quietHtml = quiet.length
+      ? `<h2 class="sec">🤫 반대로, ${SEASON_M}월에 덜 붐비는 편인 동네</h2>
+<p>같은 표에서 아래쪽에 있는 곳들입니다. 성수기 배수가 낮다는 건 <b>이 달에 사람이 특별히 몰리지 않는다</b>는 뜻이에요. 성수기를 피하고 싶다면 여기부터 보세요.</p>
+<div class="qgrid">${quiet.map(d => `<a class="qchip" href="/search/?kw=${encodeURIComponent(d.name)}">${esc(d.sido)} ${esc(d.name)} <span>×${d.idx}</span></a>`).join('')}</div>`
+      : '';
+
+    const hotContent = `<main><div class="wrap">
+<style>
+.hcard{background:#fff;border-radius:18px;box-shadow:0 3px 14px rgba(31,41,55,.08);padding:18px 20px;margin:14px 0}
+.hhead{display:flex;gap:14px;align-items:flex-start}
+.hrank{flex:none;width:34px;height:34px;border-radius:12px;background:#0f9d8f;color:#fff;font-weight:900;display:flex;align-items:center;justify-content:center;font-size:1rem}
+.hhead h3{font-size:1.15rem;font-weight:900;color:#0a6c63}
+.hidx{font-size:.86rem;color:#c2410c;font-weight:700;margin-top:4px}
+.hrow{display:flex;gap:10px;margin-top:11px;font-size:.9rem;line-height:1.6}
+.hlab{flex:none;width:70px;font-weight:800;color:#0a6c63}
+.hval{color:#4b5563}
+.hval em{color:#9ca3af;font-style:normal;font-size:.85em}
+.hlinks{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.hlinks a{background:#f2fbfa;color:#0a6c63;font-weight:700;font-size:.85rem;padding:8px 14px;border-radius:999px;text-decoration:none}
+.hlinks a:hover{background:#e2f5f2}
+.qgrid{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 4px}
+.qchip{background:#fff;border:1.5px solid #dcefeb;color:#374151;font-weight:700;font-size:.88rem;padding:9px 15px;border-radius:999px;text-decoration:none}
+.qchip span{color:#0f9d8f;font-weight:900}
+</style>
+<h1 style="font-size:1.5rem;font-weight:900;margin:8px 0 4px">🔥 요즘 어디 가지 — ${SEASON_M}월에 사람이 몰리는 동네</h1>
+<p style="color:#6b7280;font-size:.95rem">"이번 달에 다들 어디 가지?"에 숫자로 답합니다. 광고나 인기 순위가 아니라 <b>실제 방문 데이터</b>로, 그 동네가 평소보다 몇 배 붐볐는지를 기준으로 줄을 세웠어요. 동네마다 지금 열리는 축제·카페·자연 명소·걷기길을 함께 묶었습니다.</p>
+<div class="datebadge">📅 <b>${SEASON_Y}년 ${SEASON_M}월</b> 실적 기준 · 방문 데이터는 약 한 달 늦게 공개돼 <b>작년 같은 달</b>로 계절을 맞춥니다 · <a href="/trend/#howto">숫자 읽는 법 →</a></div>
+${blocks}
+${quietHtml}
+<h2 class="sec">이 순위는 어떻게 만들었나</h2>
+<p><b>성수기 배수 = ${SEASON_Y}년 ${SEASON_M}월 하루 평균 방문자 ÷ 그 해 평소 하루 평균 방문자.</b> ×1.5면 평소보다 1.5배 붐볐다는 뜻입니다. 절대 방문자 수가 아니라 '평소 대비'라서, 작은 지역도 제철이 되면 위로 올라옵니다. 방문자가 너무 적어 배수가 튀는 곳(하루 평균 5,000명 미만)은 제외했습니다.</p>
+<p>왜 작년 데이터를 쓰냐면, 이 공공데이터가 <b>약 한 달 늦게</b> 공개되기 때문입니다. 지연된 최신 데이터로 "지금 ${SEASON_M}월에 어디가 붐비나"를 답하면 엉뚱한 계절의 결과가 나옵니다. 작년 같은 달을 쓰면 계절이 정확히 맞습니다.</p>
+${buyBox('festival')}
+<p class="note" style="margin-top:18px">데이터 출처: 한국관광공사 「한국관광 데이터랩」 지역별 방문자 수(시·군·구 단위) · 축제·카페·자연 명소는 한국관광공사 TourAPI · 걷기길은 전국길관광정보표준데이터. 축제 일정은 변경될 수 있으니 방문 전 주최 측 공지를 확인하세요.</p>
+</div></main>`;
+
+    const hotLd = `<script type="application/ld+json">${JSON.stringify({
+      '@context': 'https://schema.org', '@type': 'ItemList',
+      name: `${SEASON_M}월에 사람이 몰리는 동네`,
+      numberOfItems: top.length,
+      itemListElement: top.map((d, i) => ({ '@type': 'ListItem', position: i + 1, name: `${d.sido} ${d.name}` }))
+    })}</script>`;
+
+    writePage('hot', layout(
+      `요즘 어디 가지 — ${SEASON_M}월 사람 몰리는 동네 TOP${top.length} | ${SITE_NAME}`,
+      `${SEASON_M}월에 실제로 사람이 몰린 동네를 관광 빅데이터 성수기 배수로 줄 세웠습니다. 동네별로 지금 열리는 축제, 카페, 계곡·단풍, 걷기길까지 한 번에. 반대로 덜 붐비는 동네도 함께 정리했어요.`,
+      '/hot/', hotContent, { jsonld: hotLd, ogImage: '/img/hero.webp' }));
+    HOT_URLS.push('/hot/');
+  }
+}
+
 // ---------- sitemap / robots ----------
-const urls = ['/', ...MONTHS.map(m => `/${m.key}/`), '/search/', ...(holidays.length ? ['/holiday/'] : []), '/pet/', ...(apiAccessible.length ? ['/accessible/'] : []), ...(apiTrails.length ? ['/trails/'] : []), ...(apiValleys.length ? ['/valley/'] : []), ...(apiMaple.length ? ['/maple/'] : []), ...(apiFlower.length ? ['/flower/'] : []), ...(apiOnsen.length ? ['/onsen/'] : []), '/jangteo/', '/test/', '/trip-cost/', ...(visitors.kor && visitors.kor.length ? ['/trend/'] : []), ...SIDO_URLS, ...THEME_URLS, ...TRAIL_URLS, ...WALK_URLS, ...TREND_LANG_URLS, '/blog/', ...posts.map(p => `/blog/${p.slug}/`), '/about/', EDITORIAL_URL, '/contact/', '/privacy/',...(apiFestsEn.length ? ['/en/', '/en/search/'] : []), ...(apiFestsJa.length ? ['/ja/', '/ja/search/'] : []), ...(apiFestsEs.length ? ['/es/', '/es/search/'] : []), ...(apiFestsZh.length ? ['/zh/', '/zh/search/'] : []), ...(apiFestsTw.length ? ['/tw/', '/tw/search/'] : []), ...TW_EXTRA_URLS, ...MOUNTAIN_URLS];
+const urls = ['/', ...MONTHS.map(m => `/${m.key}/`), '/search/', ...(holidays.length ? ['/holiday/'] : []), '/pet/', ...(apiAccessible.length ? ['/accessible/'] : []), ...(apiTrails.length ? ['/trails/'] : []), ...(apiValleys.length ? ['/valley/'] : []), ...(apiMaple.length ? ['/maple/'] : []), ...(apiFlower.length ? ['/flower/'] : []), ...(apiOnsen.length ? ['/onsen/'] : []), '/jangteo/', '/test/', '/trip-cost/', ...(visitors.kor && visitors.kor.length ? ['/trend/'] : []), ...SIDO_URLS, ...THEME_URLS, ...TRAIL_URLS, ...WALK_URLS, ...TREND_LANG_URLS, '/blog/', ...posts.map(p => `/blog/${p.slug}/`), '/about/', EDITORIAL_URL, '/contact/', '/privacy/',...(apiFestsEn.length ? ['/en/', '/en/search/'] : []), ...(apiFestsJa.length ? ['/ja/', '/ja/search/'] : []), ...(apiFestsEs.length ? ['/es/', '/es/search/'] : []), ...(apiFestsZh.length ? ['/zh/', '/zh/search/'] : []), ...(apiFestsTw.length ? ['/tw/', '/tw/search/'] : []), ...TW_EXTRA_URLS, ...MOUNTAIN_URLS, ...CAFE_URLS, ...HOT_URLS];
 // noindex 페이지는 사이트맵에서 뺀다 — "색인해라(사이트맵) + 하지마라(noindex)"는 모순 신호다.
 const NOINDEX_URLS = new Set([...SIDO_URLS, ...THEME_URLS]);
 const sitemapUrls = urls.filter(u => !NOINDEX_URLS.has(u));
