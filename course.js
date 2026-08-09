@@ -9,7 +9,7 @@ const E = require('./course/engine.js');
 const R = require('./course/render.js');
 const CD = require('./course-data.js');
 
-const ASSET_V = '20260809';
+const ASSET_V = '20260809b';
 
 // 방문자 데이터(붐빔 배수)는 1·4·8·10월만 있다. 정적 페이지는 지금 계절에 가장 가까운 달을 쓴다.
 const SEASON_MM = (() => {

@@ -34,6 +34,13 @@ module.exports = async (req, res) => {
     const fx = Number(l.fx), fy = Number(l.fy), tx = Number(l.tx), ty = Number(l.ty);
     if (!fx || !fy || !tx || !ty) { out.push({ from: l.from, to: l.to, min: 0 }); continue; }
     const j = await odsay(fx, fy, tx, ty);
+    // ⚠️ 2026-08-09 확인: ODsay 키가 서버(Vercel) 호출을 거부한다(ApiKeyAuthFailed).
+    //    api/tripcost.js 에도 같은 증상이 기록돼 있다 — 키가 특정 IP에 묶여 있는 것으로 보인다.
+    //    이때 구간마다 "경로 없음"을 늘어놓으면 우리 기능이 고장 난 것처럼 보인다. 원인을 그대로 돌려준다.
+    if (j && j.error) {
+      const e = Array.isArray(j.error) ? j.error[0] : j.error;
+      return res.status(200).json({ error: 'odsay', code: String(e && e.code || ''), msg: String(e && e.message || ''), legs: [] });
+    }
     const p = j && j.result && j.result.path && j.result.path[0];
     if (!p) { out.push({ from: l.from, to: l.to, min: 0 }); continue; }
     out.push({

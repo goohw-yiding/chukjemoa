@@ -59,6 +59,10 @@
       if (x.readyState !== 4) return;
       if (x.status !== 200) { out.innerHTML = '<div class="cnote">대중교통 조회에 실패했습니다. 위의 자차 기준 추정치를 참고하세요.</div>'; return; }
       var r; try { r = JSON.parse(x.responseText); } catch (e) { out.innerHTML = '<div class="cnote">조회 실패</div>'; return; }
+      if (r.error === 'odsay' || !(r.legs || []).length) {
+        out.innerHTML = '<div class="cnote">대중교통 실측을 지금은 제공하지 못합니다(경로 제공사 인증 문제). 위의 자차 기준 추정치를 참고하시고, 정확한 시간은 <a href="https://map.kakao.com" target="_blank" rel="noopener">카카오맵</a>이나 네이버 지도에서 확인해 주세요.</div>';
+        return;
+      }
       var h = '<table class="ctab"><tr><th>구간</th><th>대중교통</th><th>요금</th></tr>';
       (r.legs || []).forEach(function (l) {
         h += '<tr><td>' + R.esc(l.from) + ' → ' + R.esc(l.to) + '</td><td>' + (l.min ? l.min + '분 (환승 ' + l.transfer + ')' : '경로 없음') + '</td><td>' + (l.pay ? R.won(l.pay) : '-') + '</td></tr>';
@@ -95,10 +99,10 @@
     x.onreadystatechange = function () {
       if (x.readyState !== 4) return;
       var tmp = $('#c-ai-tmp'); if (tmp) tmp.removeAttribute('id');
+      // 서버가 이유를 담아 보내면 그걸 그대로 보여준다(한도 초과·미설정 등). 없을 때만 일반 문구.
       var msg;
-      if (x.status === 429) { try { msg = JSON.parse(x.responseText).text; } catch (e) { msg = '오늘 AI 상담 사용량을 다 썼습니다.'; } }
-      else if (x.status !== 200) msg = '지금은 AI 상담을 쓸 수 없습니다. 잠시 후 다시 시도해 주세요.';
-      else { try { msg = JSON.parse(x.responseText).text; } catch (e) { msg = '응답을 읽지 못했습니다.'; } }
+      try { msg = JSON.parse(x.responseText).text; } catch (e) { msg = ''; }
+      if (!msg) msg = '지금은 AI 상담을 쓸 수 없습니다. 잠시 후 다시 시도해 주세요.';
       if (tmp) tmp.innerHTML = R.esc(msg).replace(/\n/g, '<br>');
       CHAT.push({ role: 'user', content: q }, { role: 'assistant', content: msg });
       log.scrollTop = 1e9;
