@@ -4191,13 +4191,15 @@ ${c.ov ? `<p class="cov">${esc(String(c.ov).slice(0, 105))}…</p>` : ''}
   // 성수기 배수 상위 동네를 뽑고, 그 동네의 축제·카페·계곡·단풍·걷기길을 한 장에 묶는다.
   if ((MONTH_LIST || []).length) {
     const TD = TODAY.replace(/-/g, '');
+    const TD45 = new Date(Date.now() + 9 * 3600 * 1000 + 45 * 86400 * 1000).toISOString().slice(0, 10).replace(/-/g, '');
     const cafesKo = CF.ko || [];
     const top = MONTH_LIST.slice(0, 20);
 
     const blocks = top.map((d, i) => {
       const code = String(d.code);
       const fests = apiFests
-        .filter(f => f.sido === d.sido && f.sigungu === d.name && String(f.end || '') >= TD)
+        // ⚠️ "요즘"인데 5개월 뒤 산천어축제가 뜨면 안 된다 → 진행중이거나 45일 이내 시작하는 것만
+        .filter(f => f.sido === d.sido && f.sigungu === d.name && String(f.end || '') >= TD && String(f.start || '') <= TD45)
         .sort((a, b) => String(a.start).localeCompare(String(b.start)))
         .slice(0, 3);
       const cafes = cafesKo.filter(c => (String(c.regnCd || '') + String(c.signguCd || '')) === code).slice(0, 4);
