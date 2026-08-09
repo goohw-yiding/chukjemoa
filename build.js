@@ -279,7 +279,8 @@ const COUPANG = {
                 // 여름은 bySeason으로 일괄 교체하지 않는다 — 물축제만 썬캡, 나머지는 캠핑테이블(FEST_BB_WATER 참고)
                 bySeason: { winter: 'tripcost', spring: 'flower' } },
     flower:   { ico: '🧺', t: '봄꽃 나들이 준비물', s: '피크닉 돗자리', q: '접이식 돗자리', url: 'https://link.coupang.com/a/fXNSDlRDwa' },
-    maple:    { ico: '🪑', t: '단풍 보면서 앉아 쉴 자리', s: '접어서 드는 폴딩 스툴 + 메쉬백', own: true, q: '캠핑의자', url: 'https://brand.naver.com/guung/products/13026204364' },
+    maple:    { ico: '🪑', t: '단풍 보면서 앉아 쉴 자리', s: '접어서 드는 폴딩 스툴 + 메쉬백', own: true, q: '캠핑의자', url: 'https://brand.naver.com/guung/products/13026204364',
+                up: ['gakline', 'chairs'] },
     trails:   { ico: '🥾', t: '걷기 여행 준비물', s: '발 편한 등산화', q: '등산화', url: 'https://link.coupang.com/a/fXNZ2GivM4' },
     // 20인치가 24인치보다 잘 팔린다(64개·177만 vs 34개·108만). 사이즈 선택은 검색 업셀로.
     tripcost: { ico: '🧳', t: '떠나기 전에, 가방부터', s: '초경량 여행 캐리어 20인치', own: true, q: '초경량 캐리어', url: 'https://brand.naver.com/guung/products/13159625424',
@@ -288,7 +289,7 @@ const COUPANG = {
     // 5색 동일가(12,900)인데 엑셀은 레드 119개=222만으로 계산이 안 맞는다(과거 고가 시절 매출로 추정).
     //   리뷰 수(네이비70 · 블루28 · 블랙17 · 레드13 · 와인9)와 최근 판매일 모두 네이비 우위 → 메인은 네이비 유지.
     jangteo:  { ico: '🛒', t: '장 보러 갈 때 손이 편하려면', s: '바퀴달린 접이식 장보기 카트 · 5색', own: true, q: '바퀴달린 장바구니', url: 'https://brand.naver.com/guung/products/12580509879',
-                up: ['jangcolors', 'foldbox'] },
+                up: ['jangcolors'] },
     // 파라솔 3색 중 레드 스트라이프가 최다판매(161개·346만) — 베이지/옐로우는 스토어 검색으로 흡수
     valley:   { ico: '⛱️', t: '계곡 자리에 그늘 하나', s: '각도·높이 조절 UV차단 파라솔 · 3색', own: true, q: '그늘막 파라솔', url: 'https://brand.naver.com/guung/products/10181585601',
                 up: ['psbases', 'aqua', 'pstray'], bySeason: { autumn: 'maple', winter: 'tripcost' } },
@@ -320,8 +321,6 @@ const COUPANG = {
     jangcolors: { ico: '🎨', t: '색상 고르기', s: '장보기카트 5색 · 네이비/레드/블랙/블루/와인', own: true, q: '장보기카트',
                 url: 'https://brand.naver.com/guung/search?q=' + encodeURIComponent('장보기카트'),
                 upT: '🎨 색상 고르기 — 네이비 · 레드 · 블랙 · 블루 · 와인' },
-    foldbox:  { ico: '📦', t: '장 본 것 담아 올 통', s: '접이식 폴딩박스 30L / 55L', own: true, q: '폴딩박스', url: 'https://brand.naver.com/guung/products/8090430037',
-                upT: '📦 접이식 폴딩박스 30L·55L — 접으면 납작해집니다' },
     // 여행준비 — 20/24/세트는 검색 한 칸, 네임택·여권지갑은 2026년 입고인데 노출 자리가 없던 것
     carriers: { ico: '📏', t: '사이즈 고르기', s: '20인치 · 24인치 · 20+24 세트', own: true, q: '여행캐리어',
                 url: 'https://brand.naver.com/guung/search?q=' + encodeURIComponent('캐리어'),
@@ -330,6 +329,13 @@ const COUPANG = {
                 upT: '🛂 여권지갑 RFID 차단 — 스캔 도난을 막습니다' },
     nametag:  { ico: '🏷️', t: '수하물 찾을 때', s: '캐리어 네임택 러기지택', own: true, q: '캐리어 네임택', url: 'https://brand.naver.com/guung/products/13302496481',
                 upT: '🏷️ 네임택 — 컨베이어에서 내 가방을 바로 찾습니다' },
+    // 축제 좌석 — [gak] 페스티벌 3종(세트·스툴 단품·메쉬백 단품)은 검색 한 칸으로 묶는다
+    gakline:  { ico: '🪑', t: '세트로 살까 단품으로 살까', s: '[gak] 페스티벌 · 메쉬백&스툴 세트 / 스툴 단품 / 메쉬백 단품', own: true, q: '페스티벌 스툴',
+                url: 'https://brand.naver.com/guung/search?q=' + encodeURIComponent('페스티벌'),
+                upT: '🪑 세트 · 스툴 단품 · 메쉬백 단품 — 골라 담기' },
+    // 스툴은 등받이가 없다. 오래 앉는 축제엔 등받이 의자가 객단가도 높다(34개·235만, 개당 6.9만)
+    chairs:   { ico: '💺', t: '오래 앉을 거라면 등받이', s: '접이식 테라스 폴딩 캠핑의자 · 4색', own: true, q: '접이식 캠핑의자', url: 'https://brand.naver.com/guung/products/11585759983',
+                upT: '💺 등받이 폴딩 의자 — 스툴보다 오래 앉습니다' },
     // ⛰️ 명산 페이지용(가을 등산). 걷기길 자사상품이 없어 우선 스툴로 대응 — 걷기용품 소싱되면 교체
     mountain: { ico: '🪑', t: '정상에서 앉아 쉴 자리', s: '접어서 드는 폴딩 스툴 + 메쉬백', own: true, q: '폴딩 스툴', url: 'https://brand.naver.com/guung/products/13026204364' }
   }
@@ -364,13 +370,13 @@ const BLOG_BUYBOX = {
   'valley-summer-guide-2026':         ['valley', 'psbases', 'aqua'],
   'busan-sea-festival-guide':         ['valley', 'psbases', 'suncap'],
   // 가을·야간 축제 — 앉을 자리가 관건
-  'muju-firefly-festival-guide':      ['maple'],
-  'andong-mask-dance-festival-guide': ['maple'],
+  'muju-firefly-festival-guide':      ['maple', 'chairs'],
+  'andong-mask-dance-festival-guide': ['maple', 'chairs'],
   'bongpyeong-buckwheat-festival-guide': ['maple', 'jangteo'],   // 봉평장 연계 코스가 본문에 있음
-  'autumn-festivals-2026':            ['maple', 'festival'],
+  'autumn-festivals-2026':            ['maple', 'gakline', 'chairs'],
   // 오일장
   'ojang-day-guide':                  ['jangteo', 'jangcolors'],
-  'ojang-train-trip-course':          ['jangteo', 'foldbox'],
+  'ojang-train-trip-course':          ['jangteo', 'jangcolors'],
   // 반려견 (여름 준비물 글)
   'pet-friendly-festival-guide':      ['pet', 'suncap'],
   // 걷기 — 현재 자사 걷기용품이 없어 제휴 등산화. 소싱 완료되면 교체할 것
@@ -482,9 +488,13 @@ const DDAY_JS = `<script>
 // ⚠️ '물' 한 글자로 매칭하면 '박물관축제'가 걸린다 — 반드시 아래 토큰 목록으로만 판정할 것.
 // 여름 축제는 물축제가 아니어도 덥다 → 기본값(캠핑테이블)에 넥쿨러를 업셀로 붙인다.
 // 물축제 13건보다 일반 여름축제가 훨씬 많아서 넥쿨러 노출은 여기가 맞다.
-const FEST_BB_BASE = NOW_SEASON === 'summer'
-  ? renderBuyBox('festival', ['necool'], 'festival')
-  : buyBox('festival');
+const FEST_MAIN = seasonKey('festival');
+// 축제 모달은 922건 전체에 뜨는 최대 노출 자리다. 메인이 캠핑테이블일 때(여름·가을)만 좌석 업셀을 붙이고,
+// 겨울(캐리어)·봄(돗자리)로 바뀌면 그 상품이 원래 갖고 있는 업셀을 그대로 쓴다.
+const FEST_UP = FEST_MAIN === 'festival'
+  ? (NOW_SEASON === 'summer' ? ['necool', 'chairs'] : ['chairs', 'gakline'])
+  : (COUPANG.items[FEST_MAIN] || {}).up;
+const FEST_BB_BASE = renderBuyBox(FEST_MAIN, FEST_UP, 'festival');
 const FEST_BB_WATER = NOW_SEASON === 'summer'
   ? renderBuyBox('suncap', ['suncap98', 'aqua'], 'festival-water')
   : FEST_BB_BASE;
@@ -4325,8 +4335,13 @@ ${buyBox('festival')}
   }
 }
 
+// ---------- 🧭 코스·일정 제안 /course/ ----------
+// 시도별 POI 팩(JSON) → 정적 코스 12페이지 + 조건 입력형 제안기 허브
+require('./course-data.js').build(ROOT);
+const COURSE_URLS = require('./course.js').build({ ROOT, layout, writePage, SITE_NAME });
+
 // ---------- sitemap / robots ----------
-const urls = ['/', ...MONTHS.map(m => `/${m.key}/`), '/search/', ...(holidays.length ? ['/holiday/'] : []), '/pet/', ...(apiAccessible.length ? ['/accessible/'] : []), ...(apiTrails.length ? ['/trails/'] : []), ...(apiValleys.length ? ['/valley/'] : []), ...(apiMaple.length ? ['/maple/'] : []), ...(apiFlower.length ? ['/flower/'] : []), ...(apiOnsen.length ? ['/onsen/'] : []), '/jangteo/', '/test/', '/trip-cost/', ...(visitors.kor && visitors.kor.length ? ['/trend/'] : []), ...SIDO_URLS, ...THEME_URLS, ...TRAIL_URLS, ...WALK_URLS, ...TREND_LANG_URLS, '/blog/', ...posts.map(p => `/blog/${p.slug}/`), '/about/', EDITORIAL_URL, '/contact/', '/privacy/',...(apiFestsEn.length ? ['/en/', '/en/search/'] : []), ...(apiFestsJa.length ? ['/ja/', '/ja/search/'] : []), ...(apiFestsEs.length ? ['/es/', '/es/search/'] : []), ...(apiFestsZh.length ? ['/zh/', '/zh/search/'] : []), ...(apiFestsTw.length ? ['/tw/', '/tw/search/'] : []), ...TW_EXTRA_URLS, ...MOUNTAIN_URLS, ...CAFE_URLS, ...HOT_URLS];
+const urls = ['/', ...MONTHS.map(m => `/${m.key}/`), '/search/', ...(holidays.length ? ['/holiday/'] : []), '/pet/', ...(apiAccessible.length ? ['/accessible/'] : []), ...(apiTrails.length ? ['/trails/'] : []), ...(apiValleys.length ? ['/valley/'] : []), ...(apiMaple.length ? ['/maple/'] : []), ...(apiFlower.length ? ['/flower/'] : []), ...(apiOnsen.length ? ['/onsen/'] : []), '/jangteo/', '/test/', '/trip-cost/', ...(visitors.kor && visitors.kor.length ? ['/trend/'] : []), ...SIDO_URLS, ...THEME_URLS, ...TRAIL_URLS, ...WALK_URLS, ...TREND_LANG_URLS, '/blog/', ...posts.map(p => `/blog/${p.slug}/`), '/about/', EDITORIAL_URL, '/contact/', '/privacy/',...(apiFestsEn.length ? ['/en/', '/en/search/'] : []), ...(apiFestsJa.length ? ['/ja/', '/ja/search/'] : []), ...(apiFestsEs.length ? ['/es/', '/es/search/'] : []), ...(apiFestsZh.length ? ['/zh/', '/zh/search/'] : []), ...(apiFestsTw.length ? ['/tw/', '/tw/search/'] : []), ...TW_EXTRA_URLS, ...MOUNTAIN_URLS, ...CAFE_URLS, ...HOT_URLS, ...COURSE_URLS];
 // noindex 페이지는 사이트맵에서 뺀다 — "색인해라(사이트맵) + 하지마라(noindex)"는 모순 신호다.
 const NOINDEX_URLS = new Set([...SIDO_URLS, ...THEME_URLS]);
 const sitemapUrls = urls.filter(u => !NOINDEX_URLS.has(u));
