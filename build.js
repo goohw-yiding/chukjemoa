@@ -1225,6 +1225,13 @@ function writePage(rel, html) {
   console.log('✓', rel + '/index.html');
 }
 
+// ---------- 🎪 개별 축제 페이지 /festival/ ----------
+// 축제 사이트인데 개별 축제 페이지가 0개였다(2026-08-09 발견). 검색 수요의 대부분이 개별 축제명인데 받을 페이지가 없었다.
+const FESTIVAL_URLS = require('./festival.js').build({ ROOT, layout, writePage, SITE_NAME, SITE, buyBox, TODAY });
+
+let FEST_PAGES = [];
+try { FEST_PAGES = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/festival_pages.json'), 'utf8')); } catch (e) { }
+
 // ---------- 월별 페이지 ----------
 const monthNavHtml = `<div class="monthnav">` + MONTHS.map(mm => {
   const cnt = festivals.filter(f => f.month.some(m => mm.months.includes(m))).length;
@@ -1237,16 +1244,73 @@ MONTHS.forEach(mm => {
     .sort((a, b) => a.start.localeCompare(b.start));
   const title = `${mm.label} 축제 일정 총정리 (${list.length}개) | ${SITE_NAME}`;
   const desc = `${mm.label} 전국 축제 일정 한눈에 보기 — 지역별 축제 날짜, 장소, 볼거리 정리. ${list.slice(0, 3).map(f => f.name).join(', ')} 등 ${list.length}개 축제.`;
+  // 이 달의 숫자 — 지역 분포와 붐빔 상위는 우리만 낼 수 있는 문장이다
+  const M = mm.months[0];
+  const bySido = {}; list.forEach(f => { const r = (f.region || '').split(' ')[0]; if (r) bySido[r] = (bySido[r] || 0) + 1; });
+  const topSido = Object.entries(bySido).sort((a, b) => b[1] - a[1]).slice(0, 6);
+  const repM = [1, 4, 8, 10].reduce((a, b) => (Math.abs(b - M) < Math.abs(a - M) ? b : a), 1);
+  const busyList = (((visitors.seasonByMonth || {}).months || {})[String(repM)] || [])
+    .filter(r => r.idx).sort((x, z) => z.idx - x.idx).slice(0, 6);
+  const quietList = (((visitors.seasonByMonth || {}).months || {})[String(repM)] || [])
+    .filter(r => r.idx && r.num > 800000).sort((x, z) => x.idx - z.idx).slice(0, 5);
+  // 개별 축제 페이지가 있는 것 = 이 달의 '깊게 볼 축제'
+  const deep = FEST_PAGES.filter(f => +String(f.start).slice(4, 6) === M || +String(f.end).slice(4, 6) === M);
+  const mFaq = [
+    [`${mm.label}에는 어떤 축제가 몇 개나 열리나요?`, `${mm.label} 기준 ${list.length}개를 정리해 두었습니다. 지역별로는 ${topSido.slice(0, 3).map(([r, c]) => `${r} ${c}개`).join(', ')} 순으로 많습니다. 한국관광공사 TourAPI 등록 기준이라 마을 단위 소규모 행사는 빠져 있을 수 있습니다.`],
+    [`${mm.label}에 사람이 가장 몰리는 지역은 어디인가요?`, busyList.length ? `${busyList.slice(0, 3).map(r => `${r.sido} ${r.name}(평소의 ×${r.idx})`).join(', ')} 순입니다. 한국관광공사 「한국관광 데이터랩」의 시·군·구 방문자 수를 그 지역 평소 하루 평균과 비교한 값입니다.` : `방문자 데이터가 준비되면 표시됩니다.`],
+    [`붐비는 곳을 피하고 싶습니다.`, quietList.length ? `방문 규모가 어느 정도 있으면서 ${repM}월 배수가 낮은 곳은 ${quietList.slice(0, 3).map(r => `${r.sido} ${r.name}(×${r.idx})`).join(', ')}입니다. 사람이 없는 게 아니라 <b>평소 대비 덜 몰린다</b>는 뜻입니다.` : `요즘 어디 가지 페이지에서 배수가 낮은 지역을 볼 수 있습니다.`],
+    [`일정이 바뀌면 어떻게 되나요?`, `공공데이터를 주기적으로 다시 받아 갱신하지만, 주최 측이 먼저 바꾸고 데이터가 늦게 반영되는 경우가 있습니다. 출발 전에는 각 축제 페이지의 문의 전화로 확인하시는 편이 안전합니다.`]
+  ];
+
   const content = `<main><div class="wrap">
 <h1 style="font-size:1.5rem;margin-bottom:6px">${mm.label} 전국 축제 일정</h1>
 <p class="note">총 ${list.length}개 · 지역 버튼을 눌러 필터링하세요. 일정은 변동될 수 있으니 방문 전 공식 홈페이지를 확인하세요.</p>
 <p style="margin:4px 0 12px"><button id="nearby-btn" class="nearby-btn">📍 내 주변 축제 보기</button></p>
 ${regionFilter(list)}
 <div class="grid">${list.map(festCard).join('\n')}</div>
+
+${deep.length ? `<h2 class="sec">${mm.short}에 자세히 볼 축제 ${deep.length}곳</h2>
+<p>아래 축제는 <b>개별 페이지</b>가 있습니다. 축제 소개뿐 아니라 그 동네가 이달 얼마나 붐비는지, 근처 맛집·카페의 영업시간, 걷기 좋은 길, 숙소, 그리고 축제를 중심으로 한 하루 코스까지 한 페이지에 정리해 두었습니다.</p>
+<div class="frelm">${deep.slice(0, 40).map(f => `<a href="/festival/${f.slug}/">${esc(f.title)}<span>${esc(f.sido)} ${esc(f.sigungu || '')}</span></a>`).join('')}</div>
+<style>.frelm{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:8px;margin:12px 0}
+.frelm a{background:#fff;border:1.5px solid #dcefeb;border-radius:12px;padding:10px 13px;text-decoration:none;color:#374151;font-weight:700;font-size:.9rem;line-height:1.4}
+.frelm a span{display:block;color:#9ca3af;font-weight:600;font-size:.82em;margin-top:2px}
+.frelm a:hover{background:#e2f5f2}</style>` : ''}
+
+<h2 class="sec">${mm.short} 축제, 어느 지역에 몰려 있나</h2>
+<p>${mm.label}에 열리는 ${list.length}개를 지역별로 세어 보면 ${topSido.map(([r, c]) => `<b>${esc(r)} ${c}개</b>`).join(' · ')} 순입니다. 축제 수가 많다고 다 붐비는 건 아닙니다. 실제로 사람이 얼마나 몰리는지는 아래 방문자 데이터가 더 정확합니다.</p>
+
+${busyList.length ? `<h2 class="sec">${repM}월에 실제로 사람이 몰리는 동네</h2>
+<p>한국관광공사 「한국관광 데이터랩」의 시·군·구 방문자 수를, 그 지역의 <b>평소 하루 평균</b>과 비교한 배수입니다. 절대 방문자 수가 아니라 '평소 대비'라서 작은 지역도 제철이 되면 위로 올라옵니다.</p>
+<ul class="flistm">${busyList.map(r => `<li>🔥 <b>${esc(r.sido)} ${esc(r.name)}</b> — 평소의 <b>×${r.idx}</b></li>`).join('')}</ul>
+${quietList.length ? `<p style="margin-top:10px">반대로, 방문 규모는 어느 정도 있으면서 ${repM}월 배수가 낮은 곳은 이렇습니다. 사람이 없다는 뜻이 아니라 <b>평소보다 덜 몰린다</b>는 뜻입니다.</p>
+<ul class="flistm">${quietList.map(r => `<li>🤫 <b>${esc(r.sido)} ${esc(r.name)}</b> — 평소의 ×${r.idx}</li>`).join('')}</ul>` : ''}
+<style>.flistm{list-style:none;padding:0;margin:10px 0}
+.flistm li{background:#fff;border-radius:12px;padding:10px 14px;margin-bottom:7px;box-shadow:0 2px 8px rgba(31,41,55,.06);font-size:.92rem;color:#374151}
+.flistm li b{color:#0a6c63}</style>
+<p class="note">방문자 데이터는 약 한 달 늦게 공개돼, 계절을 맞추기 위해 <b>작년 같은 달</b> 실적을 씁니다. 이 배수는 축제장이 아니라 그 <b>시·군·구 전체</b>의 값입니다.</p>` : ''}
+
+<h2 class="sec">${mm.short}에 같이 보면 좋은 것</h2>
+<div class="frel2">
+<a href="/hot/">🔥 요즘 사람 몰리는 동네</a>
+<a href="/course/">🧭 조건 넣으면 코스가 나옵니다</a>
+<a href="/jangteo/">🏮 그날 열리는 오일장</a>
+<a href="/trails/">🥾 걷기 좋은 길</a>
+<a href="/trip-cost/">🧮 여행비용 계산기</a>
+</div>
+<style>.frel2{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+.frel2 a{background:#fff;border:1.5px solid #dcefeb;color:#374151;font-weight:700;font-size:.88rem;padding:9px 15px;border-radius:999px;text-decoration:none}
+.frel2 a:hover{background:#e2f5f2}</style>
+
+<h2 class="sec">자주 묻는 것</h2>
+${mFaq.map(q => `<p><b>${esc(q[0])}</b><br>${q[1]}</p>`).join('')}
+
 <h2 class="sec">다른 달 축제 보기</h2>
 ${monthNavHtml}
+<p class="note" style="margin-top:16px">데이터 출처: 한국관광공사 TourAPI(축제 정보) · 한국관광공사 「한국관광 데이터랩」(시·군·구 방문자 수).</p>
 </div></main>`;
-  writePage(mm.key, layout(title, desc, `/${mm.key}/`, content, { jsonld: eventsJsonLd(list) }));
+  const mFaqLd = `<script type="application/ld+json">${JSON.stringify({ '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: mFaq.map(q => ({ '@type': 'Question', name: q[0], acceptedAnswer: { '@type': 'Answer', text: String(q[1]).replace(/<[^>]+>/g, '') } })) })}</script>`;
+  writePage(mm.key, layout(title, desc, `/${mm.key}/`, content, { jsonld: eventsJsonLd(list) + mFaqLd }));
 });
 
 // ---------- 오일장 페이지 ----------
@@ -1667,10 +1731,75 @@ ${buyBox('jangteo')}
 ${posts.map(p => `<a href="/blog/${p.slug}/">${esc(p.title)}<span>${p.date}</span></a>`).join('\n')}
 </div>
 </div></main>`;
+
+// ---------- 홈 하단 '이 사이트가 가진 것' ----------
+// 홈이 사이트에서 가장 얇았다(2026-08-08 진단). 광고 문구가 아니라 **실제 보유 데이터를 숫자로** 적는다.
+// 숫자는 하드코딩하지 않고 파일에서 세어 쓴다 — 데이터가 늘면 문장도 같이 늘어난다.
+const HOME_DEPTH = (() => {
+  const cnt = f => { try { const j = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', f), 'utf8')); return Array.isArray(j) ? j.length : 0; } catch (e) { return 0; } };
+  const nFes = cnt('festivals_api.json'), nSpot = cnt('spots_ko.json'), nWalk = cnt('stret.json') + cnt('trails.json');
+  const nAcc = cnt('accessible.json'), nFood = cnt('restaurants_ko.json'), nCafe = cnt('cafes_ko.json');
+  const nStay = cnt('stays_ko.json'), nPet = cnt('pets.json'), nMt = cnt('mountains_ko.json');
+  const nVly = cnt('valleys.json'), nMpl = cnt('maple.json'), nOns = cnt('onsen.json'), nMkt = cnt('markets.json');
+  let openPct = 0;
+  try { const a = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/restaurants_ko.json'), 'utf8')); openPct = Math.round(a.filter(x => x.open).length / a.length * 100); } catch (e) { }
+  const nFesPage = FEST_PAGES.length;
+  const nSg = (((visitors.seasonByMonth || {}).months || {})['8'] || []).length;
+
+  return `<div class="wrap">
+<h2 class="sec">축제모아가 가진 것</h2>
+<p>여행 정보를 '많이 모은' 사이트는 이미 많습니다. 저희가 다르게 하려는 건 <b>숫자로 답하는 것</b>입니다.
+어디가 예쁘다는 말 대신, 그 동네가 이번 달 평소보다 몇 배 붐비는지를 방문자 데이터로 보여드립니다.
+전국 ${nSg}개 시·군·구의 방문자 수를 그 지역 자신의 평소 하루 평균과 비교한 값이라, 큰 도시가 아니라 <b>제철을 맞은 작은 지역</b>도 위로 올라옵니다.</p>
+
+<div class="hdgrid">
+<div><b>${nFes.toLocaleString()}</b><span>축제 (개별 페이지 ${nFesPage}곳)</span></div>
+<div><b>${nSpot.toLocaleString()}</b><span>관광지</span></div>
+<div><b>${nWalk.toLocaleString()}</b><span>걷기길 코스 (거리·소요시간·난이도)</span></div>
+<div><b>${nAcc.toLocaleString()}</b><span>무장애 여행 정보</span></div>
+<div><b>${nFood.toLocaleString()}</b><span>음식점 (영업시간 ${openPct}%)</span></div>
+<div><b>${nCafe.toLocaleString()}</b><span>카페</span></div>
+<div><b>${nStay.toLocaleString()}</b><span>숙소</span></div>
+<div><b>${nPet.toLocaleString()}</b><span>반려동물 동반 가능</span></div>
+<div><b>${(nMt + nVly + nMpl + nOns).toLocaleString()}</b><span>명산·계곡·단풍·온천</span></div>
+<div><b>${nMkt.toLocaleString()}</b><span>오일장 (다음 장날 자동 계산)</span></div>
+</div>
+<style>
+.hdgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(148px,1fr));gap:10px;margin:14px 0}
+.hdgrid div{background:#fff;border-radius:14px;padding:13px 15px;box-shadow:0 2px 10px rgba(31,41,55,.06)}
+.hdgrid b{display:block;font-size:1.32rem;font-weight:900;color:#0a6c63;line-height:1.2}
+.hdgrid span{display:block;font-size:.79rem;color:#6b7280;margin-top:3px;line-height:1.45}
+.hdlist{list-style:none;padding:0;margin:12px 0}
+.hdlist li{background:#fff;border-radius:12px;padding:12px 15px;margin-bottom:8px;box-shadow:0 2px 8px rgba(31,41,55,.06);font-size:.93rem;color:#374151;line-height:1.65}
+.hdlist li b{color:#0a6c63}
+</style>
+
+<h2 class="sec">여기서 할 수 있는 것</h2>
+<ul class="hdlist">
+<li><b><a href="/course/">코스 짜기</a></b> — 지역·날짜·동행(아이·부모님·반려견·휠체어)·중점만 고르면 그 지역의 축제·걷기길·자연·식당·카페·숙소를 <b>동선 순서로</b> 묶어 시간표를 만듭니다. 걷기길은 실제 거리와 소요시간이 있어서 하루에 무리인지 아닌지를 계산할 수 있습니다. 만든 코스를 두고 AI에게 "2일차가 빡빡해요" 같은 걸 물어볼 수도 있습니다.</li>
+<li><b><a href="/hot/">요즘 어디 가지</a></b> — 이번 달 실제로 사람이 몰린 동네를 평소 대비 배수로 줄 세웠습니다. 광고나 인기 순위가 아닙니다.</li>
+<li><b><a href="/trip-cost/">여행비용 계산기</a></b> — 출발지와 목적지를 넣으면 자차(유류비·통행료)와 대중교통(KTX·시외버스)을 비교합니다.</li>
+<li><b><a href="/trails/">걷기 여행</a></b> — 전국 걷기길 ${nWalk.toLocaleString()}개 코스를 브랜드별(해파랑길·남파랑길·제주올레·지리산둘레길 등)과 지역별로 정리했습니다. 코스마다 거리·소요시간·난이도가 있습니다.</li>
+<li><b><a href="/accessible/">무장애 여행</a></b> — 휠체어·유아차로 갈 수 있는 곳만 모았습니다. 이 정보를 이 정도 규모로 정리한 곳은 많지 않습니다.</li>
+<li><b><a href="/jangteo/">오일장</a></b> — 날짜 끝자리로 다음 장날을 자동 계산합니다. 가려는 날짜를 넣으면 그날 열리는 장이 표시됩니다.</li>
+</ul>
+
+<h2 class="sec">저희가 모르는 것</h2>
+<p>쓸모 있으려면 못 하는 것부터 밝히는 게 맞다고 봅니다.
+<b>영업시간과 휴무일</b>은 공공데이터에 등록된 곳만 표시하며, 없는 곳은 "정보 없음"으로 비워 둡니다. 추정해서 채우지 않습니다.
+<b>이동시간</b>은 직선거리에 보정계수를 곱한 추정치입니다. 실제 도로 경로가 아닙니다.
+<b>숙소 가격과 빈방</b>은 저희 데이터에 없습니다. 위치와 유형만 보여드립니다.
+<b>붐빔 배수</b>는 특정 장소가 아니라 그 시·군·구 전체의 방문자 수 기준입니다.
+축제 일정은 주최 측이 먼저 바꾸고 공공데이터가 늦게 반영되는 경우가 있으니, 출발 전 문의 전화로 확인하시는 편이 안전합니다.</p>
+
+<p class="note">데이터 출처: 한국관광공사 TourAPI · 전국길관광정보 표준데이터 · 한국관광공사 「한국관광 데이터랩」 · 국가유산청 · 한국철도공사 운임 · 국토교통부 TAGO.</p>
+</div>`;
+})();
+
 writePage('.', layout(
   `${SITE_NAME} — 전국 축제·오일장 일정 총정리 (2026)`,
   `2026 전국 축제 일정과 오일장(5일장) 날짜를 한눈에. 월별·지역별 축제 정보, 보령머드축제부터 화천산천어축제까지.`,
-  '/', indexContent + FAQ_HOME_HTML, { jsonld: eventsJsonLd(upcoming) + FAQ_HOME_LD, alternates: homeAlts() }));
+  '/', indexContent + HOME_DEPTH + FAQ_HOME_HTML, { jsonld: eventsJsonLd(upcoming) + FAQ_HOME_LD, alternates: homeAlts() }));
 
 // ---------- 개인정보처리방침 ----------
 const privacyContent = `<main><div class="wrap"><article>
@@ -4346,7 +4475,7 @@ require('./trip-data.js').build(ROOT);
 const TRIP_URLS = require('./trip.js').build({ ROOT, layout, writePage, SITE_NAME });
 
 // ---------- sitemap / robots ----------
-const urls = ['/', ...MONTHS.map(m => `/${m.key}/`), '/search/', ...(holidays.length ? ['/holiday/'] : []), '/pet/', ...(apiAccessible.length ? ['/accessible/'] : []), ...(apiTrails.length ? ['/trails/'] : []), ...(apiValleys.length ? ['/valley/'] : []), ...(apiMaple.length ? ['/maple/'] : []), ...(apiFlower.length ? ['/flower/'] : []), ...(apiOnsen.length ? ['/onsen/'] : []), '/jangteo/', '/test/', '/trip-cost/', ...(visitors.kor && visitors.kor.length ? ['/trend/'] : []), ...SIDO_URLS, ...THEME_URLS, ...TRAIL_URLS, ...WALK_URLS, ...TREND_LANG_URLS, '/blog/', ...posts.map(p => `/blog/${p.slug}/`), '/about/', EDITORIAL_URL, '/contact/', '/privacy/',...(apiFestsEn.length ? ['/en/', '/en/search/'] : []), ...(apiFestsJa.length ? ['/ja/', '/ja/search/'] : []), ...(apiFestsEs.length ? ['/es/', '/es/search/'] : []), ...(apiFestsZh.length ? ['/zh/', '/zh/search/'] : []), ...(apiFestsTw.length ? ['/tw/', '/tw/search/'] : []), ...TW_EXTRA_URLS, ...MOUNTAIN_URLS, ...CAFE_URLS, ...HOT_URLS, ...COURSE_URLS, ...TRIP_URLS];
+const urls = ['/', ...MONTHS.map(m => `/${m.key}/`), '/search/', ...(holidays.length ? ['/holiday/'] : []), '/pet/', ...(apiAccessible.length ? ['/accessible/'] : []), ...(apiTrails.length ? ['/trails/'] : []), ...(apiValleys.length ? ['/valley/'] : []), ...(apiMaple.length ? ['/maple/'] : []), ...(apiFlower.length ? ['/flower/'] : []), ...(apiOnsen.length ? ['/onsen/'] : []), '/jangteo/', '/test/', '/trip-cost/', ...(visitors.kor && visitors.kor.length ? ['/trend/'] : []), ...SIDO_URLS, ...THEME_URLS, ...TRAIL_URLS, ...WALK_URLS, ...TREND_LANG_URLS, '/blog/', ...posts.map(p => `/blog/${p.slug}/`), '/about/', EDITORIAL_URL, '/contact/', '/privacy/',...(apiFestsEn.length ? ['/en/', '/en/search/'] : []), ...(apiFestsJa.length ? ['/ja/', '/ja/search/'] : []), ...(apiFestsEs.length ? ['/es/', '/es/search/'] : []), ...(apiFestsZh.length ? ['/zh/', '/zh/search/'] : []), ...(apiFestsTw.length ? ['/tw/', '/tw/search/'] : []), ...TW_EXTRA_URLS, ...MOUNTAIN_URLS, ...CAFE_URLS, ...HOT_URLS, ...COURSE_URLS, ...TRIP_URLS, ...FESTIVAL_URLS];
 // noindex 페이지는 사이트맵에서 뺀다 — "색인해라(사이트맵) + 하지마라(noindex)"는 모순 신호다.
 const NOINDEX_URLS = new Set([...SIDO_URLS, ...THEME_URLS]);
 const sitemapUrls = urls.filter(u => !NOINDEX_URLS.has(u));
@@ -4391,11 +4520,15 @@ fs.writeFileSync(LM_PATH, JSON.stringify(LM_NEW, null, 0));
 // ① 새 URL(sitemap-index.xml)을 제출하면 같은 URL 재제출보다 확실하게 다시 읽는다.
 // ② 섹션별로 나눠 두면 서치콘솔에서 "어느 묶음이 발견/색인이 안 되는지"를 따로 볼 수 있다.
 const SEC = {
+  // 축제 개별 페이지는 따로 낸다 — 신설 묶음이라 서치콘솔에서 발견·색인을 별도로 봐야 판단이 된다
+  'sitemap-festival.xml': sitemapUrls.filter(u => /^\/festival\//.test(u)),
+  'sitemap-course.xml': sitemapUrls.filter(u => /^\/course\//.test(u)),
   'sitemap-trails.xml': sitemapUrls.filter(u => /^\/trails\//.test(u)),
   'sitemap-blog.xml': sitemapUrls.filter(u => /^\/blog\//.test(u)),
   'sitemap-lang.xml': sitemapUrls.filter(u => /^\/(en|ja|es|zh|tw)\//.test(u))
 };
 SEC['sitemap-core.xml'] = sitemapUrls.filter(u =>
+  !SEC['sitemap-festival.xml'].includes(u) && !SEC['sitemap-course.xml'].includes(u) &&
   !SEC['sitemap-trails.xml'].includes(u) && !SEC['sitemap-blog.xml'].includes(u) && !SEC['sitemap-lang.xml'].includes(u));
 Object.entries(SEC).forEach(([file, list]) => {
   fs.writeFileSync(path.join(ROOT, file), `<?xml version="1.0" encoding="UTF-8"?>
