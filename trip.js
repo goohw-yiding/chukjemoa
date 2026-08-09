@@ -11,7 +11,7 @@
 const fs = require('fs'), path = require('path');
 const TD = require('./trip-data.js');
 
-const ASSET_V = '20260809c';
+const ASSET_V = '20260809d';
 const LANGS = TD.LANGS;
 const TIERS = ['first', 'second', 'third'];
 const SLUG = { first: 'first-time', second: 'second-time', third: 'third-time' };
@@ -24,6 +24,17 @@ const MON = {
   tw: ['', '1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
   es: ['', 'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre']
 };
+
+// 국가유산 종목 라벨 — 외국인에게 "국보 32점"은 등록 관광지 수보다 훨씬 강한 근거다
+const HER_L = {
+  '국보':   { en: 'National Treasures', ja: '国宝', zh: '国宝', tw: '國寶', es: 'Tesoros Nacionales' },
+  '보물':   { en: 'Treasures', ja: '宝物', zh: '宝物', tw: '寶物', es: 'Tesoros' },
+  '사적':   { en: 'Historic Sites', ja: '史跡', zh: '史迹', tw: '史蹟', es: 'Sitios Históricos' },
+  '명승':   { en: 'Scenic Sites', ja: '名勝', zh: '名胜', tw: '名勝', es: 'Parajes Pintorescos' },
+  '국가민속문화유산': { en: 'Folk Heritage sites', ja: '国家民俗文化遺産', zh: '国家民俗文化遗产', tw: '國家民俗文化遺產', es: 'Patrimonio Folclórico' },
+  '천연기념물': { en: 'Natural Monuments', ja: '天然記念物', zh: '天然纪念物', tw: '天然紀念物', es: 'Monumentos Naturales' }
+};
+const HER_ORDER = ['국보', '보물', '사적', '명승', '국가민속문화유산', '천연기념물'];
 
 const L = {
   en: {
@@ -51,11 +62,12 @@ const L = {
     limits: 'What this page does not know',
     limitList: [
       'Opening hours, closing days and ticket prices are not in our data. Check before you go.',
-      'Rankings come from the number of <b>registered</b> attractions, so a city famous for one single place (Jeonju Hanok Village, Andong Hahoe Village) ranks lower than it deserves.',
+      'The ranking mixes four measures: foreign-visitor rank, Korean peak-season multiplier, number of registered attractions, and how often each place is looked up on Wikipedia in your language. No single one of them decides it.',
+      'Wikipedia lookups measure how well known a place is — which partly tracks city size, not only tourism. We use it as a threshold, not as the main ranking.',
       'The crowd multiplier describes the <b>district</b>, not any single place inside it.',
       'Foreign-visitor data covers only the top 40 districts. "Not ranked" means "not in that 40" — not zero.'
     ],
-    source: 'Data: Korea Tourism Organization TourAPI (attractions, festivals, restaurants, cafés, accommodation, accessible sites) · National Walking Trail Standard Data · Korea Tourism Data Lab (visitor counts by district).',
+    source: 'Data: Korea Tourism Organization TourAPI (attractions, festivals, restaurants, cafés, accommodation, accessible sites) · National Walking Trail Standard Data · Korea Tourism Data Lab (visitor counts by district) · Korea Heritage Service (National Treasures, Treasures, Historic Sites) · Wikimedia pageviews (how often each place is looked up).',
     nameNote: 'Korean names are shown next to the romanised name on purpose — show your screen to a taxi driver or ticket clerk.',
     other: 'Other trips'
   },
@@ -84,11 +96,12 @@ const L = {
     limits: 'このページが知らないこと',
     limitList: [
       '営業時間・定休日・入場料はデータにありません。訪問前にご確認ください。',
-      '順位は<b>登録された</b>観光地の数から出しています。全州韓屋村・安東河回村のように一か所の名声で有名な都市は実際より低く出ます。',
+      '順位は四つの数字を混ぜています。外国人訪問順位、韓国人の繁忙倍率、登録観光地の数、そしてあなたの言語のウィキペディアでどれだけ調べられているか。どれか一つで決まりません。',
+      'ウィキペディアの閲覧数は「知名度」であって、都市の大きさも含みます。順位の主軸ではなく足切りに使っています。',
       '混雑倍率はその<b>市郡区</b>の数値で、個々の場所のものではありません。',
       '外国人訪問データは上位40地域のみです。「圏外」はゼロという意味ではありません。'
     ],
-    source: '出典：韓国観光公社 TourAPI（観光地・祭り・飲食店・カフェ・宿泊・バリアフリー）／全国歩く道標準データ／韓国観光データラボ（地域別訪問者数）。',
+    source: '出典：韓国観光公社 TourAPI（観光地・祭り・飲食店・カフェ・宿泊・バリアフリー）／全国歩く道標準データ／韓国観光データラボ（地域別訪問者数）／国家遺産庁（国宝・宝物・史跡）／ウィキメディア閲覧数。',
     nameNote: 'ローマ字の横に韓国語を併記しています。タクシーや窓口で画面を見せてください。',
     other: '他の回数'
   },
@@ -117,11 +130,12 @@ const L = {
     limits: '这一页不知道的事',
     limitList: [
       '营业时间、休息日、门票价格不在我们的数据里，出发前请自行确认。',
-      '排名基于<b>登记</b>景点的数量，所以像全州韩屋村、安东河回村这种靠一处出名的城市会被低估。',
+      '排名混合了四个数字：外国游客排名、韩国人旺季倍数、登记景点数量，以及在你所用语言的维基百科上被查阅的频率。没有任何单一指标能决定结果。',
+      '维基百科查阅量衡量的是知名度，其中也包含城市规模。我们把它当作门槛，而不是主要排序依据。',
       '拥挤倍数说的是那个<b>市郡区</b>，不是里面某一个地点。',
       '外国游客数据只覆盖前40个地区，「未上榜」不等于零。'
     ],
-    source: '数据来源：韩国观光公社 TourAPI（景点·庆典·餐饮·咖啡馆·住宿·无障碍）／全国步道标准数据／韩国观光数据实验室（地区访客数）。',
+    source: '数据来源：韩国观光公社 TourAPI（景点·庆典·餐饮·咖啡馆·住宿·无障碍）／全国步道标准数据／韩国观光数据实验室（地区访客数）／国家遗产厅（国宝·宝物·史迹）／维基媒体查阅量。',
     nameNote: '罗马字旁边特意保留了韩文——可以直接把屏幕给出租车司机或售票员看。',
     other: '其他次数'
   },
@@ -150,11 +164,12 @@ const L = {
     limits: '這一頁不知道的事',
     limitList: [
       '營業時間、公休日、門票價格不在我們的資料裡，出發前請自行確認。',
-      '排名以<b>登記</b>景點數量為準，所以像全州韓屋村、安東河回村這種靠一處出名的城市會被低估。',
+      '排名混合了四個數字：外國旅客排名、韓國人旺季倍數、登記景點數量，以及在你使用的語言維基百科上被查閱的頻率。沒有任何單一指標能決定結果。',
+      '維基百科查閱量衡量的是知名度，其中也包含城市規模。我們把它當成門檻，而不是主要排序依據。',
       '擁擠倍數講的是那個<b>市郡區</b>，不是裡面某一個地點。',
       '外國旅客資料只涵蓋前40個地區，「未上榜」不等於零。'
     ],
-    source: '資料來源：韓國觀光公社 TourAPI（景點・慶典・餐飲・咖啡廳・住宿・無障礙）／全國步道標準資料／韓國觀光數據實驗室（地區訪客數）。',
+    source: '資料來源：韓國觀光公社 TourAPI（景點・慶典・餐飲・咖啡廳・住宿・無障礙）／全國步道標準資料／韓國觀光數據實驗室（地區訪客數）／國家遺產廳（國寶・寶物・史蹟）／維基媒體查閱量。',
     nameNote: '羅馬拼音旁邊刻意保留韓文——可以直接把螢幕給計程車司機或售票員看。',
     other: '其他次數'
   },
@@ -183,11 +198,12 @@ const L = {
     limits: 'Lo que esta página no sabe',
     limitList: [
       'Horarios, días de cierre y precios no están en nuestros datos. Confírmalos antes de ir.',
-      'El ranking usa el número de atractivos <b>registrados</b>, así que una ciudad famosa por un solo lugar (la aldea hanok de Jeonju, Hahoe en Andong) queda más abajo de lo que merece.',
+      'El ranking combina cuatro medidas: puesto de visitantes extranjeros, multiplicador coreano de temporada alta, número de atractivos registrados y cuánto se consulta cada lugar en Wikipedia en tu idioma. Ninguna decide por sí sola.',
+      'Las consultas en Wikipedia miden lo conocido que es un lugar, lo que también refleja el tamaño de la ciudad. La usamos como umbral, no como criterio principal de orden.',
       'El multiplicador de aglomeración describe el <b>distrito</b>, no un lugar concreto dentro de él.',
       'Los datos de visitantes extranjeros solo cubren los 40 primeros distritos. "Sin puesto" no significa cero.'
     ],
-    source: 'Datos: Organización de Turismo de Corea TourAPI (atractivos, festivales, restaurantes, cafés, alojamiento, sitios accesibles) · Datos estándar de senderos · Korea Tourism Data Lab (visitantes por distrito).',
+    source: 'Datos: Organización de Turismo de Corea TourAPI (atractivos, festivales, restaurantes, cafés, alojamiento, sitios accesibles) · Datos estándar de senderos · Korea Tourism Data Lab (visitantes por distrito) · Servicio de Patrimonio de Corea (Tesoros Nacionales, Tesoros, Sitios Históricos) · Consultas en Wikimedia.',
     nameNote: 'El nombre en coreano aparece junto al romanizado a propósito: enséñale la pantalla al taxista o en la taquilla.',
     other: 'Otras visitas'
   }
@@ -208,6 +224,8 @@ const CSS = `
 .tb.qt{background:#f2fbfa;color:#0a6c63}
 .tass{display:flex;flex-wrap:wrap;gap:10px;padding:0 18px 12px;font-size:.84rem;color:#4b5563}
 .tass b{color:#0a6c63;font-weight:900}
+.tass.ther{color:#8a5a2b}
+.tass.ther b{color:#a2570f}
 .thi{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;padding:0 18px 18px}
 .thio{background:#f8fafa;border-radius:12px;overflow:hidden}
 .thio img{width:100%;aspect-ratio:16/10;object-fit:cover;display:block;background:#f0ece6}
@@ -234,7 +252,7 @@ function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').repla
 const IMG_PRE = ['http://tong.visitkorea.or.kr/cms/resource/', 'https://tong.visitkorea.or.kr/cms/resource/'];
 function unimg(v) { if (!v) return ''; const i = v.indexOf('|'); if (i < 0) return v; const p = v.slice(0, i), r = v.slice(i + 1); return p === 'x' ? r : (IMG_PRE[+p] || '') + r; }
 
-function card(d, T, monthLabel) {
+function card(d, T, monthLabel, lang) {
   const badges = [];
   badges.push(d.fgn ? `<span class="tb f">${esc(T.fgnRank(d.fgn))}</span>` : `<span class="tb n">${esc(T.fgnNone)}</span>`);
   if (d.idx) badges.push(d.idx >= 1.15
@@ -244,6 +262,11 @@ function card(d, T, monthLabel) {
   const A = d.a || {};
   const ass = ['spot', 'walk', 'nat', 'market', 'fes', 'acc']
     .filter(k => A[k]).map(k => `<span><b>${A[k]}</b> ${esc(T.a[k])}</span>`).join('');
+
+  // 국가유산 — 국보·보물·사적은 "볼 게 있다"의 가장 강한 근거다
+  const H = d.her || {};
+  const her = HER_ORDER.filter(k => H[k]).slice(0, 4)
+    .map(k => `<span><b>${H[k]}</b> ${esc((HER_L[k] || {})[lang] || k)}</span>`).join('');
 
   const hi = (d.hi || []).slice(0, 6).map(h => {
     const img = unimg(h.g);
@@ -258,6 +281,7 @@ function card(d, T, monthLabel) {
 <div class="tsido">${esc(d.sido)}</div>
 <div class="tbadges">${badges.join('')}</div>
 </div>
+${her ? `<div class="tass ther">🏛 ${her}</div>` : ''}
 ${ass ? `<div class="tass">${ass}</div>` : ''}
 ${hi ? `<div class="thi">${hi}</div>` : ''}
 </div>`;
@@ -309,7 +333,7 @@ function build(ctx) {
       const preview = TIERS.map(t => {
         const list = pack.tiers[t] || [];
         return `<h2 class="sec">${esc(T.tier[t].h1)}</h2><p>${esc(T.tier[t].lead)}</p>`
-          + `<div class="tgrid">${list.slice(0, 3).map(d => card(d, T, monthLabel)).join('')}</div>`
+          + `<div class="tgrid">${list.slice(0, 3).map(d => card(d, T, monthLabel, lang)).join('')}</div>`
           + `<p><a class="cplink" href="/${lang}/trip/${SLUG[t]}/">${esc(T.tier[t].h1)} (${list.length}) →</a></p>`;
       }).join('');
       const faq = [
@@ -342,7 +366,7 @@ ${limitsBlock(T)}
 <h1 style="font-size:1.5rem;font-weight:900;margin:8px 0 6px">${esc(TT.h1)}</h1>
 <p style="color:#6b7280;font-size:.96rem">${esc(TT.lead)}</p>
 ${nav(t)}
-<div class="tgrid">${list.map(d => card(d, T, monthLabel)).join('')}</div>
+<div class="tgrid">${list.map(d => card(d, T, monthLabel, lang)).join('')}</div>
 ${aiBox(T, lang, t)}
 ${limitsBlock(T)}
 <p class="tnote">${esc(T.nameNote)}</p>
