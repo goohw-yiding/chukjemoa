@@ -87,14 +87,23 @@ const CAT_IMG = { '물놀이': 'water', '음악': 'music', '음식': 'food', '�
 //    목록이 답답해 보였다(장남님 지적). 카테고리마다 색을 완전히 다르게 잡아 새로 만들고,
 //    많이 쓰이는 카테고리는 변형을 2개씩 둬서 나란히 있어도 같은 그림이 안 뜨게 한다.
 //    (사진이 있는 축제는 원래대로 실사 사진이 우선이다 — 이건 사진 없는 40개용 폴백이다)
-const CAT_VARIANTS = { water: 2, music: 2, food: 2, flower: 2, culture: 2, firework: 1, tradition: 2, light: 2, snow: 2, etc: 2 };
-// 축제 이름으로 변형을 고정 선택 — 빌드마다 그림이 바뀌면 캐시·인상이 흔들린다
+const CAT_VARIANTS = { water: 2, music: 2, food: 2, flower: 2, culture: 4, firework: 1, tradition: 3, light: 2, snow: 2, etc: 3 };
+// ⚠️ 이름 해시만 쓰면 같은 카테고리 두 장이 나란히 붙을 때 우연히 같은 그림이 나온다(실측: 변산비치펍·대전0시).
+//    카드 목록은 순서대로 그려지므로, **카테고리별 회전 카운터**를 쓰면 인접 중복이 원천 차단된다.
+const _catTurn = {};
+function catImgTurn(f) {
+  const key = CAT_IMG[f.category] || 'etc';
+  const n = CAT_VARIANTS[key] || 1;
+  const i = (_catTurn[key] = (_catTurn[key] || 0) + 1) - 1;
+  return '/img/cat2-' + key + '-' + 'abcd'[i % n] + '.webp';
+}
+// og:image·JSON-LD 처럼 **고정되어야 하는 자리**는 이름 해시로 뽑는다(공유 썸네일이 매번 바뀌면 안 된다)
 function catImgOf(f) {
   const key = CAT_IMG[f.category] || 'etc';
   const n = CAT_VARIANTS[key] || 1;
   let h = 0; const s2 = String(f.name || f.title || '');
   for (let i = 0; i < s2.length; i++) h = (h * 31 + s2.charCodeAt(i)) >>> 0;
-  return '/img/cat2-' + key + '-' + 'abc'[h % n] + '.webp';
+  return '/img/cat2-' + key + '-' + 'abcd'[h % n] + '.webp';
 }
 
 // ---------- 실사진 매칭 (큐레이션 축제 ↔ 공공데이터 이미지) ----------
@@ -136,7 +145,7 @@ function realImgOf(f) {
 }
 // 카드 썸네일 URL(실사진 우선, 카테고리 폴백)
 function thumbOf(f) {
-  return realImgOf(f) || catImgOf(f);
+  return realImgOf(f) || catImgTurn(f);
 }
 // JSON-LD·OG용 절대 이미지 URL
 function absImgOf(f) {
