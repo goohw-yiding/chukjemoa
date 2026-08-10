@@ -9,6 +9,7 @@
 //      카카오/네이버 지도가 아니라 Leaflet+OSM을 쓴 이유는 **키 발급도 도메인 등록도 필요 없어서**다.
 //      나중에 카카오맵으로 바꾸고 싶으면 이 파일의 지도 초기화 부분만 갈면 된다.
 const fs = require('fs'), path = require('path');
+const { inKorea } = require('./geo.js');
 
 function build(ctx) {
   const { ROOT, layout, writePage, SITE_NAME, buyBox, TODAY } = ctx;
@@ -38,7 +39,7 @@ function build(ctx) {
 
   // 축제 — 아직 안 끝난 것만. 끝난 축제를 지도에 찍으면 "가면 없다".
   L('festivals_api.json').forEach(f => {
-    if (!f.x || !f.y || String(f.end) < T) return;
+    if (!inKorea(f.x, f.y) || String(f.end) < T) return;
     const on = String(f.start) <= T;
     // [x, y, 이름, 기간, 슬러그(있으면), 진행중(1)] — 뒤쪽 빈 값은 넣지 않는다
     const row = [r4(f.x), r4(f.y), f.title, `${String(f.start).slice(4, 6)}/${String(f.start).slice(6, 8)}~${String(f.end).slice(4, 6)}/${String(f.end).slice(6, 8)}`];
@@ -50,13 +51,13 @@ function build(ctx) {
   const walk = L('stret.json').map(w => [w.x, w.y, w.name, w.km, w.min])
     .concat(L('trails.json').map(w => [w.x, w.y, w.name, w.dist, w.min]));
   walk.forEach(([x, y, n, km, min]) => {
-    if (!x || !y || !n) return;
+    if (!inKorea(x, y) || !n) return;
     const sub = (km ? km + 'km' : '') + (min ? ` 약 ${Math.round(min / 60 * 10) / 10}시간` : '');
     pts.walk.push(sub ? [r4(x), r4(y), n, sub] : [r4(x), r4(y), n]);
   });
 
   const simple = (file, key) => L(file).forEach(o => {
-    if (!o.x || !o.y) return;
+    if (!inKorea(o.x, o.y)) return;
     const sub = o.addr ? String(o.addr).split(' ').slice(0, 2).join(' ') : '';
     pts[key].push(sub ? [r4(o.x), r4(o.y), o.title || o.name, sub] : [r4(o.x), r4(o.y), o.title || o.name]);
   });

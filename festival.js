@@ -25,6 +25,7 @@ const fs = require('fs'), path = require('path');
 const E = require('./course/engine.js');
 const R = require('./course/render.js');
 const { romanizeMixed } = require('./placename.js');
+const { inKorea } = require('./geo.js');
 
 const MIN_OV = 300, MIN_NEAR = 3, FROM_YEAR = '2026';
 
@@ -115,8 +116,10 @@ function build(ctx) {
   const nb = id => { const a = nearbyRaw[id]; return Array.isArray(a) ? a : (a ? [a] : []); };
 
   // ── 대상 선별
+  // ⚠️ inKorea 검사가 없으면 좌표가 중국 남해인 축제가 상세 페이지로 나간다(2026-08-10 실사고, geo.js 참고).
+  //    좌표가 틀리면 근처 맛집·걷기길·코스·숙소가 전부 틀리므로 본문 전체가 거짓이 된다.
   const cand = fes.filter(f =>
-    f.ov && f.ov.length >= MIN_OV && f.img && f.x && f.y &&
+    f.ov && f.ov.length >= MIN_OV && f.img && inKorea(f.x, f.y) &&
     nb(f.id).length >= MIN_NEAR && String(f.start).slice(0, 4) >= FROM_YEAR)
     .sort((a, b) => String(a.start).localeCompare(String(b.start)));
 

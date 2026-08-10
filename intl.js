@@ -20,6 +20,7 @@
 'use strict';
 const fs = require('fs'), path = require('path');
 const { romanizeMixed } = require('./placename.js');
+const { inKorea } = require('./geo.js');
 
 const LANGS = ['en', 'ja', 'es', 'zh', 'tw'];
 const HREF = { en: 'en', ja: 'ja', es: 'es', zh: 'zh-Hans', tw: 'zh-Hant' };
@@ -236,7 +237,8 @@ function build(ctx) {
   const wheelTopSido = Object.keys(wheelBySido).sort((a, b) => wheelBySido[b] - wheelBySido[a])[0];
 
   // ── 축제 캘린더 뼈대: 한국어 데이터 + 좌표/시작일 일치 시 공식 번역으로 덮어쓰기
-  const upKo = koFes.filter(f => String(f.end || '') >= T && f.x && f.y)
+  // 좌표가 성한 것만 — 지도 링크가 엉뚱한 데로 가면 안 된다(geo.js 참고)
+  const upKo = koFes.filter(f => String(f.end || '') >= T && inKorea(f.x, f.y))
     .sort((a, b) => String(a.start).localeCompare(String(b.start)));
   const ckey = f => (+f.x).toFixed(3) + '|' + (+f.y).toFixed(3) + '|' + String(f.start).slice(0, 8);
   const TRANS = {};

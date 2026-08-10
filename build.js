@@ -5188,4 +5188,5 @@ Sitemap: ${SITE}/sitemap.xml
 `);
 fs.writeFileSync(path.join(ROOT, 'ads.txt'), `google.com, pub-3293445488923111, DIRECT, f08c47fec0942fa0\n`);
 console.log('✓ sitemap.xml, robots.txt, ads.txt');
+require('./geo.js').audit(ROOT);
 console.log('빌드 완료:', urls.length, '페이지');
