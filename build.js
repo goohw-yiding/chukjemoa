@@ -812,6 +812,19 @@ nav a:hover{color:#0f9d8f}
 .hero-cta .cta2{background:rgba(255,255,255,.16);color:#fff;border:1.5px solid rgba(255,255,255,.65);backdrop-filter:blur(4px)}
 .hero-stats{margin-top:28px;display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
 .hero-stats span{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.28);backdrop-filter:blur(4px);padding:6px 15px;border-radius:18px;font-size:.85rem;font-weight:600}
+.hero-stats span b{font-weight:900;font-variant-numeric:tabular-nums}
+/* 라이브 배지 — 매일 바뀌는 문구가 여기 돈다 */
+.hero-live{display:inline-flex;align-items:center;gap:8px;background:rgba(0,0,0,.34);border:1px solid rgba(255,255,255,.3);backdrop-filter:blur(6px);padding:7px 16px 7px 13px;border-radius:999px;font-size:.87rem;font-weight:700;margin-bottom:16px;max-width:92vw}
+.hero-live #hero-live-txt{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:opacity .45s}
+.hero-live b{font-weight:900;color:#ffd9a8}
+.hero-live .dot{flex:none;width:8px;height:8px;border-radius:50%;background:#4ade80;box-shadow:0 0 0 0 rgba(74,222,128,.7);animation:hpulse 2.2s infinite}
+@keyframes hpulse{0%{box-shadow:0 0 0 0 rgba(74,222,128,.6)}70%{box-shadow:0 0 0 9px rgba(74,222,128,0)}100%{box-shadow:0 0 0 0 rgba(74,222,128,0)}}
+/* 스크롤 등장 */
+.reveal{opacity:0;transform:translateY(14px);transition:opacity .55s ease,transform .55s ease}
+.reveal.on{opacity:1;transform:none}
+/* ⚠️ 모바일에서는 비디오를 아예 틀지 않는다 — 이 사이트 모바일 비중이 65~93%라 LCP가 곧 이탈이다 */
+@media(max-width:820px){.hero-vid{display:none}}
+@media(prefers-reduced-motion:reduce){.hero-vid{display:none}.hero-live .dot{animation:none}.reveal{opacity:1;transform:none;transition:none}}
 main{padding:36px 0 56px}
 h2.sec{position:relative;font-size:1.45rem;font-weight:800;letter-spacing:-.02em;margin:48px 0 18px;padding-left:15px}
 h2.sec::before{content:'';position:absolute;left:0;top:14%;width:5px;height:72%;background:linear-gradient(180deg,#0f9d8f,#2dd4bf);border-radius:4px}
@@ -1699,14 +1712,130 @@ const FAQ_HOME = [
 const FAQ_HOME_HTML = `<div class="wrap"><section class="faqbox"><h2>❓ 자주 묻는 질문</h2>${FAQ_HOME.map(q=>`<details><summary>${q[0]}</summary><p>${q[1]}</p></details>`).join('')}</section></div>`;
 const FAQ_HOME_LD = `<script type="application/ld+json">${JSON.stringify({'@context':'https://schema.org','@type':'FAQPage',mainEntity:FAQ_HOME.map(q=>({'@type':'Question',name:q[0],acceptedAnswer:{'@type':'Answer',text:q[1]}}))})}</script>`;
 
+// ---------- 히어로 라이브 문구 ----------
+// "살아있는 사이트" 느낌은 영상이 아니라 **매일 바뀌는 숫자**에서 나온다.
+// 빌드가 매일 돌므로(자동글쓰기 09:32) 아래 문구도 매일 달라진다.
+const HERO_LIVE = (() => {
+  // ⚠️ stret/trails 는 이 시점보다 뒤에서 로드되므로 파일에서 직접 센다
+  const cntFile = f => { try { const j = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', f), 'utf8')); return Array.isArray(j) ? j.length : 0; } catch (e) { return 0; } };
+  const nWalk = cntFile('stret.json') + cntFile('trails.json');
+  const nSpot = cntFile('spots_ko.json');
+  const today = TODAY.replace(/-/g, '');
+  const d0 = new Date(+TODAY.slice(0, 4), +TODAY.slice(5, 7) - 1, +TODAY.slice(8, 10));
+  const ymd = d => d.getFullYear() + ('0' + (d.getMonth() + 1)).slice(-2) + ('0' + d.getDate()).slice(-2);
+  // 이번 주말(다가오는 토·일)
+  const sat = new Date(d0); sat.setDate(sat.getDate() + ((6 - sat.getDay() + 7) % 7));
+  const sun = new Date(sat); sun.setDate(sun.getDate() + 1);
+  const inRange = (f, a, b) => String(f.start) <= b && String(f.end) >= a;
+
+  const now = apiFests.filter(f => String(f.start) <= today && String(f.end) >= today);
+  const wk = apiFests.filter(f => inRange(f, ymd(sat), ymd(sun)));
+  // 곧 시작하는 축제 (7일 이내)
+  const soon = apiFests.filter(f => {
+    const s = String(f.start); if (s <= today) return false;
+    const dt = new Date(+s.slice(0, 4), +s.slice(4, 6) - 1, +s.slice(6, 8));
+    return Math.round((dt - d0) / 86400e3) <= 7;
+  }).sort((a, b) => String(a.start).localeCompare(String(b.start)));
+
+  // 이달 가장 붐비는 곳 / 한산한 곳
+  const M = d0.getMonth() + 1;
+  const rep = [1, 4, 8, 10].reduce((a, b) => (Math.abs(b - M) < Math.abs(a - M) ? b : a), 1);
+  const list = ((visitors.seasonByMonth || {}).months || {})[String(rep)] || [];
+  const hot = list.filter(r => r.idx).sort((a, b) => b.idx - a.idx)[0];
+  // ⚠️ '한적한 곳'에 서울 동작구 같은 자치구가 뽑히면 여행지로 안 읽힌다. 광역시 구는 뺀다.
+  const METRO_SIDO = ['서울', '부산', '대구', '인천', '광주', '대전', '울산'];
+  const quiet = list.filter(r => r.idx && r.num > 1500000
+    && !(METRO_SIDO.indexOf(r.sido) >= 0 && /구$/.test(r.name)))
+    .sort((a, b) => a.idx - b.idx)[0];
+
+  // 롤링 문구 — 방문할 때마다 순환한다
+  const lines = [];
+  if (now.length) lines.push(`🎪 지금 <b>${now.length}개</b> 축제가 열리고 있어요`);
+  if (wk.length) lines.push(`📅 이번 주말엔 <b>${wk.length}개</b>가 열립니다`);
+  if (soon.length) lines.push(`⏳ <b>${esc(soon[0].title)}</b> 개막이 코앞이에요`);
+  if (hot) lines.push(`🔥 이달 가장 붐비는 곳 · <b>${esc(hot.sido)} ${esc(hot.name)}</b> 평소의 ×${hot.idx}`);
+  if (quiet) lines.push(`🤫 사람 적은 곳 찾는다면 · <b>${esc(quiet.sido)} ${esc(quiet.name)}</b> ×${quiet.idx}`);
+  lines.push(`🥾 걷기길 <b>${nWalk.toLocaleString()}</b>개 코스를 거리·소요시간까지`);
+  if (!lines.length) lines.push('🎪 전국 축제와 오일장 일정을 한눈에');
+
+  return {
+    lines,
+    stats: [
+      ['🎪', now.length || festivals.length, now.length ? '지금 열리는 축제' : '축제'],
+      ['📅', wk.length, '이번 주말'],
+      ['🧭', nSpot, '관광지'],
+      ['🥾', nWalk, '걷기길 코스']
+    ]
+  };
+})();
+
+
+// 히어로 인터랙션 — 카운트업 · 라이브 문구 롤링 · 스크롤 등장
+// ⚠️ prefers-reduced-motion 이면 전부 끈다(접근성). 모션이 과하면 오히려 싸구려로 보인다.
+const HERO_JS = `<script>
+(function(){
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // 1) 숫자 카운트업
+  function countUp(el){
+    var to = +el.getAttribute('data-to') || 0;
+    if (reduce || to === 0){ el.textContent = to.toLocaleString('ko-KR'); return; }
+    var dur = 900, t0 = null;
+    function step(t){
+      if(!t0) t0 = t;
+      var p = Math.min((t - t0) / dur, 1);
+      var e = 1 - Math.pow(1 - p, 3);
+      el.textContent = Math.round(to * e).toLocaleString('ko-KR');
+      if(p < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+  var cnts = [].slice.call(document.querySelectorAll('.hero-stats .cnt'));
+  if ('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ countUp(e.target); io.unobserve(e.target); } });
+    }, {threshold:.4});
+    cnts.forEach(function(el){ io.observe(el); });
+  } else { cnts.forEach(countUp); }
+
+  // 2) 라이브 문구 롤링
+  var box = document.getElementById('hero-live-txt');
+  var raw = document.getElementById('hero-live-data');
+  if (box && raw && !reduce){
+    var lines = [];
+    try { lines = JSON.parse(raw.textContent); } catch(e){}
+    if (lines.length > 1){
+      var i = 0;
+      setInterval(function(){
+        i = (i + 1) % lines.length;
+        box.style.opacity = 0;
+        setTimeout(function(){ box.innerHTML = lines[i]; box.style.opacity = 1; }, 450);
+      }, 4200);
+    }
+  }
+
+  // 3) 스크롤 등장
+  if (!reduce && 'IntersectionObserver' in window){
+    var ro = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('on'); ro.unobserve(e.target); } });
+    }, {threshold:.12});
+    [].slice.call(document.querySelectorAll('.reveal')).forEach(function(el){ ro.observe(el); });
+  } else {
+    [].slice.call(document.querySelectorAll('.reveal')).forEach(function(el){ el.classList.add('on'); });
+  }
+})();
+<\/script>`;
+
 const indexContent = `<div class="hero">
-<video class="hero-vid" autoplay muted loop playsinline poster="/img/hero.webp" aria-hidden="true"><source src="/img/hero.mp4" type="video/mp4"></video>
+<video class="hero-vid" autoplay muted loop playsinline preload="none" poster="/img/hero.webp" aria-hidden="true"><source src="/img/hero.mp4" type="video/mp4"></video>
 <div class="hero-inner">
+<div class="hero-live"><span class="dot"></span><span id="hero-live-txt">${HERO_LIVE.lines[0]}</span></div>
 <h1>이번 주말, 어디로 떠나볼까요?</h1>
 <p>전국 축제와 오일장 일정을 한눈에 — 가족 나들이 계획이 3분이면 끝나요.</p>
-<div class="hero-cta"><a class="cta1" href="#weekend-title">이번 주말 축제 보기</a><a class="cta2" href="/test/">🔮 축제 취향 테스트</a></div>
-<div class="hero-stats"><span>🎪 축제 ${festivals.length}개</span><span>🧺 오일장 ${markets.length}곳</span><span>📅 매달 업데이트</span></div>
+<div class="hero-cta"><a class="cta1" href="#weekend-title">이번 주말 축제 보기</a><a class="cta2" href="/course/">🧭 내 조건으로 코스 짜기</a></div>
+<div class="hero-stats">${HERO_LIVE.stats.map(([e, n, l]) => `<span>${e} <b class="cnt" data-to="${n}">0</b> ${l}</span>`).join('')}</div>
 </div>
+<script id="hero-live-data" type="application/json">${JSON.stringify(HERO_LIVE.lines)}</script>
 </div>
 <main><div class="wrap">
 <div id="myfavs-sec" style="display:none">
@@ -1799,7 +1928,7 @@ const HOME_DEPTH = (() => {
 writePage('.', layout(
   `${SITE_NAME} — 전국 축제·오일장 일정 총정리 (2026)`,
   `2026 전국 축제 일정과 오일장(5일장) 날짜를 한눈에. 월별·지역별 축제 정보, 보령머드축제부터 화천산천어축제까지.`,
-  '/', indexContent + HOME_DEPTH + FAQ_HOME_HTML, { jsonld: eventsJsonLd(upcoming) + FAQ_HOME_LD, alternates: homeAlts() }));
+  '/', indexContent + HOME_DEPTH + FAQ_HOME_HTML + HERO_JS, { jsonld: eventsJsonLd(upcoming) + FAQ_HOME_LD, alternates: homeAlts() }));
 
 // ---------- 개인정보처리방침 ----------
 const privacyContent = `<main><div class="wrap"><article>
