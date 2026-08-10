@@ -907,8 +907,8 @@ document.querySelectorAll('.rbtn').forEach(b => b.addEventListener('click', () =
 // 비용: 세션(3턴) 약 20~25원. api/plan.js 의 4중 캡(Referer·IP 12회/일·전체 400회/일·max_tokens 900)을 그대로 탄다.
 // ★ 접었다 펴는 형태 — 안 누르면 호출이 아예 없다. 그래서 페이지 수를 늘려도 비용이 안 늘어난다.
 const NEAR_AI_CSS = `
-.nai{margin:34px 0 8px;border:1.5px solid #d9f0ec;border-radius:16px;background:#f7fcfb;overflow:hidden}
-.nai>summary{list-style:none;cursor:pointer;padding:16px 18px;font-weight:800;color:#0c7d72;display:flex;align-items:center;gap:9px}
+.nai{margin:34px 0 8px;border:2px solid #9fdcd3;border-radius:16px;background:#f2fbf9;overflow:hidden;box-shadow:0 3px 14px rgba(15,157,143,.09)}
+.nai>summary{list-style:none;cursor:pointer;padding:15px 18px;font-weight:900;font-size:1.03rem;color:#0a6c63;display:flex;align-items:center;gap:9px;background:#e4f6f2}
 .nai>summary::-webkit-details-marker{display:none}
 .nai>summary::after{content:'＋';margin-left:auto;font-weight:700;color:#8fc9c1}
 .nai[open]>summary::after{content:'−'}
@@ -932,7 +932,10 @@ const NEAR_AI_CSS = `
 function nearAiBox(place, data, chips) {
   const cs = (chips || ['축제 말고 근처에 뭐가 더 있나요?', '비 오면 어디로 갈까요?', '아이랑 가도 괜찮은 곳은?'])
     .map(c => `<button type="button">${esc(c)}</button>`).join('');
-  return `<details class="nai" id="nai">
+  // ⚠️ 2026-08-10: 원래 접혀 있었는데, 장남 님이 "AI 상담이 어디 있냐"고 물으셨다. 못 찾으신 게 맞다.
+  //    접어둔 이유가 "비용"이라고 적어 뒀었는데 **틀린 인과였다** — API 호출은 칩이나 「보내기」를 눌러야 일어난다.
+  //    펼치는 것만으로는 호출이 0이다. 즉 접어둔 건 비용을 한 푼도 안 아끼면서 발견성만 죽이고 있었다.
+  return `<details class="nai" id="nai" open>
 <summary>💬 이 근처, 또 어디 가면 좋을지 물어보세요</summary>
 <div class="naib">
 <p class="naih">이 페이지에 정리해 둔 <b>${esc(place)}</b> 주변 자료만 보고 답합니다. 없는 곳을 지어내지 않습니다.</p>
