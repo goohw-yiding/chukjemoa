@@ -1521,12 +1521,14 @@ function layout(title, desc, urlPath, content, opts) {
   const alts = (opts.alternates || []).map(a => `<link rel="alternate" hreflang="${a.hreflang}" href="${SITE}${a.href}">`).join('\n');
   const logoHref = lang === 'ko' ? '/' : '/' + lang + '/';
   const NAVS = {
-    en: `<nav><a href="/en/">Home</a><a href="/en/search/">🔎 Festivals</a><a href="/en/mountains/">⛰️ Mountains</a><a href="/en/cafe/">☕ Cafés</a><a href="/en/trend/">🔥 Rankings</a><a href="/en/trip/">🧳 1st/2nd/3rd visit</a><a href="/">🇰🇷 한국어</a></nav>`,
-    ja: `<nav><a href="/ja/">ホーム</a><a href="/ja/search/">🔎 お祭り検索</a><a href="/ja/mountains/">⛰️ 名山</a><a href="/ja/cafe/">☕ カフェ</a><a href="/ja/trend/">🔥 人気ランキング</a><a href="/ja/trip/">🧳 何回目の訪韓</a><a href="/">🇰🇷 한국어</a></nav>`,
-    es: `<nav><a href="/es/">Inicio</a><a href="/es/search/">🔎 Buscar festivales</a><a href="/es/trend/">🔥 Rankings</a><a href="/es/trip/">🧳 Según tu visita</a><a href="/">🇰🇷 한국어</a></nav>`,
-    zh: `<nav><a href="/zh/">首页</a><a href="/zh/search/">🔎 庆典搜索</a><a href="/zh/mountains/">⛰️ 名山</a><a href="/zh/cafe/">☕ 咖啡馆</a><a href="/zh/trend/">🔥 人气排行</a><a href="/zh/trip/">🧳 第几次来韩国</a><a href="/">🇰🇷 한국어</a></nav>`,
+    // ⚠️ 2026-08-10: 외국어 내비에 실전 3종(언제 가나·문 닫는 날·무장애)을 **앞쪽에** 넣었다.
+    //    외국인이 오기 전에 제일 먼저 찾는 게 그것인데, 축제 검색보다 뒤에 두면 안 눌린다.
+    en: `<nav><a href="/en/">Home</a><a href="/en/calendar/">🗓️ When to go</a><a href="/en/closed/">🚪 What closes</a><a href="/en/access/">♿ Barrier-free</a><a href="/en/search/">🔎 Festivals</a><a href="/en/mountains/">⛰️ Mountains</a><a href="/en/cafe/">☕ Cafés</a><a href="/en/trend/">🔥 Rankings</a><a href="/en/trip/">🧳 1st/2nd/3rd visit</a><a href="/">🇰🇷 한국어</a></nav>`,
+    ja: `<nav><a href="/ja/">ホーム</a><a href="/ja/calendar/">🗓️ いつ行くか</a><a href="/ja/closed/">🚪 休む日</a><a href="/ja/access/">♿ バリアフリー</a><a href="/ja/search/">🔎 お祭り検索</a><a href="/ja/mountains/">⛰️ 名山</a><a href="/ja/cafe/">☕ カフェ</a><a href="/ja/trend/">🔥 人気ランキング</a><a href="/ja/trip/">🧳 何回目の訪韓</a><a href="/">🇰🇷 한국어</a></nav>`,
+    es: `<nav><a href="/es/">Inicio</a><a href="/es/calendar/">🗓️ Cuándo ir</a><a href="/es/closed/">🚪 Qué cierra</a><a href="/es/access/">♿ Accesibilidad</a><a href="/es/search/">🔎 Buscar festivales</a><a href="/es/trend/">🔥 Rankings</a><a href="/es/trip/">🧳 Según tu visita</a><a href="/">🇰🇷 한국어</a></nav>`,
+    zh: `<nav><a href="/zh/">首页</a><a href="/zh/calendar/">🗓️ 什么时候去</a><a href="/zh/closed/">🚪 哪天关门</a><a href="/zh/access/">♿ 无障碍</a><a href="/zh/search/">🔎 庆典搜索</a><a href="/zh/mountains/">⛰️ 名山</a><a href="/zh/cafe/">☕ 咖啡馆</a><a href="/zh/trend/">🔥 人气排行</a><a href="/zh/trip/">🧳 第几次来韩国</a><a href="/">🇰🇷 한국어</a></nav>`,
     // 번체는 오일장이 주력 콘텐츠라 내비에 올린다(간체엔 없음 — 언어별 무기가 다르다)
-    tw: `<nav><a href="/tw/">首頁</a><a href="/tw/search/">🔎 慶典搜尋</a><a href="/tw/jangteo/">🏮 五日市集</a><a href="/tw/mountains/">⛰️ 名山</a><a href="/tw/cafe/">☕ 咖啡廳</a><a href="/tw/trend/">🔥 人氣排行</a><a href="/tw/trip/">🧳 第幾次來韓國</a><a href="/">🇰🇷 한국어</a></nav>`
+    tw: `<nav><a href="/tw/">首頁</a><a href="/tw/calendar/">🗓️ 什麼時候去</a><a href="/tw/closed/">🚪 哪天休息</a><a href="/tw/access/">♿ 無障礙</a><a href="/tw/search/">🔎 慶典搜尋</a><a href="/tw/jangteo/">🏮 五日市集</a><a href="/tw/mountains/">⛰️ 名山</a><a href="/tw/cafe/">☕ 咖啡廳</a><a href="/tw/trend/">🔥 人氣排行</a><a href="/tw/trip/">🧳 第幾次來韓國</a><a href="/">🇰🇷 한국어</a></nav>`
   };
   const nav = lang === 'ko'
     ? KO_NAV
@@ -1645,6 +1647,11 @@ function writePage(rel, html) {
 // 축제 사이트인데 개별 축제 페이지가 0개였다(2026-08-09 발견). 검색 수요의 대부분이 개별 축제명인데 받을 페이지가 없었다.
 const FESTIVAL_URLS = require('./festival.js').build({ ROOT, layout, writePage, SITE_NAME, SITE, buyBox, festBuyBox, nearAiBox, TODAY });
 const MAP_URLS = require('./map.js').build({ ROOT, layout, writePage, SITE_NAME, buyBox, TODAY });
+
+// ---------- 🌐 외국어 실전 정보 (/{lang}/closed·access·calendar) ----------
+// 외국인이 오기 전에 제일 궁금한 것 = 문 여나 / 언제 가나 / 휠체어로 갈 수 있나.
+// K-ETA·환율·유심은 우리 데이터가 아니라 안 다룬다. 자세한 배경은 intl.js 머리말 참고.
+const INTL_URLS = require('./intl.js').build({ layout, writePage, TODAY });
 
 let FEST_PAGES = [];
 try { FEST_PAGES = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/festival_pages.json'), 'utf8')); } catch (e) { }
@@ -5043,7 +5050,7 @@ require('./trip-data.js').build(ROOT);
 const TRIP_URLS = require('./trip.js').build({ ROOT, layout, writePage, SITE_NAME });
 
 // ---------- sitemap / robots ----------
-const urls = ['/', ...MONTHS.map(m => `/${m.key}/`), '/search/', ...(holidays.length ? ['/holiday/'] : []), '/pet/', ...(apiAccessible.length ? ['/accessible/'] : []), ...(apiTrails.length ? ['/trails/'] : []), ...(apiValleys.length ? ['/valley/'] : []), ...(apiMaple.length ? ['/maple/'] : []), ...(apiFlower.length ? ['/flower/'] : []), ...(apiOnsen.length ? ['/onsen/'] : []), '/jangteo/', '/test/', '/trip-cost/', ...(visitors.kor && visitors.kor.length ? ['/trend/'] : []), ...SIDO_URLS, ...THEME_URLS, ...TRAIL_URLS, ...WALK_URLS, ...TREND_LANG_URLS, '/blog/', ...posts.map(p => `/blog/${p.slug}/`), '/about/', EDITORIAL_URL, '/contact/', '/privacy/',...(apiFestsEn.length ? ['/en/', '/en/search/'] : []), ...(apiFestsJa.length ? ['/ja/', '/ja/search/'] : []), ...(apiFestsEs.length ? ['/es/', '/es/search/'] : []), ...(apiFestsZh.length ? ['/zh/', '/zh/search/'] : []), ...(apiFestsTw.length ? ['/tw/', '/tw/search/'] : []), ...TW_EXTRA_URLS, ...MOUNTAIN_URLS, ...CAFE_URLS, ...HOT_URLS, ...COURSE_URLS, ...TRIP_URLS, ...FESTIVAL_URLS, ...MAP_URLS];
+const urls = ['/', ...MONTHS.map(m => `/${m.key}/`), '/search/', ...(holidays.length ? ['/holiday/'] : []), '/pet/', ...(apiAccessible.length ? ['/accessible/'] : []), ...(apiTrails.length ? ['/trails/'] : []), ...(apiValleys.length ? ['/valley/'] : []), ...(apiMaple.length ? ['/maple/'] : []), ...(apiFlower.length ? ['/flower/'] : []), ...(apiOnsen.length ? ['/onsen/'] : []), '/jangteo/', '/test/', '/trip-cost/', ...(visitors.kor && visitors.kor.length ? ['/trend/'] : []), ...SIDO_URLS, ...THEME_URLS, ...TRAIL_URLS, ...WALK_URLS, ...TREND_LANG_URLS, '/blog/', ...posts.map(p => `/blog/${p.slug}/`), '/about/', EDITORIAL_URL, '/contact/', '/privacy/',...(apiFestsEn.length ? ['/en/', '/en/search/'] : []), ...(apiFestsJa.length ? ['/ja/', '/ja/search/'] : []), ...(apiFestsEs.length ? ['/es/', '/es/search/'] : []), ...(apiFestsZh.length ? ['/zh/', '/zh/search/'] : []), ...(apiFestsTw.length ? ['/tw/', '/tw/search/'] : []), ...TW_EXTRA_URLS, ...MOUNTAIN_URLS, ...CAFE_URLS, ...HOT_URLS, ...COURSE_URLS, ...TRIP_URLS, ...FESTIVAL_URLS, ...MAP_URLS, ...INTL_URLS];
 // noindex 페이지는 사이트맵에서 뺀다 — "색인해라(사이트맵) + 하지마라(noindex)"는 모순 신호다.
 const NOINDEX_URLS = new Set([...SIDO_URLS, ...THEME_URLS]);
 const sitemapUrls = urls.filter(u => !NOINDEX_URLS.has(u));
