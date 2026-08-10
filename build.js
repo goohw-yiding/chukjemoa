@@ -1108,8 +1108,23 @@ nav>a{margin-left:18px;font-weight:600;font-size:.95rem;color:#4b5563}
 nav>a.nhot{margin-left:8px;padding:8px 15px;border-radius:20px;background:linear-gradient(135deg,#ff5a3c,#ff8a5c);color:#fff;font-weight:800;font-size:.92rem;box-shadow:0 4px 12px rgba(255,90,60,.3)}
 nav>a.nhot:hover{filter:brightness(1.06)}
 .navtoggle{display:none;border:1.5px solid #dcefeb;background:#fff;color:#0f9d8f;font-size:1.15rem;width:44px;height:38px;border-radius:11px;cursor:pointer;line-height:1;font-family:inherit}
+/* 헤더 검색 — 로고와 메뉴 사이 빈 공간. 축제 이름을 아는 사람이 가장 많은데 검색이 메뉴 안에 숨어 있었다 */
+.hsrch{position:relative;flex:1;max-width:330px;margin:0 18px}
+.hsrch input{width:100%;padding:9px 14px 9px 36px;border:1.5px solid #e0efec;border-radius:20px;background:#f7fbfa url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230f9d8f' stroke-width='2.4' stroke-linecap='round'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cpath d='M20 20l-3.6-3.6'/%3E%3C/svg%3E") no-repeat 12px center/15px;font-family:inherit;font-size:.92rem;color:#1f2937;transition:border-color .18s,background-color .18s,box-shadow .18s}
+.hsrch input::placeholder{color:#9aa8b2}
+.hsrch input:focus{outline:none;border-color:#5ac8ba;background-color:#fff;box-shadow:0 0 0 3px rgba(15,157,143,.12)}
+.hsrch .hres{display:none;position:absolute;top:calc(100% + 7px);left:0;right:0;background:#fff;border:1px solid #e4f2ee;border-radius:14px;box-shadow:0 14px 34px rgba(31,41,55,.16);padding:6px;max-height:62vh;overflow:auto;z-index:70}
+.hsrch.open .hres{display:block}
+.hsrch .hres a{display:flex;align-items:center;gap:9px;padding:9px 11px;border-radius:10px;font-size:.9rem;color:#374151;line-height:1.35}
+.hsrch .hres a:hover,.hsrch .hres a.sel{background:#effaf8;color:#0a6c63}
+.hsrch .hres a i{flex:none;font-style:normal;font-size:.7rem;font-weight:800;color:#0c7d72;background:#e6f6f3;border-radius:7px;padding:3px 7px}
+.hsrch .hres a b{font-weight:800;color:#0f9d8f}
+.hsrch .hres .hall{border-top:1px solid #f0f6f5;margin-top:4px;color:#6b7280;font-weight:700}
+.hsrch .hres .hnone{padding:12px;font-size:.88rem;color:#8b95a1}
+@media(max-width:1080px){.hsrch{max-width:230px;margin:0 12px}}
 @media(max-width:880px){
 .navtoggle{display:block}
+.hsrch{display:none}
 nav{display:none;order:3;width:100%;flex-direction:column;align-items:stretch;gap:0;padding-top:10px;margin-top:10px;border-top:1px solid #e4f2ee}
 nav.open{display:flex}
 nav>a{display:block;margin:0;padding:10px 4px}
@@ -1182,6 +1197,62 @@ const NAV_JS = `<script>
 // 마크업은 하나도 안 고치고 DOM을 읽어서 붙이는 방식이라, 새 페이지가 늘어도 자동 적용된다.
 // ⚠️ prefers-reduced-motion 이면 전부 정지. 모바일 비중 65~93%라 scroll 은 전부 passive + rAF.
 // ⚠️ 홈(.hero 존재)에는 목차를 안 만든다 — 홈은 이미 자체 구조가 있다.
+// 헤더 검색 — 인덱스는 첫 타이핑 때 1회만 받는다(초기 로딩에 부담 주지 않기 위해)
+const HSEARCH_JS = `<script>
+(function(){
+  var box=document.getElementById('hsrch'), inp=document.getElementById('hsrch-in'), res=document.getElementById('hsrch-res');
+  if(!box||!inp||!res) return;
+  var IDX=null, sel=-1, items=[];
+  function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+  function load(){ if(IDX) return Promise.resolve(IDX);
+    return fetch('/hsearch.json').then(function(r){return r.json();}).then(function(j){IDX=j;return j;}).catch(function(){IDX=[];return IDX;}); }
+  function mark(t,q){ var i=t.toLowerCase().indexOf(q); if(i<0) return esc(t);
+    return esc(t.slice(0,i))+'<b>'+esc(t.slice(i,i+q.length))+'</b>'+esc(t.slice(i+q.length)); }
+  function render(q){
+    var ql=q.toLowerCase();
+    var hit=IDX.filter(function(r){return r[0].toLowerCase().indexOf(ql)>=0;});
+    // 앞에서 걸린 것 먼저, 그다음 짧은 제목 먼저
+    hit.sort(function(a,b){ var ai=a[0].toLowerCase().indexOf(ql), bi=b[0].toLowerCase().indexOf(ql);
+      return ai-bi || a[0].length-b[0].length; });
+    hit=hit.slice(0,8);
+    var h=hit.map(function(r){return '<a href="'+r[1]+'"><i>'+esc(r[2])+'</i><span>'+mark(r[0],ql)+'</span></a>';}).join('');
+    h+='<a class="hall" href="/search/?kw='+encodeURIComponent(q)+'">🔎 「'+esc(q)+'」 전체 축제에서 찾기</a>';
+    if(!hit.length) h='<div class="hnone">이름이 딱 맞는 페이지는 없습니다. 아래로 전체 축제를 찾아보세요.</div>'+h;
+    res.innerHTML=h; box.classList.add('open'); sel=-1;
+    items=[].slice.call(res.querySelectorAll('a'));
+  }
+  var tm;
+  inp.addEventListener('input',function(){
+    var q=inp.value.trim();
+    clearTimeout(tm);
+    if(q.length<1){ box.classList.remove('open'); return; }
+    tm=setTimeout(function(){ load().then(function(){ render(q); }); },120);
+  });
+  inp.addEventListener('focus',function(){ if(inp.value.trim()) box.classList.add('open'); load(); });
+  inp.addEventListener('keydown',function(e){
+    if(!box.classList.contains('open')){ if(e.key==='Enter'&&inp.value.trim()) location.href='/search/?kw='+encodeURIComponent(inp.value.trim()); return; }
+    if(e.key==='ArrowDown'||e.key==='ArrowUp'){
+      e.preventDefault();
+      if(!items.length) return;
+      if(sel>=0) items[sel].classList.remove('sel');
+      sel=(sel+(e.key==='ArrowDown'?1:-1)+items.length)%items.length;
+      items[sel].classList.add('sel'); items[sel].scrollIntoView({block:'nearest'});
+    } else if(e.key==='Enter'){
+      e.preventDefault();
+      if(sel>=0&&items[sel]) location.href=items[sel].getAttribute('href');
+      else if(inp.value.trim()) location.href='/search/?kw='+encodeURIComponent(inp.value.trim());
+    } else if(e.key==='Escape'){ box.classList.remove('open'); inp.blur(); }
+  });
+  document.addEventListener('click',function(e){ if(!box.contains(e.target)) box.classList.remove('open'); });
+  // 데스크톱에서 / 키로 검색창 포커스
+  document.addEventListener('keydown',function(e){
+    if(e.key==='/'&&document.activeElement!==inp&&!/^(INPUT|TEXTAREA|SELECT)\$/.test((document.activeElement||{}).tagName||'')){
+      e.preventDefault(); inp.focus();
+    }
+  });
+})();
+<\/script>`;
+
 const TOC_LABEL = {
   ko: '이 페이지에서 볼 수 있는 것', en: 'On this page', ja: 'このページの内容',
   es: 'En esta página', zh: '本页内容', tw: '本頁內容'
@@ -1379,6 +1450,7 @@ ${opts.jsonld || ''}
 <body>
 <header><div class="wrap">
 <a class="logo" href="${logoHref}">🎪 ${SITE_NAME}</a>
+${lang === 'ko' ? `<div class="hsrch" id="hsrch"><input type="search" id="hsrch-in" placeholder="축제·코스·걷기길 검색" autocomplete="off" aria-label="사이트 검색"><div class="hres" id="hsrch-res"></div></div>` : ''}
 ${nav}
 </div></header>
 ${content}
@@ -1392,6 +1464,7 @@ ${FAV_JS}
 ${NEARBY_JS}
 ${lang === 'ko' ? FEST_BB_JS + MODAL_CALC_JS + FEST_MODAL_JS + PLACE_MODAL_JS : ''}
 ${urlPath === '/' ? FIREWORKS_JS : ''}
+${lang === 'ko' ? HSEARCH_JS : ''}
 ${motionJs(lang)}
 </body>
 </html>`;
@@ -4791,6 +4864,34 @@ const urls = ['/', ...MONTHS.map(m => `/${m.key}/`), '/search/', ...(holidays.le
 // noindex 페이지는 사이트맵에서 뺀다 — "색인해라(사이트맵) + 하지마라(noindex)"는 모순 신호다.
 const NOINDEX_URLS = new Set([...SIDO_URLS, ...THEME_URLS]);
 const sitemapUrls = urls.filter(u => !NOINDEX_URLS.has(u));
+
+// ---------- 헤더 검색 인덱스 /hsearch.json ----------
+// 로고와 메뉴 사이가 비어 있어서 검색창을 넣었다(2026-08-10).
+// ⚠️ 축제 이름을 아는 사람이 가장 많은데, 그동안 검색은 메뉴 안에 숨어 있었다.
+// 인덱스는 **빌드가 끝난 뒤 실제 생성된 HTML의 <title>** 에서 뽑는다 — 목록을 따로 관리하면 반드시 어긋난다.
+{
+  const KIND = u =>
+    u.startsWith('/festival/') && u !== '/festival/' ? '축제' :
+    u.startsWith('/course/') && u !== '/course/' ? '코스' :
+    u.startsWith('/trails/') && u !== '/trails/' ? '걷기길' :
+    u.startsWith('/blog/') && u !== '/blog/' ? '가이드' :
+    /^\/(en|ja|es|zh|tw)\//.test(u) ? '' : '페이지';
+  const idx = [];
+  urls.forEach(u => {
+    if (!KIND(u)) return;
+    if (NOINDEX_URLS.has(u)) return;
+    const f = path.join(ROOT, u === '/' ? 'index.html' : u.replace(/^\/|\/$/g, '') + '/index.html');
+    let t = '';
+    try { t = (fs.readFileSync(f, 'utf8').match(/<title>([^<]*)<\/title>/) || [])[1] || ''; } catch (e) { return; }
+    // "안동국제탈춤페스티벌 — 9월 24일 일정… | 축제모아" → 앞부분만
+    t = t.split('|')[0].split(' — ')[0].split(' - ')[0].trim();
+    if (!t) return;
+    idx.push([t, u, KIND(u)]);
+  });
+  fs.writeFileSync(path.join(ROOT, 'hsearch.json'), JSON.stringify(idx));
+  console.log('✓ hsearch.json —', idx.length, '건 (헤더 검색)');
+}
+
 
 // ---------- lastmod: 진짜 바뀐 날짜만 ----------
 // 매 빌드마다 109개 전부 오늘 날짜로 찍으면 크롤러가 "이 사이트는 매일 전체가 바뀐다"고 학습하고

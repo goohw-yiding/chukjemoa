@@ -325,8 +325,23 @@ nav>a{margin-left:18px;font-weight:600;font-size:.95rem;color:#4b5563}
 nav>a.nhot{margin-left:8px;padding:8px 15px;border-radius:20px;background:linear-gradient(135deg,#ff5a3c,#ff8a5c);color:#fff;font-weight:800;font-size:.92rem;box-shadow:0 4px 12px rgba(255,90,60,.3)}
 nav>a.nhot:hover{filter:brightness(1.06)}
 .navtoggle{display:none;border:1.5px solid #dcefeb;background:#fff;color:#0f9d8f;font-size:1.15rem;width:44px;height:38px;border-radius:11px;cursor:pointer;line-height:1;font-family:inherit}
+/* 헤더 검색 — 로고와 메뉴 사이 빈 공간. 축제 이름을 아는 사람이 가장 많은데 검색이 메뉴 안에 숨어 있었다 */
+.hsrch{position:relative;flex:1;max-width:330px;margin:0 18px}
+.hsrch input{width:100%;padding:9px 14px 9px 36px;border:1.5px solid #e0efec;border-radius:20px;background:#f7fbfa url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230f9d8f' stroke-width='2.4' stroke-linecap='round'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cpath d='M20 20l-3.6-3.6'/%3E%3C/svg%3E") no-repeat 12px center/15px;font-family:inherit;font-size:.92rem;color:#1f2937;transition:border-color .18s,background-color .18s,box-shadow .18s}
+.hsrch input::placeholder{color:#9aa8b2}
+.hsrch input:focus{outline:none;border-color:#5ac8ba;background-color:#fff;box-shadow:0 0 0 3px rgba(15,157,143,.12)}
+.hsrch .hres{display:none;position:absolute;top:calc(100% + 7px);left:0;right:0;background:#fff;border:1px solid #e4f2ee;border-radius:14px;box-shadow:0 14px 34px rgba(31,41,55,.16);padding:6px;max-height:62vh;overflow:auto;z-index:70}
+.hsrch.open .hres{display:block}
+.hsrch .hres a{display:flex;align-items:center;gap:9px;padding:9px 11px;border-radius:10px;font-size:.9rem;color:#374151;line-height:1.35}
+.hsrch .hres a:hover,.hsrch .hres a.sel{background:#effaf8;color:#0a6c63}
+.hsrch .hres a i{flex:none;font-style:normal;font-size:.7rem;font-weight:800;color:#0c7d72;background:#e6f6f3;border-radius:7px;padding:3px 7px}
+.hsrch .hres a b{font-weight:800;color:#0f9d8f}
+.hsrch .hres .hall{border-top:1px solid #f0f6f5;margin-top:4px;color:#6b7280;font-weight:700}
+.hsrch .hres .hnone{padding:12px;font-size:.88rem;color:#8b95a1}
+@media(max-width:1080px){.hsrch{max-width:230px;margin:0 12px}}
 @media(max-width:880px){
 .navtoggle{display:block}
+.hsrch{display:none}
 nav{display:none;order:3;width:100%;flex-direction:column;align-items:stretch;gap:0;padding-top:10px;margin-top:10px;border-top:1px solid #e4f2ee}
 nav.open{display:flex}
 nav>a{display:block;margin:0;padding:10px 4px}
@@ -346,6 +361,7 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 <body>
 <header><div class="wrap">
 <a class="logo" href="/zh/">🎪 축제모아</a>
+
 <button class="navtoggle" id="navtoggle" aria-label="menu" aria-expanded="false">☰</button><nav id="mainnav"><a href="/zh/">首页</a><a href="/zh/search/">🔎 庆典搜索</a><a href="/zh/mountains/">⛰️ 名山</a><a href="/zh/cafe/">☕ 咖啡馆</a><a href="/zh/trend/">🔥 人气排行</a><a href="/zh/trip/">🧳 第几次来韩国</a><a href="/">🇰🇷 한국어</a></nav>
 </div></header>
 <main><div class="wrap"><style>
@@ -568,6 +584,7 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
   });
 })();
 </script>
+
 
 
 <script>
