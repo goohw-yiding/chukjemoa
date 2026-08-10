@@ -303,7 +303,9 @@ const COUPANG = {
     flower:   { ico: '🧺', t: '봄꽃 나들이 준비물', s: '피크닉 돗자리', q: '접이식 돗자리', url: 'https://link.coupang.com/a/fXNSDlRDwa' },
     maple:    { ico: '🪑', t: '단풍 보면서 앉아 쉴 자리', s: '접어서 드는 폴딩 스툴 + 메쉬백', own: true, q: '캠핑의자', url: 'https://brand.naver.com/guung/products/13026204364',
                 up: ['gakline', 'chairs'] },
-    trails:   { ico: '🥾', t: '걷기 여행 준비물', s: '발 편한 등산화', q: '등산화', url: 'https://link.coupang.com/a/fXNZ2GivM4' },
+    // 걷기길 39페이지 — 자사 걷기용품이 아직 없어 제휴로 채운다. 등산스틱·무릎보호대는 발주 완료라 입고되면 자사로 교체.
+    trails:   { ico: '🥾', t: '걷기 여행 준비물', s: '발 편한 등산화', q: '등산화', url: 'https://link.coupang.com/a/fXNZ2GivM4',
+                up: ['pole', 'knee'] },
     // 20인치가 24인치보다 잘 팔린다(64개·177만 vs 34개·108만). 사이즈 선택은 검색 업셀로.
     tripcost: { ico: '🧳', t: '떠나기 전에, 가방부터', s: '초경량 여행 캐리어 20인치', own: true, q: '초경량 캐리어', url: 'https://brand.naver.com/guung/products/13159625424',
                 up: ['carriers', 'passport', 'nametag'] },
@@ -359,9 +361,46 @@ const COUPANG = {
     chairs:   { ico: '💺', t: '오래 앉을 거라면 등받이', s: '접이식 테라스 폴딩 캠핑의자 · 4색', own: true, q: '접이식 캠핑의자', url: 'https://brand.naver.com/guung/products/11585759983',
                 upT: '💺 등받이 폴딩 의자 — 스툴보다 오래 앉습니다' },
     // ⛰️ 명산 페이지용(가을 등산). 걷기길 자사상품이 없어 우선 스툴로 대응 — 걷기용품 소싱되면 교체
-    mountain: { ico: '🪑', t: '정상에서 앉아 쉴 자리', s: '접어서 드는 폴딩 스툴 + 메쉬백', own: true, q: '폴딩 스툴', url: 'https://brand.naver.com/guung/products/13026204364' }
+    mountain: { ico: '🪑', t: '정상에서 앉아 쉴 자리', s: '접어서 드는 폴딩 스툴 + 메쉬백', own: true, q: '폴딩 스툴', url: 'https://brand.naver.com/guung/products/13026204364' },
+
+    // ───── 자사 상품이 없는 자리를 우선 쿠팡으로 메운 것 (2026-08-10) ─────
+    // ⚠️ url 이 비어 있으면 일반 쿠팡 검색으로 폴백한다 = 링크는 살아 있지만 **수수료가 안 붙는다.**
+    //    partners.coupang.com → 검색결과 링크 → 아래 q 값 입력 → 나온 https://link.coupang.com/a/XXXX 를 url 에 넣을 것.
+    // ★ 교체 방법: 자사 상품이 입고되면 이 항목의 url 을 스마트스토어 주소로 바꾸고 own:true 를 켜면
+    //    고지 문구·rel·유입 파라미터까지 전부 자동으로 자사 모드로 바뀐다. 다른 곳은 손댈 필요 없다.
+    // 🔜 등산스틱·무릎보호대는 2026-08 발주 완료(등산스틱 Seabuo · 무릎보호대 途愫). 입고되면 여기부터 교체.
+    pole:     { ico: '🦯', t: '오래 걸을 거라면', s: '경량 등산스틱 (2단·손목스트랩)', q: '등산스틱', url: '',
+                upT: '🦯 등산스틱 — 내리막에서 무릎 부담을 줄입니다' },
+    knee:     { ico: '🦵', t: '내리막에서 무릎이 시큰하면', s: '무릎보호대 (압박형)', q: '무릎보호대', url: '',
+                upT: '🦵 무릎보호대 — 긴 코스일수록 차이가 납니다' },
+    hotpack:  { ico: '🔥', t: '겨울 축제는 추위와의 싸움', s: '손난로 핫팩 (붙이는 것·쥐는 것)', q: '핫팩', url: '',
+                upT: '🔥 핫팩 — 눈축제는 서 있는 시간이 깁니다' }
   }
 };
+
+// ---------- 축제 상세 140개의 상품 매칭 ----------
+// ⚠️ 2026-08-10: 축제 상세 140개가 **전부 같은 상품 세트**를 보여주고 있었다.
+//    안동 탈춤 보러 온 사람에게 아쿠아슈즈를 권하고 있던 셈이다.
+//    축제 이름으로 성격을 갈라 맞는 것만 붙인다(모달의 CJM_WATER_RE와 같은 사고).
+const FEST_KIND = [
+  [/물축제|물놀이|물싸움|머드|워터|해수욕|해변|바다축제|비치|계곡|서핑|모래|백사장|갯벌|조개|바지락/, ['aqua', 'suncap', 'necool']],
+  [/눈꽃|눈축제|얼음|빙어|송어|산천어|겨울|한파|스키|썰매|빙등/,                                    ['hotpack', 'chairs']],
+  [/불꽃|불빛|빛축제|등축제|야행|야간|미디어아트|루미나리에|별빛|달빛/,                              ['chairs', 'gakline']],
+  [/벚꽃|유채|장미|연꽃|국화|철쭉|코스모스|튤립|수국|해바라기|꽃축제|꽃무릇|상사화|매화|진달래/,      ['flower', 'gakline']],
+  [/음악|재즈|록페|뮤직|콘서트|가요|트로트|밴드|힙합|EDM|아리랑/,                                    ['gakline', 'chairs']],
+  [/김치|막국수|치맥|포도|사과|대추|한우|먹거리|음식|맛|푸드|미식|인삼|산나물|수박|딸기|감귤/,        ['festival', 'chairs']],
+  [/걷기|둘레길|올레|트레킹|도보|순례|숲길/,                                                        ['trails', 'pole', 'knee']],
+  // 문화·전통·공연은 '오래 서서 보거나 앉을 데가 없다'가 실제 불편이다. 등받이 의자가 객단가도 높다(개당 6.9만).
+  [/탈춤|국악|전통|문화제|민속|역사|재현|한마당|예술제|공연|연극|마당놀이|축제한마당/,                ['gakline', 'chairs']]
+];
+// 위 어디에도 안 걸리면(문화·전통·기타) 계절 로테이션 기본값을 쓴다.
+function festBuyBox(title) {
+  const t = String(title || '');
+  for (const [re, keys] of FEST_KIND) {
+    if (re.test(t)) return renderBuyBox(keys[0], keys.slice(1), 'festival-page');
+  }
+  return buyBox('festival');
+}
 // 페이지 키 → 이번 달에 실제로 노출할 상품 키 (bySeason 이 없으면 그대로)
 function seasonKey(pageKey) {
   const it = COUPANG.items[pageKey];
@@ -402,8 +441,15 @@ const BLOG_BUYBOX = {
   // 반려견 (여름 준비물 글)
   'pet-friendly-festival-guide':      ['pet', 'suncap'],
   // 걷기 — 현재 자사 걷기용품이 없어 제휴 등산화. 소싱 완료되면 교체할 것
-  'jeju-olle-course-guide':           ['trails'],
-  'jeju-olle-course-1':               ['trails']
+  'jeju-olle-course-guide':           ['trails', 'pole', 'knee'],
+  'jeju-olle-course-1':               ['trails', 'pole', 'knee'],
+  // 2026-08-10 추가 — 21편 중 6편이 아무 상품도 안 붙어 있었다
+  'walking-trails-by-distance':       ['trails', 'pole', 'knee'],   // 평균 13.5km라고 본문이 말하는 글
+  'maple-october-crowd-guide':        ['maple', 'chairs'],
+  'sangsahwa-kkotmuret-guide':        ['flower', 'gakline'],
+  'chuseok-2026-holiday-guide':       ['tripcost', 'carriers', 'car'],
+  'festival-food-hours-data':         ['festival', 'chairs'],
+  'national-treasure-cities-data':    ['trails', 'knee']            // 유적 답사는 결국 많이 걷는다
 };
 function buyBox(pageKey) {
   const key = seasonKey(pageKey);
@@ -1479,7 +1525,7 @@ function writePage(rel, html) {
 
 // ---------- 🎪 개별 축제 페이지 /festival/ ----------
 // 축제 사이트인데 개별 축제 페이지가 0개였다(2026-08-09 발견). 검색 수요의 대부분이 개별 축제명인데 받을 페이지가 없었다.
-const FESTIVAL_URLS = require('./festival.js').build({ ROOT, layout, writePage, SITE_NAME, SITE, buyBox, TODAY });
+const FESTIVAL_URLS = require('./festival.js').build({ ROOT, layout, writePage, SITE_NAME, SITE, buyBox, festBuyBox, TODAY });
 
 let FEST_PAGES = [];
 try { FEST_PAGES = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/festival_pages.json'), 'utf8')); } catch (e) { }

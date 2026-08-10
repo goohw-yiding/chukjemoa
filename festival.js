@@ -83,7 +83,7 @@ function near(list, x, y, maxKm, n) {
 }
 
 function build(ctx) {
-  const { ROOT, layout, writePage, SITE_NAME, SITE, buyBox, TODAY } = ctx;
+  const { ROOT, layout, writePage, SITE_NAME, SITE, buyBox, festBuyBox, TODAY } = ctx;
 
   const fes = load('festivals_api.json');
   const nearbyRaw = (() => { try { return JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'nearby.json'), 'utf8')); } catch (e) { return {}; } })();
@@ -248,7 +248,7 @@ ${nAcc.length ? `<h2 class="sec">무장애 여행 정보</h2>
 <ul class="flist">${nAcc.map(({ o, d }) => `<li>♿ <b>${esc(o.title)}</b> — ${d.toFixed(1)}km${o.acc && o.acc.length ? ` · ${esc(o.acc.join(' · '))}` : ''}</li>`).join('')}</ul>
 <p class="note">한국관광공사 무장애 관광정보에 등록된 시설입니다. 축제장 자체의 접근성은 주최 측에 확인하세요.</p>` : ''}
 
-${buyBox ? buyBox('festival') : ''}
+${festBuyBox ? festBuyBox(f.title) : (buyBox ? buyBox('festival') : '')}
 
 <h2 class="sec">자주 묻는 것</h2>
 ${faq.map(([q, a]) => `<p><b>${esc(q)}</b><br>${esc(a)}</p>`).join('')}
