@@ -83,6 +83,19 @@ const MONTHS = [
 
 const CAT_EMOJI = { '물놀이': '💦', '음악': '🎵', '음식': '🍜', '꽃': '🌸', '문화': '🎭', '불꽃': '🎆', '전통': '🏮', '빛': '✨', '눈': '⛄', '기타': '🎪' };
 const CAT_IMG = { '물놀이': 'water', '음악': 'music', '음식': 'food', '꽃': 'flower', '문화': 'culture', '불꽃': 'firework', '전통': 'tradition', '빛': 'light', '눈': 'snow', '기타': 'etc' };
+// ⚠️ 2026-08-10: 카테고리 일러스트가 10장뿐이라 같은 그림이 계속 반복되고 전부 붉은 톤이라
+//    목록이 답답해 보였다(장남님 지적). 카테고리마다 색을 완전히 다르게 잡아 새로 만들고,
+//    많이 쓰이는 카테고리는 변형을 2개씩 둬서 나란히 있어도 같은 그림이 안 뜨게 한다.
+//    (사진이 있는 축제는 원래대로 실사 사진이 우선이다 — 이건 사진 없는 40개용 폴백이다)
+const CAT_VARIANTS = { water: 2, music: 2, food: 2, flower: 2, culture: 2, firework: 1, tradition: 2, light: 2, snow: 2, etc: 2 };
+// 축제 이름으로 변형을 고정 선택 — 빌드마다 그림이 바뀌면 캐시·인상이 흔들린다
+function catImgOf(f) {
+  const key = CAT_IMG[f.category] || 'etc';
+  const n = CAT_VARIANTS[key] || 1;
+  let h = 0; const s2 = String(f.name || f.title || '');
+  for (let i = 0; i < s2.length; i++) h = (h * 31 + s2.charCodeAt(i)) >>> 0;
+  return '/img/cat2-' + key + '-' + 'abc'[h % n] + '.webp';
+}
 
 // ---------- 실사진 매칭 (큐레이션 축제 ↔ 공공데이터 이미지) ----------
 function normTitle(s) {
@@ -123,30 +136,30 @@ function realImgOf(f) {
 }
 // 카드 썸네일 URL(실사진 우선, 카테고리 폴백)
 function thumbOf(f) {
-  return realImgOf(f) || ('/img/cat-' + (CAT_IMG[f.category] || 'etc') + '.webp');
+  return realImgOf(f) || catImgOf(f);
 }
 // JSON-LD·OG용 절대 이미지 URL
 function absImgOf(f) {
   const r = realImgOf(f);
   if (r) return r.replace(/^http:/, 'https:');
-  return SITE + '/img/cat-' + (CAT_IMG[f.category] || 'etc') + '.webp';
+  return SITE + catImgOf(f);
 }
 // ---------- og:image ----------
 // 109페이지 전부 og:image가 없어서 카톡·SNS·숏폼에 링크를 붙여도 썸네일이 안 떴다.
 // 페이지 성격에 맞는 대표 이미지를 자동으로 물린다. 개별 지정은 layout opts.ogImage로.
 function ogImageFor(urlPath) {
   const u = String(urlPath || '/');
-  if (/^\/valley\//.test(u) || /\/trend\/valley\//.test(u)) return '/img/cat-water.webp';
-  if (/^\/maple\//.test(u) || /\/trend\/maple\//.test(u)) return '/img/cat-tradition.webp';
-  if (/^\/flower\//.test(u) || /\/trend\/flower\//.test(u)) return '/img/cat-flower.webp';
-  if (/^\/onsen\//.test(u) || /\/trend\/onsen\//.test(u)) return '/img/cat-light.webp';
+  if (/^\/valley\//.test(u) || /\/trend\/valley\//.test(u)) return '/img/cat2-water-b.webp';
+  if (/^\/maple\//.test(u) || /\/trend\/maple\//.test(u)) return '/img/cat2-tradition-b.webp';
+  if (/^\/flower\//.test(u) || /\/trend\/flower\//.test(u)) return '/img/cat2-flower-a.webp';
+  if (/^\/onsen\//.test(u) || /\/trend\/onsen\//.test(u)) return '/img/cat2-light-b.webp';
   if (/^\/jangteo\//.test(u)) return '/img/jangteo.webp';
   if (/^\/trails\//.test(u)) return '/img/olle1-07-coast.webp';
   if (/^\/blog\/jeju-olle/.test(u)) return '/img/olle1-01-daepyo.webp';
-  if (/^\/2026-1[12]\//.test(u)) return '/img/cat-snow.webp';
-  if (/^\/2026-0[678]\//.test(u)) return '/img/cat-water.webp';
-  if (/^\/holiday\//.test(u)) return '/img/cat-firework.webp';
-  if (/^\/pet\//.test(u)) return '/img/cat-etc.webp';
+  if (/^\/2026-1[12]\//.test(u)) return '/img/cat2-snow-a.webp';
+  if (/^\/2026-0[678]\//.test(u)) return '/img/cat2-water-a.webp';
+  if (/^\/holiday\//.test(u)) return '/img/cat2-firework-a.webp';
+  if (/^\/pet\//.test(u)) return '/img/cat2-etc-a.webp';
   return '/img/hero.webp';
 }
 
@@ -449,7 +462,7 @@ function festCard(f) {
   const dHp = mm && mm.hp ? ` data-hp="${escA(mm.hp)}"` : '';
   const dNear = mm && Array.isArray(nearby[mm.id]) && nearby[mm.id].length ? ` data-near="${encodeURIComponent(JSON.stringify(nearby[mm.id]))}"` : '';
   return `<div class="card" data-region="${esc(f.region)}" data-start="${f.start}" data-end="${f.end}" data-lat="${la}" data-lng="${lo}" data-name="${escA(f.name)}" data-city="${escA(f.city)}" data-place="${escA(f.place)}" data-desc="${escA(f.desc)}" data-cat="${escA(f.category)}" data-img="${escA(thumbOf(f))}"${dOv}${dHp}${dNear}>
-  <div class="thumb"><img src="${esc(thumbOf(f))}" alt="${esc(f.name)}" loading="lazy" onerror="this.src=&#39;/img/cat-${img}.webp&#39;"><span class="dday"></span><button class="fav" data-name="${esc(f.name)}" aria-label="찜하기">♡</button><span class="km"></span><span class="cat">${emoji} ${esc(f.category)}</span></div>
+  <div class="thumb"><img src="${esc(thumbOf(f))}" alt="${esc(f.name)}" loading="lazy" onerror="this.src=&#39;${catImgOf(f)}&#39;"><span class="dday"></span><button class="fav" data-name="${esc(f.name)}" aria-label="찜하기">♡</button><span class="km"></span><span class="cat">${emoji} ${esc(f.category)}</span></div>
   <div class="card-body">
   <div class="card-top">${badge}</div>
   <h3>${esc(f.name)}</h3>
@@ -2162,7 +2175,7 @@ function fy(y){return y?y.slice(0,4)+'.'+(+y.slice(4,6))+'.'+(+y.slice(6,8)):'';
 function esc(s){return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 function dday(f){var t=td(),s=toD(f.start),e=toD(f.end);if(e<t)return{l:'종료',c:'off'};if(s<=t)return{l:'진행중',c:'on'};return{l:'D-'+Math.round((s-t)/86400000),c:'on'};}
 function ranges(){var t=td(),w=t.getDay();var sat=new Date(t);sat.setDate(t.getDate()+((6-w+7)%7));var sun=new Date(sat);sun.setDate(sat.getDate()+1);var m0=new Date(t.getFullYear(),t.getMonth(),1),m1=new Date(t.getFullYear(),t.getMonth()+1,0),n0=new Date(t.getFullYear(),t.getMonth()+1,1),n1=new Date(t.getFullYear(),t.getMonth()+2,0);return{t:t,sat:sat,sun:sun,m0:m0,m1:m1,n0:n0,n1:n1};}
-function card(f){var d=dday(f),img=f.img||'/img/cat-culture.webp',loc=(f.sido||'')+(f.sigungu?' '+f.sigungu:'');return '<div class="card" data-id="'+esc(f.id)+'" style="cursor:pointer"><div class="thumb"><img loading="lazy" src="'+esc(img)+'" alt="'+esc(f.title)+'" onerror="this.src=&#39;/img/cat-culture.webp&#39;"><span class="dday '+d.c+'">'+d.l+'</span>'+(f.sido?'<span class="cat">'+esc(f.sido)+'</span>':'')+'</div><div class="card-body"><h3>'+esc(f.title)+'</h3><div class="date">'+fy(f.start)+' ~ '+fy(f.end)+'</div><div class="loc">'+esc(loc)+'</div></div></div>';}
+function card(f){var d=dday(f),img=f.img||'/img/cat2-culture-a.webp',loc=(f.sido||'')+(f.sigungu?' '+f.sigungu:'');return '<div class="card" data-id="'+esc(f.id)+'" style="cursor:pointer"><div class="thumb"><img loading="lazy" src="'+esc(img)+'" alt="'+esc(f.title)+'" onerror="this.src=&#39;/img/cat2-culture-a.webp&#39;"><span class="dday '+d.c+'">'+d.l+'</span>'+(f.sido?'<span class="cat">'+esc(f.sido)+'</span>':'')+'</div><div class="card-body"><h3>'+esc(f.title)+'</h3><div class="date">'+fy(f.start)+' ~ '+fy(f.end)+'</div><div class="loc">'+esc(loc)+'</div></div></div>';}
 function apply(){var r=ranges();var list=F.filter(function(f){if(!st.past&&!st.pet&&toD(f.end)<r.t)return false;if(st.pet&&!f.pet)return false;if(st.sido&&f.sido!==st.sido)return false;if(st.sigungu&&f.sigungu!==st.sigungu)return false;if(st.kw){var k=st.kw.toLowerCase();if((f.title||'').toLowerCase().indexOf(k)<0&&(f.addr||'').indexOf(st.kw)<0)return false;}if(st.quick==='now'&&!ov(f,r.t,r.t))return false;if(st.quick==='weekend'&&!ov(f,r.sat,r.sun))return false;if(st.quick==='month'&&!ov(f,r.m0,r.m1))return false;if(st.quick==='next'&&!ov(f,r.n0,r.n1))return false;return true;});list.sort(function(a,b){return (a.start||'').localeCompare(b.start||'');});document.getElementById('fCount').textContent='총 '+list.length+'개 축제';document.getElementById('fGrid').innerHTML=list.length?list.map(card).join(''):'<p style="grid-column:1/-1;color:#6b7280;padding:24px 0">조건에 맞는 축제가 없어요. 필터를 바꿔보세요.</p>';}
 function fillSg(){var set={};F.forEach(function(f){if((!st.sido||f.sido===st.sido)&&f.sigungu)set[f.sigungu]=1;});var arr=Object.keys(set).sort();document.getElementById('fSigungu').innerHTML='<option value="">전체 도시</option>'+arr.map(function(s){return '<option value="'+s+'">'+s+'</option>';}).join('');}
 document.getElementById('fSido').addEventListener('change',function(e){st.sido=e.target.value;st.sigungu='';fillSg();apply();});
@@ -2439,7 +2452,7 @@ function fy(y){return y?y.slice(0,4)+'.'+(+y.slice(4,6))+'.'+(+y.slice(6,8)):'';
 function esc(s){return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 function dday(f){var t=td(),s=toD(f.start),e=toD(f.end);if(e<t)return{l:'Ended',c:'off'};if(s<=t)return{l:'Ongoing',c:'on'};return{l:'D-'+Math.round((s-t)/86400000),c:'on'};}
 function ranges(){var t=td(),w=t.getDay();var sat=new Date(t);sat.setDate(t.getDate()+((6-w+7)%7));var sun=new Date(sat);sun.setDate(sat.getDate()+1);var m0=new Date(t.getFullYear(),t.getMonth(),1),m1=new Date(t.getFullYear(),t.getMonth()+1,0);return{t:t,sat:sat,sun:sun,m0:m0,m1:m1};}
-function card(f){var d=dday(f),img=f.img||'/img/cat-culture.webp';return '<div class="card" data-id="'+esc(f.id)+'" style="cursor:pointer"><div class="thumb"><img loading="lazy" src="'+esc(img)+'" alt="'+esc(f.title)+'" onerror="this.src=&#39;/img/cat-culture.webp&#39;"><span class="dday '+d.c+'">'+d.l+'</span>'+(f.region?'<span class="cat">'+esc(f.region)+'</span>':'')+'</div><div class="card-body"><h3>'+esc(f.title)+'</h3><div class="date">'+fy(f.start)+' ~ '+fy(f.end)+'</div><div class="loc">'+esc(f.region)+'</div></div></div>';}
+function card(f){var d=dday(f),img=f.img||'/img/cat2-culture-a.webp';return '<div class="card" data-id="'+esc(f.id)+'" style="cursor:pointer"><div class="thumb"><img loading="lazy" src="'+esc(img)+'" alt="'+esc(f.title)+'" onerror="this.src=&#39;/img/cat2-culture-a.webp&#39;"><span class="dday '+d.c+'">'+d.l+'</span>'+(f.region?'<span class="cat">'+esc(f.region)+'</span>':'')+'</div><div class="card-body"><h3>'+esc(f.title)+'</h3><div class="date">'+fy(f.start)+' ~ '+fy(f.end)+'</div><div class="loc">'+esc(f.region)+'</div></div></div>';}
 function apply(){var r=ranges();var list=F.filter(function(f){if(st.quick!=='past'&&toD(f.end)<r.t)return false;if(st.region&&f.region!==st.region)return false;if(st.kw){var k=st.kw.toLowerCase();if((f.title||'').toLowerCase().indexOf(k)<0&&(f.addr||'').toLowerCase().indexOf(k)<0)return false;}if(st.quick==='now'&&!ov(f,r.t,r.t))return false;if(st.quick==='weekend'&&!ov(f,r.sat,r.sun))return false;if(st.quick==='month'&&!ov(f,r.m0,r.m1))return false;return true;});list.sort(function(a,b){return (a.start||'').localeCompare(b.start||'');});document.getElementById('fCount').textContent=list.length+' festivals';document.getElementById('fGrid').innerHTML=list.length?list.map(card).join(''):'<p style="grid-column:1/-1;color:#6b7280;padding:24px 0">No festivals match. Try other filters.</p>';}
 function openModal(f){var m=document.getElementById('fmodal');var img=document.getElementById('fm-img');if(f.img){img.src=f.img;img.alt=(f.title||'')+' 사진';img.style.display='block';}else{img.alt='';img.style.display='none';}document.getElementById('fm-title').textContent=f.title;if(window.cjmFestBB)window.cjmFestBB('fm-bb',f.title,f.addr);document.getElementById('fm-meta').textContent=fy(f.start)+' ~ '+fy(f.end)+'  ·  '+(f.region||'')+(f.tel?'  ·  '+f.tel:'');document.getElementById('fm-ov').textContent=f.ov||'Overview coming soon. Please check the official website or Google.';var hp=document.getElementById('fm-hp');if(f.hp){hp.href=(f.hp.indexOf('http')===0?f.hp:'http://'+f.hp);hp.style.display='inline-block';}else{hp.style.display='none';}document.getElementById('fm-naver').href='https://www.google.com/search?q='+encodeURIComponent(f.title+' Korea festival');m.classList.add('show');}
 function closeModal(){document.getElementById('fmodal').classList.remove('show');}
@@ -2537,7 +2550,7 @@ function fy(y){return y?y.slice(0,4)+'.'+(+y.slice(4,6))+'.'+(+y.slice(6,8)):'';
 function esc(s){return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 function dday(f){var t=td(),s=toD(f.start),e=toD(f.end);if(e<t)return{l:LBL.ended,c:'off'};if(s<=t)return{l:LBL.ongoing,c:'on'};return{l:LBL.dpre+Math.round((s-t)/86400000)+LBL.dpost,c:'on'};}
 function ranges(){var t=td(),w=t.getDay();var sat=new Date(t);sat.setDate(t.getDate()+((6-w+7)%7));var sun=new Date(sat);sun.setDate(sat.getDate()+1);var m0=new Date(t.getFullYear(),t.getMonth(),1),m1=new Date(t.getFullYear(),t.getMonth()+1,0);return{t:t,sat:sat,sun:sun,m0:m0,m1:m1};}
-function card(f){var d=dday(f),img=f.img||'/img/cat-culture.webp';return '<div class="card" data-id="'+esc(f.id)+'" style="cursor:pointer"><div class="thumb"><img loading="lazy" src="'+esc(img)+'" alt="'+esc(f.title)+'" onerror="this.src=&#39;/img/cat-culture.webp&#39;"><span class="dday '+d.c+'">'+d.l+'</span>'+(f.region?'<span class="cat">'+esc(f.region)+'</span>':'')+'</div><div class="card-body"><h3>'+esc(f.title)+'</h3><div class="date">'+fy(f.start)+' ~ '+fy(f.end)+'</div><div class="loc">'+esc(f.region)+'</div></div></div>';}
+function card(f){var d=dday(f),img=f.img||'/img/cat2-culture-a.webp';return '<div class="card" data-id="'+esc(f.id)+'" style="cursor:pointer"><div class="thumb"><img loading="lazy" src="'+esc(img)+'" alt="'+esc(f.title)+'" onerror="this.src=&#39;/img/cat2-culture-a.webp&#39;"><span class="dday '+d.c+'">'+d.l+'</span>'+(f.region?'<span class="cat">'+esc(f.region)+'</span>':'')+'</div><div class="card-body"><h3>'+esc(f.title)+'</h3><div class="date">'+fy(f.start)+' ~ '+fy(f.end)+'</div><div class="loc">'+esc(f.region)+'</div></div></div>';}
 function apply(){var r=ranges();var list=F.filter(function(f){if(st.quick!=='past'&&toD(f.end)<r.t)return false;if(st.region&&f.region!==st.region)return false;if(st.kw){var k=st.kw.toLowerCase();if((f.title||'').toLowerCase().indexOf(k)<0&&(f.addr||'').toLowerCase().indexOf(k)<0)return false;}if(st.quick==='now'&&!ov(f,r.t,r.t))return false;if(st.quick==='weekend'&&!ov(f,r.sat,r.sun))return false;if(st.quick==='month'&&!ov(f,r.m0,r.m1))return false;return true;});list.sort(function(a,b){return (a.start||'').localeCompare(b.start||'');});document.getElementById('fCount').textContent=LBL.count.replace('%d',list.length);document.getElementById('fGrid').innerHTML=list.length?list.map(card).join(''):'<p style="grid-column:1/-1;color:#6b7280;padding:24px 0">'+LBL.noMatch+'</p>';}
 function openModal(f){var m=document.getElementById('fmodal');var img=document.getElementById('fm-img');if(f.img){img.src=f.img;img.alt=(f.title||'')+' 사진';img.style.display='block';}else{img.alt='';img.style.display='none';}document.getElementById('fm-title').textContent=f.title;if(window.cjmFestBB)window.cjmFestBB('fm-bb',f.title,f.addr);document.getElementById('fm-meta').textContent=fy(f.start)+' ~ '+fy(f.end)+'  ·  '+(f.region||'')+(f.tel?'  ·  '+f.tel:'');document.getElementById('fm-ov').textContent=f.ov||LBL.modalFallback;var hp=document.getElementById('fm-hp');if(f.hp){hp.href=(f.hp.indexOf('http')===0?f.hp:'http://'+f.hp);hp.style.display='inline-block';}else{hp.style.display='none';}document.getElementById('fm-naver').href='https://www.google.com/search?q='+encodeURIComponent(f.title+LBL.googleSuffix);m.classList.add('show');}
 function closeModal(){document.getElementById('fmodal').classList.remove('show');}
@@ -2867,10 +2880,10 @@ const SIDO_URLS = [];
 
 // 그 지역 축제 카드(공공데이터 apiFests 기준, 진행중·예정만)
 function sidoFestCard(f) {
-  const img = f.img ? String(f.img).replace(/^http:/, 'https:') : '/img/cat-culture.webp';
+  const img = f.img ? String(f.img).replace(/^http:/, 'https:') : '/img/cat2-culture-a.webp';
   const fy = y => y ? y.slice(0, 4) + '.' + (+y.slice(4, 6)) + '.' + (+y.slice(6, 8)) : '';
   return `<div class="card" data-name="${escA(f.title)}" data-start="${f.start}" data-end="${f.end}" data-region="${escA(f.sido || '')}" data-city="${escA(f.sigungu || '')}" data-place="${escA(f.addr || '')}" data-img="${escA(img)}"${f.ov ? ` data-ov="${escA(f.ov)}"` : ''}${f.hp ? ` data-hp="${escA(f.hp)}"` : ''}>
-  <div class="thumb"><img src="${esc(img)}" alt="${esc(f.title)}" loading="lazy" onerror="this.src='/img/cat-culture.webp'"><span class="dday"></span></div>
+  <div class="thumb"><img src="${esc(img)}" alt="${esc(f.title)}" loading="lazy" onerror="this.src='/img/cat2-culture-a.webp'"><span class="dday"></span></div>
   <div class="card-body"><h3>${esc(f.title)}</h3>
   <p class="date">📅 ${fy(f.start)} ~ ${fy(f.end)}</p>
   <p class="loc">📍 ${esc((f.sido || '') + ' ' + (f.sigungu || ''))}</p></div>
@@ -3118,13 +3131,13 @@ if (holidays.length && apiFests.length) {
   if (run && run.hasHol) blocks.push(run);
   const upcoming = blocks.filter(b => b.end >= today).slice(0, 8);
   function holCard(f) {
-    const img = f.img || '/img/cat-culture.webp';
+    const img = f.img || '/img/cat2-culture-a.webp';
     const loc = (f.sido || '') + (f.sigungu ? ' ' + f.sigungu : '');
     const iso = s => String(s).replace(/(\d{4})(\d{2})(\d{2})/, '$1-$2-$3');
     const dOv = f.ov ? ` data-ov="${escA(f.ov)}"` : '';
     const dHp = f.hp ? ` data-hp="${escA(f.hp)}"` : '';
     const dNear = Array.isArray(nearby[f.id]) && nearby[f.id].length ? ` data-near="${encodeURIComponent(JSON.stringify(nearby[f.id]))}"` : '';
-    return `<div class="card" style="cursor:pointer" data-name="${escA(f.title)}" data-start="${iso(f.start)}" data-end="${iso(f.end)}" data-region="${escA(f.sido || '')}" data-city="${escA(f.sigungu || '')}" data-img="${escA(img)}"${dOv}${dHp}${dNear}><div class="thumb"><img loading="lazy" src="${esc(img)}" alt="${esc(f.title)}" onerror="this.src=&#39;/img/cat-culture.webp&#39;"><span class="dday"></span>${f.sido ? `<span class="cat">${esc(f.sido)}</span>` : ''}</div><div class="card-body"><h3>${esc(f.title)}</h3><div class="date">📅 ${fyy(f.start)} ~ ${fyy(f.end)}</div><div class="loc">📍 ${esc(loc)}</div></div></div>`;
+    return `<div class="card" style="cursor:pointer" data-name="${escA(f.title)}" data-start="${iso(f.start)}" data-end="${iso(f.end)}" data-region="${escA(f.sido || '')}" data-city="${escA(f.sigungu || '')}" data-img="${escA(img)}"${dOv}${dHp}${dNear}><div class="thumb"><img loading="lazy" src="${esc(img)}" alt="${esc(f.title)}" onerror="this.src=&#39;/img/cat2-culture-a.webp&#39;"><span class="dday"></span>${f.sido ? `<span class="cat">${esc(f.sido)}</span>` : ''}</div><div class="card-body"><h3>${esc(f.title)}</h3><div class="date">📅 ${fyy(f.start)} ~ ${fyy(f.end)}</div><div class="loc">📍 ${esc(loc)}</div></div></div>`;
   }
   const sections = upcoming.map(b => {
     const uniq = [...new Set(b.names)];
@@ -3145,7 +3158,7 @@ if (holidays.length && apiFests.length) {
 ${sections || '<p class="note">다가오는 연휴 정보를 준비 중이에요.</p>'}
 <p class="note" style="margin-top:20px">공휴일 데이터: 한국천문연구원 특일정보(공공데이터포털). 축제 일정은 변경될 수 있으니 방문 전 공식 홈페이지를 확인하세요. 카드를 누르면 상세정보와 지도·검색 링크가 표시됩니다.</p>
 </div></main>`;
-  const holJsonLd = upcoming.slice(0, 3).flatMap(b => apiFests.filter(f => yd(f.start) <= b.end && yd(f.end) >= b.start).slice(0, 5)).map(f => `<script type="application/ld+json">${JSON.stringify({ '@context': 'https://schema.org', '@type': 'Event', name: f.title, startDate: String(f.start).replace(/(\d{4})(\d{2})(\d{2})/, '$1-$2-$3'), endDate: String(f.end).replace(/(\d{4})(\d{2})(\d{2})/, '$1-$2-$3'), eventStatus: 'https://schema.org/EventScheduled', eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode', description: evDesc(f), location: { '@type': 'Place', name: (f.sido || '') + (f.sigungu ? ' ' + f.sigungu : ''), address: { '@type': 'PostalAddress', addressRegion: f.sido, addressLocality: f.sigungu || undefined, streetAddress: f.addr || undefined, addressCountry: 'KR' } }, image: [f.img ? String(f.img).replace(/^http:/, 'https:') : SITE + '/img/cat-firework.webp'], url: SITE + '/holiday/' })}</script>`).join('\n');
+  const holJsonLd = upcoming.slice(0, 3).flatMap(b => apiFests.filter(f => yd(f.start) <= b.end && yd(f.end) >= b.start).slice(0, 5)).map(f => `<script type="application/ld+json">${JSON.stringify({ '@context': 'https://schema.org', '@type': 'Event', name: f.title, startDate: String(f.start).replace(/(\d{4})(\d{2})(\d{2})/, '$1-$2-$3'), endDate: String(f.end).replace(/(\d{4})(\d{2})(\d{2})/, '$1-$2-$3'), eventStatus: 'https://schema.org/EventScheduled', eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode', description: evDesc(f), location: { '@type': 'Place', name: (f.sido || '') + (f.sigungu ? ' ' + f.sigungu : ''), address: { '@type': 'PostalAddress', addressRegion: f.sido, addressLocality: f.sigungu || undefined, streetAddress: f.addr || undefined, addressCountry: 'KR' } }, image: [f.img ? String(f.img).replace(/^http:/, 'https:') : SITE + '/img/cat2-firework-a.webp'], url: SITE + '/holiday/' })}</script>`).join('\n');
   writePage('holiday', layout('2026 연휴에 갈 축제 — 설날·추석·광복절 황금연휴 축제 총정리 | ' + SITE_NAME, '2026 공휴일·연휴에 열리는 전국 축제를 한눈에. 설날·추석·광복절·개천절·한글날 연휴 나들이 계획을 축제모아에서.', '/holiday/', holContent, { jsonld: holJsonLd }));
 }
 
