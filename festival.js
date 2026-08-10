@@ -287,7 +287,86 @@ ${cand.filter(o => o !== f && o.sido !== f.sido && String(o.start).slice(4, 6) =
   });
 
   fs.writeFileSync(path.join(ROOT, 'data', 'festival_pages.json'), JSON.stringify(index));
-  console.log('✓ /festival/ —', urls.length, '페이지 (개요', MIN_OV, '자↑·사진·근처', MIN_NEAR, '곳↑·', FROM_YEAR, '년~)');
+
+  // 축제명 → 슬러그 맵. 모달이 "이 축제 상세 페이지가 있나?"를 물어볼 때 쓴다.
+  // ⚠️ 페이지마다 심으면 7KB씩 무거워지므로 별도 파일로 두고 모달 열 때 1회만 받아간다.
+  const slugMap = {};
+  index.forEach(r => { slugMap[r.title] = r.slug; });
+  try { fs.mkdirSync(path.join(ROOT, 'festival'), { recursive: true }); } catch (e) {}
+  fs.writeFileSync(path.join(ROOT, 'festival', 'map.json'), JSON.stringify(slugMap));
+
+  // ── 허브 /festival/
+  // ⚠️ 2026-08-10 발견: 상세 페이지 140개를 만들어 놓고 **목록 페이지를 안 만들었다.**
+  //    그래서 홈에서 이 140개로 가는 링크가 0개였고("월별 축제"를 거쳐야만 도달), 장남 님이 "랜딩페이지 어디 있냐"고 물으신 것.
+  //    사람이 찾을 수 없는 페이지는 만든 게 아니다.
+  {
+    const t0 = TODAY.replace(/-/g, '');
+    const withState = index.map(r => {
+      const ended = String(r.end) < t0, on = !ended && String(r.start) <= t0;
+      const a = new Date(+String(r.start).slice(0, 4), +String(r.start).slice(4, 6) - 1, +String(r.start).slice(6, 8));
+      const b = new Date(+TODAY.slice(0, 4), +TODAY.slice(5, 7) - 1, +TODAY.slice(8, 10));
+      return Object.assign({}, r, { ended, on, dday: Math.round((a - b) / 86400e3) });
+    });
+    const live = withState.filter(r => r.on);
+    const soon = withState.filter(r => !r.on && !r.ended).sort((a, b) => a.dday - b.dday);
+    const feat = live.concat(soon).slice(0, 24);
+
+    const card = r => `<a class="card" href="/festival/${r.slug}/">
+<div class="thumb"><span class="dday ${r.on ? 'on' : ''}">${r.on ? '진행 중' : (r.dday === 0 ? '오늘 개막' : 'D-' + r.dday)}</span>
+<img src="${esc(r.img)}" alt="${esc(r.title)}" loading="lazy"></div>
+<div class="card-body"><h3>${esc(r.title)}</h3>
+<div class="date">${fmtDate(String(r.start))} ~ ${fmtDate(String(r.end)).slice(5)}</div>
+<div class="loc">📍 ${esc(r.sido)}${r.sigungu ? ' ' + esc(r.sigungu) : ''}</div></div></a>`;
+
+    const bySido = {};
+    withState.forEach(r => (bySido[r.sido] = bySido[r.sido] || []).push(r));
+    const sidoOrder = Object.keys(bySido).sort((a, b) => bySido[b].length - bySido[a].length);
+    const sidoBlock = sidoOrder.map(s => `<details><summary><b>${esc(s)}</b> <span>${bySido[s].length}곳</span></summary>
+<ul class="flist">${bySido[s].sort((a, b) => String(a.start).localeCompare(String(b.start)))
+      .map(r => `<li><a href="/festival/${r.slug}/">${esc(r.title)}</a> <span class="note">${esc(r.sigungu || '')} · ${fmtDate(String(r.start)).slice(5)}${r.ended ? ' (종료)' : ''}</span></li>`).join('')}</ul></details>`).join('');
+
+    const mon = {};
+    withState.forEach(r => { const m = +String(r.start).slice(4, 6); (mon[m] = mon[m] || []).push(r); });
+    const monLine = Object.keys(mon).sort((a, b) => a - b)
+      .map(m => `<b>${m}월</b> ${mon[m].length}곳`).join(' · ');
+
+    const hub = `<main><div class="wrap">
+<h1>축제 상세 페이지 ${index.length}곳</h1>
+<p class="lead">일정만 적어 놓은 목록이 아닙니다. ${index.length}곳 각각에 <b>그 동네가 얼마나 붐비는지</b>, 걸어서 갈 수 있는 <b>맛집과 카페의 영업시간·휴무일</b>,
+근처 <b>걷기길의 거리와 소요시간</b>, 그리고 <b>그 축제를 중심으로 짠 하루 코스</b>까지 한 페이지에 넣었습니다.
+저희가 모은 축제 ${(fes || []).length.toLocaleString()}건 중 개요가 ${MIN_OV}자 넘고, 사진이 있고, 근처에 볼거리가 ${MIN_NEAR}곳 이상인 것만 골랐습니다.
+나머지는 페이지를 만들어도 읽을 게 없어서 만들지 않았습니다.</p>
+
+<h2 class="sec">지금 열리거나 곧 열리는 축제</h2>
+<p>진행 중 <b>${live.length}곳</b> · 개막 대기 <b>${soon.length}곳</b>. 가까운 순으로 24곳을 먼저 보여드립니다.</p>
+<div class="grid">${feat.map(card).join('')}</div>
+
+<h2 class="sec">지역으로 찾기</h2>
+<p>시·도를 누르면 그 지역 축제가 펼쳐집니다. 가장 많은 곳은 <b>${sidoOrder[0]}</b>(${bySido[sidoOrder[0]].length}곳)입니다.</p>
+<div class="fnum">${sidoBlock}</div>
+
+<h2 class="sec">달별로는 이렇게 흩어져 있습니다</h2>
+<p>${monLine}</p>
+<p class="note">개막일 기준입니다. 상설 전시나 연중 행사는 시작 월에 잡혀 있어 실제 관람 가능 기간과 다를 수 있습니다.</p>
+
+<h2 class="sec">코스로 이어서 보기</h2>
+<p>축제 하나만 보고 오기 아까울 때는 <a href="/course/">추천 코스</a>에서 지역·테마별로 짜 둔 일정을 보시거나,
+날짜와 조건을 넣어 <b>직접 코스를 만들어</b> 보실 수 있습니다. 축제 상세 페이지 안에도 그 축제 기준 하루 코스가 들어 있습니다.</p>
+
+<h2 class="sec">이 목록이 못 하는 것</h2>
+<p>축제 정보는 한국관광공사 API를 따르기 때문에, <b>주최 측이 아직 등록하지 않은 축제는 여기 없습니다.</b>
+매년 열리는 큰 축제인데 안 보인다면 대부분 그 이유입니다. 붐빔 배수도 축제장 앞이 아니라 <b>그 시·군·구 전체</b> 방문자 기준이라
+실제 현장 혼잡과는 다를 수 있습니다.</p>
+</div></main>`;
+
+    writePage('festival', layout(
+      `축제 상세 ${index.length}곳 — 일정·근처 맛집·걷기길·하루 코스 | ${SITE_NAME}`,
+      `전국 축제 ${index.length}곳의 상세 페이지. 일정과 장소는 물론 그 동네 붐빔 정도, 근처 맛집·카페 영업시간, 걷기길 거리, 축제 중심 하루 코스까지 한 페이지에 정리했습니다.`,
+      '/festival/', hub, {}));
+    urls.push('/festival/');
+  }
+
+  console.log('✓ /festival/ —', urls.length, '페이지 (허브 1 + 상세', index.length, '· 개요', MIN_OV, '자↑·사진·근처', MIN_NEAR, '곳↑·', FROM_YEAR, '년~)');
   return urls;
 }
 

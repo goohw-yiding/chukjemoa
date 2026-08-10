@@ -181,7 +181,8 @@ function build(ctx) {
 
   // ── 허브 /course/
   {
-    const presetChips = PRESETS.slice(0, 8).map(p =>
+    // ⚠️ slice(0,8) 이었다 — 12개를 만들어 놓고 8개만 링크해서 4개가 어디서도 못 닿는 페이지였다(2026-08-10).
+    const presetChips = PRESETS.map(p =>
       `<a class="cplink" href="/course/${p.slug}/">${p.h1}</a>`).join('');
     const faq = [
       ['축제모아 코스 제안은 무엇을 근거로 만드나요?', '한국관광공사 TourAPI의 축제·음식점·카페·숙박·자연 명소, 전국길관광정보 표준데이터의 걷기길 1,325개 코스(거리·소요시간·난이도), 한국관광 데이터랩의 시·군·구 방문자 수를 씁니다. 좌표로 동선을 정렬하고 걷기길의 실제 소요시간으로 하루 분량을 맞춥니다.'],
@@ -241,7 +242,7 @@ ${AI_BOX}
 ${LIMITS}
 <h2 class="sec">자주 묻는 것</h2>
 ${faq.map(([q, a]) => `<p><b>${q}</b><br>${a}</p>`).join('')}
-<div class="cpresets" style="margin-top:18px">${PRESETS.filter(o => o.slug !== p.slug).slice(0, 6).map(o => `<a class="cplink" href="/course/${o.slug}/">${o.h1}</a>`).join('')}</div>
+<div class="cpresets" style="margin-top:18px">${PRESETS.filter(o => o.slug !== p.slug).map(o => `<a class="cplink" href="/course/${o.slug}/">${o.h1}</a>`).join('')}</div>
 <p class="note" style="margin-top:18px">데이터 출처: 한국관광공사 TourAPI · 전국길관광정보 표준데이터 · 한국관광공사 「한국관광 데이터랩」. 영업시간·휴무일은 등록된 곳만 표시합니다. 방문 전 확인하세요.</p>
 </div></main>${SCRIPTS}`;
 

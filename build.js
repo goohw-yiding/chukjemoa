@@ -632,7 +632,7 @@ const FEST_MODAL_HTML = `<div id="festmodal" class="fmodal"><div class="fmbox">
 <p class="hint">자동차(연료+통행료+주차) vs 대중교통·KTX 편도 비용 비교 · <a href="/trip-cost/" style="color:#e0502f;font-weight:700">연비·유가 바꿔서 자세히 계산 →</a></p>
 </div>
 <div id="fm2-bb">${FEST_BB_BASE}</div>
-<div class="fm-links"><a id="fm2-hp" target="_blank" rel="noopener">🏛️ 공식 홈페이지</a><a id="fm2-naver" target="_blank" rel="noopener">🔎 네이버에서 보기</a></div>
+<div class="fm-links"><a id="fm2-page" class="fm-page">📄 이 축제 상세 페이지</a><a id="fm2-hp" target="_blank" rel="noopener">🏛️ 공식 홈페이지</a><a id="fm2-naver" target="_blank" rel="noopener">🔎 네이버에서 보기</a></div>
 </div></div>`;
 const FEST_MODAL_JS = `<script>
 (function(){
@@ -653,6 +653,15 @@ const FEST_MODAL_JS = `<script>
     var hp=document.getElementById('fm2-hp');
     if(ds.hp){hp.href=(ds.hp.indexOf('http')===0?ds.hp:'http://'+ds.hp);hp.style.display='inline-block';}else{hp.style.display='none';}
     document.getElementById('fm2-naver').href='https://search.naver.com/search.naver?query='+encodeURIComponent((ds.name||'')+' 축제');
+    // 이 축제에 상세 페이지가 있으면 그리로 보낸다.
+    // ⚠️ 상세 140개를 만들어 놓고 모달에서 링크를 안 걸어 둬서, 사이트 절반이 사람 눈에 안 보였다(2026-08-10).
+    (function(){
+      var btn=document.getElementById('fm2-page'); if(!btn) return;
+      btn.style.display='none';
+      var show=function(map){ var s=map&&map[ds.name]; if(s){ btn.href='/festival/'+s+'/'; btn.style.display='inline-block'; } };
+      if(!window.__fpP) window.__fpP=fetch('/festival/map.json').then(function(r){return r.json();}).catch(function(){return {};});
+      window.__fpP.then(show);
+    })();
     if(window.cjmResetCalc){var cp=window.cjmClean(ds.place);window.cjmResetCalc('fmc',window.cjmCands(ds.name,(ds.city?ds.city+' ':'')+cp,cp,(ds.region||'')+' '+(ds.city||''),ds.city));}
     m.classList.add('show');
   };
@@ -846,7 +855,29 @@ nav a:hover{color:#0f9d8f}
 .reveal.on{opacity:1;transform:none}
 /* ⚠️ 모바일에서는 비디오를 아예 틀지 않는다 — 이 사이트 모바일 비중이 65~93%라 LCP가 곧 이탈이다 */
 @media(max-width:820px){.hero-vid{display:none}}
-@media(prefers-reduced-motion:reduce){.hero-vid{display:none}.hero-live .dot{animation:none}.reveal{opacity:1;transform:none;transition:none}}
+.reveal.d1{transition-delay:.06s}.reveal.d2{transition-delay:.12s}
+/* 읽기 진행바 — 긴 페이지에서만 JS가 붙인다 */
+#readbar{position:fixed;top:0;left:0;height:3px;width:0;z-index:60;background:linear-gradient(90deg,#0f9d8f,#2dd4bf,#f59e0b);transition:width .12s linear;pointer-events:none}
+/* 자동 목차 — h2가 5개 이상인 페이지에 JS가 삽입 */
+.autotoc{margin:22px 0 4px;background:#f4fbfa;border:1px solid #d9f0ec;border-radius:14px;padding:14px 17px}
+.autotoc>b{display:block;font-size:.86rem;color:#0c7d72;margin-bottom:9px;font-weight:800;letter-spacing:-.01em}
+.autotoc ol{list-style:none;display:flex;flex-wrap:wrap;gap:7px}
+.autotoc a{display:inline-block;font-size:.86rem;font-weight:600;color:#4b5563;padding:5px 12px;border-radius:15px;background:#fff;border:1px solid #e2efec;transition:color .18s,border-color .18s,transform .18s,background .18s}
+.autotoc a:hover{color:#0f9d8f;border-color:#9fdcd3;transform:translateY(-1px)}
+.autotoc a.cur{background:#0f9d8f;color:#fff;border-color:#0f9d8f}
+/* 숫자 하이라이트 — 화면에 들어올 때 형광펜이 왼쪽에서 칠해진다 */
+.hl{background:linear-gradient(90deg,#ffe9b8,#ffe0a3);background-size:0 42%;background-repeat:no-repeat;background-position:0 86%;transition:background-size .75s cubic-bezier(.22,1,.36,1);border-radius:2px}
+.hl.on{background-size:100% 42%}
+/* 홈 진입 카드 — 안쪽 페이지로 가는 문 */
+.egrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(228px,1fr));gap:14px}
+.ecard{display:block;position:relative;overflow:hidden;background:#fff;border:1px solid #e4f2ee;border-radius:16px;padding:20px 18px 18px;box-shadow:0 2px 10px rgba(31,41,55,.05);transition:transform .2s,box-shadow .2s,border-color .2s}
+.ecard::after{content:'';position:absolute;left:0;top:0;height:3px;width:0;background:linear-gradient(90deg,#0f9d8f,#2dd4bf);transition:width .35s ease}
+.ecard:hover{transform:translateY(-4px);border-color:#bfe6df;box-shadow:0 14px 30px rgba(31,41,55,.12)}
+.ecard:hover::after{width:100%}
+.ecard .ei{display:block;font-size:1.6rem;margin-bottom:8px}
+.ecard b{display:block;font-size:1.06rem;font-weight:800;letter-spacing:-.02em;margin-bottom:6px;color:#0c7d72}
+.ecard span:not(.ei){display:block;font-size:.88rem;color:#5b6470;line-height:1.6}
+@media(prefers-reduced-motion:reduce){.hero-vid{display:none}.hero-live .dot{animation:none}.reveal{opacity:1;transform:none;transition:none}#readbar{display:none}.hl{background-size:100% 42%;transition:none}}
 main{padding:36px 0 56px}
 h2.sec{position:relative;font-size:1.45rem;font-weight:800;letter-spacing:-.02em;margin:48px 0 18px;padding-left:15px}
 h2.sec::before{content:'';position:absolute;left:0;top:14%;width:5px;height:72%;background:linear-gradient(180deg,#0f9d8f,#2dd4bf);border-radius:4px}
@@ -960,6 +991,8 @@ article ul{padding-left:20px}
 #fm-ov,#fm2-ov{color:#374151;font-size:.95rem;line-height:1.65}
 .fm-links{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
 .fm-links a{flex:1;min-width:140px;text-align:center;padding:12px;border-radius:12px;font-weight:800;font-size:.95rem}
+.fm-links a.fm-page{display:none;background:#0f9d8f;color:#fff;box-shadow:0 4px 14px rgba(15,157,143,.34)}
+.fm-links a.fm-page:hover{background:#0c8579}
 #fm-hp,#fm2-hp{background:#0f9d8f;color:#fff}
 #fm-naver,#fm2-naver{background:#f3f4f6;color:#374151;border:1.5px solid #dcefeb}
 .fmcalc{margin-top:18px;border:1.5px solid #ffd9cf;background:#fff8f6;border-radius:14px;padding:14px}
@@ -1098,6 +1131,7 @@ const KO_NAV = `<button class="navtoggle" id="navtoggle" aria-label="메뉴 열�
 <nav id="mainnav">
 <div class="ndrop"><button class="nbtn" type="button">🎪 축제<span class="arw">▼</span></button><div class="nmenu">
 <a href="/search/">🔎 축제 검색</a>
+<a href="/festival/">📄 축제 상세 페이지</a>
 <a href="/${CUR_MONTH_KEY}/">📅 월별 축제</a>
 <a href="/trend/">🔥 인기 여행지 랭킹</a>
 <a href="/holiday/">🎌 연휴 축제</a>
@@ -1116,8 +1150,12 @@ const KO_NAV = `<button class="navtoggle" id="navtoggle" aria-label="메뉴 열�
 <a href="/accessible/">♿ 무장애 여행</a>
 <a href="/jangteo/">🏮 전국 오일장</a>
 </div></div>
+<div class="ndrop"><button class="nbtn" type="button">🧭 코스<span class="arw">▼</span></button><div class="nmenu">
+<a href="/course/">🗓️ 추천 코스 보기</a>
+<a href="/course/#c-form">🛠️ 내 조건으로 짜기</a>
+<a href="/trip-cost/">🧮 여행비용 계산기</a>
+</div></div>
 <a class="nhot" href="/hot/">🔥 요즘 어디 가지</a>
-<a class="nhot" href="/trip-cost/">🧮 여행비용 계산기</a>
 <div class="ndrop"><button class="nbtn" type="button">🌐<span class="arw">▼</span></button><div class="nmenu">
 <a href="/en/">English</a>
 <a href="/ja/">日本語</a>
@@ -1138,18 +1176,123 @@ const NAV_JS = `<script>
 })();
 </script>`;
 
+// ───────────────────────────────────────────────────────────
+// 공통 모션 레이어 — 전 페이지(303개)에 들어간다
+// 홈만 살아 있고 내부 페이지는 정적 문서였던 걸 고친다.
+// 마크업은 하나도 안 고치고 DOM을 읽어서 붙이는 방식이라, 새 페이지가 늘어도 자동 적용된다.
+// ⚠️ prefers-reduced-motion 이면 전부 정지. 모바일 비중 65~93%라 scroll 은 전부 passive + rAF.
+// ⚠️ 홈(.hero 존재)에는 목차를 안 만든다 — 홈은 이미 자체 구조가 있다.
+const TOC_LABEL = {
+  ko: '이 페이지에서 볼 수 있는 것', en: 'On this page', ja: 'このページの内容',
+  es: 'En esta página', zh: '本页内容', tw: '本頁內容'
+};
+const motionJs = (lang) => `<script>
+(function(){
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var main = document.querySelector('main'); if(!main) return;
+  var wrap = main.querySelector('.wrap') || main;
+  var isHome = !!document.querySelector('.hero');
+
+  // 1) 읽기 진행바 — 스크롤할 게 많은 페이지에서만
+  if (!reduce && document.body.scrollHeight > 2400){
+    var bar = document.createElement('div'); bar.id = 'readbar'; document.body.appendChild(bar);
+    var t1 = false;
+    addEventListener('scroll', function(){
+      if (t1) return; t1 = true;
+      requestAnimationFrame(function(){
+        var h = document.documentElement.scrollHeight - innerHeight;
+        bar.style.width = (h > 0 ? Math.min(scrollY / h * 100, 100) : 0) + '%';
+        t1 = false;
+      });
+    }, {passive:true});
+  }
+
+  // 2) 자동 목차 — h2가 5개 이상인 긴 페이지만
+  var hs = [].slice.call(wrap.querySelectorAll('h2')).filter(function(h){ return h.textContent.trim().length > 1; });
+  var links = [];
+  if (!isHome && hs.length >= 5){
+    hs.forEach(function(h,i){ if(!h.id) h.id = 'sec' + (i+1); });
+    var toc = document.createElement('nav');
+    toc.className = 'autotoc';
+    var ol = document.createElement('ol');
+    hs.forEach(function(h){
+      var li = document.createElement('li'), a = document.createElement('a');
+      a.href = '#' + h.id;
+      a.textContent = h.textContent.trim().replace(/\\s+/g,' ').slice(0, 24);
+      li.appendChild(a); ol.appendChild(li);
+    });
+    var lb = document.createElement('b'); lb.textContent = ${JSON.stringify(TOC_LABEL[lang] || TOC_LABEL.ko)};
+    toc.appendChild(lb); toc.appendChild(ol);
+    hs[0].parentNode.insertBefore(toc, hs[0]);
+    links = [].slice.call(toc.querySelectorAll('a'));
+  }
+
+  // 3) 스크롤 등장 — 제목과 그 직후 블록 2개까지만 (전부 하면 산만하다)
+  if (!reduce){
+    hs.forEach(function(h){
+      h.classList.add('reveal');
+      var n = h.nextElementSibling, c = 0;
+      while (n && c < 2 && n.tagName !== 'H2'){
+        n.classList.add('reveal'); n.classList.add('d' + (c+1));
+        n = n.nextElementSibling; c++;
+      }
+    });
+  }
+
+  // 4) 숫자 형광펜 — 본문 굵은 글씨 중 숫자가 든 짧은 것
+  var hl = [];
+  if (!reduce){
+    [].slice.call(wrap.querySelectorAll('p b, li b, td b')).forEach(function(b){
+      var t = b.textContent;
+      if (/[0-9]/.test(t) && t.length <= 14 && !b.querySelector('*')) { b.classList.add('hl'); hl.push(b); }
+    });
+  }
+
+  // 5) 관찰 시작
+  var rev = [].slice.call(document.querySelectorAll('.reveal'));
+  if ('IntersectionObserver' in window && !reduce){
+    var ro = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('on'); ro.unobserve(e.target); } });
+    }, {threshold:.12});
+    rev.forEach(function(el){ ro.observe(el); });
+    var ho = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('on'); ho.unobserve(e.target); } });
+    }, {threshold:.85});
+    hl.forEach(function(el){ ho.observe(el); });
+  } else {
+    rev.forEach(function(el){ el.classList.add('on'); });
+    hl.forEach(function(el){ el.classList.add('on'); });
+  }
+
+  // 6) 목차 현재 위치 표시
+  if (links.length){
+    var spy = function(){
+      var y = scrollY + 150, cur = 0;
+      for (var i = 0; i < hs.length; i++){ if (hs[i].getBoundingClientRect().top + scrollY <= y) cur = i; }
+      for (var j = 0; j < links.length; j++){ links[j].classList.toggle('cur', j === cur); }
+    };
+    var t2 = false;
+    addEventListener('scroll', function(){
+      if (t2) return; t2 = true;
+      requestAnimationFrame(function(){ spy(); t2 = false; });
+    }, {passive:true});
+    spy();
+  }
+})();
+<\/script>`;
+
 function layout(title, desc, urlPath, content, opts) {
   opts = opts || {};
   const lang = opts.lang || 'ko';
   const alts = (opts.alternates || []).map(a => `<link rel="alternate" hreflang="${a.hreflang}" href="${SITE}${a.href}">`).join('\n');
   const logoHref = lang === 'ko' ? '/' : '/' + lang + '/';
   const NAVS = {
-    en: `<nav><a href="/en/">Home</a><a href="/en/search/">🔎 Festivals</a><a href="/en/mountains/">⛰️ Mountains</a><a href="/en/cafe/">☕ Cafés</a><a href="/en/trend/">🔥 Rankings</a><a href="/">🇰🇷 한국어</a></nav>`,
-    ja: `<nav><a href="/ja/">ホーム</a><a href="/ja/search/">🔎 お祭り検索</a><a href="/ja/mountains/">⛰️ 名山</a><a href="/ja/cafe/">☕ カフェ</a><a href="/ja/trend/">🔥 人気ランキング</a><a href="/">🇰🇷 한국어</a></nav>`,
-    es: `<nav><a href="/es/">Inicio</a><a href="/es/search/">🔎 Buscar festivales</a><a href="/es/trend/">🔥 Rankings</a><a href="/">🇰🇷 한국어</a></nav>`,
-    zh: `<nav><a href="/zh/">首页</a><a href="/zh/search/">🔎 庆典搜索</a><a href="/zh/mountains/">⛰️ 名山</a><a href="/zh/cafe/">☕ 咖啡馆</a><a href="/zh/trend/">🔥 人气排行</a><a href="/">🇰🇷 한국어</a></nav>`,
+    en: `<nav><a href="/en/">Home</a><a href="/en/search/">🔎 Festivals</a><a href="/en/mountains/">⛰️ Mountains</a><a href="/en/cafe/">☕ Cafés</a><a href="/en/trend/">🔥 Rankings</a><a href="/en/trip/">🧳 1st/2nd/3rd visit</a><a href="/">🇰🇷 한국어</a></nav>`,
+    ja: `<nav><a href="/ja/">ホーム</a><a href="/ja/search/">🔎 お祭り検索</a><a href="/ja/mountains/">⛰️ 名山</a><a href="/ja/cafe/">☕ カフェ</a><a href="/ja/trend/">🔥 人気ランキング</a><a href="/ja/trip/">🧳 何回目の訪韓</a><a href="/">🇰🇷 한국어</a></nav>`,
+    es: `<nav><a href="/es/">Inicio</a><a href="/es/search/">🔎 Buscar festivales</a><a href="/es/trend/">🔥 Rankings</a><a href="/es/trip/">🧳 Según tu visita</a><a href="/">🇰🇷 한국어</a></nav>`,
+    zh: `<nav><a href="/zh/">首页</a><a href="/zh/search/">🔎 庆典搜索</a><a href="/zh/mountains/">⛰️ 名山</a><a href="/zh/cafe/">☕ 咖啡馆</a><a href="/zh/trend/">🔥 人气排行</a><a href="/zh/trip/">🧳 第几次来韩国</a><a href="/">🇰🇷 한국어</a></nav>`,
     // 번체는 오일장이 주력 콘텐츠라 내비에 올린다(간체엔 없음 — 언어별 무기가 다르다)
-    tw: `<nav><a href="/tw/">首頁</a><a href="/tw/search/">🔎 慶典搜尋</a><a href="/tw/jangteo/">🏮 五日市集</a><a href="/tw/mountains/">⛰️ 名山</a><a href="/tw/cafe/">☕ 咖啡廳</a><a href="/tw/trend/">🔥 人氣排行</a><a href="/">🇰🇷 한국어</a></nav>`
+    tw: `<nav><a href="/tw/">首頁</a><a href="/tw/search/">🔎 慶典搜尋</a><a href="/tw/jangteo/">🏮 五日市集</a><a href="/tw/mountains/">⛰️ 名山</a><a href="/tw/cafe/">☕ 咖啡廳</a><a href="/tw/trend/">🔥 人氣排行</a><a href="/tw/trip/">🧳 第幾次來韓國</a><a href="/">🇰🇷 한국어</a></nav>`
   };
   const nav = lang === 'ko'
     ? KO_NAV
@@ -1249,6 +1392,7 @@ ${FAV_JS}
 ${NEARBY_JS}
 ${lang === 'ko' ? FEST_BB_JS + MODAL_CALC_JS + FEST_MODAL_JS + PLACE_MODAL_JS : ''}
 ${urlPath === '/' ? FIREWORKS_JS : ''}
+${motionJs(lang)}
 </body>
 </html>`;
 }
@@ -1897,7 +2041,22 @@ const HOME_DEPTH = (() => {
   const nFesPage = FEST_PAGES.length;
   const nSg = (((visitors.seasonByMonth || {}).months || {})['8'] || []).length;
 
+  // ⚠️ 2026-08-10: 상세 140개·코스 13개를 만들어 놓고 홈에서 가는 길을 안 만들었다.
+  //    "만들었는데 못 찾겠다"는 지적이 나온 이유. 홈 상단부에 진입 카드를 둔다.
   return `<div class="wrap">
+<h2 class="sec">깊이 보고 싶으면 여기부터</h2>
+<div class="egrid">
+<a class="ecard" href="/festival/"><span class="ei">📄</span><b>축제 상세 ${nFesPage}곳</b>
+<span>일정만이 아니라 그 동네 붐빔 정도, 근처 맛집·카페 영업시간, 걷기길 거리, 축제 중심 하루 코스까지 한 페이지에.</span></a>
+<a class="ecard" href="/course/"><span class="ei">🧭</span><b>추천 코스 13개</b>
+<span>지역·테마별로 짜 둔 당일치기~2박3일. 날짜와 조건을 넣으면 이동시간까지 계산해 새로 짜 드립니다.</span></a>
+<a class="ecard" href="/trails/"><span class="ei">🥾</span><b>걷기길 ${nWalk.toLocaleString()}개 코스</b>
+<span>제주올레·해파랑길·갈맷길까지 브랜드별·지역별로. 거리와 소요시간을 붙여 놨습니다.</span></a>
+<a class="ecard" href="/trend/"><span class="ei">🔥</span><b>인기 여행지 랭킹</b>
+<span>작년 같은 달 대비 성수기 배수로 계산합니다. 지금 붐비는 곳과 한적한 곳을 같이 보여드립니다.</span></a>
+</div>
+</div>
+<div class="wrap">
 <h2 class="sec">축제모아가 가진 것</h2>
 <p>여행 정보를 '많이 모은' 사이트는 이미 많습니다. 저희가 다르게 하려는 건 <b>숫자로 답하는 것</b>입니다.
 어디가 예쁘다는 말 대신, 그 동네가 이번 달 평소보다 몇 배 붐비는지를 방문자 데이터로 보여드립니다.
@@ -2125,6 +2284,8 @@ const searchContent = `<main><div class="wrap">
 #fm-ov{color:#374151;font-size:.95rem;line-height:1.65}
 .fm-links{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
 .fm-links a{flex:1;min-width:140px;text-align:center;padding:12px;border-radius:12px;font-weight:800;font-size:.95rem}
+.fm-links a.fm-page{display:none;background:#0f9d8f;color:#fff;box-shadow:0 4px 14px rgba(15,157,143,.34)}
+.fm-links a.fm-page:hover{background:#0c8579}
 #fm-hp{background:#0f9d8f;color:#fff}
 #fm-naver{background:#f3f4f6;color:#374151;border:1.5px solid #dcefeb}
 .srchbar .chk{display:inline-flex;align-items:center;gap:5px;font-size:.9rem;font-weight:700;color:#0c7d72;cursor:pointer;background:#f4faf8;border:1.5px solid #dcefeb;border-radius:12px;padding:9px 12px}
