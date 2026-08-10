@@ -361,7 +361,8 @@ const COUPANG = {
     chairs:   { ico: '💺', t: '오래 앉을 거라면 등받이', s: '접이식 테라스 폴딩 캠핑의자 · 4색', own: true, q: '접이식 캠핑의자', url: 'https://brand.naver.com/guung/products/11585759983',
                 upT: '💺 등받이 폴딩 의자 — 스툴보다 오래 앉습니다' },
     // ⛰️ 명산 페이지용(가을 등산). 걷기길 자사상품이 없어 우선 스툴로 대응 — 걷기용품 소싱되면 교체
-    mountain: { ico: '🪑', t: '정상에서 앉아 쉴 자리', s: '접어서 드는 폴딩 스툴 + 메쉬백', own: true, q: '폴딩 스툴', url: 'https://brand.naver.com/guung/products/13026204364' },
+    mountain: { ico: '🪑', t: '정상에서 앉아 쉴 자리', s: '접어서 드는 폴딩 스툴 + 메쉬백', own: true, q: '폴딩 스툴', url: 'https://brand.naver.com/guung/products/13026204364',
+                up: ['pole', 'knee'] },
 
     // ───── 자사 상품이 없는 자리를 우선 쿠팡으로 메운 것 (2026-08-10) ─────
     // ⚠️ url 이 비어 있으면 일반 쿠팡 검색으로 폴백한다 = 링크는 살아 있지만 **수수료가 안 붙는다.**
@@ -369,11 +370,11 @@ const COUPANG = {
     // ★ 교체 방법: 자사 상품이 입고되면 이 항목의 url 을 스마트스토어 주소로 바꾸고 own:true 를 켜면
     //    고지 문구·rel·유입 파라미터까지 전부 자동으로 자사 모드로 바뀐다. 다른 곳은 손댈 필요 없다.
     // 🔜 등산스틱·무릎보호대는 2026-08 발주 완료(등산스틱 Seabuo · 무릎보호대 途愫). 입고되면 여기부터 교체.
-    pole:     { ico: '🦯', t: '오래 걸을 거라면', s: '경량 등산스틱 (2단·손목스트랩)', q: '등산스틱', url: '',
+    pole:     { ico: '🦯', t: '오래 걸을 거라면', s: '경량 등산스틱 (2단·손목스트랩)', q: '등산스틱', url: 'https://link.coupang.com/a/f55oqk7CGi',
                 upT: '🦯 등산스틱 — 내리막에서 무릎 부담을 줄입니다' },
-    knee:     { ico: '🦵', t: '내리막에서 무릎이 시큰하면', s: '무릎보호대 (압박형)', q: '무릎보호대', url: '',
+    knee:     { ico: '🦵', t: '내리막에서 무릎이 시큰하면', s: '무릎보호대 (압박형)', q: '무릎보호대', url: 'https://link.coupang.com/a/f55ro9jebQ',
                 upT: '🦵 무릎보호대 — 긴 코스일수록 차이가 납니다' },
-    hotpack:  { ico: '🔥', t: '겨울 축제는 추위와의 싸움', s: '손난로 핫팩 (붙이는 것·쥐는 것)', q: '핫팩', url: '',
+    hotpack:  { ico: '🔥', t: '겨울 축제는 추위와의 싸움', s: '손난로 핫팩 (붙이는 것·쥐는 것)', q: '핫팩', url: 'https://link.coupang.com/a/f55uDRMZ9o',
                 upT: '🔥 핫팩 — 눈축제는 서 있는 시간이 깁니다' }
   }
 };
@@ -393,6 +394,14 @@ const FEST_KIND = [
   // 문화·전통·공연은 '오래 서서 보거나 앉을 데가 없다'가 실제 불편이다. 등받이 의자가 객단가도 높다(개당 6.9만).
   [/탈춤|국악|전통|문화제|민속|역사|재현|한마당|예술제|공연|연극|마당놀이|축제한마당/,                ['gakline', 'chairs']]
 ];
+// 월별 축제 페이지(7~12월) — 그 달 날씨에 맞는 준비물. 여름은 더위, 가을은 앉을 자리, 겨울은 추위.
+function monthBuyBox(m) {
+  const keys = m >= 6 && m <= 8 ? ['festival', 'necool', 'suncap']
+    : m >= 9 && m <= 10 ? ['maple', 'gakline', 'chairs']
+      : (m >= 11 || m <= 2) ? ['hotpack', 'chairs']
+        : ['flower', 'gakline'];
+  return `<div class="wrap">${renderBuyBox(keys[0], keys.slice(1), 'month-' + m)}</div>`;
+}
 // 위 어디에도 안 걸리면(문화·전통·기타) 계절 로테이션 기본값을 쓴다.
 function festBuyBox(title) {
   const t = String(title || '');
@@ -1608,7 +1617,11 @@ ${monthNavHtml}
 <p class="note" style="margin-top:16px">데이터 출처: 한국관광공사 TourAPI(축제 정보) · 한국관광공사 「한국관광 데이터랩」(시·군·구 방문자 수).</p>
 </div></main>`;
   const mFaqLd = `<script type="application/ld+json">${JSON.stringify({ '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: mFaq.map(q => ({ '@type': 'Question', name: q[0], acceptedAnswer: { '@type': 'Answer', text: String(q[1]).replace(/<[^>]+>/g, '') } })) })}</script>`;
-  writePage(mm.key, layout(title, desc, `/${mm.key}/`, content, { jsonld: eventsJsonLd(list) + mFaqLd }));
+  // ⚠️ 2026-08-10: 월별 6페이지에 구매박스가 아예 없었다. "8월에 어디 갈까"를 보러 온 사람이라
+  //    준비물 구매의도가 오히려 높은 자리다. 그 달 날씨에 맞는 것을 붙인다.
+  writePage(mm.key, layout(title, desc, `/${mm.key}/`,
+    content.indexOf('</main>') >= 0 ? content.replace('</main>', monthBuyBox(M) + '</main>') : content + monthBuyBox(M),
+    { jsonld: eventsJsonLd(list) + mFaqLd }));
 });
 
 // ---------- 오일장 페이지 ----------
