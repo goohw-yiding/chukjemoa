@@ -351,6 +351,28 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 .nmenu::before{display:none}
 .nmenu a{display:inline-block;padding:7px 12px;margin:3px 6px 3px 0;background:#f4faf8;border:1px solid #e4f2ee;font-size:.88rem}
 }
+
+.nai{margin:34px 0 8px;border:1.5px solid #d9f0ec;border-radius:16px;background:#f7fcfb;overflow:hidden}
+.nai>summary{list-style:none;cursor:pointer;padding:16px 18px;font-weight:800;color:#0c7d72;display:flex;align-items:center;gap:9px}
+.nai>summary::-webkit-details-marker{display:none}
+.nai>summary::after{content:'＋';margin-left:auto;font-weight:700;color:#8fc9c1}
+.nai[open]>summary::after{content:'−'}
+.nai .naib{padding:0 18px 18px}
+.nai .naih{font-size:.88rem;color:#5b6470;line-height:1.6;margin-bottom:12px}
+.nai .nailog{display:flex;flex-direction:column;gap:10px;margin-bottom:12px}
+.nai .naimsg{padding:11px 14px;border-radius:13px;font-size:.92rem;line-height:1.66;white-space:pre-wrap}
+.nai .naimsg.u{background:#0f9d8f;color:#fff;align-self:flex-end;max-width:82%;border-bottom-right-radius:4px}
+.nai .naimsg.a{background:#fff;border:1px solid #e4f2ee;align-self:flex-start;max-width:94%;border-bottom-left-radius:4px}
+.nai .naichips{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:11px}
+.nai .naichips button{border:1px solid #d9ece8;background:#fff;color:#41525c;border-radius:15px;padding:7px 12px;font-size:.85rem;font-weight:600;cursor:pointer;font-family:inherit;transition:border-color .16s,color .16s}
+.nai .naichips button:hover{border-color:#0f9d8f;color:#0f9d8f}
+.nai .nairow{display:flex;gap:8px}
+.nai .nairow input{flex:1;min-width:0;padding:11px 14px;border:1.5px solid #e0efec;border-radius:12px;font-family:inherit;font-size:.93rem}
+.nai .nairow input:focus{outline:none;border-color:#5ac8ba}
+.nai .nairow button{flex:none;padding:11px 18px;border:0;border-radius:12px;background:#0f9d8f;color:#fff;font-weight:800;font-size:.92rem;cursor:pointer;font-family:inherit}
+.nai .nairow button:disabled{background:#b9d6d1;cursor:default}
+.nai .naifoot{margin-top:10px;font-size:.79rem;color:#93a0a8;line-height:1.55}
+
 @media(max-width:600px){.hero h1{font-size:1.3rem}}
 </style>
 <script>window.__onesignalAppId="8d4d29df-1dba-4f43-9efb-0c3745441e1f";(function(){var id=window.__onesignalAppId;if(!id||id.indexOf("PASTE")===0)return;if(location.protocol!=="https:")return;var s=document.createElement("script");s.src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js";s.defer=true;document.head.appendChild(s);window.OneSignalDeferred=window.OneSignalDeferred||[];window.OneSignalDeferred.push(function(OneSignal){OneSignal.init({appId:id});});})();</script>
@@ -482,6 +504,18 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 <h2 class="sec">무장애 여행 정보</h2>
 <ul class="flist"><li>♿ <b>노들섬</b> — 0.0km</li><li>♿ <b>노들나루공원</b> — 0.7km</li><li>♿ <b>용양봉저정공원</b> — 0.7km</li></ul>
 <p class="note">한국관광공사 무장애 관광정보에 등록된 시설입니다. 축제장 자체의 접근성은 주최 측에 확인하세요.</p>
+
+<details class="nai" id="nai">
+<summary>💬 이 근처, 또 어디 가면 좋을지 물어보세요</summary>
+<div class="naib">
+<p class="naih">이 페이지에 정리해 둔 <b>서울서커스페스티벌 주변</b> 주변 자료만 보고 답합니다. 없는 곳을 지어내지 않습니다.</p>
+<div class="nailog" id="nailog"></div>
+<div class="naichips" id="naichips"><button type="button">축제 말고 근처에 뭐가 더 있나요?</button><button type="button">비 오면 어디로 갈까요?</button><button type="button">걷기 좋은 곳부터 보고 싶어요</button><button type="button">아이랑 가도 괜찮을까요?</button></div>
+<div class="nairow"><input id="naiin" type="text" placeholder="예) 걷기 좋은 곳부터 보고 싶어요" maxlength="200"><button id="naisend" type="button">보내기</button></div>
+<p class="naifoot">답변은 AI가 만듭니다. 영업시간·요금·예약은 저희 데이터에 없어 답하지 않습니다 — 가시기 전에 직접 확인하세요.</p>
+</div>
+<script type="application/json" id="naidata">{"place":"서울서커스페스티벌 (서울 용산구)","near":{"관광지":["노들섬 0.0km","이원등 상사상 0.1km","노들나루공원 0.7km","용양봉저정공원 0.7km","새남터기념성당 0.8km","효사정 0.9km"],"맛집":["이촌동면옥 0.9km 한식 영업 11:00~21:00 (라스트오더 20:30) 휴무 연중무휴","기와 1.2km 한식 영업 - 11:30~21:30 - 준비시간 15:00~17:00 - 마지막 주문 20:30 휴무 연중무휴","스즈란테이 1.5km 일식 영업 - 11:30~21:00 - 준비시간 15:00~17:00 - 마지막 주문 20:30 휴무 연중무휴","장독대김치찜김치찌개_용산점 1.5km 한식 영업 10:00-22:00 휴무 연중무휴","채홍 1.5km 중식 영업 매일 11:00 - 20:50 휴무 연중무휴","한강파라다이스 1.6km 서양식 영업 11:30~22:00 휴무 연중무휴"],"카페":["더한강 0.6km 영업 10:00~22:00 (마지막 주문 21:00)","터방내 1.1km 영업 11:00~24:00","고카페 용산아이파크몰점 1.5km 영업 매일 10:30-21:00","식물학 아이파크몰점 1.5km 영업 매일 10:30-22:00 (라스트오더 21:00)"],"걷기길":["동작충효길 1코스 고구동산길 0.6km 길이 3.2km 약 1시간","동작충효길 4코스 노량진길 0.9km 길이 3.4km 약 1시간","마을관광길 1.5km 길이 2.1km 약 0.6시간"],"숙소":["나인트리 프리미어 로카우스 호텔 서울 용산 1.2km","그랜드 머큐어 앰버서더 서울 용산 1.7km 관광호텔","노보텔 스위트 앰배서더 서울 용산 1.7km 관광호텔","노보텔 앰배서더 서울 용산 1.7km 관광호텔"],"무장애":["노들섬 0.0km","노들나루공원 0.7km","용양봉저정공원 0.7km"],"오일장":[],"같은지역축제":["서울 왕궁수문장 교대의식 01월","2026 숭례문 파수의식 01월","DDP 건축투어 01월","DDP 루프탑투어 03월","영등포 여의도 봄꽃축제 04월","양재아트살롱 04월"]}}</script>
+</details>
 
 <a class="buybox" href="https://brand.naver.com/guung/products/4972833368?nt_source=chukjemoa&nt_medium=site&nt_detail=festival" target="_blank" rel="nofollow noopener"><span class="bb-ico">🪵</span><span class="bb-txt"><b>축제·나들이 갈 때</b><span class="bb-sub">3단 폴딩 캠핑테이블 · 120x60cm</span></span><span class="bb-arrow">›</span></a><div class="bb-disc">※ 축제모아를 운영하는 쿠웅샵에서 직접 판매하는 상품입니다.</div>
 
@@ -819,6 +853,42 @@ window.cjmFestBB=function(elId,name,place){
       e.preventDefault(); inp.focus();
     }
   });
+})();
+</script>
+<script>
+(function(){
+  var box=document.getElementById('nai'); if(!box) return;
+  var log=document.getElementById('nailog'), inp=document.getElementById('naiin'),
+      btn=document.getElementById('naisend'), chips=document.getElementById('naichips'),
+      raw=document.getElementById('naidata');
+  var DATA={}; try{ DATA=JSON.parse(raw.textContent); }catch(e){}
+  var hist=[], busy=false;
+  function add(role,txt){
+    var d=document.createElement('div');
+    d.className='naimsg '+(role==='user'?'u':'a');
+    d.textContent=txt; log.appendChild(d); d.scrollIntoView({block:'nearest',behavior:'smooth'});
+    return d;
+  }
+  function ask(q){
+    if(busy||!q) return;
+    busy=true; btn.disabled=true; inp.value='';
+    if(chips) chips.style.display='none';
+    add('user',q);
+    var wait=add('a','…');
+    fetch('/api/plan',{method:'POST',headers:{'content-type':'application/json'},
+      body:JSON.stringify({mode:'near',q:q,place:DATA.place,near:DATA.near,history:hist.slice(-4)})})
+      .then(function(r){return r.json();})
+      .then(function(j){
+        var t=j.text||'답을 만들지 못했습니다.';
+        wait.textContent=t;
+        hist.push({role:'user',content:q},{role:'assistant',content:t});
+      })
+      .catch(function(){ wait.textContent='연결에 문제가 있었습니다. 잠시 후 다시 시도해 주세요.'; })
+      .then(function(){ busy=false; btn.disabled=false; inp.focus(); });
+  }
+  btn.addEventListener('click',function(){ ask(inp.value.trim()); });
+  inp.addEventListener('keydown',function(e){ if(e.key==='Enter'){ e.preventDefault(); ask(inp.value.trim()); } });
+  if(chips) chips.addEventListener('click',function(e){ if(e.target.tagName==='BUTTON') ask(e.target.textContent); });
 })();
 </script>
 <script>

@@ -350,6 +350,28 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 .nmenu::before{display:none}
 .nmenu a{display:inline-block;padding:7px 12px;margin:3px 6px 3px 0;background:#f4faf8;border:1px solid #e4f2ee;font-size:.88rem}
 }
+
+.nai{margin:34px 0 8px;border:1.5px solid #d9f0ec;border-radius:16px;background:#f7fcfb;overflow:hidden}
+.nai>summary{list-style:none;cursor:pointer;padding:16px 18px;font-weight:800;color:#0c7d72;display:flex;align-items:center;gap:9px}
+.nai>summary::-webkit-details-marker{display:none}
+.nai>summary::after{content:'＋';margin-left:auto;font-weight:700;color:#8fc9c1}
+.nai[open]>summary::after{content:'−'}
+.nai .naib{padding:0 18px 18px}
+.nai .naih{font-size:.88rem;color:#5b6470;line-height:1.6;margin-bottom:12px}
+.nai .nailog{display:flex;flex-direction:column;gap:10px;margin-bottom:12px}
+.nai .naimsg{padding:11px 14px;border-radius:13px;font-size:.92rem;line-height:1.66;white-space:pre-wrap}
+.nai .naimsg.u{background:#0f9d8f;color:#fff;align-self:flex-end;max-width:82%;border-bottom-right-radius:4px}
+.nai .naimsg.a{background:#fff;border:1px solid #e4f2ee;align-self:flex-start;max-width:94%;border-bottom-left-radius:4px}
+.nai .naichips{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:11px}
+.nai .naichips button{border:1px solid #d9ece8;background:#fff;color:#41525c;border-radius:15px;padding:7px 12px;font-size:.85rem;font-weight:600;cursor:pointer;font-family:inherit;transition:border-color .16s,color .16s}
+.nai .naichips button:hover{border-color:#0f9d8f;color:#0f9d8f}
+.nai .nairow{display:flex;gap:8px}
+.nai .nairow input{flex:1;min-width:0;padding:11px 14px;border:1.5px solid #e0efec;border-radius:12px;font-family:inherit;font-size:.93rem}
+.nai .nairow input:focus{outline:none;border-color:#5ac8ba}
+.nai .nairow button{flex:none;padding:11px 18px;border:0;border-radius:12px;background:#0f9d8f;color:#fff;font-weight:800;font-size:.92rem;cursor:pointer;font-family:inherit}
+.nai .nairow button:disabled{background:#b9d6d1;cursor:default}
+.nai .naifoot{margin-top:10px;font-size:.79rem;color:#93a0a8;line-height:1.55}
+
 @media(max-width:600px){.hero h1{font-size:1.3rem}}
 </style>
 <script>window.__onesignalAppId="8d4d29df-1dba-4f43-9efb-0c3745441e1f";(function(){var id=window.__onesignalAppId;if(!id||id.indexOf("PASTE")===0)return;if(location.protocol!=="https:")return;var s=document.createElement("script");s.src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js";s.defer=true;document.head.appendChild(s);window.OneSignalDeferred=window.OneSignalDeferred||[];window.OneSignalDeferred.push(function(OneSignal){OneSignal.init({appId:id});});})();</script>
@@ -836,6 +858,7 @@ window.cjmFestBB=function(elId,name,place){
   });
 })();
 </script>
+
 <script>
 (function(){
   var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;

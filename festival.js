@@ -83,7 +83,7 @@ function near(list, x, y, maxKm, n) {
 }
 
 function build(ctx) {
-  const { ROOT, layout, writePage, SITE_NAME, SITE, buyBox, festBuyBox, TODAY } = ctx;
+  const { ROOT, layout, writePage, SITE_NAME, SITE, buyBox, festBuyBox, nearAiBox, TODAY } = ctx;
 
   const fes = load('festivals_api.json');
   const nearbyRaw = (() => { try { return JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'nearby.json'), 'utf8')); } catch (e) { return {}; } })();
@@ -247,6 +247,20 @@ ${herTxt ? `<div class="fnum"><h3>🏛 ${esc(sg)}가 가진 국가유산</h3><p>
 ${nAcc.length ? `<h2 class="sec">무장애 여행 정보</h2>
 <ul class="flist">${nAcc.map(({ o, d }) => `<li>♿ <b>${esc(o.title)}</b> — ${d.toFixed(1)}km${o.acc && o.acc.length ? ` · ${esc(o.acc.join(' · '))}` : ''}</li>`).join('')}</ul>
 <p class="note">한국관광공사 무장애 관광정보에 등록된 시설입니다. 축제장 자체의 접근성은 주최 측에 확인하세요.</p>` : ''}
+
+${nearAiBox ? nearAiBox(`${f.title} 주변`, {
+      place: `${f.title} (${f.sido}${sg ? ' ' + sg : ''})${idx ? ` · 이 지역은 ${rm}월에 평소의 ${idx.toFixed(2)}배` : ''}`,
+      near: {
+        관광지: nSpot.map(({ o, d }) => `${o.title} ${d.toFixed(1)}km`),
+        맛집: nFood.map(({ o, d }) => `${o.title} ${d.toFixed(1)}km${o.kind ? ' ' + o.kind : ''}${o.open ? ` 영업 ${o.open}` : ''}${o.rest ? ` 휴무 ${o.rest}` : ''}`),
+        카페: nCafe.map(({ o, d }) => `${o.title} ${d.toFixed(1)}km${o.open ? ` 영업 ${o.open}` : ''}`),
+        걷기길: nWalk.map(({ o, d }) => `${o.t} ${d.toFixed(1)}km${o.km ? ` 길이 ${o.km}km` : ''}${o.min ? ` 약 ${Math.round(o.min / 60 * 10) / 10}시간` : ''}${o.lv ? ` 난이도 ${o.lv}` : ''}`),
+        숙소: nStay.map(({ o, d }) => `${o.title} ${d.toFixed(1)}km${o.kind ? ' ' + o.kind : ''}`),
+        무장애: nAcc.map(({ o, d }) => `${o.title} ${d.toFixed(1)}km`),
+        오일장: mktHere.map(m => `${m.name} ${m.days} 개시`),
+        같은지역축제: cand.filter(o => o !== f && o.sido === f.sido).slice(0, 6).map(o => `${o.title} ${String(o.start).slice(4, 6)}월`)
+      }
+    }, ['축제 말고 근처에 뭐가 더 있나요?', '비 오면 어디로 갈까요?', '걷기 좋은 곳부터 보고 싶어요', '아이랑 가도 괜찮을까요?']) : ''}
 
 ${festBuyBox ? festBuyBox(f.title) : (buyBox ? buyBox('festival') : '')}
 

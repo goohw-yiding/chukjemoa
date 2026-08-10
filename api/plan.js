@@ -23,7 +23,7 @@ const IP_MAX = Number(process.env.PLAN_IP_MAX || 12);          // IP당 일일 �
 const MAX_TOKENS = 900;
 const ALLOW = ['chukjemoa.co.kr', 'localhost'];
 
-const CUT = { q: 400, plan: 2200, alts: 1400, hist: 700, dest: 4200 };
+const CUT = { q: 400, plan: 2200, alts: 1400, hist: 700, dest: 4200, near: 2600 };
 const cut = (s, n) => String(s == null ? '' : s).replace(/\s+/g, ' ').slice(0, n);
 
 // 인스턴스 메모리 카운터 (콜드스타트마다 리셋 — 어림 방어용)
@@ -74,6 +74,23 @@ Rules you must follow:
 7. Reply in the SAME language as the [LANG] tag. If the user writes in a different language, follow the user.
 8. If the user says which places they have already visited, exclude those and explain what changes as a result.`;
 
+// ── near 모드: 축제 상세·걷기길 같은 "한 장소" 페이지의 「이 근처 또 어디 가지」 상담
+// 코스 상담과 다른 점 — 코스(순서)가 없고, 그 페이지가 이미 화면에 보여주고 있는 목록만 주어진다.
+// 그래서 규칙의 핵심은 "화면에 있는 것만 말하라"이다. 지어내면 사용자가 바로 알아챈다.
+const SYSTEM_NEAR = `당신은 한국 여행지 주변을 안내하는 상담자다. 사이트 "축제모아"의 장소 페이지 안에서 동작한다.
+
+주어지는 것: [장소]와 [근처] — 그 페이지가 이미 화면에 보여주고 있는 목록이다(관광지·맛집·카페·걷기길·숙소·무장애·오일장·같은 지역 축제). 거리(km)와 영업시간이 붙어 있는 것도 있다.
+
+지켜야 할 규칙:
+1. [근처] 목록에 있는 곳만 말한다. **목록에 없는 지명을 절대 지어내지 않는다.** 없으면 "이 페이지에 정리된 자료에는 없습니다"라고 말한다.
+2. 추천할 때는 반드시 근거를 숫자로 붙인다. "0.4km", "영업 08:00~21:00", "길이 2.1km 약 1시간" 처럼 주어진 값을 그대로 쓴다.
+3. 영업시간·휴무일은 주어진 것만 말하고, 없으면 "저희 자료에 없습니다 — 가시기 전에 확인하세요"라고 한다. 요금·예약·주차는 데이터가 없으니 답하지 않는다.
+4. 거리는 축제장(또는 그 장소) 기준 직선거리다. 도보/차량 소요시간을 지어내지 않는다.
+5. 답은 짧게. 3~5문장 또는 3~4개짜리 짧은 목록. 인사말·서론 없이 바로 본론.
+6. 붐빔 배수(×)는 그 장소가 아니라 그 시·군·구 전체 방문자 기준이다. 물으면 그렇게 설명한다.
+7. 비 오는 날·아이 동반 같은 조건을 물으면, 목록 안에서 실내로 보이는 것(박물관·전시관·카페 등)을 고르되 **확실하지 않으면 단정하지 않는다.**
+8. 한국어로 답한다. 의료·안전·법률 판단은 하지 않는다.`;
+
 function callClaude(payload) {
   return new Promise((res, rej) => {
     const data = JSON.stringify(payload);
@@ -115,9 +132,21 @@ module.exports = async (req, res) => {
   if (!q) return res.status(400).json({ error: 'q 없음' });
 
   const TRIP = b.mode === 'trip';
+  const NEAR = b.mode === 'near';
   const LANGNAME = { en: 'English', ja: 'Japanese (日本語)', zh: 'Simplified Chinese (简体中文)', tw: 'Traditional Chinese (繁體中文)', es: 'Spanish (Español)' };
   let ctx;
-  if (TRIP) {
+  if (NEAR) {
+    // 근처 목록은 객체로 온다 — 카테고리별 배열. 사람이 읽는 형태로 펴서 넣는다.
+    const n = b.near && typeof b.near === 'object' ? b.near : {};
+    const lines = Object.keys(n).map(k => {
+      const v = Array.isArray(n[k]) ? n[k] : [];
+      return v.length ? `${k}: ${v.join(' / ')}` : '';
+    }).filter(Boolean).join('\n');
+    ctx = [
+      `[장소] ${cut(b.place, 160)}`,
+      `[근처]\n${cut(lines, CUT.near)}`
+    ].join('\n');
+  } else if (TRIP) {
     const lang = LANGNAME[b.lang] ? b.lang : 'en';
     const TIER = { first: 'first visit to Korea', second: 'second visit', third: 'third or later visit', all: 'not specified' };
     ctx = [
@@ -148,7 +177,7 @@ module.exports = async (req, res) => {
     const r = await callClaude({
       model: MODEL, max_tokens: MAX_TOKENS,
       // 시스템 프롬프트 캐싱 — 같은 세션 2턴째부터 입력비 90% 절감
-      system: [{ type: 'text', text: TRIP ? SYSTEM_TRIP : SYSTEM, cache_control: { type: 'ephemeral' } }],
+      system: [{ type: 'text', text: NEAR ? SYSTEM_NEAR : (TRIP ? SYSTEM_TRIP : SYSTEM), cache_control: { type: 'ephemeral' } }],
       messages: msgs
     });
     if (r.status !== 200) {

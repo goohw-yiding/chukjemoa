@@ -876,6 +876,87 @@ document.querySelectorAll('.rbtn').forEach(b => b.addEventListener('click', () =
 </script>`;
 }
 
+// ---------- 「이 근처 또 어디 가지」 AI 상담 (공용) ----------
+// ⚠️ 그동안 AI 상담은 /course/ 와 외국어 방문차수에만 있었다. 정작 페이지가 제일 많은
+//    축제 상세 140개·걷기길에는 없어서, 다 읽고 나면 갈 데가 없었다(2026-08-10).
+// 비용: 세션(3턴) 약 20~25원. api/plan.js 의 4중 캡(Referer·IP 12회/일·전체 400회/일·max_tokens 900)을 그대로 탄다.
+// ★ 접었다 펴는 형태 — 안 누르면 호출이 아예 없다. 그래서 페이지 수를 늘려도 비용이 안 늘어난다.
+const NEAR_AI_CSS = `
+.nai{margin:34px 0 8px;border:1.5px solid #d9f0ec;border-radius:16px;background:#f7fcfb;overflow:hidden}
+.nai>summary{list-style:none;cursor:pointer;padding:16px 18px;font-weight:800;color:#0c7d72;display:flex;align-items:center;gap:9px}
+.nai>summary::-webkit-details-marker{display:none}
+.nai>summary::after{content:'＋';margin-left:auto;font-weight:700;color:#8fc9c1}
+.nai[open]>summary::after{content:'−'}
+.nai .naib{padding:0 18px 18px}
+.nai .naih{font-size:.88rem;color:#5b6470;line-height:1.6;margin-bottom:12px}
+.nai .nailog{display:flex;flex-direction:column;gap:10px;margin-bottom:12px}
+.nai .naimsg{padding:11px 14px;border-radius:13px;font-size:.92rem;line-height:1.66;white-space:pre-wrap}
+.nai .naimsg.u{background:#0f9d8f;color:#fff;align-self:flex-end;max-width:82%;border-bottom-right-radius:4px}
+.nai .naimsg.a{background:#fff;border:1px solid #e4f2ee;align-self:flex-start;max-width:94%;border-bottom-left-radius:4px}
+.nai .naichips{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:11px}
+.nai .naichips button{border:1px solid #d9ece8;background:#fff;color:#41525c;border-radius:15px;padding:7px 12px;font-size:.85rem;font-weight:600;cursor:pointer;font-family:inherit;transition:border-color .16s,color .16s}
+.nai .naichips button:hover{border-color:#0f9d8f;color:#0f9d8f}
+.nai .nairow{display:flex;gap:8px}
+.nai .nairow input{flex:1;min-width:0;padding:11px 14px;border:1.5px solid #e0efec;border-radius:12px;font-family:inherit;font-size:.93rem}
+.nai .nairow input:focus{outline:none;border-color:#5ac8ba}
+.nai .nairow button{flex:none;padding:11px 18px;border:0;border-radius:12px;background:#0f9d8f;color:#fff;font-weight:800;font-size:.92rem;cursor:pointer;font-family:inherit}
+.nai .nairow button:disabled{background:#b9d6d1;cursor:default}
+.nai .naifoot{margin-top:10px;font-size:.79rem;color:#93a0a8;line-height:1.55}
+`;
+// place = 이 페이지가 다루는 곳 이름 · data = 이 페이지가 이미 보여주고 있는 근처 목록(JSON)
+function nearAiBox(place, data, chips) {
+  const cs = (chips || ['축제 말고 근처에 뭐가 더 있나요?', '비 오면 어디로 갈까요?', '아이랑 가도 괜찮은 곳은?'])
+    .map(c => `<button type="button">${esc(c)}</button>`).join('');
+  return `<details class="nai" id="nai">
+<summary>💬 이 근처, 또 어디 가면 좋을지 물어보세요</summary>
+<div class="naib">
+<p class="naih">이 페이지에 정리해 둔 <b>${esc(place)}</b> 주변 자료만 보고 답합니다. 없는 곳을 지어내지 않습니다.</p>
+<div class="nailog" id="nailog"></div>
+<div class="naichips" id="naichips">${cs}</div>
+<div class="nairow"><input id="naiin" type="text" placeholder="예) 걷기 좋은 곳부터 보고 싶어요" maxlength="200"><button id="naisend" type="button">보내기</button></div>
+<p class="naifoot">답변은 AI가 만듭니다. 영업시간·요금·예약은 저희 데이터에 없어 답하지 않습니다 — 가시기 전에 직접 확인하세요.</p>
+</div>
+<script type="application/json" id="naidata">${JSON.stringify(data).replace(/</g, '\\u003c')}</script>
+</details>`;
+}
+const NEAR_AI_JS = `<script>
+(function(){
+  var box=document.getElementById('nai'); if(!box) return;
+  var log=document.getElementById('nailog'), inp=document.getElementById('naiin'),
+      btn=document.getElementById('naisend'), chips=document.getElementById('naichips'),
+      raw=document.getElementById('naidata');
+  var DATA={}; try{ DATA=JSON.parse(raw.textContent); }catch(e){}
+  var hist=[], busy=false;
+  function add(role,txt){
+    var d=document.createElement('div');
+    d.className='naimsg '+(role==='user'?'u':'a');
+    d.textContent=txt; log.appendChild(d); d.scrollIntoView({block:'nearest',behavior:'smooth'});
+    return d;
+  }
+  function ask(q){
+    if(busy||!q) return;
+    busy=true; btn.disabled=true; inp.value='';
+    if(chips) chips.style.display='none';
+    add('user',q);
+    var wait=add('a','…');
+    fetch('/api/plan',{method:'POST',headers:{'content-type':'application/json'},
+      body:JSON.stringify({mode:'near',q:q,place:DATA.place,near:DATA.near,history:hist.slice(-4)})})
+      .then(function(r){return r.json();})
+      .then(function(j){
+        var t=j.text||'답을 만들지 못했습니다.';
+        wait.textContent=t;
+        hist.push({role:'user',content:q},{role:'assistant',content:t});
+      })
+      .catch(function(){ wait.textContent='연결에 문제가 있었습니다. 잠시 후 다시 시도해 주세요.'; })
+      .then(function(){ busy=false; btn.disabled=false; inp.focus(); });
+  }
+  btn.addEventListener('click',function(){ ask(inp.value.trim()); });
+  inp.addEventListener('keydown',function(e){ if(e.key==='Enter'){ e.preventDefault(); ask(inp.value.trim()); } });
+  if(chips) chips.addEventListener('click',function(e){ if(e.target.tagName==='BUTTON') ask(e.target.textContent); });
+})();
+<\/script>`;
+
+
 const CSS = `
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'Pretendard Variable',Pretendard,'Apple SD Gothic Neo','Malgun Gothic',sans-serif;color:#1f2937;line-height:1.65;background:#fff;letter-spacing:-.01em}
@@ -1192,6 +1273,7 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 .nmenu::before{display:none}
 .nmenu a{display:inline-block;padding:7px 12px;margin:3px 6px 3px 0;background:#f4faf8;border:1px solid #e4f2ee;font-size:.88rem}
 }
+${NEAR_AI_CSS}
 @media(max-width:600px){.hero h1{font-size:1.3rem}}
 `;
 
@@ -1520,6 +1602,7 @@ ${NEARBY_JS}
 ${lang === 'ko' ? FEST_BB_JS + MODAL_CALC_JS + FEST_MODAL_JS + PLACE_MODAL_JS : ''}
 ${urlPath === '/' ? FIREWORKS_JS : ''}
 ${lang === 'ko' ? HSEARCH_JS : ''}
+${String(content).indexOf('id="nai"') >= 0 ? NEAR_AI_JS : ''}
 ${motionJs(lang)}
 </body>
 </html>`;
@@ -1534,7 +1617,7 @@ function writePage(rel, html) {
 
 // ---------- 🎪 개별 축제 페이지 /festival/ ----------
 // 축제 사이트인데 개별 축제 페이지가 0개였다(2026-08-09 발견). 검색 수요의 대부분이 개별 축제명인데 받을 페이지가 없었다.
-const FESTIVAL_URLS = require('./festival.js').build({ ROOT, layout, writePage, SITE_NAME, SITE, buyBox, festBuyBox, TODAY });
+const FESTIVAL_URLS = require('./festival.js').build({ ROOT, layout, writePage, SITE_NAME, SITE, buyBox, festBuyBox, nearAiBox, TODAY });
 
 let FEST_PAGES = [];
 try { FEST_PAGES = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/festival_pages.json'), 'utf8')); } catch (e) { }
@@ -3265,6 +3348,13 @@ ${WALK_CSS}
 <h2 class="sec">코스 안내 <span style="font-size:.9rem;font-weight:600;color:#9aa3af">${o.items.length}개 · 눌러서 펼치기</span></h2>
 <p class="note" style="margin-top:-4px">각 코스를 누르면 소개와 거리·소요 시간, 시작·도착 지점, 지나는 곳이 나옵니다.</p>
 ${sorted.map(walkCard).join('\n')}
+${nearAiBox(o.title, {
+    place: `${o.title} — 코스 ${o.items.length}개${km ? ` · 총 거리 ${km.toLocaleString()}km` : ''}${sidos.length ? ` · ${sidos.join('·')}` : ''}`,
+    near: {
+      코스: sorted.slice(0, 40).map(t => `${t.name}${t.kmOk && t.km ? ` ${t.km}km` : ''}${t.min ? ` 약 ${Math.round(t.min / 60 * 10) / 10}시간` : ''}${t.level ? ` 난이도 ${t.level}` : ''}${t.sigungu ? ` ${t.sido || ''} ${t.sigungu}` : ''}`)
+    }
+  }, ['처음이면 어느 코스부터 걷는 게 좋을까요?', '3시간 안에 끝나는 코스는?', '난이도 낮은 코스만 알려주세요', '가장 짧은 코스가 어디인가요?'])}
+
 ${buyBox('trails')}
 ${o.nav}
 <p class="note" style="margin-top:18px">데이터 출처: 행정안전부 <b>전국길관광정보 표준데이터</b>(공공데이터포털) — 각 지자체·관리기관이 등록한 정보입니다. 코스 통제·우회는 방문 전 관리기관에 확인하세요.</p>
@@ -3543,6 +3633,13 @@ ${buyBox('trails')}
       ? `<span class="on">${(ROUTE_META[x] || {}).emoji || '🥾'} ${esc(TITLE)}</span>`
       : `<a href="/trails/${ROUTE_SLUG[x] || ''}/">${(ROUTE_META[x] || {}).emoji || '🥾'} ${esc((trailRoutes.find(r => r.name.replace(/\s/g, '').startsWith(x.replace(/\s/g, ''))) || {}).name || x)}</a>`).join('')}</div>
 <p style="margin:14px 0 4px"><a href="/trails/" style="display:inline-block;background:#0f9d8f;color:#fff;font-weight:800;padding:10px 22px;border-radius:24px">🥾 전국 걷기길 ${apiTrails.length}개 코스 전체 검색 →</a></p>
+${nearAiBox(TITLE, {
+      place: `${TITLE} — 총 ${list.length}개 코스 · 총 거리 ${totalKm}km · 지나는 시·도 ${sidos.length}곳`,
+      near: {
+        코스: list.slice(0, 40).map(t => `${t.name}${t.dist ? ` ${t.dist}km` : ''}${t.min ? ` 약 ${Math.round(t.min / 60 * 10) / 10}시간` : ''}${t.level ? ` 난이도 ${t.level}` : ''}${t.sigun ? ` ${String(t.sigun).split(' ').slice(0, 2).join(' ')}` : ''}`)
+      }
+    }, ['처음이면 어느 코스부터 걷는 게 좋을까요?', '3시간 안에 끝나는 코스는?', '난이도 낮은 코스만 알려주세요', '바다가 보이는 구간은 어디인가요?'])}
+
 <p class="note" style="margin-top:16px">데이터 출처: 한국관광공사 두루누비 걷기여행 정보(공공데이터포털). 코스 통제·우회 여부는 방문 전 <a href="https://www.durunubi.kr/" target="_blank" rel="noopener nofollow">두루누비</a>에서 확인하세요.</p>
 </div></main>`;
 
