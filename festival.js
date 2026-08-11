@@ -26,7 +26,7 @@ const E = require('./course/engine.js');
 const R = require('./course/render.js');
 const { romanizeMixed } = require('./placename.js');
 const { inKorea } = require('./geo.js');
-const { prose } = require('./prose.js');
+const { prose, proseLead } = require('./prose.js');
 
 const MIN_OV = 300, MIN_NEAR = 3, FROM_YEAR = '2026';
 
@@ -169,7 +169,7 @@ function build(ctx) {
       items.push({ o: oo, at: E.hhmm(clock), till: E.hhmm(clock + stayMin), move: tv, stay: stayMin, kind: cat });
       clock += stayMin;
     };
-    push({ title: f.title, x, y, img: f.img }, 'fes', 150, { ov: (f.ov || '').slice(0, 100) });
+    push({ title: f.title, x, y, img: f.img }, 'fes', 150, { ov: proseLead(f.ov, 100) });
     if (nFood[0]) push(nFood[0].o, 'food', 70, { kind: nFood[0].o.kind, open: nFood[0].o.open, rest: nFood[0].o.rest, menu: nFood[0].o.menu });
     if (nSpot[0]) push(nSpot[0].o, 'nat', 90, { sub: '관광지' });
     if (nCafe[0]) push(nCafe[0].o, 'cafe', 60, { open: nCafe[0].o.open, rest: nCafe[0].o.rest });

@@ -96,6 +96,21 @@ function proseCore(raw) {
   return html;
 }
 
+// 카드·리스트처럼 **한 줄로 잘라 쓰는 자리**용 — 문단은 안 나누고 주석만 걷어낸다.
+// ⚠️ 이게 없으면 하루 코스 카드에 `*하기 축제장 먹거리 내용은 전년도…*대한민국을 대표하는` 처럼
+//    안내문이 먼저 나와서 정작 축제 설명이 안 보인다(2026-08-10 실제로 그렇게 나가 있었다).
+function proseLead(raw, n) {
+  var text = String(raw == null ? '' : raw).replace(/\s+/g, ' ').trim();
+  for (var i = 0; i < 4; i++) {
+    var lead = text.match(/^\s*[*※]\s*[^*※]{4,200}[*※]\s*/);
+    if (!lead) break;
+    text = text.slice(lead[0].length).trim();
+  }
+  text = text.replace(/[*※]\s*[^*※]{4,200}\s*$/, '').trim();
+  if (!text) text = String(raw == null ? '' : raw).replace(/[*※]/g, ' ').replace(/\s+/g, ' ').trim();
+  return n && text.length > n ? text.slice(0, n).replace(/[\s,·]+$/, '') + '…' : text;
+}
+
 // 서버용 — `<div class="prose">…</div>` 를 통째로 돌려준다
 function prose(raw, cls) {
   var inner = proseCore(raw);
@@ -117,4 +132,4 @@ const PROSE_CSS = `
 .prose .pnote b{color:#8a929c}
 `;
 
-module.exports = { prose, proseCore, PROSE_JS, PROSE_CSS };
+module.exports = { prose, proseLead, proseCore, PROSE_JS, PROSE_CSS };
