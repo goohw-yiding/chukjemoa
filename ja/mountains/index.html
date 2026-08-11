@@ -1145,6 +1145,82 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 };var h=f(t);return h?'<div class="prose">'+h+'</div>':'';};</script>
 <script>
 (function(){
+  if(!window.gtag) return;
+
+  // 이 페이지가 어떤 종류인지 — 같은 상품이라도 어디서 눌렸는지가 중요하다
+  function pageKind(){
+    var p = location.pathname;
+    if(/^\/(en|ja|es|zh|tw)\//.test(p)) return 'lang-' + p.split('/')[1];
+    if(p.indexOf('/festival/') === 0) return p === '/festival/' ? 'festival-hub' : 'festival-detail';
+    if(p.indexOf('/blog/') === 0) return p === '/blog/' ? 'blog-hub' : 'blog-post';
+    if(p.indexOf('/course/') === 0) return 'course';
+    if(p.indexOf('/trails/') === 0) return 'trails';
+    if(p.indexOf('/map/') === 0) return 'map';
+    if(p.indexOf('/trend/') === 0) return 'trend';
+    if(p.indexOf('/jangteo/') === 0) return 'jangteo';
+    if(/^\/20\d\d-\d\d\//.test(p)) return 'month';
+    if(p === '/') return 'home';
+    return p.replace(/^\/|\/$/g,'') || 'other';
+  }
+  var KIND = pageKind();
+
+  function send(name, params){
+    params = params || {};
+    params.page_kind = KIND;
+    try{ gtag('event', name, params); }catch(e){}
+  }
+  window.cjmTrack = send;
+
+  // nt_detail=festival-page-chairs → 어느 자리에서 눌렸는지
+  function detailOf(href){
+    var m = String(href).match(/[?&]nt_detail=([^&]+)/);
+    return m ? decodeURIComponent(m[1]) : '';
+  }
+
+  document.addEventListener('click', function(e){
+    var a = e.target && e.target.closest && e.target.closest('a[href]');
+    if(!a) return;
+    var href = a.getAttribute('href') || '';
+
+    // ── ① 상품 클릭 — 이게 이 사이트의 유일한 매출 동선이다
+    var isOwn = href.indexOf('brand.naver.com/guung') >= 0 || href.indexOf('smartstore.naver.com') >= 0;
+    var isAff = href.indexOf('coupang.com') >= 0;
+    if(isOwn || isAff){
+      send('shop_click', {
+        merchant: isOwn ? 'own' : 'coupang',
+        // data-bb 가 정답이다. 쿠팡 딥링크는 주소에 아무 정보가 없어 이게 없으면 전부 'coupang' 으로 뭉개진다.
+        item: a.getAttribute('data-bb') || detailOf(href) || (isAff ? 'coupang' : 'store'),
+        slot: a.getAttribute('data-slot') || (a.classList.contains('bb-up') ? 'upsell' : (a.classList.contains('buybox') ? 'main' : 'inline')),
+        place: a.getAttribute('data-place') || detailOf(href) || '',
+        // ⚠️ 쿠팡 «일반 검색»으로 빠지면 수수료가 0이다. 자사몰 검색은 정상이므로 세지 않는다.
+        fallback: (isAff && href.indexOf('coupang.com/np/search') >= 0) ? 1 : 0
+      });
+      return;
+    }
+
+    // ── ② 길찾기 — "가려고 마음먹었다"에 가장 가까운 행동
+    if(href.indexOf('map.kakao.com/link') >= 0 || href.indexOf('map.naver.com') >= 0){
+      send('map_click', { app: href.indexOf('kakao') >= 0 ? 'kakao' : 'naver' });
+      return;
+    }
+
+    // ── ③ 축제 상세로 들어감 (모달·허브에서)
+    if(href.indexOf('/festival/') === 0 && href !== '/festival/'){
+      send('festival_open', { slug: href.replace(/^\/festival\/|\/$/g,'') });
+      return;
+    }
+
+    // ── ④ 그 밖의 바깥 링크(네이버 검색·공식 홈페이지)
+    if(/^https?:\/\//.test(href) && href.indexOf(location.host) < 0){
+      var host = '';
+      try{ host = new URL(href).hostname.replace(/^www\./,''); }catch(err){}
+      send('outbound', { host: host });
+    }
+  }, true);
+})();
+</script>
+<script>
+(function(){
   var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var main = document.querySelector('main'); if(!main) return;
   var wrap = main.querySelector('.wrap') || main;

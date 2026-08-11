@@ -501,14 +501,16 @@ function renderBuyBox(mainKey, upKeys, detail) {
   const ups = (upKeys || []).map(uk => {
     const u = COUPANG.items[uk]; if (!u) return '';
     const urel = u.own ? 'nofollow noopener' : 'nofollow sponsored noopener';
-    return `<a class="bb-up" href="${cpHref(uk, detail + '-' + uk)}" target="_blank" rel="${urel}">${esc(u.upT || u.s)}</a>`;
+    // ⚠️ 쿠팡 제휴 링크에는 우리 파라미터를 못 붙인다(딥링크가 고정 주소다).
+    //    그래서 «무슨 상품을 어느 자리에서» 눌렀는지는 data 속성으로 남긴다 — 안 그러면 GA에 전부 'coupang'으로 뭉개진다.
+    return `<a class="bb-up" data-bb="${esc(uk)}" data-slot="upsell" data-place="${esc(detail || '')}" href="${cpHref(uk, detail + '-' + uk)}" target="_blank" rel="${urel}">${esc(u.upT || u.s)}</a>`;
   }).filter(Boolean).join('');
   // 메인·업셀에 자사상품과 제휴상품이 섞일 수 있으므로 고지문구도 섞어서 낸다
   const hasOwn = it.own || (upKeys || []).some(uk => COUPANG.items[uk] && COUPANG.items[uk].own);
   const hasAff = !it.own || (upKeys || []).some(uk => COUPANG.items[uk] && !COUPANG.items[uk].own);
   const disc = [hasOwn ? COUPANG.discOwn : '', hasAff ? COUPANG.disc : ''].filter(Boolean).join(' ');
   const rel = it.own ? 'nofollow noopener' : 'nofollow sponsored noopener';
-  return `<a class="buybox" href="${cpHref(key, detail)}" target="_blank" rel="${rel}">`
+  return `<a class="buybox" data-bb="${esc(key)}" data-slot="main" data-place="${esc(detail || '')}" href="${cpHref(key, detail)}" target="_blank" rel="${rel}">`
     + `<span class="bb-ico">${it.ico}</span>`
     + `<span class="bb-txt"><b>${esc(it.t)}</b><span class="bb-sub">${esc(it.s)}</span></span>`
     + `<span class="bb-arrow">›</span></a>`
@@ -965,6 +967,7 @@ const NEAR_AI_JS = `<script>
   function ask(q){
     if(busy||!q) return;
     busy=true; btn.disabled=true; inp.value='';
+    if(window.cjmTrack) window.cjmTrack('ai_ask', { turn: hist.length/2 + 1, place: (DATA.place||'').slice(0,60) });
     if(chips) chips.style.display='none';
     add('user',q);
     var wait=add('a','…');
@@ -1386,6 +1389,8 @@ const HSEARCH_JS = `<script>
     h+='<a class="hall" href="/search/?kw='+encodeURIComponent(q)+'">🔎 「'+esc(q)+'」 전체 축제에서 찾기</a>';
     if(!hit.length) h='<div class="hnone">이름이 딱 맞는 페이지는 없습니다. 아래로 전체 축제를 찾아보세요.</div>'+h;
     res.innerHTML=h; box.classList.add('open'); sel=-1;
+    // 검색어와 "결과가 있었는지"를 같이 남긴다 — 0건이 많은 말이 곧 만들어야 할 페이지다
+    if(window.cjmTrack) window.cjmTrack('search_use', { q: q.slice(0,40), hits: hit.length });
     items=[].slice.call(res.querySelectorAll('a'));
   }
   var tm;
@@ -1426,6 +1431,8 @@ const TOC_LABEL = {
 };
 // 📖 긴 설명문 문단 나눔 + 핵심 강조 (prose.js) — 장남 님 지적 "글자가 쭉 나열돼 읽기 힘들다"
 const { prose, PROSE_JS, PROSE_CSS } = require('./prose.js');
+// 📈 GA4 전환 이벤트 — 「주요 이벤트 0」이던 원인(커스텀 이벤트가 하나도 없었다)
+const { TRACK_JS } = require('./track.js');
 
 const motionJs = (lang) => `<script>
 (function(){
@@ -1639,6 +1646,7 @@ ${urlPath === '/' ? FIREWORKS_JS : ''}
 ${lang === 'ko' ? HSEARCH_JS : ''}
 ${String(content).indexOf('id="nai"') >= 0 ? NEAR_AI_JS : ''}
 ${PROSE_JS}
+${TRACK_JS}
 ${motionJs(lang)}
 </body>
 </html>`;

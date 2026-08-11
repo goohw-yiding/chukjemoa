@@ -1,0 +1,33 @@
+mode=terminal festivals=909 badCoord=4 cached=155 todo=754 limit=760
+  25/754 ok=24 noroute=1
+  50/754 ok=49 noroute=1
+  75/754 ok=73 noroute=2
+  100/754 ok=96 noroute=4
+  125/754 ok=120 noroute=5
+  150/754 ok=142 noroute=8
+  175/754 ok=166 noroute=9
+  200/754 ok=187 noroute=13
+  225/754 ok=209 noroute=16
+  250/754 ok=230 noroute=20
+  275/754 ok=252 noroute=23
+  300/754 ok=274 noroute=26
+  325/754 ok=298 noroute=27
+  350/754 ok=320 noroute=30
+  375/754 ok=343 noroute=32
+  400/754 ok=365 noroute=35
+  425/754 ok=390 noroute=35
+  450/754 ok=413 noroute=37
+  475/754 ok=437 noroute=38
+  500/754 ok=461 noroute=39
+  525/754 ok=485 noroute=40
+  550/754 ok=509 noroute=41
+  575/754 ok=532 noroute=43
+  600/754 ok=554 noroute=46
+  625/754 ok=577 noroute=48
+  650/754 ok=600 noroute=50
+  675/754 ok=622 noroute=53
+  700/754 ok=645 noroute=55
+  725/754 ok=668 noroute=57
+  750/754 ok=692 noroute=58
+DONE used=754 ok=696 noroute=58 err=0
+cache entries: 909
