@@ -63,6 +63,7 @@ const CSS = `
 .fgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(158px,1fr));gap:12px;margin:12px 0}
 .fcard{background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 2px 10px rgba(31,41,55,.07)}
 .fcard img{width:100%;aspect-ratio:16/10;object-fit:cover;display:block;background:#f0ece6}
+.fcard .noimg{width:100%;aspect-ratio:16/10;display:flex;align-items:center;justify-content:center;background:#f4f1ec;color:#c9c2b8;font-size:1.5rem}
 .fcard .b{padding:10px 12px}
 .fcard h4{font-size:.93rem;font-weight:800;color:#1f2937;margin:0 0 3px}
 .fcard .m{font-size:.79rem;color:#6b7280;line-height:1.5}
@@ -115,6 +116,19 @@ function build(ctx) {
   const repMonth = m => REP.reduce((a, b) => (Math.abs(b - m) < Math.abs(a - m) ? b : a), REP[0]);
 
   const nb = id => { const a = nearbyRaw[id]; return Array.isArray(a) ? a : (a ? [a] : []); };
+  // ⚠️ 2026-08-10 장남 님 지적: 태백 축제 페이지에 「모녀떡볶이 **부평**남부역점」「**광천**막국수」가 떠서
+  //    "인천·충남 가게가 왜 여기 있냐"고 물으셨다. 확인해 보니 **둘 다 실제로 태백시**였다.
+  //    프랜차이즈 지점명이 잘못 등록됐거나(부평남부역점 → 실주소 태백시 황지동) 상호에 지역명이 들어간 경우다.
+  //    데이터는 맞는데 **카드에 이름과 거리만 보여줘서 확인할 방법이 없었던 게 문제**였다.
+  //    같은 오해를 부를 수 있는 항목이 근처 목록 4,847건 중 45건 있다(전주식당@양구, 일산정삼계탕@울산 …).
+  //    → 근처 카드에 **그 가게가 실제로 어느 시·군·구인지**를 같이 적는다. 우리 데이터로 88%가 확인된다.
+  const ADDR_OF = {};
+  [food, cafe, stay, spots, acc, load('mountains_ko.json'), load('valleys.json'),
+   load('maple.json'), load('flower.json'), load('onsen.json'), load('pets.json')].forEach(list => {
+    (list || []).forEach(x => { const t = x.title || x.name; if (t && !ADDR_OF[t]) ADDR_OF[t] = x.addr || ''; });
+  });
+  const sgOfTitle = t => sgOf(ADDR_OF[t] || '');
+
 
   // ── 대상 선별
   // ⚠️ inKorea 검사가 없으면 좌표가 중국 남해인 축제가 상세 페이지로 나간다(2026-08-10 실사고, geo.js 참고).
@@ -192,8 +206,9 @@ function build(ctx) {
     const herTxt = ['국보', '보물', '사적', '명승', '국가민속문화유산'].filter(k => her[k]).map(k => `${k} ${her[k]}점`).join(' · ');
 
     // ── 본문
+    // 사진이 없는 항목이 16% 있다. 빈 카드는 고장난 것처럼 보여서 회색 자리표를 대신 넣는다.
     const card = (title, meta, img, hours, mapx, mapy) =>
-      `<div class="fcard">${img ? `<img src="${esc(img)}" alt="${esc(title)}" loading="lazy">` : ''}<div class="b"><h4>${esc(title)}</h4>`
+      `<div class="fcard">${img ? `<img src="${esc(img)}" alt="${esc(title)}" loading="lazy">` : '<div class="noimg">🏞</div>'}<div class="b"><h4>${esc(title)}</h4>`
       + (meta ? `<div class="m">${esc(meta)}</div>` : '')
       + (hours === null ? `<div class="h dim">🕘 영업시간 정보 없음 — 방문 전 확인</div>` : (hours ? `<div class="h">🕘 ${esc(hours)}</div>` : ''))
       + (mapx ? `<a class="fmap" target="_blank" rel="noopener" href="https://map.kakao.com/link/to/${encodeURIComponent(title)},${mapy},${mapx}">길찾기 →</a>` : '')
@@ -231,7 +246,8 @@ ${prose(f.ov)}
 ${idx ? `<div class="fnum"><h3>📊 지금 이 동네, 얼마나 붐비나</h3>${busyP}</div>` : ''}
 
 ${nbList.length ? `<h2 class="sec">축제장 근처 가볼 곳</h2>
-<div class="fgrid">${nbList.map(n => card(n.t, `${n.ty || ''}${n.d ? ` · ${n.d}km` : ''}`, n.img, '', '', '')).join('')}</div>` : ''}
+<p style="color:#6b7280;font-size:.92rem">한국관광공사가 이 축제 기준으로 알려 준 근처 목록입니다. <b>상호에 다른 지역 이름이 들어간 가게가 있어</b>, 실제로 어느 시·군·구인지 같이 적었습니다.</p>
+<div class="fgrid">${nbList.map(n => { const g = sgOfTitle(n.t); return card(n.t, `${n.ty || ''}${g ? ` · ${g}` : ''}${n.d ? ` · ${n.d}km` : ''}`, n.img, '', '', ''); }).join('')}</div>` : ''}
 
 ${nFood.length ? `<h2 class="sec">근처에서 밥 먹을 곳</h2>
 <p style="color:#6b7280;font-size:.92rem">축제장에서 가까운 순서입니다. 영업시간과 휴무일은 한국관광공사 공공데이터에 등록된 곳만 표시했습니다.</p>
