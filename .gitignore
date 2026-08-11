@@ -8,3 +8,4 @@ _*.js
 .fuse_hidden*
 apikeys.json
 apikeys.local.json
+_*.log 
