@@ -26,6 +26,7 @@ const E = require('./course/engine.js');
 const R = require('./course/render.js');
 const { romanizeMixed } = require('./placename.js');
 const { inKorea } = require('./geo.js');
+const { prose } = require('./prose.js');
 
 const MIN_OV = 300, MIN_NEAR = 3, FROM_YEAR = '2026';
 
@@ -225,7 +226,7 @@ ${f.tel ? `<dt>문의</dt><dd>${esc(f.tel)}</dd>` : ''}
 </div>
 
 <h2 class="sec">어떤 축제인가</h2>
-<p>${esc(f.ov)}</p>
+${prose(f.ov)}
 
 ${idx ? `<div class="fnum"><h3>📊 지금 이 동네, 얼마나 붐비나</h3>${busyP}</div>` : ''}
 

@@ -374,6 +374,12 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 .nai .naifoot{margin-top:10px;font-size:.79rem;color:#93a0a8;line-height:1.55}
 
 @media(max-width:600px){.hero h1{font-size:1.3rem}}
+
+.prose p{margin:0 0 13px;line-height:1.85}
+.prose p:last-child{margin-bottom:0}
+.prose p b{font-weight:800;color:#0a6c63}
+.prose .pnote{font-size:.87rem;color:#8a929c;line-height:1.7;padding-top:4px;border-top:1px dashed #e7ebee;margin-top:14px}
+.prose .pnote b{color:#8a929c}
 </style>
 <script>window.__onesignalAppId="8d4d29df-1dba-4f43-9efb-0c3745441e1f";(function(){var id=window.__onesignalAppId;if(!id||id.indexOf("PASTE")===0)return;if(location.protocol!=="https:")return;var s=document.createElement("script");s.src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js";s.defer=true;document.head.appendChild(s);window.OneSignalDeferred=window.OneSignalDeferred||[];window.OneSignalDeferred.push(function(OneSignal){OneSignal.init({appId:id});});})();</script>
 </head>
@@ -472,7 +478,7 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 </div>
 
 <h2 class="sec">어떤 축제인가</h2>
-<p>2026 횡성썸머나잇페스타는 강원특별자치도 횡성군 섬강둔치에서 매년 6월~8월경 개최되는 야간관광형 야외 복합 축제이다. '밤의 피크닉'이라는 감성 콘셉트를 중심으로, 섬강의 청량한 자연 환경을 배경 삼아 낮의 활동적인 워터 액티비티와 밤의 감성 공연이 하나의 흐름으로 이어지는 것이 이 축제의 핵심 정체성이다. 단순한 공연 관람이나 체험 행사에 그치지 않고, 먹거리·쉼터·포토존 등 감성 공간과 문화예술 공연이 어우러져 방문객이 하루를 온전히 머물며 즐길 수 있도록 설계된 체류형 축제이다. 횡성문화관광재단이 주관하며, 수도권을 포함한 광역 방문객 유치와 횡성 지역의 야간관광 브랜드 강화를 목표로 운영되는 축제이다.</p>
+<div class="prose"><p>2026 횡성썸머나잇페스타는 강원특별자치도 횡성군 섬강둔치에서 매년 6월~8월경 개최되는 야간관광형 야외 복합 축제이다. '밤의 피크닉'이라는 감성 콘셉트를 중심으로, 섬강의 청량한 자연 환경을 배경 삼아 낮의 활동적인 워터 액티비티와 밤의 감성 공연이 하나의 흐름으로 이어지는 것이 이 축제의 핵심 정체성이다.</p><p>단순한 공연 관람이나 체험 행사에 그치지 않고, 먹거리·쉼터·포토존 등 감성 공간과 문화예술 공연이 어우러져 방문객이 하루를 온전히 머물며 즐길 수 있도록 설계된 체류형 축제이다. 횡성문화관광재단이 주관하며, 수도권을 포함한 광역 방문객 유치와 횡성 지역의 야간관광 브랜드 강화를 목표로 운영되는 축제이다.</p></div>
 
 
 
@@ -759,7 +765,8 @@ window.cjmFestBB=function(elId,name,place){
     var loc=[ds.region,ds.city,ds.place].filter(Boolean).join(' ');
     var dr=fy(ds.start)+(ds.end&&String(ds.end).replace(/[^0-9]/g,'')!==String(ds.start).replace(/[^0-9]/g,'')?' ~ '+fy(ds.end):'');
     document.getElementById('fm2-meta').textContent=[dr,loc].filter(Boolean).join('  ·  ');
-    document.getElementById('fm2-ov').textContent=ds.ov||ds.desc||'상세 개요는 아래 네이버·공식 홈페이지에서 확인하세요.';
+    var ovTxt=ds.ov||ds.desc||'';
+    document.getElementById('fm2-ov').innerHTML=ovTxt&&window.cjmProse?window.cjmProse(ovTxt):esc(ovTxt||'상세 개요는 아래 네이버·공식 홈페이지에서 확인하세요.');
     var nearEl=document.getElementById('fm2-near');nearEl.innerHTML='';
     if(ds.near){try{var arr=JSON.parse(decodeURIComponent(ds.near));if(arr&&arr.length){nearEl.innerHTML='<div style="font-weight:800;color:#0a6c63;margin:16px 0 8px">📍 근처 가볼 곳</div><div style="display:flex;flex-wrap:wrap;gap:8px">'+arr.map(function(n){return '<a href="https://search.naver.com/search.naver?query='+encodeURIComponent(n.t)+'" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;background:#f4faf8;border:1px solid #dcefeb;border-radius:20px;padding:6px 12px;font-size:.85rem;font-weight:700;color:#374151;text-decoration:none">'+(n.img?'<img src="'+esc(n.img)+'" alt="'+esc(n.t)+'" loading="lazy" style="width:22px;height:22px;border-radius:50%;object-fit:cover" onerror="this.style.display=&#39;none&#39;">':'')+esc(n.t)+' <span style="color:#9aa3af;font-weight:600">'+esc(n.ty)+(n.d?' '+n.d+'km':'')+'</span></a>';}).join('')+'</div>';}}catch(e){}}
     var hp=document.getElementById('fm2-hp');
@@ -893,6 +900,84 @@ window.cjmFestBB=function(elId,name,place){
   if(chips) chips.addEventListener('click',function(e){ if(e.target.tagName==='BUTTON') ask(e.target.textContent); });
 })();
 </script>
+<script>window.cjmProse=function(t){var f=function proseCore(raw) {
+  var text = String(raw == null ? '' : raw).replace(/\r/g, ' ').replace(/[ \t]+/g, ' ').trim();
+  if (!text) return '';
+
+  function esc(s) {
+    return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+
+  // ① 주석 분리 — `*` `※` 로 감싸거나 뒤에 붙는 안내문
+  //    ⚠️ 주석은 뒤에만 오는 게 아니다. 보령머드축제는 `*전년도 내용입니다.*` 가 **맨 앞**에 있어서
+  //       그대로 두면 첫 문장이 안내문으로 시작한다. 앞쪽 `*...*` 도 같이 걷어낸다.
+  var notes = [];
+  var body = text;
+  for (var g = 0; g < 4; g++) {
+    var lead = body.match(/^\s*[*※]\s*([^*※]{4,200})[*※]\s*/);
+    if (!lead) break;
+    notes.push(lead[1].trim());
+    body = body.slice(lead[0].length).trim();
+  }
+  for (var g2 = 0; g2 < 4; g2++) {
+    var m = body.match(/[*※]\s*([^*※]{4,200})\s*$/);
+    if (!m) break;
+    notes.push(m[1].trim());
+    body = body.slice(0, m.index).trim();
+  }
+  if (!body) { body = text.replace(/[*※]/g, ' ').trim(); notes = []; }
+
+  // ② 문장 나누기 — 마침표 앞이 숫자면 소수점이니 자르지 않는다(1.5km)
+  var parts = body.split(/\n+/).join(' ');
+  var sentences = parts.split(/(?<=[^0-9\s][.!?])\s+/).map(function (s) { return s.trim(); }).filter(Boolean);
+  if (!sentences.length) sentences = [body];
+
+  // ③ 문단 묶기 — 목표 150자, 한 문단 최대 230자.
+  //    ⚠️ "150자 넘으면 끊는다"만 쓰면 250자짜리 긴 문장 뒤에 130자가 또 붙어 380자 문단이 나온다.
+  //       그래서 **붙이기 전에** 넘칠지 먼저 본다.
+  var paras = [], cur = '';
+  for (var i = 0; i < sentences.length; i++) {
+    var s = sentences[i];
+    if (!cur) cur = s;
+    else if (cur.length + 1 + s.length <= 230) cur += ' ' + s;
+    else { paras.push(cur); cur = s; }
+    if (cur.length >= 150) { paras.push(cur); cur = ''; }
+  }
+  if (cur) {
+    if (paras.length && cur.length < 55) paras[paras.length - 1] += ' ' + cur;
+    else paras.push(cur);
+  }
+
+  // ④ 강조 — 눈이 먼저 찾는 것만.
+  //    ⚠️ 규칙을 따로따로 돌리면 「19시·21시는 굵은데 22시는 안 굵은」 어정쩡한 결과가 나온다.
+  //       하나의 정규식으로 **왼쪽에서 오른쪽으로 한 번에** 훑어야 일관된다.
+  //    ⚠️ 너무 많이 굵게 하면 아무것도 안 굵은 것과 같다 → 글자 40자당 1개, 최소 4개.
+  //    ⚠️ 다만 「19시·21시」처럼 **딱 붙어 있는 짝**은 한쪽만 굵으면 오히려 실수처럼 보인다.
+  //       바로 앞 강조에서 구두점·공백만 사이에 두고 이어지면 개수 제한에서 빼 준다.
+  //    ⚠️ 연도(2022년)는 일부러 뺐다 — 문장 맨 앞에 있어서 제일 먼저 굵어지는데 정작 안 중요하다.
+  var RULE = /\d{1,2}\s*:\s*\d{2}(?:\s*[~-]\s*\d{1,2}\s*:\s*\d{2})?|\d[\d,]*\s*(?:개월|가지|시간|미터|인분|만원|천원|대|명|회|분|시|일|개|종|곳|km|m|원|%|호|점|위|박|층|평)|매주\s*[월화수목금토일]요일|매주\s*[월화수목금토일]|매일|매월|연중무휴/g;
+  function markUp(s) {
+    var cap = Math.max(4, Math.floor(s.length / 40)), used = 0, lastEnd = -99;
+    var re = new RegExp(RULE.source, 'g'), out = '', at = 0, m2;
+    while ((m2 = re.exec(s))) {
+      var gap = s.slice(lastEnd, m2.index);
+      var glued = m2.index - lastEnd <= 3 && /^[\s·,~/、-]*$/.test(gap);
+      if (used < cap || glued) {
+        out += esc(s.slice(at, m2.index)) + '<b>' + esc(m2[0]) + '</b>';
+        at = m2.index + m2[0].length;
+        if (!glued) used++;
+      }
+      lastEnd = m2.index + m2[0].length;
+    }
+    return out + esc(s.slice(at));
+  }
+
+  var html = paras.map(function (p) { return '<p>' + markUp(p) + '</p>'; }).join('');
+  if (notes.length) {
+    html += '<p class="pnote">' + notes.map(function (n) { return '※ ' + esc(n); }).join('<br>') + '</p>';
+  }
+  return html;
+};var h=f(t);return h?'<div class="prose">'+h+'</div>':'';};</script>
 <script>
 (function(){
   var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
