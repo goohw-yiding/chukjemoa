@@ -19,41 +19,13 @@ function odsay(fx, fy, tx, ty) {
   });
 }
 
+// ⚠️ 2026-08-12 폐지 — 서버에서는 ODsay 를 부를 수 없다.
+//    같은 키로 이 PC 는 성공, Vercel 은 ApiKeyAuthFailed. Referer 는 무관(example.com 도 통과).
+//    남은 변수는 «호출 IP» 뿐이고 Vercel 서버리스는 고정 IP 가 없어 ODsay 에 등록할 방법이 없다.
+//    → 브라우저에서 직접 부르는 방식으로 옮겼다(`odsay.js` 의 window.cjmOdsay, ODsay 는 CORS 개방).
+//    이 엔드포인트는 옛 브라우저 캐시가 아직 부를 수 있어 남겨 두되, **실패할 걸 알면서 API 를 때리지는 않는다**
+//    (쿼터를 태우고 응답만 느려진다). 새 코드가 퍼지면 파일째 지울 것.
 module.exports = async (req, res) => {
   res.setHeader('Cache-Control', 'no-store');
-  if (req.method !== 'POST') return res.status(405).json({ error: 'POST only' });
-  if (!ODSAY) return res.status(503).json({ error: 'ODSAY_KEY 미설정' });
-
-  let body = req.body;
-  if (typeof body === 'string') { try { body = JSON.parse(body); } catch (e) { body = {}; } }
-  const legs = Array.isArray(body && body.legs) ? body.legs.slice(0, MAX_LEGS) : [];
-  if (!legs.length) return res.status(400).json({ error: 'legs 없음' });
-
-  const out = [];
-  for (const l of legs) {
-    const fx = Number(l.fx), fy = Number(l.fy), tx = Number(l.tx), ty = Number(l.ty);
-    if (!fx || !fy || !tx || !ty) { out.push({ from: l.from, to: l.to, min: 0 }); continue; }
-    const j = await odsay(fx, fy, tx, ty);
-    // ⚠️ 2026-08-09 확인: ODsay 키가 서버(Vercel) 호출을 거부한다(ApiKeyAuthFailed).
-    //    api/tripcost.js 에도 같은 증상이 기록돼 있다 — 키가 특정 IP에 묶여 있는 것으로 보인다.
-    //    이때 구간마다 "경로 없음"을 늘어놓으면 우리 기능이 고장 난 것처럼 보인다. 원인을 그대로 돌려준다.
-    if (j && j.error) {
-      const e = Array.isArray(j.error) ? j.error[0] : j.error;
-      // 🔎 임시 진단(2026-08-12): 이 PC에서는 같은 키가 되는데 서버에서만 실패한다.
-      //    「IP 문제」인지 「Vercel 환경변수가 옛날 키」인지 가르려면 두 키가 같은지부터 봐야 한다.
-      //    키를 노출하지 않으려고 sha256 앞 8자리만 돌려준다. 원인 확정되면 지울 것.
-      const kf = require('crypto').createHash('sha256').update(ODSAY).digest('hex').slice(0, 8);
-      return res.status(200).json({ error: 'odsay', code: String(e && e.code || ''), msg: String(e && e.message || ''), keyLen: ODSAY.length, keyHash: kf, legs: [] });
-    }
-    const p = j && j.result && j.result.path && j.result.path[0];
-    if (!p) { out.push({ from: l.from, to: l.to, min: 0 }); continue; }
-    out.push({
-      from: l.from, to: l.to,
-      min: p.info.totalTime,
-      transfer: (p.info.busTransitCount || 0) + (p.info.subwayTransitCount || 0),
-      pay: p.info.payment || 0,
-      km: Math.round((p.info.totalDistance || 0) / 100) / 10
-    });
-  }
-  res.status(200).json({ legs: out });
+  res.status(200).json({ error: 'moved', msg: '대중교통 조회는 브라우저에서 직접 처리합니다(window.cjmOdsay).', legs: [] });
 };

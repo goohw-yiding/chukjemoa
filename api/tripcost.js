@@ -107,7 +107,11 @@ module.exports = async (req, res) => {
     const parking = Math.max(0, Number(q.parking) || 0);     // 주차비 원(왕복 아님, 목적지 1회)
 
     const [o, d] = await Promise.all([geocode(from), geocode(to)]);
-    const [car, tr] = await Promise.all([carRoute(o, d), transit(o, d).catch(() => null)]);
+    // ⚠️ 2026-08-12: 서버(Vercel)에서 ODsay 를 부르면 IP 때문에 무조건 ApiKeyAuthFailed 다.
+    //    실패할 걸 알면서 매번 부르면 쿼터도 먹고 응답도 그만큼 느려진다 → **서버에서는 안 부른다.**
+    //    대신 아래 `geo` 를 내려보내고, 브라우저가 `window.cjmOdsay` 로 직접 불러 대중교통 칸을 채운다.
+    const car = await carRoute(o, d);
+    const tr = null;
 
     // KTX: 출발·도착에서 가장 가까운 역(20km 내) + 운임표 조회
     let ktx = null;
@@ -147,6 +151,8 @@ module.exports = async (req, res) => {
       from: { q: from, name: o.name, addr: o.addr },
       to: { q: to, name: d.name, addr: d.addr },
       assumptions: { kmpl, fuelPrice, parking },
+      // 브라우저가 ODsay 를 직접 부를 때 쓸 좌표 (서버는 못 부른다 — 위 주석 참고)
+      geo: { ox: o.x, oy: o.y, dx: d.x, dy: d.y },
       car: {
         distanceKm: Math.round(distanceKm * 10) / 10,
         durationMin: Math.round(car.durationSec / 60),

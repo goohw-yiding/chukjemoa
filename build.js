@@ -677,6 +677,14 @@ const MODAL_CALC_JS = `<script>
       fetch('/api/tripcost?from='+encodeURIComponent(from)+'&to='+encodeURIComponent(list[k]))
         .then(function(r){return r.json();})
         .then(function(d){
+          // 서버는 ODsay 를 못 부른다(데이터센터 IP 차단) → 브라우저에서 직접 채운다. odsay.js 머리말 참고.
+          if(d.error||!d.car||!d.geo||!window.cjmOdsay)return d;
+          return window.cjmOdsay(d.geo.ox,d.geo.oy,d.geo.dx,d.geo.dy).then(function(t){
+            if(t&&t.fare){d.transit=t;d.intercity=null;d.diff=d.car.total-t.fare;}
+            return d;
+          });
+        })
+        .then(function(d){
           if(d.error||!d.car){tryList(from,list,k+1);return;}
           done();render(d);
         })
@@ -1433,6 +1441,8 @@ const TOC_LABEL = {
 const { prose, PROSE_JS, PROSE_CSS } = require('./prose.js');
 // 📈 GA4 전환 이벤트 — 「주요 이벤트 0」이던 원인(커스텀 이벤트가 하나도 없었다)
 const { TRACK_JS } = require('./track.js');
+// 🚌 브라우저에서 ODsay 직접 호출 (서버는 IP 때문에 막힌다 — odsay.js 머리말 참고)
+const { ODSAY_JS } = require('./odsay.js');
 
 const motionJs = (lang) => `<script>
 (function(){
@@ -1647,6 +1657,7 @@ ${lang === 'ko' ? HSEARCH_JS : ''}
 ${String(content).indexOf('id="nai"') >= 0 ? NEAR_AI_JS : ''}
 ${PROSE_JS}
 ${TRACK_JS}
+${ODSAY_JS}
 ${motionJs(lang)}
 </body>
 </html>`;
@@ -4495,6 +4506,13 @@ function run(){
   btn.disabled=true;btn.textContent='계산 중…';out.innerHTML='';
   var qs='?from='+encodeURIComponent(from)+'&to='+encodeURIComponent(to)+'&kmpl='+kmpl+'&fuel='+fuel+'&parking='+park;
   fetch('/api/tripcost'+qs).then(function(r){return r.json();}).then(function(d){
+    // 서버는 ODsay 를 못 부른다(데이터센터 IP 차단) → 브라우저에서 직접 채운다
+    if(d.error||!d.car||!d.geo||!window.cjmOdsay)return d;
+    return window.cjmOdsay(d.geo.ox,d.geo.oy,d.geo.dx,d.geo.dy).then(function(t){
+      if(t&&t.fare){d.transit=t;d.intercity=null;d.diff=d.car.total-t.fare;}
+      return d;
+    });
+  }).then(function(d){
     btn.disabled=false;btn.textContent='비용 계산하기';
     if(d.error){out.innerHTML='<div class="tc-err">'+d.error+'</div>';return;}
     var car=d.car;var pt=d.transit;

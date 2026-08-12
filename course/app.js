@@ -52,25 +52,28 @@
     legs = legs.slice(0, 8);                       // 무료 한도 보호 — 앞 8개 구간만
     var out = $('#c-transit-out');
     out.innerHTML = '<div class="cnote">조회 중…</div>';
-    var x = new XMLHttpRequest();
-    x.open('POST', '/api/transit', true);
-    x.setRequestHeader('Content-Type', 'application/json');
-    x.onreadystatechange = function () {
-      if (x.readyState !== 4) return;
-      if (x.status !== 200) { out.innerHTML = '<div class="cnote">대중교통 조회에 실패했습니다. 위의 자차 기준 추정치를 참고하세요.</div>'; return; }
-      var r; try { r = JSON.parse(x.responseText); } catch (e) { out.innerHTML = '<div class="cnote">조회 실패</div>'; return; }
-      if (r.error === 'odsay' || !(r.legs || []).length) {
-        out.innerHTML = '<div class="cnote">대중교통 실측을 지금은 제공하지 못합니다(경로 제공사 인증 문제). 위의 자차 기준 추정치를 참고하시고, 정확한 시간은 <a href="https://map.kakao.com" target="_blank" rel="noopener">카카오맵</a>이나 네이버 지도에서 확인해 주세요.</div>';
+    // ⚠️ 2026-08-12: 서버(/api/transit)로 부르면 ODsay 가 데이터센터 IP 를 막아 무조건 실패한다.
+    //    ODsay 는 CORS 를 완전히 열어 뒀으므로 **브라우저에서 직접** 부른다. odsay.js 머리말 참고.
+    if (!window.cjmOdsay) { out.innerHTML = '<div class="cnote">대중교통 조회를 사용할 수 없습니다. 위의 자차 기준 추정치를 참고하세요.</div>'; return; }
+    Promise.all(legs.map(function (l) {
+      return window.cjmOdsay(l.a.x, l.a.y, l.b.x, l.b.y).then(function (t) {
+        return { from: l.a.t, to: l.b.t, t: t };
+      });
+    })).then(function (rows) {
+      if (!rows.filter(function (r) { return r.t; }).length) {
+        out.innerHTML = '<div class="cnote">이 구간들은 대중교통 경로를 찾지 못했습니다. 위의 자차 기준 추정치를 참고하시고, 정확한 시간은 <a href="https://map.kakao.com" target="_blank" rel="noopener">카카오맵</a>에서 확인해 주세요.</div>';
         return;
       }
       var h = '<table class="ctab"><tr><th>구간</th><th>대중교통</th><th>요금</th></tr>';
-      (r.legs || []).forEach(function (l) {
-        h += '<tr><td>' + R.esc(l.from) + ' → ' + R.esc(l.to) + '</td><td>' + (l.min ? l.min + '분 (환승 ' + l.transfer + ')' : '경로 없음') + '</td><td>' + (l.pay ? R.won(l.pay) : '-') + '</td></tr>';
+      rows.forEach(function (r) {
+        var t = r.t;
+        h += '<tr><td>' + R.esc(r.from) + ' → ' + R.esc(r.to) + '</td><td>'
+          + (t && t.durationMin ? t.durationMin + '분 (환승 ' + t.transfer + ')' : '경로 없음') + '</td><td>'
+          + (t && t.fare ? R.won(t.fare) : '-') + '</td></tr>';
       });
-      h += '</table><p class="cwarn">ODsay 대중교통 경로 실측값입니다. 배차 간격과 시간대에 따라 달라집니다. 경로가 없다고 나오면 그 구간은 대중교통 연결이 약한 곳입니다.</p>';
+      h += '</table><p class="cwarn">ODsay 대중교통 경로 실측값입니다. 배차 간격과 시간대에 따라 달라집니다. 경로가 없다고 나오면 그 구간은 대중교통 연결이 약한 곳입니다. 요금이 «-» 인 구간은 수도권 밖이라 ODsay 가 요금을 주지 않는 곳입니다.</p>';
       out.innerHTML = h;
-    };
-    x.send(JSON.stringify({ legs: legs.map(function (l) { return { fx: l.a.x, fy: l.a.y, tx: l.b.x, ty: l.b.y, from: l.a.t, to: l.b.t }; }) }));
+    });
   }
 
   /* ── AI 상담 ──────────────────────────────── */

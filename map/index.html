@@ -787,6 +787,14 @@ window.cjmFestBB=function(elId,name,place){
       fetch('/api/tripcost?from='+encodeURIComponent(from)+'&to='+encodeURIComponent(list[k]))
         .then(function(r){return r.json();})
         .then(function(d){
+          // 서버는 ODsay 를 못 부른다(데이터센터 IP 차단) → 브라우저에서 직접 채운다. odsay.js 머리말 참고.
+          if(d.error||!d.car||!d.geo||!window.cjmOdsay)return d;
+          return window.cjmOdsay(d.geo.ox,d.geo.oy,d.geo.dx,d.geo.dy).then(function(t){
+            if(t&&t.fare){d.transit=t;d.intercity=null;d.diff=d.car.total-t.fare;}
+            return d;
+          });
+        })
+        .then(function(d){
           if(d.error||!d.car){tryList(from,list,k+1);return;}
           done();render(d);
         })
@@ -1074,6 +1082,52 @@ window.cjmFestBB=function(elId,name,place){
       send('outbound', { host: host });
     }
   }, true);
+})();
+</script>
+<script>
+(function(){
+  var KEY = null, pending = null;
+  function getKey(){
+    if (KEY) return Promise.resolve(KEY);
+    try { var s = sessionStorage.getItem('cjm_ok'); if (s) { KEY = s; return Promise.resolve(KEY); } } catch(e){}
+    if (pending) return pending;
+    pending = fetch('/api/odsay-key')
+      .then(function(r){ return r.ok ? r.json() : null; })
+      .then(function(j){
+        KEY = (j && j.k) || '';
+        try { if (KEY) sessionStorage.setItem('cjm_ok', KEY); } catch(e){}
+        pending = null;
+        return KEY;
+      })
+      .catch(function(){ pending = null; return ''; });
+    return pending;
+  }
+
+  // 좌표 4개 → { fare, durationMin, transfer, walk } | null
+  // 실패·경로없음은 전부 null 로 돌려준다. 호출부는 «없으면 추정치» 로 가면 된다.
+  window.cjmOdsay = function(sx, sy, ex, ey){
+    if (!sx || !sy || !ex || !ey) return Promise.resolve(null);
+    return getKey().then(function(k){
+      if (!k) return null;
+      var u = 'https://api.odsay.com/v1/api/searchPubTransPathT?apiKey=' + encodeURIComponent(k)
+            + '&SX=' + sx + '&SY=' + sy + '&EX=' + ex + '&EY=' + ey + '&OPT=0&SearchPathType=0';
+      return fetch(u).then(function(r){ return r.json(); }).then(function(j){
+        if (!j || j.error || !j.result || !j.result.path || !j.result.path.length) return null;
+        // ⚠️ ODsay 는 수도권 버스·지하철 요금만 준다. 시외버스·KTX 구간은 payment=0 으로 온다.
+        //    그래서 «요금이 있는 첫 경로» 를 우선 고르고, 없으면 요금은 null 로 둔다(0원이라고 말하지 않는다).
+        var p = null, arr = j.result.path;
+        for (var i = 0; i < arr.length; i++) { if (arr[i].info && arr[i].info.payment > 0) { p = arr[i]; break; } }
+        if (!p) p = arr[0];
+        var f = p.info || {};
+        return {
+          fare: f.payment > 0 ? f.payment : null,
+          durationMin: f.totalTime || 0,
+          transfer: (f.busTransitCount || 0) + (f.subwayTransitCount || 0),
+          walk: f.totalWalk || 0
+        };
+      }).catch(function(){ return null; });
+    });
+  };
 })();
 </script>
 <script>
