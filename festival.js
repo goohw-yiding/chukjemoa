@@ -311,10 +311,24 @@ ${cand.filter(o => o !== f && o.sido !== f.sido && String(o.start).slice(4, 6) =
       endDate: `${f.end.slice(0, 4)}-${f.end.slice(4, 6)}-${f.end.slice(6, 8)}`,
       eventStatus: 'https://schema.org/EventScheduled',
       eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
-      description: String(f.ov).slice(0, 300),
-      image: f.img ? [f.img] : undefined,
-      location: { '@type': 'Place', name: f.title, address: { '@type': 'PostalAddress', streetAddress: f.addr, addressRegion: f.sido, addressCountry: 'KR' }, geo: { '@type': 'GeoCoordinates', latitude: y, longitude: x } },
-      organizer: f.tel ? { '@type': 'Organization', name: f.title, telephone: f.tel } : undefined
+      description: proseLead(f.ov, 300),
+      image: f.img ? [String(f.img).replace(/^http:/, 'https:')] : undefined,
+      url: `${SITE}/festival/${f._slug}/`,
+      location: {
+        '@type': 'Place', name: f.title,
+        address: { '@type': 'PostalAddress', streetAddress: f.addr, addressRegion: f.sido, addressLocality: sg || undefined, addressCountry: 'KR' },
+        geo: { '@type': 'GeoCoordinates', latitude: y, longitude: x },
+        // 문의 전화는 «주최자»가 아니라 «장소»에 붙는 게 맞다. Place 는 telephone 을 지원한다.
+        telephone: f.tel || undefined
+      },
+      // ⚠️ 2026-08-11 구글 경고: "'url' 입력란이 누락되었습니다.(경로: 'organizer')" 151건.
+      //    organizer 를 넣으면서 url 을 안 줬던 것. 게다가 organizer.name 에 «축제 이름»을 넣고 있었는데
+      //    그건 주최자 이름이 아니다 — TourAPI 는 주최자를 안 준다.
+      //    → **주최 측 공식 홈페이지가 있을 때만** organizer 를 쓴다(913개 중 290개). 없으면 아예 안 쓴다.
+      //      모르는 걸 채워 넣는 것보다 비워 두는 게 맞다.
+      organizer: f.hp && String(f.hp).indexOf('http') === 0
+        ? { '@type': 'Organization', name: f.title, url: String(f.hp).trim(), telephone: f.tel || undefined }
+        : undefined
     };
     const faqLd = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faq.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })) };
     const jsonld = `<script type="application/ld+json">${JSON.stringify(evLd)}</script>\n<script type="application/ld+json">${JSON.stringify(faqLd)}</script>`;
