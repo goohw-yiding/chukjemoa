@@ -850,6 +850,9 @@ window.cjmFestBB=function(elId,name,place){
     var q=inp.value.trim();
     clearTimeout(tm);
     if(q.length<1){ box.classList.remove('open'); return; }
+    // ⚠️ 첫 검색은 hsearch.json 을 그때 처음 받아오느라 1초 넘게 걸릴 수 있는데
+    // 그동안 화면이 비어 있어서 "검색해도 안 나온다"로 보였다(2026-08-12). 로딩 문구를 바로 띄운다.
+    if(!IDX){ res.innerHTML='<div class="hnone">검색 중…</div>'; box.classList.add('open'); }
     tm=setTimeout(function(){ load().then(function(){ render(q); }); },120);
   });
   inp.addEventListener('focus',function(){ if(inp.value.trim()) box.classList.add('open'); load(); });
