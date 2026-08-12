@@ -39,7 +39,11 @@ module.exports = async (req, res) => {
     //    이때 구간마다 "경로 없음"을 늘어놓으면 우리 기능이 고장 난 것처럼 보인다. 원인을 그대로 돌려준다.
     if (j && j.error) {
       const e = Array.isArray(j.error) ? j.error[0] : j.error;
-      return res.status(200).json({ error: 'odsay', code: String(e && e.code || ''), msg: String(e && e.message || ''), legs: [] });
+      // 🔎 임시 진단(2026-08-12): 이 PC에서는 같은 키가 되는데 서버에서만 실패한다.
+      //    「IP 문제」인지 「Vercel 환경변수가 옛날 키」인지 가르려면 두 키가 같은지부터 봐야 한다.
+      //    키를 노출하지 않으려고 sha256 앞 8자리만 돌려준다. 원인 확정되면 지울 것.
+      const kf = require('crypto').createHash('sha256').update(ODSAY).digest('hex').slice(0, 8);
+      return res.status(200).json({ error: 'odsay', code: String(e && e.code || ''), msg: String(e && e.message || ''), keyLen: ODSAY.length, keyHash: kf, legs: [] });
     }
     const p = j && j.result && j.result.path && j.result.path[0];
     if (!p) { out.push({ from: l.from, to: l.to, min: 0 }); continue; }
