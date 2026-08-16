@@ -327,6 +327,8 @@ nav>a.nhot:hover{filter:brightness(1.06)}
 .navtoggle{display:none;border:1.5px solid #dcefeb;background:#fff;color:#0f9d8f;font-size:1.15rem;width:44px;height:38px;border-radius:11px;cursor:pointer;line-height:1;font-family:inherit}
 /* 헤더 검색 — 로고와 메뉴 사이 빈 공간. 축제 이름을 아는 사람이 가장 많은데 검색이 메뉴 안에 숨어 있었다 */
 .hsrch{position:relative;flex:1;max-width:330px;margin:0 18px}
+/* 히어로 검색창 — 모바일 메인 화면에 검색이 안 보인다는 지적(2026-08-16)으로 추가. 데스크톱은 헤더 검색으로 충분해 기본은 숨김 */
+.hsrch-hero{display:none}
 .hsrch input{width:100%;padding:9px 14px 9px 36px;border:1.5px solid #e0efec;border-radius:20px;background:#f7fbfa url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230f9d8f' stroke-width='2.4' stroke-linecap='round'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cpath d='M20 20l-3.6-3.6'/%3E%3C/svg%3E") no-repeat 12px center/15px;font-family:inherit;font-size:.92rem;color:#1f2937;transition:border-color .18s,background-color .18s,box-shadow .18s}
 .hsrch input::placeholder{color:#9aa8b2}
 .hsrch input:focus{outline:none;border-color:#5ac8ba;background-color:#fff;box-shadow:0 0 0 3px rgba(15,157,143,.12)}
@@ -342,6 +344,7 @@ nav>a.nhot:hover{filter:brightness(1.06)}
 @media(max-width:880px){
 .navtoggle{display:block}
 .hsrch{display:none}
+.hsrch-hero{display:block;position:relative;flex:none;width:100%;max-width:460px;margin:16px auto 0}
 nav{display:none;order:3;width:100%;flex-direction:column;align-items:stretch;gap:0;padding-top:10px;margin-top:10px;border-top:1px solid #e4f2ee}
 nav.open{display:flex}
 nav>a{display:block;margin:0;padding:10px 4px}
