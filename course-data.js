@@ -42,8 +42,10 @@ const KEYS = {
   stay: ['t', 'x', 'y', 'g', 'sg', 'kind', 'ci', 'co'],
   nat: ['t', 'x', 'y', 'g', 'sg', 'sub', 'ov'],
   walk: ['t', 'x', 'y', 'sg', 'km', 'min', 'lv', 'theme', 'ov'],
-  acc: ['t', 'x', 'y', 'g', 'sg', 'cat', 'af'],
-  pet: ['t', 'x', 'y', 'g', 'sg', 'cat', 'psbl']
+  // ⚠️ 'cat' 은 절대 쓰지 말 것 — 엔진 expand()가 카테고리를 o.cat 에 담으므로 덮어써진다.
+  //    (2026-08-18: 무장애·반려가 이것 때문에 라벨 undefined + 선호 가산점 미적용이었다)
+  acc: ['t', 'x', 'y', 'g', 'sg', 'sub', 'af'],
+  pet: ['t', 'x', 'y', 'g', 'sg', 'sub', 'psbl']
 };
 const row = (keys, o) => keys.map(k => o[k] === undefined || o[k] === null ? '' : o[k]);
 
@@ -88,8 +90,8 @@ function build(ROOT) {
   D.stret.forEach(w => { if (!ok(w)) return; put(w.sido, 'walk', { t: w.name, x: num(w.x), y: num(w.y), sg: sgOf(w.addr, w.sigungu), km: w.km || '', min: w.min || '', lv: '', theme: '', ov: (w.intro || '').slice(0, 110) }); });
   D.trails.forEach(w => { if (!ok(w)) return; put(w.sido, 'walk', { t: w.name, x: num(w.x), y: num(w.y), sg: String(w.sigun || '').split(' ').pop(), km: w.dist || '', min: w.min || '', lv: w.level || '', theme: w.theme || '', ov: (w.summary || '').replace(/^- /, '').slice(0, 110) }); });
   // ── 무장애 / 반려
-  D.acc.forEach(f => { if (!ok(f)) return; put(f.sido, 'acc', { t: f.title, x: num(f.x), y: num(f.y), g: shortImg(f.img), sg: sgOf(f.addr, f.sigungu), cat: f.cat || '', af: (f.acc || []).join('·'), ov: '' }); });
-  D.pet.forEach(f => { if (!ok(f)) return; put(f.sido, 'pet', { t: f.title, x: num(f.x), y: num(f.y), g: shortImg(f.img), sg: sgOf(f.addr, f.sigungu), cat: f.cat || '', psbl: f.psbl || '', ov: '' }); });
+  D.acc.forEach(f => { if (!ok(f)) return; put(f.sido, 'acc', { t: f.title, x: num(f.x), y: num(f.y), g: shortImg(f.img), sg: sgOf(f.addr, f.sigungu), sub: f.cat || '', af: (f.acc || []).join('·'), ov: '' }); });
+  D.pet.forEach(f => { if (!ok(f)) return; put(f.sido, 'pet', { t: f.title, x: num(f.x), y: num(f.y), g: shortImg(f.img), sg: sgOf(f.addr, f.sigungu), sub: f.cat || '', psbl: f.psbl || '', ov: '' }); });
   // ── 오일장 (좌표 없음 — 시군구만 있으므로 별도 배열로 이름만 싣는다)
   D.mkt.forEach(m => { const s = m.region; if (bucket[s]) bucket[s].mkt.push({ t: m.name, sg: m.city || '', d: m.daysNum || [], desc: m.desc || '', f: m.famous || '' }); });
 

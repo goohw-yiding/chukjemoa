@@ -53,6 +53,20 @@
   function ymd(d) { return d.getFullYear() + ('0' + (d.getMonth() + 1)).slice(-2) + ('0' + d.getDate()).slice(-2); }
   function addDays(s, n) { var d = new Date(+s.slice(0, 4), +s.slice(4, 6) - 1, +s.slice(6, 8)); d.setDate(d.getDate() + n); return d; }
 
+  // 「한적한 곳」 축을 시도 안 순위로 환산한다.
+  // ⚠️ 2026-08-18 실측: 배수를 그대로 빼면 전남이 1.01~1.15(폭 0.14)라 감점이 최대 0.6뿐이었다.
+  //    사진 가산점(+1.6)에 눌려 「전남 한적한 코스」가 전남에서 가장 붐비는 여수시 1위를 골랐다.
+  function busyNorm(D, monthKey) {
+    D._bn = D._bn || {};
+    if (D._bn[monthKey]) return D._bn[monthKey];
+    var vals = [], m = {};
+    Object.keys(D.busy).forEach(function (sg) { var v = D.busy[sg][monthKey]; if (v) vals.push([sg, v]); });
+    vals.sort(function (a, b) { return a[1] - b[1]; });
+    vals.forEach(function (x, i) { m[x[0]] = vals.length > 1 ? i / (vals.length - 1) : 0.5; });  // 0=가장 한산 … 1=가장 붐빔
+    D._bn[monthKey] = m;
+    return m;
+  }
+
   function scoreOf(D, o, O, monthKey) {
     var s = 0, f = O.focus || [], w = O.who || [];
     if (o.img) s += 1.6;
@@ -69,7 +83,8 @@
     if (w.indexOf('kid') >= 0 && o.cat === 'walk' && +o.km > 8) s -= 2;
     var b = D.busy[o.sg] && D.busy[o.sg][monthKey];
     if (f.indexOf('quiet') >= 0) {
-      if (b) s -= (b - 1) * 4;
+      var bn = busyNorm(D, monthKey)[o.sg];
+      s -= (bn === undefined ? 0.45 : bn) * 4.5;   // 데이터 없는 곳은 판단 불가 — 중간값으로 둔다
       if (D.fgn[o.sg] && D.fgn[o.sg] <= 20) s -= 1.5;
     } else if (b) s += (b - 1) * 1.2;
     return s;

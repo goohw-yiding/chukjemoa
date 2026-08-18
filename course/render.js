@@ -20,7 +20,8 @@
       h += '<div class="cmove">🚗 이동 약 ' + Math.round(it.move.min) + '분 · ' + it.move.km.toFixed(1) + 'km <em>(직선거리 추정)</em></div>';
     h += '<div class="crow"><div class="ctime">' + it.at + (it.till ? '<br><span>~' + it.till + '</span>' : '') + '</div><div class="cbody2">';
     if (o.img) h += '<img class="cthumb2" src="' + esc(o.img) + '" alt="' + esc(o.t) + '" loading="lazy">';
-    h += '<div class="cmeta"><div class="ctag">' + CATLABEL[o.cat] + (o.sub ? ' · ' + esc(o.sub) : '') + (o.kind ? ' · ' + esc(o.kind) : '') + '</div>';
+    // ⚠️ 라벨이 없는 카테고리가 오면 'undefined' 가 화면에 찍힌다(2026-08-18 실사고). 폴백 필수.
+    h += '<div class="cmeta"><div class="ctag">' + (CATLABEL[o.cat] || '📍 가볼 곳') + (o.sub ? ' · ' + esc(o.sub) : '') + (o.kind ? ' · ' + esc(o.kind) : '') + '</div>';
     h += '<h4>' + esc(o.t) + '</h4>';
     var line = [];
     if (o.sg) line.push(esc(o.sg));

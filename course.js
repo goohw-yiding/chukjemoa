@@ -152,6 +152,23 @@ const AI_BOX = `<div id="c-ai" style="display:none;margin-top:26px">
 <p class="cwarn">AI 답변은 참고용입니다. 영업시간·휴무일·예약 가능 여부는 우리 데이터에 없으므로 반드시 직접 확인하세요.</p>
 </div>`;
 
+// 정적 코스 페이지용 — 예시 질문을 그 코스에 맞춘다.
+// ⚠️ 당일치기 페이지에 "2일차가 빡빡해요"가 떠 있었다(2026-08-18). 12페이지가 같은 칩을 쓰던 흔적.
+function aiBox(p) {
+  const q = [];
+  q.push(p.days > 1 ? `${p.days}일차가 너무 빡빡해요, 하나 빼주세요` : '당일치기라 빡빡합니다, 하나 빼주세요');
+  q.push('비 오면 어디로 바꾸면 좋을까요?');
+  if ((p.who || []).indexOf('kid') >= 0) q.push('아이가 지치지 않을 순서로 바꿔주세요');
+  else if ((p.who || []).indexOf('parent') >= 0) q.push('부모님이 걷기 힘든 곳은 빼주세요');
+  else if ((p.who || []).indexOf('wheel') >= 0) q.push('경사가 있는 곳은 빼주세요');
+  else if ((p.who || []).indexOf('pet') >= 0) q.push('반려견 입장이 확실한 곳만 남겨주세요');
+  else if ((p.focus || []).indexOf('quiet') >= 0) q.push('더 한적한 곳으로 바꿔주세요');
+  else q.push('아이랑 가기엔 어디가 무리인가요?');
+  q.push(`${p.sido}에서 이것 말고 다른 동선도 알려주세요`);
+  return AI_BOX.replace(/<div class="cqs">[\s\S]*?<\/div>/,
+    `<div class="cqs">${q.map(s => `<button class="cq" type="button">${s}</button>`).join('\n')}</div>`);
+}
+
 const LIMITS = `<h2 class="sec">이 기능이 못 하는 것</h2>
 <p>쓸모 있으려면 못 하는 것부터 밝히는 게 맞다고 봅니다.</p>
 <ul>
@@ -211,6 +228,92 @@ ${faq.map(([q, a]) => `<p><b>${q}</b><br>${a}</p>`).join('')}
     urls.push('/course/');
   }
 
+  // ── 「이 코스를 숫자로 보면」 — 코스마다 자기 데이터로만 만드는 문단.
+  // 2026-08-18: 정적 코스 12개의 8-gram 자카드가 0.536(축제 상세는 0.195)이라 구글이 12개 중 1개만 색인했다.
+  // 템플릿 문장을 줄이는 대신, 그 코스에서만 나오는 숫자를 문장으로 만들어 고유 본문을 늘린다.
+  function courseBrief(p, D, P) {
+    const items = P.days.flatMap(d => d.items.map(it => it.o));
+    if (items.length < 3) return '';
+    const mk = SEASON_MM.replace(/^0/, '');
+    const li = [];
+
+    // 1) 시·군·구 구성 — 코스마다 반드시 다르다
+    const sgs = [...new Set(items.map(o => o.sg).filter(Boolean))];
+    if (sgs.length === 1) {
+      li.push(`방문지 <b>${items.length}곳이 ${sgs[0]} 한 곳</b>에 모여 있습니다. 차를 세워 두고 걸어서 도는 것도 가능한 밀도입니다.`);
+    } else if (sgs.length) {
+      li.push(`방문지 ${items.length}곳이 <b>${sgs.length}개 시·군·구</b>(${sgs.slice(0, 4).join(' · ')}${sgs.length > 4 ? ' 외' : ''})에 걸쳐 있고, 총 이동은 <b>약 ${P.km.toFixed(0)}km</b>입니다.`);
+    }
+
+    // 2) 붐빔 배수 — 이 코스가 지나는 지역의 실제 숫자
+    const busy = sgs.map(sg => [sg, D.busy[sg] && D.busy[sg][mk]]).filter(x => x[1]);
+    if (busy.length) {
+      const hot = busy.slice().sort((a, b) => b[1] - a[1])[0];
+      const cool = busy.slice().sort((a, b) => a[1] - b[1])[0];
+      li.push(hot[0] === cool[0]
+        ? `${mk}월 <b>${hot[0]}</b>의 방문자는 평소의 <b>×${hot[1].toFixed(2)}</b>입니다.`
+        : `${mk}월 기준 이 동선에서 가장 붐비는 곳은 <b>${hot[0]}(×${hot[1].toFixed(2)})</b>, 가장 한산한 곳은 <b>${cool[0]}(×${cool[1].toFixed(2)})</b>입니다.`);
+    }
+
+    // 3) 걷기길 — 포함된 코스에서만
+    const walks = items.filter(o => o.cat === 'walk');
+    if (walks.length) {
+      const km = walks.reduce((a, o) => a + (+o.km || 0), 0);
+      const min = walks.reduce((a, o) => a + Math.min(+o.min || 0, 240), 0);
+      // ⚠️ 올레·해파랑처럼 전 구간 100km가 넘는 길이 섞인다. "합계 114km를 4시간에"로 읽히면 거짓말이 된다.
+      const longs = walks.filter(o => (+o.min || 0) > 240);
+      li.push(`걷기길 <b>${walks.length}개</b>가 들어 있고, 일정에 잡은 걷는 시간은 <b>약 ${Math.round(min / 60)}시간</b>입니다.` +
+        (longs.length
+          ? ` 다만 ${longs.map(o => `<b>${o.t}</b>(전 구간 ${(+o.km).toFixed(0)}km · 약 ${Math.round(+o.min / 60)}시간)`).join(', ')}처럼 하루에 다 걸을 수 없는 장거리 길이 섞여 있어, <b>일부 구간만</b> 잡았습니다.`
+          : ` 등록된 전 구간 거리는 합계 약 ${km.toFixed(1)}km입니다.`));
+    }
+
+    // 4) 영업시간 — 우리가 아는 것과 모르는 것을 코스별 실제 비율로
+    const eat = items.filter(o => o.cat === 'food' || o.cat === 'cafe');
+    if (eat.length) {
+      const know = eat.filter(o => o.open).length;
+      li.push(know === eat.length
+        ? `식사·카페 <b>${eat.length}곳 전부</b> 영업시간이 공공데이터에 있어 카드에 그대로 표시했습니다.`
+        : `식사·카페 ${eat.length}곳 중 <b>${know}곳만</b> 영업시간이 공공데이터에 있습니다. 나머지 ${eat.length - know}곳은 「정보 없음」으로 적어 뒀습니다 — 모르는 걸 아는 척하지 않습니다.`);
+    }
+
+    // 5) 후보 규모 — 이 시도에 우리가 가진 데이터의 크기
+    const pool = ['nat', 'walk', 'food', 'cafe', 'stay', 'acc', 'pet']
+      .map(c => [c, (D.c[c] || []).length]).filter(x => x[1] > 0);
+    const NAME = { nat: '자연', walk: '걷기길', food: '식사', cafe: '카페', stay: '숙소', acc: '무장애', pet: '반려동반' };
+    if (pool.length) {
+      li.push(`${p.sido} 지역에서 후보로 쓴 데이터는 ${pool.slice(0, 5).map(([c, n]) => `${NAME[c]} ${n.toLocaleString('ko-KR')}곳`).join(' · ')}입니다. 이 중 좌표가 가까운 순서로 골랐습니다.`);
+    }
+
+    let out = `<h2 class="sec">이 코스를 숫자로 보면</h2><ul style="line-height:1.85;color:#374151;font-size:.95rem;padding-left:20px">${li.map(s => `<li>${s}</li>`).join('')}</ul>`;
+
+    // ── 이 동선이 지나는 시·군·구의 이달 붐빔 순위 (시도 전체와 비교)
+    const allBusy = Object.keys(D.busy).map(sg => [sg, D.busy[sg][mk]]).filter(x => x[1]).sort((a, b) => b[1] - a[1]);
+    if (allBusy.length >= 4) {
+      const mine = new Set(sgs);
+      const rankOf = sg => allBusy.findIndex(x => x[0] === sg) + 1;
+      const rows = allBusy.filter(x => mine.has(x[0])).map(([sg, v]) =>
+        `<li><b>${sg}</b> — 평소의 ×${v.toFixed(2)} <span style="color:#9ca3af">(${p.sido} ${allBusy.length}개 시·군·구 중 ${rankOf(sg)}위)</span></li>`).join('');
+      out += `<h2 class="sec">${mk}월, 이 동선은 얼마나 붐비나</h2>
+<p style="color:#6b7280;font-size:.93rem">한국관광공사 「한국관광 데이터랩」의 시·군·구 방문자 수를 연평균과 비교한 배수입니다. 1보다 크면 그 달에 사람이 더 몰린다는 뜻입니다.</p>
+<ul style="line-height:1.8;font-size:.95rem;padding-left:20px">${rows || '<li>이 동선이 지나는 시·군·구는 방문자 데이터에 없습니다.</li>'}</ul>
+<p style="color:#6b7280;font-size:.93rem">참고로 ${mk}월 ${p.sido}에서 가장 붐비는 곳은 ${allBusy.slice(0, 3).map(x => `<b>${x[0]}</b>(×${x[1].toFixed(2)})`).join(' · ')}, 가장 한산한 곳은 ${allBusy.slice(-3).reverse().map(x => `<b>${x[0]}</b>(×${x[1].toFixed(2)})`).join(' · ')}입니다.</p>`;
+    }
+
+    // ── 이 지역 오일장 — 코스가 지나는 시·군을 먼저 보여준다
+    const DAYN = d => (d || []).map(x => x + '일').join(' · ');
+    const mkt = (D.mkt || []).slice().sort((a, b) => (sgs.includes(b.sg) ? 1 : 0) - (sgs.includes(a.sg) ? 1 : 0));
+    if (mkt.length) {
+      const near = mkt.filter(m => sgs.includes(m.sg));
+      out += `<h2 class="sec">이 근처 오일장은 언제 서나</h2>
+<p style="color:#6b7280;font-size:.93rem">축제가 없는 날도 오일장은 섭니다. ${p.sido}에 등록된 오일장 ${mkt.length}곳 중${near.length ? ` 이 동선이 지나는 시·군의 ${near.length}곳을 먼저,` : ''} 가까운 순서로 적었습니다.</p>
+<ul style="line-height:1.8;font-size:.95rem;padding-left:20px">${mkt.slice(0, 10).map(m =>
+        `<li><b>${m.t}</b>${m.sg ? ` <span style="color:#9ca3af">(${m.sg})</span>` : ''}${m.d && m.d.length ? ` — 매월 ${DAYN(m.d)}` : ''}${m.f ? ` · 대표 ${m.f}` : ''}</li>`).join('')}</ul>
+<p style="color:#9ca3af;font-size:.85rem">오일장 날짜는 명절·기상에 따라 쉬는 날이 있습니다. <a href="/jangteo/" style="color:#0a6c63">전국 오일장 일정 보기 →</a></p>`;
+    }
+    return out;
+  }
+
   // ── 정적 코스 페이지 (날짜 없음 — lastmod 안정성 때문)
   PRESETS.forEach(p => {
     const slug = CD.SIDO_SLUG[p.sido];
@@ -227,7 +330,15 @@ ${faq.map(([q, a]) => `<p><b>${q}</b><br>${a}</p>`).join('')}
     const faq = [
       [`${p.h1}는 어떻게 정해졌나요?`, `${p.sido} 지역의 공공데이터 후보를 좌표로 이어 동선이 짧은 순서로 배치하고, 걷기길은 실제 소요시간으로 하루 분량을 맞췄습니다. 광고나 제휴가 아니라 데이터로 뽑은 순서입니다.`],
       ['날짜를 바꾸고 싶어요.', '이 페이지 아래의 코스 짜기에서 날짜와 조건을 바꾸면 그 날 열리는 축제와 오일장까지 반영해 다시 만들어 드립니다.'],
-      ['이동시간이 정확한가요?', '직선거리 기반 추정치입니다. 대중교통 실제 소요시간은 조건을 넣어 코스를 만든 뒤 확인 버튼으로 조회할 수 있습니다.']
+      // ⚠️ 아래 두 개는 코스별 실제 숫자로 만든다 — 12개 페이지가 같은 문장이면 구글이 한 개만 색인한다(2026-08-18 실측).
+      [`${p.h1}는 하루에 얼마나 움직이나요?`, (() => {
+        const per = P.days.map((d, i) => `${i + 1}일차 약 ${(d.km || 0).toFixed(0)}km`).join(' · ');
+        return `${per}, 합계 <b>약 ${P.km.toFixed(0)}km</b>입니다. 자차 기준 유류비는 약 ${Math.round(P.carCost).toLocaleString('ko-KR')}원(휘발유 1,700원/L · 연비 12km/L 가정, 통행료 별도). 직선거리에 1.35를 곱한 추정치라 산길·섬·도심 정체는 반영되지 않았고, 대중교통 실제 소요시간은 조건을 넣어 다시 짠 뒤 확인 버튼으로 조회할 수 있습니다.`;
+      })()],
+      [`${p.sido}에서 여기 말고 다른 곳도 있나요?`, (() => {
+        const nat = (D.c.nat || []).length, walk = (D.c.walk || []).length, food = (D.c.food || []).length;
+        return `이 페이지에 실린 ${n}곳은 ${p.sido} 후보 가운데 동선이 짧은 순서로 뽑은 것입니다. 후보 자체는 자연 ${nat.toLocaleString('ko-KR')}곳 · 걷기길 ${walk.toLocaleString('ko-KR')}곳 · 식사 ${food.toLocaleString('ko-KR')}곳이 더 있으니, 조건(며칠·누구와·무엇 중심)을 바꾸면 완전히 다른 동선이 나옵니다.`;
+      })()]
     ];
     const content = `<main><div class="wrap">
 <style>${CSS}</style>
@@ -235,10 +346,11 @@ ${faq.map(([q, a]) => `<p><b>${q}</b><br>${a}</p>`).join('')}
 <p style="color:#6b7280;font-size:.95rem">${p.lead}</p>
 <p style="color:#9ca3af;font-size:.85rem">아래는 <b>날짜를 넣지 않은 기본 동선</b>입니다. 실제 날짜를 넣으면 그 날 열리는 축제와 오일장까지 반영해 시간표를 다시 만들어 드립니다.</p>
 ${body}
+${courseBrief(p, D, P)}
 <h2 class="sec">내 날짜·조건으로 다시 짜기</h2>
 ${wizard({ sido: p.sido, days: p.days, focus: p.focus, who: p.who, pace: p.pace })}
 <div id="c-outwrap"><div id="c-out"></div></div>
-${AI_BOX}
+${aiBox(p)}
 ${LIMITS}
 <h2 class="sec">자주 묻는 것</h2>
 ${faq.map(([q, a]) => `<p><b>${q}</b><br>${a}</p>`).join('')}
