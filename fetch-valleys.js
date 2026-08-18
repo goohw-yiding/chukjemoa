@@ -7,6 +7,7 @@ const https = require('https');
 const KEY = fs.readFileSync(path.join(__dirname, 'tourapi.key'), 'utf8').trim();
 const LIST = 'https://apis.data.go.kr/B551011/KorService2/areaBasedList2';
 const DET  = 'https://apis.data.go.kr/B551011/KorService2/detailCommon2';
+const DET2 = 'https://apis.data.go.kr/B551011/KorService2/detailIntro2';   // 영업시간·휴무·주차·문의처
 
 // ⚠️ 「변칙 표기 방어」라고 적어 뒀지만 **방어가 아니라 오분류였다.**
 //    '전남광주통합특별시':'광주' 로 뭉뚱그려 담양·장성·곡성·광양·순천 계곡 9곳이 전부 광주로 들어갔다
@@ -70,25 +71,58 @@ async function main(){
   try { JSON.parse(fs.readFileSync(outPath,'utf8')).forEach(p=>{ if(p.ov) cache[p.id]=p.ov; }); } catch(e){}
   out.forEach(p=>{ if(cache[p.id]) p.ov = cache[p.id]; });
   fs.writeFileSync(outPath, JSON.stringify(out)); // 목록 우선 저장
-  async function overview(cid){
-    const u = `${DET}?serviceKey=${KEY}&MobileOS=ETC&MobileApp=chukjemoa&_type=json&numOfRows=1&pageNo=1&contentId=${cid}`;
-    try { const j=JSON.parse(await get(u)); const it=j.response&&j.response.body&&j.response.body.items; const d=it&&it.item?(Array.isArray(it.item)?it.item[0]:it.item):null; if(!d) return null; return clean(d.overview||'').slice(0,300); } catch(e){ return null; }
+  // 🚨 동시 8개는 TourAPI 초당 제한에 걸린다. 응답이 OpenAPI_ServiceResponse 로 오는데
+  //    예전 코드가 조용히 삼켜 「데이터 없음」으로 보였다(fetch-spots.js 와 같은 사고).
+  //    순차 + 120ms. 그리고 detailIntro2 로 영업시간·주차·문의처도 같이 받는다.
+  const sleep = ms => new Promise(r=>setTimeout(r, ms));
+  let apiErr = 0;
+  async function detail(cid){
+    const o = {};
+    try {
+      const j = JSON.parse(await get(`${DET}?serviceKey=${KEY}&MobileOS=ETC&MobileApp=chukjemoa&_type=json&numOfRows=1&pageNo=1&contentId=${cid}`));
+      if (j.OpenAPI_ServiceResponse) { apiErr++; return null; }
+      const it = j.response && j.response.body && j.response.body.items;
+      const d = it && it.item ? (Array.isArray(it.item)?it.item[0]:it.item) : null;
+      if (d) { o.ov = clean(d.overview||'').slice(0,300); o.tel = clean(d.tel||'').slice(0,60); o.hp = clean(d.homepage||'').replace(/<[^>]*>/g,'').slice(0,200); }
+    } catch(e){ apiErr++; }
+    await sleep(120);
+    try {
+      const j2 = JSON.parse(await get(`${DET2}?serviceKey=${KEY}&MobileOS=ETC&MobileApp=chukjemoa&_type=json&numOfRows=1&pageNo=1&contentId=${cid}&contentTypeId=12`));
+      if (j2.OpenAPI_ServiceResponse) apiErr++;
+      else {
+        const it2 = j2.response && j2.response.body && j2.response.body.items;
+        const d2 = it2 && it2.item ? (Array.isArray(it2.item)?it2.item[0]:it2.item) : null;
+        if (d2) {
+          o.open = clean(d2.usetime||'').slice(0,60);
+          o.rest = clean(d2.restdate||'').slice(0,50);
+          o.park = clean(d2.parking||'').slice(0,60);
+          if (!o.tel && d2.infocenter) o.tel = clean(d2.infocenter).slice(0,60);
+        }
+      }
+    } catch(e){ apiErr++; }
+    return o;
   }
   const CAP = Number(process.env.CAP || 100000);
-  const todo = out.filter(p=>!p.ov).slice(0, CAP);
-  let got=0; const CB=8;
-  for (let i=0;i<todo.length;i+=CB){
-    const chunk = todo.slice(i,i+CB);
-    const ds = await Promise.all(chunk.map(p=>overview(p.id)));
-    ds.forEach((d,k)=>{ if(d){ chunk[k].ov=d; got++; } });
-    process.stdout.write('\r개요 '+Math.min(i+CB,todo.length)+'/'+todo.length+' (신규 '+got+')');
-    if ((i/CB) % 10 === 0) fs.writeFileSync(outPath, JSON.stringify(out));
+  const todo = out.filter(p=>!p.ov || !p.tel || p.open === undefined).slice(0, CAP);
+  const KEYS = ['ov','tel','hp','open','rest','park'];
+  const n = {}; KEYS.forEach(k=> n[k]=0);
+  for (let i=0;i<todo.length;i++){
+    const p = todo[i];
+    const d = await detail(p.id);
+    if (d) KEYS.forEach(k=>{ if (d[k] && !p[k]) { p[k]=d[k]; n[k]++; } });
+    if (i % 10 === 0 || i === todo.length-1) {
+      process.stdout.write('\r상세 '+(i+1)+'/'+todo.length+' (개요+'+n.ov+' 전화+'+n.tel+' 영업+'+n.open+' 주차+'+n.park+(apiErr?' ⚠️API오류'+apiErr:'')+')');
+      if (i % 50 === 0) fs.writeFileSync(outPath, JSON.stringify(out));
+    }
+    await sleep(120);
   }
   console.log('');
   fs.writeFileSync(outPath, JSON.stringify(out));
   const bySido={}; out.forEach(p=> bySido[p.sido]=(bySido[p.sido]||0)+1);
+  const pct = k => Math.round(out.filter(p=>p[k]).length / out.length * 100) + '%';
   console.log('총 수집:', all.length, '→ 저장:', out.length);
-  console.log('개요 보유:', out.filter(p=>p.ov).length, '/', out.length);
+  console.log('개요 ' + pct('ov') + ' · 전화 ' + pct('tel') + ' · 영업시간 ' + pct('open') + ' · 주차 ' + pct('park')
+    + (apiErr ? '  ⚠️ API 오류 ' + apiErr + '회' : ''));
   console.log('시도별:', JSON.stringify(bySido));
 }
 main();

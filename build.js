@@ -3031,7 +3031,11 @@ const petContent = `<main><div class="wrap">
 <button id="pReset" class="pmore" style="border-color:#f0e6dc;color:#374151">초기화</button>
 </div></div>
 <div class="srch-count" id="pCount"></div>
-<div class="grid" id="pGrid">${ssrCards(apiPets, 60, p => ({ title: p.title, img: p.img, loc: (p.sido || '') + ' ' + (p.sigungu || ''), desc: p.cat }))}</div>
+<div class="grid" id="pGrid">${ssrCards(apiPets, 60, p => ({
+  title: p.title, img: p.img, loc: (p.sido || '') + ' ' + (p.sigungu || ''),
+  desc: [[p.psbl, p.type].filter(Boolean).join(' · '), [p.need, p.note].filter(Boolean).join(' / ')]
+    .filter(Boolean).join(' — ') || p.cat
+}))}</div>
 <div style="text-align:center;margin:22px 0"><button id="pMore" class="pmore" style="display:none">더 보기</button></div>
 <p class="note">데이터 출처: 한국관광공사 반려동물 동반여행 서비스(공공데이터포털). 반려동물 동반 조건·이용가능 시설은 방문 전 각 장소에 꼭 확인하세요. 카드를 누르면 상세정보와 지도·검색 링크가 표시됩니다.</p>
 </div></main>
@@ -3111,6 +3115,12 @@ fetch('/valley/data.json').then(function(r){return r.json();}).then(function(dat
   writePage('valley', layout('전국 계곡명소 — 여름 피서·물놀이 좋은 전국 계곡 총정리 | ' + SITE_NAME, '여름 피서·물놀이 가기 좋은 전국 계곡 ' + apiValleys.length + '곳을 지역별로. 공공데이터 기반 계곡 명소 정보와 지도.', '/valley/', valleyContent + '<script>window.CJM_BUYBOX=' + JSON.stringify(buyBox('valley')) + ';</script>'));
   fs.writeFileSync(path.join(ROOT, 'valley', 'data.json'), JSON.stringify(apiValleys));
 // ---------- 계절 명소(단풍·꽃·온천) — 범용 루프 ----------
+// ⚠️ 2026-08-18: 아래 허브들의 «서버가 그리는 첫 HTML»이 이름+시군뿐이었다(항목당 25~31자).
+//    JS 카드는 동반조건·편의시설을 다 그리는데 검색엔진이 읽는 HTML엔 없었다 → ssrCards 의 desc 를 JS와 맞췄다.
+//    /pet/ 은 psbl·type·need·note, /accessible/ 은 acc 배지를 함께 내보낸다.
+//    ※ 무장애 편의시설 정보는 공공데이터에 1,390곳만 있다 — 우리 수집 누락이 아니라 원본 한계다.
+//    ※ 이 메모를 처음엔 «템플릿 안 HTML 주석»으로 넣었다가 audit.js 가 「개발용 주석 유출 2건」으로 잡아냈다.
+//       같은 함정을 하루에 두 번 밟았다. 메모는 반드시 템플릿 바깥의 // 주석으로.
 const SPOT_THEMES = [
   { data: apiMaple, slug: 'maple', title: '전국 단풍 명소 — 가을 산·단풍 여행 명소 총정리 | ' + SITE_NAME,
     metaDesc: '가을 단풍 구경 좋은 전국 산·단풍 명소를 지역별로. 공공데이터 기반 단풍 명소 정보와 지도.',
@@ -3165,7 +3175,7 @@ var P=[];var byId={};var st={sido:'',sigungu:'',kw:''};var shown=60;
 var CATLABEL=${JSON.stringify(T.catLabel)};var DURL='/'+${JSON.stringify(T.slug)}+'/data.json';
 function esc(s){return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 function card(p){var loc=(p.sido||'')+(p.sigungu?' '+p.sigungu:'');var q=encodeURIComponent(p.title);var img=p.img||'/img/hero.webp';return '<a class="card" data-id="'+esc(p.id)+'" style="cursor:pointer" href="https://search.naver.com/search.naver?query='+q+'"><div class="thumb"><img loading="lazy" src="'+esc(img)+'" alt="'+esc(p.title)+'" onerror="this.src=&#39;/img/hero.webp&#39;"><span class="cat">'+CATLABEL+'</span></div><div class="card-body"><h3>'+esc(p.title)+'</h3><div class="loc">'+esc(loc)+'</div>'+(p.ov?'<div class="sov">'+esc(p.ov)+'</div>':'')+'</div></a>';}
-function openSpot(p){if(!window.openPlaceModal){window.open('https://search.naver.com/search.naver?query='+encodeURIComponent(p.title),'_blank','noopener');return;}var loc=(p.sido||'')+(p.sigungu?' '+p.sigungu:'');var body=p.ov?(window.cjmProse?window.cjmProse(p.ov):'<div>'+esc(p.ov)+'</div>'):'<div style="color:#6b7280;font-size:.9rem">운영·요금·시기 정보는 방문 전 확인하세요.</div>';window.openPlaceModal({img:p.img,title:p.title,meta:[CATLABEL,loc,p.tel].filter(Boolean).join('  ·  '),body:body,naver:'https://search.naver.com/search.naver?query='+encodeURIComponent(p.title),map:'https://map.naver.com/p/search/'+encodeURIComponent(p.title)});}
+function openSpot(p){if(!window.openPlaceModal){window.open('https://search.naver.com/search.naver?query='+encodeURIComponent(p.title),'_blank','noopener');return;}var loc=(p.sido||'')+(p.sigungu?' '+p.sigungu:'');var body=p.ov?(window.cjmProse?window.cjmProse(p.ov):'<div>'+esc(p.ov)+'</div>'):'<div style="color:#6b7280;font-size:.9rem">운영·요금·시기 정보는 방문 전 확인하세요.</div>';var rows=[['🕒 영업시간',p.open],['🚫 휴무',p.rest],['🅿️ 주차',p.park],['☎ 문의',p.tel]].filter(function(r){return r[1];});if(rows.length)body+='<div style="margin-top:12px;border-top:1px solid #eef2f5;padding-top:10px;font-size:.9rem;color:#374151">'+rows.map(function(r){return '<div style="margin:3px 0"><b>'+r[0]+'</b> '+esc(r[1])+'</div>';}).join('')+'</div>';if(p.hp)body+='<div style="margin-top:8px;font-size:.88rem"><a href="'+esc(p.hp)+'" target="_blank" rel="noopener nofollow">공식 홈페이지 →</a></div>';window.openPlaceModal({img:p.img,title:p.title,meta:[CATLABEL,loc,p.tel].filter(Boolean).join('  ·  '),body:body,naver:'https://search.naver.com/search.naver?query='+encodeURIComponent(p.title),map:'https://map.naver.com/p/search/'+encodeURIComponent(p.title)});}
 function filtered(){return P.filter(function(p){if(st.sido&&p.sido!==st.sido)return false;if(st.sigungu&&p.sigungu!==st.sigungu)return false;if(st.kw){var k=st.kw.toLowerCase();if((p.title||'').toLowerCase().indexOf(k)<0&&(p.addr||'').indexOf(st.kw)<0)return false;}return true;});}
 function render(){var list=filtered();document.getElementById('sCount').textContent='총 '+list.length+'곳';var g=document.getElementById('sGrid');g.innerHTML=list.length?list.slice(0,shown).map(card).join(''):'<p style="grid-column:1/-1;color:#6b7280;padding:24px 0">조건에 맞는 곳이 없어요. 지역을 바꿔보세요.</p>';document.getElementById('sMore').style.display=list.length>shown?'inline-block':'none';}
 function fillSg(){var set={};P.forEach(function(p){if((!st.sido||p.sido===st.sido)&&p.sigungu)set[p.sigungu]=1;});var arr=Object.keys(set).sort();document.getElementById('sSigungu').innerHTML='<option value="">전체 시·군·구</option>'+arr.map(function(s){return '<option value="'+s+'">'+s+'</option>';}).join('');}
@@ -3612,7 +3622,10 @@ if (apiAccessible.length) {
 <button id="aReset" class="pmore" style="border-color:#f0e6dc;color:#374151">초기화</button>
 </div></div>
 <div class="srch-count" id="aCount"></div>
-<div class="grid" id="aGrid">${ssrCards(apiAccessible, 60, p => ({ title: p.title, img: p.img, loc: (p.sido || '') + ' ' + (p.sigungu || ''), desc: p.cat }))}</div>
+<div class="grid" id="aGrid">${ssrCards(apiAccessible, 60, p => ({
+  title: p.title, img: p.img, loc: (p.sido || '') + ' ' + (p.sigungu || ''),
+  desc: (Array.isArray(p.acc) && p.acc.length) ? p.cat + ' — ' + p.acc.join(' · ') + ' 있음' : p.cat
+}))}</div>
 <div style="text-align:center;margin:22px 0"><button id="aMore" class="pmore" style="display:none">더 보기</button></div>
 <p class="note">데이터 출처: 한국관광공사 무장애여행 서비스(공공데이터포털). 편의시설 정보는 순차적으로 채워지고 있으며, 방문 전 각 시설에 접근성을 꼭 확인하세요. 카드를 누르면 상세정보와 지도·검색 링크가 표시됩니다.</p>
 </div></main>
