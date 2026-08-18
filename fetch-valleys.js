@@ -67,9 +67,12 @@ async function main(){
 
   // ---- 개요(overview) enrich : 캐시 병합 + 부족분만(중단 대비 주기 저장) ----
   const outPath = path.join(__dirname, 'data', 'valleys.json');
+  // ⚠️ 물려받을 필드를 «하나라도 빠뜨리면 재수집이 곧 삭제»다 — 2026-08-18에 카페에서 그렇게
+  //    영업시간·대표메뉴 2,018곳을 날렸다. 새 필드를 추가하면 이 목록에도 반드시 넣을 것.
+  const CARRY = ['ov','tel','hp','open','rest','park'];
   const cache = {};
-  try { JSON.parse(fs.readFileSync(outPath,'utf8')).forEach(p=>{ if(p.ov) cache[p.id]=p.ov; }); } catch(e){}
-  out.forEach(p=>{ if(cache[p.id]) p.ov = cache[p.id]; });
+  try { JSON.parse(fs.readFileSync(outPath,'utf8')).forEach(p=>{ const k={}; let any=false; CARRY.forEach(f=>{ if(p[f]){k[f]=p[f];any=true;} }); if(any) cache[p.id]=k; }); } catch(e){}
+  out.forEach(p=>{ const c=cache[p.id]; if(!c) return; CARRY.forEach(f=>{ if(c[f] && !p[f]) p[f]=c[f]; }); });
   fs.writeFileSync(outPath, JSON.stringify(out)); // 목록 우선 저장
   // 🚨 동시 8개는 TourAPI 초당 제한에 걸린다. 응답이 OpenAPI_ServiceResponse 로 오는데
   //    예전 코드가 조용히 삼켜 「데이터 없음」으로 보였다(fetch-spots.js 와 같은 사고).

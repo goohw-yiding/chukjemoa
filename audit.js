@@ -123,6 +123,57 @@ R.push('\n## 4. 설명(개요) 채움률 — 낮으면 페이지가 이름 나�
   }
 }
 
+// ══ 4-B. 채움률이 «지난주보다 떨어졌나» ═══════════════════════════
+// 🚨 2026-08-18 실사고: 카페를 재수집했더니 fetch-hours.js 가 채워 둔
+//    영업시간·대표메뉴·주차가 2,018곳에서 통째로 사라졌다(캐시가 ov 만 물려줬다).
+//    화면은 멀쩡해 보이고 🔴도 안 뜬다 — «있던 게 없어진 것»은 절대값으로는 안 잡힌다.
+//    그래서 매 실행의 채움률을 남기고 **지난번보다 떨어지면 🔴**로 올린다.
+R.push('\n## 4-B. 채움률 변화 (지난 점검 대비)');
+{
+  const HIST = path.join(DATA, 'audit-history.json');
+  const WATCH = [
+    ['오일장', 'markets_api.json', ['ov', 'sale', 'days', 'open', 'tel']],
+    ['온천', 'onsen.json', ['ov', 'tel', 'open', 'park']],
+    ['봄꽃', 'flower.json', ['ov', 'tel', 'open', 'park']],
+    ['계곡', 'valleys.json', ['ov', 'tel', 'open', 'park']],
+    ['단풍', 'maple.json', ['ov', 'tel', 'open', 'park']],
+    ['명산', 'mountains_ko.json', ['ov', 'sigungu']],
+    ['카페', 'cafes_ko.json', ['ov', 'open', 'rest', 'menu', 'park']],
+    ['맛집', 'restaurants_ko.json', ['open', 'rest', 'menu', 'park']],
+    ['숙박', 'stays_ko.json', ['ci', 'co', 'park']],
+    ['반려', 'pets.json', ['psbl', 'type', 'need', 'note']],
+    ['무장애', 'accessible.json', ['acc']],
+    ['걷기길', 'trails.json', ['desc', 'summary', 'x']]
+  ];
+  let prev = {};
+  try { prev = JSON.parse(fs.readFileSync(HIST, 'utf8')); } catch (e) { }
+  const now = {};
+  const drops = [];
+  R.push('| 데이터 | 필드 | 지난번 | 이번 | 변화 |'); R.push('|---|---|---|---|---|');
+  for (const [label, f, keys] of WATCH) {
+    const j = readJ(f); if (!Array.isArray(j) || !j.length) continue;
+    for (const k of keys) {
+      const pct = Math.round(j.filter(o => o[k] && !(Array.isArray(o[k]) && !o[k].length)).length / j.length * 100);
+      const id = f + ':' + k;
+      now[id] = pct;
+      const was = prev[id];
+      if (was === undefined) continue;
+      const diff = pct - was;
+      if (diff <= -3) {                       // 3%p 넘게 떨어지면 사고로 본다
+        drops.push(label + ' ' + k + ' ' + was + '% → ' + pct + '% (' + diff + '%p)');
+        R.push('| ' + label + ' | ' + k + ' | ' + was + '% | **' + pct + '%** | 🔴 ' + diff + '%p |');
+      } else if (diff !== 0) {
+        R.push('| ' + label + ' | ' + k + ' | ' + was + '% | ' + pct + '% | ' + (diff > 0 ? '+' : '') + diff + '%p |');
+      }
+    }
+  }
+  if (!Object.keys(prev).length) R.push('| — | — | — | — | 첫 실행: 이번 값을 기준으로 저장했습니다 |');
+  else if (!drops.length) R.push('| — | — | — | — | ✅ 떨어진 항목 없음 |');
+  drops.forEach(d => RED.push('채움률 하락 — ' + d));
+  if (drops.length) { R.push('\n' + red('채움률이 떨어진 항목 ' + drops.length + '개 — «있던 데이터가 사라진 것»입니다')); drops.forEach(d => R.push('- ' + d)); }
+  try { fs.writeFileSync(HIST, JSON.stringify(now, null, 1)); } catch (e) { }
+}
+
 // ══ 5. 축제 재고 (겨울 절벽) ══════════════════════════════════════
 R.push('\n## 5. 축제 재고 — 앞으로 몇 개가 남나');
 {

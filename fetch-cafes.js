@@ -59,9 +59,20 @@ async function run(L) {
     });
   }
   const fpath = path.join(__dirname, 'data', `cafes_${L.code}.json`);
+  // ⚠️ 2026-08-18 실사고: 캐시가 `ov` 만 물려주는 바람에, 이 스크립트를 다시 돌렸더니
+  //    **fetch-hours.js 가 채워 둔 영업시간·휴무·대표메뉴·주차가 2,018곳에서 통째로 사라졌다.**
+  //    이 파일은 목록 API 결과로 out 을 새로 만들기 때문에, «다른 스크립트가 넣은 필드»는
+  //    반드시 캐시로 물려받아야 한다. 그렇지 않으면 재수집이 곧 데이터 삭제다.
+  const CARRY = ['ov', 'open', 'rest', 'menu', 'park', 'tel'];
   const cache = {};
-  try { JSON.parse(fs.readFileSync(fpath, 'utf8')).forEach(m => { if (m.ov) cache[m.id] = m.ov; }); } catch (e) { }
-  out.forEach(m => { if (cache[m.id]) m.ov = cache[m.id]; });
+  try {
+    JSON.parse(fs.readFileSync(fpath, 'utf8')).forEach(m => {
+      const keep = {}; let any = false;
+      CARRY.forEach(k => { if (m[k]) { keep[k] = m[k]; any = true; } });
+      if (any) cache[m.id] = keep;
+    });
+  } catch (e) { }
+  out.forEach(m => { const c = cache[m.id]; if (!c) return; CARRY.forEach(k => { if (c[k] && !m[k]) m[k] = c[k]; }); });
   // 🚨 2026-08-18: 여기도 «동시 10개» + `L.ovMax` 상한이었다. TourAPI 초당 제한에 걸린 응답을
   //    `catch → return null` 로 조용히 삼켜 **국문 2,040곳 중 개요가 41곳(2%)** 뿐이었다.
   //    상한을 늘려도 소용없었을 것이다 — 막힌 건 호출량이 아니라 «초당 속도»였다.
