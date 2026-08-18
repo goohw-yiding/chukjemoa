@@ -77,8 +77,13 @@ async function main(){
   const outPath = path.join(__dirname, 'data', 'accessible.json');
   const cache = {};
   const encache = {};
-  try { JSON.parse(fs.readFileSync(outPath,'utf8')).forEach(p=>{ if(Array.isArray(p.acc)) cache[p.id]=p.acc; if(p.enr) encache[p.id]=1; }); } catch(e){}
-  out.forEach(p=>{ if(cache[p.id]) p.acc = cache[p.id]; if(encache[p.id]) p.enr = 1; });
+  // ⚠️ 2026-08-18: 여기서 acc/enr 만 물려받고 있었다. `fetch-ov.js` 가 채운 **개요 9,361건**이
+  //    이 스크립트를 다시 돌리는 순간 통째로 사라진다(카페에서 실제로 그렇게 2,018곳을 날렸다).
+  //    이 파일은 목록 API로 레코드를 «새로 만들기» 때문에, 다른 스크립트가 넣은 필드는 반드시 물려받아야 한다.
+  const ovcache = {};
+  try { JSON.parse(fs.readFileSync(outPath,'utf8')).forEach(p=>{ if(Array.isArray(p.acc)) cache[p.id]=p.acc; if(p.enr) encache[p.id]=1; if(p.ov||p.ovDone) ovcache[p.id]={ov:p.ov,ovDone:p.ovDone}; }); } catch(e){}
+  out.forEach(p=>{ if(cache[p.id]) p.acc = cache[p.id]; if(encache[p.id]) p.enr = 1;
+    const o=ovcache[p.id]; if(o){ if(o.ov) p.ov=o.ov; if(o.ovDone) p.ovDone=o.ovDone; } });
   fs.writeFileSync(outPath, JSON.stringify(out)); // 목록 우선 저장(중단 대비)
   async function detail(cid){
     const u = `${DET}?serviceKey=${KEY}&MobileOS=ETC&MobileApp=chukjemoa&_type=json&numOfRows=1&pageNo=1&contentId=${cid}`;

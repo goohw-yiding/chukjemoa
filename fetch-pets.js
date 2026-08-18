@@ -79,8 +79,10 @@ async function main(){
   // ---- 상세 반려동물 정보 enrich (KorPetTourService2/detailPetTour2) : 캐시 병합 + 부족분만, 하루한도 대비 캡 ----
   const petsPath = path.join(__dirname, 'data', 'pets.json');
   const cache = {};
-  try { JSON.parse(fs.readFileSync(petsPath,'utf8')).forEach(p=>{ if(p.psbl||p.type||p.need||p.note||p.enr) cache[p.id]={psbl:p.psbl||'',type:p.type||'',need:p.need||'',note:p.note||'',enr:p.enr?1:0}; }); } catch(e){}
-  out.forEach(p=>{ const c=cache[p.id]; if(c){ if(c.psbl)p.psbl=c.psbl; if(c.type)p.type=c.type; if(c.need)p.need=c.need; if(c.note)p.note=c.note; if(c.enr)p.enr=1; } });
+  // ⚠️ 2026-08-18: 여기에 ov/ovDone 이 빠져 있으면 `fetch-ov.js` 가 채운 개요 1,052건이
+  //    이 스크립트를 다시 돌리는 순간 사라진다(카페에서 실제로 2,018곳을 그렇게 날렸다).
+  try { JSON.parse(fs.readFileSync(petsPath,'utf8')).forEach(p=>{ if(p.psbl||p.type||p.need||p.note||p.enr||p.ov||p.ovDone) cache[p.id]={psbl:p.psbl||'',type:p.type||'',need:p.need||'',note:p.note||'',enr:p.enr?1:0,ov:p.ov||'',ovDone:p.ovDone?1:0}; }); } catch(e){}
+  out.forEach(p=>{ const c=cache[p.id]; if(c){ if(c.psbl)p.psbl=c.psbl; if(c.type)p.type=c.type; if(c.need)p.need=c.need; if(c.note)p.note=c.note; if(c.enr)p.enr=1; if(c.ov)p.ov=c.ov; if(c.ovDone)p.ovDone=1; } });
   const DET = 'https://apis.data.go.kr/B551011/KorPetTourService2/detailPetTour2';
   function clean(s){ return (s||'').replace(/^[\s\-·]+/,'').replace(/\s*\n\s*/g,' · ').replace(/\s{2,}/g,' ').trim(); }
   async function detail(cid){

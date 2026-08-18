@@ -565,6 +565,13 @@ function normalizeSido(list) {
 }
 // 목록 페이지 첫 화면을 HTML에 실어두는 서버 렌더 카드
 // (JS가 로드 후 같은 데이터로 다시 그리므로 내용은 동일하다)
+// 브라우저가 내려받는 data.json 에서 개요를 뺀다.
+// ⚠️ 개요는 «서버가 그리는 카드»에만 쓴다. 무장애 9,398건에 개요를 실어 보내면
+//    accessible/data.json 이 2.7MB → 10MB 가 된다. 홈을 445→133KB 로 줄인 작업이 헛수고가 된다.
+//    모달이 보여줄 값어치는 개요가 아니라 «편의시설·동반조건»이고 그건 그대로 실려 나간다.
+function stripOv(list) {
+  return list.map(o => { const c = Object.assign({}, o); delete c.ov; delete c.ovDone; return c; });
+}
 function ssrCards(list, n, f) {
   return (list || []).slice(0, n || 60).map(p => {
     const o = f(p);
@@ -573,7 +580,9 @@ function ssrCards(list, n, f) {
       + (img ? '<div class="thumb"><img src="' + escA(img) + '" alt="' + escA(o.title) + '" loading="lazy"></div>' : '')
       + '<div class="card-body"><h3>' + esc(o.title) + '</h3>'
       + (o.loc ? '<p class="loc">📍 ' + esc(o.loc) + '</p>' : '')
-      + (o.desc ? '<p class="desc">' + esc(String(o.desc).slice(0, 120)) + '</p>' : '')
+      // ⚠️ 120자로 자르고 있었다. .desc 에 3줄 클램프를 넣었으니 화면은 여전히 3줄인데
+      //    HTML 에는 더 실려 나간다(검색엔진이 읽는 건 클램프 전의 원문이다).
+      + (o.desc ? '<p class="desc">' + esc(String(o.desc).slice(0, 200)) + '</p>' : '')
       + '</div></div>';
   }).join('');
 }
@@ -1110,7 +1119,7 @@ h2.sec::before{content:'';position:absolute;left:0;top:14%;width:5px;height:72%;
 .card h3{font-size:1.13rem;font-weight:800;letter-spacing:-.02em;margin:2px 0 6px}
 .card .date{font-weight:700;color:#0f9d8f;font-size:.92rem}
 .card .loc{font-size:.86rem;color:#6b7280;margin:2px 0 8px}
-.card .desc{font-size:.9rem;color:#4b5563}
+.card .desc{font-size:.9rem;color:#4b5563;line-height:1.55;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
 .card-top{display:flex;justify-content:flex-end;align-items:center;margin-bottom:2px}
 .badge{font-size:.72rem;padding:3px 9px;border-radius:10px;font-weight:700}
 .badge.ok{background:#e5f6e8;color:#1a7f37}
@@ -3033,7 +3042,7 @@ const petContent = `<main><div class="wrap">
 <div class="srch-count" id="pCount"></div>
 <div class="grid" id="pGrid">${ssrCards(apiPets, 60, p => ({
   title: p.title, img: p.img, loc: (p.sido || '') + ' ' + (p.sigungu || ''),
-  desc: [[p.psbl, p.type].filter(Boolean).join(' · '), [p.need, p.note].filter(Boolean).join(' / ')]
+  desc: [[p.psbl, p.type].filter(Boolean).join(' · '), [p.need, p.note].filter(Boolean).join(' / '), p.ov]
     .filter(Boolean).join(' — ') || p.cat
 }))}</div>
 <div style="text-align:center;margin:22px 0"><button id="pMore" class="pmore" style="display:none">더 보기</button></div>
@@ -3061,7 +3070,7 @@ fetch('/pet/data.json').then(function(r){return r.json();}).then(function(data){
 })();
 </script>`;
 writePage('pet', layout('반려견 동반 여행지 — 전국 반려동물 동반 관광지·맛집·숙소 | ' + SITE_NAME, '반려동물 동반 가능한 전국 관광지·음식점·숙박·레포츠를 지역별로. 공공데이터 기반 ' + apiPets.length + '곳. 강아지와 함께 갈 곳 찾기.', '/pet/', petContent + '<script>window.CJM_BUYBOX=' + JSON.stringify(buyBox('pet')) + ';</script>'));
-fs.writeFileSync(path.join(ROOT, 'pet', 'data.json'), JSON.stringify(apiPets));
+fs.writeFileSync(path.join(ROOT, 'pet', 'data.json'), JSON.stringify(stripOv(apiPets)));
 
 // ---------- 계곡명소 ----------
 if (apiValleys.length) {
@@ -3624,7 +3633,8 @@ if (apiAccessible.length) {
 <div class="srch-count" id="aCount"></div>
 <div class="grid" id="aGrid">${ssrCards(apiAccessible, 60, p => ({
   title: p.title, img: p.img, loc: (p.sido || '') + ' ' + (p.sigungu || ''),
-  desc: (Array.isArray(p.acc) && p.acc.length) ? p.cat + ' — ' + p.acc.join(' · ') + ' 있음' : p.cat
+  desc: [(Array.isArray(p.acc) && p.acc.length) ? p.cat + ' — ' + p.acc.join(' · ') + ' 있음' : p.cat, p.ov]
+    .filter(Boolean).join(' · ')
 }))}</div>
 <div style="text-align:center;margin:22px 0"><button id="aMore" class="pmore" style="display:none">더 보기</button></div>
 <p class="note">데이터 출처: 한국관광공사 무장애여행 서비스(공공데이터포털). 편의시설 정보는 순차적으로 채워지고 있으며, 방문 전 각 시설에 접근성을 꼭 확인하세요. 카드를 누르면 상세정보와 지도·검색 링크가 표시됩니다.</p>
@@ -3652,7 +3662,7 @@ fetch('/accessible/data.json').then(function(r){return r.json();}).then(function
 })();
 </script>`;
   writePage('accessible', layout('무장애 여행지 — 휠체어·유아차·고령자 접근 가능 관광지 | ' + SITE_NAME, '휠체어·유아차·고령자도 편하게 갈 수 있는 전국 무장애 관광지·문화시설·맛집·숙소를 지역별로. 공공데이터 기반 ' + apiAccessible.length.toLocaleString() + '곳.', '/accessible/', accContent + '<script>window.CJM_BUYBOX=' + JSON.stringify(buyBox('trails')) + ';</script>'));
-  fs.writeFileSync(path.join(ROOT, 'accessible', 'data.json'), JSON.stringify(apiAccessible));
+  fs.writeFileSync(path.join(ROOT, 'accessible', 'data.json'), JSON.stringify(stripOv(apiAccessible)));
 }
 
 // ---------- 걷기길 노선별 페이지 (/trails/{slug}/) ----------
