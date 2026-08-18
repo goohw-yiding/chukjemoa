@@ -8,22 +8,11 @@ const KEY = fs.readFileSync(path.join(__dirname, 'tourapi.key'), 'utf8').trim();
 const LIST = 'https://apis.data.go.kr/B551011/KorService2/areaBasedList2';
 const DET  = 'https://apis.data.go.kr/B551011/KorService2/detailCommon2';
 
-const SIDO = {
-  '서울특별시':'서울','부산광역시':'부산','대구광역시':'대구','인천광역시':'인천',
-  '광주광역시':'광주','대전광역시':'대전','울산광역시':'울산','세종특별자치시':'세종',
-  '경기도':'경기','강원특별자치도':'강원','강원도':'강원','충청북도':'충북','충청남도':'충남',
-  '전라북도':'전북','전북특별자치도':'전북','전라남도':'전남','경상북도':'경북','경상남도':'경남',
-  '제주특별자치도':'제주','제주도':'제주',
-  // TourAPI가 광주/전남을 붙여 쓰는 변칙 표기 방어
-  '전남광주통합특별시':'광주'
-};
-const VALID_SIDO = new Set(['서울','부산','대구','인천','광주','대전','울산','세종','경기','강원','충북','충남','전북','전남','경북','경남','제주']);
-function parseAddr(a){
-  a=(a||'').trim(); const t=a.split(/\s+/); const first=t[0]||'', second=t[1]||'';
-  let sido = SIDO[first] || first.replace(/(특별시|광역시|특별자치시|특별자치도|도)$/,'') || '';
-  const sigungu = /(시|군|구)$/.test(second) ? second : '';
-  return { sido, sigungu };
-}
+// ⚠️ 「변칙 표기 방어」라고 적어 뒀지만 **방어가 아니라 오분류였다.**
+//    '전남광주통합특별시':'광주' 로 뭉뚱그려 담양·장성·곡성·광양·순천 계곡 9곳이 전부 광주로 들어갔다
+//    (2026-08-18 실측: 「광주」 라벨 9건 중 진짜 광주는 0건).
+//    이제 공용 region.js 가 주소 두 번째 토큰으로 광주/전남을 가른다.
+const { parseAddr, VALID_SIDO } = require('./region');
 function clean(s){
   return (s || '')
     .replace(/<[^>]+>/g, ' ')

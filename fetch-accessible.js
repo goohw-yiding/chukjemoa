@@ -8,20 +8,10 @@ const KEY = fs.readFileSync(path.join(__dirname, 'tourapi.key'), 'utf8').trim();
 const LIST = 'https://apis.data.go.kr/B551011/KorWithService2/areaBasedList2';
 const DET  = 'https://apis.data.go.kr/B551011/KorWithService2/detailWithTour2';
 
-const SIDO = {
-  '서울특별시':'서울','부산광역시':'부산','대구광역시':'대구','인천광역시':'인천',
-  '광주광역시':'광주','대전광역시':'대전','울산광역시':'울산','세종특별자치시':'세종',
-  '경기도':'경기','강원특별자치도':'강원','강원도':'강원','충청북도':'충북','충청남도':'충남',
-  '전라북도':'전북','전북특별자치도':'전북','전라남도':'전남','경상북도':'경북','경상남도':'경남',
-  '제주특별자치도':'제주','제주도':'제주'
-};
-const VALID_SIDO = new Set(['서울','부산','대구','인천','광주','대전','울산','세종','경기','강원','충북','충남','전북','전남','경북','경남','제주']);
-function parseAddr(a){
-  a=(a||'').trim(); const t=a.split(/\s+/); const first=t[0]||'', second=t[1]||'';
-  let sido = SIDO[first] || first.replace(/(특별시|광역시|특별자치시|특별자치도|도)$/,'') || '';
-  const sigungu = /(시|군|구)$/.test(second) ? second : '';
-  return { sido, sigungu };
-}
+// ⚠️ 여기 있던 자체 SIDO 표에 「전남광주통합특별시」가 없어서 VALID_SIDO 검사에 걸려
+//    **광주·전남 전체가 통째로 버려지고 있었다**(2026-08-18 실측: 8,915곳 중 두 시도 0건).
+//    이제 공용 region.js 를 쓴다 — 표를 두 벌 관리하지 않는다.
+const { parseAddr, VALID_SIDO } = require('./region');
 const CAT = {'12':'관광지','14':'문화시설','15':'축제·행사','25':'여행코스','28':'레포츠','32':'숙박','38':'쇼핑','39':'음식점'};
 
 function get(url){
