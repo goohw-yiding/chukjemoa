@@ -2308,16 +2308,84 @@ const slim = festivals.map(f => {
     `(${slim.length}건 · 홈·취향테스트 공유)`);
 }
 
+// ---------- 🎪 fest-live.json — 홈 「이번 주말」이 큐레이션 157건만 보던 문제 ----------
+// ⚠️ 2026-08-18 실측: 이번 주말 큐레이션에서 2건이 잡히는데, 히어로는 apiFests 로 세서
+//    「이번 주말엔 51개가 열립니다」라고 말하고 있었다. **말과 목록이 어긋나 있었다.**
+//    그래서 카드가 볼 수 있는 풀을 공공데이터로 넓히고, 히어로 숫자도 같은 규칙으로 센다.
+// 규칙 3개 — 셋 다 「축제가 아닌 것」을 걸러내려는 것이다.
+//   ① 기간 45일 초과 제외: 「2026 문화가 있는 날」288일·「한강야경투어」142일 같은
+//      상설 프로그램이 주말 카드를 다 차지해 버린다(이번 주말 51건 중 37건이 이 부류였다).
+//   ② 좌표 없는 것 제외: 카드가 주말 날씨 배지를 좌표로 붙인다.
+//   ③ 큐레이션과 이름이 겹치면 제외: 큐레이션 쪽이 설명·사진이 더 낫다.
+// 창(window)을 28일로 끊는다 — 다음 4번의 주말을 덮고, 빌드가 매일 도니 항상 최신이다.
+// 전체(150건 106KB)를 다 넣으면 홈을 445→133KB로 줄인 작업이 헛수고가 된다. 28일이면 59건 30KB.
+const FEST_LIVE = (() => {
+  const D = s => String(s || '').replace(/^(\d{4})(\d{2})(\d{2})$/, '$1-$2-$3');
+  const t0 = new Date(+TODAY.slice(0, 4), +TODAY.slice(5, 7) - 1, +TODAY.slice(8, 10));
+  const LIMIT = new Date(t0.getTime() + 28 * 86400e3).toISOString().slice(0, 10);
+  const dur = a => (new Date(D(a.end)) - new Date(D(a.start))) / 86400e3 + 1;
+  // 개요 첫 문장 — 문장을 중간에서 자르지 않는다(오일장 표에서 쓰던 것과 같은 규칙).
+  // ⚠️ 오일장 쪽 firstSent 는 그 블록 스코프 안에 있어 여기서 못 쓴다.
+  const sent1 = s => { const m = String(s || '').match(/^[\s\S]*?[.。!?！？]|^[\s\S]*?다\./); return (m ? m[0] : String(s || '')).trim(); };
+  const curNorm = new Set(festivals.map(f => normTitle(f.name)));
+  // ⚠️ 공공데이터에 sido 가 「포항시」로 들어온 레코드가 1건 있다(2026-08-18).
+  //    시도명을 지어내지 않고 **다른 레코드에서 배운다** — 정상 레코드의 시군구→시도 표를 만들어 되찾는다.
+  const SIDO = /^(서울|부산|대구|인천|광주|대전|울산|세종|경기|강원|충북|충남|전북|전남|경북|경남|제주)$/;
+  const CITY2SIDO = {};
+  apiFests.forEach(a => {
+    if (!SIDO.test(a.sido)) return;
+    const city = String(a.sigungu || '').split(' ')[0];
+    if (city && !CITY2SIDO[city]) CITY2SIDO[city] = a.sido;
+  });
+  let unfixed = 0;
+  const fixLoc = a => {
+    if (SIDO.test(a.sido)) return { r: a.sido, c: a.sigungu || '' };
+    const guess = CITY2SIDO[String(a.sido).split(' ')[0]];
+    if (guess) return { r: guess, c: (a.sido + ' ' + (a.sigungu || '')).trim() };
+    unfixed++; return { r: a.sido || '', c: a.sigungu || '' };
+  };
+  const out = apiFests
+    .filter(a => D(a.end) >= TODAY && D(a.start) <= LIMIT && dur(a) <= 45
+      && +a.x && +a.y && !curNorm.has(normTitle(a.title)))
+    .sort((a, b) => String(a.start).localeCompare(String(b.start)))
+    .map(a => {
+      const loc = fixLoc(a);
+      const ov = String(a.ov || '');
+      return {
+        n: a.title, s: D(a.start), e: D(a.end), r: loc.r, c: loc.c,
+        g: '기타',                       // 공공데이터에 카테고리가 없다 — 지어내지 않고 기본 🎪 로 둔다
+        la: +a.y, lo: +a.x,
+        k: (MONTHS.find(mm => mm.months.includes(+D(a.start).slice(5, 7))) || MONTHS[0]).key,
+        p: a.addr || '', d: sent1(ov).slice(0, 110), img: a.img || '',
+        ov: ov.slice(0, 300), hp: '', ap: 1   // ap:1 = 공공데이터에서 온 것
+      };
+    });
+  fs.writeFileSync(path.join(ROOT, 'fest-live.json'), JSON.stringify(out));
+  console.log('✓ fest-live.json', Math.round(JSON.stringify(out).length / 1024) + 'KB',
+    `(${out.length}건 · 앞으로 28일 · 45일 초과 상설 제외` + (unfixed ? ` · ⚠️시도 미해결 ${unfixed}` : '') + ')');
+  return out;
+})();
+// ⭐ 히어로가 «말하는 숫자»와 주말 카드가 «보여주는 목록»은 같은 풀에서 나와야 한다.
+//    이게 어긋나서 「이번 주말 51개」라고 써 놓고 2개만 보여주고 있었다.
+const HOME_POOL = festivals.map(f => ({ s: f.start, e: f.end }))
+  .concat(FEST_LIVE.map(f => ({ s: f.s, e: f.e })));
+
 const WEEKEND_JS = `<script>
 (function(){
   const EMOJI = ${JSON.stringify(CAT_EMOJI)};
   window.renderFavs = window.renderFavs || function(){};   // 데이터 오기 전에 불려도 안 터지게
-  fetch('/fest.json').then(function(r){ return r.json(); }).then(function(F){
+  // 큐레이션(fest.json) + 공공데이터 단기축제(fest-live.json)를 합쳐서 본다.
+  // ⚠️ fest-live.json 이 실패해도 주말 카드는 «예전대로» 떠야 한다 → catch 로 빈 배열.
+  const grab = u => fetch(u).then(function(r){ return r.json(); }).catch(function(){ return []; });
+  Promise.all([grab('/fest.json'), grab('/fest-live.json')]).then(function(parts){
+  const seen = {};
+  const F = parts[0].concat(parts[1]).filter(function(f){ if (seen[f.n]) return false; seen[f.n] = 1; return true; });
   const t = new Date(); t.setHours(0,0,0,0);
   const sat = new Date(t); sat.setDate(t.getDate() + ((6 - t.getDay() + 7) % 7));
   const sun = new Date(sat); sun.setDate(sat.getDate() + 1);
   const iso = d => d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
-  const list = F.filter(f => f.s <= iso(sun) && f.e >= iso(sat)).slice(0, 10);
+  const list = F.filter(f => f.s <= iso(sun) && f.e >= iso(sat))
+    .sort(function(a,b){ return a.s.localeCompare(b.s) || a.n.localeCompare(b.n); }).slice(0, 12);
   const box = document.getElementById('weekend');
   if (box) {
     if (!list.length) { box.innerHTML = '<p class="note">이번 주말 예정된 축제 정보가 없어요.</p>'; }
@@ -2434,13 +2502,19 @@ const HERO_LIVE = (() => {
   // 이번 주말(다가오는 토·일)
   const sat = new Date(d0); sat.setDate(sat.getDate() + ((6 - sat.getDay() + 7) % 7));
   const sun = new Date(sat); sun.setDate(sun.getDate() + 1);
-  const inRange = (f, a, b) => String(f.start) <= b && String(f.end) >= a;
+  // 45일 넘게 이어지는 것은 «축제»가 아니라 상설 프로그램이다(「2026 문화가 있는 날」288일 등).
+  const yd = s => new Date(+String(s).slice(0, 4), +String(s).slice(4, 6) - 1, +String(s).slice(6, 8));
+  const SHORT = f => (yd(f.end) - yd(f.start)) / 86400e3 + 1 <= 45;
 
-  const now = apiFests.filter(f => String(f.start) <= today && String(f.end) >= today);
-  const wk = apiFests.filter(f => inRange(f, ymd(sat), ymd(sun)));
+  // ⚠️ 2026-08-18: 여기서 apiFests 를 그냥 세는 바람에 히어로는 「이번 주말 51개」라고 말하는데
+  //    바로 아래 주말 카드에는 2개만 떴다. **세는 것과 보여주는 것이 다른 목록이었다.**
+  //    이제 주말 카드와 똑같이 HOME_POOL(큐레이션 + fest-live)에서 센다.
+  const isoD = d => d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2);
+  const now = HOME_POOL.filter(f => f.s <= TODAY && f.e >= TODAY);
+  const wk = HOME_POOL.filter(f => f.s <= isoD(sun) && f.e >= isoD(sat));
   // 곧 시작하는 축제 (7일 이내)
   const soon = apiFests.filter(f => {
-    const s = String(f.start); if (s <= today) return false;
+    const s = String(f.start); if (s <= today || !SHORT(f)) return false;
     const dt = new Date(+s.slice(0, 4), +s.slice(4, 6) - 1, +s.slice(6, 8));
     return Math.round((dt - d0) / 86400e3) <= 7;
   }).sort((a, b) => String(a.start).localeCompare(String(b.start)));
@@ -2553,6 +2627,7 @@ const indexContent = `<div class="hero">
 </div>
 <h2 class="sec" id="weekend-title">이번 주말 갈 만한 축제</h2>
 <div class="wkgrid" id="weekend"></div>
+<p class="note" style="margin-top:8px">저희가 정리한 축제와 <b>한국관광공사 TourAPI</b>의 축제를 함께 봅니다. 45일 넘게 이어지는 상설 프로그램은 빼고, 실제로 그 주말에 열리는 것만 골랐습니다. 일정은 주최 측 사정으로 바뀔 수 있으니 방문 전에 확인해 주세요.</p>
 ${WEEKEND_JS}
 <a class="testbanner" href="/test/"><strong>🔮 30초 축제 취향 테스트</strong><span>4가지 질문으로 나에게 딱 맞는 축제를 찾아드려요 — 결과를 친구에게 공유해보세요!</span></a>
 <h2 class="sec">지금 &amp; 곧 열리는 축제 <button id="nearby-btn" class="nearby-btn" style="margin-left:10px;vertical-align:middle">📍 내 주변 축제 보기</button></h2>

@@ -446,14 +446,14 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 <div class="hero">
 <video class="hero-vid" autoplay muted loop playsinline preload="none" poster="/img/hero.webp" aria-hidden="true"><source src="/img/hero.mp4" type="video/mp4"></video>
 <div class="hero-inner">
-<div class="hero-live"><span class="dot"></span><span id="hero-live-txt">🎪 지금 <b>45개</b> 축제가 열리고 있어요</span></div>
+<div class="hero-live"><span class="dot"></span><span id="hero-live-txt">🎪 지금 <b>10개</b> 축제가 열리고 있어요</span></div>
 <h1>이번 주말, 어디로 떠나볼까요?</h1>
 <p>전국 축제와 오일장 일정을 한눈에 — 가족 나들이 계획이 3분이면 끝나요.</p>
 <div class="hsrch hsrch-hero" id="hsrch-hero"><input type="search" placeholder="축제·지역·계곡 검색" autocomplete="off" aria-label="사이트 검색"><div class="hres"></div></div>
 <div class="hero-cta"><a class="cta1" href="#weekend-title">이번 주말 축제 보기</a><a class="cta2" href="/course/">🧭 내 조건으로 코스 짜기</a></div>
-<div class="hero-stats"><span>🎪 <b class="cnt" data-to="45">0</b> 지금 열리는 축제</span><span>📅 <b class="cnt" data-to="51">0</b> 이번 주말</span><span>🧭 <b class="cnt" data-to="12649">0</b> 관광지</span><span>🥾 <b class="cnt" data-to="1587">0</b> 걷기길 코스</span></div>
+<div class="hero-stats"><span>🎪 <b class="cnt" data-to="10">0</b> 지금 열리는 축제</span><span>📅 <b class="cnt" data-to="16">0</b> 이번 주말</span><span>🧭 <b class="cnt" data-to="12649">0</b> 관광지</span><span>🥾 <b class="cnt" data-to="1587">0</b> 걷기길 코스</span></div>
 </div>
-<script id="hero-live-data" type="application/json">["🎪 지금 <b>45개</b> 축제가 열리고 있어요","📅 이번 주말엔 <b>51개</b>가 열립니다","⏳ <b>사천시 삼천포항 자연산 전어축제</b> 개막이 코앞이에요","🔥 이달 가장 붐비는 곳 · <b>경북 울릉군</b> 평소의 ×1.54","🤫 사람 적은 곳 찾는다면 · <b>경기 파주시</b> ×1.01","🥾 걷기길 <b>1,587</b>개 코스를 거리·소요시간까지"]</script>
+<script id="hero-live-data" type="application/json">["🎪 지금 <b>10개</b> 축제가 열리고 있어요","📅 이번 주말엔 <b>16개</b>가 열립니다","⏳ <b>사천시 삼천포항 자연산 전어축제</b> 개막이 코앞이에요","🔥 이달 가장 붐비는 곳 · <b>경북 울릉군</b> 평소의 ×1.54","🤫 사람 적은 곳 찾는다면 · <b>경기 파주시</b> ×1.01","🥾 걷기길 <b>1,587</b>개 코스를 거리·소요시간까지"]</script>
 </div>
 <main><div class="wrap">
 <div id="myfavs-sec" style="display:none">
@@ -462,16 +462,23 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 </div>
 <h2 class="sec" id="weekend-title">이번 주말 갈 만한 축제</h2>
 <div class="wkgrid" id="weekend"></div>
+<p class="note" style="margin-top:8px">저희가 정리한 축제와 <b>한국관광공사 TourAPI</b>의 축제를 함께 봅니다. 45일 넘게 이어지는 상설 프로그램은 빼고, 실제로 그 주말에 열리는 것만 골랐습니다. 일정은 주최 측 사정으로 바뀔 수 있으니 방문 전에 확인해 주세요.</p>
 <script>
 (function(){
   const EMOJI = {"물놀이":"💦","음악":"🎵","음식":"🍜","꽃":"🌸","문화":"🎭","불꽃":"🎆","전통":"🏮","빛":"✨","눈":"⛄","기타":"🎪"};
   window.renderFavs = window.renderFavs || function(){};   // 데이터 오기 전에 불려도 안 터지게
-  fetch('/fest.json').then(function(r){ return r.json(); }).then(function(F){
+  // 큐레이션(fest.json) + 공공데이터 단기축제(fest-live.json)를 합쳐서 본다.
+  // ⚠️ fest-live.json 이 실패해도 주말 카드는 «예전대로» 떠야 한다 → catch 로 빈 배열.
+  const grab = u => fetch(u).then(function(r){ return r.json(); }).catch(function(){ return []; });
+  Promise.all([grab('/fest.json'), grab('/fest-live.json')]).then(function(parts){
+  const seen = {};
+  const F = parts[0].concat(parts[1]).filter(function(f){ if (seen[f.n]) return false; seen[f.n] = 1; return true; });
   const t = new Date(); t.setHours(0,0,0,0);
   const sat = new Date(t); sat.setDate(t.getDate() + ((6 - t.getDay() + 7) % 7));
   const sun = new Date(sat); sun.setDate(sat.getDate() + 1);
   const iso = d => d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
-  const list = F.filter(f => f.s <= iso(sun) && f.e >= iso(sat)).slice(0, 10);
+  const list = F.filter(f => f.s <= iso(sun) && f.e >= iso(sat))
+    .sort(function(a,b){ return a.s.localeCompare(b.s) || a.n.localeCompare(b.n); }).slice(0, 12);
   const box = document.getElementById('weekend');
   if (box) {
     if (!list.length) { box.innerHTML = '<p class="note">이번 주말 예정된 축제 정보가 없어요.</p>'; }
