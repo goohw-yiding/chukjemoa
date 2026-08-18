@@ -5232,6 +5232,7 @@ const HOT_URLS = [];
 <div class="cloc">📍 ${esc(sidoName(c.sido))}${c.addr ? ' · ' + esc(String(c.addr).slice(0, 38)) : ''}</div>
 ${badges ? `<div class="cbs">${badges}</div>` : ''}
 ${c.ov ? `<p class="cov">${esc(String(c.ov).slice(0, 105))}…</p>` : ''}
+${(c.open || c.menu) ? `<p class="cov" style="color:#0a6c63">${[c.open ? '🕒 ' + esc(String(c.open).slice(0, 30)) : '', c.menu ? '☕ ' + esc(String(c.menu).slice(0, 40)) : ''].filter(Boolean).join('  ·  ')}</p>` : ''}
 </div></a>`;
     };
     const SSR_N = 240;

@@ -57,36 +57,57 @@ async function run(L) {
     const addr = clean(it.addr1);
     out.push({
       id: it.contentid, title: clean(it.title), addr,
-      sido: sidoOf(it.lDongRegnCd, it.lDongSignguCd), sigungu: '',
+      // ⚠️ sigungu 를 ''로 두는 바람에 332곳 전부 시·군이 빈칸이었다(2026-08-18). 주소에서 채운다.
+      sido: sidoOf(it.lDongRegnCd, it.lDongSignguCd), sigungu: (String(addr).split(/\s+/)[1] || '').replace(/^(?!.*(시|군|구)$).*$/, ''),
       regnCd: it.lDongRegnCd || '', signguCd: it.lDongSignguCd || '',
       img: it.firstimage || '', x: it.mapx || '', y: it.mapy || '', tel: clean(it.tel)
     });
   }
   // 개요(overview)는 국문만 채운다 — 다국어는 건수가 적어 전량, 국문은 상위 200개만(호출 절약)
   const fpath = path.join(__dirname, 'data', `mountains_${L.code}.json`);
+  // 이미 받은 개요·전화는 다시 받지 않는다(재실행이 싸야 매주 돌릴 수 있다)
   const cache = {};
-  try { JSON.parse(fs.readFileSync(fpath, 'utf8')).forEach(m => { if (m.ov) cache[m.id] = m.ov; }); } catch (e) { }
-  out.forEach(m => { if (cache[m.id]) m.ov = cache[m.id]; });
+  try { JSON.parse(fs.readFileSync(fpath, 'utf8')).forEach(m => { if (m.ov || m.tel) cache[m.id] = { ov: m.ov, tel: m.tel }; }); } catch (e) { }
+  out.forEach(m => { const c = cache[m.id]; if (!c) return; if (c.ov) m.ov = c.ov; if (c.tel && !m.tel) m.tel = c.tel; });
+  // 🚨 2026-08-18: 여기도 «동시 10개»였다. TourAPI 초당 제한에 걸려 응답이
+  //    {"OpenAPI_ServiceResponse":{...LIMITED_NUMBER_OF_SERVICE_REQUESTS_PER_SECOND...}} 로 오는데
+  //    `catch → return null` 로 조용히 삼켜 개요가 30%에서 멈춰 있었다(332곳 중 232곳 결측).
+  //    → 순차 + 120ms. API 오류는 «세어서» 보고한다. (fetch-spots.js 와 같은 사고, 같은 처방)
+  const sleep = ms => new Promise(r => setTimeout(r, ms));
+  let apiErr = 0;
   async function common(cid) {
     const u = `${BASE}/detailCommon2?serviceKey=${L.key}&MobileOS=ETC&MobileApp=chukjemoa&_type=json&numOfRows=1&pageNo=1&contentId=${cid}`;
     try {
       const j = JSON.parse(await get(u));
+      if (j.OpenAPI_ServiceResponse) { apiErr++; return null; }
       const it = j.response && j.response.body && j.response.body.items;
       const d = it && it.item ? (Array.isArray(it.item) ? it.item[0] : it.item) : null;
       if (!d) return null;
-      return { ov: clean(d.overview).slice(0, 500), addr: clean(d.addr1) };
-    } catch (e) { return null; }
+      return { ov: clean(d.overview).slice(0, 500), addr: clean(d.addr1), tel: clean(d.tel).slice(0, 60) };
+    } catch (e) { apiErr++; return null; }
   }
-  const need = out.filter(m => !m.ov).slice(0, L.code === 'ko' ? 340 : 120);
-  for (let i = 0; i < need.length; i += 10) {
-    const ch = need.slice(i, i + 10);
-    const ds = await Promise.all(ch.map(m => common(m.id)));
-    ds.forEach((d, k) => { if (d) { if (d.ov) ch[k].ov = d.ov; if (!ch[k].addr && d.addr) ch[k].addr = d.addr; } });
-    process.stdout.write(`\r[${L.code}] overview ${Math.min(i + 10, need.length)}/${need.length}`);
+  // ⚠️ 예전엔 국문을 340개로 잘라 두었는데(호출 절약), 정작 못 채운 이유는 호출량이 아니라 초당 제한이었다.
+  //    이제 캐시가 있어 재실행이 싸므로 상한을 두지 않는다.
+  const need = out.filter(m => !m.ov || !m.tel);
+  let nOv = 0, nTel = 0;
+  for (let i = 0; i < need.length; i++) {
+    const d = await common(need[i].id);
+    if (d) {
+      if (d.ov && !need[i].ov) { need[i].ov = d.ov; nOv++; }
+      if (d.tel && !need[i].tel) { need[i].tel = d.tel; nTel++; }
+      if (!need[i].addr && d.addr) need[i].addr = d.addr;
+    }
+    if (i % 10 === 0 || i === need.length - 1) {
+      process.stdout.write(`\r[${L.code}] 상세 ${i + 1}/${need.length} (개요+${nOv} 전화+${nTel}${apiErr ? ' ⚠️API오류' + apiErr : ''})`);
+      if (i % 50 === 0) fs.writeFileSync(fpath, JSON.stringify(out));
+    }
+    await sleep(120);
   }
   console.log('');
   fs.writeFileSync(fpath, JSON.stringify(out));
-  console.log(`[${L.code}] 산 ${out.length}곳 저장 · 개요 ${out.filter(m => m.ov).length}건 · 사진 ${out.filter(m => m.img).length}건`);
+  const pct = k => Math.round(out.filter(m => m[k]).length / out.length * 100) + '%';
+  console.log(`[${L.code}] 산 ${out.length}곳 저장 · 개요 ${pct('ov')} · 전화 ${pct('tel')} · 사진 ${pct('img')}`
+    + (apiErr ? `  ⚠️ API 오류 ${apiErr}회` : ''));
 }
 
 (async () => { for (const L of LANGS) { try { await run(L); } catch (e) { console.error(L.code, 'FAIL', e.message); } } })();

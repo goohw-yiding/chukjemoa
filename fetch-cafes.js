@@ -62,25 +62,37 @@ async function run(L) {
   const cache = {};
   try { JSON.parse(fs.readFileSync(fpath, 'utf8')).forEach(m => { if (m.ov) cache[m.id] = m.ov; }); } catch (e) { }
   out.forEach(m => { if (cache[m.id]) m.ov = cache[m.id]; });
+  // 🚨 2026-08-18: 여기도 «동시 10개» + `L.ovMax` 상한이었다. TourAPI 초당 제한에 걸린 응답을
+  //    `catch → return null` 로 조용히 삼켜 **국문 2,040곳 중 개요가 41곳(2%)** 뿐이었다.
+  //    상한을 늘려도 소용없었을 것이다 — 막힌 건 호출량이 아니라 «초당 속도»였다.
+  //    → 순차 + 120ms, 상한 제거(캐시가 있어 재실행이 싸다), API 오류는 세어서 보고.
+  const sleep = ms => new Promise(r => setTimeout(r, ms));
+  let apiErr = 0;
   async function common(cid) {
     const u = `${BASE}/detailCommon2?serviceKey=${L.key}&MobileOS=ETC&MobileApp=chukjemoa&_type=json&numOfRows=1&pageNo=1&contentId=${cid}`;
     try {
       const j = JSON.parse(await get(u));
+      if (j.OpenAPI_ServiceResponse) { apiErr++; return null; }
       const it = j.response && j.response.body && j.response.body.items;
       const d = it && it.item ? (Array.isArray(it.item) ? it.item[0] : it.item) : null;
       if (!d) return null;
       return clean(d.overview).slice(0, 400);
-    } catch (e) { return null; }
+    } catch (e) { apiErr++; return null; }
   }
-  const need = out.filter(m => !m.ov).slice(0, L.ovMax);
-  for (let i = 0; i < need.length; i += 10) {
-    const ch = need.slice(i, i + 10);
-    const ds = await Promise.all(ch.map(m => common(m.id)));
-    ds.forEach((d, k) => { if (d) ch[k].ov = d; });
-    process.stdout.write(`\r[${L.code}] overview ${Math.min(i + 10, need.length)}/${need.length}`);
+  const need = out.filter(m => !m.ov);
+  let nOv = 0;
+  for (let i = 0; i < need.length; i++) {
+    const d = await common(need[i].id);
+    if (d) { need[i].ov = d; nOv++; }
+    if (i % 20 === 0 || i === need.length - 1) {
+      process.stdout.write(`\r[${L.code}] 개요 ${i + 1}/${need.length} (+${nOv}${apiErr ? ' ⚠️API오류' + apiErr : ''})`);
+      if (i % 100 === 0) fs.writeFileSync(fpath, JSON.stringify(out));
+    }
+    await sleep(120);
   }
   console.log('');
   fs.writeFileSync(fpath, JSON.stringify(out));
-  console.log(`[${L.code}] 카페 ${out.length}곳 · 개요 ${out.filter(m => m.ov).length} · 사진 ${out.filter(m => m.img).length} · 시도미상 ${out.filter(m => !m.sido).length}`);
+  console.log(`[${L.code}] 카페 ${out.length}곳 · 개요 ${Math.round(out.filter(m => m.ov).length / out.length * 100)}% · 사진 ${out.filter(m => m.img).length} · 시도미상 ${out.filter(m => !m.sido).length}`
+    + (apiErr ? `  ⚠️ API 오류 ${apiErr}회` : ''));
 }
 (async () => { for (const L of LANGS) { try { await run(L); } catch (e) { console.error(L.code, 'FAIL', e.message); } } })();
