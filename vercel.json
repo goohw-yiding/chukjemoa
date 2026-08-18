@@ -1,6 +1,5 @@
 {
   "regions": ["icn1"],
-  "//redirects": "2026-08-18 GSC '사이트맵에 포함된 페이지 404' 메일 대응. 2026-08-10 고아페이지 정리(커밋 e2de3ba7·720025ff)로 지운 URL들을 구글이 아직 들고 있어 404를 뱉고 있었다. 하드 404 대신 같은 주제의 허브로 301 — 죽은 URL은 지우는 게 아니라 «갈 곳을 정해 주는» 것이 맞다.",
   "redirects": [
     { "source": "/festival/donggangttenmokchukje", "destination": "/festival/", "permanent": true },
     { "source": "/festival/gimcheonpodochukje", "destination": "/festival/", "permanent": true },
