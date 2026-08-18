@@ -1844,7 +1844,48 @@ ${monthNavHtml}
 });
 
 // ---------- 오일장 페이지 ----------
-const marketRows = markets.map(m =>
+// ⚠️ 2026-08-18 전체 점검: 손으로 관리하던 markets.json 이 27곳뿐이었고 좌표가 0건이었다.
+//    서울·부산·대구·광주·대전·세종·전북이 아예 없는데 제목은 「전국」이었다.
+//    → fetch-markets.js 로 TourAPI 전통시장 143곳(전부 좌표 있음)을 받아 합친다.
+//    손큐레이션 27곳은 «대표 품목·특징» 서술이 좋으므로 이름이 겹치면 그쪽을 살린다.
+//    ⚠️ 장날을 못 뽑은 곳은 daysNum 을 비운 채 두고 **표에 넣지 않는다** —
+//       표의 JS가 빈 배열을 「상설」로 표시하기 때문에, 모르는 것을 안다고 말하게 된다.
+const marketsAll = (() => {
+  let api = [];
+  try { api = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/markets_api.json'), 'utf8')); } catch (e) { }
+  const key = s => String(s).replace(/[\s()（）]/g, '').replace(/\d+[일]?[,·ㆍ]\d+일?/g, '')
+    .replace(/5일장|오일장|민속시장|전통시장|공설시장|중앙시장|시장|장$/g, '');
+  // 이름에 붙은 「(1, 6일)」「(3일,8일)」은 장날 칸과 중복이라 표시용 이름에서 뗀다
+  const tidy = s => String(s).replace(/\s*[（(]\s*\d{1,2}\s*일?\s*[,·ㆍ、\s]+\s*\d{1,2}\s*일?\s*[)）]/g, '').trim();
+  // ⚠️ 「경기 안성장」과 「안성장」, 「용인 백암장」과 「백암장」이 따로 잡혔다.
+  //    앞에 붙은 지역 접두어를 뗀 이름으로도 한 번 더 맞춰 본다.
+  const drop1 = s => { const t = String(s).trim().split(/\s+/); return t.length > 1 ? t.slice(1).join(' ') : ''; };
+  const byKey = new Map(), alias = new Map();
+  const reg = (k, v) => { if (k && !byKey.has(k)) byKey.set(k, v); };
+  api.forEach(m => {
+    const k1 = key(m.name), k2 = key(drop1(m.name));
+    reg(k1, {
+      name: tidy(m.name), region: m.sido, city: m.city, days: m.days, daysNum: m.daysNum || [],
+      famous: '', desc: (m.ov || '').split(/(?<=다)\.\s/)[0].slice(0, 90), x: m.x, y: m.y, src: 'api'
+    });
+    if (k2 && k2 !== k1 && !alias.has(k2)) alias.set(k2, k1);
+  });
+  markets.forEach(o => {                       // 손큐레이션이 이긴다(설명·대표품목이 훨씬 낫다)
+    const k1 = key(o.name), k2 = key(drop1(o.name));
+    const hit = [k1, alias.get(k1), k2, alias.get(k2)].find(k => k && byKey.has(k)) || k1;
+    const a = byKey.get(hit) || {};
+    byKey.set(hit, {
+      name: o.name, region: o.region, city: o.city, days: o.days, daysNum: o.daysNum || [],
+      famous: o.famous || '', desc: o.desc || a.desc || '', x: a.x || 0, y: a.y || 0, src: 'hand'
+    });
+  });
+  return [...byKey.values()];
+})();
+const marketsDay = marketsAll.filter(m => (m.daysNum || []).length);   // 장날 아는 곳
+const marketsNoDay = marketsAll.filter(m => !(m.daysNum || []).length); // 장날 미확인
+console.log(`✓ 오일장 — 합계 ${marketsAll.length}곳(손 ${markets.length} + API ${marketsAll.length - markets.length}) · 장날 확인 ${marketsDay.length} · 미확인 ${marketsNoDay.length}`);
+
+const marketRows = marketsDay.map(m =>
   `<tr data-days="${m.daysNum.join(',')}"><td><strong>${esc(m.name)}</strong></td><td class="nextday"></td><td>${esc(m.region)} ${esc(m.city)}</td><td>${esc(m.days)}</td><td>${esc(m.famous)}</td><td>${esc(m.desc)}</td><td class="jt-links"><a href="https://search.naver.com/search.naver?query=${encodeURIComponent(m.name + ' 맛집')}" target="_blank" rel="noopener">🍴 맛집</a><a href="https://map.naver.com/p/search/${encodeURIComponent(m.name)}" target="_blank" rel="noopener">🗺️ 지도</a></td></tr>`
 ).join('\n');
 
@@ -1873,6 +1914,27 @@ tr.open-on td{background:#e5f6e8}
 <thead><tr><th>장터</th><th>다음 장날</th><th>위치</th><th>장날</th><th>대표 품목</th><th>특징</th><th>바로가기</th></tr></thead>
 <tbody id="jt-body">${marketRows}</tbody>
 </table></div>
+
+<h2 class="sec">시·도별로 보면</h2>
+<p style="color:#6b7280;font-size:.94rem">장날이 확인된 <b>${marketsDay.length}곳</b>의 분포입니다. 오일장은 농촌 지역에 몰려 있어 대도시에는 적습니다.</p>
+<p style="line-height:2;font-size:.96rem">${Object.entries(marketsDay.reduce((a, m) => { a[m.region || '기타'] = (a[m.region || '기타'] || 0) + 1; return a; }, {})).sort((a, b) => b[1] - a[1]).map(([r, n]) => `<b>${esc(r)}</b> ${n}곳`).join(' · ')}</p>
+
+<h2 class="sec">끝자리별로 모아 보기</h2>
+<p style="color:#6b7280;font-size:.94rem">오늘이 며칠인지만 알면 갈 수 있는 장이 정해집니다. 끝자리가 같은 날에 열리는 장끼리 묶었습니다.</p>
+${[[1, 6], [2, 7], [3, 8], [4, 9], [5, 10]].map(([a, b]) => {
+  const list = marketsDay.filter(m => m.daysNum.includes(a) || m.daysNum.includes(b));
+  if (!list.length) return '';
+  return `<h3 style="margin:16px 0 4px;font-size:1.02rem;font-weight:800">${a}·${b}일장 <span style="color:#9ca3af;font-weight:600">${list.length}곳</span></h3>
+<p style="color:#374151;font-size:.95rem;line-height:1.9">${list.map(m => `${esc(m.name)}<span style="color:#9ca3af">(${esc(m.region)})</span>`).join(' · ')}</p>`;
+}).join('')}
+
+${marketsNoDay.length ? `<h2 class="sec">장날을 확인하지 못한 시장 ${marketsNoDay.length}곳</h2>
+<p style="color:#6b7280;font-size:.94rem">아래는 전통시장으로 등록돼 있지만 <b>공공데이터에 장날이 적혀 있지 않은 곳</b>입니다. 상설시장일 수도 있고 오일장일 수도 있어, <b>추측해서 날짜를 적지 않았습니다.</b> 방문 전 확인이 필요합니다.</p>
+<p style="color:#374151;font-size:.95rem;line-height:1.9">${marketsNoDay.map(m => `${esc(m.name)}<span style="color:#9ca3af">(${esc(m.region)})</span>`).join(' · ')}</p>` : ''}
+
+<h2 class="sec">이 데이터는 어디서 왔나</h2>
+<p style="color:#374151;font-size:.95rem;line-height:1.8">한국관광공사 TourAPI의 전통시장 정보 <b>${marketsAll.length - markets.length}곳</b>에, 저희가 직접 정리한 유명 장터 <b>${markets.length}곳</b>(대표 품목·특징 서술)을 합쳤습니다. 장날은 공공데이터 설명문에서 뽑아낸 뒤 <b>끝자리 간격이 정확히 5일 때만</b> 오일장으로 인정했습니다 — 그래서 「23·28일」 같은 표기도 3·8일장으로 바르게 읽습니다. 명절·기상에 따라 쉬는 날이 있으니 먼 길이라면 확인 후 출발하세요.</p>
+
 <h2 class="sec">이달의 축제도 확인하세요</h2>
 ${monthNavHtml}
 </div></main>
@@ -1909,8 +1971,8 @@ render();
 })();
 </script>`;
 writePage('jangteo', layout(
-  `전국 오일장(5일장) 날짜 총정리 — 모란장·정선장·봉평장 장날 | ${SITE_NAME}`,
-  `전국 유명 오일장 장날 한눈에 보기. 성남 모란장(4·9일), 정선아리랑시장(2·7일), 봉평장(2·7일) 등 27곳 5일장 날짜와 대표 먹거리 정리.`,
+  `전국 오일장(5일장) 장날 ${marketsDay.length}곳 총정리 — 오늘 열리는 장 바로 확인 | ${SITE_NAME}`,
+  `전국 오일장 장날 ${marketsDay.length}곳을 한눈에. 날짜를 넣으면 그 날 열리는 장이 초록색으로 표시되고 가까운 장날 순으로 정렬됩니다. 모란장(4·9일)·정선아리랑시장(2·7일)·봉평장(2·7일) 등 시·도별, 끝자리별 정리.`,
   '/jangteo/', jangteoContent + buyBox('jangteo')));
 
 // ---------- 신뢰 요소(E-E-A-T) 공통 블록 ----------
@@ -2124,10 +2186,28 @@ const slim = festivals.map(f => {
   };
 });
 
+// ⚠️ 2026-08-18 전체 점검: 홈 445KB 중 **228KB가 이 배열 하나**였다(사람이 읽는 본문은 6KB).
+//    같은 배열을 /test/ 도 통째로 안고 있었다. 외부 파일 하나로 빼서 두 페이지가 같이 받는다.
+//    첫 화면 렌더에 필요한 것이 아니라(주말 카드·찜 목록은 원래 JS로 그린다) 지연 로드해도 안전하다.
+// ⚠️ 그런데 이 배열의 58%가 `near`(근처 관광지)였다 — 모달을 열어야 쓰는 값인데
+//    첫 화면 렌더를 기다리게 만든다. 그래서 두 개로 나눈다:
+//      fest.json      = 카드·검색·찜에 필요한 것 (바로 받음)
+//      fest-near.json = 모달에서만 쓰는 근처 정보 (카드 그린 뒤에 배경으로 받아 합침)
+{
+  const light = slim.map(f => { const o = Object.assign({}, f); delete o.near; return o; });
+  const near = {}; slim.forEach(f => { if (f.near) near[f.n] = f.near; });
+  fs.writeFileSync(path.join(ROOT, 'fest.json'), JSON.stringify(light));
+  fs.writeFileSync(path.join(ROOT, 'fest-near.json'), JSON.stringify(near));
+  console.log('✓ fest.json', Math.round(JSON.stringify(light).length / 1024) + 'KB',
+    '+ fest-near.json', Math.round(JSON.stringify(near).length / 1024) + 'KB',
+    `(${slim.length}건 · 홈·취향테스트 공유)`);
+}
+
 const WEEKEND_JS = `<script>
 (function(){
-  const F = ${JSON.stringify(slim)};
   const EMOJI = ${JSON.stringify(CAT_EMOJI)};
+  window.renderFavs = window.renderFavs || function(){};   // 데이터 오기 전에 불려도 안 터지게
+  fetch('/fest.json').then(function(r){ return r.json(); }).then(function(F){
   const t = new Date(); t.setHours(0,0,0,0);
   const sat = new Date(t); sat.setDate(t.getDate() + ((6 - t.getDay() + 7) % 7));
   const sun = new Date(sat); sun.setDate(sat.getDate() + 1);
@@ -2189,6 +2269,12 @@ const WEEKEND_JS = `<script>
     Array.prototype.forEach.call(fbox.querySelectorAll('.wkchip'), function(ch){ ch.addEventListener('click', function(ev){ if(!window.openFestModal) return; ev.preventDefault(); var f=mine[+ch.getAttribute('data-i')]; if(f) window.openFestModal({name:f.n,start:f.s,end:f.e,region:f.r,city:f.c,place:f.p,desc:f.d,img:f.img,ov:f.ov,hp:f.hp,near:f.near}); }); });
   };
   renderFavs();
+  // 근처 정보는 카드가 다 그려진 뒤에 배경으로 받아 같은 객체에 합친다.
+  // (모달은 클릭 시점에 F를 읽으므로 그때까지 오면 된다. 못 받으면 근처 칸만 비고 나머지는 정상)
+  fetch('/fest-near.json').then(function(r){ return r.json(); }).then(function(N){
+    F.forEach(function(f){ if (N[f.n]) f.near = N[f.n]; });
+  }).catch(function(){});
+  }).catch(function(){});
 })();
 </script>`;
 
@@ -2387,7 +2473,7 @@ const HOME_DEPTH = (() => {
   const nFes = cnt('festivals_api.json'), nSpot = cnt('spots_ko.json'), nWalk = cnt('stret.json') + cnt('trails.json');
   const nAcc = cnt('accessible.json'), nFood = cnt('restaurants_ko.json'), nCafe = cnt('cafes_ko.json');
   const nStay = cnt('stays_ko.json'), nPet = cnt('pets.json'), nMt = cnt('mountains_ko.json');
-  const nVly = cnt('valleys.json'), nMpl = cnt('maple.json'), nOns = cnt('onsen.json'), nMkt = cnt('markets.json');
+  const nVly = cnt('valleys.json'), nMpl = cnt('maple.json'), nOns = cnt('onsen.json'), nMkt = marketsDay.length;
   let openPct = 0;
   try { const a = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/restaurants_ko.json'), 'utf8')); openPct = Math.round(a.filter(x => x.open).length / a.length * 100); } catch (e) { }
   const nFesPage = FEST_PAGES.length;
@@ -2486,7 +2572,9 @@ writePage('privacy', layout(`개인정보처리방침 | ${SITE_NAME}`, `축제�
 // ---------- 킥① 축제 취향 테스트 ----------
 const QUIZ_JS = `<script>
 (function(){
-  const F = ${JSON.stringify(slim)};
+  // 축제 배열은 /fest.json 하나로 뺐다(2026-08-18) — 홈과 이 페이지가 같은 파일을 쓴다.
+  let F = [];
+  fetch('/fest.json').then(function(r){ return r.json(); }).then(function(d){ F = d; }).catch(function(){});
   const EMOJI = ${JSON.stringify(CAT_EMOJI)};
   const TYPES = {
     '물놀이': ['💦 여름 물개상', '더위는 정면돌파! 시원하게 젖어야 진짜 축제죠.'],
@@ -5183,7 +5271,7 @@ const TRIP_URLS = require('./trip.js').build({ ROOT, layout, writePage, SITE_NAM
 <ul style="line-height:2">
 <li>개별 축제 상세 페이지 <b>${nFest}개</b> — 축제마다 가는 법·근처 먹을 곳·붐빔 정도를 따로 계산합니다.</li>
 <li>전국 걷기길 <b>${cnt('trails.json')}개</b> 코스 — 해파랑길·남파랑길·서해랑길·제주올레·갈맷길 등.</li>
-<li>오일장 <b>${cnt('markets.json')}곳</b>의 장날 — 4·9일장처럼 날짜 규칙까지 정리했습니다.</li>
+<li>오일장 <b>${marketsDay.length}곳</b>의 장날 — 4·9일장처럼 날짜 규칙까지 정리했습니다(장날을 확인 못 한 ${marketsNoDay.length}곳은 따로 표시).</li>
 <li>축제장까지 대중교통 <b>${cnt('transit_access.json')}건 실측</b> — 직선거리 추정이 아니라 실제 경로로 재본 값입니다.</li>
 <li>음식점 <b>${cnt('restaurants_ko.json')}곳</b> · 카페 <b>${cnt('cafes_ko.json')}곳</b> · 숙소 <b>${cnt('stays_ko.json')}곳</b> — 코스를 짤 때 씁니다.</li>
 <li>직접 취재·정리한 가이드 글 <b>${posts.length}편</b>.</li>
