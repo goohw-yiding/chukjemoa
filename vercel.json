@@ -2,11 +2,17 @@
   "regions": ["icn1"],
   "redirects": [
     { "source": "/festival/donggangttenmokchukje", "destination": "/festival/", "permanent": true },
+    { "source": "/festival/donggangttenmokchukje/", "destination": "/festival/", "permanent": true },
     { "source": "/festival/gimcheonpodochukje", "destination": "/festival/", "permanent": true },
+    { "source": "/festival/gimcheonpodochukje/", "destination": "/festival/", "permanent": true },
     { "source": "/festival/gyeyangaraonwoteochukje", "destination": "/festival/", "permanent": true },
+    { "source": "/festival/gyeyangaraonwoteochukje/", "destination": "/festival/", "permanent": true },
     { "source": "/festival/samcheok-bichi-sseom-peseutibeol", "destination": "/festival/", "permanent": true },
+    { "source": "/festival/samcheok-bichi-sseom-peseutibeol/", "destination": "/festival/", "permanent": true },
     { "source": "/festival/seourilleoseuteureisyeonpeeov-21", "destination": "/festival/", "permanent": true },
-    { "source": "/blog/festival-gear-checklist", "destination": "/blog/", "permanent": true }
+    { "source": "/festival/seourilleoseuteureisyeonpeeov-21/", "destination": "/festival/", "permanent": true },
+    { "source": "/blog/festival-gear-checklist", "destination": "/blog/", "permanent": true },
+    { "source": "/blog/festival-gear-checklist/", "destination": "/blog/", "permanent": true }
   ],
   "headers": [
     {
