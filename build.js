@@ -1556,6 +1556,11 @@ const motionJs = (lang) => `<script>
 function layout(title, desc, urlPath, content, opts) {
   opts = opts || {};
   const lang = opts.lang || 'ko';
+  // 2026-08-18: en/ja/zh 74페이지 중 59일 노출은 있는데 클릭이 0에 가깝다(en 108imp/0clk,
+  // ja 61imp/0clk, zh 2imp/0clk — GSC 실측). 애드센스 "가치 낮은 콘텐츠" 반려와 겹쳐 보여
+  // 전량 noindex(follow)로 접는다. tw(오일장 실적 있음)·es(약하지만 클릭 있음)는 그대로 둔다.
+  // 링크·hreflang은 유지 — 검색으로 들어온 외국인 방문자 동선은 안 끊는다.
+  const forceNoindex = ['en', 'ja', 'zh'].includes(lang);
   const alts = (opts.alternates || []).map(a => `<link rel="alternate" hreflang="${a.hreflang}" href="${SITE}${a.href}">`).join('\n');
   const logoHref = lang === 'ko' ? '/' : '/' + lang + '/';
   const NAVS = {
@@ -1643,7 +1648,7 @@ ${alts}
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="${esc(title)}">
 <meta name="twitter:description" content="${esc(desc)}">
-<meta name="twitter:image" content="${SITE}${opts.ogImage || ogImageFor(urlPath)}">${opts.noindex ? '\n<meta name="robots" content="noindex, follow">' : ''}
+<meta name="twitter:image" content="${SITE}${opts.ogImage || ogImageFor(urlPath)}">${(opts.noindex || forceNoindex) ? '\n<meta name="robots" content="noindex, follow">' : ''}
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE}" crossorigin="anonymous"></script>
 ${opts.jsonld || ''}
@@ -5101,7 +5106,9 @@ const TRIP_URLS = require('./trip.js').build({ ROOT, layout, writePage, SITE_NAM
 // ---------- sitemap / robots ----------
 const urls = ['/', ...MONTHS.map(m => `/${m.key}/`), '/search/', ...(holidays.length ? ['/holiday/'] : []), '/pet/', ...(apiAccessible.length ? ['/accessible/'] : []), ...(apiTrails.length ? ['/trails/'] : []), ...(apiValleys.length ? ['/valley/'] : []), ...(apiMaple.length ? ['/maple/'] : []), ...(apiFlower.length ? ['/flower/'] : []), ...(apiOnsen.length ? ['/onsen/'] : []), '/jangteo/', '/test/', '/trip-cost/', ...(visitors.kor && visitors.kor.length ? ['/trend/'] : []), ...SIDO_URLS, ...THEME_URLS, ...TRAIL_URLS, ...WALK_URLS, ...TREND_LANG_URLS, '/blog/', ...posts.map(p => `/blog/${p.slug}/`), '/about/', EDITORIAL_URL, '/contact/', '/privacy/',...(apiFestsEn.length ? ['/en/', '/en/search/'] : []), ...(apiFestsJa.length ? ['/ja/', '/ja/search/'] : []), ...(apiFestsEs.length ? ['/es/', '/es/search/'] : []), ...(apiFestsZh.length ? ['/zh/', '/zh/search/'] : []), ...(apiFestsTw.length ? ['/tw/', '/tw/search/'] : []), ...TW_EXTRA_URLS, ...MOUNTAIN_URLS, ...CAFE_URLS, ...HOT_URLS, ...COURSE_URLS, ...TRIP_URLS, ...FESTIVAL_URLS, ...MAP_URLS, ...INTL_URLS];
 // noindex 페이지는 사이트맵에서 뺀다 — "색인해라(사이트맵) + 하지마라(noindex)"는 모순 신호다.
-const NOINDEX_URLS = new Set([...SIDO_URLS, ...THEME_URLS]);
+// 2026-08-18: en/ja/zh는 layout()에서 전량 forceNoindex 처리했다 — 사이트맵에서도 같이 뺀다.
+const LANG_NOINDEX_URLS = urls.filter(u => /^\/(en|ja|zh)\//.test(u));
+const NOINDEX_URLS = new Set([...SIDO_URLS, ...THEME_URLS, ...LANG_NOINDEX_URLS]);
 // 끝난 축제(2026-08-18): 색인·사이트맵에서만 뺀다. 헤더검색에는 남긴다 —
 // 축제 이름을 아는 사람이 검색했는데 "없다"고 답하면 그건 우리 쪽 손실이다.
 const ENDED_FEST_URLS = new Set(FESTIVAL_URLS.noindex || []);

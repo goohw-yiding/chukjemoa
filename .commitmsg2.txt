@@ -1,0 +1,11 @@
+seo: en/ja/zh 전량 noindex(follow) — 실적 없는 74페이지 중 45개 정리
+
+GSC 59일 실측: en 108imp/0clk, ja 61imp/0clk, zh 2imp/0clk (전량 CTR 0%).
+tw(오일장 실적 있음)·es(약하지만 클릭 있음)는 그대로 둔다.
+
+- layout()에 forceNoindex 추가: lang이 en/ja/zh면 opts.noindex 여부와 무관하게
+  <meta name="robots" content="noindex, follow"> 삽입. 링크·hreflang은 유지.
+- 사이트맵에서도 en/ja/zh URL 전량 제외 (색인해라+하지마라 모순 방지).
+- 색인 대상 사이트맵 323 → 278개. 외국어 섹션 74 → 29(tw+es만).
+
+애드센스 "가치 낮은 콘텐츠" 반려와 겹쳐 보이는 요소를 하나 더 제거.
