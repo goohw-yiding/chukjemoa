@@ -1648,6 +1648,11 @@ function layout(title, desc, urlPath, content, opts) {
 <p class="srcnote">축제 정보 출처: 한국관광공사 TourAPI 등 <a href="https://www.data.go.kr/" target="_blank" rel="noopener nofollow">공공데이터포털</a> 개방 데이터. 최종 갱신 ${TODAY}.<br>일정·요금은 주최 측 사정으로 변경될 수 있으니 방문 전 주최 측 공식 채널에서 확인하시기 바랍니다. 잘못된 정보는 <a href="/contact/">문의</a>로 알려주시면 확인 후 정정합니다.</p>
 <p>© 2026 ${SITE_NAME}</p>`
     : FOOTERS[lang];
+  // ⚠️ 아래 템플릿에서 «속성값» 안에는 반드시 escA(따옴표까지 이스케이프)를 쓴다. esc()는 " 를 안 바꾼다.
+  //    2026-08-18 전체 점검에서 발견: 제목에 큰따옴표가 든 축제·카페·명산 3페이지의
+  //    <meta description> 이 첫 따옴표에서 잘리고 나머지가 깨진 속성으로 새어 나가고 있었다.
+  //    ⚠️ 이 경고를 «HTML 주석»으로 템플릿 안에 넣었더니 611페이지 head 에 그대로 실려 나갔다(같은 날 발견).
+  //        개발용 메모는 반드시 여기처럼 템플릿 «바깥»의 JS 주석으로 둘 것.
   return `<!DOCTYPE html>
 <html lang="${lang === 'tw' ? 'zh-Hant' : lang === 'zh' ? 'zh-Hans' : lang}">
 <head>
@@ -1663,9 +1668,6 @@ function layout(title, desc, urlPath, content, opts) {
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-GXJQ4SXMWY"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-GXJQ4SXMWY');</script>
 <title>${esc(title)}</title>
-<!-- ⚠️ 속성값 안에는 반드시 escA(따옴표까지 이스케이프)를 쓴다. esc()는 " 를 안 바꾼다.
-     2026-08-18 전체 점검에서 발견: 제목에 큰따옴표가 든 축제·카페·명산 3페이지의
-     <meta description> 이 첫 따옴표에서 잘리고 나머지가 깨진 속성으로 새어 나가고 있었다. -->
 <meta name="description" content="${escA(desc)}">
 <link rel="canonical" href="${SITE}${urlPath}">
 <link rel="alternate" type="application/rss+xml" title="${SITE_NAME} 축제 가이드" href="${SITE}/rss.xml">

@@ -13,10 +13,31 @@ const fs = require('fs'), path = require('path'), https = require('https');
 const KEY = fs.readFileSync(path.join(__dirname, 'tourapi.key'), 'utf8').trim();
 const B = 'https://apis.data.go.kr/B551011/KorService2';
 const RCODE = { '11': '서울', '26': '부산', '27': '대구', '28': '인천', '29': '광주', '30': '대전', '31': '울산', '36': '세종', '41': '경기', '43': '충북', '44': '충남', '46': '전남', '47': '경북', '48': '경남', '50': '제주', '51': '강원', '52': '전북' };
-function sidoOf(regnCd, signguCd) {
+// ⚠️ TourAPI가 전남·광주를 「전남광주통합특별시」(regnCd 12)로 묶어서 준다.
+//    signguCd 만 보던 규칙으로는 2026-08-18에 **비아5일시장(광주 광산구)이 전남으로** 잡혔다.
+//    광주 자치구 이름은 전남 시·군과 겹치지 않으므로(전남은 전부 시·군) 주소로 먼저 가른다.
+const GWANGJU_GU = /^(광산구|동구|서구|남구|북구)$/;
+function sidoOf(regnCd, signguCd, addr) {
   const r = String(regnCd || '');
-  if (r === '12') return /^[1-5]00$/.test(String(signguCd)) ? '광주' : '전남';
+  if (r === '12') {
+    const t = String(addr || '').split(' ')[1] || '';
+    if (GWANGJU_GU.test(t)) return '광주';
+    return /^[1-5]00$/.test(String(signguCd)) ? '광주' : '전남';
+  }
   return RCODE[r] || RCODE[r.slice(0, 2)] || '';
+}
+// 주소·개요에 그대로 박혀 나오는 통합 표기를 사람이 읽는 시도명으로 바꾼다.
+// ⚠️ 개요 본문(ov)에는 두 가지 용법이 섞여 나온다. 한 규칙으로는 못 고친다(2026-08-18 실측 7건).
+//    ① 「전남광주통합특별시 광양에 위치」  → 뒤에 시·군·구가 붙는다 = 그 시장이 속한 시도  → sido
+//    ② 「전남광주통합특별시에서 시내버스」 → 조사가 바로 붙는다 = 인근 대도시 광주        → 광주
+//    ③ 「인근 전남광주통합특별시민들도」   → ②를 그냥 '광주'로 바꾸면 '광주민들'이 된다   → 광주시민
+//    없는 사실을 지어내지 않고 문자열 안에 이미 있는 지명만 남기는 방식이다.
+function tidyAddr(addr, sido) {
+  return String(addr || '')
+    .replace(/전남광주통합특별시민/g, '광주시민')
+    .replace(/전남광주통합특별시(?=\s)/g, sido || '')
+    .replace(/전남광주통합특별시/g, '광주')
+    .replace(/\s{2,}/g, ' ').trim();
 }
 function get(u) {
   return new Promise((res, rej) => https.get(u, { headers: { 'User-Agent': 'chukjemoa' } }, r => {
@@ -105,12 +126,13 @@ async function run() {
     } catch (e) { }
     const fair = clean(intro.fairday);
     const days = daysFromFair(fair) || daysOf(it.title, ov);
+    const sido = sidoOf(it.lDongRegnCd, it.lDongSignguCd, it.addr1);
     out.push({
       id: it.contentid,
       name: clean(it.title),
-      sido: sidoOf(it.lDongRegnCd, it.lDongSignguCd),
+      sido,
       city: (String(it.addr1 || '').split(' ')[1] || ''),
-      addr: clean(it.addr1),
+      addr: tidyAddr(clean(it.addr1), sido),
       x: +it.mapx || 0, y: +it.mapy || 0,
       img: it.firstimage || '',
       daysNum: days || [],
@@ -121,7 +143,7 @@ async function run() {
       rest: clean(intro.restdateshopping).slice(0, 50),
       park: clean(intro.parkingshopping).slice(0, 60),
       tel: clean(intro.infocentershopping).slice(0, 60),
-      ov: ov.slice(0, 400)
+      ov: tidyAddr(ov, sido).slice(0, 400)   // 개요 본문에도 「전남광주통합특별시」가 그대로 박혀 나온다
     });
     if ((i + 1) % 25 === 0) console.log('  수집', i + 1, '/', items.length);
     await sleep(110);
