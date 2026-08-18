@@ -61,6 +61,13 @@ const CSS = `
 .fbadge.pet{background:#f0fdf4;color:#15803d}
 .fbadge.acc{background:#eef2ff;color:#4338ca}
 .fgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(158px,1fr));gap:12px;margin:12px 0}
+.fend{background:#fff7ed;border:1.5px solid #fed7aa;border-radius:14px;padding:16px 18px;margin:14px 0 18px}
+.fend h2{font-size:1.08rem;font-weight:900;color:#9a3412;margin:0 0 8px}
+.fend p{color:#7c2d12;font-size:.95rem;line-height:1.62;margin:0 0 7px}
+.fend .fend-h{margin-top:11px}
+.fend ul{margin:5px 0 0}
+.fend li{color:#7c2d12;font-size:.93rem;line-height:1.7}
+.fend a{color:#9a3412;font-weight:700;text-decoration:underline}
 .fcard{background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 2px 10px rgba(31,41,55,.07)}
 .fcard img{width:100%;aspect-ratio:16/10;object-fit:cover;display:block;background:#f0ece6}
 .fcard .noimg{width:100%;aspect-ratio:16/10;display:flex;align-items:center;justify-content:center;background:#f4f1ec;color:#c9c2b8;font-size:1.5rem}
@@ -146,6 +153,18 @@ function build(ctx) {
   });
   const bySlug = {}; cand.forEach(f => { bySlug[f._slug] = f; });
 
+  // ── 끝난 축제 처리용 (2026-08-18)
+  // ⚠️ 실측: 축제 상세 394개 중 246개(62%)가 「종료된 축제」인데도 "이 축제로 하루를 짠다면"을
+  //    현재형으로 안내하고 있었다. 사이트의 지배적 콘텐츠(전체의 68%)가 «이미 지나간 행사»로 보이는 것이
+  //    애드센스 「가치가 별로 없는 콘텐츠」의 유력 원인. → 끝난 축제는 색인에서 빼고(noindex),
+  //    페이지 상단에서 «지금 갈 수 있는 곳»으로 곧장 보낸다. 링크·헤더검색은 살린다(follow).
+  const TD = TODAY.replace(/-/g, '');
+  const aliveBySido = {};
+  cand.filter(f => String(f.end) >= TD)
+    .sort((a, b) => String(a.start).localeCompare(String(b.start)))
+    .forEach(f => { (aliveBySido[f.sido] = aliveBySido[f.sido] || []).push(f); });
+  const noindexUrls = [];
+
   cand.forEach(f => {
     const x = num(f.x), y = num(f.y), sg = f.sigungu || sgOf(f.addr);
     const mStart = +String(f.start).slice(4, 6);
@@ -201,6 +220,24 @@ function build(ctx) {
       busyP += `<p class="note" style="margin-top:6px">이 숫자는 축제장 자체가 아니라 <b>${esc(sg)} 전체</b>의 방문자 기준입니다. 축제장 앞 혼잡과는 다를 수 있습니다.</p>`;
     }
 
+    // ── 끝난 축제 안내 (2026-08-18)
+    // 「종료」 배지 하나만 달아 두고 본문 전체를 현재형으로 두면, 못 가는 행사를 권하는 페이지가 된다.
+    // 기록으로서의 값은 남기되 «지금 갈 수 있는 곳»을 상단에서 바로 준다.
+    let endedBox = '';
+    if (ended) {
+      const d0 = +String(f.start).slice(6, 8);
+      const when = `${mStart}월 ${d0 <= 10 ? '초' : d0 <= 20 ? '중' : '하'}순`;
+      const alt = (aliveBySido[f.sido] || []).slice(0, 6);
+      endedBox = `<div class="fend">
+<h2>이 축제는 이미 끝났습니다</h2>
+<p>${fmtDate(String(f.end))}에 종료됐습니다. 이 페이지에 정리해 둔 근처 맛집·걷기길·동선은 <b>다음 회차를 가늠할 기록</b>으로 남겨 둔 것이지, 지금 갈 수 있는 행사가 아닙니다.</p>
+<p>${esc(f.title)}은 예년 기준 <b>${when}</b>에 열렸습니다. 다음 일정은 주최 측이 공지한 뒤 공공데이터에 반영되고, 이 페이지도 그때 자동으로 갱신됩니다${f.tel ? ` — 급하시면 ${esc(f.tel)}로 직접 확인하실 수 있습니다` : ''}.</p>
+${alt.length ? `<p class="fend-h"><b>지금 ${esc(f.sido)}에서 갈 수 있는 축제</b></p>
+<ul class="flist">${alt.map(a => `<li><a href="/festival/${a._slug}/">${esc(a.title)}</a> — ${fmtDate(String(a.start))}${String(a.start) <= TD ? ' · <b>진행 중</b>' : ' 시작'}</li>`).join('')}</ul>` : ''}
+<p class="fend-h"><a href="/festival/">지금 열리거나 곧 열리는 축제 전체 보기 →</a></p>
+</div>`;
+    }
+
     // ── 국가유산
     const her = (FAME[f.sido + '|' + sg] || {}).her || {};
     const herTxt = ['국보', '보물', '사적', '명승', '국가민속문화유산'].filter(k => her[k]).map(k => `${k} ${her[k]}점`).join(' · ');
@@ -215,7 +252,9 @@ function build(ctx) {
       + `</div></div>`;
 
     const faq = [
-      [`${f.title}은 언제 열리나요?`, `${fmtDate(String(f.start))}(${dayName(String(f.start))})부터 ${fmtDate(String(f.end))}(${dayName(String(f.end))})까지입니다. 일정은 주최 측 사정으로 바뀔 수 있으니 출발 전 ${f.tel ? `${f.tel}로 ` : ''}확인하시는 편이 안전합니다.`],
+      ended
+        ? [`${f.title}은 아직 열리나요?`, `아닙니다. ${fmtDate(String(f.end))}(${dayName(String(f.end))})에 이미 종료됐습니다. 예년 기준 ${mStart}월 ${+String(f.start).slice(6, 8) <= 10 ? '초' : +String(f.start).slice(6, 8) <= 20 ? '중' : '하'}순에 열렸고, 다음 회차 일정은 주최 측 공지 후 공공데이터에 반영되면 이 페이지도 갱신됩니다${f.tel ? `. 급하시면 ${f.tel}로 확인하세요` : ''}.`]
+        : [`${f.title}은 언제 열리나요?`, `${fmtDate(String(f.start))}(${dayName(String(f.start))})부터 ${fmtDate(String(f.end))}(${dayName(String(f.end))})까지입니다. 일정은 주최 측 사정으로 바뀔 수 있으니 출발 전 ${f.tel ? `${f.tel}로 ` : ''}확인하시는 편이 안전합니다.`],
       [`${f.title} 근처에 뭐가 있나요?`, `${nbList.slice(0, 3).map(n => n.t).join(', ')} 등이 가까이 있습니다. 걸어서 갈 만한 거리의 식당 ${nFood.length}곳과 카페 ${nCafe.length}곳, 반경 20km 안 걷기길 ${nWalk.length}개도 이 페이지에 정리해 뒀습니다.`],
       idx ? [`축제 기간에 사람이 많은가요?`, `${sg}는 ${rm}월에 평소의 ${idx.toFixed(2)}배 붐빕니다. 이 수치는 한국관광공사 데이터랩의 시·군·구 방문자 수 기준이며, 축제장 자체의 혼잡도가 아니라 그 지역 전체의 값입니다.`] : null,
       [`주차나 숙소는 어떻게 하나요?`, `반경 15km 안 숙소 ${nStay.length}곳을 위치와 유형으로 정리해 뒀습니다. 가격과 빈방은 저희 데이터에 없어 표시하지 않습니다. 주차는 축제장 안내를 따르시고, 붐비는 축제는 오전에 도착하는 편이 안전합니다.`]
@@ -240,10 +279,13 @@ ${f.tel ? `<dt>문의</dt><dd>${esc(f.tel)}</dd>` : ''}
 </dl>
 </div>
 
-<h2 class="sec">어떤 축제인가</h2>
-${prose(f.ov)}
+${endedBox}
 
-${idx ? `<div class="fnum"><h3>📊 지금 이 동네, 얼마나 붐비나</h3>${busyP}</div>` : ''}
+${idx ? `<div class="fnum"><h3>📊 ${ended ? '이 동네는 이맘때 얼마나 붐비나' : '지금 이 동네, 얼마나 붐비나'}</h3>${busyP}</div>` : ''}
+
+<h2 class="sec">어떤 축제인가</h2>
+<p class="note" style="margin:-2px 0 10px">아래 소개는 한국관광공사 TourAPI에 등록된 <b>공식 설명</b>입니다. 저희가 직접 계산해 붙인 것은 붐빔 배수·근처 영업시간·걷기길 거리·하루 동선입니다.</p>
+${prose(f.ov)}
 
 ${nbList.length ? `<h2 class="sec">축제장 근처 가볼 곳</h2>
 <p style="color:#6b7280;font-size:.92rem">한국관광공사가 이 축제 기준으로 알려 준 근처 목록입니다. <b>상호에 다른 지역 이름이 들어간 가게가 있어</b>, 실제로 어느 시·군·구인지 같이 적었습니다.</p>
@@ -260,8 +302,10 @@ ${nWalk.length ? `<h2 class="sec">축제 보고 걷기 좋은 길</h2>
 <p style="color:#6b7280;font-size:.92rem">반경 20km 안의 걷기길입니다. 거리와 소요시간은 전국길관광정보 표준데이터에 등록된 값입니다.</p>
 <ul class="flist">${nWalk.map(({ o, d }) => `<li><b>${esc(o.t)}</b> — 축제장에서 ${d.toFixed(1)}km · ${o.km ? `${o.km}km` : ''}${o.min ? ` · 약 ${Math.round(o.min / 60 * 10) / 10}시간` : ''}${o.lv ? ` · 난이도 ${esc(o.lv)}` : ''}${o.ov ? `<br><em>${esc(String(o.ov).replace(/^-\s*/, '').slice(0, 90))}</em>` : ''}</li>`).join('')}</ul>` : ''}
 
-<h2 class="sec">이 축제로 하루를 짠다면</h2>
-<p style="color:#6b7280;font-size:.92rem">축제를 오전에 두고 가까운 순서로 이어 붙인 예시입니다. 날짜와 조건을 바꿔 다시 짜려면 <a href="/course/">코스 짜기</a>에서 하시면 됩니다.</p>
+<h2 class="sec">${ended ? '다음에 열릴 때 참고할 하루 동선' : '이 축제로 하루를 짠다면'}</h2>
+<p style="color:#6b7280;font-size:.92rem">${ended
+  ? `이 축제가 <b>다시 열린다면</b>을 가정한 예시 동선입니다. 아래 식당·카페·걷기길은 지금도 그대로 있지만, <b>축제 자체는 열리지 않습니다.</b> 지금 갈 수 있는 곳으로 짜려면 <a href="/course/">코스 짜기</a>를 쓰세요.`
+  : `축제를 오전에 두고 가까운 순서로 이어 붙인 예시입니다. 날짜와 조건을 바꿔 다시 짜려면 <a href="/course/">코스 짜기</a>에서 하시면 됩니다.`}</p>
 ${courseHtml}
 
 ${nStay.length ? `<h2 class="sec">근처 숙소</h2>
@@ -338,12 +382,32 @@ ${cand.filter(o => o !== f && o.sido !== f.sido && String(o.start).slice(4, 6) =
       + `근처 맛집 ${nFood.length}곳(영업시간 포함)·카페 ${nCafe.length}곳·걷기길 ${nWalk.length}개와 하루 코스까지 한 페이지에.`
       + (idx ? ` ${sg}는 ${rm}월에 평소의 ${idx.toFixed(2)}배 붐빕니다.` : '');
 
-    writePage('festival/' + f._slug, layout(title.slice(0, 95), desc.slice(0, 300), `/festival/${f._slug}/`, content, { jsonld, ogImage: f.img && f.img.indexOf('http') === 0 ? undefined : undefined }));
+    // ⚠️ 끝난 축제는 noindex(follow) — 색인에서만 뺀다. 링크·헤더검색·내부 이동은 그대로 살린다.
+    writePage('festival/' + f._slug, layout(title.slice(0, 95), desc.slice(0, 300), `/festival/${f._slug}/`, content, { jsonld, noindex: ended }));
     urls.push(`/festival/${f._slug}/`);
+    if (ended) noindexUrls.push(`/festival/${f._slug}/`);
     index.push({ slug: f._slug, title: f.title, sido: f.sido, sigungu: sg, start: f.start, end: f.end, img: f.img, id: f.id });
   });
 
   fs.writeFileSync(path.join(ROOT, 'data', 'festival_pages.json'), JSON.stringify(index));
+
+  // ── 유령 페이지 청소 (2026-08-18)
+  // ⚠️ 빌드는 페이지를 «쓰기»만 하고 지우지 않아서, 축제가 TourAPI에서 빠지면 옛 HTML이 디스크에 남는다.
+  //    그 페이지는 사이트맵에도 없고 어디서도 링크되지 않는데 구글에는 색인돼 있고, 영영 갱신되지 않는다.
+  //    = 딱 「가치가 별로 없는 콘텐츠」로 셀 만한 고아 페이지. 매 빌드마다 정리한다.
+  {
+    const liveSlugs = new Set(index.map(r => r.slug));
+    let gone = 0;
+    try {
+      fs.readdirSync(path.join(ROOT, 'festival'), { withFileTypes: true })
+        .filter(d => d.isDirectory() && !liveSlugs.has(d.name))
+        .forEach(d => {
+          fs.rmSync(path.join(ROOT, 'festival', d.name), { recursive: true, force: true });
+          gone++;
+        });
+    } catch (e) {}
+    if (gone) console.log('  └ 더 이상 생성되지 않는 축제 페이지', gone, '개 삭제(고아 방지)');
+  }
 
   // 축제명 → 슬러그 맵. 모달이 "이 축제 상세 페이지가 있나?"를 물어볼 때 쓴다.
   // ⚠️ 페이지마다 심으면 7KB씩 무거워지므로 별도 파일로 두고 모달 열 때 1회만 받아간다.
@@ -424,6 +488,9 @@ ${cand.filter(o => o !== f && o.sido !== f.sido && String(o.start).slice(4, 6) =
   }
 
   console.log('✓ /festival/ —', urls.length, '페이지 (허브 1 + 상세', index.length, '· 개요', MIN_OV, '자↑·사진·근처', MIN_NEAR, '곳↑·', FROM_YEAR, '년~)');
+  console.log('  └ 끝난 축제', noindexUrls.length, '개는 noindex + 사이트맵 제외 · 색인 대상 상세', index.length - noindexUrls.length, '개');
+  // 배열에 얹어 보낸다 — 호출부(build.js)가 `...FESTIVAL_URLS` 로 펼쳐 쓰고 있어 반환 타입은 바꾸지 않는다.
+  urls.noindex = noindexUrls;
   return urls;
 }
 
