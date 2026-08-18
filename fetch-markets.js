@@ -62,6 +62,17 @@ function scan(text, needCue) {
   }
   return null;
 }
+// 공공데이터 fairday 원문에서 끝자리 두 개를 뽑는다.
+// 예: 「매월 3, 8, 13, 18, 23, 28일」 「2일 / 7일」 「1일, 6일」 「5일 / 10일 / 15일 …」
+// ⚠️ 여기서도 «간격 5» 규칙을 그대로 적용한다 — 10일장(5,15,25)은 오일장이 아니므로 거른다.
+function daysFromFair(fair) {
+  const s = String(fair || '');
+  const nums = (s.match(/\d{1,2}/g) || []).map(Number);
+  if (nums.length < 2) return null;
+  const ends = [...new Set(nums.map(n => n % 10 || 10))].sort((a, b) => a - b);
+  if (ends.length !== 2) return null;
+  return (ends[1] - ends[0] === 5) ? ends : null;
+}
 function daysOf(title, ov) {
   const t = String(title || '');
   const paren = (t.match(/[（(]([^)）]*)[)）]/) || [])[1];
@@ -79,12 +90,21 @@ async function run() {
   const out = [];
   for (let i = 0; i < items.length; i++) {
     const it = items[i];
-    let ov = '';
+    let ov = '', intro = {};
     try {
       const d = await get(`${B}/detailCommon2?serviceKey=${KEY}&MobileOS=ETC&MobileApp=chukjemoa&_type=json&numOfRows=1&pageNo=1&contentId=${it.contentid}`);
       ov = clean((JSON.parse(d).response.body.items.item[0] || {}).overview || '');
     } catch (e) { }
-    const days = daysOf(it.title, ov);
+    await sleep(110);
+    // ⭐ detailIntro2(쇼핑)에 **판매품목(saleitem)과 공식 장날(fairday)** 이 들어 있다.
+    //    2026-08-18 표본 12건 실측: saleitem 11/12 · fairday 11/12 · 주차 11/12 · 영업시간 10/12.
+    //    개요에서 정규식으로 장날을 캐던 것보다 fairday 가 훨씬 정확하다 — 이걸 1순위로 쓴다.
+    try {
+      const d2 = await get(`${B}/detailIntro2?serviceKey=${KEY}&MobileOS=ETC&MobileApp=chukjemoa&_type=json&numOfRows=1&pageNo=1&contentId=${it.contentid}&contentTypeId=38`);
+      intro = JSON.parse(d2).response.body.items.item[0] || {};
+    } catch (e) { }
+    const fair = clean(intro.fairday);
+    const days = daysFromFair(fair) || daysOf(it.title, ov);
     out.push({
       id: it.contentid,
       name: clean(it.title),
@@ -95,12 +115,20 @@ async function run() {
       img: it.firstimage || '',
       daysNum: days || [],
       days: days ? days.join('·') + '일' : '',
+      fair,                                        // 공공데이터가 적어 준 장날 원문
+      sale: clean(intro.saleitem).replace(/\s*\/\s*/g, ' · ').replace(/\s*등$/, '').slice(0, 90),
+      open: clean(intro.opentime).slice(0, 60),
+      rest: clean(intro.restdateshopping).slice(0, 50),
+      park: clean(intro.parkingshopping).slice(0, 60),
+      tel: clean(intro.infocentershopping).slice(0, 60),
       ov: ov.slice(0, 400)
     });
-    if ((i + 1) % 25 === 0) console.log('  개요', i + 1, '/', items.length);
+    if ((i + 1) % 25 === 0) console.log('  수집', i + 1, '/', items.length);
     await sleep(110);
   }
   const withDays = out.filter(m => m.daysNum.length);
+  console.log('  판매품목', out.filter(m => m.sale).length, '· 공식장날(fairday)', out.filter(m => m.fair).length,
+    '· 영업시간', out.filter(m => m.open).length, '· 주차', out.filter(m => m.park).length, '· 문의처', out.filter(m => m.tel).length);
   const bySido = {}; out.forEach(m => bySido[m.sido || '(미상)'] = (bySido[m.sido || '(미상)'] || 0) + 1);
   console.log('✓ 시장', out.length, '곳 · 장날 확인', withDays.length, '곳(' + Math.round(withDays.length / out.length * 100) + '%)',
     '· 좌표', out.filter(m => m.x && m.y).length, '· 개요', out.filter(m => m.ov).length, '· 사진', out.filter(m => m.img).length);

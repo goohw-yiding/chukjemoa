@@ -1862,11 +1862,15 @@ const marketsAll = (() => {
   const drop1 = s => { const t = String(s).trim().split(/\s+/); return t.length > 1 ? t.slice(1).join(' ') : ''; };
   const byKey = new Map(), alias = new Map();
   const reg = (k, v) => { if (k && !byKey.has(k)) byKey.set(k, v); };
+  const firstSent = s => { const t = String(s || '').trim(); const m = t.match(/^[\s\S]{20,160}?다\.(\s|$)/); return (m ? m[0] : t.slice(0, 120)).trim(); };
   api.forEach(m => {
     const k1 = key(m.name), k2 = key(drop1(m.name));
     reg(k1, {
       name: tidy(m.name), region: m.sido, city: m.city, days: m.days, daysNum: m.daysNum || [],
-      famous: '', desc: (m.ov || '').split(/(?<=다)\.\s/)[0].slice(0, 90), x: m.x, y: m.y, src: 'api'
+      // ⭐ detailIntro2 의 saleitem = 공공데이터가 적어 둔 «판매 품목». 143곳 중 139곳에 있다.
+      famous: m.sale || '', desc: firstSent(m.ov).slice(0, 120),
+      ov: m.ov || '', open: m.open || '', rest: m.rest || '', park: m.park || '', tel: m.tel || '',
+      fair: m.fair || '', addr: m.addr || '', img: m.img || '', x: m.x, y: m.y, src: 'api'
     });
     if (k2 && k2 !== k1 && !alias.has(k2)) alias.set(k2, k1);
   });
@@ -1874,10 +1878,10 @@ const marketsAll = (() => {
     const k1 = key(o.name), k2 = key(drop1(o.name));
     const hit = [k1, alias.get(k1), k2, alias.get(k2)].find(k => k && byKey.has(k)) || k1;
     const a = byKey.get(hit) || {};
-    byKey.set(hit, {
+    byKey.set(hit, Object.assign({}, a, {
       name: o.name, region: o.region, city: o.city, days: o.days, daysNum: o.daysNum || [],
-      famous: o.famous || '', desc: o.desc || a.desc || '', x: a.x || 0, y: a.y || 0, src: 'hand'
-    });
+      famous: o.famous || a.famous || '', desc: o.desc || a.desc || '', src: 'hand'
+    }));
   });
   return [...byKey.values()];
 })();
@@ -1916,8 +1920,14 @@ tr.open-on td{background:#e5f6e8}
 </table></div>
 
 <h2 class="sec">시·도별로 보면</h2>
-<p style="color:#6b7280;font-size:.94rem">장날이 확인된 <b>${marketsDay.length}곳</b>의 분포입니다. 오일장은 농촌 지역에 몰려 있어 대도시에는 적습니다.</p>
-<p style="line-height:2;font-size:.96rem">${Object.entries(marketsDay.reduce((a, m) => { a[m.region || '기타'] = (a[m.region || '기타'] || 0) + 1; return a; }, {})).sort((a, b) => b[1] - a[1]).map(([r, n]) => `<b>${esc(r)}</b> ${n}곳`).join(' · ')}</p>
+<p style="color:#6b7280;font-size:.94rem">장날이 확인된 <b>${marketsDay.length}곳</b>의 분포입니다. 오일장은 농촌 지역에 몰려 있어 대도시에는 적습니다. <b>시장이 6곳 이상인 지역은 「무엇을 파는지·언제 여는지·주차가 되는지」까지 정리한 페이지</b>가 따로 있습니다.</p>
+<div style="display:flex;flex-wrap:wrap;gap:8px;margin:12px 0">${(() => {
+    const S = { 경기: 'gyeonggi', 강원: 'gangwon', 충북: 'chungbuk', 충남: 'chungnam', 전북: 'jeonbuk', 전남: 'jeonnam', 경북: 'gyeongbuk', 경남: 'gyeongnam', 제주: 'jeju', 대구: 'daegu', 부산: 'busan', 대전: 'daejeon', 울산: 'ulsan', 인천: 'incheon' };
+    const cnt = {}; marketsAll.forEach(m => { if (m.region) cnt[m.region] = (cnt[m.region] || 0) + 1; });
+    return Object.entries(cnt).sort((a, b) => b[1] - a[1]).map(([r, n]) => (S[r] && n >= 6)
+      ? `<a href="/jangteo/${S[r]}/" style="background:#e2f5f2;border:1.5px solid #a9e5dd;color:#0a6c63;font-weight:800;font-size:.92rem;padding:9px 15px;border-radius:999px">${esc(r)} ${n}곳 →</a>`
+      : `<span style="background:#f4faf8;border:1.5px solid #dcefeb;color:#6b7280;font-weight:700;font-size:.92rem;padding:9px 15px;border-radius:999px">${esc(r)} ${n}곳</span>`).join('');
+  })()}</div>
 
 <h2 class="sec">끝자리별로 모아 보기</h2>
 <p style="color:#6b7280;font-size:.94rem">오늘이 며칠인지만 알면 갈 수 있는 장이 정해집니다. 끝자리가 같은 날에 열리는 장끼리 묶었습니다.</p>
@@ -1974,6 +1984,99 @@ writePage('jangteo', layout(
   `전국 오일장(5일장) 장날 ${marketsDay.length}곳 총정리 — 오늘 열리는 장 바로 확인 | ${SITE_NAME}`,
   `전국 오일장 장날 ${marketsDay.length}곳을 한눈에. 날짜를 넣으면 그 날 열리는 장이 초록색으로 표시되고 가까운 장날 순으로 정렬됩니다. 모란장(4·9일)·정선아리랑시장(2·7일)·봉평장(2·7일) 등 시·도별, 끝자리별 정리.`,
   '/jangteo/', jangteoContent + buyBox('jangteo')));
+
+// ---------- 🏮 시·도별 오일장 /jangteo/{시도}/ ----------
+// 왜 나누나: 시장마다 «판매 품목·영업시간·휴무·주차·문의»가 다 있는데(공공데이터 detailIntro2)
+//   그걸 한 페이지에 다 넣으면 본문이 6만 자·330KB가 된다. 방금 홈에서 무게를 덜어낸 참이라 그럴 수 없다.
+//   그리고 「전남 오일장」·「경북 오일장 장날」은 실제로 따로 검색되는 말이다.
+// ⚠️ 얇은 페이지 양산은 하지 않는다 — **시장이 6곳 이상인 시도만** 만든다.
+//    기준을 4로 두고 지어 보니 대구(4곳)가 본문 2,463자로 사이트 하한(걷기길 최소 2,999자)에 못 미쳤다.
+//    6으로 올리니 가장 얇은 페이지가 경남 3,076자가 된다. 부산3·대전2·울산2·인천1·대구4는 허브에만 싣는다.
+const JANGTEO_SIDO_URLS = [];
+{
+  const SLUG = { 서울: 'seoul', 부산: 'busan', 대구: 'daegu', 인천: 'incheon', 광주: 'gwangju', 대전: 'daejeon', 울산: 'ulsan', 세종: 'sejong', 경기: 'gyeonggi', 강원: 'gangwon', 충북: 'chungbuk', 충남: 'chungnam', 전북: 'jeonbuk', 전남: 'jeonnam', 경북: 'gyeongbuk', 경남: 'gyeongnam', 제주: 'jeju' };
+  const bySido = {};
+  marketsAll.forEach(m => { if (m.region) (bySido[m.region] = bySido[m.region] || []).push(m); });
+  const big = Object.entries(bySido).filter(([s, a]) => SLUG[s] && a.length >= 6)
+    .sort((a, b) => b[1].length - a[1].length);
+  const linkRow = cur => `<div class="cpresets" style="display:flex;flex-wrap:wrap;gap:8px;margin:14px 0">${big.filter(([s]) => s !== cur).map(([s, a]) =>
+    `<a href="/jangteo/${SLUG[s]}/" style="background:#fff;border:1.5px solid #dcefeb;color:#374151;font-weight:700;font-size:.9rem;padding:8px 14px;border-radius:999px">${s} ${a.length}</a>`).join('')}</div>`;
+
+  big.forEach(([sido, list]) => {
+    const withDay = list.filter(m => (m.daysNum || []).length).sort((a, b) => (a.daysNum[0] - b.daysNum[0]) || a.name.localeCompare(b.name));
+    const noDay = list.filter(m => !(m.daysNum || []).length);
+    const cityCnt = {}; list.forEach(m => { if (m.city) cityCnt[m.city] = (cityCnt[m.city] || 0) + 1; });
+    const endCnt = {}; withDay.forEach(m => { const k = m.daysNum.join('·'); endCnt[k] = (endCnt[k] || 0) + 1; });
+
+    const cardOf = m => `<div style="background:#fff;border-radius:14px;padding:16px 18px;box-shadow:0 2px 10px rgba(31,41,55,.06);margin:0 0 14px">
+<h3 style="font-size:1.06rem;font-weight:800;margin:0 0 4px">${esc(m.name)}${m.daysNum.length ? ` <span style="background:#e2f5f2;color:#0a6c63;font-size:.82rem;font-weight:800;border-radius:999px;padding:3px 10px;margin-left:4px">${m.daysNum.join('·')}일장</span>` : ''}</h3>
+<div style="color:#6b7280;font-size:.9rem;margin-bottom:8px">${esc(m.region)} ${esc(m.city)}${m.addr ? ' · ' + esc(m.addr) : ''}</div>
+${m.famous ? `<p style="margin:0 0 6px;font-size:.96rem"><b>파는 것</b> — ${esc(m.famous)}</p>` : ''}
+${m.desc ? `<p style="margin:0 0 8px;color:#374151;font-size:.95rem;line-height:1.75">${esc(m.desc)}</p>` : ''}
+<div style="color:#6b7280;font-size:.9rem;line-height:1.8">
+${m.fair ? `📅 장날 <b>${esc(m.fair)}</b><br>` : ''}
+${m.open ? `🕘 ${esc(m.open)}` : ''}${m.rest ? ` · 휴무 ${esc(m.rest)}` : ''}${(m.open || m.rest) ? '<br>' : ''}
+${m.park ? `🅿️ 주차 ${esc(m.park)}<br>` : ''}
+${m.tel ? `☎️ ${esc(m.tel)}` : ''}
+</div>
+<div style="margin-top:10px"><a href="https://map.naver.com/p/search/${encodeURIComponent(m.name)}" target="_blank" rel="noopener" style="color:#0c7d72;font-weight:700;font-size:.88rem;margin-right:10px">🗺️ 지도</a><a href="https://search.naver.com/search.naver?query=${encodeURIComponent(m.name + ' 맛집')}" target="_blank" rel="noopener" style="color:#0c7d72;font-weight:700;font-size:.88rem">🍴 근처 맛집</a></div>
+</div>`;
+
+    const faq = [
+      [`${sido}에서 오늘 열리는 오일장은 어디인가요?`,
+        `오일장은 날짜 끝자리로 열립니다. ${sido}에는 ${Object.entries(endCnt).sort((a, b) => b[1] - a[1]).map(([k, n]) => `${k}일장 ${n}곳`).join(' · ')}이 있습니다. 전국 표에서 날짜를 넣으면 그 날 열리는 장이 초록색으로 표시됩니다.`],
+      [`${sido} 오일장에서는 주로 무엇을 파나요?`,
+        (() => { const items = withDay.filter(m => m.famous).slice(0, 6).map(m => `${m.name}은 ${m.famous}`); return items.length ? items.join(', ') + ' 등으로 알려져 있습니다. 품목은 한국관광공사 공공데이터에 등록된 판매 품목입니다.' : '시장마다 다릅니다. 각 시장 카드의 「파는 것」을 참고하세요.'; })()],
+      ['장날이 명절이나 비 오는 날에도 서나요?',
+        '장날은 정해진 날짜에 서지만 명절 당일이나 기상 악화 시 쉬는 곳이 있습니다. 먼 길이라면 각 시장 문의처로 확인 후 출발하시길 권합니다.']
+    ];
+
+    const content = `<main><div class="wrap">
+<h1 style="font-size:1.5rem;font-weight:900;margin:8px 0 6px">${sido} 오일장 ${withDay.length}곳 — 장날·파는 것·영업시간</h1>
+<p style="color:#374151;font-size:1rem;line-height:1.8">${sido}에서 장날이 확인된 오일장 <b>${withDay.length}곳</b>을 정리했습니다${noDay.length ? `(장날을 확인하지 못한 ${noDay.length}곳은 아래에 따로 적었습니다)` : ''}. 시장마다 <b>무엇을 파는지·언제 여는지·주차가 되는지</b>를 한국관광공사 공공데이터에서 가져와 함께 실었습니다.</p>
+<p style="color:#6b7280;font-size:.95rem">시·군 분포: ${Object.entries(cityCnt).sort((a, b) => b[1] - a[1]).map(([c, n]) => `${esc(c)} ${n}`).join(' · ')}</p>
+<p style="color:#6b7280;font-size:.95rem">끝자리별: ${Object.entries(endCnt).sort((a, b) => a[0].localeCompare(b[0])).map(([k, n]) => `<b>${k}일장</b> ${n}곳`).join(' · ')}</p>
+<div style="background:#f4faf8;border:1.5px solid #dcefeb;border-radius:14px;padding:13px 17px;margin:14px 0;color:#0a6c63;font-size:.94rem;line-height:1.75">
+오일장은 <b>날짜 끝자리</b>로 열립니다. 예를 들어 4·9일장이면 4, 9, 14, 19, 24, 29일에 섭니다.
+<a href="/jangteo/" style="color:#0a6c63;font-weight:800">전국 표에서 날짜를 넣으면</a> 그 날 열리는 장을 한 번에 볼 수 있습니다.
+</div>
+
+<h2 class="sec">${sido}의 오일장</h2>
+${withDay.map(cardOf).join('')}
+
+${noDay.length ? `<h2 class="sec">장날을 확인하지 못한 시장 ${noDay.length}곳</h2>
+<p style="color:#6b7280;font-size:.94rem">전통시장으로 등록돼 있지만 공공데이터에 장날이 적혀 있지 않습니다. <b>추측해서 날짜를 적지 않았습니다.</b></p>
+${noDay.map(cardOf).join('')}` : ''}
+
+<h2 class="sec">다른 지역 오일장</h2>
+${linkRow(sido)}
+
+<h2 class="sec">자주 묻는 것</h2>
+${faq.map(([q, a]) => `<p style="line-height:1.8"><b>${esc(q)}</b><br>${esc(a)}</p>`).join('')}
+
+<p class="note" style="margin-top:18px">데이터 출처: 한국관광공사 TourAPI 전통시장 정보(판매 품목·장날·영업시간·주차·문의처)와 축제모아가 직접 정리한 유명 장터 자료. 장날은 <b>끝자리 간격이 5일 때만</b> 오일장으로 인정했습니다. 명절·기상에 따라 쉬는 날이 있으니 방문 전 확인하세요.</p>
+</div></main>`;
+
+    const ld = `<script type="application/ld+json">${JSON.stringify({ '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faq.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })) })}</script>`;
+    writePage('jangteo/' + SLUG[sido], layout(
+      `${sido} 오일장 ${withDay.length}곳 — 장날·파는 것·영업시간 총정리 | ${SITE_NAME}`,
+      `${sido} 오일장 ${withDay.length}곳의 장날과 판매 품목, 영업시간·휴무·주차·문의처를 한곳에. ${Object.entries(endCnt).sort((a, b) => b[1] - a[1]).slice(0, 3).map(([k, n]) => `${k}일장 ${n}곳`).join(' · ')}.`,
+      `/jangteo/${SLUG[sido]}/`, content, { jsonld: ld }));
+    JANGTEO_SIDO_URLS.push(`/jangteo/${SLUG[sido]}/`);
+  });
+  // ⚠️ 빌드는 페이지를 «쓰기»만 하고 지우지 않는다. 기준을 4→6으로 올렸을 때 대구 폴더가 그대로 남아
+  //    사이트맵엔 없는데 파일은 살아 있는 «유령 페이지»가 됐다(축제 상세에서 겪은 것과 같은 사고).
+  //    이번 빌드가 만들지 않은 하위 폴더는 지운다.
+  const keep = new Set(JANGTEO_SIDO_URLS.map(u => u.split('/')[2]));
+  let gone = 0;
+  for (const e of fs.readdirSync(path.join(ROOT, 'jangteo'), { withFileTypes: true })) {
+    if (!e.isDirectory() || keep.has(e.name)) continue;
+    fs.rmSync(path.join(ROOT, 'jangteo', e.name), { recursive: true, force: true });
+    console.log('  🗑 유령 페이지 삭제 /jangteo/' + e.name + '/');
+    gone++;
+  }
+  console.log('✓ /jangteo/{시도}/ —', JANGTEO_SIDO_URLS.length, '페이지 (시장 6곳 이상인 시도만)' + (gone ? ` · 정리 ${gone}개` : ''));
+}
 
 // ---------- 신뢰 요소(E-E-A-T) 공통 블록 ----------
 // 편집 원칙: /editorial/ · 저자 명의: 축제모아 편집팀
@@ -5366,7 +5469,7 @@ const TRIP_URLS = require('./trip.js').build({ ROOT, layout, writePage, SITE_NAM
 }
 
 // ---------- sitemap / robots ----------
-const urls = ['/', ...MONTHS.map(m => `/${m.key}/`), '/search/', ...(holidays.length ? ['/holiday/'] : []), '/pet/', ...(apiAccessible.length ? ['/accessible/'] : []), ...(apiTrails.length ? ['/trails/'] : []), ...(apiValleys.length ? ['/valley/'] : []), ...(apiMaple.length ? ['/maple/'] : []), ...(apiFlower.length ? ['/flower/'] : []), ...(apiOnsen.length ? ['/onsen/'] : []), '/jangteo/', '/test/', '/trip-cost/', ...(visitors.kor && visitors.kor.length ? ['/trend/'] : []), ...SIDO_URLS, ...THEME_URLS, ...TRAIL_URLS, ...WALK_URLS, ...TREND_LANG_URLS, '/blog/', ...posts.map(p => `/blog/${p.slug}/`), '/about/', EDITORIAL_URL, '/contact/', '/privacy/',...(apiFestsEn.length ? ['/en/', '/en/search/'] : []), ...(apiFestsJa.length ? ['/ja/', '/ja/search/'] : []), ...(apiFestsEs.length ? ['/es/', '/es/search/'] : []), ...(apiFestsZh.length ? ['/zh/', '/zh/search/'] : []), ...(apiFestsTw.length ? ['/tw/', '/tw/search/'] : []), ...TW_EXTRA_URLS, ...MOUNTAIN_URLS, ...CAFE_URLS, ...HOT_URLS, ...COURSE_URLS, ...WINTER_URLS, ...TRIP_URLS, ...FESTIVAL_URLS, ...MAP_URLS, ...INTL_URLS];
+const urls = ['/', ...MONTHS.map(m => `/${m.key}/`), '/search/', ...(holidays.length ? ['/holiday/'] : []), '/pet/', ...(apiAccessible.length ? ['/accessible/'] : []), ...(apiTrails.length ? ['/trails/'] : []), ...(apiValleys.length ? ['/valley/'] : []), ...(apiMaple.length ? ['/maple/'] : []), ...(apiFlower.length ? ['/flower/'] : []), ...(apiOnsen.length ? ['/onsen/'] : []), '/jangteo/', '/test/', '/trip-cost/', ...(visitors.kor && visitors.kor.length ? ['/trend/'] : []), ...SIDO_URLS, ...THEME_URLS, ...TRAIL_URLS, ...WALK_URLS, ...TREND_LANG_URLS, '/blog/', ...posts.map(p => `/blog/${p.slug}/`), '/about/', EDITORIAL_URL, '/contact/', '/privacy/',...(apiFestsEn.length ? ['/en/', '/en/search/'] : []), ...(apiFestsJa.length ? ['/ja/', '/ja/search/'] : []), ...(apiFestsEs.length ? ['/es/', '/es/search/'] : []), ...(apiFestsZh.length ? ['/zh/', '/zh/search/'] : []), ...(apiFestsTw.length ? ['/tw/', '/tw/search/'] : []), ...TW_EXTRA_URLS, ...MOUNTAIN_URLS, ...CAFE_URLS, ...HOT_URLS, ...COURSE_URLS, ...WINTER_URLS, ...JANGTEO_SIDO_URLS, ...TRIP_URLS, ...FESTIVAL_URLS, ...MAP_URLS, ...INTL_URLS];
 // noindex 페이지는 사이트맵에서 뺀다 — "색인해라(사이트맵) + 하지마라(noindex)"는 모순 신호다.
 // 2026-08-18: en/ja/zh는 layout()에서 전량 forceNoindex 처리했다 — 사이트맵에서도 같이 뺀다.
 const LANG_NOINDEX_URLS = urls.filter(u => /^\/(en|ja|zh)\//.test(u));
