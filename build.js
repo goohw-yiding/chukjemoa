@@ -498,10 +498,32 @@ function buyBox(pageKey) {
   const key = seasonKey(pageKey);
   return renderBuyBox(key, (COUPANG.items[key] || {}).up, pageKey);
 }
-function blogBuyBox(slug) {
-  const m = BLOG_BUYBOX[slug];
-  if (!m || !m.length) return '';
-  return renderBuyBox(m[0], m.slice(1), 'blog-' + slug);
+// ⚠️ 2026-08-18 전체 점검에서 발견한 구조적 누수:
+//    BLOG_BUYBOX 는 «손으로 적는 표»인데 자동 글쓰기는 여기에 항목을 추가하지 않는다.
+//    그래서 자동 발행된 글 8편(27편 중 30%)에 상품이 하나도 없었고, 매일 1편씩 늘고 있었다.
+//    → 표에 없으면 제목·태그로 자동 매칭하고, 그것도 안 걸리면 계절 기본값을 쓴다. 이제 0인 글은 없다.
+const BLOG_AUTO = [
+  [/걷기|둘레길|올레|해파랑|남파랑|서해랑|갈맷|트레킹|등산|산행|명산|코스 고르|완주/, ['trails', 'pole', 'knee']],
+  [/오일장|5일장|장날|장터|전통시장/, ['jangteo', 'jangcolors']],
+  [/물놀이|계곡|워터|머드|해수욕|물축제|피서/, ['valley', 'psbases', 'aqua']],
+  [/단풍|가을꽃|국화|억새/, ['maple', 'gakline', 'chairs']],
+  [/봄꽃|벚꽃|유채|철쭉|진달래|튤립|상사화|꽃무릇/, ['flower', 'gakline']],
+  [/반려|강아지|댕댕|펫/, ['pet', 'suncap']],
+  [/온천|족욕|스파/, ['onsen', 'tripcost']],
+  [/눈꽃|얼음|빙어|산천어|겨울|스키|송어/, ['hotpack', 'chairs']],
+  [/숙소|숙박|교통|대중교통|이동|거리|연휴|추석|여행비용|캐리어|짐/, ['tripcost', 'carriers', 'car']],
+  [/유등|야행|불꽃|등불|야간|탈춤|국악|전통|문화제|공연/, ['gakline', 'chairs']]
+];
+function blogAutoKeys(p) {
+  const t = [p.title || '', (p.tags || []).join(' '), p.slug || ''].join(' ');
+  for (const [re, keys] of BLOG_AUTO) if (re.test(t)) return keys;
+  return null;
+}
+function blogBuyBox(p) {
+  const slug = typeof p === 'string' ? p : p.slug;
+  const m = BLOG_BUYBOX[slug] || (typeof p === 'object' ? blogAutoKeys(p) : null);
+  if (m && m.length) return renderBuyBox(m[0], m.slice(1), 'blog-' + slug);
+  return buyBox('festival');                 // 마지막 안전망 — 빈 채로 나가지 않는다
 }
 function renderBuyBox(mainKey, upKeys, detail) {
   if (!COUPANG.enabled) return '';
@@ -1339,6 +1361,7 @@ const KO_NAV = `<button class="navtoggle" id="navtoggle" aria-label="메뉴 열�
 <a href="/${CUR_MONTH_KEY}/">📅 월별 축제</a>
 <a href="/trend/">🔥 인기 여행지 랭킹</a>
 <a href="/holiday/">🎌 연휴 축제</a>
+<a href="/winter/">❄️ 겨울 축제</a>
 <a href="/blog/">📖 축제 가이드</a>
 <a href="/test/">🔮 취향 테스트</a>
 </div></div>
@@ -1640,12 +1663,15 @@ function layout(title, desc, urlPath, content, opts) {
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-GXJQ4SXMWY"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-GXJQ4SXMWY');</script>
 <title>${esc(title)}</title>
-<meta name="description" content="${esc(desc)}">
+<!-- ⚠️ 속성값 안에는 반드시 escA(따옴표까지 이스케이프)를 쓴다. esc()는 " 를 안 바꾼다.
+     2026-08-18 전체 점검에서 발견: 제목에 큰따옴표가 든 축제·카페·명산 3페이지의
+     <meta description> 이 첫 따옴표에서 잘리고 나머지가 깨진 속성으로 새어 나가고 있었다. -->
+<meta name="description" content="${escA(desc)}">
 <link rel="canonical" href="${SITE}${urlPath}">
 <link rel="alternate" type="application/rss+xml" title="${SITE_NAME} 축제 가이드" href="${SITE}/rss.xml">
 ${alts}
-<meta property="og:title" content="${esc(title)}">
-<meta property="og:description" content="${esc(desc)}">
+<meta property="og:title" content="${escA(title)}">
+<meta property="og:description" content="${escA(desc)}">
 <meta property="og:url" content="${SITE}${urlPath}">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="${SITE_NAME}">
@@ -1653,10 +1679,10 @@ ${alts}
 <meta property="og:image" content="${SITE}${opts.ogImage || ogImageFor(urlPath)}">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="${esc(title)}">
+<meta property="og:image:alt" content="${escA(title)}">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="${esc(title)}">
-<meta name="twitter:description" content="${esc(desc)}">
+<meta name="twitter:title" content="${escA(title)}">
+<meta name="twitter:description" content="${escA(desc)}">
 <meta name="twitter:image" content="${SITE}${opts.ogImage || ogImageFor(urlPath)}">${(opts.noindex || forceNoindex) ? '\n<meta name="robots" content="noindex, follow">' : ''}
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE}" crossorigin="anonymous"></script>
@@ -1691,7 +1717,28 @@ ${motionJs(lang)}
 </html>`;
 }
 
+// 허브 페이지에 그 주제에 맞는 상품을 붙인다.
+// ⚠️ 2026-08-18 전체 점검에서 발견: 걷기길·반려·온천·봄꽃·계곡·단풍 허브에 자기 상품이 하나도 없었다.
+//    (축제 모달 안의 공통 상품은 모달을 열어야 보인다 = 허브 방문자에겐 없는 것과 같다)
+//    억지 매칭은 하지 않는다 — /cafe/·/accessible/ 는 정직하게 맞는 상품이 없어 비워 둔다.
+const PAGE_BUYBOX = {
+  trails: 'trails', pet: 'pet', onsen: 'onsen', flower: 'flower',
+  valley: 'valley', maple: 'maple', course: 'tripcost', festival: 'festival',
+  // 정적 코스 12개 — 그 코스의 조건(걷기·온천·반려·아이·물놀이)에 맞춰 각각 다르게
+  'course/jeju-walk-2n3d': 'trails', 'course/jeonbuk-walk-1d': 'trails', 'course/chungbuk-nature-1n2d': 'trails',
+  'course/gangwon-onsen-1n2d': 'onsen', 'course/gyeongnam-pet-1n2d': 'pet',
+  'course/gangwon-water-1n2d': 'valley', 'course/gyeonggi-kid-1d': 'gakline',
+  'course/busan-1d': 'festival', 'course/chungnam-food-1d': 'festival',
+  'course/jeonnam-quiet-1n2d': 'tripcost', 'course/gyeongbuk-quiet-1n2d': 'tripcost',
+  'course/gyeongbuk-accessible-1d': 'tripcost'
+};
 function writePage(rel, html) {
+  const key = PAGE_BUYBOX[rel];
+  if (key && !/class="buybox"[\s\S]*?<\/main>/.test(html.slice(html.indexOf('<main')))) {
+    const bb = `<div class="wrap">${buyBox(key)}</div>`;
+    const i = html.lastIndexOf('</main>');
+    if (i > 0) html = html.slice(0, i) + bb + html.slice(i);
+  }
   const dir = path.join(ROOT, rel);
   fs.mkdirSync(dir, { recursive: true });
   fs.writeFileSync(path.join(dir, 'index.html'), html);
@@ -1951,7 +1998,7 @@ posts.forEach(p => {
 <h1>${esc(p.title)}</h1>
 ${metaBlock(p.date)}
 ${p.body}
-${blogBuyBox(p.slug)}
+${blogBuyBox(p)}
 ${SCHEDULE_NOTICE}
 ${refsBlock(p.slug)}
 </article>
@@ -2434,7 +2481,7 @@ const privacyContent = `<main><div class="wrap"><article>
 <h2>6. 문의</h2>
 <p>개인정보 관련 문의: goohw593@gmail.com</p>
 </article></div></main>`;
-writePage('privacy', layout(`개인정보처리방침 | ${SITE_NAME}`, `축제모아 개인정보처리방침`, '/privacy/', privacyContent));
+writePage('privacy', layout(`개인정보처리방침 | ${SITE_NAME}`, `축제모아가 수집하는 정보와 쓰임, 보관 기간, 광고·분석 도구(구글 애널리틱스·애드센스)의 쿠키 사용, 이용자의 열람·삭제 요청 방법을 정리했습니다.`, '/privacy/', privacyContent));
 
 // ---------- 킥① 축제 취향 테스트 ----------
 const QUIZ_JS = `<script>
@@ -5107,13 +5154,131 @@ ${buyBox('festival')}
 require('./course-data.js').build(ROOT);
 const COURSE_URLS = require('./course.js').build({ ROOT, layout, writePage, SITE_NAME });
 
+// ---------- ❄️ 겨울 축제 랜딩 /winter/ ----------
+// 2026-08-18 전체 점검: 「겨울 축제 2026」이 GSC 2.9위인데 클릭 0 = 도착할 페이지가 없었다.
+// 겸해서 «11월 이후 축제 재고 0» 구간에 계절 무관 자산(온천·오일장·걷기길)으로 가는 다리를 만든다.
+const WINTER_URLS = require('./winter.js').build({ ROOT, layout, writePage, SITE_NAME, buyBox });
+
 // ---------- 🌏 방문 차수별 추천 /{lang}/trip/ (5개 언어) ----------
 // '두 번째 한국 여행 어디 가지'에 외국인 방문 순위·한국인 성수기 배수·등록 관광지 수로 답한다.
 require('./trip-data.js').build(ROOT);
 const TRIP_URLS = require('./trip.js').build({ ROOT, layout, writePage, SITE_NAME });
 
+// ---------- 소개 · 문의 ----------
+// ⚠️ 2026-08-18 전체 점검에서 발견: /about/ 과 /contact/ 는 2026-08-07에 손으로 만든 정적 HTML이라
+//    빌드가 건드리지 않았다. 그 결과 이 두 페이지에만 **상단 네비게이션이 통째로 없고**(nav 0개),
+//    헤더 검색창도 GA 이벤트 추적(track.js)도 없었다. 하필 애드센스 심사자가 반드시 보는 페이지다.
+//    → 빌드가 생성하도록 옮긴다. 이제 메뉴가 늘어나면 여기도 같이 따라온다.
+{
+  const cnt = f => { try { const j = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', f), 'utf8')); return (Array.isArray(j) ? j.length : Object.keys(j).length).toLocaleString('ko-KR'); } catch (e) { return '—'; } };
+  const nFest = (FESTIVAL_URLS.length || 0).toLocaleString('ko-KR');
+  const aboutContent = `<main><div class="wrap"><article>
+<h1>축제모아 소개</h1>
+<p>전국의 축제와 오일장 일정을 한곳에 모아 무료로 제공하는 사이트입니다.</p>
+
+<h2 class="sec">어떤 사이트인가요</h2>
+<p>축제모아는 전국에서 열리는 지역 축제와 오일장(5일장) 일정을 한눈에 볼 수 있도록 모아 정리한 무료 정보 사이트입니다. 보령머드축제·화천산천어축제 같은 대형 축제부터 각 지역의 작은 오일장까지, 월별·지역별로 찾아보고 남은 날짜(D-day)와 가는 법, 준비물까지 확인할 수 있습니다. 한국어 외에 영어·일본어·중국어·스페인어로도 제공해, 한국을 찾는 외국인 여행자도 이용할 수 있습니다.</p>
+
+<h2 class="sec">숫자로 보는 축제모아</h2>
+<ul style="line-height:2">
+<li>개별 축제 상세 페이지 <b>${nFest}개</b> — 축제마다 가는 법·근처 먹을 곳·붐빔 정도를 따로 계산합니다.</li>
+<li>전국 걷기길 <b>${cnt('trails.json')}개</b> 코스 — 해파랑길·남파랑길·서해랑길·제주올레·갈맷길 등.</li>
+<li>오일장 <b>${cnt('markets.json')}곳</b>의 장날 — 4·9일장처럼 날짜 규칙까지 정리했습니다.</li>
+<li>축제장까지 대중교통 <b>${cnt('transit_access.json')}건 실측</b> — 직선거리 추정이 아니라 실제 경로로 재본 값입니다.</li>
+<li>음식점 <b>${cnt('restaurants_ko.json')}곳</b> · 카페 <b>${cnt('cafes_ko.json')}곳</b> · 숙소 <b>${cnt('stays_ko.json')}곳</b> — 코스를 짤 때 씁니다.</li>
+<li>직접 취재·정리한 가이드 글 <b>${posts.length}편</b>.</li>
+</ul>
+
+<h2 class="sec">우리가 계산한 것과, 공공데이터 그대로인 것</h2>
+<p>정보의 출처를 섞지 않으려고 합니다.</p>
+<ul style="line-height:2">
+<li><b>공공데이터 그대로</b> — 축제 개요 설명, 주소·좌표·문의처, 걷기길 거리와 난이도는 한국관광공사 TourAPI와 전국길관광정보 표준데이터의 내용입니다. 우리가 다시 쓰지 않고 출처를 밝혀 그대로 싣습니다.</li>
+<li><b>우리가 계산한 것</b> — 「이달 이 동네가 평소의 몇 배로 붐비는가」(관광 빅데이터 방문자 수 기준), 축제장까지 걸리는 실제 대중교통 시간, 동선 순서와 하루 일정, 여행 비용 비교, 축제별 준비물 매칭은 우리가 직접 계산해 만든 것입니다.</li>
+<li><b>우리가 쓴 것</b> — 가이드 글 ${posts.length}편과 각 페이지의 설명 문장.</li>
+</ul>
+
+<h2 class="sec">왜 만들었나요</h2>
+<p>축제와 오일장 정보는 여러 기관·지자체 사이트에 흩어져 있어 한 번에 보기 어렵습니다. "이번 주말 근처에 갈 만한 축제가 있을까?", "우리 동네 장날이 언제지?" 같은 궁금증을 한 곳에서 빠르게 해결할 수 있도록 만들었습니다.</p>
+
+<h2 class="sec">정보 출처와 갱신</h2>
+<p>축제·오일장 정보는 공공데이터와 각 주최 측·지자체 공개 자료를 참고해 정리하며, 새로운 일정과 변경 사항을 반영해 지속적으로 업데이트합니다. 다만 <b>축제 일정은 기상·주최 측 사정에 따라 변경되거나 취소될 수 있습니다.</b> 방문 전에는 반드시 해당 축제의 공식 홈페이지나 주최 기관을 통해 최종 일정을 확인해 주세요.</p>
+
+<h2 class="sec">우리가 못 하는 것</h2>
+<p>쓸모 있으려면 못 하는 것부터 밝히는 게 맞다고 봅니다.</p>
+<ul style="line-height:2">
+<li>이동 시간은 별도 조회 전에는 <b>직선거리 기반 추정치</b>입니다. 실제 도로 경로가 아닙니다.</li>
+<li>영업시간·휴무일은 <b>공공데이터에 등록된 곳만</b> 표시합니다. 없는 곳이 더 많습니다.</li>
+<li>숙소는 위치와 유형만 보여주고 <b>가격·빈방·예약은 다루지 않습니다.</b></li>
+<li>붐빔 배수는 그 장소가 아니라 <b>그 시·군·구</b>의 방문자 수 기준입니다.</li>
+</ul>
+
+<h2 class="sec">이용 안내</h2>
+<p>모든 정보는 무료이며 회원가입이 필요 없습니다. 사이트 운영은 광고와 상품 판매 수익으로 이루어집니다. 일부 상품 링크는 쿠팡 파트너스 활동의 일환으로 수수료를 제공받으며, 해당 위치에 그 사실을 표시합니다. 축제모아를 운영하는 쿠웅샵에서 직접 판매하는 상품도 같은 방식으로 구분해 표시합니다.</p>
+<p>일정 오류나 누락을 발견하시면 <a href="/contact/">문의 페이지</a>로 알려주세요. 확인 후 신속히 반영하겠습니다. 편집·검수 기준은 <a href="/editorial/">편집 원칙</a>에, 개인정보 처리에 관한 사항은 <a href="/privacy/">개인정보처리방침</a>에서 확인하실 수 있습니다.</p>
+</article></div></main>`;
+  writePage('about', layout(
+    `소개 — 축제모아는 어떤 사이트인가요 | ${SITE_NAME}`,
+    `축제모아는 전국 축제 ${nFest}곳과 오일장·걷기길 일정을 모아 무료로 제공합니다. 공공데이터를 그대로 싣는 부분과 우리가 직접 계산한 부분(붐빔 배수·대중교통 실측·동선)을 구분해 밝힙니다.`,
+    '/about/', aboutContent));
+
+  const contactContent = `<main><div class="wrap"><article>
+<h1>문의하기</h1>
+<p>일정 제보나 제안이 있으면 편하게 연락해 주세요.</p>
+
+<h2 class="sec">이메일</h2>
+<p>모든 문의는 아래 이메일로 받습니다. 보통 <b>2~3일 이내</b>에 답변드립니다.</p>
+<p style="font-size:1.1rem;font-weight:800"><a href="mailto:goohw593@gmail.com">goohw593@gmail.com</a></p>
+
+<h2 class="sec">이런 문의를 받아요</h2>
+<ul style="line-height:2">
+<li><b>일정 오류·변경 제보</b> — 날짜나 장소가 실제와 다르거나 취소된 축제를 발견하셨다면 알려주세요. 어느 페이지인지 주소를 함께 주시면 가장 빠릅니다.</li>
+<li><b>축제·오일장 추가 요청</b> — 목록에 없는 축제나 장터를 제보해 주시면 확인 후 추가합니다. 공공데이터에 등록되지 않은 행사도 근거가 있으면 싣습니다.</li>
+<li><b>제휴·광고 문의</b> — 지자체·주최 측 협업이나 광고 관련 문의를 받습니다.</li>
+<li><b>정보 정정 요청</b> — 잘못된 정보를 발견하셨다면 근거와 함께 알려주세요.</li>
+<li><b>사진·저작권 관련</b> — 게재된 이미지에 권리 문제가 있다면 알려주시는 대로 내리고 확인하겠습니다.</li>
+</ul>
+
+<h2 class="sec">제보가 반영되는 방식</h2>
+<p>받은 내용은 공공데이터·주최 측 공지와 대조한 뒤 반영합니다. 확인이 안 되는 내용은 <b>추측해서 싣지 않고</b> 「확인하지 못했습니다」로 남겨 둡니다. 반영되면 해당 페이지의 수정일이 함께 갱신됩니다.</p>
+
+<h2 class="sec">운영</h2>
+<p>축제모아는 쿠웅샵이 운영합니다. 사이트 운영은 광고와 상품 판매 수익으로 이루어지며, 제휴 링크가 있는 자리에는 그 사실을 표시합니다. 자세한 내용은 <a href="/about/">소개</a>와 <a href="/editorial/">편집 원칙</a>을 참고해 주세요.</p>
+
+<h2 class="sec">안내</h2>
+<p>축제 일정은 기상·주최 측 사정에 따라 변경될 수 있어, 방문 전 공식 홈페이지 확인을 권합니다. 개인정보 처리에 관한 사항은 <a href="/privacy/">개인정보처리방침</a>을 참고하시기 바랍니다.</p>
+</article></div></main>`;
+  writePage('contact', layout(
+    `문의 — 일정 오류 제보·제휴 | ${SITE_NAME}`,
+    `축제 일정 오류 제보, 목록에 없는 축제·오일장 추가 요청, 제휴·광고 문의를 받습니다. 받은 제보는 공공데이터·주최 측 공지와 대조한 뒤 반영합니다.`,
+    '/contact/', contactContent));
+}
+
+// ---------- 404 ----------
+// ⚠️ 2026-08-18 전체 점검: 없는 주소를 밟으면 흰 화면에 text/plain 404가 떴다.
+//    사이트 안으로 되돌릴 동선이 0이었다. Vercel 정적 호스팅은 루트 404.html을 자동으로 쓴다.
+{
+  const notFound = `<main><div class="wrap" style="text-align:center;padding:40px 0 20px">
+<div style="font-size:3rem">🎪</div>
+<h1 style="font-size:1.5rem;font-weight:900;margin:10px 0 6px">찾으시는 페이지가 없습니다</h1>
+<p style="color:#6b7280;line-height:1.8">주소가 바뀌었거나, 끝난 축제라 정리된 페이지일 수 있습니다.<br>아래에서 다시 찾아보세요.</p>
+<div style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:22px 0">
+<a href="/" style="background:#0f9d8f;color:#fff;font-weight:800;padding:11px 20px;border-radius:999px;font-size:.95rem">🏠 홈으로</a>
+<a href="/search/" style="background:#fff;border:1.5px solid #dcefeb;color:#374151;font-weight:700;padding:11px 20px;border-radius:999px;font-size:.95rem">🔎 축제 검색</a>
+<a href="/${CUR_MONTH_KEY}/" style="background:#fff;border:1.5px solid #dcefeb;color:#374151;font-weight:700;padding:11px 20px;border-radius:999px;font-size:.95rem">📅 이달의 축제</a>
+<a href="/festival/" style="background:#fff;border:1.5px solid #dcefeb;color:#374151;font-weight:700;padding:11px 20px;border-radius:999px;font-size:.95rem">📄 축제 상세</a>
+<a href="/jangteo/" style="background:#fff;border:1.5px solid #dcefeb;color:#374151;font-weight:700;padding:11px 20px;border-radius:999px;font-size:.95rem">🏮 전국 오일장</a>
+<a href="/trails/" style="background:#fff;border:1.5px solid #dcefeb;color:#374151;font-weight:700;padding:11px 20px;border-radius:999px;font-size:.95rem">🥾 걷기 여행</a>
+<a href="/course/" style="background:#fff;border:1.5px solid #dcefeb;color:#374151;font-weight:700;padding:11px 20px;border-radius:999px;font-size:.95rem">🧭 코스 짜기</a>
+</div>
+<p style="color:#9ca3af;font-size:.9rem">축제 이름을 아신다면 위쪽 검색창에 바로 넣어 보세요. 끝난 축제도 검색됩니다.</p>
+</div></main>`;
+  fs.writeFileSync(path.join(ROOT, '404.html'),
+    layout(`페이지를 찾을 수 없습니다 | ${SITE_NAME}`, '찾으시는 페이지가 없습니다. 축제 검색·월별 일정·오일장·걷기길에서 다시 찾아보세요.', '/404', notFound, { noindex: true }));
+  console.log('✓ 404.html');
+}
+
 // ---------- sitemap / robots ----------
-const urls = ['/', ...MONTHS.map(m => `/${m.key}/`), '/search/', ...(holidays.length ? ['/holiday/'] : []), '/pet/', ...(apiAccessible.length ? ['/accessible/'] : []), ...(apiTrails.length ? ['/trails/'] : []), ...(apiValleys.length ? ['/valley/'] : []), ...(apiMaple.length ? ['/maple/'] : []), ...(apiFlower.length ? ['/flower/'] : []), ...(apiOnsen.length ? ['/onsen/'] : []), '/jangteo/', '/test/', '/trip-cost/', ...(visitors.kor && visitors.kor.length ? ['/trend/'] : []), ...SIDO_URLS, ...THEME_URLS, ...TRAIL_URLS, ...WALK_URLS, ...TREND_LANG_URLS, '/blog/', ...posts.map(p => `/blog/${p.slug}/`), '/about/', EDITORIAL_URL, '/contact/', '/privacy/',...(apiFestsEn.length ? ['/en/', '/en/search/'] : []), ...(apiFestsJa.length ? ['/ja/', '/ja/search/'] : []), ...(apiFestsEs.length ? ['/es/', '/es/search/'] : []), ...(apiFestsZh.length ? ['/zh/', '/zh/search/'] : []), ...(apiFestsTw.length ? ['/tw/', '/tw/search/'] : []), ...TW_EXTRA_URLS, ...MOUNTAIN_URLS, ...CAFE_URLS, ...HOT_URLS, ...COURSE_URLS, ...TRIP_URLS, ...FESTIVAL_URLS, ...MAP_URLS, ...INTL_URLS];
+const urls = ['/', ...MONTHS.map(m => `/${m.key}/`), '/search/', ...(holidays.length ? ['/holiday/'] : []), '/pet/', ...(apiAccessible.length ? ['/accessible/'] : []), ...(apiTrails.length ? ['/trails/'] : []), ...(apiValleys.length ? ['/valley/'] : []), ...(apiMaple.length ? ['/maple/'] : []), ...(apiFlower.length ? ['/flower/'] : []), ...(apiOnsen.length ? ['/onsen/'] : []), '/jangteo/', '/test/', '/trip-cost/', ...(visitors.kor && visitors.kor.length ? ['/trend/'] : []), ...SIDO_URLS, ...THEME_URLS, ...TRAIL_URLS, ...WALK_URLS, ...TREND_LANG_URLS, '/blog/', ...posts.map(p => `/blog/${p.slug}/`), '/about/', EDITORIAL_URL, '/contact/', '/privacy/',...(apiFestsEn.length ? ['/en/', '/en/search/'] : []), ...(apiFestsJa.length ? ['/ja/', '/ja/search/'] : []), ...(apiFestsEs.length ? ['/es/', '/es/search/'] : []), ...(apiFestsZh.length ? ['/zh/', '/zh/search/'] : []), ...(apiFestsTw.length ? ['/tw/', '/tw/search/'] : []), ...TW_EXTRA_URLS, ...MOUNTAIN_URLS, ...CAFE_URLS, ...HOT_URLS, ...COURSE_URLS, ...WINTER_URLS, ...TRIP_URLS, ...FESTIVAL_URLS, ...MAP_URLS, ...INTL_URLS];
 // noindex 페이지는 사이트맵에서 뺀다 — "색인해라(사이트맵) + 하지마라(noindex)"는 모순 신호다.
 // 2026-08-18: en/ja/zh는 layout()에서 전량 forceNoindex 처리했다 — 사이트맵에서도 같이 뺀다.
 const LANG_NOINDEX_URLS = urls.filter(u => /^\/(en|ja|zh)\//.test(u));
