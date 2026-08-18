@@ -3039,6 +3039,7 @@ const petContent = `<main><div class="wrap">
 <input type="text" id="pKw" placeholder="장소명·주소 검색">
 <button id="pReset" class="pmore" style="border-color:#f0e6dc;color:#374151">초기화</button>
 </div></div>
+<!--SIDOLINKS-->
 <div class="srch-count" id="pCount"></div>
 <div class="grid" id="pGrid">${ssrCards(apiPets, 60, p => ({
   title: p.title, img: p.img, loc: (p.sido || '') + ' ' + (p.sigungu || ''),
@@ -3630,6 +3631,7 @@ if (apiAccessible.length) {
 <input type="text" id="aKw" placeholder="장소명·주소 검색">
 <button id="aReset" class="pmore" style="border-color:#f0e6dc;color:#374151">초기화</button>
 </div></div>
+<!--SIDOLINKS-->
 <div class="srch-count" id="aCount"></div>
 <div class="grid" id="aGrid">${ssrCards(apiAccessible, 60, p => ({
   title: p.title, img: p.img, loc: (p.sido || '') + ' ' + (p.sigungu || ''),
@@ -3663,6 +3665,167 @@ fetch('/accessible/data.json').then(function(r){return r.json();}).then(function
 </script>`;
   writePage('accessible', layout('무장애 여행지 — 휠체어·유아차·고령자 접근 가능 관광지 | ' + SITE_NAME, '휠체어·유아차·고령자도 편하게 갈 수 있는 전국 무장애 관광지·문화시설·맛집·숙소를 지역별로. 공공데이터 기반 ' + apiAccessible.length.toLocaleString() + '곳.', '/accessible/', accContent + '<script>window.CJM_BUYBOX=' + JSON.stringify(buyBox('trails')) + ';</script>'));
   fs.writeFileSync(path.join(ROOT, 'accessible', 'data.json'), JSON.stringify(stripOv(apiAccessible)));
+}
+
+// ---------- ♿🐶 시·도별 페이지 /accessible/{시도}/ · /pet/{시도}/ ----------
+// 왜 만드나: 허브는 9,398곳·1,470곳을 갖고 있는데 화면에는 각 60곳만 나온다.
+//   「전남 무장애 여행지」·「강원 애견동반 여행지」는 실제로 따로 검색되는 말이고,
+//   이제 개요가 다 채워져 있어(무장애 100% · 반려 72%) 시·도별로 나눌 재료가 생겼다. (오일장에서 통한 패턴)
+//
+// ⚠️ **정직성이 이 페이지의 조건이다.**
+//   무장애 편의시설(휠체어·장애인주차 등) 상세는 9,398곳 «전량 조회를 마쳤는데도» 1,356곳에만 있다.
+//   그나마 강원 1,267 · 광주 66에 몰려 있고 나머지 15개 시도는 사실상 0이다 — 우리 누락이 아니라 원본 한계다.
+//   그래서 시도마다 «그 지역에 편의시설 정보가 몇 곳 있는지»를 맨 위에 그대로 밝힌다.
+//   없는 지역에서 「무장애 정보를 준다」고 말하면 오늘 하루 종일 고친 «말과 목록이 어긋나는» 잘못을 새로 만드는 것이다.
+//
+// ⚠️ 얇은 페이지도, 무거운 페이지도 만들지 않는다 — **15곳 이상인 시도만**, **한 페이지 100곳까지**.
+//   경기 무장애가 1,594곳인데 다 실으면 본문 38만 자가 된다.
+const SIDO_HUB_URLS = [];
+{
+  const SLUG = { 서울: 'seoul', 부산: 'busan', 대구: 'daegu', 인천: 'incheon', 광주: 'gwangju', 대전: 'daejeon', 울산: 'ulsan', 세종: 'sejong', 경기: 'gyeonggi', 강원: 'gangwon', 충북: 'chungbuk', 충남: 'chungnam', 전북: 'jeonbuk', 전남: 'jeonnam', 경북: 'gyeongbuk', 경남: 'gyeongnam', 제주: 'jeju' };
+  const MIN = 15, CAP = 100;
+  const CATE = { '관광지': '🏞️', '문화시설': '🎭', '음식점': '🍴', '숙박': '🏨', '레포츠': '🚵', '쇼핑': '🛍️', '축제·행사': '🎪', '기타': '📍' };
+
+  const HUBS = [
+    {
+      base: 'accessible', emoji: '♿', name: '무장애 여행지', data: apiAccessible, hub: '/accessible/',
+      // 그 시도에서 «검증된 편의시설 정보»가 있는 곳 수
+      keyed: a => a.filter(p => Array.isArray(p.acc) && p.acc.length).length,
+      badges: p => (Array.isArray(p.acc) && p.acc.length)
+        ? `<div style="margin:6px 0 2px">${p.acc.map(x => `<span style="background:#e2f5f2;color:#0a6c63;font-size:.8rem;font-weight:800;border-radius:999px;padding:3px 9px;margin:0 5px 4px 0;display:inline-block">♿ ${esc(x)}</span>`).join('')}</div>` : '',
+      // ⚠️ 「1,302곳 중 12곳」처럼 비율이 낮을 때 숫자만 적으면 «나머지 1,290곳은 접근이 안 된다»로 읽힌다.
+      //   실제로는 «원본에 정보가 없다»는 뜻이므로, 10% 미만이면 그 말을 리드문에 붙인다.
+      lead: (s, n, k) => k
+        ? `${s}에서 한국관광공사 무장애여행 정보에 등재된 <b>${n.toLocaleString()}곳</b>입니다. 그중 <b>${k.toLocaleString()}곳</b>은 휠체어·장애인주차·장애인화장실 같은 <b>편의시설이 확인</b>돼 있습니다.`
+          + (k / n < 0.1 ? ` 나머지는 <b>편의시설 정보가 공공데이터에 없는 것</b>이지, 접근이 불가능하다는 뜻이 아닙니다 — 방문 전 각 시설에 직접 확인하세요.` : '')
+        : `${s}에서 한국관광공사 무장애여행 정보에 등재된 <b>${n.toLocaleString()}곳</b>입니다. <b>다만 ${s}은(는) 편의시설 상세가 공공데이터에 아직 0곳입니다</b> — 아래 목록은 «무장애 관광 대상으로 수집된 곳»이라는 뜻이지, 휠체어 접근이 확인됐다는 뜻은 아닙니다.`,
+      note: '데이터 출처: 한국관광공사 무장애여행 서비스(공공데이터포털). 편의시설 상세는 전국 9,398곳 중 1,356곳에만 있으며, 저희가 채우지 못한 것이 아니라 원본에 없는 것입니다. <b>방문 전 각 시설에 접근성을 반드시 확인하세요.</b>'
+    },
+    {
+      base: 'pet', emoji: '🐶', name: '반려견 동반 여행지', data: apiPets, hub: '/pet/',
+      keyed: a => a.filter(p => p.psbl || p.type || p.need || p.note).length,
+      badges: p => {
+        const b = [p.psbl, p.type].filter(Boolean).join(' · ');
+        const i = [p.need, p.note].filter(Boolean).join(' / ');
+        return (b ? `<div style="color:#8a5a2b;font-weight:700;font-size:.9rem;margin:6px 0 2px">🐾 ${esc(b)}</div>` : '')
+          + (i ? `<div style="color:#6b7280;font-size:.9rem;margin-bottom:2px">ⓘ ${esc(i)}</div>` : '');
+      },
+      lead: (s, n, k) => `${s}에서 반려동물과 함께 갈 수 있는 곳 <b>${n.toLocaleString()}곳</b>입니다. 그중 <b>${k.toLocaleString()}곳</b>은 <b>동반 가능 견종·동반 구역·주의사항</b>이 공공데이터에 적혀 있어 함께 실었습니다.`,
+      note: '데이터 출처: 한국관광공사 반려동물 동반여행 서비스(공공데이터포털). 동반 조건은 시설 사정으로 바뀔 수 있으니 방문 전 각 장소에 꼭 확인하세요.'
+    }
+  ];
+
+  for (const H of HUBS) {
+    if (!H.data || !H.data.length) continue;
+    const bySido = {};
+    H.data.forEach(p => { if (p.sido && SLUG[p.sido]) (bySido[p.sido] = bySido[p.sido] || []).push(p); });
+    const big = Object.entries(bySido).filter(([, a]) => a.length >= MIN).sort((a, b) => b[1].length - a[1].length);
+    const made = [];
+
+    const linkRow = cur => `<div style="display:flex;flex-wrap:wrap;gap:8px;margin:14px 0">${big.filter(([s]) => s !== cur).map(([s, a]) =>
+      `<a href="/${H.base}/${SLUG[s]}/" style="background:#fff;border:1.5px solid #dcefeb;color:#374151;font-weight:700;font-size:.9rem;padding:8px 14px;border-radius:999px">${s} ${a.length.toLocaleString()}</a>`).join('')}</div>`;
+
+    big.forEach(([sido, all]) => {
+      const keyed = H.keyed(all);
+      // 무엇을 먼저 보여줄까 — ①조건·편의시설이 있는 것 ②사진 ③설명이 긴 것. 그 다음 이름순.
+      const score = p => (H.base === 'accessible'
+        ? ((Array.isArray(p.acc) && p.acc.length) ? 4 : 0)
+        : ((p.psbl || p.type || p.need || p.note) ? 4 : 0))
+        + (p.img ? 2 : 0) + (p.ov ? 1 : 0);
+      const list = all.slice().sort((a, b) => score(b) - score(a)
+        || String(a.sigungu || '').localeCompare(String(b.sigungu || ''))
+        || String(a.title).localeCompare(String(b.title))).slice(0, CAP);
+
+      const sgCnt = {}; all.forEach(p => { if (p.sigungu) sgCnt[p.sigungu] = (sgCnt[p.sigungu] || 0) + 1; });
+      const catCnt = {}; all.forEach(p => { if (p.cat) catCnt[p.cat] = (catCnt[p.cat] || 0) + 1; });
+      const topSg = Object.entries(sgCnt).sort((a, b) => b[1] - a[1]);
+      const topCat = Object.entries(catCnt).sort((a, b) => b[1] - a[1]);
+
+      const cardOf = p => `<div style="background:#fff;border-radius:14px;padding:15px 17px;box-shadow:0 2px 10px rgba(31,41,55,.06);margin:0 0 13px">
+<h3 style="font-size:1.04rem;font-weight:800;margin:0 0 3px">${esc(p.title)} <span style="color:#6b7280;font-size:.85rem;font-weight:700">${CATE[p.cat] || '📍'} ${esc(p.cat || '')}</span></h3>
+<div style="color:#6b7280;font-size:.89rem;margin-bottom:5px">📍 ${esc(sido)}${p.sigungu ? ' ' + esc(p.sigungu) : ''}${p.addr ? ' · ' + esc(String(p.addr).slice(0, 44)) : ''}</div>
+${H.badges(p)}
+${p.ov ? `<p style="margin:5px 0 8px;color:#374151;font-size:.94rem;line-height:1.72">${esc(String(p.ov).slice(0, 200))}</p>` : ''}
+<div><a href="https://map.naver.com/p/search/${encodeURIComponent(p.title)}" target="_blank" rel="noopener" style="color:#0c7d72;font-weight:700;font-size:.87rem;margin-right:10px">🗺️ 지도</a><a href="https://search.naver.com/search.naver?query=${encodeURIComponent(p.title)}" target="_blank" rel="noopener" style="color:#0c7d72;font-weight:700;font-size:.87rem">🔎 검색</a></div>
+</div>`;
+
+      const faq = H.base === 'accessible' ? [
+        [`${sido}에 무장애 여행지가 몇 곳 있나요?`,
+          `한국관광공사 무장애여행 정보 기준 ${all.length.toLocaleString()}곳입니다. 유형별로는 ${topCat.slice(0, 4).map(([c, n]) => `${c} ${n}곳`).join(' · ')} 입니다.`],
+        [`${sido}에서 휠체어로 갈 수 있는 곳은 어떻게 확인하나요?`,
+          keyed ? `${sido}은 ${keyed.toLocaleString()}곳에 휠체어·장애인주차·장애인화장실 등 편의시설 정보가 등록돼 있습니다. 아래 목록에서 ♿ 배지가 붙은 곳이 그 곳들이고, 배지가 없는 곳은 «정보가 없는 것»이지 «없는 것»이 아닙니다.`
+            : `${sido}은 편의시설 상세가 공공데이터에 아직 등록돼 있지 않습니다(전국 9,398곳 중 1,356곳만 있습니다). 아래 목록은 무장애 관광 대상으로 수집된 곳이라는 뜻이며, 실제 접근성은 방문 전 각 시설에 확인하셔야 합니다.`],
+        ['정보가 틀렸거나 빠진 곳이 있으면 어떻게 하나요?',
+          '저희는 공공데이터를 그대로 싣고, 없는 정보는 지어내지 않습니다. 잘못된 내용을 발견하시면 문의로 알려주시면 확인 후 정정합니다.']
+      ] : [
+        [`${sido}에 반려견과 갈 수 있는 곳이 몇 곳인가요?`,
+          `한국관광공사 반려동물 동반여행 정보 기준 ${all.length.toLocaleString()}곳입니다. 유형별로는 ${topCat.slice(0, 4).map(([c, n]) => `${c} ${n}곳`).join(' · ')} 입니다.`],
+        [`${sido} 어디에 많이 몰려 있나요?`,
+          topSg.length ? `${topSg.slice(0, 5).map(([c, n]) => `${c} ${n}곳`).join(' · ')} 순입니다.` : '시·군 정보가 등록돼 있지 않습니다.'],
+        ['모든 견종이 다 들어갈 수 있나요?',
+          '장소마다 다릅니다. 「전 견종 동반 가능」인 곳도 있고 무게·크기 제한이나 실외만 가능한 곳도 있습니다. 각 카드의 🐾 표시가 공공데이터에 등록된 동반 조건이며, 맹견은 별도 제한이 있는 경우가 많으니 방문 전 확인하세요.']
+      ];
+
+      const shown = list.length < all.length
+        ? `<p style="color:#6b7280;font-size:.93rem">아래에는 <b>${list.length}곳</b>을 실었습니다(조건·사진·설명이 있는 곳 우선). 나머지 ${(all.length - list.length).toLocaleString()}곳은 <a href="${H.hub}" style="color:#0a6c63;font-weight:700">${H.name} 전체 검색</a>에서 지역·유형으로 찾아보세요.</p>`
+        : '';
+
+      const content = `<main><div class="wrap">
+<h1 style="font-size:1.5rem;font-weight:900;margin:8px 0 6px">${H.emoji} ${sido} ${H.name} ${all.length.toLocaleString()}곳</h1>
+<p style="color:#374151;font-size:1rem;line-height:1.8">${H.lead(sido, all.length, keyed)}</p>
+${topSg.length ? `<p style="color:#6b7280;font-size:.95rem">시·군·구 분포: ${topSg.slice(0, 12).map(([c, n]) => `${esc(c)} ${n}`).join(' · ')}${topSg.length > 12 ? ` 외 ${topSg.length - 12}곳` : ''}</p>` : ''}
+<p style="color:#6b7280;font-size:.95rem">유형: ${topCat.map(([c, n]) => `${CATE[c] || '📍'} <b>${esc(c)}</b> ${n}`).join(' · ')}</p>
+${shown}
+
+<h2 class="sec">${sido}의 ${H.name}</h2>
+${list.map(cardOf).join('')}
+
+<h2 class="sec">다른 지역</h2>
+${linkRow(sido)}
+
+<h2 class="sec">자주 묻는 것</h2>
+${faq.map(([q, a]) => `<p style="line-height:1.8"><b>${esc(q)}</b><br>${esc(a)}</p>`).join('')}
+
+<p class="note" style="margin-top:18px">${H.note}</p>
+</div></main>`;
+
+      const ld = `<script type="application/ld+json">${JSON.stringify({ '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faq.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })) })}</script>`;
+      const title = `${sido} ${H.name} ${all.length.toLocaleString()}곳 — 지역별 총정리 | ${SITE_NAME}`;
+      const desc = H.base === 'accessible'
+        ? `${sido} 무장애 여행지 ${all.length.toLocaleString()}곳. ${keyed ? `편의시설 확인 ${keyed.toLocaleString()}곳. ` : ''}${topCat.slice(0, 3).map(([c, n]) => `${c} ${n}곳`).join(' · ')}. 공공데이터 기반 목록과 설명.`
+        : `${sido} 반려견 동반 여행지 ${all.length.toLocaleString()}곳. 동반 조건·주의사항 ${keyed.toLocaleString()}곳 수록. ${topCat.slice(0, 3).map(([c, n]) => `${c} ${n}곳`).join(' · ')}.`;
+      writePage(H.base + '/' + SLUG[sido], layout(title, desc, `/${H.base}/${SLUG[sido]}/`, content, { jsonld: ld }));
+      SIDO_HUB_URLS.push(`/${H.base}/${SLUG[sido]}/`);
+      made.push(SLUG[sido]);
+    });
+
+    // ⚠️ 빌드는 페이지를 «쓰기»만 하고 지우지 않는다 — 기준이 바뀌면 유령 폴더가 남는다(오일장에서 겪었다).
+    const keep = new Set(made);
+    let gone = 0;
+    for (const e of fs.readdirSync(path.join(ROOT, H.base), { withFileTypes: true })) {
+      if (!e.isDirectory() || keep.has(e.name)) continue;
+      fs.rmSync(path.join(ROOT, H.base, e.name), { recursive: true, force: true });
+      console.log('  🗑 유령 페이지 삭제 /' + H.base + '/' + e.name + '/');
+      gone++;
+    }
+    // 허브에서 시·도 페이지로 가는 길을 낸다 — 사이트맵에만 있고 링크가 없으면 «고아 페이지»다.
+    // 허브 HTML은 이 블록보다 먼저 쓰였으므로, 심어둔 자리표시자를 지금 바꿔 넣는다.
+    {
+      const f = path.join(ROOT, H.base, 'index.html');
+      const row = big.length
+        ? `<div style="margin:4px 0 10px"><div style="color:#6b7280;font-size:.92rem;margin-bottom:7px">지역별로 자세히 보기</div><div style="display:flex;flex-wrap:wrap;gap:8px">${big.map(([s, a]) =>
+            `<a href="/${H.base}/${SLUG[s]}/" style="background:#fff;border:1.5px solid #dcefeb;color:#374151;font-weight:700;font-size:.9rem;padding:8px 14px;border-radius:999px">${s} ${a.length.toLocaleString()}</a>`).join('')}</div></div>`
+        : '';
+      try { fs.writeFileSync(f, fs.readFileSync(f, 'utf8').replace('<!--SIDOLINKS-->', row)); }
+      catch (e) { console.log('  ⚠ ' + H.base + ' 허브 지역링크 삽입 실패 — ' + e.message); }
+    }
+    console.log(`✓ /${H.base}/{시도}/ — ${made.length}페이지 (${MIN}곳 이상인 시도만 · 한 페이지 최대 ${CAP}곳)` + (gone ? ` · 정리 ${gone}개` : ''));
+  }
+  // 데이터가 비어 위에서 건너뛴 경우 자리표시자가 화면에 남는다 — 반드시 지운다.
+  for (const H of HUBS) {
+    const f = path.join(ROOT, H.base, 'index.html');
+    try { const s = fs.readFileSync(f, 'utf8'); if (s.includes('<!--SIDOLINKS-->')) fs.writeFileSync(f, s.replace('<!--SIDOLINKS-->', '')); } catch (e) {}
+  }
 }
 
 // ---------- 걷기길 노선별 페이지 (/trails/{slug}/) ----------
@@ -5575,7 +5738,7 @@ const TRIP_URLS = require('./trip.js').build({ ROOT, layout, writePage, SITE_NAM
 }
 
 // ---------- sitemap / robots ----------
-const urls = ['/', ...MONTHS.map(m => `/${m.key}/`), '/search/', ...(holidays.length ? ['/holiday/'] : []), '/pet/', ...(apiAccessible.length ? ['/accessible/'] : []), ...(apiTrails.length ? ['/trails/'] : []), ...(apiValleys.length ? ['/valley/'] : []), ...(apiMaple.length ? ['/maple/'] : []), ...(apiFlower.length ? ['/flower/'] : []), ...(apiOnsen.length ? ['/onsen/'] : []), '/jangteo/', '/test/', '/trip-cost/', ...(visitors.kor && visitors.kor.length ? ['/trend/'] : []), ...SIDO_URLS, ...THEME_URLS, ...TRAIL_URLS, ...WALK_URLS, ...TREND_LANG_URLS, '/blog/', ...posts.map(p => `/blog/${p.slug}/`), '/about/', EDITORIAL_URL, '/contact/', '/privacy/',...(apiFestsEn.length ? ['/en/', '/en/search/'] : []), ...(apiFestsJa.length ? ['/ja/', '/ja/search/'] : []), ...(apiFestsEs.length ? ['/es/', '/es/search/'] : []), ...(apiFestsZh.length ? ['/zh/', '/zh/search/'] : []), ...(apiFestsTw.length ? ['/tw/', '/tw/search/'] : []), ...TW_EXTRA_URLS, ...MOUNTAIN_URLS, ...CAFE_URLS, ...HOT_URLS, ...COURSE_URLS, ...WINTER_URLS, ...JANGTEO_SIDO_URLS, ...TRIP_URLS, ...FESTIVAL_URLS, ...MAP_URLS, ...INTL_URLS];
+const urls = ['/', ...MONTHS.map(m => `/${m.key}/`), '/search/', ...(holidays.length ? ['/holiday/'] : []), '/pet/', ...(apiAccessible.length ? ['/accessible/'] : []), ...(apiTrails.length ? ['/trails/'] : []), ...(apiValleys.length ? ['/valley/'] : []), ...(apiMaple.length ? ['/maple/'] : []), ...(apiFlower.length ? ['/flower/'] : []), ...(apiOnsen.length ? ['/onsen/'] : []), '/jangteo/', '/test/', '/trip-cost/', ...(visitors.kor && visitors.kor.length ? ['/trend/'] : []), ...SIDO_URLS, ...THEME_URLS, ...TRAIL_URLS, ...WALK_URLS, ...TREND_LANG_URLS, '/blog/', ...posts.map(p => `/blog/${p.slug}/`), '/about/', EDITORIAL_URL, '/contact/', '/privacy/',...(apiFestsEn.length ? ['/en/', '/en/search/'] : []), ...(apiFestsJa.length ? ['/ja/', '/ja/search/'] : []), ...(apiFestsEs.length ? ['/es/', '/es/search/'] : []), ...(apiFestsZh.length ? ['/zh/', '/zh/search/'] : []), ...(apiFestsTw.length ? ['/tw/', '/tw/search/'] : []), ...TW_EXTRA_URLS, ...MOUNTAIN_URLS, ...CAFE_URLS, ...HOT_URLS, ...COURSE_URLS, ...WINTER_URLS, ...JANGTEO_SIDO_URLS, ...SIDO_HUB_URLS, ...TRIP_URLS, ...FESTIVAL_URLS, ...MAP_URLS, ...INTL_URLS];
 // noindex 페이지는 사이트맵에서 뺀다 — "색인해라(사이트맵) + 하지마라(noindex)"는 모순 신호다.
 // 2026-08-18: en/ja/zh는 layout()에서 전량 forceNoindex 처리했다 — 사이트맵에서도 같이 뺀다.
 const LANG_NOINDEX_URLS = urls.filter(u => /^\/(en|ja|zh)\//.test(u));
