@@ -82,6 +82,10 @@ module.exports = function (R, RED, ORANGE, red, orange) {
   R.push('\n## 7. 색인 대상 본문 두께 · 판박이 정도');
   R.push('| 섹션 | 개수 | 최소 | 중앙 | 최대 | 2,000자 미만 | 평균 유사도 |');
   R.push('|---|---|---|---|---|---|---|');
+  // ⚠️ 얇은 게 «정상»인 페이지가 있다 — 개인정보처리방침·문의처는 길게 늘리면 오히려 나쁜 글이 된다.
+  //    이걸 매주 🟠로 올리면 진짜 얇은 페이지가 소음에 묻힌다. 그래서 의도적 예외로 빼되,
+  //    **표에는 그대로 세고** 목록에만 「(의도적)」으로 표시한다 — 조용히 숨기면 그것도 거짓말이다.
+  const THIN_OK = new Set(['/privacy/', '/contact/', '/editorial/']);
   const thin = [];
   Object.keys(bySec).sort().forEach(s => {
     const a = bySec[s], v = a.map(p => p.len).sort((x, y) => x - y);
@@ -97,9 +101,13 @@ module.exports = function (R, RED, ORANGE, red, orange) {
     }
     R.push('| ' + s + ' | ' + a.length + ' | ' + v[0] + ' | ' + v[v.length >> 1] + ' | ' + v[v.length - 1] + ' | ' + (t.length ? '**' + t.length + '**' : '0') + ' | ' + sim + ' |');
   });
+  const thinReal = thin.filter(p => !THIN_OK.has(p.u));
   if (thin.length) {
-    R.push('\n' + orange('본문 2,000자 미만 색인 페이지 ' + thin.length + '개'));
-    thin.sort((a, b) => a.len - b.len).slice(0, 20).forEach(p => R.push('- ' + p.len + '자  ' + p.u));
+    if (thinReal.length) R.push('\n' + orange('본문 2,000자 미만 색인 페이지 ' + thinReal.length + '개'
+      + (thin.length > thinReal.length ? ' (의도적 예외 ' + (thin.length - thinReal.length) + '개 제외)' : '')));
+    else R.push('\n✅ 얇은 페이지 없음 (의도적 예외 ' + thin.length + '개 제외)');
+    thin.sort((a, b) => a.len - b.len).slice(0, 20).forEach(p =>
+      R.push('- ' + p.len + '자  ' + p.u + (THIN_OK.has(p.u) ? '  ← 의도적(법적·안내 페이지는 늘리지 않는다)' : '')));
   }
 
   // ── 「N곳」이라 말하면서 목록이 빈약한 허브
