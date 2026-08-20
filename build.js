@@ -2215,7 +2215,7 @@ ${posts.map(p => `<a href="/blog/${p.slug}/">${esc(p.title)}<span>${p.date} · $
 <h2 class="sec">월별 축제 일정 보기</h2>
 ${monthNavHtml}
 </div></main>`;
-writePage('blog', layout(`축제·장터 가이드 | ${SITE_NAME}`, `축제 준비물, 오일장 이용 팁 등 축제·장터를 200% 즐기는 가이드 모음.`, '/blog/', blogIndex));
+writePage('blog', layout(`축제·장터 가이드 | ${SITE_NAME}`, `축제 준비물, 오일장 이용 팁, 여름 물축제·가을 단풍 축제 코스까지 — 축제모아 에디터가 직접 정리한 축제·장터 가이드 모음.`, '/blog/', blogIndex));
 
 // ---------- 편집 원칙 (/editorial/) ----------
 const editorialContent = `<main><div class="wrap"><article>
@@ -3160,7 +3160,7 @@ document.getElementById('vCount').textContent='불러오는 중…';
 fetch('/valley/data.json').then(function(r){return r.json();}).then(function(data){P=data;byId={};P.forEach(function(p){byId[p.id]=p;});fillSg();render();}).catch(function(){document.getElementById('vCount').textContent='데이터를 불러오지 못했습니다. 새로고침 해주세요.';});
 })();
 </script>`;
-  writePage('valley', layout('전국 계곡명소 — 여름 피서·물놀이 좋은 전국 계곡 총정리 | ' + SITE_NAME, '여름 피서·물놀이 가기 좋은 전국 계곡 ' + apiValleys.length + '곳을 지역별로. 공공데이터 기반 계곡 명소 정보와 지도.', '/valley/', valleyContent + '<script>window.CJM_BUYBOX=' + JSON.stringify(buyBox('valley')) + ';</script>'));
+  writePage('valley', layout('전국 계곡명소 — 여름 피서·물놀이 좋은 전국 계곡 총정리 | ' + SITE_NAME, '여름 피서·물놀이 가기 좋은 전국 계곡 ' + apiValleys.length + '곳을 지역별로 모았습니다. 공공데이터(한국관광공사) 기반 명소 정보와 지도, 지역별 검색까지 한 페이지에서 확인하세요.', '/valley/', valleyContent + '<script>window.CJM_BUYBOX=' + JSON.stringify(buyBox('valley')) + ';</script>'));
   fs.writeFileSync(path.join(ROOT, 'valley', 'data.json'), JSON.stringify(apiValleys));
 // ---------- 계절 명소(단풍·꽃·온천) — 범용 루프 ----------
 // ⚠️ 2026-08-18: 아래 허브들의 «서버가 그리는 첫 HTML»이 이름+시군뿐이었다(항목당 25~31자).
@@ -3171,17 +3171,17 @@ fetch('/valley/data.json').then(function(r){return r.json();}).then(function(dat
 //       같은 함정을 하루에 두 번 밟았다. 메모는 반드시 템플릿 바깥의 // 주석으로.
 const SPOT_THEMES = [
   { data: apiMaple, slug: 'maple', title: '전국 단풍 명소 — 가을 산·단풍 여행 명소 총정리 | ' + SITE_NAME,
-    metaDesc: '가을 단풍 구경 좋은 전국 산·단풍 명소를 지역별로. 공공데이터 기반 단풍 명소 정보와 지도.',
+    metaDesc: '가을 단풍 구경 좋은 전국 산·단풍 명소를 지역별로 모았습니다. 공공데이터(한국관광공사) 기반 명소 정보와 지도, 지역별 검색까지 한 페이지에서 확인하세요.',
     h1: '🍁 전국 단풍 명소', catLabel: '🍁 단풍', accent: '#c2410c', bd: '#f0c9a6', bg: '#fdf5ee', ph: '산·명소명·주소 검색',
     sub: '공공데이터(한국관광공사) 기반 전국 산·단풍 명소 __N__곳 — 가을 단풍 구경 좋은 곳을 지역별로 찾아보세요. 카드를 누르면 상세정보와 지도·검색 링크가 열립니다.',
     note: '데이터 출처: 한국관광공사(공공데이터포털). 단풍 절정 시기는 해마다·고도에 따라 다르니 방문 전 단풍 예상 시기를 확인하세요.' },
   { data: apiFlower, slug: 'flower', title: '전국 봄꽃·정원 명소 — 벚꽃·수목원·꽃구경 명소 총정리 | ' + SITE_NAME,
-    metaDesc: '봄 꽃구경·정원 나들이 좋은 전국 수목원·꽃 명소를 지역별로. 공공데이터 기반 정보와 지도.',
+    metaDesc: '봄 꽃구경·정원 나들이 좋은 전국 수목원·꽃 명소를 지역별로 모았습니다. 공공데이터(한국관광공사) 기반 명소 정보와 지도, 지역별 검색까지 한 페이지에서 확인하세요.',
     h1: '🌸 전국 봄꽃·정원 명소', catLabel: '🌸 봄꽃·정원', accent: '#db2777', bd: '#f4c6dc', bg: '#fdf2f8', ph: '수목원·명소명·주소 검색',
     sub: '공공데이터(한국관광공사) 기반 전국 수목원·정원 __N__곳 — 봄 꽃구경·나들이 좋은 곳을 지역별로 찾아보세요. 카드를 누르면 상세정보와 지도·검색 링크가 열립니다.',
     note: '데이터 출처: 한국관광공사(공공데이터포털). 꽃 개화 시기는 해마다 날씨에 따라 크게 달라지니 방문 전 개화 상황을 확인하세요.' },
   { data: apiOnsen, slug: 'onsen', title: '전국 온천·스파 명소 — 겨울 온천 여행지 총정리 | ' + SITE_NAME,
-    metaDesc: '겨울 온천 여행·찜질하기 좋은 전국 온천·스파를 지역별로. 공공데이터 기반 온천 명소 정보와 지도.',
+    metaDesc: '겨울 온천 여행·찜질하기 좋은 전국 온천·스파를 지역별로 모았습니다. 공공데이터(한국관광공사) 기반 명소 정보와 지도, 지역별 검색까지 한 페이지에서 확인하세요.',
     h1: '♨️ 전국 온천·스파 명소', catLabel: '♨️ 온천·스파', accent: '#0369a1', bd: '#bcdcec', bg: '#eff8fc', ph: '온천·명소명·주소 검색',
     sub: '공공데이터(한국관광공사) 기반 전국 온천·스파 __N__곳 — 겨울에 몸 녹이기 좋은 온천을 지역별로 찾아보세요. 카드를 누르면 상세정보와 지도·검색 링크가 열립니다.',
     note: '데이터 출처: 한국관광공사(공공데이터포털). 운영시간·요금·휴관일은 계절과 시설 사정에 따라 다르니 방문 전 꼭 확인하세요.' },
@@ -3448,14 +3448,14 @@ writeLangSite('ja', apiFestsJa, JA_ORDER, {
   note: 'データ：韓国観光公社（TourAPI）。日程は変更される場合があります。公式サイトをご確認ください。カードをタップすると概要・公式サイト・Google検索が開きます。',
   official: '🏛️ 公式サイト', google: '🔎 Googleで検索',
   metaTitleSearch: '韓国お祭り検索 — 日付・地域で韓国の祭りを探す | Chukjemoa',
-  metaDescSearch: `韓国全国のお祭り${apiFestsJa.length}件を日付・地域で検索。韓国観光公社の公式概要つき。`,
+  metaDescSearch: `韓国全国のお祭り${apiFestsJa.length}件を日付・地域で検索。韓国観光公社の公式データを使い、開催中・開催予定・過去の祭りまで絞り込めます。`,
   heroH1: '韓国のお祭り・伝統市場',
   heroP: '韓国全国のお祭りを日付・地域で検索 — 韓国観光公社の公式データ。',
   heroCta: 'すべてのお祭りを見る →', sec: '韓国のお祭りを中心に旅を計画',
   lead: `韓国では毎年数百のお祭りが開催されます — 夏のマッド・水祭り、秋の花火や紅葉イベント、冬の氷・光の祭りなど。Chukjemoaなら${apiFestsJa.length}件以上のお祭りを日付・地域で検索し、公式概要を読んで、各お祭りの公式サイトへ直接アクセスできます。日程と説明はすべて韓国観光公社（TourAPI）提供です。`,
   ctaBtn: '🔎 お祭り検索を開く',
   metaTitleHome: '韓国お祭りカレンダー2026 — 祭り・伝統市場ガイド | Chukjemoa',
-  metaDescHome: '韓国全国のお祭り・伝統市場を日付・地域で検索。韓国観光公社の公式データを使用。',
+  metaDescHome: '韓国全国のお祭り・伝統市場を日付・地域で検索。韓国観光公社の公式データを使用し、開催中の祭りから来月の予定まで一覧できます。',
   client: { count: '%d件のお祭り', loading: '読み込み中...', fail: 'データを読み込めませんでした。', noMatch: '該当するお祭りがありません。条件を変えてみてください。', modalFallback: '概要は準備中です。公式サイトまたはGoogleでご確認ください。', ended: '終了', ongoing: '開催中', dpre: 'あと', dpost: '日', googleSuffix: ' 韓国 祭り' }
 });
 writeLangSite('es', apiFestsEs, ES_ORDER, {
@@ -3485,14 +3485,14 @@ writeLangSite('zh', apiFestsZh, ZH_ORDER, {
   note: '数据：韩国观光公社（TourAPI）。日程可能变动，出行前请确认官方网站。点击卡片可查看简介、官方网站和谷歌搜索。',
   official: '🏛️ 官方网站', google: '🔎 谷歌搜索',
   metaTitleSearch: '韩国庆典搜索 — 按日期和地区查找韩国庆典 | Chukjemoa',
-  metaDescSearch: `按日期和地区搜索韩国全国庆典活动，共${apiFestsZh.length}个，附韩国观光公社官方简介。`,
+  metaDescSearch: `按日期和地区搜索韩国全国庆典活动，共${apiFestsZh.length}个，附韩国观光公社官方简介，可按进行中、即将开始或往期筛选。`,
   heroH1: '韩国庆典·传统市场',
   heroP: '按日期和地区搜索韩国全国的庆典活动 — 韩国观光公社官方数据。',
   heroCta: '浏览所有庆典 →', sec: '围绕韩国庆典规划你的旅程',
   lead: `韩国每年举办数百场庆典 — 夏季的泥浆节和水上庆典，秋季的烟花和红叶活动，冬季的冰雪和灯光节。通过Chukjemoa，你可以按日期和地区搜索${apiFestsZh.length}多个庆典，阅读官方简介，并直接访问每个庆典的官方网站。所有日程和介绍均来自韩国观光公社（TourAPI）。`,
   ctaBtn: '🔎 打开庆典搜索',
   metaTitleHome: '韩国庆典日历2026 — 庆典·传统市场指南 | Chukjemoa',
-  metaDescHome: '按日期和地区搜索韩国全国的庆典和传统市场，采用韩国观光公社官方数据。',
+  metaDescHome: '按日期和地区搜索韩国全国的庆典和传统市场，采用韩国观光公社官方数据，涵盖正在进行与即将开始的庆典。',
   client: { count: '%d个庆典', loading: '加载中...', fail: '数据加载失败。', noMatch: '没有符合条件的庆典，请尝试其他筛选。', modalFallback: '简介即将上线，请查看官方网站或谷歌。', ended: '已结束', ongoing: '进行中', dpre: '还有', dpost: '天', googleSuffix: ' 韩国 庆典' }
 });
 
@@ -3509,14 +3509,14 @@ writeLangSite('tw', apiFestsTw, TW_ORDER, {
   note: '資料來源：韓國觀光公社（TourAPI）。日程可能變動，出發前請確認官方網站。點選卡片可查看簡介、官方網站與 Google 搜尋。',
   official: '🏛️ 官方網站', google: '🔎 Google 搜尋',
   metaTitleSearch: '韓國慶典搜尋 — 依日期與地區查詢韓國慶典 | Chukjemoa',
-  metaDescSearch: `依日期與地區搜尋全韓國${apiFestsTw.length}場慶典，附韓國觀光公社官方簡介。`,
+  metaDescSearch: `依日期與地區搜尋全韓國${apiFestsTw.length}場慶典，附韓國觀光公社官方簡介，可依進行中、即將開始或已結束篩選。`,
   heroH1: '韓國慶典・傳統市場',
   heroP: '依日期與地區搜尋全韓國的慶典 — 韓國觀光公社官方資料。',
   heroCta: '瀏覽所有慶典 →', sec: '把行程排在慶典上',
   lead: `第二次、第三次來韓國的話，明洞和弘大大概已經走過了。韓國每年舉辦數百場慶典 — 夏天的泥漿節與水戰、秋天的煙火與楓葉、冬天的冰雪與燈節，而且大多在首爾以外的地方。Chukjemoa 可以依日期與地區搜尋${apiFestsTw.length}場以上的慶典，閱讀官方簡介，並直接前往各慶典的官方網站。所有日程與介紹皆來自韓國觀光公社（TourAPI）。想更貼近在地生活，可以看看<a href="/tw/jangteo/">全韓國的五日市集</a>。`,
   ctaBtn: '🔎 開啟慶典搜尋',
   metaTitleHome: '韓國慶典行事曆 2026 — 慶典・五日市集指南 | Chukjemoa',
-  metaDescHome: '依日期與地區搜尋全韓國的慶典與傳統市場。韓國觀光公社官方資料，另有五日市集（五日場）開市日查詢。',
+  metaDescHome: '依日期與地區搜尋全韓國的慶典與傳統市場。韓國觀光公社官方資料，另有五日市集（五日場）開市日查詢，涵蓋進行中與即將開始的慶典。',
   client: { count: '%d 場慶典', loading: '載入中...', fail: '資料載入失敗。', noMatch: '沒有符合條件的慶典，請調整篩選。', modalFallback: '簡介準備中，請參考官方網站或 Google。', ended: '已結束', ongoing: '進行中', dpre: '還有', dpost: '天', googleSuffix: ' 韓國 慶典' }
 });
 
@@ -3830,8 +3830,8 @@ ${faq.map(([q, a]) => `<p style="line-height:1.8"><b>${esc(q)}</b><br>${esc(a)}<
       const ld = `<script type="application/ld+json">${JSON.stringify({ '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faq.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })) })}</script>`;
       const title = `${sido} ${H.name} ${all.length.toLocaleString()}곳 — 지역별 총정리 | ${SITE_NAME}`;
       const desc = H.base === 'accessible'
-        ? `${sido} 무장애 여행지 ${all.length.toLocaleString()}곳. ${keyed ? `편의시설 확인 ${keyed.toLocaleString()}곳. ` : ''}${topCat.slice(0, 3).map(([c, n]) => `${c} ${n}곳`).join(' · ')}. 공공데이터 기반 목록과 설명.`
-        : `${sido} 반려견 동반 여행지 ${all.length.toLocaleString()}곳. 동반 조건·주의사항 ${keyed.toLocaleString()}곳 수록. ${topCat.slice(0, 3).map(([c, n]) => `${c} ${n}곳`).join(' · ')}.`;
+        ? `${sido} 무장애 여행지 ${all.length.toLocaleString()}곳. ${keyed ? `편의시설 확인 ${keyed.toLocaleString()}곳. ` : ''}${topCat.slice(0, 3).map(([c, n]) => `${c} ${n}곳`).join(' · ')}. 공공데이터(한국관광공사) 기반 목록이며, 방문 전 시설별 세부 정보를 다시 확인하세요.`
+        : `${sido} 반려견 동반 여행지 ${all.length.toLocaleString()}곳. 동반 조건·주의사항 ${keyed.toLocaleString()}곳 수록. ${topCat.slice(0, 3).map(([c, n]) => `${c} ${n}곳`).join(' · ')}. 공공데이터(한국관광공사) 기반 목록이며, 방문 전 동반 조건을 다시 확인하세요.`;
       writePage(H.base + '/' + SLUG[sido], layout(title, desc, `/${H.base}/${SLUG[sido]}/`, content, { jsonld: ld }));
       SIDO_HUB_URLS.push(`/${H.base}/${SLUG[sido]}/`);
       made.push(SLUG[sido]);
@@ -4543,7 +4543,7 @@ const TREND_L = {
     },
     unit: '', times: '×', legend: `条形长度＝访问规模 · 右侧数字＝旺季标签为<b>倍数</b>，其余为<b>30天访客人次合计</b>。<a href="#howto">数字怎么看 ↓</a>`, src: '数据来源：韩国观光公社《韩国观光数据实验室》地区访客数（公共数据门户）。基于通信与卡片数据的推算值，每周更新。',
     title: m => `韩国人气目的地排行 — ${m}月旺季榜 | 庆典集`,
-    metad: '基于韩国观光公社旅游大数据的人气目的地排行：本月旺季热点、韩国人常去与外国人常去的市·郡·区，并可直接查看当地庆典。'
+    metad: '基于韩国观光公社旅游大数据的人气目的地排行：本月旺季热点、韩国人常去与外国人常去的市·郡·区，并可直接查看当地庆典与开市日期。'
   },
   // 번체 — "외국인이 적은 곳 = 로컬" 각도를 전면에 세운다. 재방문객이 원하는 게 그거다.
   tw: {
@@ -5189,7 +5189,7 @@ const MOUNTAIN_URLS = [];
       hundred: '※ 山林庁が2002年「国際山岳年」を記念して選定した「100大名山」の公式リストは<a href="https://www.forest.go.kr/kfsweb/kfi/kfs/foreston/main/contents/FmmntSrch/selectFmmntSrchList.do?mn=AR02_02_05_01" target="_blank" rel="noopener nofollow">山林庁ホームページ</a>で確認できます。' },
     zh: { h1: '⛰️ 韩国名山', sub: n => `韩国全国 ${n} 座山 — 还能看到哪些地区在红叶季拥挤、哪些地区清静。`,
       title: n => `韩国名山 ${n}座 — 红叶季拥挤的山与清静的山 | Chukjemoa`,
-      desc: n => `按地区浏览韩国全国 ${n} 座山。韩国观光公社公共数据，另加旅游大数据的「10月旺季倍数」与外国人访问指标。`,
+      desc: n => `按地区浏览韩国全国 ${n} 座山。韩国观光公社公共数据，另加旅游大数据的「10月旺季倍数」与外国人访问指标，方便按季节挑选登山地点。`,
       all: '所有地区', kw: '按名称或地址搜索', reset: '重置', cnt: n => `共 ${n} 座`,
       none: '没有符合条件的山，请更换地区。',
       oct: v => `🍁 10月该地区是平时的 ×${v} 倍`, quiet: '🤫 外国游客较少的地区',
@@ -5381,7 +5381,7 @@ const HOT_URLS = [];
       h1: '☕ 韩国最近在去的咖啡馆',
       sub: n => `韩国全国咖啡馆·烘焙店 ${n} 家 — 还能看到现在哪些街区人多、哪些还清静。`,
       title: n => `韩国咖啡馆 ${n}家 — 按拥挤街区与清静街区挑选 | Chukjemoa`,
-      desc: n => `按地区浏览韩国全国 ${n} 家咖啡馆与烘焙店。韩国观光公社公共数据，另加旅游大数据的「本月旺季倍数」与外国人访问指标。`,
+      desc: n => `按地区浏览韩国全国 ${n} 家咖啡馆与烘焙店。韩国观光公社公共数据，另加旅游大数据的「本月旺季倍数」与外国人访问指标，方便按地区挑选。`,
       all: '所有地区', kw: '按名称或地址搜索', reset: '重置', cnt: n => `共 ${n} 家`,
       none: '没有符合条件的咖啡馆，请更换地区。',
       hot: v => `🔥 本月该街区是平时的 ×${v} 倍`, quiet: '🤫 外国游客较少的地区',
