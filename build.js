@@ -46,6 +46,8 @@ let apiFlower = [];
 try { apiFlower = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/flower.json'), 'utf8')); } catch (e) {}
 let apiOnsen = [];
 try { apiOnsen = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/onsen.json'), 'utf8')); } catch (e) {}
+let apiStays = [];
+try { apiStays = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/stays_ko.json'), 'utf8')); } catch (e) {}
 let apiFestsJa = [];
 try { apiFestsJa = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/festivals_ja.json'), 'utf8')); }
 catch (e) { console.log('⚠ festivals_ja.json 없음 — 일문 데이터 비어있음 (node fetch-festivals-ja.js 먼저 실행)'); }
@@ -1384,6 +1386,7 @@ const KO_NAV = `<button class="navtoggle" id="navtoggle" aria-label="메뉴 열�
 <a href="/maple/">🍁 단풍명소</a>
 <a href="/flower/">🌸 봄꽃명소</a>
 <a href="/onsen/">♨️ 온천</a>
+<a href="/healing/">🌿 웰니스 여행지</a>
 <a href="/trails/">🥾 걷기 여행</a>
 <a href="/mountains/">⛰️ 전국 명산</a>
 <a href="/cafe/">☕ 요즘 가는 카페</a>
@@ -5319,6 +5322,7 @@ ${lang === 'ko' ? buyBox('mountain') : ''}
 // /hot/ 은 감사에서 지적된 '상황별 랜딩'(사람이 실제로 검색하는 문장)의 첫 페이지다.
 const CAFE_URLS = [];
 const HOT_URLS = [];
+const HEALING_URLS = [];
 {
   const CF = {};
   ['ko', 'en', 'ja', 'zh', 'tw'].forEach(l => {
@@ -5657,6 +5661,82 @@ ${buyBox('festival')}
       '/hot/', hotContent, { jsonld: hotLd, ogImage: '/img/hero.webp' }));
     HOT_URLS.push('/hot/');
   }
+
+  
+  if ((MONTH_LIST || []).length && (apiOnsen.length || apiValleys.length)) {
+    const STAY_KINDS_REST = new Set(['한옥', '펜션', '휴양펜션', '콘도미니엄', '관광호텔']);
+    const healCands = (MONTH_LIST || []).map(d => {
+      const code = String(d.code);
+      const ons = apiOnsen.filter(v => v.sido === d.sido && v.sigungu === d.name);
+      const vly = apiValleys.filter(v => v.sido === d.sido && v.sigungu === d.name);
+      const stays = apiStays.filter(s => (String(s.regnCd || '') + String(s.signguCd || '')) === code && STAY_KINDS_REST.has(s.kind));
+      return Object.assign({}, d, { ons: ons, vly: vly, stays: stays });
+    }).filter(d => d.ons.length || d.vly.length);
+    const healTop = healCands.slice().sort((a, b) => a.idx - b.idx).slice(0, 20);
+  
+    const healBlocks = healTop.map((d, i) => {
+      const onsHtml = d.ons.length
+        ? `<div class="hrow"><span class="hlab">♨️ 온천</span><span class="hval">${d.ons.slice(0, 2).map(o => esc(o.title)).join(' · ')}${d.ons.length > 2 ? ` 외 ${d.ons.length - 2}곳` : ''}</span></div>`
+        : '';
+      const vlyHtml = d.vly.length
+        ? `<div class="hrow"><span class="hlab">💧 계곡</span><span class="hval">${d.vly.slice(0, 2).map(v => esc(v.title)).join(' · ')}${d.vly.length > 2 ? ` 외 ${d.vly.length - 2}곳` : ''}</span></div>`
+        : '';
+      const stayHtml = d.stays.length
+        ? `<div class="hrow"><span class="hlab">🏡 숙소</span><span class="hval">휴양형 숙소 ${d.stays.length}곳 (한옥·펜션·관광호텔 등)</span></div>`
+        : '';
+      const hlinks = [
+        `<a href="/search/?kw=${encodeURIComponent(d.name)}">이 동네 축제 검색 →</a>`,
+        d.ons.length ? `<a href="/onsen/">온천 전체 목록 →</a>` : '',
+        d.vly.length ? `<a href="/valley/">계곡 전체 목록 →</a>` : ''
+      ].filter(Boolean).join('');
+      return `<section class="hcard">
+  <div class="hhead"><span class="hrank">${i + 1}</span>
+  <div><h3>${esc(d.sido)} ${esc(d.name)}</h3>
+  <div class="hidx">🤫 평소의 <b>×${d.idx}</b>배 — ${SEASON_Y}년 ${SEASON_M}월 방문 ${Number(d.num || 0).toLocaleString('ko-KR')}명, 사람 몰리지 않는 편</div></div></div>
+  ${onsHtml}${vlyHtml}${stayHtml}
+  <div class="hlinks">${hlinks}</div>
+  </section>`;
+    }).join('\n');
+  
+    const healingContent = `<main><div class="wrap">
+  <style>
+  .hcard{background:#fff;border-radius:18px;box-shadow:0 3px 14px rgba(31,41,55,.08);padding:18px 20px;margin:14px 0}
+  .hhead{display:flex;gap:14px;align-items:flex-start}
+  .hrank{flex:none;width:34px;height:34px;border-radius:12px;background:#16a34a;color:#fff;font-weight:900;display:flex;align-items:center;justify-content:center;font-size:1rem}
+  .hhead h3{font-size:1.15rem;font-weight:900;color:#0a6c63}
+  .hidx{font-size:.86rem;color:#0a6c63;font-weight:700;margin-top:4px}
+  .hrow{display:flex;gap:10px;margin-top:11px;font-size:.9rem;line-height:1.6}
+  .hlab{flex:none;width:70px;font-weight:800;color:#0a6c63}
+  .hval{color:#4b5563}
+  .hlinks{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+  .hlinks a{background:#f2fbfa;color:#0a6c63;font-weight:700;font-size:.85rem;padding:8px 14px;border-radius:999px;text-decoration:none}
+  .hlinks a:hover{background:#e2f5f2}
+  </style>
+  <h1 style="font-size:1.5rem;font-weight:900;margin:8px 0 4px">🌿 웰니스 여행지 총정리 — 사람 몰리지 않는 동네에서 제대로 쉬기</h1>
+  <p style="color:#6b7280;font-size:.95rem">요즘 웰니스·힐링 여행이 화제죠. 축제모아는 감성 큐레이션 대신 <b>실제 방문 데이터</b>로 접근합니다. 성수기 배수가 낮아 평소보다 사람이 몰리지 않는 동네를 골라, 그 동네의 온천·계곡·휴양형 숙소(한옥·펜션·관광호텔 등)를 한 번에 모았어요.</p>
+  <div class="datebadge">📅 <b>${SEASON_Y}년 ${SEASON_M}월</b> 실적 기준 · 방문 데이터는 약 한 달 늦게 공개돼 <b>작년 같은 달</b>로 계절을 맞춥니다 · <a href="/trend/#howto">숫자 읽는 법 →</a></div>
+  ${healBlocks}
+  <h2 class="sec">이 순위는 어떻게 만들었나</h2>
+  <p><b>성수기 배수 = ${SEASON_Y}년 ${SEASON_M}월 하루 평균 방문자 ÷ 그 해 평소 하루 평균 방문자.</b> 숫자가 낮을수록 이 달에 유독 붐비지 않는다는 뜻입니다. 그중 온천이나 계곡이 있는 동네만 골라 배수가 낮은 순으로 ${healTop.length}곳을 뽑았어요. 절대적으로 한산한 동네를 뜻하진 않으며, '이 동네의 평소 대비'라는 뜻입니다.</p>
+  <p>숙소 목록은 한국관광공사 공공데이터 기준으로 한옥·펜션·휴양펜션·콘도미니엄·관광호텔만 골랐습니다. 가격이나 빈방 정보는 없어 예약은 각 숙소·예약 플랫폼에서 직접 확인해야 합니다.</p>
+  ${buyBox('onsen')}
+  <p class="note" style="margin-top:18px">데이터 출처: 한국관광공사 「한국관광 데이터랩」 지역별 방문자 수(시·군·구 단위) · 온천·계곡·숙소는 한국관광공사 TourAPI. 숙소 정보(체크인·주차 등)는 변경될 수 있으니 예약 전 확인하세요.</p>
+  </div></main>`;
+  
+    const healingLd = `<script type="application/ld+json">${JSON.stringify({
+      '@context': 'https://schema.org', '@type': 'ItemList',
+      name: '사람 몰리지 않는 웰니스 여행지',
+      numberOfItems: healTop.length,
+      itemListElement: healTop.map((d, i) => ({ '@type': 'ListItem', position: i + 1, name: `${d.sido} ${d.name}` }))
+    })}</script>`;
+  
+    writePage('healing', layout(
+      `웰니스 여행지 총정리 — 사람 붐비지 않는 동네에서 제대로 쉬기 | ${SITE_NAME}`,
+      `관광 빅데이터로 성수기 배수가 낮은 동네 ${healTop.length}곳을 뽑아 온천·계곡·휴양형 숙소와 함께 정리했습니다. 사람 많은 핫플 대신 조용한 곳에서 제대로 쉬고 싶을 때 참고하세요.`,
+      '/healing/', healingContent, { jsonld: healingLd, ogImage: '/img/hero.webp' }));
+    HEALING_URLS.push('/healing/');
+  }
+  
 }
 
 // ---------- 🧭 코스·일정 제안 /course/ ----------
@@ -5788,7 +5868,7 @@ const TRIP_URLS = require('./trip.js').build({ ROOT, layout, writePage, SITE_NAM
 }
 
 // ---------- sitemap / robots ----------
-const urls = ['/', ...MONTHS.map(m => `/${m.key}/`), '/search/', ...(holidays.length ? ['/holiday/'] : []), '/pet/', ...(apiAccessible.length ? ['/accessible/'] : []), ...(apiTrails.length ? ['/trails/'] : []), ...(apiValleys.length ? ['/valley/'] : []), ...(apiMaple.length ? ['/maple/'] : []), ...(apiFlower.length ? ['/flower/'] : []), ...(apiOnsen.length ? ['/onsen/'] : []), '/jangteo/', '/test/', '/trip-cost/', ...(visitors.kor && visitors.kor.length ? ['/trend/'] : []), ...SIDO_URLS, ...THEME_URLS, ...TRAIL_URLS, ...WALK_URLS, ...TREND_LANG_URLS, '/blog/', ...posts.map(p => `/blog/${p.slug}/`), '/about/', EDITORIAL_URL, '/contact/', '/privacy/',...(apiFestsEn.length ? ['/en/', '/en/search/'] : []), ...EN_FESTIVAL_URLS, ...EN_JANGTEO_URLS, ...EN_BLOG_URLS, ...(apiFestsJa.length ? ['/ja/', '/ja/search/'] : []), ...(apiFestsEs.length ? ['/es/', '/es/search/'] : []), ...(apiFestsZh.length ? ['/zh/', '/zh/search/'] : []), ...(apiFestsTw.length ? ['/tw/', '/tw/search/'] : []), ...TW_EXTRA_URLS, ...MOUNTAIN_URLS, ...CAFE_URLS, ...HOT_URLS, ...COURSE_URLS, ...WINTER_URLS, ...JANGTEO_SIDO_URLS, ...SIDO_HUB_URLS, ...TRIP_URLS, ...FESTIVAL_URLS, ...MAP_URLS, ...INTL_URLS, ...CHUSEOK_URLS];
+const urls = ['/', ...MONTHS.map(m => `/${m.key}/`), '/search/', ...(holidays.length ? ['/holiday/'] : []), '/pet/', ...(apiAccessible.length ? ['/accessible/'] : []), ...(apiTrails.length ? ['/trails/'] : []), ...(apiValleys.length ? ['/valley/'] : []), ...(apiMaple.length ? ['/maple/'] : []), ...(apiFlower.length ? ['/flower/'] : []), ...(apiOnsen.length ? ['/onsen/'] : []), '/jangteo/', '/test/', '/trip-cost/', ...(visitors.kor && visitors.kor.length ? ['/trend/'] : []), ...SIDO_URLS, ...THEME_URLS, ...TRAIL_URLS, ...WALK_URLS, ...TREND_LANG_URLS, '/blog/', ...posts.map(p => `/blog/${p.slug}/`), '/about/', EDITORIAL_URL, '/contact/', '/privacy/',...(apiFestsEn.length ? ['/en/', '/en/search/'] : []), ...EN_FESTIVAL_URLS, ...EN_JANGTEO_URLS, ...EN_BLOG_URLS, ...(apiFestsJa.length ? ['/ja/', '/ja/search/'] : []), ...(apiFestsEs.length ? ['/es/', '/es/search/'] : []), ...(apiFestsZh.length ? ['/zh/', '/zh/search/'] : []), ...(apiFestsTw.length ? ['/tw/', '/tw/search/'] : []), ...TW_EXTRA_URLS, ...MOUNTAIN_URLS, ...CAFE_URLS, ...HOT_URLS, ...HEALING_URLS, ...COURSE_URLS, ...WINTER_URLS, ...JANGTEO_SIDO_URLS, ...SIDO_HUB_URLS, ...TRIP_URLS, ...FESTIVAL_URLS, ...MAP_URLS, ...INTL_URLS, ...CHUSEOK_URLS];
 // noindex 페이지는 사이트맵에서 뺀다 — "색인해라(사이트맵) + 하지마라(noindex)"는 모순 신호다.
 // 🔁 2026-08-19: en/ja/zh 사이트맵 제외를 되돌린다(위 layout()의 forceNoindex 주석 참고).
 //    구글 클릭 0을 보고 뺐지만 GA4로는 구글 아닌 검색엔진에서 16세션/28일이 들어오고 있었다.
