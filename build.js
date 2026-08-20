@@ -5930,6 +5930,17 @@ Sitemap: ${SITE}/sitemap-index.xml
 Sitemap: ${SITE}/sitemap.xml
 `);
 fs.writeFileSync(path.join(ROOT, 'ads.txt'), `google.com, pub-3293445488923111, DIRECT, f08c47fec0942fa0\n`);
+
+// ---------- IndexNow (2026-08-20, 빙 웹마스터 추천으로 신설) ----------
+// 빙·야후·네이버(2023~ 참여)·얀덱스 등이 공유하는 IndexNow 프로토콜. 키 파일을 루트에 올려 두면
+// 빙 웹마스터가 소유권 확인 없이도 그대로 검증한다. 실제 URL 제출은 submit-indexnow.js 가 담당
+// (build.js 는 네트워크 호출을 하지 않는다 — 예약 빌드 안에서 걸리면 안 되므로 분리).
+try {
+  const INDEXNOW_KEY = fs.readFileSync(path.join(ROOT, 'indexnow.key'), 'utf8').trim();
+  fs.writeFileSync(path.join(ROOT, `${INDEXNOW_KEY}.txt`), INDEXNOW_KEY);
+  console.log('✓ IndexNow 키 파일 —', `${INDEXNOW_KEY}.txt`);
+} catch (e) { console.log('⚠️ IndexNow 키 파일 생략(indexnow.key 없음)'); }
+
 console.log('✓ sitemap.xml, robots.txt, ads.txt');
 require('./geo.js').audit(ROOT);
 console.log('빌드 완료:', urls.length, '페이지');
