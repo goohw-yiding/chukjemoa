@@ -1072,6 +1072,44 @@ nav a:hover{color:#0f9d8f}
 .hero-live #hero-live-txt{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:opacity .45s}
 .hero-live b{font-weight:900;color:#ffd9a8}
 .hero-live .dot{flex:none;width:8px;height:8px;border-radius:50%;background:#4ade80;box-shadow:0 0 0 0 rgba(74,222,128,.7);animation:hpulse 2.2s infinite}
+/* 홈 전용 히어로 — .hero* 는 다른 언어판 홈에서도 쓰므로 절대 건드리지 않고, 새 이름공간으로만 만든다 */
+.home-hero{position:relative;padding:56px 20px 44px;background:radial-gradient(circle at 10% 12%,rgba(15,157,143,.09),transparent 46%),radial-gradient(circle at 92% 88%,rgba(255,107,74,.08),transparent 48%),#f4faf8}
+.home-hero-inner{max-width:1180px;margin:0 auto}
+.home-live{display:inline-flex;align-items:center;gap:7px;font-size:.82rem;font-weight:700;color:#0a6c63;background:#eafbef;padding:6px 14px;border-radius:999px;margin-bottom:18px}
+.home-live #hero-live-txt{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:70vw;transition:opacity .45s}
+.home-live b{font-weight:900;color:#0c7d72}
+.home-live .dot{flex:none;width:7px;height:7px;border-radius:50%;background:#4ade80;box-shadow:0 0 0 0 rgba(74,222,128,.7);animation:hpulse 2.2s infinite}
+.home-grid{display:grid;grid-template-columns:1.05fr 1fr;gap:36px;align-items:center}
+.home-left h1{font-size:clamp(1.5rem,3vw,2.15rem);line-height:1.35;letter-spacing:-.02em;margin:0 0 10px;color:#1f2937}
+.home-left h1 b{color:#0a6c63}
+.home-left>p{color:#6b7280;font-size:.94rem;margin:0 0 22px}
+.home-stats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:24px}
+.home-stats .stat{background:#fff;border:1px solid #dcefeb;border-radius:13px;padding:14px 15px}
+.home-stats .stat b{display:block;font-size:1.35rem;font-weight:900;font-variant-numeric:tabular-nums;color:#0f9d8f}
+.home-stats .stat .stat-label{font-size:.76rem;color:#6b7280;margin-top:3px;font-weight:600}
+.home-cta{display:flex;gap:10px;flex-wrap:wrap}
+.home-cta1{background:#0f9d8f;color:#fff;font-weight:800;font-size:.94rem;padding:13px 24px;border-radius:11px;box-shadow:0 6px 18px rgba(15,157,143,.3);transition:transform .15s}
+.home-cta1:hover{transform:translateY(-2px)}
+.home-cta2{background:#fff;color:#0c7d72;font-weight:700;font-size:.94rem;padding:13px 22px;border-radius:11px;border:1.5px solid #a9e5dd;transition:transform .15s}
+.home-cta2:hover{transform:translateY(-2px)}
+.home-right{position:relative}
+.home-map{position:relative;background:#fff;border:1px solid #dcefeb;border-radius:16px;height:300px;overflow:hidden}
+.home-map-cap{position:absolute;top:13px;left:15px;font-size:.7rem;color:#6b7280;font-weight:700;z-index:3}
+.home-map-cap a{color:#0f9d8f;text-decoration:none;font-weight:800}
+.home-map-cap a:hover{text-decoration:underline}
+.home-map-shape{position:absolute;inset:22px 44px;background:linear-gradient(160deg,#f2fbf9,#f2fbfa);border-radius:38% 62% 55% 45%/45% 40% 60% 55%;border:1px solid #dcefeb}
+.home-map-pt{position:absolute;width:11px;height:11px;border-radius:50%;background:#0f9d8f;box-shadow:0 0 0 5px rgba(15,157,143,.16);transform:translate(-50%,-50%)}
+.home-map-pt.fes{background:#0f9d8f;box-shadow:0 0 0 5px rgba(15,157,143,.16)}
+.home-map-pt.mkt{background:#ff6b4a;box-shadow:0 0 0 5px rgba(255,107,74,.16)}
+.home-map-legend{position:absolute;bottom:12px;right:14px;display:flex;gap:11px;font-size:.68rem;color:#6b7280;font-weight:700;z-index:3}
+.home-map-legend span{display:inline-flex;align-items:center;gap:5px}
+.home-map-legend i{width:8px;height:8px;border-radius:50%;display:inline-block}
+.home-market-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.home-chip{font-size:.78rem;font-weight:600;color:#374151;background:#fff;border:1px solid #dcefeb;padding:7px 12px;border-radius:999px}
+.home-chip b{color:#0a6c63}
+.home-chip.more{color:#6b7280}
+@media(max-width:900px){.home-grid{grid-template-columns:1fr}.home-map{height:240px}}
+@media(max-width:520px){.home-hero{padding:40px 16px 32px}}
 @keyframes hpulse{0%{box-shadow:0 0 0 0 rgba(74,222,128,.6)}70%{box-shadow:0 0 0 9px rgba(74,222,128,0)}100%{box-shadow:0 0 0 0 rgba(74,222,128,0)}}
 /* 스크롤 등장 */
 .reveal{opacity:0;transform:translateY(14px);transition:opacity .55s ease,transform .55s ease}
@@ -2575,12 +2613,28 @@ const HERO_LIVE = (() => {
   lines.push(`🥾 걷기길 <b>${nWalk.toLocaleString()}</b>개 코스를 거리·소요시간까지`);
   if (!lines.length) lines.push('🎪 전국 축제와 오일장 일정을 한눈에');
 
+  // 홈 히어로 지도 — 오늘 서는 오일장(끝자리 기준) + 지금 열리는 공공데이터 축제
+  // ⚠️ daysNum 은 날짜 전체가 아니라 «끝자리»만 담는다(예: [2,7] = 2·7일장으로 인정된 경우).
+  //    그래서 literal day가 아니라 d0.getDate() % 10 으로 맞춰야 한다 — 10·20·30일은 %10 이 0이라
+  //    daysNum 의 0과 맞물린다.
+  const todayLastDigit = d0.getDate() % 10;
+  const marketsOpenToday = marketsDay.filter(m => (m.daysNum || []).includes(todayLastDigit));
+  const liveFests = FEST_LIVE.filter(f => f.s <= TODAY && f.e >= TODAY);
+  // 위경도를 미니맵 좌표(%)로 — 정밀 지도가 아니라 장식용이라 남한 대략 범위로만 투영한다
+  const projX = lo => Math.max(4, Math.min(96, ((lo - 124.5) / (130.9 - 124.5)) * 100));
+  const projY = la => Math.max(4, Math.min(96, (1 - (la - 33.0) / (38.9 - 33.0)) * 100));
+  const mapMarkets = marketsOpenToday.filter(m => +m.x && +m.y).slice(0, 6)
+    .map(m => ({ name: m.name, region: m.region, city: m.city, x: projX(+m.x), y: projY(+m.y) }));
+  const mapFests = liveFests.filter(f => +f.lo && +f.la).slice(0, 8)
+    .map(f => ({ name: f.n, region: f.r, x: projX(+f.lo), y: projY(+f.la) }));
+
   return {
     lines,
+    marketsOpenToday, mapMarkets, mapFests,
     stats: [
       ['🎪', now.length || festivals.length, now.length ? '지금 열리는 축제' : '축제'],
       ['📅', wk.length, '이번 주말'],
-      ['🧭', nSpot, '관광지'],
+      ['🏮', marketsOpenToday.length, '오늘 서는 오일장'],
       ['🥾', nWalk, '걷기길 코스']
     ]
   };
@@ -2643,15 +2697,36 @@ const HERO_JS = `<script>
 })();
 <\/script>`;
 
-const indexContent = `<div class="hero">
-<video class="hero-vid" autoplay muted loop playsinline preload="none" poster="/img/hero.webp" aria-hidden="true"><source src="/img/hero.mp4" type="video/mp4"></video>
-<div class="hero-inner">
-<div class="hero-live"><span class="dot"></span><span id="hero-live-txt">${HERO_LIVE.lines[0]}</span></div>
-<h1>이번 주말, 어디로 떠나볼까요?</h1>
+const heroMoreMarkets = Math.max(0, HERO_LIVE.marketsOpenToday.length - 3);
+const heroMarketChipsHtml = HERO_LIVE.marketsOpenToday.length
+  ? HERO_LIVE.marketsOpenToday.slice(0, 3)
+      .map(m => `<div class="home-chip">🏮 <b>${esc(m.name)}</b> · ${esc(m.region)} ${esc(m.city)}</div>`).join('')
+    + (heroMoreMarkets ? `<div class="home-chip more">+ ${heroMoreMarkets}곳 더</div>` : '')
+  : `<div class="home-chip more">오늘은 서는 오일장이 없어요</div>`;
+const heroMapPtsHtml = HERO_LIVE.mapFests.map(f => `<div class="home-map-pt fes" style="top:${f.y}%;left:${f.x}%" title="${esc(f.name)}"></div>`).join('')
+  + HERO_LIVE.mapMarkets.map(m => `<div class="home-map-pt mkt" style="top:${m.y}%;left:${m.x}%" title="${esc(m.name)}"></div>`).join('');
+
+const indexContent = `<div class="home-hero">
+<div class="home-hero-inner">
+<div class="home-live"><span class="dot"></span><span id="hero-live-txt">${HERO_LIVE.lines[0]}</span></div>
+<div class="home-grid">
+<div class="home-left">
+<h1>오늘, 전국에서 <b>${(HERO_LIVE.stats[0][1]).toLocaleString()}개</b> 축제가<br>열리고 있어요</h1>
 <p>전국 축제와 오일장 일정을 한눈에 — 가족 나들이 계획이 3분이면 끝나요.</p>
 <div class="hsrch hsrch-hero" id="hsrch-hero"><input type="search" placeholder="축제·지역·계곡 검색" autocomplete="off" aria-label="사이트 검색"><div class="hres"></div></div>
-<div class="hero-cta"><a class="cta1" href="#weekend-title">이번 주말 축제 보기</a><a class="cta2" href="/course/">🧭 내 조건으로 코스 짜기</a></div>
-<div class="hero-stats">${HERO_LIVE.stats.map(([e, n, l]) => `<span>${e} <b class="cnt" data-to="${n}">0</b> ${l}</span>`).join('')}</div>
+<div class="home-stats hero-stats">${HERO_LIVE.stats.map(([e, n, l]) => `<div class="stat"><b class="cnt" data-to="${n}">0</b><div class="stat-label">${e} ${l}</div></div>`).join('')}</div>
+<div class="home-cta"><a class="home-cta1" href="#weekend-title">이번 주말 축제 보기</a><a class="home-cta2" href="/course/">🧭 내 조건으로 코스 짜기</a></div>
+</div>
+<div class="home-right">
+<div class="home-map">
+<div class="home-map-cap">오늘 열리는 곳 · <a href="/map/">지도로 보기</a></div>
+<div class="home-map-shape"></div>
+${heroMapPtsHtml}
+<div class="home-map-legend"><span><i style="background:#0f9d8f"></i>축제</span><span><i style="background:#ff6b4a"></i>오일장</span></div>
+</div>
+<div class="home-market-row">${heroMarketChipsHtml}</div>
+</div>
+</div>
 </div>
 <script id="hero-live-data" type="application/json">${JSON.stringify(HERO_LIVE.lines)}</script>
 </div>
@@ -5662,80 +5737,80 @@ ${buyBox('festival')}
     HOT_URLS.push('/hot/');
   }
 
-  
-  if ((MONTH_LIST || []).length && (apiOnsen.length || apiValleys.length)) {
-    const STAY_KINDS_REST = new Set(['한옥', '펜션', '휴양펜션', '콘도미니엄', '관광호텔']);
-    const healCands = (MONTH_LIST || []).map(d => {
-      const code = String(d.code);
-      const ons = apiOnsen.filter(v => v.sido === d.sido && v.sigungu === d.name);
-      const vly = apiValleys.filter(v => v.sido === d.sido && v.sigungu === d.name);
-      const stays = apiStays.filter(s => (String(s.regnCd || '') + String(s.signguCd || '')) === code && STAY_KINDS_REST.has(s.kind));
-      return Object.assign({}, d, { ons: ons, vly: vly, stays: stays });
-    }).filter(d => d.ons.length || d.vly.length);
-    const healTop = healCands.slice().sort((a, b) => a.idx - b.idx).slice(0, 20);
-  
-    const healBlocks = healTop.map((d, i) => {
-      const onsHtml = d.ons.length
-        ? `<div class="hrow"><span class="hlab">♨️ 온천</span><span class="hval">${d.ons.slice(0, 2).map(o => esc(o.title)).join(' · ')}${d.ons.length > 2 ? ` 외 ${d.ons.length - 2}곳` : ''}</span></div>`
-        : '';
-      const vlyHtml = d.vly.length
-        ? `<div class="hrow"><span class="hlab">💧 계곡</span><span class="hval">${d.vly.slice(0, 2).map(v => esc(v.title)).join(' · ')}${d.vly.length > 2 ? ` 외 ${d.vly.length - 2}곳` : ''}</span></div>`
-        : '';
-      const stayHtml = d.stays.length
-        ? `<div class="hrow"><span class="hlab">🏡 숙소</span><span class="hval">휴양형 숙소 ${d.stays.length}곳 (한옥·펜션·관광호텔 등)</span></div>`
-        : '';
-      const hlinks = [
-        `<a href="/search/?kw=${encodeURIComponent(d.name)}">이 동네 축제 검색 →</a>`,
-        d.ons.length ? `<a href="/onsen/">온천 전체 목록 →</a>` : '',
-        d.vly.length ? `<a href="/valley/">계곡 전체 목록 →</a>` : ''
-      ].filter(Boolean).join('');
-      return `<section class="hcard">
-  <div class="hhead"><span class="hrank">${i + 1}</span>
-  <div><h3>${esc(d.sido)} ${esc(d.name)}</h3>
-  <div class="hidx">🤫 평소의 <b>×${d.idx}</b>배 — ${SEASON_Y}년 ${SEASON_M}월 방문 ${Number(d.num || 0).toLocaleString('ko-KR')}명, 사람 몰리지 않는 편</div></div></div>
-  ${onsHtml}${vlyHtml}${stayHtml}
-  <div class="hlinks">${hlinks}</div>
-  </section>`;
-    }).join('\n');
-  
-    const healingContent = `<main><div class="wrap">
-  <style>
-  .hcard{background:#fff;border-radius:18px;box-shadow:0 3px 14px rgba(31,41,55,.08);padding:18px 20px;margin:14px 0}
-  .hhead{display:flex;gap:14px;align-items:flex-start}
-  .hrank{flex:none;width:34px;height:34px;border-radius:12px;background:#16a34a;color:#fff;font-weight:900;display:flex;align-items:center;justify-content:center;font-size:1rem}
-  .hhead h3{font-size:1.15rem;font-weight:900;color:#0a6c63}
-  .hidx{font-size:.86rem;color:#0a6c63;font-weight:700;margin-top:4px}
-  .hrow{display:flex;gap:10px;margin-top:11px;font-size:.9rem;line-height:1.6}
-  .hlab{flex:none;width:70px;font-weight:800;color:#0a6c63}
-  .hval{color:#4b5563}
-  .hlinks{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
-  .hlinks a{background:#f2fbfa;color:#0a6c63;font-weight:700;font-size:.85rem;padding:8px 14px;border-radius:999px;text-decoration:none}
-  .hlinks a:hover{background:#e2f5f2}
-  </style>
-  <h1 style="font-size:1.5rem;font-weight:900;margin:8px 0 4px">🌿 웰니스 여행지 총정리 — 사람 몰리지 않는 동네에서 제대로 쉬기</h1>
-  <p style="color:#6b7280;font-size:.95rem">요즘 웰니스·힐링 여행이 화제죠. 축제모아는 감성 큐레이션 대신 <b>실제 방문 데이터</b>로 접근합니다. 성수기 배수가 낮아 평소보다 사람이 몰리지 않는 동네를 골라, 그 동네의 온천·계곡·휴양형 숙소(한옥·펜션·관광호텔 등)를 한 번에 모았어요.</p>
-  <div class="datebadge">📅 <b>${SEASON_Y}년 ${SEASON_M}월</b> 실적 기준 · 방문 데이터는 약 한 달 늦게 공개돼 <b>작년 같은 달</b>로 계절을 맞춥니다 · <a href="/trend/#howto">숫자 읽는 법 →</a></div>
-  ${healBlocks}
-  <h2 class="sec">이 순위는 어떻게 만들었나</h2>
-  <p><b>성수기 배수 = ${SEASON_Y}년 ${SEASON_M}월 하루 평균 방문자 ÷ 그 해 평소 하루 평균 방문자.</b> 숫자가 낮을수록 이 달에 유독 붐비지 않는다는 뜻입니다. 그중 온천이나 계곡이 있는 동네만 골라 배수가 낮은 순으로 ${healTop.length}곳을 뽑았어요. 절대적으로 한산한 동네를 뜻하진 않으며, '이 동네의 평소 대비'라는 뜻입니다.</p>
-  <p>숙소 목록은 한국관광공사 공공데이터 기준으로 한옥·펜션·휴양펜션·콘도미니엄·관광호텔만 골랐습니다. 가격이나 빈방 정보는 없어 예약은 각 숙소·예약 플랫폼에서 직접 확인해야 합니다.</p>
-  ${buyBox('onsen')}
-  <p class="note" style="margin-top:18px">데이터 출처: 한국관광공사 「한국관광 데이터랩」 지역별 방문자 수(시·군·구 단위) · 온천·계곡·숙소는 한국관광공사 TourAPI. 숙소 정보(체크인·주차 등)는 변경될 수 있으니 예약 전 확인하세요.</p>
-  </div></main>`;
-  
-    const healingLd = `<script type="application/ld+json">${JSON.stringify({
-      '@context': 'https://schema.org', '@type': 'ItemList',
-      name: '사람 몰리지 않는 웰니스 여행지',
-      numberOfItems: healTop.length,
-      itemListElement: healTop.map((d, i) => ({ '@type': 'ListItem', position: i + 1, name: `${d.sido} ${d.name}` }))
-    })}</script>`;
-  
-    writePage('healing', layout(
-      `웰니스 여행지 총정리 — 사람 붐비지 않는 동네에서 제대로 쉬기 | ${SITE_NAME}`,
-      `관광 빅데이터로 성수기 배수가 낮은 동네 ${healTop.length}곳을 뽑아 온천·계곡·휴양형 숙소와 함께 정리했습니다. 사람 많은 핫플 대신 조용한 곳에서 제대로 쉬고 싶을 때 참고하세요.`,
-      '/healing/', healingContent, { jsonld: healingLd, ogImage: '/img/hero.webp' }));
-    HEALING_URLS.push('/healing/');
-  }
+  
+  if ((MONTH_LIST || []).length && (apiOnsen.length || apiValleys.length)) {
+    const STAY_KINDS_REST = new Set(['한옥', '펜션', '휴양펜션', '콘도미니엄', '관광호텔']);
+    const healCands = (MONTH_LIST || []).map(d => {
+      const code = String(d.code);
+      const ons = apiOnsen.filter(v => v.sido === d.sido && v.sigungu === d.name);
+      const vly = apiValleys.filter(v => v.sido === d.sido && v.sigungu === d.name);
+      const stays = apiStays.filter(s => (String(s.regnCd || '') + String(s.signguCd || '')) === code && STAY_KINDS_REST.has(s.kind));
+      return Object.assign({}, d, { ons: ons, vly: vly, stays: stays });
+    }).filter(d => d.ons.length || d.vly.length);
+    const healTop = healCands.slice().sort((a, b) => a.idx - b.idx).slice(0, 20);
+  
+    const healBlocks = healTop.map((d, i) => {
+      const onsHtml = d.ons.length
+        ? `<div class="hrow"><span class="hlab">♨️ 온천</span><span class="hval">${d.ons.slice(0, 2).map(o => esc(o.title)).join(' · ')}${d.ons.length > 2 ? ` 외 ${d.ons.length - 2}곳` : ''}</span></div>`
+        : '';
+      const vlyHtml = d.vly.length
+        ? `<div class="hrow"><span class="hlab">💧 계곡</span><span class="hval">${d.vly.slice(0, 2).map(v => esc(v.title)).join(' · ')}${d.vly.length > 2 ? ` 외 ${d.vly.length - 2}곳` : ''}</span></div>`
+        : '';
+      const stayHtml = d.stays.length
+        ? `<div class="hrow"><span class="hlab">🏡 숙소</span><span class="hval">휴양형 숙소 ${d.stays.length}곳 (한옥·펜션·관광호텔 등)</span></div>`
+        : '';
+      const hlinks = [
+        `<a href="/search/?kw=${encodeURIComponent(d.name)}">이 동네 축제 검색 →</a>`,
+        d.ons.length ? `<a href="/onsen/">온천 전체 목록 →</a>` : '',
+        d.vly.length ? `<a href="/valley/">계곡 전체 목록 →</a>` : ''
+      ].filter(Boolean).join('');
+      return `<section class="hcard">
+  <div class="hhead"><span class="hrank">${i + 1}</span>
+  <div><h3>${esc(d.sido)} ${esc(d.name)}</h3>
+  <div class="hidx">🤫 평소의 <b>×${d.idx}</b>배 — ${SEASON_Y}년 ${SEASON_M}월 방문 ${Number(d.num || 0).toLocaleString('ko-KR')}명, 사람 몰리지 않는 편</div></div></div>
+  ${onsHtml}${vlyHtml}${stayHtml}
+  <div class="hlinks">${hlinks}</div>
+  </section>`;
+    }).join('\n');
+  
+    const healingContent = `<main><div class="wrap">
+  <style>
+  .hcard{background:#fff;border-radius:18px;box-shadow:0 3px 14px rgba(31,41,55,.08);padding:18px 20px;margin:14px 0}
+  .hhead{display:flex;gap:14px;align-items:flex-start}
+  .hrank{flex:none;width:34px;height:34px;border-radius:12px;background:#16a34a;color:#fff;font-weight:900;display:flex;align-items:center;justify-content:center;font-size:1rem}
+  .hhead h3{font-size:1.15rem;font-weight:900;color:#0a6c63}
+  .hidx{font-size:.86rem;color:#0a6c63;font-weight:700;margin-top:4px}
+  .hrow{display:flex;gap:10px;margin-top:11px;font-size:.9rem;line-height:1.6}
+  .hlab{flex:none;width:70px;font-weight:800;color:#0a6c63}
+  .hval{color:#4b5563}
+  .hlinks{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+  .hlinks a{background:#f2fbfa;color:#0a6c63;font-weight:700;font-size:.85rem;padding:8px 14px;border-radius:999px;text-decoration:none}
+  .hlinks a:hover{background:#e2f5f2}
+  </style>
+  <h1 style="font-size:1.5rem;font-weight:900;margin:8px 0 4px">🌿 웰니스 여행지 총정리 — 사람 몰리지 않는 동네에서 제대로 쉬기</h1>
+  <p style="color:#6b7280;font-size:.95rem">요즘 웰니스·힐링 여행이 화제죠. 축제모아는 감성 큐레이션 대신 <b>실제 방문 데이터</b>로 접근합니다. 성수기 배수가 낮아 평소보다 사람이 몰리지 않는 동네를 골라, 그 동네의 온천·계곡·휴양형 숙소(한옥·펜션·관광호텔 등)를 한 번에 모았어요.</p>
+  <div class="datebadge">📅 <b>${SEASON_Y}년 ${SEASON_M}월</b> 실적 기준 · 방문 데이터는 약 한 달 늦게 공개돼 <b>작년 같은 달</b>로 계절을 맞춥니다 · <a href="/trend/#howto">숫자 읽는 법 →</a></div>
+  ${healBlocks}
+  <h2 class="sec">이 순위는 어떻게 만들었나</h2>
+  <p><b>성수기 배수 = ${SEASON_Y}년 ${SEASON_M}월 하루 평균 방문자 ÷ 그 해 평소 하루 평균 방문자.</b> 숫자가 낮을수록 이 달에 유독 붐비지 않는다는 뜻입니다. 그중 온천이나 계곡이 있는 동네만 골라 배수가 낮은 순으로 ${healTop.length}곳을 뽑았어요. 절대적으로 한산한 동네를 뜻하진 않으며, '이 동네의 평소 대비'라는 뜻입니다.</p>
+  <p>숙소 목록은 한국관광공사 공공데이터 기준으로 한옥·펜션·휴양펜션·콘도미니엄·관광호텔만 골랐습니다. 가격이나 빈방 정보는 없어 예약은 각 숙소·예약 플랫폼에서 직접 확인해야 합니다.</p>
+  ${buyBox('onsen')}
+  <p class="note" style="margin-top:18px">데이터 출처: 한국관광공사 「한국관광 데이터랩」 지역별 방문자 수(시·군·구 단위) · 온천·계곡·숙소는 한국관광공사 TourAPI. 숙소 정보(체크인·주차 등)는 변경될 수 있으니 예약 전 확인하세요.</p>
+  </div></main>`;
+  
+    const healingLd = `<script type="application/ld+json">${JSON.stringify({
+      '@context': 'https://schema.org', '@type': 'ItemList',
+      name: '사람 몰리지 않는 웰니스 여행지',
+      numberOfItems: healTop.length,
+      itemListElement: healTop.map((d, i) => ({ '@type': 'ListItem', position: i + 1, name: `${d.sido} ${d.name}` }))
+    })}</script>`;
+  
+    writePage('healing', layout(
+      `웰니스 여행지 총정리 — 사람 붐비지 않는 동네에서 제대로 쉬기 | ${SITE_NAME}`,
+      `관광 빅데이터로 성수기 배수가 낮은 동네 ${healTop.length}곳을 뽑아 온천·계곡·휴양형 숙소와 함께 정리했습니다. 사람 많은 핫플 대신 조용한 곳에서 제대로 쉬고 싶을 때 참고하세요.`,
+      '/healing/', healingContent, { jsonld: healingLd, ogImage: '/img/hero.webp' }));
+    HEALING_URLS.push('/healing/');
+  }
   
 }
 
