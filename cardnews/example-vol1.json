@@ -1,0 +1,40 @@
+{
+  "VOL": "1",
+  "DATE": "2026.08.21",
+  "HEADLINE_HTML": "사람 몰리지 않는<br>곳에서 쉬는 게<br>요즘 트렌드",
+  "KEYWORD1": "🌿 웰니스",
+  "KEYWORD2": "📊 데이터",
+  "KEYWORD3": "🤫 한적함",
+
+  "ITEM1_EYEBROW": "ITEM 1",
+  "ITEM1_TITLE_HTML": "웰니스 여행,<br>요즘 왜 뜨나",
+  "ITEM1_BODY_HTML": "요즘 SNS에서 웰니스·힐링 여행 이야기가 유독 자주 보입니다. 사람 많은 핫플레이스 대신 <b>한적한 곳에서 제대로 쉬고 오는 여행</b>이 트렌드로 떠오르는 분위기예요.",
+  "ITEM1_TAG": "🎪 이주의 축제모아 Vol.1",
+
+  "ITEM2_EYEBROW": "ITEM 2",
+  "ITEM2_TITLE_HTML": "우리는 리스트 대신<br>데이터를 골랐다",
+  "ITEM2_BODY_HTML": "한국관광공사의 지역별 방문자 데이터를 바탕으로 <b>성수기에도 유독 붐비지 않는 동네</b>를 골라, 온천·계곡·휴양형 숙소를 한 번에 모았습니다. 그 결과가 새로 만든 <b>🌿 웰니스 여행지 총정리</b> 페이지입니다.",
+  "ITEM2_TAG": "🔗 chukjemoa.co.kr/healing/",
+
+  "ITEM3_EYEBROW": "ABOUT THIS SERIES",
+  "ITEM3_TITLE_HTML": "매주 목요일,<br>데이터로 짚는<br>여행 이야기",
+  "ITEM3_BODY_HTML": "「이주의 축제모아」는 축제모아가 가진 방문 데이터로 매주 여행 이야기 하나씩을 짚어보는 코너입니다. 원문을 그대로 옮기지 않고, 우리 데이터로 다시 확인해서 전합니다.",
+  "ITEM3_TAG": "🗓️ 매주 목요일 발행",
+
+  "DATA_LABEL": "🤫 이번 주 가장 한적한 웰니스 동네",
+  "DATA_PLACE": "경기 파주시",
+  "DATA_BIGNUM": "×1.01",
+  "DATA_UNIT": "배",
+  "DATA_DESC": "성수기에도 사실상 평소와 다르지 않은 수준의 방문자 배수 — /healing/ 20곳 중 1위",
+  "DATA_FACT1_ICON": "💧",
+  "DATA_FACT1_TEXT": "마장리계곡 · 퇴골계곡",
+  "DATA_FACT2_ICON": "🏡",
+  "DATA_FACT2_TEXT": "휴양형 숙소 7곳 (한옥·펜션 등)",
+  "DATA_SRC": "데이터 출처: 한국관광공사 「한국관광 데이터랩」 · TourAPI",
+
+  "CTA_GLYPH": "🌿",
+  "CTA_HEADLINE_HTML": "축제모아에서<br>더 보기",
+  "CTA_DESC_HTML": "성수기 배수가 낮은 동네 20곳의<br>온천·계곡·휴양형 숙소를 한 번에",
+  "CTA_URL": "chukjemoa.co.kr/healing/",
+  "CTA_NEXT_HTML": "다음 회 「이주의 축제모아 Vol.2」는<br>다음 주 목요일에 찾아옵니다."
+}
