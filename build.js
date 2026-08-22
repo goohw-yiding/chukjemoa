@@ -1993,6 +1993,12 @@ const marketsDay = marketsAll.filter(m => (m.daysNum || []).length);   // 장날
 const marketsNoDay = marketsAll.filter(m => !(m.daysNum || []).length); // 장날 미확인
 console.log(`✓ 오일장 — 합계 ${marketsAll.length}곳(손 ${markets.length} + API ${marketsAll.length - markets.length}) · 장날 확인 ${marketsDay.length} · 미확인 ${marketsNoDay.length}`);
 
+// ⚠️ 2026-08-22: "오늘 서는 오일장"을 홈 히어로·/jangteo/ 페이지 두 곳에서 각자 계산하면 숫자가
+//    어긋날 수 있다 — 특히 daysNum엔 10일장이 literal 10으로 들어있어(0이 아니다) 한쪽만 %10으로
+//    정규화하면 10·20·30일에 틀린다. 여기서 한 번만 계산해 두 곳이 같은 배열을 공유한다.
+const TODAY_LAST_DIGIT = (() => { const d = new Date(+TODAY.slice(0, 4), +TODAY.slice(5, 7) - 1, +TODAY.slice(8, 10)); return d.getDate() % 10; })();
+const marketsOpenToday = marketsDay.filter(m => (m.daysNum || []).some(d => (d % 10) === TODAY_LAST_DIGIT));
+
 const marketRows = marketsDay.map(m =>
   `<tr data-days="${m.daysNum.join(',')}"><td><strong>${esc(m.name)}</strong></td><td class="nextday"></td><td>${esc(m.region)} ${esc(m.city)}</td><td>${esc(m.days)}</td><td>${esc(m.famous)}</td><td>${esc(m.desc)}</td><td class="jt-links"><a href="https://search.naver.com/search.naver?query=${encodeURIComponent(m.name + ' 맛집')}" target="_blank" rel="noopener">🍴 맛집</a><a href="https://map.naver.com/p/search/${encodeURIComponent(m.name)}" target="_blank" rel="noopener">🗺️ 지도</a></td></tr>`
 ).join('\n');
@@ -2011,8 +2017,18 @@ const jangteoContent = `<main><div class="wrap">
 tr.open-on td{background:#e5f6e8}
 .jt-links a{display:inline-block;margin-right:8px;color:#0c7d72;font-weight:700;font-size:.85rem;white-space:nowrap}
 .jt-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.jt-today-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:10px;margin:12px 0 22px}
+.jt-today-card{background:#eafbef;border:1.5px solid #b9ecc4;border-radius:14px;padding:14px 15px}
+.jt-today-card b{display:block;font-size:1rem;font-weight:800;color:#15803d;margin-bottom:3px}
+.jt-today-card span{display:block;font-size:.85rem;color:#374151}
+.jt-today-card .fam{color:#6b7280;font-size:.8rem;margin-top:2px}
+.jt-today-card .jt-links{margin-top:8px}
+.jt-today-card .jt-links a{display:inline-block;font-size:.8rem;margin-right:10px;color:#0c7d72;font-weight:700}
 </style>
 <p class="note">오일장은 날짜 끝자리 기준으로 열립니다. 예: 4·9일장 → 4, 9, 14, 19, 24, 29일. <strong>가까운 장날 순으로 자동 정렬</strong>되고, 그 날 열리는 장은 초록색으로 표시됩니다.</p>
+<h2 class="sec" id="jt-today">🏮 오늘(${TODAY.slice(5, 7).replace(/^0/, '')}월 ${TODAY.slice(8, 10).replace(/^0/, '')}일) 서는 오일장 <span style="color:#9ca3af;font-weight:600">${marketsOpenToday.length}곳</span></h2>
+${marketsOpenToday.length ? `<div class="jt-today-grid">${marketsOpenToday.map(m => `<div class="jt-today-card"><b>${esc(m.name)}</b><span>${esc(m.region)} ${esc(m.city)}</span>${m.famous ? `<span class="fam">${esc(m.famous)}</span>` : ''}<div class="jt-links"><a href="https://search.naver.com/search.naver?query=${encodeURIComponent(m.name + ' 맛집')}" target="_blank" rel="noopener">🍴 맛집</a><a href="https://map.naver.com/p/search/${encodeURIComponent(m.name)}" target="_blank" rel="noopener">🗺️ 지도</a></div></div>`).join('')}</div>`
+    : `<p class="note">오늘은 장날인 곳이 없어요. 아래에서 날짜를 넣어 다른 날을 확인해보세요.</p>`}
 <div class="datepick">
 <label>📅 가려는 날짜: <input type="date" id="visit-date"></label>
 <button id="date-reset" type="button">오늘로</button>
@@ -2038,7 +2054,8 @@ tr.open-on td{background:#e5f6e8}
 ${[[1, 6], [2, 7], [3, 8], [4, 9], [5, 10]].map(([a, b]) => {
   const list = marketsDay.filter(m => m.daysNum.includes(a) || m.daysNum.includes(b));
   if (!list.length) return '';
-  return `<h3 style="margin:16px 0 4px;font-size:1.02rem;font-weight:800">${a}·${b}일장 <span style="color:#9ca3af;font-weight:600">${list.length}곳</span></h3>
+  const isToday = [a, b].some(x => (x % 10) === TODAY_LAST_DIGIT);
+  return `<h3 style="margin:16px 0 4px;font-size:1.02rem;font-weight:800">${a}·${b}일장 <span style="color:#9ca3af;font-weight:600">${list.length}곳</span>${isToday ? ' <span class="ndbadge nd0">오늘</span>' : ''}</h3>
 <p style="color:#374151;font-size:.95rem;line-height:1.9">${list.map(m => `${esc(m.name)}<span style="color:#9ca3af">(${esc(m.region)})</span>`).join(' · ')}</p>`;
 }).join('')}
 
@@ -2642,12 +2659,10 @@ const HERO_LIVE = (() => {
   lines.push(`🥾 걷기길 <b>${nWalk.toLocaleString()}</b>개 코스를 거리·소요시간까지`);
   if (!lines.length) lines.push('🎪 전국 축제와 오일장 일정을 한눈에');
 
-  // 홈 히어로 지도 — 오늘 서는 오일장(끝자리 기준) + 지금 열리는 공공데이터 축제
-  // ⚠️ daysNum 은 날짜 전체가 아니라 «끝자리»만 담는다(예: [2,7] = 2·7일장으로 인정된 경우).
-  //    그래서 literal day가 아니라 d0.getDate() % 10 으로 맞춰야 한다 — 10·20·30일은 %10 이 0이라
-  //    daysNum 의 0과 맞물린다.
-  const todayLastDigit = d0.getDate() % 10;
-  const marketsOpenToday = marketsDay.filter(m => (m.daysNum || []).includes(todayLastDigit));
+  // 홈 히어로 지도 — 오늘 서는 오일장 + 지금 열리는 공공데이터 축제
+  // ⚠️ 2026-08-22 수정: daysNum엔 10일장이 literal 10으로 들어있어(0이 아니다) d0.getDate()%10만으로
+  //    includes() 검사하면 10·20·30일에 10일장을 못 찾는 버그가 있었다. 이제 marketsOpenToday는
+  //    위쪽(marketsDay 바로 아래)에서 한 번만 계산해 /jangteo/ 페이지와 같은 배열을 공유한다.
   const liveFests = FEST_LIVE.filter(f => f.s <= TODAY && f.e >= TODAY);
   // 위경도를 미니맵 좌표(%)로 — 정밀 지도가 아니라 장식용이라 남한 대략 범위로만 투영한다
   const projX = lo => Math.max(4, Math.min(96, ((lo - 124.5) / (130.9 - 124.5)) * 100));
@@ -2736,7 +2751,7 @@ const heroMapPtsHtml = HERO_LIVE.mapFests.map(f => `<div class="home-map-pt fes"
   + HERO_LIVE.mapMarkets.map(m => `<div class="home-map-pt mkt" style="top:${m.y}%;left:${m.x}%" title="${esc(m.name)}"></div>`).join('');
 // 통계 카드 4장을 각각 관련 섹션/페이지로 눌러 이동할 수 있게 — HERO_LIVE.stats 배열 순서와 1:1로 맞춘다
 // [🎪 지금 열리는 축제, 📅 이번 주말, 🏮 오늘 서는 오일장, 🥾 걷기길 코스]
-const STAT_LINKS = ['#nearby-grid', '#weekend-title', '/jangteo/', '/trails/'];
+const STAT_LINKS = ['#nearby-grid', '#weekend-title', '/jangteo/#jt-today', '/trails/'];
 
 const indexContent = `<div class="home-hero">
 <div class="home-hero-inner">
