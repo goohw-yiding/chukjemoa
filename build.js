@@ -1084,7 +1084,8 @@ nav a:hover{color:#0f9d8f}
 .home-left h1 b{color:#0a6c63}
 .home-left>p{color:#6b7280;font-size:.94rem;margin:0 0 22px}
 .home-stats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:24px}
-.home-stats .stat{background:#fff;border:1px solid #dcefeb;border-radius:13px;padding:14px 15px}
+.home-stats .stat{background:#fff;border:1px solid #dcefeb;border-radius:13px;padding:14px 15px;display:block;color:inherit;text-decoration:none;transition:transform .15s,border-color .15s,box-shadow .15s}
+.home-stats .stat:hover{transform:translateY(-2px);border-color:#a9e5dd;box-shadow:0 6px 16px rgba(31,41,55,.08)}
 .home-stats .stat b{display:block;font-size:1.35rem;font-weight:900;font-variant-numeric:tabular-nums;color:#0f9d8f}
 .home-stats .stat .stat-label{font-size:.76rem;color:#6b7280;margin-top:3px;font-weight:600}
 .home-cta{display:flex;gap:10px;flex-wrap:wrap}
@@ -2733,6 +2734,9 @@ const heroMarketChipsHtml = HERO_LIVE.marketsOpenToday.length
   : `<div class="home-chip more">오늘은 서는 오일장이 없어요</div>`;
 const heroMapPtsHtml = HERO_LIVE.mapFests.map(f => `<div class="home-map-pt fes" style="top:${f.y}%;left:${f.x}%" title="${esc(f.name)}"></div>`).join('')
   + HERO_LIVE.mapMarkets.map(m => `<div class="home-map-pt mkt" style="top:${m.y}%;left:${m.x}%" title="${esc(m.name)}"></div>`).join('');
+// 통계 카드 4장을 각각 관련 섹션/페이지로 눌러 이동할 수 있게 — HERO_LIVE.stats 배열 순서와 1:1로 맞춘다
+// [🎪 지금 열리는 축제, 📅 이번 주말, 🏮 오늘 서는 오일장, 🥾 걷기길 코스]
+const STAT_LINKS = ['#nearby-grid', '#weekend-title', '/jangteo/', '/trails/'];
 
 const indexContent = `<div class="home-hero">
 <div class="home-hero-inner">
@@ -2742,7 +2746,7 @@ const indexContent = `<div class="home-hero">
 <h1>오늘, 전국에서 <b>${(HERO_LIVE.stats[0][1]).toLocaleString()}개</b> 축제가<br>열리고 있어요</h1>
 <p>전국 축제와 오일장 일정을 한눈에 — 가족 나들이 계획이 3분이면 끝나요.</p>
 <div class="hsrch hsrch-hero" id="hsrch-hero"><input type="search" placeholder="축제·지역·계곡 검색" autocomplete="off" aria-label="사이트 검색"><div class="hres"></div></div>
-<div class="home-stats hero-stats">${HERO_LIVE.stats.map(([e, n, l]) => `<div class="stat"><b class="cnt" data-to="${n}">0</b><div class="stat-label">${e} ${l}</div></div>`).join('')}</div>
+<div class="home-stats hero-stats">${HERO_LIVE.stats.map(([e, n, l], i) => `<a class="stat" href="${STAT_LINKS[i] || '#'}"><b class="cnt" data-to="${n}">0</b><div class="stat-label">${e} ${l}</div></a>`).join('')}</div>
 <div class="home-cta"><a class="home-cta1" href="#weekend-title">이번 주말 축제 보기</a><a class="home-cta2" href="/course/">🧭 내 조건으로 코스 짜기</a></div>
 </div>
 <div class="home-right">
