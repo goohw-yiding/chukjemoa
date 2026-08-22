@@ -163,6 +163,22 @@ h2.sec::before{content:'';position:absolute;left:0;top:14%;width:5px;height:72%;
 .monthnav a:hover{transform:translateY(-3px);border-color:#7fd8ce;box-shadow:0 8px 20px rgba(15,157,143,.14);color:#0f9d8f}
 .monthnav .mn-emoji{display:block;font-size:1.6rem;margin-bottom:6px}
 .monthnav .cnt{display:block;font-size:.8rem;color:#9ca3af;font-weight:500;margin-top:2px}
+.monthnav-wrap{margin:16px 0}
+.monthnav-feat{display:grid;grid-template-columns:1.7fr 1fr;gap:14px;margin-bottom:12px}
+.mn-hero{position:relative;display:block;background:linear-gradient(135deg,#0f9d8f,#2dd4bf);border-radius:20px;padding:26px 24px;color:#fff;text-align:left;overflow:hidden;box-shadow:0 12px 28px rgba(15,157,143,.3);transition:transform .18s}
+.mn-hero:hover{transform:translateY(-3px)}
+.mn-hero .mn-emoji{display:block;font-size:2.4rem;margin-bottom:10px}
+.mn-hero b{display:block;font-size:1.5rem;font-weight:900;letter-spacing:-.02em;margin-bottom:4px}
+.mn-hero .cnt{display:block;font-size:.92rem;color:rgba(255,255,255,.92);font-weight:600}
+.mn-next{position:relative;display:block;background:#fff;border:1.5px solid #dcefeb;border-radius:20px;padding:20px;text-align:left;box-shadow:0 4px 14px rgba(31,41,55,.06);transition:transform .18s,border-color .18s}
+.mn-next:hover{transform:translateY(-3px);border-color:#7fd8ce}
+.mn-next .mn-emoji{display:block;font-size:1.8rem;margin-bottom:8px}
+.mn-next b{display:block;font-size:1.15rem;font-weight:800;color:#1f2937;margin-bottom:3px}
+.mn-next .cnt{display:block;font-size:.82rem;color:#6b7280;font-weight:600}
+.mn-badge{position:absolute;top:14px;right:16px;font-size:.7rem;font-weight:800;padding:4px 10px;border-radius:999px}
+.mn-hero .mn-badge{background:rgba(255,255,255,.22);color:#fff}
+.mn-next .mn-badge{background:#eafbef;color:#0a6c63}
+@media(max-width:620px){.monthnav-feat{grid-template-columns:1fr}}
 table{width:100%;border-collapse:collapse;background:#fff;border-radius:16px;overflow:hidden;font-size:.92rem;box-shadow:0 3px 14px rgba(31,41,55,.07)}
 th,td{padding:12px 10px;border-bottom:1px solid #e7f5f1;text-align:left}
 th{background:#e9f9f5;color:#0a6c63;font-weight:800}
@@ -526,7 +542,7 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 </div>
 </article>
 <h2 class="sec">월별 축제 일정 보기</h2>
-<div class="monthnav"><a href="/2026-07/"><span class="mn-emoji">💦</span>7월 축제<span class="cnt">27개</span></a><a href="/2026-08/"><span class="mn-emoji">🌊</span>8월 축제<span class="cnt">30개</span></a><a href="/2026-09/"><span class="mn-emoji">🎆</span>9월 축제<span class="cnt">18개</span></a><a href="/2026-10/"><span class="mn-emoji">🍁</span>10월 축제<span class="cnt">18개</span></a><a href="/2026-11/"><span class="mn-emoji">🌾</span>11월 축제<span class="cnt">6개</span></a><a href="/2026-12/"><span class="mn-emoji">⛄</span>12월·겨울 축제<span class="cnt">17개</span></a><a href="/2027-02/"><span class="mn-emoji">⛄</span>2월 축제<span class="cnt">10개</span></a><a href="/2027-03/"><span class="mn-emoji">🌱</span>3월 축제<span class="cnt">21개</span></a><a href="/2027-04/"><span class="mn-emoji">🌸</span>4월 축제<span class="cnt">18개</span></a><a href="/2027-05/"><span class="mn-emoji">🌷</span>5월 축제<span class="cnt">19개</span></a><a href="/2027-06/"><span class="mn-emoji">🌿</span>6월 축제<span class="cnt">17개</span></a></div>
+<div class="monthnav-wrap"><div class="monthnav-feat"><a class="mn-hero" href="/2026-08/"><span class="mn-badge">이번 달</span><span class="mn-emoji">🌊</span><b>8월 축제</b><span class="cnt">30개</span></a><a class="mn-next" href="/2026-09/"><span class="mn-badge">다음 달</span><span class="mn-emoji">🎆</span><b>9월 축제</b><span class="cnt">18개</span></a></div><div class="monthnav"><a href="/2026-10/"><span class="mn-emoji">🍁</span>10월 축제<span class="cnt">18개</span></a><a href="/2026-11/"><span class="mn-emoji">🌾</span>11월 축제<span class="cnt">6개</span></a><a href="/2026-12/"><span class="mn-emoji">⛄</span>12월·겨울 축제<span class="cnt">17개</span></a><a href="/2027-02/"><span class="mn-emoji">⛄</span>2월 축제<span class="cnt">10개</span></a><a href="/2027-03/"><span class="mn-emoji">🌱</span>3월 축제<span class="cnt">21개</span></a><a href="/2027-04/"><span class="mn-emoji">🌸</span>4월 축제<span class="cnt">18개</span></a><a href="/2027-05/"><span class="mn-emoji">🌷</span>5월 축제<span class="cnt">19개</span></a><a href="/2027-06/"><span class="mn-emoji">🌿</span>6월 축제<span class="cnt">17개</span></a><a href="/2026-07/"><span class="mn-emoji">💦</span>7월 축제<span class="cnt">27개</span></a></div></div>
 </div></main>
 <footer><div class="wrap">
 <p>축제모아 — 전국 축제·오일장 일정 모음</p>

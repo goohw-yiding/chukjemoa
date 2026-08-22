@@ -1173,6 +1173,22 @@ h2.sec::before{content:'';position:absolute;left:0;top:14%;width:5px;height:72%;
 .monthnav a:hover{transform:translateY(-3px);border-color:#7fd8ce;box-shadow:0 8px 20px rgba(15,157,143,.14);color:#0f9d8f}
 .monthnav .mn-emoji{display:block;font-size:1.6rem;margin-bottom:6px}
 .monthnav .cnt{display:block;font-size:.8rem;color:#9ca3af;font-weight:500;margin-top:2px}
+.monthnav-wrap{margin:16px 0}
+.monthnav-feat{display:grid;grid-template-columns:1.7fr 1fr;gap:14px;margin-bottom:12px}
+.mn-hero{position:relative;display:block;background:linear-gradient(135deg,#0f9d8f,#2dd4bf);border-radius:20px;padding:26px 24px;color:#fff;text-align:left;overflow:hidden;box-shadow:0 12px 28px rgba(15,157,143,.3);transition:transform .18s}
+.mn-hero:hover{transform:translateY(-3px)}
+.mn-hero .mn-emoji{display:block;font-size:2.4rem;margin-bottom:10px}
+.mn-hero b{display:block;font-size:1.5rem;font-weight:900;letter-spacing:-.02em;margin-bottom:4px}
+.mn-hero .cnt{display:block;font-size:.92rem;color:rgba(255,255,255,.92);font-weight:600}
+.mn-next{position:relative;display:block;background:#fff;border:1.5px solid #dcefeb;border-radius:20px;padding:20px;text-align:left;box-shadow:0 4px 14px rgba(31,41,55,.06);transition:transform .18s,border-color .18s}
+.mn-next:hover{transform:translateY(-3px);border-color:#7fd8ce}
+.mn-next .mn-emoji{display:block;font-size:1.8rem;margin-bottom:8px}
+.mn-next b{display:block;font-size:1.15rem;font-weight:800;color:#1f2937;margin-bottom:3px}
+.mn-next .cnt{display:block;font-size:.82rem;color:#6b7280;font-weight:600}
+.mn-badge{position:absolute;top:14px;right:16px;font-size:.7rem;font-weight:800;padding:4px 10px;border-radius:999px}
+.mn-hero .mn-badge{background:rgba(255,255,255,.22);color:#fff}
+.mn-next .mn-badge{background:#eafbef;color:#0a6c63}
+@media(max-width:620px){.monthnav-feat{grid-template-columns:1fr}}
 table{width:100%;border-collapse:collapse;background:#fff;border-radius:16px;overflow:hidden;font-size:.92rem;box-shadow:0 3px 14px rgba(31,41,55,.07)}
 th,td{padding:12px 10px;border-bottom:1px solid #e7f5f1;text-align:left}
 th{background:#e9f9f5;color:#0a6c63;font-weight:800}
@@ -1830,10 +1846,22 @@ let FEST_PAGES = [];
 try { FEST_PAGES = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/festival_pages.json'), 'utf8')); } catch (e) { }
 
 // ---------- 월별 페이지 ----------
-const monthNavHtml = `<div class="monthnav">` + MONTHS.map(mm => {
-  const cnt = festivals.filter(f => f.month.some(m => mm.months.includes(m))).length;
-  return `<a href="/${mm.key}/"><span class="mn-emoji">${mm.emoji}</span>${mm.short} 축제<span class="cnt">${cnt}개</span></a>`;
-}).join('') + `</div>`;
+// ⚠️ 2026-08-22: MONTHS 배열 선언 순서 그대로 찍다 보니 이미 지난 7월이 맨 앞에 나오는 등
+//    날짜와 무관해 보이는 정렬이었다. 오늘이 속한 달을 맨 앞으로 돌리고(rotate), 그중
+//    이번 달·다음 달 두 장만 큰 카드로 강조한다 — 나머지는 기존과 같은 작은 카드 그리드.
+const curMonthNum = +TODAY.slice(5, 7);
+let curMonthIdx = MONTHS.findIndex(mm => mm.months.includes(curMonthNum));
+if (curMonthIdx < 0) curMonthIdx = 0;
+const MONTHS_ROTATED = MONTHS.slice(curMonthIdx).concat(MONTHS.slice(0, curMonthIdx));
+const monthCnt = mm => festivals.filter(f => f.month.some(m => mm.months.includes(m))).length;
+const [mnHero, mnNext, ...mnRest] = MONTHS_ROTATED;
+const monthNavHtml = `<div class="monthnav-wrap">`
+  + `<div class="monthnav-feat">`
+  + (mnHero ? `<a class="mn-hero" href="/${mnHero.key}/"><span class="mn-badge">이번 달</span><span class="mn-emoji">${mnHero.emoji}</span><b>${mnHero.short} 축제</b><span class="cnt">${monthCnt(mnHero)}개</span></a>` : '')
+  + (mnNext ? `<a class="mn-next" href="/${mnNext.key}/"><span class="mn-badge">다음 달</span><span class="mn-emoji">${mnNext.emoji}</span><b>${mnNext.short} 축제</b><span class="cnt">${monthCnt(mnNext)}개</span></a>` : '')
+  + `</div>`
+  + `<div class="monthnav">` + mnRest.map(mm => `<a href="/${mm.key}/"><span class="mn-emoji">${mm.emoji}</span>${mm.short} 축제<span class="cnt">${monthCnt(mm)}개</span></a>`).join('') + `</div>`
+  + `</div>`;
 
 MONTHS.forEach(mm => {
   const list = festivals
