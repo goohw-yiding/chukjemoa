@@ -69,12 +69,28 @@ function build(ctx) {
   const byRegion = {};
   rows.forEach(f => { (byRegion[f.region] = byRegion[f.region] || []).push(f); });
 
+  // ⚠️ 2026-08-23: Ahrefs가 고아 페이지 81개를 잡았다 — 정확히 81개였던 이유를 추적해 보니
+  //    "같은 지역 축제" 링크가 항상 배열 앞쪽 6~7개만 가리키는 slice(0,6) 방식이라, 지역 인원이
+  //    7명을 넘는 순간 뒤쪽 사람들은 사이트 어디서도 링크를 받지 못했다(15개 지역에서 7명 넘는
+  //    인원의 합 = 정확히 81명 — /en/search/는 JS로만 채워져 크롤러가 링크로 세지 않는다).
+  //    앞쪽 고정 6개 대신 "내 바로 다음 6명"을 원형으로 도는 방식으로 바꾼다 — 이러면 지역 인원이
+  //    2명 이상이기만 하면 누구나 앞사람들에게서 반드시 링크를 받는다.
+  const regionIndex = {};
+  rows.forEach(f => { regionIndex[f.slug] = (byRegion[f.region] || []).indexOf(f); });
+  const relatedRing = (arr, i, count) => {
+    const n = arr.length, take = Math.min(count, n - 1);
+    const out = [];
+    for (let k = 1; k <= take; k++) out.push(arr[(i + k) % n]);
+    return out;
+  };
+
   const TODAY8 = TODAY.replace(/-/g, '');
   const urls = [];
 
   rows.forEach(f => {
     const ended = String(f.end || '') < TODAY8;
-    const related = (byRegion[f.region] || []).filter(r => r.slug !== f.slug).slice(0, 6);
+    const region = byRegion[f.region] || [];
+    const related = relatedRing(region, regionIndex[f.slug], 6);
     const mapUrl = f.x && f.y ? `https://www.google.com/maps?q=${f.y},${f.x}` : '';
     const hpUrl = f.hp ? (f.hp.indexOf('http') === 0 ? f.hp : 'http://' + f.hp) : '';
     const googleUrl = `https://www.google.com/search?q=${encodeURIComponent(f.title + ' Korea festival')}`;
