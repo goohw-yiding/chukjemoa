@@ -3818,7 +3818,10 @@ ${r.desc ? `<p class="jdesc">${esc(r.desc)}</p>` : ''}
     for(var add=0; add<40; add++){
       var t=new Date(Date.UTC(y,mo,d+add));
       var dd=t.getUTCDate();
-      if(days.indexOf(dd)>=0) return {add:add,date:t};
+      var ld=dd%10;
+      var hit=false;
+      for(var i=0;i<days.length;i++){ if((days[i]%10)===ld){ hit=true; break; } }
+      if(hit) return {add:add,date:t};
     }
     return null;
   }
