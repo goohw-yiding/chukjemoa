@@ -870,6 +870,53 @@ const FAV_JS = `<script>
 })();
 </script>`;
 
+// 🔖 찜한 축제 캘린더 담기 (.ics 다운로드) — 2026-08-24 추가
+const CAL_JS = `<script>
+(function(){
+  var CRLF = String.fromCharCode(13, 10);
+  function icsText(s){
+    s = String(s || '');
+    var out = '';
+    for (var i = 0; i < s.length; i++) {
+      var c = s[i];
+      out += (c === ',' || c === ';') ? ' ' : c;
+    }
+    return out;
+  }
+  function plusDay(d){
+    var y = +d.slice(0,4), m = +d.slice(4,6) - 1, dd = +d.slice(6,8);
+    var dt = new Date(y, m, dd + 1);
+    var mm = dt.getMonth() + 1, day = dt.getDate();
+    return '' + dt.getFullYear() + (mm < 10 ? '0' : '') + mm + (day < 10 ? '0' : '') + day;
+  }
+  function stamp(){
+    var d = new Date(), pad = function(n){ return (n < 10 ? '0' : '') + n; };
+    return '' + d.getUTCFullYear() + pad(d.getUTCMonth()+1) + pad(d.getUTCDate()) + 'T' + pad(d.getUTCHours()) + pad(d.getUTCMinutes()) + pad(d.getUTCSeconds()) + 'Z';
+  }
+  document.querySelectorAll('.cal-ics').forEach(function(b){
+    b.addEventListener('click', function(){
+      var t = b.dataset.title || '', s = b.dataset.start || '', e = b.dataset.end || s, loc = b.dataset.loc || '', slug = b.dataset.slug || 'festival';
+      var lines = [
+        'BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//chukjemoa.co.kr//festival//KO', 'BEGIN:VEVENT',
+        'UID:' + slug + '-' + s + '@chukjemoa.co.kr',
+        'DTSTAMP:' + stamp(),
+        'DTSTART;VALUE=DATE:' + s,
+        'DTEND;VALUE=DATE:' + plusDay(e),
+        'SUMMARY:' + icsText(t)
+      ];
+      if (loc) lines.push('LOCATION:' + icsText(loc));
+      lines.push('END:VEVENT', 'END:VCALENDAR');
+      var blob = new Blob([lines.join(CRLF)], { type: 'text/calendar;charset=utf-8' });
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement('a');
+      a.href = url; a.download = slug + '.ics';
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(function(){ URL.revokeObjectURL(url); }, 3000);
+    });
+  });
+})();
+</script>`;
+
 // 킥③ 내 주변 축제 (geolocation → 가까운 순 정렬 + 거리 배지)
 const NEARBY_JS = `<script>
 (function(){
@@ -1789,6 +1836,7 @@ ${lang === 'ko' ? FEST_BB_JS + MODAL_CALC_JS + FEST_MODAL_JS + PLACE_MODAL_JS : 
 ${urlPath === '/' ? FIREWORKS_JS : ''}
 ${lang === 'ko' ? HSEARCH_JS : ''}
 ${String(content).indexOf('id="nai"') >= 0 ? NEAR_AI_JS : ''}
+${String(content).indexOf('cal-ics') >= 0 ? CAL_JS : ''}
 ${PROSE_JS}
 ${TRACK_JS}
 ${ODSAY_JS}

@@ -526,6 +526,13 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 .frel{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
 .frel a{background:#fff;border:1.5px solid #dcefeb;color:#374151;font-weight:700;font-size:.86rem;padding:8px 14px;border-radius:999px;text-decoration:none}
 .frel a:hover{background:#e2f5f2}
+.factions{display:flex;flex-wrap:wrap;gap:9px;margin:2px 0 14px}
+.fav-standalone{position:static;display:inline-flex;align-items:center;width:auto;height:auto;padding:9px 16px;border-radius:999px;font-size:1rem;font-weight:800;color:#374151;background:#fff;border:1.5px solid #e5e7eb;box-shadow:none;cursor:pointer}
+.fav-standalone::after{content:'찜하기';margin-left:7px;font-size:.88rem;font-weight:800}
+.fav-standalone.on{color:#ff3b6b;border-color:#ffc9d6;background:#fff5f7}
+.fav-standalone.on::after{content:'찜 완료'}
+.cal-btn{display:inline-flex;align-items:center;gap:6px;padding:9px 16px;border-radius:999px;font-size:.88rem;font-weight:800;color:#0a6c63;background:#f2fbfa;border:1.5px solid #cdeae5;cursor:pointer;font-family:inherit;text-decoration:none;transition:all .15s}
+.cal-btn:hover{background:#e2f5f2}
 </style>
 <h1 style="font-size:1.55rem;font-weight:900;margin:8px 0 6px">수원 국가유산야행</h1>
 <div style="margin-bottom:8px">
@@ -533,6 +540,12 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 <span class="fbadge qt">🤫 8월 수원시 한산한 편 ×1.06</span>
 
 <span class="fbadge acc">♿ 근처 무장애 시설 3곳</span>
+</div>
+
+<div class="factions">
+<button class="fav fav-standalone" type="button" data-name="수원 국가유산야행" aria-label="찜하기">♡</button>
+<a class="cal-btn" href="https://calendar.google.com/calendar/render?action=TEMPLATE&amp;text=%EC%88%98%EC%9B%90%20%EA%B5%AD%EA%B0%80%EC%9C%A0%EC%82%B0%EC%95%BC%ED%96%89&amp;dates=20260814/20260831&amp;location=%EA%B2%BD%EA%B8%B0%EB%8F%84%20%EC%88%98%EC%9B%90%EC%8B%9C%20%EC%88%98%EC%9B%90%EC%B2%9C%EB%A1%9C392%EB%B2%88%EA%B8%B8&amp;details=https%3A%2F%2Fchukjemoa.co.kr%2Ffestival%2Fsuwon-gukgayusanyahaeng%2F" target="_blank" rel="noopener">📅 구글 캘린더에 추가</a>
+<button class="cal-btn cal-ics" type="button" data-title="수원 국가유산야행" data-start="20260814" data-end="20260830" data-loc="경기도 수원시 수원천로392번길" data-slug="suwon-gukgayusanyahaeng">⬇️ 캘린더 파일(.ics)</button>
 </div>
 
 <div class="fhero">
@@ -991,6 +1004,51 @@ window.cjmFestBB=function(elId,name,place){
   btn.addEventListener('click',function(){ ask(inp.value.trim()); });
   inp.addEventListener('keydown',function(e){ if(e.key==='Enter'){ e.preventDefault(); ask(inp.value.trim()); } });
   if(chips) chips.addEventListener('click',function(e){ if(e.target.tagName==='BUTTON') ask(e.target.textContent); });
+})();
+</script>
+<script>
+(function(){
+  var CRLF = String.fromCharCode(13, 10);
+  function icsText(s){
+    s = String(s || '');
+    var out = '';
+    for (var i = 0; i < s.length; i++) {
+      var c = s[i];
+      out += (c === ',' || c === ';') ? ' ' : c;
+    }
+    return out;
+  }
+  function plusDay(d){
+    var y = +d.slice(0,4), m = +d.slice(4,6) - 1, dd = +d.slice(6,8);
+    var dt = new Date(y, m, dd + 1);
+    var mm = dt.getMonth() + 1, day = dt.getDate();
+    return '' + dt.getFullYear() + (mm < 10 ? '0' : '') + mm + (day < 10 ? '0' : '') + day;
+  }
+  function stamp(){
+    var d = new Date(), pad = function(n){ return (n < 10 ? '0' : '') + n; };
+    return '' + d.getUTCFullYear() + pad(d.getUTCMonth()+1) + pad(d.getUTCDate()) + 'T' + pad(d.getUTCHours()) + pad(d.getUTCMinutes()) + pad(d.getUTCSeconds()) + 'Z';
+  }
+  document.querySelectorAll('.cal-ics').forEach(function(b){
+    b.addEventListener('click', function(){
+      var t = b.dataset.title || '', s = b.dataset.start || '', e = b.dataset.end || s, loc = b.dataset.loc || '', slug = b.dataset.slug || 'festival';
+      var lines = [
+        'BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//chukjemoa.co.kr//festival//KO', 'BEGIN:VEVENT',
+        'UID:' + slug + '-' + s + '@chukjemoa.co.kr',
+        'DTSTAMP:' + stamp(),
+        'DTSTART;VALUE=DATE:' + s,
+        'DTEND;VALUE=DATE:' + plusDay(e),
+        'SUMMARY:' + icsText(t)
+      ];
+      if (loc) lines.push('LOCATION:' + icsText(loc));
+      lines.push('END:VEVENT', 'END:VCALENDAR');
+      var blob = new Blob([lines.join(CRLF)], { type: 'text/calendar;charset=utf-8' });
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement('a');
+      a.href = url; a.download = slug + '.ics';
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(function(){ URL.revokeObjectURL(url); }, 3000);
+    });
+  });
 })();
 </script>
 <script>window.cjmProse=function(t){var f=function proseCore(raw) {

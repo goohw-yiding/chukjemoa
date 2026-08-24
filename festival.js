@@ -46,6 +46,12 @@ function slugify(t) {
 const fmtDate = s => `${s.slice(0, 4)}년 ${+s.slice(4, 6)}월 ${+s.slice(6, 8)}일`;
 const dayName = s => '일월화수목금토'[new Date(+s.slice(0, 4), +s.slice(4, 6) - 1, +s.slice(6, 8)).getDay()];
 const won = n => Math.round(n).toLocaleString('ko-KR') + '원';
+function addDay(s) {
+  const y = +s.slice(0, 4), m = +s.slice(4, 6) - 1, d = +s.slice(6, 8);
+  const dt = new Date(y, m, d + 1);
+  const mm = dt.getMonth() + 1, dd = dt.getDate();
+  return `${dt.getFullYear()}${mm < 10 ? '0' : ''}${mm}${dd < 10 ? '0' : ''}${dd}`;
+}
 
 const CSS = `
 .fhero{background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 3px 16px rgba(31,41,55,.08);margin:14px 0}
@@ -87,6 +93,13 @@ const CSS = `
 .frel{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
 .frel a{background:#fff;border:1.5px solid #dcefeb;color:#374151;font-weight:700;font-size:.86rem;padding:8px 14px;border-radius:999px;text-decoration:none}
 .frel a:hover{background:#e2f5f2}
+.factions{display:flex;flex-wrap:wrap;gap:9px;margin:2px 0 14px}
+.fav-standalone{position:static;display:inline-flex;align-items:center;width:auto;height:auto;padding:9px 16px;border-radius:999px;font-size:1rem;font-weight:800;color:#374151;background:#fff;border:1.5px solid #e5e7eb;box-shadow:none;cursor:pointer}
+.fav-standalone::after{content:'찜하기';margin-left:7px;font-size:.88rem;font-weight:800}
+.fav-standalone.on{color:#ff3b6b;border-color:#ffc9d6;background:#fff5f7}
+.fav-standalone.on::after{content:'찜 완료'}
+.cal-btn{display:inline-flex;align-items:center;gap:6px;padding:9px 16px;border-radius:999px;font-size:.88rem;font-weight:800;color:#0a6c63;background:#f2fbfa;border:1.5px solid #cdeae5;cursor:pointer;font-family:inherit;text-decoration:none;transition:all .15s}
+.cal-btn:hover{background:#e2f5f2}
 `;
 
 // 거리순 근처 뽑기
@@ -260,6 +273,8 @@ ${alt.length ? `<p class="fend-h"><b>지금 ${esc(f.sido)}에서 갈 수 있는 
       [`주차나 숙소는 어떻게 하나요?`, `반경 15km 안 숙소 ${nStay.length}곳을 위치와 유형으로 정리해 뒀습니다. 가격과 빈방은 저희 데이터에 없어 표시하지 않습니다. 주차는 축제장 안내를 따르시고, 붐비는 축제는 오전에 도착하는 편이 안전합니다.`]
     ].filter(Boolean);
 
+    const gcalUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(f.title)}&dates=${f.start}/${addDay(String(f.end))}&location=${encodeURIComponent(f.addr || '')}&details=${encodeURIComponent(SITE + '/festival/' + f._slug + '/')}`;
+
     const content = `<main><div class="wrap"><style>${CSS}</style>
 <h1 style="font-size:1.55rem;font-weight:900;margin:8px 0 6px">${esc(f.title)}</h1>
 <div style="margin-bottom:8px">
@@ -267,6 +282,12 @@ ${ended ? `<span class="fbadge end">종료된 축제</span>` : ongoing ? `<span 
 ${idx ? `<span class="fbadge ${idx >= 1.15 ? 'hot' : 'qt'}">${idx >= 1.15 ? `🔥 ${rm}월 ${esc(sg)} 평소의 ×${idx.toFixed(2)}` : `🤫 ${rm}월 ${esc(sg)} 한산한 편 ×${idx.toFixed(2)}`}</span>` : ''}
 ${f.pet ? `<span class="fbadge pet">🐶 반려동물 동반 가능</span>` : ''}
 ${nAcc.length ? `<span class="fbadge acc">♿ 근처 무장애 시설 ${nAcc.length}곳</span>` : ''}
+</div>
+
+<div class="factions">
+<button class="fav fav-standalone" type="button" data-name="${esc(f.title)}" aria-label="찜하기">♡</button>
+${!ended ? `<a class="cal-btn" href="${esc(gcalUrl)}" target="_blank" rel="noopener">📅 구글 캘린더에 추가</a>
+<button class="cal-btn cal-ics" type="button" data-title="${esc(f.title)}" data-start="${f.start}" data-end="${f.end}" data-loc="${esc(f.addr || '')}" data-slug="${f._slug}">⬇️ 캘린더 파일(.ics)</button>` : ''}
 </div>
 
 <div class="fhero">

@@ -527,6 +527,13 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 .frel{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
 .frel a{background:#fff;border:1.5px solid #dcefeb;color:#374151;font-weight:700;font-size:.86rem;padding:8px 14px;border-radius:999px;text-decoration:none}
 .frel a:hover{background:#e2f5f2}
+.factions{display:flex;flex-wrap:wrap;gap:9px;margin:2px 0 14px}
+.fav-standalone{position:static;display:inline-flex;align-items:center;width:auto;height:auto;padding:9px 16px;border-radius:999px;font-size:1rem;font-weight:800;color:#374151;background:#fff;border:1.5px solid #e5e7eb;box-shadow:none;cursor:pointer}
+.fav-standalone::after{content:'찜하기';margin-left:7px;font-size:.88rem;font-weight:800}
+.fav-standalone.on{color:#ff3b6b;border-color:#ffc9d6;background:#fff5f7}
+.fav-standalone.on::after{content:'찜 완료'}
+.cal-btn{display:inline-flex;align-items:center;gap:6px;padding:9px 16px;border-radius:999px;font-size:.88rem;font-weight:800;color:#0a6c63;background:#f2fbfa;border:1.5px solid #cdeae5;cursor:pointer;font-family:inherit;text-decoration:none;transition:all .15s}
+.cal-btn:hover{background:#e2f5f2}
 </style>
 <h1 style="font-size:1.55rem;font-weight:900;margin:8px 0 6px">새봄맞이 연수한마음 축제</h1>
 <div style="margin-bottom:8px">
@@ -534,6 +541,11 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 
 
 <span class="fbadge acc">♿ 근처 무장애 시설 3곳</span>
+</div>
+
+<div class="factions">
+<button class="fav fav-standalone" type="button" data-name="새봄맞이 연수한마음 축제" aria-label="찜하기">♡</button>
+
 </div>
 
 <div class="fhero">
@@ -1001,6 +1013,7 @@ window.cjmFestBB=function(elId,name,place){
   if(chips) chips.addEventListener('click',function(e){ if(e.target.tagName==='BUTTON') ask(e.target.textContent); });
 })();
 </script>
+
 <script>window.cjmProse=function(t){var f=function proseCore(raw) {
   var text = String(raw == null ? '' : raw).replace(/\r/g, ' ').replace(/[ \t]+/g, ' ').trim();
   if (!text) return '';
