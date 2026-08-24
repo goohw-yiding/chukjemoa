@@ -217,6 +217,8 @@ article ul{padding-left:20px}
 .fav{position:absolute;top:8px;right:8px;z-index:3;width:34px;height:34px;border-radius:50%;border:none;background:rgba(255,255,255,.92);color:#d1d5db;font-size:1.15rem;line-height:1;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.18);transition:all .15s}
 .fav:hover{transform:scale(1.12)}
 .fav.on{color:#ff3b6b;background:#fff}
+.fav-mini{position:static;display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;background:#f4f1ec;color:#9ca3af;border:1.5px solid #e5e7eb;font-size:1.05rem;box-shadow:none;margin-right:6px}
+.fav-mini.on{color:#ff3b6b;background:#fff5f7;border-color:#ffc9d6}
 .km{position:absolute;bottom:10px;right:10px;z-index:2;background:rgba(17,24,39,.72);color:#fff;font-size:.75rem;font-weight:700;padding:3px 9px;border-radius:12px;backdrop-filter:blur(3px)}
 .km:empty{display:none}
 .nearby-btn{border:1.5px solid #a9e5dd;background:#fff;color:#0c7d72;border-radius:20px;padding:8px 18px;font-size:.9rem;cursor:pointer;font-weight:800;transition:all .15s;box-shadow:0 2px 8px rgba(15,157,143,.12);font-family:inherit}
@@ -497,6 +499,7 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 
 <h2 class="sec">충북의 오일장</h2>
 <div style="background:#fff;border-radius:14px;padding:16px 18px;box-shadow:0 2px 10px rgba(31,41,55,.06);margin:0 0 14px">
+<button class="fav fav-mini" type="button" data-name="단양장" aria-label="찜하기" style="float:right">♡</button>
 <h3 style="font-size:1.06rem;font-weight:800;margin:0 0 4px">단양장 <span style="background:#e2f5f2;color:#0a6c63;font-size:.82rem;font-weight:800;border-radius:999px;padding:3px 10px;margin-left:4px">1·6일장</span></h3>
 <div style="color:#6b7280;font-size:.9rem;margin-bottom:8px">충북 단양군</div>
 <p style="margin:0 0 6px;font-size:.96rem"><b>파는 것</b> — 단양마늘·마늘순대</p>
@@ -509,6 +512,7 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 </div>
 <div style="margin-top:10px"><a href="https://map.naver.com/p/search/%EB%8B%A8%EC%96%91%EC%9E%A5" target="_blank" rel="noopener" style="color:#0c7d72;font-weight:700;font-size:.88rem;margin-right:10px">🗺️ 지도</a><a href="https://search.naver.com/search.naver?query=%EB%8B%A8%EC%96%91%EC%9E%A5%20%EB%A7%9B%EC%A7%91" target="_blank" rel="noopener" style="color:#0c7d72;font-weight:700;font-size:.88rem">🍴 근처 맛집</a></div>
 </div><div style="background:#fff;border-radius:14px;padding:16px 18px;box-shadow:0 2px 10px rgba(31,41,55,.06);margin:0 0 14px">
+<button class="fav fav-mini" type="button" data-name="보은장" aria-label="찜하기" style="float:right">♡</button>
 <h3 style="font-size:1.06rem;font-weight:800;margin:0 0 4px">보은장 <span style="background:#e2f5f2;color:#0a6c63;font-size:.82rem;font-weight:800;border-radius:999px;padding:3px 10px;margin-left:4px">1·6일장</span></h3>
 <div style="color:#6b7280;font-size:.9rem;margin-bottom:8px">충북 보은군 · 충청북도 보은군 보은읍 삼산로 17-16</div>
 <p style="margin:0 0 6px;font-size:.96rem"><b>파는 것</b> — 산나물 · 대추(특산물) · 채소 · 잡곡</p>
@@ -521,6 +525,7 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 </div>
 <div style="margin-top:10px"><a href="https://map.naver.com/p/search/%EB%B3%B4%EC%9D%80%EC%9E%A5" target="_blank" rel="noopener" style="color:#0c7d72;font-weight:700;font-size:.88rem;margin-right:10px">🗺️ 지도</a><a href="https://search.naver.com/search.naver?query=%EB%B3%B4%EC%9D%80%EC%9E%A5%20%EB%A7%9B%EC%A7%91" target="_blank" rel="noopener" style="color:#0c7d72;font-weight:700;font-size:.88rem">🍴 근처 맛집</a></div>
 </div><div style="background:#fff;border-radius:14px;padding:16px 18px;box-shadow:0 2px 10px rgba(31,41,55,.06);margin:0 0 14px">
+<button class="fav fav-mini" type="button" data-name="음성장" aria-label="찜하기" style="float:right">♡</button>
 <h3 style="font-size:1.06rem;font-weight:800;margin:0 0 4px">음성장 <span style="background:#e2f5f2;color:#0a6c63;font-size:.82rem;font-weight:800;border-radius:999px;padding:3px 10px;margin-left:4px">2·7일장</span></h3>
 <div style="color:#6b7280;font-size:.9rem;margin-bottom:8px">충북 음성군 · 충청북도 음성군 음성읍 시장로117번길 6</div>
 <p style="margin:0 0 6px;font-size:.96rem"><b>파는 것</b> — 채소 · 과일 · 곡류</p>
@@ -533,6 +538,7 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 </div>
 <div style="margin-top:10px"><a href="https://map.naver.com/p/search/%EC%9D%8C%EC%84%B1%EC%9E%A5" target="_blank" rel="noopener" style="color:#0c7d72;font-weight:700;font-size:.88rem;margin-right:10px">🗺️ 지도</a><a href="https://search.naver.com/search.naver?query=%EC%9D%8C%EC%84%B1%EC%9E%A5%20%EB%A7%9B%EC%A7%91" target="_blank" rel="noopener" style="color:#0c7d72;font-weight:700;font-size:.88rem">🍴 근처 맛집</a></div>
 </div><div style="background:#fff;border-radius:14px;padding:16px 18px;box-shadow:0 2px 10px rgba(31,41,55,.06);margin:0 0 14px">
+<button class="fav fav-mini" type="button" data-name="광혜원장" aria-label="찜하기" style="float:right">♡</button>
 <h3 style="font-size:1.06rem;font-weight:800;margin:0 0 4px">광혜원장 <span style="background:#e2f5f2;color:#0a6c63;font-size:.82rem;font-weight:800;border-radius:999px;padding:3px 10px;margin-left:4px">3·8일장</span></h3>
 <div style="color:#6b7280;font-size:.9rem;margin-bottom:8px">충북 진천군 · 충청북도 진천군 광혜원면 장기1안길 16</div>
 <p style="margin:0 0 6px;font-size:.96rem"><b>파는 것</b> — 먹거리 · 신선 식품 · 잡화류 · 생활용품</p>
@@ -545,6 +551,7 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 </div>
 <div style="margin-top:10px"><a href="https://map.naver.com/p/search/%EA%B4%91%ED%98%9C%EC%9B%90%EC%9E%A5" target="_blank" rel="noopener" style="color:#0c7d72;font-weight:700;font-size:.88rem;margin-right:10px">🗺️ 지도</a><a href="https://search.naver.com/search.naver?query=%EA%B4%91%ED%98%9C%EC%9B%90%EC%9E%A5%20%EB%A7%9B%EC%A7%91" target="_blank" rel="noopener" style="color:#0c7d72;font-weight:700;font-size:.88rem">🍴 근처 맛집</a></div>
 </div><div style="background:#fff;border-radius:14px;padding:16px 18px;box-shadow:0 2px 10px rgba(31,41,55,.06);margin:0 0 14px">
+<button class="fav fav-mini" type="button" data-name="괴산장" aria-label="찜하기" style="float:right">♡</button>
 <h3 style="font-size:1.06rem;font-weight:800;margin:0 0 4px">괴산장 <span style="background:#e2f5f2;color:#0a6c63;font-size:.82rem;font-weight:800;border-radius:999px;padding:3px 10px;margin-left:4px">3·8일장</span></h3>
 <div style="color:#6b7280;font-size:.9rem;margin-bottom:8px">충북 괴산군 · 충청북도 괴산군 괴산읍 읍내로15길 8-8</div>
 <p style="margin:0 0 6px;font-size:.96rem"><b>파는 것</b> — 괴산청결고추 · 고추가루 · 채소류 · 임산물</p>
@@ -557,6 +564,7 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 </div>
 <div style="margin-top:10px"><a href="https://map.naver.com/p/search/%EA%B4%B4%EC%82%B0%EC%9E%A5" target="_blank" rel="noopener" style="color:#0c7d72;font-weight:700;font-size:.88rem;margin-right:10px">🗺️ 지도</a><a href="https://search.naver.com/search.naver?query=%EA%B4%B4%EC%82%B0%EC%9E%A5%20%EB%A7%9B%EC%A7%91" target="_blank" rel="noopener" style="color:#0c7d72;font-weight:700;font-size:.88rem">🍴 근처 맛집</a></div>
 </div><div style="background:#fff;border-radius:14px;padding:16px 18px;box-shadow:0 2px 10px rgba(31,41,55,.06);margin:0 0 14px">
+<button class="fav fav-mini" type="button" data-name="옥산장" aria-label="찜하기" style="float:right">♡</button>
 <h3 style="font-size:1.06rem;font-weight:800;margin:0 0 4px">옥산장 <span style="background:#e2f5f2;color:#0a6c63;font-size:.82rem;font-weight:800;border-radius:999px;padding:3px 10px;margin-left:4px">3·8일장</span></h3>
 <div style="color:#6b7280;font-size:.9rem;margin-bottom:8px">충북 청주시 · 충청북도 청주시 흥덕구 옥산면 오산리</div>
 <p style="margin:0 0 6px;font-size:.96rem"><b>파는 것</b> — 채소류 · 과일류 · 고물 · 농산품 · 생필품 · 잡화</p>
@@ -569,6 +577,7 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 </div>
 <div style="margin-top:10px"><a href="https://map.naver.com/p/search/%EC%98%A5%EC%82%B0%EC%9E%A5" target="_blank" rel="noopener" style="color:#0c7d72;font-weight:700;font-size:.88rem;margin-right:10px">🗺️ 지도</a><a href="https://search.naver.com/search.naver?query=%EC%98%A5%EC%82%B0%EC%9E%A5%20%EB%A7%9B%EC%A7%91" target="_blank" rel="noopener" style="color:#0c7d72;font-weight:700;font-size:.88rem">🍴 근처 맛집</a></div>
 </div><div style="background:#fff;border-radius:14px;padding:16px 18px;box-shadow:0 2px 10px rgba(31,41,55,.06);margin:0 0 14px">
+<button class="fav fav-mini" type="button" data-name="추풍령장" aria-label="찜하기" style="float:right">♡</button>
 <h3 style="font-size:1.06rem;font-weight:800;margin:0 0 4px">추풍령장 <span style="background:#e2f5f2;color:#0a6c63;font-size:.82rem;font-weight:800;border-radius:999px;padding:3px 10px;margin-left:4px">3·8일장</span></h3>
 <div style="color:#6b7280;font-size:.9rem;margin-bottom:8px">충북 영동군 · 충청북도 영동군 추풍령면 추풍령로5길 8-4</div>
 <p style="margin:0 0 6px;font-size:.96rem"><b>파는 것</b> — 포도 · 사과 · 쌀 · 기타곡물 · 고추 · 참깨 · 채소류</p>
@@ -581,6 +590,7 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 </div>
 <div style="margin-top:10px"><a href="https://map.naver.com/p/search/%EC%B6%94%ED%92%8D%EB%A0%B9%EC%9E%A5" target="_blank" rel="noopener" style="color:#0c7d72;font-weight:700;font-size:.88rem;margin-right:10px">🗺️ 지도</a><a href="https://search.naver.com/search.naver?query=%EC%B6%94%ED%92%8D%EB%A0%B9%EC%9E%A5%20%EB%A7%9B%EC%A7%91" target="_blank" rel="noopener" style="color:#0c7d72;font-weight:700;font-size:.88rem">🍴 근처 맛집</a></div>
 </div><div style="background:#fff;border-radius:14px;padding:16px 18px;box-shadow:0 2px 10px rgba(31,41,55,.06);margin:0 0 14px">
+<button class="fav fav-mini" type="button" data-name="영동장" aria-label="찜하기" style="float:right">♡</button>
 <h3 style="font-size:1.06rem;font-weight:800;margin:0 0 4px">영동장 <span style="background:#e2f5f2;color:#0a6c63;font-size:.82rem;font-weight:800;border-radius:999px;padding:3px 10px;margin-left:4px">4·9일장</span></h3>
 <div style="color:#6b7280;font-size:.9rem;margin-bottom:8px">충북 영동군 · 충청북도 영동군 영동읍 중앙로 21</div>
 
@@ -593,6 +603,7 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 </div>
 <div style="margin-top:10px"><a href="https://map.naver.com/p/search/%EC%98%81%EB%8F%99%EC%9E%A5" target="_blank" rel="noopener" style="color:#0c7d72;font-weight:700;font-size:.88rem;margin-right:10px">🗺️ 지도</a><a href="https://search.naver.com/search.naver?query=%EC%98%81%EB%8F%99%EC%9E%A5%20%EB%A7%9B%EC%A7%91" target="_blank" rel="noopener" style="color:#0c7d72;font-weight:700;font-size:.88rem">🍴 근처 맛집</a></div>
 </div><div style="background:#fff;border-radius:14px;padding:16px 18px;box-shadow:0 2px 10px rgba(31,41,55,.06);margin:0 0 14px">
+<button class="fav fav-mini" type="button" data-name="옥천장" aria-label="찜하기" style="float:right">♡</button>
 <h3 style="font-size:1.06rem;font-weight:800;margin:0 0 4px">옥천장 <span style="background:#e2f5f2;color:#0a6c63;font-size:.82rem;font-weight:800;border-radius:999px;padding:3px 10px;margin-left:4px">5·10일장</span></h3>
 <div style="color:#6b7280;font-size:.9rem;margin-bottom:8px">충북 옥천군 · 충청북도 옥천군 옥천읍 삼금로 45</div>
 <p style="margin:0 0 6px;font-size:.96rem"><b>파는 것</b> — 농산물 · 식음료 · 생활용품</p>

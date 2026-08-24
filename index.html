@@ -231,6 +231,8 @@ article ul{padding-left:20px}
 .fav{position:absolute;top:8px;right:8px;z-index:3;width:34px;height:34px;border-radius:50%;border:none;background:rgba(255,255,255,.92);color:#d1d5db;font-size:1.15rem;line-height:1;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.18);transition:all .15s}
 .fav:hover{transform:scale(1.12)}
 .fav.on{color:#ff3b6b;background:#fff}
+.fav-mini{position:static;display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;background:#f4f1ec;color:#9ca3af;border:1.5px solid #e5e7eb;font-size:1.05rem;box-shadow:none;margin-right:6px}
+.fav-mini.on{color:#ff3b6b;background:#fff5f7;border-color:#ffc9d6}
 .km{position:absolute;bottom:10px;right:10px;z-index:2;background:rgba(17,24,39,.72);color:#fff;font-size:.75rem;font-weight:700;padding:3px 9px;border-radius:12px;backdrop-filter:blur(3px)}
 .km:empty{display:none}
 .nearby-btn{border:1.5px solid #a9e5dd;background:#fff;color:#0c7d72;border-radius:20px;padding:8px 18px;font-size:.9rem;cursor:pointer;font-weight:800;transition:all .15s;box-shadow:0 2px 8px rgba(15,157,143,.12);font-family:inherit}
@@ -528,6 +530,10 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 <h2 class="sec">💖 내가 찜한 축제</h2>
 <div class="wkgrid" id="myfavs"></div>
 </div>
+<div id="myjangteofavs-sec" style="display:none">
+<h2 class="sec">🏮 내가 찜한 오일장</h2>
+<div class="wkgrid" id="myjangteofavs"></div>
+</div>
 <h2 class="sec" id="weekend-title">이번 주말 갈 만한 축제</h2>
 <div class="wkgrid" id="weekend"></div>
 <p class="note" style="margin-top:8px">저희가 정리한 축제와 <b>한국관광공사 TourAPI</b>의 축제를 함께 봅니다. 45일 넘게 이어지는 상설 프로그램은 빼고, 실제로 그 주말에 열리는 것만 골랐습니다. 일정은 주최 측 사정으로 바뀔 수 있으니 방문 전에 확인해 주세요.</p>
@@ -584,7 +590,9 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
   }
 
   // 킥④ 찜한 축제 D-day (메인)
+  const __prevRenderFavs1 = window.renderFavs;
   window.renderFavs = function(){
+    if (typeof __prevRenderFavs1 === 'function') __prevRenderFavs1();
     const sec = document.getElementById('myfavs-sec'), fbox = document.getElementById('myfavs');
     if (!sec || !fbox) return;
     let favs = [];
@@ -608,6 +616,37 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
   fetch('/fest-near.json').then(function(r){ return r.json(); }).then(function(N){
     F.forEach(function(f){ if (N[f.n]) f.near = N[f.n]; });
   }).catch(function(){});
+  }).catch(function(){});
+})();
+</script>
+<script>
+(function(){
+  window.renderFavs = window.renderFavs || function(){};
+  var MS = 86400000;
+  function opensOn(days, dt){ if (!days.length) return true; var ld = dt.getDate() % 10; for (var i=0;i<days.length;i++){ if ((days[i] % 10) === ld) return true; } return false; }
+  function nextOffset(days, base){ if (!days.length) return 0; for (var o=0;o<5;o++){ if (opensOn(days, new Date(base.getTime()+o*MS))) return o; } return 0; }
+  fetch('/market-fav.json').then(function(r){ return r.json(); }).then(function(M){
+    var __prevRenderFavsM = window.renderFavs;
+    window.renderFavs = function(){
+      if (typeof __prevRenderFavsM === 'function') __prevRenderFavsM();
+      var sec = document.getElementById('myjangteofavs-sec'), fbox = document.getElementById('myjangteofavs');
+      if (!sec || !fbox) return;
+      var favs = [];
+      try { favs = JSON.parse(localStorage.getItem('cjm_favs')) || []; } catch(e) {}
+      var mine = M.filter(function(m){ return favs.indexOf(m.n) !== -1; });
+      if (!mine.length) { sec.style.display = 'none'; return; }
+      sec.style.display = '';
+      var today = new Date(); today.setHours(0,0,0,0);
+      mine.forEach(function(m){ m.__off = nextOffset(m.dn || [], today); });
+      mine.sort(function(a,b){ return a.__off - b.__off; });
+      fbox.innerHTML = mine.map(function(m){
+        var dd = m.__off === 0 ? '오늘 장날 🔥' : 'D+' + m.__off;
+        var col = m.__off === 0 ? '#0f9d8f' : '#374151';
+        return '<a class="wkchip" style="cursor:pointer" href="https://map.naver.com/p/search/' + encodeURIComponent(m.n) + '" target="_blank" rel="noopener">🏮 <strong>' + m.n +
+          '</strong> <em style="font-style:normal;font-weight:800;color:' + col + '">' + dd + '</em><span>' + m.r + ' ' + m.c + ' · ' + (m.d || '') + '</span></a>';
+      }).join('');
+    };
+    renderFavs();
   }).catch(function(){});
 })();
 </script>

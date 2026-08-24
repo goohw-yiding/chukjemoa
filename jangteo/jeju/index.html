@@ -217,6 +217,8 @@ article ul{padding-left:20px}
 .fav{position:absolute;top:8px;right:8px;z-index:3;width:34px;height:34px;border-radius:50%;border:none;background:rgba(255,255,255,.92);color:#d1d5db;font-size:1.15rem;line-height:1;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.18);transition:all .15s}
 .fav:hover{transform:scale(1.12)}
 .fav.on{color:#ff3b6b;background:#fff}
+.fav-mini{position:static;display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;background:#f4f1ec;color:#9ca3af;border:1.5px solid #e5e7eb;font-size:1.05rem;box-shadow:none;margin-right:6px}
+.fav-mini.on{color:#ff3b6b;background:#fff5f7;border-color:#ffc9d6}
 .km{position:absolute;bottom:10px;right:10px;z-index:2;background:rgba(17,24,39,.72);color:#fff;font-size:.75rem;font-weight:700;padding:3px 9px;border-radius:12px;backdrop-filter:blur(3px)}
 .km:empty{display:none}
 .nearby-btn{border:1.5px solid #a9e5dd;background:#fff;color:#0c7d72;border-radius:20px;padding:8px 18px;font-size:.9rem;cursor:pointer;font-weight:800;transition:all .15s;box-shadow:0 2px 8px rgba(15,157,143,.12);font-family:inherit}
@@ -497,6 +499,7 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 
 <h2 class="sec">제주의 오일장</h2>
 <div style="background:#fff;border-radius:14px;padding:16px 18px;box-shadow:0 2px 10px rgba(31,41,55,.06);margin:0 0 14px">
+<button class="fav fav-mini" type="button" data-name="대정오일시장" aria-label="찜하기" style="float:right">♡</button>
 <h3 style="font-size:1.06rem;font-weight:800;margin:0 0 4px">대정오일시장 <span style="background:#e2f5f2;color:#0a6c63;font-size:.82rem;font-weight:800;border-radius:999px;padding:3px 10px;margin-left:4px">1·6일장</span></h3>
 <div style="color:#6b7280;font-size:.9rem;margin-bottom:8px">제주 서귀포시 · 제주특별자치도 서귀포시 대정읍 신영로36번길 65</div>
 <p style="margin:0 0 6px;font-size:.96rem"><b>파는 것</b> — 생황용품 · 건어물 · 수산물 · 의류 · 청과</p>
@@ -509,6 +512,7 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 </div>
 <div style="margin-top:10px"><a href="https://map.naver.com/p/search/%EB%8C%80%EC%A0%95%EC%98%A4%EC%9D%BC%EC%8B%9C%EC%9E%A5" target="_blank" rel="noopener" style="color:#0c7d72;font-weight:700;font-size:.88rem;margin-right:10px">🗺️ 지도</a><a href="https://search.naver.com/search.naver?query=%EB%8C%80%EC%A0%95%EC%98%A4%EC%9D%BC%EC%8B%9C%EC%9E%A5%20%EB%A7%9B%EC%A7%91" target="_blank" rel="noopener" style="color:#0c7d72;font-weight:700;font-size:.88rem">🍴 근처 맛집</a></div>
 </div><div style="background:#fff;border-radius:14px;padding:16px 18px;box-shadow:0 2px 10px rgba(31,41,55,.06);margin:0 0 14px">
+<button class="fav fav-mini" type="button" data-name="제주시민속오일시장" aria-label="찜하기" style="float:right">♡</button>
 <h3 style="font-size:1.06rem;font-weight:800;margin:0 0 4px">제주시민속오일시장 <span style="background:#e2f5f2;color:#0a6c63;font-size:.82rem;font-weight:800;border-radius:999px;padding:3px 10px;margin-left:4px">2·7일장</span></h3>
 <div style="color:#6b7280;font-size:.9rem;margin-bottom:8px">제주 제주시 · 제주특별자치도 제주시 오일장서길 26</div>
 <p style="margin:0 0 6px;font-size:.96rem"><b>파는 것</b> — 감귤·옥돔·흑돼지</p>
@@ -521,6 +525,7 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 </div>
 <div style="margin-top:10px"><a href="https://map.naver.com/p/search/%EC%A0%9C%EC%A3%BC%EC%8B%9C%EB%AF%BC%EC%86%8D%EC%98%A4%EC%9D%BC%EC%8B%9C%EC%9E%A5" target="_blank" rel="noopener" style="color:#0c7d72;font-weight:700;font-size:.88rem;margin-right:10px">🗺️ 지도</a><a href="https://search.naver.com/search.naver?query=%EC%A0%9C%EC%A3%BC%EC%8B%9C%EB%AF%BC%EC%86%8D%EC%98%A4%EC%9D%BC%EC%8B%9C%EC%9E%A5%20%EB%A7%9B%EC%A7%91" target="_blank" rel="noopener" style="color:#0c7d72;font-weight:700;font-size:.88rem">🍴 근처 맛집</a></div>
 </div><div style="background:#fff;border-radius:14px;padding:16px 18px;box-shadow:0 2px 10px rgba(31,41,55,.06);margin:0 0 14px">
+<button class="fav fav-mini" type="button" data-name="표선오일시장" aria-label="찜하기" style="float:right">♡</button>
 <h3 style="font-size:1.06rem;font-weight:800;margin:0 0 4px">표선오일시장 <span style="background:#e2f5f2;color:#0a6c63;font-size:.82rem;font-weight:800;border-radius:999px;padding:3px 10px;margin-left:4px">2·7일장</span></h3>
 <div style="color:#6b7280;font-size:.9rem;margin-bottom:8px">제주 서귀포시 · 제주특별자치도 서귀포시 표선면 표선동서로 203-1</div>
 <p style="margin:0 0 6px;font-size:.96rem"><b>파는 것</b> — 수산물 · 야채 · 잡화 · 어물류 · 양품류 · 과일 · 철물</p>
@@ -533,6 +538,7 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 </div>
 <div style="margin-top:10px"><a href="https://map.naver.com/p/search/%ED%91%9C%EC%84%A0%EC%98%A4%EC%9D%BC%EC%8B%9C%EC%9E%A5" target="_blank" rel="noopener" style="color:#0c7d72;font-weight:700;font-size:.88rem;margin-right:10px">🗺️ 지도</a><a href="https://search.naver.com/search.naver?query=%ED%91%9C%EC%84%A0%EC%98%A4%EC%9D%BC%EC%8B%9C%EC%9E%A5%20%EB%A7%9B%EC%A7%91" target="_blank" rel="noopener" style="color:#0c7d72;font-weight:700;font-size:.88rem">🍴 근처 맛집</a></div>
 </div><div style="background:#fff;border-radius:14px;padding:16px 18px;box-shadow:0 2px 10px rgba(31,41,55,.06);margin:0 0 14px">
+<button class="fav fav-mini" type="button" data-name="중문향토오일시장" aria-label="찜하기" style="float:right">♡</button>
 <h3 style="font-size:1.06rem;font-weight:800;margin:0 0 4px">중문향토오일시장 <span style="background:#e2f5f2;color:#0a6c63;font-size:.82rem;font-weight:800;border-radius:999px;padding:3px 10px;margin-left:4px">3·8일장</span></h3>
 <div style="color:#6b7280;font-size:.9rem;margin-bottom:8px">제주 서귀포시 · 제주특별자치도 서귀포시 천제연로188번길 12</div>
 <p style="margin:0 0 6px;font-size:.96rem"><b>파는 것</b> — 과일 · 건어물 · 농산물 · 수산물 · 의류</p>
@@ -545,6 +551,7 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 </div>
 <div style="margin-top:10px"><a href="https://map.naver.com/p/search/%EC%A4%91%EB%AC%B8%ED%96%A5%ED%86%A0%EC%98%A4%EC%9D%BC%EC%8B%9C%EC%9E%A5" target="_blank" rel="noopener" style="color:#0c7d72;font-weight:700;font-size:.88rem;margin-right:10px">🗺️ 지도</a><a href="https://search.naver.com/search.naver?query=%EC%A4%91%EB%AC%B8%ED%96%A5%ED%86%A0%EC%98%A4%EC%9D%BC%EC%8B%9C%EC%9E%A5%20%EB%A7%9B%EC%A7%91" target="_blank" rel="noopener" style="color:#0c7d72;font-weight:700;font-size:.88rem">🍴 근처 맛집</a></div>
 </div><div style="background:#fff;border-radius:14px;padding:16px 18px;box-shadow:0 2px 10px rgba(31,41,55,.06);margin:0 0 14px">
+<button class="fav fav-mini" type="button" data-name="고성오일시장" aria-label="찜하기" style="float:right">♡</button>
 <h3 style="font-size:1.06rem;font-weight:800;margin:0 0 4px">고성오일시장 <span style="background:#e2f5f2;color:#0a6c63;font-size:.82rem;font-weight:800;border-radius:999px;padding:3px 10px;margin-left:4px">4·9일장</span></h3>
 <div style="color:#6b7280;font-size:.9rem;margin-bottom:8px">제주 서귀포시 · 제주특별자치도 서귀포시 성산읍 고성오조로 93</div>
 <p style="margin:0 0 6px;font-size:.96rem"><b>파는 것</b> — 수산물 · 농산물 · 의류 · 잡화류</p>
@@ -557,6 +564,7 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 </div>
 <div style="margin-top:10px"><a href="https://map.naver.com/p/search/%EA%B3%A0%EC%84%B1%EC%98%A4%EC%9D%BC%EC%8B%9C%EC%9E%A5" target="_blank" rel="noopener" style="color:#0c7d72;font-weight:700;font-size:.88rem;margin-right:10px">🗺️ 지도</a><a href="https://search.naver.com/search.naver?query=%EA%B3%A0%EC%84%B1%EC%98%A4%EC%9D%BC%EC%8B%9C%EC%9E%A5%20%EB%A7%9B%EC%A7%91" target="_blank" rel="noopener" style="color:#0c7d72;font-weight:700;font-size:.88rem">🍴 근처 맛집</a></div>
 </div><div style="background:#fff;border-radius:14px;padding:16px 18px;box-shadow:0 2px 10px rgba(31,41,55,.06);margin:0 0 14px">
+<button class="fav fav-mini" type="button" data-name="서귀포향토오일시장" aria-label="찜하기" style="float:right">♡</button>
 <h3 style="font-size:1.06rem;font-weight:800;margin:0 0 4px">서귀포향토오일시장 <span style="background:#e2f5f2;color:#0a6c63;font-size:.82rem;font-weight:800;border-radius:999px;padding:3px 10px;margin-left:4px">4·9일장</span></h3>
 <div style="color:#6b7280;font-size:.9rem;margin-bottom:8px">제주 서귀포시 · 제주특별자치도 서귀포시 중산간동로7894번길 18-5 (동홍동)</div>
 <p style="margin:0 0 6px;font-size:.96rem"><b>파는 것</b> — 감귤·한라봉·수산물</p>
@@ -569,6 +577,7 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 </div>
 <div style="margin-top:10px"><a href="https://map.naver.com/p/search/%EC%84%9C%EA%B7%80%ED%8F%AC%ED%96%A5%ED%86%A0%EC%98%A4%EC%9D%BC%EC%8B%9C%EC%9E%A5" target="_blank" rel="noopener" style="color:#0c7d72;font-weight:700;font-size:.88rem;margin-right:10px">🗺️ 지도</a><a href="https://search.naver.com/search.naver?query=%EC%84%9C%EA%B7%80%ED%8F%AC%ED%96%A5%ED%86%A0%EC%98%A4%EC%9D%BC%EC%8B%9C%EC%9E%A5%20%EB%A7%9B%EC%A7%91" target="_blank" rel="noopener" style="color:#0c7d72;font-weight:700;font-size:.88rem">🍴 근처 맛집</a></div>
 </div><div style="background:#fff;border-radius:14px;padding:16px 18px;box-shadow:0 2px 10px rgba(31,41,55,.06);margin:0 0 14px">
+<button class="fav fav-mini" type="button" data-name="한림민속오일시장" aria-label="찜하기" style="float:right">♡</button>
 <h3 style="font-size:1.06rem;font-weight:800;margin:0 0 4px">한림민속오일시장 <span style="background:#e2f5f2;color:#0a6c63;font-size:.82rem;font-weight:800;border-radius:999px;padding:3px 10px;margin-left:4px">4·9일장</span></h3>
 <div style="color:#6b7280;font-size:.9rem;margin-bottom:8px">제주 제주시 · 제주특별자치도 제주시 한림읍 한수풀로4길 10</div>
 <p style="margin:0 0 6px;font-size:.96rem"><b>파는 것</b> — 생필품 · 의류 · 농기구 · 먹거리</p>
@@ -581,6 +590,7 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 </div>
 <div style="margin-top:10px"><a href="https://map.naver.com/p/search/%ED%95%9C%EB%A6%BC%EB%AF%BC%EC%86%8D%EC%98%A4%EC%9D%BC%EC%8B%9C%EC%9E%A5" target="_blank" rel="noopener" style="color:#0c7d72;font-weight:700;font-size:.88rem;margin-right:10px">🗺️ 지도</a><a href="https://search.naver.com/search.naver?query=%ED%95%9C%EB%A6%BC%EB%AF%BC%EC%86%8D%EC%98%A4%EC%9D%BC%EC%8B%9C%EC%9E%A5%20%EB%A7%9B%EC%A7%91" target="_blank" rel="noopener" style="color:#0c7d72;font-weight:700;font-size:.88rem">🍴 근처 맛집</a></div>
 </div><div style="background:#fff;border-radius:14px;padding:16px 18px;box-shadow:0 2px 10px rgba(31,41,55,.06);margin:0 0 14px">
+<button class="fav fav-mini" type="button" data-name="세화민속오일시장" aria-label="찜하기" style="float:right">♡</button>
 <h3 style="font-size:1.06rem;font-weight:800;margin:0 0 4px">세화민속오일시장 <span style="background:#e2f5f2;color:#0a6c63;font-size:.82rem;font-weight:800;border-radius:999px;padding:3px 10px;margin-left:4px">5·10일장</span></h3>
 <div style="color:#6b7280;font-size:.9rem;margin-bottom:8px">제주 제주시 · 제주특별자치도 제주시 구좌읍 해맞이해안로 1412</div>
 <p style="margin:0 0 6px;font-size:.96rem"><b>파는 것</b> — 청과물 · 수산물 · 약초 · 양품 · 곡물</p>
