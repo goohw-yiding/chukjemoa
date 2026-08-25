@@ -8,4 +8,6 @@ _*.js
 .fuse_hidden*
 apikeys.json
 apikeys.local.json
-_*.log 
+_*.log
+# 커밋 메시지 임시 파일 — 네 번 딸려 들어갔다. 패턴으로 막는다.
+_*.txt
