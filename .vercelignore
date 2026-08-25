@@ -1,0 +1,12 @@
+# 배포에서 제외 (git 에는 남는다 — 예약작업이 git pull 로 써야 하기 때문)
+#
+# cardnews/  뉴스레터 카드 제작용 «내부 도구». 공개될 이유가 없는데 2026-08-24 확인 시
+#            template.html·README.md·render.py·example-vol1.json 이 전부 라이브 200 이었다.
+#
+# data/      빌드 «입력» 데이터. 배포물이 이걸 참조하는 횟수는 0회로 실측 확인했다
+#            (사이트가 쓰는 건 search/data.json 처럼 빌드가 따로 써주는 파일이다).
+#            그대로 두면 spots_ko.json(6,728건) 같은 수집 데이터가 통째로 공개된다.
+#            ⚠️ package.json 이 없어 Vercel 은 빌드를 돌리지 않는다(정적 서빙) — 그래서 빼도 안전하다.
+#            나중에 Vercel 에서 빌드를 돌리게 바꾸면 이 줄을 반드시 지워야 한다.
+cardnews
+data

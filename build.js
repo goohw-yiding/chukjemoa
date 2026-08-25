@@ -6,6 +6,22 @@ const romanizeRegion = romanize.romanizeRegion;
 
 const path = require('path');
 
+// ⚠️ mixed content 차단 (2026-08-24) — TourAPI 이미지가 전부 `http://tong.visitkorea.or.kr` 로 온다.
+//    실측: 489페이지에 7,106회, data/*.json 에는 3만 건 이상. Ahrefs 가 "HTTPS/HTTP mixed content 900건"으로 잡았다.
+//    HTTPS 페이지가 HTTP 이미지를 부르면 브라우저가 차단하거나 주소창 자물쇠가 깨진다.
+//    ✅ 같은 URL에 https 를 붙이면 그대로 200 이 온다(실측 확인).
+//    ⭐ 개별 수정 금지 — 파일을 쓰는 지점이 25곳이라 하나씩 고치면 반드시 빠뜨린다.
+//       데이터 파일은 그대로 두고 «파일로 나가는 순간» 한 곳에서 정규화한다.
+//       festival.js 등 다른 모듈도 같은 fs 객체를 쓰므로 자동으로 함께 적용된다.
+//       수집 스크립트가 다시 http 로 받아와도 출력에서 걸러지므로 재발하지 않는다.
+const _origWriteFileSync = fs.writeFileSync;
+fs.writeFileSync = function (file, data, ...rest) {
+  if (typeof data === 'string' && data.indexOf('http://tong.visitkorea.or.kr') !== -1) {
+    data = data.split('http://tong.visitkorea.or.kr').join('https://tong.visitkorea.or.kr');
+  }
+  return _origWriteFileSync.call(fs, file, data, ...rest);
+};
+
 const ROOT = __dirname;
 const SITE = 'https://chukjemoa.co.kr';
 const SITE_NAME = '축제모아';
