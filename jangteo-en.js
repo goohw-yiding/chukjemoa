@@ -40,6 +40,7 @@ function build(ctx) {
   const regions = [...new Set(rows.map(r => r.region))].sort();
 
   const card = r => `<div class="jcard" data-days="${r.daysNum.join(',')}" data-region="${esc(r.region)}">
+${r.img ? `<img src="${esc(r.img)}" alt="${esc(r.name)}" loading="lazy" style="width:100%;height:140px;object-fit:cover;border-radius:10px;margin-bottom:10px" onerror="this.remove()">` : ''}
 <div class="jhead"><h3>${esc(r.name)}</h3></div>
 <div class="jmeta">📍 ${esc(r.region)}</div>
 <div class="jdays">${r.fair ? esc(r.fair) : (r.daysNum.length ? '' : 'Market days not officially listed')}<span class="jnext"></span></div>

@@ -2095,6 +2095,10 @@ tr.open-on td{background:#e5f6e8}
 .jt-today-card .jt-links a{display:inline-block;font-size:.8rem;margin-right:10px;color:#0c7d72;font-weight:700}
 </style>
 <p class="note">오일장은 날짜 끝자리 기준으로 열립니다. 예: 4·9일장 → 4, 9, 14, 19, 24, 29일. <strong>가까운 장날 순으로 자동 정렬</strong>되고, 그 날 열리는 장은 초록색으로 표시됩니다.</p>
+<h2 class="sec">오일장이란? (오일장 뜻)</h2>
+<p style="color:#374151;font-size:.95rem;line-height:1.8"><b>오일장(五日場)</b>은 매일 여는 상설시장과 달리 <b>5일에 한 번, 날짜 끝자리가 같은 날에만 서는 시장</b>을 말합니다. 예를 들어 "2·7일장"이면 2, 7, 12, 17, 22, 27일에 열립니다. <b>5일장</b>도 같은 뜻입니다.</p>
+<p style="color:#374151;font-size:.95rem;line-height:1.8">왜 5일 간격일까요? 조선시대부터 이어진 방식으로, 상인들이 하루는 이 고을, 다음날은 옆 고을을 도는 식으로 5개 안팎의 장을 돌아가며 장사할 수 있게 정해진 주기입니다. 지금도 <b>모란민속5일장(성남)·정선아리랑시장(2·7일)·봉평장(2·7일)</b> 같은 전국 유명 5일장들이 이 방식대로 열립니다.</p>
+<p style="color:#374151;font-size:.95rem;line-height:1.8">날짜만 알면 되니, 아래 표에 <b>가려는 날짜</b>를 넣어보세요 — 그 날 열리는 장이 자동으로 초록색으로 표시됩니다.</p>
 <h2 class="sec" id="jt-today">🏮 오늘(${TODAY.slice(5, 7).replace(/^0/, '')}월 ${TODAY.slice(8, 10).replace(/^0/, '')}일) 서는 오일장 <span style="color:#9ca3af;font-weight:600">${marketsOpenToday.length}곳</span></h2>
 ${marketsOpenToday.length ? `<div class="jt-today-grid">${marketsOpenToday.map(m => `<div class="jt-today-card"><b>${esc(m.name)}</b><span>${esc(m.region)} ${esc(m.city)}</span>${m.famous ? `<span class="fam">${esc(m.famous)}</span>` : ''}<div class="jt-links"><a href="https://search.naver.com/search.naver?query=${encodeURIComponent(m.name + ' 맛집')}" target="_blank" rel="noopener">🍴 맛집</a><a href="https://map.naver.com/p/search/${encodeURIComponent(m.name)}" target="_blank" rel="noopener">🗺️ 지도</a></div></div>`).join('')}</div>`
     : `<p class="note">오늘은 장날인 곳이 없어요. 아래에서 날짜를 넣어 다른 날을 확인해보세요.</p>`}
@@ -2199,6 +2203,7 @@ const JANGTEO_SIDO_URLS = [];
     const endCnt = {}; withDay.forEach(m => { const k = m.daysNum.join('·'); endCnt[k] = (endCnt[k] || 0) + 1; });
 
     const cardOf = m => `<div style="background:#fff;border-radius:14px;padding:16px 18px;box-shadow:0 2px 10px rgba(31,41,55,.06);margin:0 0 14px">
+${m.img ? `<img src="${esc(m.img)}" alt="${esc(m.name)} 사진" loading="lazy" style="width:100%;height:160px;object-fit:cover;border-radius:10px;margin-bottom:10px" onerror="this.remove()">` : ''}
 <button class="fav fav-mini" type="button" data-name="${esc(m.name)}" aria-label="찜하기" style="float:right">♡</button>
 <h3 style="font-size:1.06rem;font-weight:800;margin:0 0 4px">${esc(m.name)}${m.daysNum.length ? ` <span style="background:#e2f5f2;color:#0a6c63;font-size:.82rem;font-weight:800;border-radius:999px;padding:3px 10px;margin-left:4px">${m.daysNum.join('·')}일장</span>` : ''}</h3>
 <div style="color:#6b7280;font-size:.9rem;margin-bottom:8px">${esc(m.region)} ${esc(m.city)}${m.addr ? ' · ' + esc(m.addr) : ''}</div>
@@ -3759,16 +3764,18 @@ writeLangSite('tw', apiFestsTw, TW_ORDER, {
 // 다음 개시일까지 계산해 주는 곳은 없다. 대만·홍콩은 야시장 문화가 있어 "장날"이라는 개념이 바로 통한다.
 if (apiFestsTw.length) {
   const TWM = require('./twmarkets');
+  const imgByName = new Map(marketsAll.map(m => [m.name, m.img]));
   const twRows = markets.map(m => {
     const t = TWM.market[m.name] || {};
     return {
       ko: m.name, tw: t.n || m.name, desc: t.d || '', famous: t.f || m.famous,
       region: TWM.region[m.region] || m.region, city: TWM.city[m.city] || m.city,
-      days: m.days, daysNum: m.daysNum || []
+      days: m.days, daysNum: m.daysNum || [], img: imgByName.get(m.name) || ''
     };
   });
   const twRegions = [...new Set(twRows.map(r => r.region))];
   const card = r => `<div class="jcard" data-days="${(r.daysNum || []).join(',')}" data-region="${esc(r.region)}">
+${r.img ? `<img src="${esc(r.img)}" alt="${esc(r.tw)}" loading="lazy" style="width:100%;height:140px;object-fit:cover;border-radius:10px;margin-bottom:10px" onerror="this.remove()">` : ''}
 <div class="jhead"><h3>${esc(r.tw)}</h3><span class="jko">${esc(r.ko)}</span></div>
 <div class="jmeta">📍 ${esc(r.region)} ${esc(r.city)}</div>
 <div class="jdays">${(r.daysNum || []).length ? `逢 <b>${(r.daysNum || []).join('・')}</b> 日開市` : '<b>每日開市</b>'}<span class="jnext"></span></div>
