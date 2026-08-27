@@ -11,3 +11,5 @@ apikeys.local.json
 _*.log
 # 커밋 메시지 임시 파일 — 네 번 딸려 들어갔다. 패턴으로 막는다.
 _*.txt
+# 카드뉴스 렌더 결과물 — 배포도 안 되고(.vercelignore) 회차마다 쌓이므로 추적 안 함(2026-08-27)
+cardnews/out/
