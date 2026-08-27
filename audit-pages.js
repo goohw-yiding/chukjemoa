@@ -5,7 +5,10 @@ const path = require('path');
 const vm = require('vm');
 
 const ROOT = __dirname;
-const SKIP = new Set(['node_modules', '.git', 'data', 'img', 'scripts', '.vercel', 'api']);
+// ⚠️ .vercelignore 로 «배포에서 빠지는» 폴더는 여기서도 빼야 한다.
+//    2026-08-27: cardnews/ 가 빠져 있어 template.html 이 「고아 페이지 + canonical 누락」 🔴 2건으로 잡혔다.
+//    라이브에는 아예 없는 파일이다(.vercelignore 에 cardnews 등재, 2026-08-24).
+const SKIP = new Set(['node_modules', '.git', 'data', 'img', 'scripts', '.vercel', 'api', 'cardnews']);
 
 module.exports = function (R, RED, ORANGE, red, orange) {
   // ── 페이지 수집 (⚠️ rel 은 반드시 '/' 로 시작)

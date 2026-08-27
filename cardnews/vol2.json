@@ -1,0 +1,40 @@
+{
+  "VOL": "2",
+  "DATE": "2026.08.27",
+  "HEADLINE_HTML": "8월에 붐빈 동네<br>20곳 중 15곳이<br>강원이었다",
+  "KEYWORD1": "🔥 성수기 배수",
+  "KEYWORD2": "📊 데이터",
+  "KEYWORD3": "⛰️ 강원",
+
+  "ITEM1_EYEBROW": "ITEM 1",
+  "ITEM1_TITLE_HTML": "붐빔은 「몇 명」이 아니라<br>「평소의 몇 배」다",
+  "ITEM1_BODY_HTML": "원래 사람 많은 도시는 성수기에도 크게 달라 보이지 않지만, <b>평소 조용하던 동네에 사람이 몰리면</b> 주차장·식당·숙소가 한꺼번에 막힙니다. 그래서 방문자 수가 아니라 배수로 봅니다.",
+  "ITEM1_TAG": "🎪 이주의 축제모아 Vol.2",
+
+  "ITEM2_EYEBROW": "ITEM 2",
+  "ITEM2_TITLE_HTML": "상위 20곳 중<br>강원이 15곳",
+  "ITEM2_BODY_HTML": "8월 배수 상위 20곳을 세어 보니 <b>강원 15곳</b>, 경북 3곳, 경기·충남 각 1곳이었습니다. 전부 바다나 계곡을 낀 동네입니다. 동네마다 축제·카페·계곡·걷기길이 함께 묶여 있습니다.",
+  "ITEM2_TAG": "🔗 chukjemoa.co.kr/hot/",
+
+  "ITEM3_EYEBROW": "ITEM 3",
+  "ITEM3_TITLE_HTML": "날짜가 고정된<br>일정을 축으로",
+  "ITEM3_BODY_HTML": "붐비는 시기에 굳이 간다면 이동을 줄이는 게 낫습니다. <b>전국 오일장 장날</b>처럼 요일이 정해진 일정을 하나 축으로 잡고 근처를 채우는 방법이 있습니다.",
+  "ITEM3_TAG": "🔗 chukjemoa.co.kr/jangteo/",
+
+  "DATA_LABEL": "🔥 8월 성수기 배수 1위",
+  "DATA_PLACE": "경북 울릉군",
+  "DATA_BIGNUM": "×1.54",
+  "DATA_UNIT": "배",
+  "DATA_DESC": "2025년 8월 방문 212,195명 — 평소 하루 오던 사람의 1.5배가 왔다는 뜻",
+  "DATA_FACT1_ICON": "🚢",
+  "DATA_FACT1_TEXT": "좌석이 정해진 섬인데 체감 혼잡은 전국 1위",
+  "DATA_FACT2_ICON": "🌊",
+  "DATA_FACT2_TEXT": "2위 강원 고성 ×1.49 · 3위 인제 ×1.43",
+  "DATA_SRC": "데이터 출처: 한국관광공사 「한국관광 데이터랩」 · TourAPI",
+
+  "CTA_GLYPH": "🔥",
+  "CTA_HEADLINE_HTML": "축제모아에서<br>더 보기",
+  "CTA_DESC_HTML": "8월에 사람이 몰린 동네 20곳의<br>축제·카페·계곡·걷기길을 한 번에",
+  "CTA_URL": "chukjemoa.co.kr/hot/",
+  "CTA_NEXT_HTML": "다음 회 「이주의 축제모아 Vol.3」은<br>다음 주 목요일에 찾아옵니다."
+}

@@ -80,8 +80,11 @@ R.push('## 1. 데이터 위생');
 R.push('\n## 2. 데이터 갱신 상태');
 {
   const stale = [];
+  // ⚠️ 손으로 관리하는 파일은 «안 바뀌는 게 정상»이라 여기서 뺀다(안 빼면 매주 영구 🟠).
+  //    markets.json = 유명 장터 손큐레이션(대표품목·서술). 자동 갱신되는 쪽은 markets_api.json 이다.
+  const HANDMADE = new Set(['markets.json', 'audit-history.json']);
   for (const f of fs.readdirSync(DATA)) {
-    if (!f.endsWith('.json')) continue;
+    if (!f.endsWith('.json') || HANDMADE.has(f)) continue;
     const age = Math.round((Date.now() - fs.statSync(path.join(DATA, f)).mtimeMs) / 86400e3);
     if (age >= 21) stale.push([f, age]);
   }

@@ -1,8 +1,8 @@
 {
  "markets_api.json:ov": 100,
- "markets_api.json:sale": 97,
+ "markets_api.json:sale": 98,
  "markets_api.json:days": 95,
- "markets_api.json:open": 95,
+ "markets_api.json:open": 96,
  "markets_api.json:tel": 99,
  "onsen.json:ov": 100,
  "onsen.json:tel": 100,
@@ -38,7 +38,7 @@
  "pets.json:type": 72,
  "pets.json:need": 60,
  "pets.json:note": 62,
- "accessible.json:acc": 14,
+ "accessible.json:acc": 15,
  "trails.json:desc": 100,
  "trails.json:summary": 100,
  "trails.json:x": 43
