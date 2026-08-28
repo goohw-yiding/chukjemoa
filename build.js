@@ -1933,6 +1933,11 @@ const monthNavHtml = `<div class="monthnav-wrap">`
   + `<div class="monthnav">` + mnRest.map(mm => `<a href="/${mm.key}/"><span class="mn-emoji">${mm.emoji}</span>${mm.short} 축제<span class="cnt">${monthCnt(mm)}개</span></a>`).join('') + `</div>`
   + `</div>`;
 
+// 축제 제목과 정확히 일치하는 태그를 가진 블로그 글 = 그 축제의 "완벽 가이드".
+// 2026-08-28 실측: posts.json 37개 중 6개가 festival_pages.json 제목과 정확히 일치.
+const guidePostByTitle = new Map();
+posts.forEach(p => (p.tags || []).forEach(t => { if (!guidePostByTitle.has(t)) guidePostByTitle.set(t, p); }));
+
 MONTHS.forEach(mm => {
   const list = festivals
     .filter(f => f.month.some(m => mm.months.includes(m)))
@@ -1970,11 +1975,17 @@ ${regionFilter(list)}
 
 ${deep.length ? `<h2 class="sec">${mm.short}에 자세히 볼 축제 ${deep.length}곳</h2>
 <p>아래 축제는 <b>개별 페이지</b>가 있습니다. 축제 소개뿐 아니라 그 동네가 이달 얼마나 붐비는지, 근처 맛집·카페의 영업시간, 걷기 좋은 길, 숙소, 그리고 축제를 중심으로 한 하루 코스까지 한 페이지에 정리해 두었습니다.</p>
-<div class="frelm">${deep.slice(0, 40).map(f => `<a href="/festival/${f.slug}/">${esc(f.title)}<span>${esc(f.sido)} ${esc(f.sigungu || '')}</span></a>`).join('')}</div>
+<div class="frelm">${deep.slice(0, 40).map(f => {
+  const gp = guidePostByTitle.get(f.title);
+  return `<a href="/festival/${f.slug}/">${esc(f.title)}<span>${esc(f.sido)} ${esc(f.sigungu || '')}</span></a>`
+    + (gp ? `<a href="/blog/${gp.slug}/" class="frelm-g">📖 ${esc(f.title)} 완벽 가이드<span>사전 정보·연계 코스</span></a>` : '');
+}).join('')}</div>
 <style>.frelm{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:8px;margin:12px 0}
 .frelm a{background:#fff;border:1.5px solid #dcefeb;border-radius:12px;padding:10px 13px;text-decoration:none;color:#374151;font-weight:700;font-size:.9rem;line-height:1.4}
 .frelm a span{display:block;color:#9ca3af;font-weight:600;font-size:.82em;margin-top:2px}
-.frelm a:hover{background:#e2f5f2}</style>` : ''}
+.frelm a:hover{background:#e2f5f2}
+.frelm a.frelm-g{background:#fff7ed;border-color:#fdd8ae;color:#9a5b1f}
+.frelm a.frelm-g:hover{background:#fef0dd}</style>` : ''}
 
 <h2 class="sec">${mm.short} 축제, 어느 지역에 몰려 있나</h2>
 <p>${mm.label}에 열리는 ${list.length}개를 지역별로 세어 보면 ${topSido.map(([r, c]) => `<b>${esc(r)} ${c}개</b>`).join(' · ')} 순입니다. 축제 수가 많다고 다 붐비는 건 아닙니다. 실제로 사람이 얼마나 몰리는지는 아래 방문자 데이터가 더 정확합니다.</p>
