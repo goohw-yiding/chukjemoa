@@ -34,6 +34,7 @@ const TODAY = new Date(Date.now() + 9 * 3600 * 1000).toISOString().slice(0, 10);
 //    수집 스크립트 하나가 다시 어긋나도(2026-08-18에 네 곳에서 어긋나 있었다) 사이트엔 틀린 값이 안 나간다.
 //    반드시 아래 readFileSync 들보다 위에 있어야 한다.
 require('./fix-data').repair();
+require('./verify-content').merge();
 
 const festivals = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/festivals.json'), 'utf8'));
 const markets = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/markets.json'), 'utf8'));
