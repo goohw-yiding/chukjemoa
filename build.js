@@ -2211,6 +2211,27 @@ const JANGTEO_SIDO_URLS = [];
   const linkRow = cur => `<div class="cpresets" style="display:flex;flex-wrap:wrap;gap:8px;margin:14px 0">${big.filter(([s]) => s !== cur).map(([s, a]) =>
     `<a href="/jangteo/${SLUG[s]}/" style="background:#fff;border:1.5px solid #dcefeb;color:#374151;font-weight:700;font-size:.9rem;padding:8px 14px;border-radius:999px">${s} ${a.length}</a>`).join('')}</div>`;
 
+  // ⭐ 2026-08-29: 오일장 카드에 "이 근처 축제" — 시도 전체가 아니라 실제 좌표 거리로.
+  //    가평 오일장을 보는데 경기도 전체 축제가 나오는 문제(사용자 리포트)를 해결하기 위해
+  //    시장 좌표(x,y)와 축제 좌표(x,y)의 실거리(haversine)로 30km 이내·3곳까지만 보여준다.
+  function distKm(x1, y1, x2, y2) {
+    const R = 6371, r = Math.PI / 180;
+    const a = Math.pow(Math.sin((y2 - y1) * r / 2), 2) + Math.cos(y1 * r) * Math.cos(y2 * r) * Math.pow(Math.sin((x2 - x1) * r / 2), 2);
+    return 2 * R * Math.asin(Math.sqrt(a));
+  }
+  const ymd8 = s => `${String(s).slice(0, 4)}.${+String(s).slice(4, 6)}.${+String(s).slice(6, 8)}`;
+  const rangeOf8 = f => f.start === f.end ? ymd8(f.start) : `${ymd8(f.start)} ~ ${ymd8(f.end)}`;
+  const NEAR_FEST_KM = 30, NEAR_FEST_N = 3;
+  const fesWithCoord = apiFests.filter(f => +f.x && +f.y && String(f.end) >= TODAY);
+  const nearFestOf = m => {
+    if (!(+m.x && +m.y)) return [];
+    return fesWithCoord
+      .map(f => ({ f, km: distKm(+m.x, +m.y, +f.x, +f.y) }))
+      .filter(o => o.km <= NEAR_FEST_KM)
+      .sort((a, b) => a.km - b.km)
+      .slice(0, NEAR_FEST_N);
+  };
+
   big.forEach(([sido, list]) => {
     const withDay = list.filter(m => (m.daysNum || []).length).sort((a, b) => (a.daysNum[0] - b.daysNum[0]) || a.name.localeCompare(b.name));
     const noDay = list.filter(m => !(m.daysNum || []).length);
@@ -2231,6 +2252,7 @@ ${m.park ? `🅿️ 주차 ${esc(m.park)}<br>` : ''}
 ${m.tel ? `☎️ ${esc(m.tel)}` : ''}
 </div>
 <div style="margin-top:10px"><a href="https://map.naver.com/p/search/${encodeURIComponent(m.name)}" target="_blank" rel="noopener" style="color:#0c7d72;font-weight:700;font-size:.88rem;margin-right:10px">🗺️ 지도</a><a href="https://search.naver.com/search.naver?query=${encodeURIComponent(m.name + ' 맛집')}" target="_blank" rel="noopener" style="color:#0c7d72;font-weight:700;font-size:.88rem">🍴 근처 맛집</a></div>
+${(() => { const nf = nearFestOf(m); if (!nf.length) return ''; return `<details style="margin-top:10px;border-top:1px solid #f0ece4;padding-top:9px"><summary style="cursor:pointer;font-weight:800;color:#0a6c63;font-size:.9rem">🎪 이 근처 축제 ${nf.length}곳 (${NEAR_FEST_KM}km 이내)</summary><div style="margin-top:7px">${nf.map(({ f, km }) => { const pg = FEST_PAGES.find(p => String(p.id) === String(f.id)); const href = pg ? `/festival/${pg.slug}/` : `/search/?q=${encodeURIComponent(f.title)}`; return `<a href="${href}" style="display:block;padding:7px 0;border-bottom:1px solid #f4f1ec;color:#374151;text-decoration:none"><b style="color:#111827">${esc(f.title)}</b> <span style="color:#9ca3af;font-size:.83rem">· 약 ${Math.round(km)}km</span><br><span style="color:#6b7280;font-size:.83rem">${esc(rangeOf8(f))}</span></a>`; }).join('')}</div></details>`; })()}
 </div>`;
 
     const faq = [
