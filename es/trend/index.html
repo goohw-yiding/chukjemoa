@@ -556,6 +556,7 @@ Periodos: temporada alta agosto de 2025 · rankings de visitantes 2026.06.26~202
     c.style.cursor = 'pointer';
     c.addEventListener('click', function(ev){
       if (ev.target.closest('.fav') || ev.target.closest('a')) return;
+      if (c.dataset.slug) { location.href = '/festival/' + c.dataset.slug + '/'; return; }
       if (window.openFestModal) { window.openFestModal(c.dataset); return; }
       const n = c.dataset.name; if (!n) return;
       window.open('https://search.naver.com/search.naver?query=' + encodeURIComponent(n + ' 축제'), '_blank', 'noopener');

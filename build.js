@@ -616,7 +616,9 @@ function festCard(f) {
   const dOv = mm && mm.ov ? ` data-ov="${escA(mm.ov)}"` : '';
   const dHp = mm && mm.hp ? ` data-hp="${escA(mm.hp)}"` : '';
   const dNear = mm && Array.isArray(nearby[mm.id]) && nearby[mm.id].length ? ` data-near="${encodeURIComponent(JSON.stringify(nearby[mm.id]))}"` : '';
-  return `<div class="card" data-region="${esc(f.region)}" data-start="${f.start}" data-end="${f.end}" data-lat="${la}" data-lng="${lo}" data-name="${escA(f.name)}" data-city="${escA(f.city)}" data-place="${escA(f.place)}" data-desc="${escA(f.desc)}" data-cat="${escA(f.category)}" data-img="${escA(thumbOf(f))}"${dOv}${dHp}${dNear}>
+  const pg1 = mm && mm.id ? FEST_PAGE_BY_ID.get(String(mm.id)) : null;
+  const dSlug = pg1 ? ` data-slug="${escA(pg1.slug)}"` : '';
+  return `<div class="card" data-region="${esc(f.region)}" data-start="${f.start}" data-end="${f.end}" data-lat="${la}" data-lng="${lo}" data-name="${escA(f.name)}" data-city="${escA(f.city)}" data-place="${escA(f.place)}" data-desc="${escA(f.desc)}" data-cat="${escA(f.category)}" data-img="${escA(thumbOf(f))}"${dOv}${dHp}${dNear}${dSlug}>
   <div class="thumb"><img src="${esc(thumbOf(f))}" alt="${esc(f.name)}" loading="lazy" onerror="this.src=&#39;${catImgOf(f)}&#39;"><span class="dday"></span><button class="fav" data-name="${esc(f.name)}" aria-label="찜하기">♡</button><span class="km"></span><span class="cat">${emoji} ${esc(f.category)}</span></div>
   <div class="card-body">
   <div class="card-top">${badge}</div>
@@ -636,6 +638,7 @@ const DDAY_JS = `<script>
     c.style.cursor = 'pointer';
     c.addEventListener('click', function(ev){
       if (ev.target.closest('.fav') || ev.target.closest('a')) return;
+      if (c.dataset.slug) { location.href = '/festival/' + c.dataset.slug + '/'; return; }
       if (window.openFestModal) { window.openFestModal(c.dataset); return; }
       const n = c.dataset.name; if (!n) return;
       window.open('https://search.naver.com/search.naver?query=' + encodeURIComponent(n + ' 축제'), '_blank', 'noopener');
@@ -1915,6 +1918,7 @@ const CHUSEOK_URLS = require('./chuseok.js').build({ layout, writePage, TODAY })
 
 let FEST_PAGES = [];
 try { FEST_PAGES = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/festival_pages.json'), 'utf8')); } catch (e) { }
+const FEST_PAGE_BY_ID = new Map(FEST_PAGES.map(p => [String(p.id), p]));
 
 // ---------- 월별 페이지 ----------
 // ⚠️ 2026-08-22: MONTHS 배열 선언 순서 그대로 찍다 보니 이미 지난 7월이 맨 앞에 나오는 등
@@ -4182,7 +4186,9 @@ const SIDO_URLS = [];
 function sidoFestCard(f) {
   const img = f.img ? String(f.img).replace(/^http:/, 'https:') : '/img/cat2-culture-a.webp';
   const fy = y => y ? y.slice(0, 4) + '.' + (+y.slice(4, 6)) + '.' + (+y.slice(6, 8)) : '';
-  return `<div class="card" data-name="${escA(f.title)}" data-start="${f.start}" data-end="${f.end}" data-region="${escA(f.sido || '')}" data-city="${escA(f.sigungu || '')}" data-place="${escA(f.addr || '')}" data-img="${escA(img)}"${f.ov ? ` data-ov="${escA(f.ov)}"` : ''}${f.hp ? ` data-hp="${escA(f.hp)}"` : ''}>
+  const pg2 = f.id ? FEST_PAGE_BY_ID.get(String(f.id)) : null;
+  const dSlug2 = pg2 ? ` data-slug="${escA(pg2.slug)}"` : '';
+  return `<div class="card" data-name="${escA(f.title)}" data-start="${f.start}" data-end="${f.end}" data-region="${escA(f.sido || '')}" data-city="${escA(f.sigungu || '')}" data-place="${escA(f.addr || '')}" data-img="${escA(img)}"${f.ov ? ` data-ov="${escA(f.ov)}"` : ''}${f.hp ? ` data-hp="${escA(f.hp)}"` : ''}${dSlug2}>
   <div class="thumb"><img src="${esc(img)}" alt="${esc(f.title)}" loading="lazy" onerror="this.src='/img/cat2-culture-a.webp'"><span class="dday"></span></div>
   <div class="card-body"><h3>${esc(f.title)}</h3>
   <p class="date">📅 ${fy(f.start)} ~ ${fy(f.end)}</p>
