@@ -189,5 +189,75 @@ R.push('\n## 5. 축제 재고 — 앞으로 몇 개가 남나');
     if (k === 30 && n < 40) RED.push('30일 뒤 축제 재고 ' + n + '건 (임계 40 미만)');
   });
 }
+
+// ══ 5-B. Override 재확인 후보 — 개요 보강분의 «내용 신선도» 점검 ═════
+// ⚠️ verify-content.js 는 원본(festivals_api.json)의 start/end/addr 가 바뀌었는지만 본다.
+//    개요(ov) 프로세 자체가 여전히 맞는지 — 취소·연기·라인업 변경 — 는 아무도 다시 안 본다.
+//    (2026-08 batch25: 백년나이트 야시장이 폭염으로 취소됐는데 우연히 후속기사를 봐서 걸렀다 — 우연이었다.)
+//    그래서 여기서 두 그룹을 뽑아 사람(또는 예약작업)이 재검색하게 만든다:
+//      ① 아직 안 열렸고 개막이 D-14 이내인 것 — 취소·연기·변경 위험이 가장 큰 구간
+//      ② 끝난 지 14일 이내인 것 — 표본으로 「실제로 열렸는지」만 가볍게 재확인
+R.push('\n## 5-B. Override 재확인 후보 (개요 보강분 신선도)');
+{
+  const ov = readJ('festival_ov_override.json') || {};
+  const fes = readJ('festivals_api.json') || [];
+  const byId = new Map(fes.map(f => [String(f.id), f]));
+  const dOf = s => { const t = dnorm(s); return new Date(+t.slice(0, 4), +t.slice(5, 7) - 1, +t.slice(8, 10)); };
+  const dToday = dOf(TODAY);
+  const daysBetween = (a, b) => Math.round((b - a) / 86400e3);
+
+  const upcoming = [], past = [];
+  const tagCount = { pre: 0, post: 0, unknown: 0 };
+
+  for (const id of Object.keys(ov)) {
+    const o = ov[id];
+    const f = byId.get(String(id));
+    const start = (o.snapshot && o.snapshot.start) || (f && f.start);
+    const end = (o.snapshot && o.snapshot.end) || (f && f.end);
+    if (!start || !end) continue;
+    const timing = (o.sourceTiming === 'pre' || o.sourceTiming === 'post') ? o.sourceTiming : 'unknown';
+    tagCount[timing]++;
+
+    const dToStart = daysBetween(dToday, dOf(start));   // 양수 = 미래(D-day)
+    const dSinceEnd = daysBetween(dOf(end), dToday);    // 양수 = 과거(종료 후 경과일)
+
+    const daysSinceChecked = o.checkedAt ? daysBetween(dOf(o.checkedAt), dToday) : 999;
+    if (dToStart > 0 && dToStart <= 14) upcoming.push({ id, title: f ? f.title : id, dToStart, timing, checkedAt: o.checkedAt || '—', daysSinceChecked });
+    else if (dSinceEnd > 0 && dSinceEnd <= 14) past.push({ id, title: f ? f.title : id, dSinceEnd, checkedAt: o.checkedAt || '—' });
+  }
+  upcoming.sort((a, b) => a.dToStart - b.dToStart);
+  past.sort((a, b) => a.dSinceEnd - b.dSinceEnd);
+
+  R.push('개요를 사람이 직접 써 넣은(override) ' + Object.keys(ov).length + '건 중, 아직 안 열렸고 개막이 임박한 것과 '
+    + '끝난 지 얼마 안 된 것을 뽑았습니다. 전자는 취소·연기·변경 위험, 후자는 「정말 열렸는지」 확인이 목적입니다.');
+
+  R.push('\n**① 임박 재확인 후보 (D-14 이내, 아직 미개최) — ' + upcoming.length + '건**');
+  if (!upcoming.length) R.push('없음');
+  else {
+    R.push('| D-day | 축제(id) | 확인일 | 출처 태그 |'); R.push('|---|---|---|---|');
+    upcoming.forEach(u => R.push('| D-' + u.dToStart + ' | ' + u.title + ' (' + u.id + ') | ' + u.checkedAt + ' | ' + u.timing + ' |'));
+    // ⚠️ checkedAt이 이미 아주 최근(3일 이내)이면 방금 검증한 것이므로 '긴급'에서 뻔다 — 아니면 오늘 아침에 갓 확인한 항목까지 매번 재검색하라고 뜨다.
+    const urgent = upcoming.filter(u => u.dToStart <= 3 && u.daysSinceChecked >= 3);
+    if (urgent.length) {
+      R.push('\n' + red('임박 재확인 후보 중 D-3 이내 긴급 ' + urgent.length + '건 — 취소·연기·변경 여부 재검색 필요'));
+      urgent.forEach(u => R.push('- D-' + u.dToStart + ' ' + u.title + ' (' + u.id + ')'));
+    } else {
+      R.push('\n(D-3 이내 긴급 건 없음)');
+    }
+  }
+
+  R.push('\n**② 지난 축제 표본 점검 후보 (종료 14일 이내) — ' + past.length + '건 중 최대 5건 표본**');
+  if (!past.length) R.push('없음');
+  else {
+    const sample = past.slice(0, 5);
+    R.push('| 종료 후 경과 | 축제(id) | 확인일 |'); R.push('|---|---|---|');
+    sample.forEach(p => R.push('| D+' + p.dSinceEnd + ' | ' + p.title + ' (' + p.id + ') | ' + p.checkedAt + ' |'));
+    R.push('\n' + orange('지난 축제 표본 점검 대상 ' + sample.length + '건 — 실제 개최·취소 보도 여부 가볍게 재검색 권장 (매 빌드 아님, 주간 점검에서만)'));
+  }
+
+  R.push('\n**출처 시점 태그 현황** — pre(사전공지) ' + tagCount.pre + ' · post(사후보도) ' + tagCount.post + ' · unknown(미태그) ' + tagCount.unknown);
+  R.push('(override 항목에 `sourceTiming: "pre"|"post"` 를 남기면 위 ①·② 판정 없이도 「사전공지만 있고 아직 사후 확인이 없는 것」을 바로 걸러낼 수 있습니다. 지금은 날짜 기준으로만 판정합니다.)');
+}
+
 module.exports = { R, RED, ORANGE };
 require('./audit-pages')(R, RED, ORANGE, red, orange);
