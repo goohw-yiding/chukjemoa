@@ -1951,8 +1951,8 @@ MONTHS.forEach(mm => {
   //    「9월축제」12,690 · 「9월축제일정」2,310 인데 제목이 "2026년 9월 축제…"로 시작해
   //    헤드가 앞머리에 없었고, 네이버 SERP 사이트 카드에 우리가 못 붙고 있었다.
   //    → "9월 축제 일정"을 맨 앞으로 옮긴다. (연도는 뒤로)
-  const title = `${mm.short} 축제 일정 — ${mm.label} 전국 축제 ${list.length}개 총정리 | ${SITE_NAME}`;
-  const desc = `${mm.short} 축제 일정 한눈에 보기 — ${mm.label} 전국 축제 ${list.length}개의 날짜·장소·볼거리를 지역별로 정리했습니다. ${list.slice(0, 3).map(f => f.name).join(', ')} 등.`;
+  const title = `${mm.short} 축제 일정 · 축제하는곳 — ${mm.label} 전국 축제 ${list.length}개 총정리 | ${SITE_NAME}`;
+  const desc = `${mm.short}에 축제하는곳이 궁금하다면 여기서 확인하세요 — ${mm.label} 전국 축제 ${list.length}개의 날짜·장소·볼거리를 지역별로 정리했습니다. ${list.slice(0, 3).map(f => f.name).join(', ')} 등.`;
   // 이 달의 숫자 — 지역 분포와 붐빔 상위는 우리만 낼 수 있는 문장이다
   const M = mm.months[0];
   const bySido = {}; list.forEach(f => { const r = (f.region || '').split(' ')[0]; if (r) bySido[r] = (bySido[r] || 0) + 1; });
@@ -1974,6 +1974,7 @@ MONTHS.forEach(mm => {
   const content = `<main><div class="wrap">
 <h1 style="font-size:1.5rem;margin-bottom:6px">${mm.short} 축제 일정 — ${mm.label} 전국 축제 ${list.length}개</h1>
 <p class="note">총 ${list.length}개 · 지역 버튼을 눌러 필터링하세요. 일정은 변동될 수 있으니 방문 전 공식 홈페이지를 확인하세요.</p>
+<p style="margin:4px 0 10px;color:#4b5563;font-size:.95rem">${mm.label}에 <b>축제하는 곳</b>은 전국에 총 <b>${list.length}곳</b>입니다. 아래 목록에서 지역별로 바로 확인할 수 있습니다.</p>
 <p style="margin:4px 0 12px"><button id="nearby-btn" class="nearby-btn">📍 내 주변 축제 보기</button></p>
 ${mm.key === '2026-09' ? `<p style="background:#fff7ed;border:1.5px solid #fdd8ae;border-radius:12px;padding:12px 16px;margin:0 0 14px"><a href="/blog/chuseok-2026-holiday-guide/" style="color:#9a5b1f;font-weight:800;text-decoration:none">🌕 2026년 추석 연휴(9/24~27) 가이드 보기 →</a> <span style="color:#7c6650;font-size:.9rem">연휴 축제·오일장 장날을 한 번에 정리했어요.</span></p>` : ''}
 ${regionFilter(list)}
