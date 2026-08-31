@@ -318,9 +318,14 @@ function esc(s) {
 // 빌드 시각을 KST로 고정한다. Vercel 빌드는 UTC라 그냥 getMonth()를 쓰면 월말·월초에 한 달 밀린다.
 const KST_NOW = new Date(Date.now() + 9 * 3600 * 1000);
 const NOW_MONTH = KST_NOW.getUTCMonth() + 1;
-const NOW_SEASON = NOW_MONTH >= 3 && NOW_MONTH <= 5 ? 'spring'
-  : NOW_MONTH >= 6 && NOW_MONTH <= 8 ? 'summer'
-    : NOW_MONTH >= 9 && NOW_MONTH <= 11 ? 'autumn' : 'winter';
+// ⚠️ 2026-08-31 발견: 8월 31일에 「9월 4일 개막」 축제를 보는 사람에게 넥쿨러(여름 냉감)를 권하고 있었다.
+//    사람은 «오늘»이 아니라 «갈 날»을 기준으로 물건을 산다. 그래서 상품 계절은 닷새 앞을 본다.
+//    월말에 다음 계절로 미리 넘어가고, 월초엔 아무 영향이 없다.
+const SEASON_AT = new Date(KST_NOW.getTime() + 5 * 86400 * 1000);
+const SEASON_MONTH = SEASON_AT.getUTCMonth() + 1;
+const NOW_SEASON = SEASON_MONTH >= 3 && SEASON_MONTH <= 5 ? 'spring'
+  : SEASON_MONTH >= 6 && SEASON_MONTH <= 8 ? 'summer'
+    : SEASON_MONTH >= 9 && SEASON_MONTH <= 11 ? 'autumn' : 'winter';
 
 const COUPANG = {
   enabled: true,
@@ -332,7 +337,13 @@ const COUPANG = {
   items: {
     festival: { ico: '🪵', t: '축제·나들이 갈 때', s: '3단 폴딩 캠핑테이블 · 120x60cm', own: true, q: '캠핑테이블', url: 'https://brand.naver.com/guung/products/4972833368',
                 // 여름은 bySeason으로 일괄 교체하지 않는다 — 물축제만 썬캡, 나머지는 캠핑테이블(FEST_BB_WATER 참고)
-                bySeason: { winter: 'tripcost', spring: 'flower' } },
+                // 2026-08-31: 가을을 추가했다. 9~10월 월별 페이지는 이미 스툴(앉을 자리)을 쓰는데
+                //   축제 모달 기본값만 캠핑테이블로 남아 «같은 사이트에서 계절이 어긋나» 보였다.
+                //   음식·수산물 축제는 FEST_KIND 가 'festival'을 직접 지정하므로 여기 영향을 받지 않는다.
+                bySeason: { winter: 'tripcost', spring: 'flower', autumn: 'festseat' } },
+    // 가을 축제 기본 — maple 과 같은 상품이지만 「단풍 보면서」라는 말이 축제 모달엔 안 맞아 문구만 따로 둔다
+    festseat: { ico: '🪑', t: '축제장엔 앉을 데가 없습니다', s: '접어서 드는 폴딩 스툴 + 메쉬백', own: true, q: '폴딩 스툴', url: 'https://brand.naver.com/guung/products/13026204364',
+                up: ['gakline', 'chairs'] },
     flower:   { ico: '🧺', t: '봄꽃 나들이 준비물', s: '피크닉 돗자리', own: true, q: '접이식 돗자리', url: 'https://brand.naver.com/guung/products/13737049813', upT: '🧺 피크닉 돗자리 — 단풍 아래 자리 깔고 앉기' },
     maple:    { ico: '🪑', t: '단풍 보면서 앉아 쉴 자리', s: '접어서 드는 폴딩 스툴 + 메쉬백', own: true, q: '캠핑의자', url: 'https://brand.naver.com/guung/products/13026204364',
                 up: ['gakline', 'chairs', 'flower'] },
@@ -443,14 +454,21 @@ const FEST_KIND = [
   [/음악|재즈|록페|뮤직|콘서트|가요|트로트|밴드|힙합|EDM|아리랑|버스킹|국제음악/,                     ['gakline', 'chairs']],
   // 술·커피·빵은 '앉아서 오래 마신다'가 본질이라 먹거리(테이블)와 달리 스툴을 앞에 둔다
   [/막걸리|맥주|와인|주류|가맥|꿀맥|하맥|양조|전통주|수제맥주|술페스타|커피|카페|빵 |빵지/,           ['gakline', 'chairs']],
-  [/김치|막국수|치맥|포도|사과|대추|한우|먹거리|음식|맛|푸드|미식|인삼|산나물|수박|딸기|감귤|삼계탕|장류|홍삼|산삼|약초|고추|참외|옥수수|곶감|메밀|전병|우럭|전어|대문어|멸치|소라|꼴갑|수산물|농특산|특산물|대제전|지평선|생명축제|한방|야생차|찻사발|차문화|다과|포구축제|항구축제|요리축제|시식|수라간/, ['festival', 'chairs']],
+  // 2026-08-31 확장 — 「홍성남당항 대하축제」가 이 줄에 안 걸려 폴백(앉을 자리)으로 떨어지고 있었다.
+  //   대하는 구워 먹는 축제라 «테이블»이 맞다. 같은 이유로 빠져 있던 제철 수산물·과일·먹거리를 채웠다.
+  //   ⚠️ 홑글자 금지: `굴`(동굴축제) `밤`(밤바다·밤도깨비) `배`(배 타는 축제) `감`(감성) `김`(김포·김해)
+  //      → 굴구이·밤축제·배축제·감축제·김축제처럼 두 글자 이상으로만 쓴다.
+  [/김치|막국수|치맥|포도|사과|대추|한우|먹거리|음식|맛|푸드|미식|인삼|산나물|수박|딸기|감귤|삼계탕|장류|홍삼|산삼|약초|고추|참외|옥수수|곶감|메밀|전병|우럭|전어|대문어|멸치|소라|꼴갑|수산물|농특산|특산물|대제전|지평선|생명축제|한방|야생차|찻사발|차문화|다과|포구축제|항구축제|요리축제|시식|수라간|대하|새우|꽃게|대게|오징어|낙지|주꾸미|가리비|굴구이|굴축제|석화|방어|고등어|장어|미꾸라지|추어|해물|젓갈|김축제|밤축제|배축제|감축제|자두|복숭아|블루베리|토마토|양파|마늘|고구마|감자축제|버섯|송이|한과|떡볶이|국수축제|김밥|치킨|막창|곱창|삼겹|갈비|빵축제|찐빵|만두|어죽|국밥|해장|먹방|장터축제|시장축제/, ['festival', 'chairs']],
   // 온천·족욕은 앉아 쉬는 축제 — 자사 온천 상품이 따로 있다
   [/온천|족욕|찜질/,                                                                                ['onsen', 'chairs']],
   // 문화·전통·공연은 '오래 서서 보거나 앉을 데가 없다'가 실제 불편이다. 등받이 의자가 객단가도 높다(개당 6.9만).
   // 궁궐 의식·성곽·대첩 재현도 결국 같은 불편이라 한 줄로 묶는다.
   [/탈춤|국악|전통|문화제|민속|역사|재현|한마당|예술제|공연|연극|마당놀이|축제한마당|궁|종묘|수문장|파수|대제|산성|읍성|성제|고분|왕실|왕가|유산|불교|서원|향교|대첩|이순신|거북선|장군|의병|동학|선비|한복|도자|공예|자기|단오|춘향|문화축제|문화축전|예술축제|거리극|마임|서커스|춤축제|마당극|풍물|한글|선사|대나무/, ['gakline', 'chairs']],
   // 어린이·가족은 짐이 많고 앉을 데가 없다. 메쉬백이 붙은 스툴 세트가 맞다.
-  [/어린이|키즈|가족|동화|유아|아동|인형극|만화|캐릭터|놀이/,                                        ['gakline', 'chairs']]
+  [/어린이|키즈|가족|동화|유아|아동|인형극|만화|캐릭터|놀이/,                                        ['gakline', 'chairs']],
+  // 2026-08-31 추가 — 폴백 목록에서 «자리를 깔고 앉는 행사»가 눈에 띄었다(평화누리 피크닉 페스티벌,
+  //   별바다부산 나이트 캠크닉). 잔디에 앉는 행사는 스툴보다 돗자리가 맞다.
+  [/피크닉|캠크닉|피크닠|잔디밭|들놀이|소풍/,                                                        ['flower', 'gakline', 'chairs']]
 ];
 // 월별 축제 페이지(7~12월) — 그 달 날씨에 맞는 준비물. 여름은 더위, 가을은 앉을 자리, 겨울은 추위.
 function monthBuyBox(m) {
@@ -2207,10 +2225,14 @@ document.getElementById('date-reset').addEventListener('click',function(){ input
 render();
 })();
 </script>`;
+// 시장 카드 모달(placemodal)에 넣을 상품. 오일장 페이지는 «장 보러 가는 사람»이라 카트가 맞다.
+//   ⚠️ 이걸 안 넣으면 window.CJM_BUYBOX 가 undefined 라 모달 구매칸이 조용히 빈 채로 뜬다.
+const jangteoModalBB = '<script>window.CJM_BUYBOX=' + JSON.stringify(buyBox('jangteo')) + ';</script>';
+
 writePage('jangteo', layout(
   `전국 유명 오일장(5일장) 장날 ${marketsDay.length}곳 총정리 — 오늘 열리는 장 바로 확인 | ${SITE_NAME}`,
   `전국 오일장 장날 ${marketsDay.length}곳을 한눈에. 날짜를 넣으면 그 날 열리는 장이 초록색으로 표시되고 가까운 장날 순으로 정렬됩니다. 모란장(4·9일)·정선아리랑시장(2·7일)·봉평장(2·7일) 등 시·도별, 끝자리별 정리.`,
-  '/jangteo/', jangteoContent + buyBox('jangteo'), { jsonld: JANGTEO_FAQ_LD }));
+  '/jangteo/', jangteoContent + buyBox('jangteo') + jangteoModalBB, { jsonld: JANGTEO_FAQ_LD }));
 
 // ---------- 🏮 시·도별 오일장 /jangteo/{시도}/ ----------
 // 왜 나누나: 시장마다 «판매 품목·영업시간·휴무·주차·문의»가 다 있는데(공공데이터 detailIntro2)
@@ -2312,7 +2334,11 @@ ${faq.map(([q, a]) => `<p style="line-height:1.8"><b>${esc(q)}</b><br>${esc(a)}<
     writePage('jangteo/' + SLUG[sido], layout(
       `${sido} 오일장 ${withDay.length}곳 — 장날·파는 것·영업시간 총정리 | ${SITE_NAME}`,
       `${sido} 오일장 ${withDay.length}곳의 장날과 판매 품목, 영업시간·휴무·주차·문의처를 한곳에. ${Object.entries(endCnt).sort((a, b) => b[1] - a[1]).slice(0, 3).map(([k, n]) => `${k}일장 ${n}곳`).join(' · ')}.`,
-      `/jangteo/${SLUG[sido]}/`, content, { jsonld: ld }));
+      // ⚠️ 2026-08-31: 시·도별 오일장 9페이지에 «구매박스가 아예 없었다». 허브(/jangteo/)에만 카트가
+      //    붙어 있고 하위는 비어 있었다 — GA4로 보면 전남·충북·경북 페이지에 실제 세션이 들어온다.
+      //    그리고 시장 카드를 눌렀을 때 뜨는 모달(placemodal)도 CJM_BUYBOX 가 없어 빈 채로 떴다.
+      `/jangteo/${SLUG[sido]}/`,
+      content + buyBox('jangteo') + jangteoModalBB, { jsonld: ld }));
     JANGTEO_SIDO_URLS.push(`/jangteo/${SLUG[sido]}/`);
   });
   // ⚠️ 빌드는 페이지를 «쓰기»만 하고 지우지 않는다. 기준을 4→6으로 올렸을 때 대구 폴더가 그대로 남아
@@ -4486,7 +4512,9 @@ ${sections || '<p class="note">다가오는 연휴 정보를 준비 중이에요
 <p class="note" style="margin-top:20px">공휴일 데이터: 한국천문연구원 특일정보(공공데이터포털). 축제 일정은 변경될 수 있으니 방문 전 공식 홈페이지를 확인하세요. 카드를 누르면 상세정보와 지도·검색 링크가 표시됩니다.</p>
 </div></main>`;
   const holJsonLd = upcoming.slice(0, 3).flatMap(b => apiFests.filter(f => yd(f.start) <= b.end && yd(f.end) >= b.start).slice(0, 5)).map(f => `<script type="application/ld+json">${JSON.stringify({ '@context': 'https://schema.org', '@type': 'Event', name: f.title, startDate: String(f.start).replace(/(\d{4})(\d{2})(\d{2})/, '$1-$2-$3'), endDate: String(f.end).replace(/(\d{4})(\d{2})(\d{2})/, '$1-$2-$3'), eventStatus: 'https://schema.org/EventScheduled', eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode', description: evDesc(f), location: { '@type': 'Place', name: (f.sido || '') + (f.sigungu ? ' ' + f.sigungu : ''), address: { '@type': 'PostalAddress', addressRegion: f.sido, addressLocality: f.sigungu || undefined, streetAddress: f.addr || undefined, addressCountry: 'KR' } }, image: [f.img ? String(f.img).replace(/^http:/, 'https:') : SITE + '/img/cat2-firework-a.webp'], url: SITE + '/holiday/' })}</script>`).join('\n');
-  writePage('holiday', layout('2026 연휴에 갈 축제 — 설날·추석·광복절 황금연휴 축제 총정리 | ' + SITE_NAME, '2026 공휴일·연휴에 열리는 전국 축제를 한눈에. 설날·추석·광복절·개천절·한글날 연휴 나들이 계획을 축제모아에서.', '/holiday/', holContent, { jsonld: holJsonLd }));
+  // ⚠️ 2026-08-31: 연휴 페이지에 구매박스가 없었다. 「추석연휴」는 네이버 월 59,800회짜리 말이고
+  //    연휴 = 짐 싸서 멀리 가는 날이라 캐리어·여권지갑·차량거치대가 맞는 자리다(월별 페이지와 다르다).
+  writePage('holiday', layout('2026 연휴에 갈 축제 — 설날·추석·광복절 황금연휴 축제 총정리 | ' + SITE_NAME, '2026 공휴일·연휴에 열리는 전국 축제를 한눈에. 설날·추석·광복절·개천절·한글날 연휴 나들이 계획을 축제모아에서.', '/holiday/', holContent + renderBuyBox('tripcost', ['carriers', 'car'], 'holiday'), { jsonld: holJsonLd }));
 }
 
 if (apiTrails.length) {
