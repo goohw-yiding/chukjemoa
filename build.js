@@ -333,9 +333,9 @@ const COUPANG = {
     festival: { ico: '🪵', t: '축제·나들이 갈 때', s: '3단 폴딩 캠핑테이블 · 120x60cm', own: true, q: '캠핑테이블', url: 'https://brand.naver.com/guung/products/4972833368',
                 // 여름은 bySeason으로 일괄 교체하지 않는다 — 물축제만 썬캡, 나머지는 캠핑테이블(FEST_BB_WATER 참고)
                 bySeason: { winter: 'tripcost', spring: 'flower' } },
-    flower:   { ico: '🧺', t: '봄꽃 나들이 준비물', s: '피크닉 돗자리', own: true, q: '접이식 돗자리', url: 'https://brand.naver.com/guung/products/13737049813' },
+    flower:   { ico: '🧺', t: '봄꽃 나들이 준비물', s: '피크닉 돗자리', own: true, q: '접이식 돗자리', url: 'https://brand.naver.com/guung/products/13737049813', upT: '🧺 피크닉 돗자리 — 단풍 아래 자리 깔고 앉기' },
     maple:    { ico: '🪑', t: '단풍 보면서 앉아 쉴 자리', s: '접어서 드는 폴딩 스툴 + 메쉬백', own: true, q: '캠핑의자', url: 'https://brand.naver.com/guung/products/13026204364',
-                up: ['gakline', 'chairs'] },
+                up: ['gakline', 'chairs', 'flower'] },
     // 걷기길 39페이지 — 자사 걷기용품이 아직 없어 제휴로 채운다. 등산스틱·무릎보호대는 발주 완료라 입고되면 자사로 교체.
     trails:   { ico: '🥾', t: '걷기 여행 준비물', s: '발 편한 등산화', q: '등산화', url: 'https://link.coupang.com/a/fXNZ2GivM4',
                 up: ['pole', 'knee'] },
@@ -1975,6 +1975,7 @@ MONTHS.forEach(mm => {
 <h1 style="font-size:1.5rem;margin-bottom:6px">${mm.short} 축제 일정 — ${mm.label} 전국 축제 ${list.length}개</h1>
 <p class="note">총 ${list.length}개 · 지역 버튼을 눌러 필터링하세요. 일정은 변동될 수 있으니 방문 전 공식 홈페이지를 확인하세요.</p>
 <p style="margin:4px 0 12px"><button id="nearby-btn" class="nearby-btn">📍 내 주변 축제 보기</button></p>
+${mm.key === '2026-09' ? `<p style="background:#fff7ed;border:1.5px solid #fdd8ae;border-radius:12px;padding:12px 16px;margin:0 0 14px"><a href="/blog/chuseok-2026-holiday-guide/" style="color:#9a5b1f;font-weight:800;text-decoration:none">🌕 2026년 추석 연휴(9/24~27) 가이드 보기 →</a> <span style="color:#7c6650;font-size:.9rem">연휴 축제·오일장 장날을 한 번에 정리했어요.</span></p>` : ''}
 ${regionFilter(list)}
 <div class="grid">${list.map(festCard).join('\n')}</div>
 
@@ -2091,6 +2092,12 @@ const marketRows = marketsDay.map(m =>
   `<tr data-days="${m.daysNum.join(',')}"><td><button class="fav fav-mini" type="button" data-name="${esc(m.name)}" aria-label="찜하기">♡</button><strong>${esc(m.name)}</strong></td><td class="nextday"></td><td>${esc(m.region)} ${esc(m.city)}</td><td>${esc(m.days)}</td><td>${esc(m.famous)}</td><td>${esc(m.desc)}</td><td class="jt-links"><a href="https://search.naver.com/search.naver?query=${encodeURIComponent(m.name + ' 맛집')}" target="_blank" rel="noopener">🍴 맛집</a><a href="https://map.naver.com/p/search/${encodeURIComponent(m.name)}" target="_blank" rel="noopener">🗺️ 지도</a></td></tr>`
 ).join('\n');
 
+// ---------- 🏮 오일장 FAQ — "오늘 장날"·"장날" 검색과 AI 답변엔진이 그대로 인용할 문장 ----------
+const JANGTEO_FAQ = [
+  [`오늘 장날인 곳은 어디인가요?`, `오늘(${TODAY.slice(5, 7).replace(/^0/, '')}월 ${TODAY.slice(8, 10).replace(/^0/, '')}일) 기준 전국에서 열리는 오일장은 ${marketsOpenToday.length}곳입니다. 이 페이지 위의 "오늘 서는 오일장" 목록에서 바로 확인할 수 있고, 다른 날짜를 보고 싶으면 날짜 선택 칸에 넣으면 자동으로 계산됩니다.`],
+  [`장날은 어떻게 계산하나요?`, `오일장(5일장)은 날짜 끝자리가 같은 날에 서는 시장입니다. 예를 들어 2·7일장이면 2, 7, 12, 17, 22, 27일에 열립니다. 상설시장은 매일 열려 별도로 표시했습니다.`]
+];
+const JANGTEO_FAQ_LD = `<script type="application/ld+json">${JSON.stringify({'@context':'https://schema.org','@type':'FAQPage',mainEntity:JANGTEO_FAQ.map(q=>({'@type':'Question',name:q[0],acceptedAnswer:{'@type':'Answer',text:q[1]}}))})}</script>`;
 const jangteoContent = `<main><div class="wrap">
 <div style="border-radius:12px;overflow:hidden;margin-bottom:16px"><img src="/img/jangteo.webp" alt="전통 오일장 풍경" style="width:100%;max-height:220px;object-fit:cover;display:block"></div>
 <h1 style="font-size:1.5rem;margin-bottom:6px">전국 유명 오일장(5일장) 날짜 총정리</h1>
@@ -2158,6 +2165,12 @@ ${marketsNoDay.length ? `<h2 class="sec">장날을 확인하지 못한 시장 ${
 <h2 class="sec">이 데이터는 어디서 왔나</h2>
 <p style="color:#374151;font-size:.95rem;line-height:1.8">한국관광공사 TourAPI의 전통시장 정보 <b>${marketsAll.length - markets.length}곳</b>에, 저희가 직접 정리한 유명 장터 <b>${markets.length}곳</b>(대표 품목·특징 서술)을 합쳤습니다. 장날은 공공데이터 설명문에서 뽑아낸 뒤 <b>끝자리 간격이 정확히 5일 때만</b> 오일장으로 인정했습니다 — 그래서 「23·28일」 같은 표기도 3·8일장으로 바르게 읽습니다. 명절·기상에 따라 쉬는 날이 있으니 먼 길이라면 확인 후 출발하세요.</p>
 
+<h2 class="sec">🌕 추석 연휴엔 오일장이 더 붐빕니다</h2>
+<p style="background:#fff7ed;border:1.5px solid #fdd8ae;border-radius:12px;padding:14px 16px;color:#374151;font-size:.95rem;line-height:1.8">2026년 추석(9월 25일 금요일, 연휴 24~27일) 차례상 재료를 오일장에서 준비하는 경우가 많아 연휴 직전 장날은 평소보다 붐빕니다. <a href="/blog/chuseok-2026-holiday-guide/" style="color:#9a5b1f;font-weight:800">2026년 추석 연휴 가이드</a>에서 연휴 일정과 겹치는 축제·오일장을 함께 확인하세요.</p>
+
+<h2 class="sec">자주 묻는 질문</h2>
+<div class="faqbox">${JANGTEO_FAQ.map(q=>`<details><summary>${q[0]}</summary><p>${q[1]}</p></details>`).join('')}</div>
+
 <h2 class="sec">이달의 축제도 확인하세요</h2>
 ${monthNavHtml}
 </div></main>
@@ -2194,9 +2207,9 @@ render();
 })();
 </script>`;
 writePage('jangteo', layout(
-  `전국 오일장(5일장) 장날 ${marketsDay.length}곳 총정리 — 오늘 열리는 장 바로 확인 | ${SITE_NAME}`,
+  `전국 유명 오일장(5일장) 장날 ${marketsDay.length}곳 총정리 — 오늘 열리는 장 바로 확인 | ${SITE_NAME}`,
   `전국 오일장 장날 ${marketsDay.length}곳을 한눈에. 날짜를 넣으면 그 날 열리는 장이 초록색으로 표시되고 가까운 장날 순으로 정렬됩니다. 모란장(4·9일)·정선아리랑시장(2·7일)·봉평장(2·7일) 등 시·도별, 끝자리별 정리.`,
-  '/jangteo/', jangteoContent + buyBox('jangteo')));
+  '/jangteo/', jangteoContent + buyBox('jangteo'), { jsonld: JANGTEO_FAQ_LD }));
 
 // ---------- 🏮 시·도별 오일장 /jangteo/{시도}/ ----------
 // 왜 나누나: 시장마다 «판매 품목·영업시간·휴무·주차·문의»가 다 있는데(공공데이터 detailIntro2)
