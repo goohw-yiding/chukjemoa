@@ -36,6 +36,14 @@ function parseAddr(addr) {
   } else {
     sido = SIDO_LONG[first] || first.replace(/(특별시|광역시|특별자치시|특별자치도|도)$/, '') || '';
   }
+  // ⚠️ 2026-09-01 추가 — 원본에 「서울특별 중구」처럼 **시·도가 잘려 들어온** 주소가 있다
+  //    (TourAPI 축제 2건). 접미사 규칙으로는 못 잡혀 sido:'' 가 되고, 그 축제는 지역 목록에서
+  //    통째로 빠진다. 첫 토큰이 유효 시·도 이름으로 «시작»하면 그 시·도로 본다.
+  //    MERGED 분기가 위에 있어 「전남광주통합특별시」가 「전남」으로 잘못 잡히지 않는다.
+  if (!VALID_SIDO.has(sido) && first) {
+    const hit = [...VALID_SIDO].find(s => first.startsWith(s));
+    if (hit) sido = hit;
+  }
   const sigungu = /(시|군|구)$/.test(second) ? second : '';
   return { sido: VALID_SIDO.has(sido) ? sido : '', sigungu };
 }

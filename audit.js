@@ -46,7 +46,13 @@ R.push('## 1. 데이터 위생');
       }
       for (const k of Object.keys(o)) {
         const v = o[k];
-        if (typeof v === 'string' && v.indexOf('전남광주통합특별시') >= 0) bad.merged.push(f + ' · ' + nm + ' [' + k + ']');
+        // ⚠️ 2026-09-01 정정 — 「전남광주통합특별시」를 모든 필드에서 잡으니 매주 🔴 29건이 떴는데
+        //    전부 `host`(주최기관명)였고, **원본이 주는 실제 기관명**이며 빌드된 HTML엔 0건이었다.
+        //    이 검사의 목적은 «우리가 만든 지역 라벨이 옛 표기로 남았나»이지 기관 이름이 아니다.
+        //    화면에 나가지도 않는 값으로 🔴를 띄우면 **진짜 경고가 그 밑에 묻힌다.**
+        //    → 지역을 가리키는 필드만 본다.
+        if (typeof v === 'string' && v.indexOf('전남광주통합특별시') >= 0
+          && ['sido', 'region', 'city', 'sigungu', 'addr', 'area'].includes(k)) bad.merged.push(f + ' · ' + nm + ' [' + k + ']');
         if (v === 'null' || v === 'undefined' || v === 'NaN') bad.nullish.push(f + ' · ' + nm + ' [' + k + ']');
       }
       if ('x' in o && 'y' in o && String(o.x || '') !== '' && String(o.y || '') !== '' && !validCoord(o.x, o.y))
