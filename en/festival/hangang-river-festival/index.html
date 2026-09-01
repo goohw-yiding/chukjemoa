@@ -446,7 +446,7 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 <header><div class="wrap">
 <a class="logo" href="/en/">🎪 축제모아</a>
 
-<button class="navtoggle" id="navtoggle" aria-label="menu" aria-expanded="false">☰</button><nav id="mainnav"><a href="/en/">Home</a><a href="/en/calendar/">🗓️ When to go</a><a href="/en/closed/">🚪 What closes</a><a href="/en/access/">♿ Barrier-free</a><a href="/en/search/">🔎 Festivals</a><a href="/en/mountains/">⛰️ Mountains</a><a href="/en/jangteo/">🏮 Markets</a><a href="/en/blog/">📝 Blog</a><a href="/en/cafe/">☕ Cafés</a><a href="/en/trend/">🔥 Rankings</a><a href="/en/trip/">🧳 1st/2nd/3rd visit</a><a href="/">🇰🇷 한국어</a></nav>
+<button class="navtoggle" id="navtoggle" aria-label="menu" aria-expanded="false">☰</button><nav id="mainnav"><a href="/en/">Home</a><a href="/en/calendar/">🗓️ When to go</a><a href="/en/closed/">🚪 What closes</a><a href="/en/access/">♿ Barrier-free</a><a href="/en/festival/">🎪 All festivals</a><a href="/en/search/">🔎 Search</a><a href="/en/mountains/">⛰️ Mountains</a><a href="/en/jangteo/">🏮 Markets</a><a href="/en/blog/">📝 Blog</a><a href="/en/cafe/">☕ Cafés</a><a href="/en/trend/">🔥 Rankings</a><a href="/en/trip/">🧳 1st/2nd/3rd visit</a><a href="/">🇰🇷 한국어</a></nav>
 </div></header>
 <main><div class="wrap">
 
@@ -489,6 +489,81 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 <a class="fl-map" href="https://www.google.com/maps?q=37.5178205886,126.9708508939" target="_blank" rel="noopener">🗺️ View on map</a>
 <a class="fl-map" href="https://www.google.com/search?q=Hangang%20River%20Festival%20Korea%20festival" target="_blank" rel="noopener">🔎 Search on Google</a>
 </div>
+
+<style>
+.xbox{background:#fff;border-radius:16px;padding:18px 20px;margin:16px 0;box-shadow:0 2px 10px rgba(31,41,55,.06)}
+.xbox h2{font-size:1.05rem;font-weight:900;color:#0a6c63;margin:0 0 6px}
+.xbox .lead{color:#6b7280;font-size:.88rem;line-height:1.62;margin:0 0 12px}
+.xcopy{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;
+  background:#f6fbfa;border:1.5px solid #dcefeb;border-radius:12px;padding:11px 13px;margin:8px 0}
+.xcopy .lb{font-size:.74rem;font-weight:800;color:#0a6c63;letter-spacing:.02em;display:block;margin-bottom:3px}
+.xcopy .vl{font-size:1rem;font-weight:800;color:#111827;word-break:keep-all;line-height:1.45}
+.xcopy button{background:#0f9d8f;color:#fff;border:0;border-radius:9px;padding:9px 14px;
+  font-weight:800;font-size:.84rem;cursor:pointer;white-space:nowrap}
+.xbars{display:flex;gap:6px;align-items:flex-end;height:74px;margin:6px 0 4px}
+.xbars .b{flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:4px}
+.xbars .bar{width:100%;border-radius:6px 6px 0 0;background:#cfe9e4;min-height:4px}
+.xbars .b.on .bar{background:#0f9d8f}
+.xbars .b.lo .bar{background:#9dd3ff}
+.xbars .lbl{font-size:.7rem;color:#6b7280;font-weight:700}
+.xbars .v{font-size:.72rem;color:#374151;font-weight:800}
+.xlist{display:grid;gap:9px}
+.xitem{border:1.5px solid #eef2f1;border-radius:12px;padding:11px 13px}
+.xitem .nm{font-weight:800;color:#111827;font-size:.95rem}
+.xitem .mt{color:#6b7280;font-size:.83rem;margin-top:3px;line-height:1.55}
+.xtag{display:inline-block;background:#e2f5f2;color:#0a6c63;font-weight:800;font-size:.76rem;
+  padding:3px 9px;border-radius:999px;margin:4px 4px 0 0}
+.xtag.d{background:#fff3e0;color:#9a5b00}
+.xnote{color:#9aa3af;font-size:.79rem;line-height:1.6;margin-top:10px}
+</style>
+<script>
+document.addEventListener('click',function(e){
+  var b=e.target.closest('.xcopy button'); if(!b) return;
+  var t=b.getAttribute('data-v')||'';
+  var done=function(){var o=b.textContent;b.textContent=b.getAttribute('data-done')||'OK';
+    setTimeout(function(){b.textContent=o;},1400);};
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,function(){});}
+  else{var ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);
+    ta.select();try{document.execCommand('copy');done();}catch(_){}document.body.removeChild(ta);}
+});
+</script><div class="xbox"><h2>🅿️ Nearby attractions — with actual parking capacity</h2><p class="lead">Most sites only say &quot;parking available.&quot; These are official figures from the Ministry of the Interior and Safety, so you can judge before you drive.</p><div class="xlist"><div class="xitem"><div class="nm">서울 구 용산철도병원 본관(현 용산역사박물관)</div>
+<div class="mt">1.0 km away · 서울특별시 용산구 한강대로14길 35-29</div>
+
+<span class="xtag">capacity 680</span>
+</div><div class="xitem"><div class="nm">노들섬</div>
+<div class="mt">1.1 km away · 서울특별시 용산구 양녕로 445</div>
+<span class="xtag">30 parking spaces</span>
+<span class="xtag">capacity 1,700</span>
+</div><div class="xitem"><div class="nm">왜고개 순교성지</div>
+<div class="mt">1.3 km away · 서울특별시 용산구 한강대로40길 46</div>
+<span class="xtag">20 parking spaces</span>
+<span class="xtag">capacity 100</span>
+</div><div class="xitem"><div class="nm">옛 간조 경성지점 사옥</div>
+<div class="mt">1.4 km away · 서울특별시 용산구 한강대로42길 13</div>
+
+<span class="xtag">capacity 40</span>
+</div></div></div>
+<div class="xbox"><h2>🏮 Traditional market days during the festival</h2><p class="lead">Korean country markets open only on days ending in fixed digits — every 5 days. These are the actual dates they open while the festival runs, so you can add one to the same trip.</p><div class="xlist"><div class="xitem"><div class="nm">대림시장</div>
+<div class="mt">9.0 km away · opens on days ending in 5, 10 · 61 stalls</div>
+<div style="margin-top:5px"><span class="lb" style="font-size:.74rem;font-weight:800;color:#9a5b00">Open on</span> <span class="xtag d">May 5</span><span class="xtag d">May 10</span></div>
+</div><div class="xitem"><div class="nm">모란종합시장</div>
+<div class="mt">17.0 km away · opens on days ending in 4, 9 · 61 stalls</div>
+<div style="margin-top:5px"><span class="lb" style="font-size:.74rem;font-weight:800;color:#9a5b00">Open on</span> <span class="xtag d">May 4</span><span class="xtag d">May 9</span></div>
+</div><div class="xitem"><div class="nm">능곡시장</div>
+<div class="mt">17.5 km away · opens on days ending in 2, 7 · 43 stalls</div>
+<div style="margin-top:5px"><span class="lb" style="font-size:.74rem;font-weight:800;color:#9a5b00">Open on</span> <span class="xtag d">May 2</span><span class="xtag d">May 7</span></div>
+</div></div></div>
+<div class="xbox"><h2>🎪 Other festivals nearby at the same time</h2><p class="lead">Overlapping dates, within 60 km.</p><div class="xlist"><a class="xitem" style="display:block;text-decoration:none" href="/en/festival/gugak-performance-jinyeon/">
+<div class="nm" style="color:#0c7d72">Gugak Performance Jinyeon</div>
+<div class="mt">6.3 km away · 01/01 – 12/31</div></a><a class="xitem" style="display:block;text-decoration:none" href="/en/festival/cookierun-kingdom-art-collaboration-project-special-exhibiti/">
+<div class="nm" style="color:#0c7d72">CookieRun: Kingdom Art Collaboration Project Special Exhibition</div>
+<div class="mt">6.3 km away · 01/23 – 05/17</div></a><a class="xitem" style="display:block;text-decoration:none" href="/en/festival/moonlight-tour-at-changdeokgung-palace/">
+<div class="nm" style="color:#0c7d72">Moonlight Tour at Changdeokgung Palace</div>
+<div class="mt">6.9 km away · 04/16 – 05/31</div></a><a class="xitem" style="display:block;text-decoration:none" href="/en/festival/apap-artwork-tour/">
+<div class="nm" style="color:#0c7d72">APAP Artwork Tour</div>
+<div class="mt">11.6 km away · 03/10 – 11/30</div></a><a class="xitem" style="display:block;text-decoration:none" href="/en/festival/international-horticulture-goyang-korea/">
+<div class="nm" style="color:#0c7d72">International Horticulture Goyang Korea</div>
+<div class="mt">23.4 km away · 04/24 – 05/10</div></a></div></div>
 <div class="frel"><h2>Other festivals in Seoul</h2><div class="row"><a href="/en/festival/cookierun-kingdom-art-collaboration-project-special-exhibiti/">CookieRun: Kingdom Art Collaboration Project Special Exhibition</a><a href="/en/festival/yeon-deung-hoe/">Yeon Deung Hoe</a><a href="/en/festival/moonlight-tour-at-changdeokgung-palace/">Moonlight Tour at Changdeokgung Palace</a><a href="/en/festival/seoul-philharmonic-orchestra-riverside-concert/">Seoul Philharmonic Orchestra Riverside Concert</a><a href="/en/festival/n-seoul-tower-global-night-walk/">N Seoul Tower Global Night Walk</a><a href="/en/festival/k-illustration-fair-magok/">K-Illustration Fair Magok</a></div></div>
 <p style="margin-top:10px"><a href="/en/search/?region=Seoul" style="color:#0c7d72;font-weight:700">← Browse all festivals in Seoul</a></p>
 </div></main>

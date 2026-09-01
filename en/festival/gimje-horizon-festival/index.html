@@ -446,7 +446,7 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 <header><div class="wrap">
 <a class="logo" href="/en/">🎪 축제모아</a>
 
-<button class="navtoggle" id="navtoggle" aria-label="menu" aria-expanded="false">☰</button><nav id="mainnav"><a href="/en/">Home</a><a href="/en/calendar/">🗓️ When to go</a><a href="/en/closed/">🚪 What closes</a><a href="/en/access/">♿ Barrier-free</a><a href="/en/search/">🔎 Festivals</a><a href="/en/mountains/">⛰️ Mountains</a><a href="/en/jangteo/">🏮 Markets</a><a href="/en/blog/">📝 Blog</a><a href="/en/cafe/">☕ Cafés</a><a href="/en/trend/">🔥 Rankings</a><a href="/en/trip/">🧳 1st/2nd/3rd visit</a><a href="/">🇰🇷 한국어</a></nav>
+<button class="navtoggle" id="navtoggle" aria-label="menu" aria-expanded="false">☰</button><nav id="mainnav"><a href="/en/">Home</a><a href="/en/calendar/">🗓️ When to go</a><a href="/en/closed/">🚪 What closes</a><a href="/en/access/">♿ Barrier-free</a><a href="/en/festival/">🎪 All festivals</a><a href="/en/search/">🔎 Search</a><a href="/en/mountains/">⛰️ Mountains</a><a href="/en/jangteo/">🏮 Markets</a><a href="/en/blog/">📝 Blog</a><a href="/en/cafe/">☕ Cafés</a><a href="/en/trend/">🔥 Rankings</a><a href="/en/trip/">🧳 1st/2nd/3rd visit</a><a href="/">🇰🇷 한국어</a></nav>
 </div></header>
 <main><div class="wrap">
 
@@ -488,6 +488,62 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 <a class="fl-map" href="https://www.google.com/maps?q=35.7540218787,126.8522718951" target="_blank" rel="noopener">🗺️ View on map</a>
 <a class="fl-map" href="https://www.google.com/search?q=Gimje%20Horizon%20Festival%20Korea%20festival" target="_blank" rel="noopener">🔎 Search on Google</a>
 </div>
+
+<style>
+.xbox{background:#fff;border-radius:16px;padding:18px 20px;margin:16px 0;box-shadow:0 2px 10px rgba(31,41,55,.06)}
+.xbox h2{font-size:1.05rem;font-weight:900;color:#0a6c63;margin:0 0 6px}
+.xbox .lead{color:#6b7280;font-size:.88rem;line-height:1.62;margin:0 0 12px}
+.xcopy{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;
+  background:#f6fbfa;border:1.5px solid #dcefeb;border-radius:12px;padding:11px 13px;margin:8px 0}
+.xcopy .lb{font-size:.74rem;font-weight:800;color:#0a6c63;letter-spacing:.02em;display:block;margin-bottom:3px}
+.xcopy .vl{font-size:1rem;font-weight:800;color:#111827;word-break:keep-all;line-height:1.45}
+.xcopy button{background:#0f9d8f;color:#fff;border:0;border-radius:9px;padding:9px 14px;
+  font-weight:800;font-size:.84rem;cursor:pointer;white-space:nowrap}
+.xbars{display:flex;gap:6px;align-items:flex-end;height:74px;margin:6px 0 4px}
+.xbars .b{flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:4px}
+.xbars .bar{width:100%;border-radius:6px 6px 0 0;background:#cfe9e4;min-height:4px}
+.xbars .b.on .bar{background:#0f9d8f}
+.xbars .b.lo .bar{background:#9dd3ff}
+.xbars .lbl{font-size:.7rem;color:#6b7280;font-weight:700}
+.xbars .v{font-size:.72rem;color:#374151;font-weight:800}
+.xlist{display:grid;gap:9px}
+.xitem{border:1.5px solid #eef2f1;border-radius:12px;padding:11px 13px}
+.xitem .nm{font-weight:800;color:#111827;font-size:.95rem}
+.xitem .mt{color:#6b7280;font-size:.83rem;margin-top:3px;line-height:1.55}
+.xtag{display:inline-block;background:#e2f5f2;color:#0a6c63;font-weight:800;font-size:.76rem;
+  padding:3px 9px;border-radius:999px;margin:4px 4px 0 0}
+.xtag.d{background:#fff3e0;color:#9a5b00}
+.xnote{color:#9aa3af;font-size:.79rem;line-height:1.6;margin-top:10px}
+</style>
+<script>
+document.addEventListener('click',function(e){
+  var b=e.target.closest('.xcopy button'); if(!b) return;
+  var t=b.getAttribute('data-v')||'';
+  var done=function(){var o=b.textContent;b.textContent=b.getAttribute('data-done')||'OK';
+    setTimeout(function(){b.textContent=o;},1400);};
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,function(){});}
+  else{var ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);
+    ta.select();try{document.execCommand('copy');done();}catch(_){}document.body.removeChild(ta);}
+});
+</script><div class="xbox"><h2>🇰🇷 Copy this into Naver Map or Kakao Map</h2><p class="lead">Google Maps cannot give walking or transit directions inside Korea — Korean law restricts map-data export. Naver Map and Kakao Map can, but they find far more when you search in Korean. Copy and paste:</p>
+<div class="xcopy"><div><span class="lb">Festival name (Korean)</span><span class="vl">김제지평선축제</span></div>
+<button data-v="김제지평선축제" data-done="Copied">Copy</button></div>
+<div class="xcopy"><div><span class="lb">Address (Korean)</span><span class="vl">전북특별자치도 김제시 부량면 벽골제로 442</span></div>
+<button data-v="전북특별자치도 김제시 부량면 벽골제로 442" data-done="Copied">Copy</button></div>
+</div>
+<div class="xbox"><h2>🏮 Traditional market days during the festival</h2><p class="lead">Korean country markets open only on days ending in fixed digits — every 5 days. These are the actual dates they open while the festival runs, so you can add one to the same trip.</p><div class="xlist"><div class="xitem"><div class="nm">김제전통시장</div>
+<div class="mt">6.0 km away · opens on days ending in 2, 7 · 66 stalls</div>
+<div style="margin-top:5px"><span class="lb" style="font-size:.74rem;font-weight:800;color:#9a5b00">Open on</span> <span class="xtag d">Oct 2</span></div>
+</div><div class="xitem"><div class="nm">신태인시장</div>
+<div class="mt">8.0 km away · opens on days ending in 3, 8 · 46 stalls</div>
+<div style="margin-top:5px"><span class="lb" style="font-size:.74rem;font-weight:800;color:#9a5b00">Open on</span> <span class="xtag d">Oct 3</span></div>
+</div><div class="xitem"><div class="nm">원평공설시장(김제원평시장)</div>
+<div class="mt">13.6 km away · opens on days ending in 4, 9 · 34 stalls</div>
+<div style="margin-top:5px"><span class="lb" style="font-size:.74rem;font-weight:800;color:#9a5b00">Open on</span> <span class="xtag d">Oct 4</span></div>
+</div></div></div>
+<div class="xbox"><h2>🎪 Other festivals nearby at the same time</h2><p class="lead">Overlapping dates, within 60 km.</p><div class="xlist"><a class="xitem" style="display:block;text-decoration:none" href="/en/festival/jeonju-hanok-village-traditional-performance-parade/">
+<div class="nm" style="color:#0c7d72">Jeonju Hanok Village Traditional Performance Parade</div>
+<div class="mt">27.7 km away · 04/18 – 10/31</div></a></div></div>
 <div class="frel"><h2>Other festivals in Jeonbuk</h2><div class="row"><a href="/en/festival/imsil-n-cheese-festival/">Imsil N Cheese Festival</a><a href="/en/festival/sunchang-jangryu-festival/">Sunchang Jangryu Festival</a><a href="/en/festival/jeonju-hanok-village-traditional-performance-parade/">Jeonju Hanok Village Traditional Performance Parade</a><a href="/en/festival/gochang-blue-farm-lavender-festival/">Gochang Blue Farm Lavender Festival</a><a href="/en/festival/jeonju-international-short-film-festival/">Jeonju International Short Film Festival</a><a href="/en/festival/jeonju-bibimbap-festival/">Jeonju Bibimbap Festival</a></div></div>
 <p style="margin-top:10px"><a href="/en/search/?region=Jeonbuk" style="color:#0c7d72;font-weight:700">← Browse all festivals in Jeonbuk</a></p>
 </div></main>

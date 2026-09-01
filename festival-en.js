@@ -8,7 +8,16 @@
 //     새로 쓰거나 보강하지 않는다(지어내지 않는다).
 // 임계값: 개요 200자 이상만 만든다(한국어판 MIN_OV=300자 기준과 같은 취지, 영문 데이터 볼륨이
 //   작아 200자로 낮췄다 — 174/216건이 여기 해당, 2026-08-20 실측).
+//
+// 2026-09-01: 실측(GSC 90일)으로 「무엇을 고칠지」가 바뀌었다.
+//   개별 축제 영문명은 이미 6~10위에 올라 있는데 **90일 클릭 0**이고 노출도 한 자릿수다.
+//   페이지에 「공식 개요 한 문단 + 지도 링크」밖에 없으니 더 오를 이유가 없었다.
+//   → intl-fest-extra.js 로 **남이 못 쓰는 것**을 붙인다(한글 원제·붐빔·주차 대수·오일장 날짜).
+//   ⚠️ 상품(쿠웅샵)은 붙이지 않는다 — 2026-08-19 결정: 공유를 노리는 외국어 페이지에 상품을 얹으면
+//      아무도 공유하지 않는다. 코리 QR 착지점은 별도 페이지로 만든다.
 const fs = require('fs'), path = require('path');
+const { extras } = require('./intl-fest-extra.js');
+const { indexPage } = require('./intl-fest-index.js');
 const MIN_OV = 200;
 
 function load(f) { try { return JSON.parse(fs.readFileSync(path.join(__dirname, 'data', f), 'utf8')); } catch (e) { return []; } }
@@ -63,7 +72,8 @@ function build(ctx) {
     let s = slug, n = 2;
     while (used.has(s)) s = `${slug}-${n++}`;
     used.add(s);
-    return { ...f, slug: s };
+    // _slug 는 intl-fest-extra.js 가 「같은 시기 근처 축제」 링크를 걸 때 쓰는 공용 키다.
+    return { ...f, slug: s, _slug: s };
   });
 
   const byRegion = {};
@@ -86,6 +96,7 @@ function build(ctx) {
 
   const TODAY8 = TODAY.replace(/-/g, '');
   const urls = [];
+  const tally = { map: 0, busy: 0, trr: 0, mkt: 0, rel: 0, none: 0 };
 
   rows.forEach(f => {
     const ended = String(f.end || '') < TODAY8;
@@ -94,6 +105,12 @@ function build(ctx) {
     const mapUrl = f.x && f.y ? `https://www.google.com/maps?q=${f.y},${f.x}` : '';
     const hpUrl = f.hp ? (f.hp.indexOf('http') === 0 ? f.hp : 'http://' + f.hp) : '';
     const googleUrl = `https://www.google.com/search?q=${encodeURIComponent(f.title + ' Korea festival')}`;
+
+    // 우리만 가진 정보 — 종료된 축제에는 「기간 중 장날」이 의미 없으므로 진행/예정만 전부 붙이고,
+    // 종료된 축제에는 한글 원제·붐빔처럼 «시기와 무관한 것»만 남는다(extras 안에서 자연히 걸러진다).
+    const ex = extras(f, 'en', rows);
+    Object.keys(tally).forEach(k => { if (ex.stats[k]) tally[k]++; });
+    if (!ex.html) tally.none++;
 
     const content = `<main><div class="wrap">
 ${CSS}
@@ -114,6 +131,7 @@ ${hpUrl ? `<a class="fl-hp" href="${esc(hpUrl)}" target="_blank" rel="noopener">
 ${mapUrl ? `<a class="fl-map" href="${esc(mapUrl)}" target="_blank" rel="noopener">🗺️ View on map</a>` : ''}
 <a class="fl-map" href="${esc(googleUrl)}" target="_blank" rel="noopener">🔎 Search on Google</a>
 </div>
+${ex.html}
 ${related.length ? `<div class="frel"><h2>Other festivals in ${esc(f.region)}</h2><div class="row">${related.map(r => `<a href="/en/festival/${esc(r.slug)}/">${esc(r.title)}</a>`).join('')}</div></div>` : ''}
 <p style="margin-top:10px"><a href="/en/search/?region=${encodeURIComponent(f.region || '')}" style="color:#0c7d72;font-weight:700">← Browse all festivals in ${esc(f.region)}</a></p>
 </div></main>`;
@@ -136,7 +154,29 @@ ${related.length ? `<div class="frel"><h2>Other festivals in ${esc(f.region)}</h
     urls.push(urlPath);
   });
 
-  console.log(`✓ /en/festival/{slug}/ — ${urls.length}개 (전체 ${load('festivals_en.json').length}건 중 개요 ${MIN_OV}자↑)`);
+  // 🗂️ 허브 — 「korean festivals」(82위)·「festivals in korea」(85위) 같은 머리말을 받을 페이지.
+  //    지금은 /en/(62.8위)과 /en/search/(61.9위)가 받고 있는데 둘 다 읽을 내용이 없는 검색 UI다.
+  const ix = indexPage('en', rows, TODAY8);
+  writePage('en/festival', layout(ix.title, ix.desc, ix.url, ix.html, { lang: 'en' }));
+  urls.push(ix.url);
+
+  // ⚠️ 빌드는 «쓰기»만 하고 지우지 않는다 — 데이터에서 빠진 축제의 폴더가 남으면
+  //    사이트맵에는 없는데 URL로는 열리는 유령 페이지가 된다(/jangteo/·/trend/ 에서 이미 겪었다).
+  const keep = new Set(rows.map(f => f.slug));
+  let gone = 0;
+  const dir = path.join(ROOT, 'en', 'festival');
+  if (fs.existsSync(dir)) {
+    for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
+      if (!e.isDirectory() || keep.has(e.name)) continue;
+      fs.rmSync(path.join(dir, e.name), { recursive: true, force: true });
+      console.log('  🗑 유령 페이지 삭제 /en/festival/' + e.name + '/');
+      gone++;
+    }
+  }
+
+  console.log(`✓ /en/festival/{slug}/ — ${urls.length - 1}개 + 허브 /en/festival/ (전체 ${load('festivals_en.json').length}건 중 개요 ${MIN_OV}자↑)`);
+  console.log(`   심화블록: 한글원제 ${tally.map} · 붐빔 ${tally.busy} · 주차대수 ${tally.trr}`
+    + ` · 기간중 장날 ${tally.mkt} · 동시기 근처축제 ${tally.rel} · 아무것도 없음 ${tally.none}`);
   return urls;
 }
 

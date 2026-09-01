@@ -446,7 +446,7 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 <header><div class="wrap">
 <a class="logo" href="/en/">🎪 축제모아</a>
 
-<button class="navtoggle" id="navtoggle" aria-label="menu" aria-expanded="false">☰</button><nav id="mainnav"><a href="/en/">Home</a><a href="/en/calendar/">🗓️ When to go</a><a href="/en/closed/">🚪 What closes</a><a href="/en/access/">♿ Barrier-free</a><a href="/en/search/">🔎 Festivals</a><a href="/en/mountains/">⛰️ Mountains</a><a href="/en/jangteo/">🏮 Markets</a><a href="/en/blog/">📝 Blog</a><a href="/en/cafe/">☕ Cafés</a><a href="/en/trend/">🔥 Rankings</a><a href="/en/trip/">🧳 1st/2nd/3rd visit</a><a href="/">🇰🇷 한국어</a></nav>
+<button class="navtoggle" id="navtoggle" aria-label="menu" aria-expanded="false">☰</button><nav id="mainnav"><a href="/en/">Home</a><a href="/en/calendar/">🗓️ When to go</a><a href="/en/closed/">🚪 What closes</a><a href="/en/access/">♿ Barrier-free</a><a href="/en/festival/">🎪 All festivals</a><a href="/en/search/">🔎 Search</a><a href="/en/mountains/">⛰️ Mountains</a><a href="/en/jangteo/">🏮 Markets</a><a href="/en/blog/">📝 Blog</a><a href="/en/cafe/">☕ Cafés</a><a href="/en/trend/">🔥 Rankings</a><a href="/en/trip/">🧳 1st/2nd/3rd visit</a><a href="/">🇰🇷 한국어</a></nav>
 </div></header>
 <main><div class="wrap">
 
@@ -489,6 +489,81 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 <a class="fl-map" href="https://www.google.com/maps?q=35.1657825586672,129.135026643506" target="_blank" rel="noopener">🗺️ View on map</a>
 <a class="fl-map" href="https://www.google.com/search?q=K-Illustration%20Fair%20Busan%20Korea%20festival" target="_blank" rel="noopener">🔎 Search on Google</a>
 </div>
+
+<style>
+.xbox{background:#fff;border-radius:16px;padding:18px 20px;margin:16px 0;box-shadow:0 2px 10px rgba(31,41,55,.06)}
+.xbox h2{font-size:1.05rem;font-weight:900;color:#0a6c63;margin:0 0 6px}
+.xbox .lead{color:#6b7280;font-size:.88rem;line-height:1.62;margin:0 0 12px}
+.xcopy{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;
+  background:#f6fbfa;border:1.5px solid #dcefeb;border-radius:12px;padding:11px 13px;margin:8px 0}
+.xcopy .lb{font-size:.74rem;font-weight:800;color:#0a6c63;letter-spacing:.02em;display:block;margin-bottom:3px}
+.xcopy .vl{font-size:1rem;font-weight:800;color:#111827;word-break:keep-all;line-height:1.45}
+.xcopy button{background:#0f9d8f;color:#fff;border:0;border-radius:9px;padding:9px 14px;
+  font-weight:800;font-size:.84rem;cursor:pointer;white-space:nowrap}
+.xbars{display:flex;gap:6px;align-items:flex-end;height:74px;margin:6px 0 4px}
+.xbars .b{flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:4px}
+.xbars .bar{width:100%;border-radius:6px 6px 0 0;background:#cfe9e4;min-height:4px}
+.xbars .b.on .bar{background:#0f9d8f}
+.xbars .b.lo .bar{background:#9dd3ff}
+.xbars .lbl{font-size:.7rem;color:#6b7280;font-weight:700}
+.xbars .v{font-size:.72rem;color:#374151;font-weight:800}
+.xlist{display:grid;gap:9px}
+.xitem{border:1.5px solid #eef2f1;border-radius:12px;padding:11px 13px}
+.xitem .nm{font-weight:800;color:#111827;font-size:.95rem}
+.xitem .mt{color:#6b7280;font-size:.83rem;margin-top:3px;line-height:1.55}
+.xtag{display:inline-block;background:#e2f5f2;color:#0a6c63;font-weight:800;font-size:.76rem;
+  padding:3px 9px;border-radius:999px;margin:4px 4px 0 0}
+.xtag.d{background:#fff3e0;color:#9a5b00}
+.xnote{color:#9aa3af;font-size:.79rem;line-height:1.6;margin-top:10px}
+</style>
+<script>
+document.addEventListener('click',function(e){
+  var b=e.target.closest('.xcopy button'); if(!b) return;
+  var t=b.getAttribute('data-v')||'';
+  var done=function(){var o=b.textContent;b.textContent=b.getAttribute('data-done')||'OK';
+    setTimeout(function(){b.textContent=o;},1400);};
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,function(){});}
+  else{var ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);
+    ta.select();try{document.execCommand('copy');done();}catch(_){}document.body.removeChild(ta);}
+});
+</script><div class="xbox"><h2>🇰🇷 Copy this into Naver Map or Kakao Map</h2><p class="lead">Google Maps cannot give walking or transit directions inside Korea — Korean law restricts map-data export. Naver Map and Kakao Map can, but they find far more when you search in Korean. Copy and paste:</p>
+<div class="xcopy"><div><span class="lb">Festival name (Korean)</span><span class="vl">K-핸드메이드페어 부산 2026</span></div>
+<button data-v="K-핸드메이드페어 부산 2026" data-done="Copied">Copy</button></div>
+<div class="xcopy"><div><span class="lb">Address (Korean)</span><span class="vl">부산광역시 해운대구 APEC로 30 (우동)</span></div>
+<button data-v="부산광역시 해운대구 APEC로 30 (우동)" data-done="Copied">Copy</button></div>
+</div>
+<div class="xbox"><h2>📊 How busy this area gets</h2><p class="lead">Visitor-volume index for 해운대구, from Korea Tourism Organization big data. 1.00 = that area's own yearly average, so this compares the area against itself — not against Seoul.</p>
+<div class="xbars"><div class="b"><span class="v">1.14</span>
+<div class="bar" style="height:62px"></div><span class="lbl">Aug</span></div><div class="b lo"><span class="v">1.07</span>
+<div class="bar" style="height:58px"></div><span class="lbl">Oct</span></div></div>
+
+<p class="xnote">The index covers the whole district, not the festival ground itself. Use it to pick a month, not a day. · Oct 1.07 / Aug 1.14</p></div>
+<div class="xbox"><h2>🅿️ Nearby attractions — with actual parking capacity</h2><p class="lead">Most sites only say &quot;parking available.&quot; These are official figures from the Ministry of the Interior and Safety, so you can judge before you drive.</p><div class="xlist"><div class="xitem"><div class="nm">요트올림픽동산지구</div>
+<div class="mt">0.0 km away · 부산광역시 해운대구 APEC로 30</div>
+<span class="xtag">398 parking spaces</span>
+<span class="xtag">capacity 800,000</span>
+</div><div class="xitem"><div class="nm">동백섬</div>
+<div class="mt">2.1 km away · 부산광역시 해운대구 동백로 116</div>
+<span class="xtag">101 parking spaces</span>
+<span class="xtag">capacity 700,000</span>
+</div><div class="xitem"><div class="nm">해운대해수욕장</div>
+<div class="mt">2.4 km away · 부산광역시 해운대구 해운대해변로 264</div>
+<span class="xtag">203 parking spaces</span>
+<span class="xtag">capacity 800,000</span>
+</div><div class="xitem"><div class="nm">황령산관광지</div>
+<div class="mt">3.2 km away · 부산광역시 수영구 황령산로 156 일원</div>
+<span class="xtag">80 parking spaces</span>
+<span class="xtag">capacity 10,000</span>
+</div></div></div>
+<div class="xbox"><h2>🏮 Traditional market days during the festival</h2><p class="lead">Korean country markets open only on days ending in fixed digits — every 5 days. These are the actual dates they open while the festival runs, so you can add one to the same trip.</p><div class="xlist"><div class="xitem"><div class="nm">양산남부시장</div>
+<div class="mt">21.6 km away · opens on days ending in 1, 6 · 200 stalls</div>
+<div style="margin-top:5px"><span class="lb" style="font-size:.74rem;font-weight:800;color:#9a5b00">Open on</span> <span class="xtag d">Jul 26</span></div>
+</div></div></div>
+<div class="xbox"><h2>🎪 Other festivals nearby at the same time</h2><p class="lead">Overlapping dates, within 60 km.</p><div class="xlist"><a class="xitem" style="display:block;text-decoration:none" href="/en/festival/k-handmade-fair-busan/">
+<div class="nm" style="color:#0c7d72">K-Handmade Fair Busan</div>
+<div class="mt">0.0 km away · 07/24 – 07/26</div></a><a class="xitem" style="display:block;text-decoration:none" href="/en/festival/miryang-performing-arts-festival/">
+<div class="nm" style="color:#0c7d72">Miryang Performing Arts Festival</div>
+<div class="mt">50.8 km away · 07/21 – 08/01</div></a></div></div>
 <div class="frel"><h2>Other festivals in Busan</h2><div class="row"><a href="/en/festival/bibliotheca-busan/">Bibliotheca Busan</a><a href="/en/festival/busan-sea-festival/">Busan Sea Festival</a><a href="/en/festival/starry-sea-busan-night-camp-picnic/">Starry Sea Busan - Night Camp Picnic</a><a href="/en/festival/busan-international-rock-festival/">Busan International Rock Festival</a><a href="/en/festival/dongnaeeupseong-history-festival/">Dongnaeeupseong History Festival</a><a href="/en/festival/october-festa-in-gwangalli/">October Festa in Gwangalli</a></div></div>
 <p style="margin-top:10px"><a href="/en/search/?region=Busan" style="color:#0c7d72;font-weight:700">← Browse all festivals in Busan</a></p>
 </div></main>

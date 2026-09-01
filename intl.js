@@ -176,6 +176,7 @@ function kakao(name, x, y) {
 // ─────────────────────────────────────────────────────────────
 function build(ctx) {
   const { layout, writePage, TODAY } = ctx;
+  const ROOT = ctx.ROOT || __dirname;   // 유령 달 페이지 정리에 쓴다(아래 4)번 끝)
   const T = TODAY.replace(/-/g, '');
   const urls = [];
 
@@ -475,6 +476,20 @@ ${next ? `<a href="/${lang}/calendar/${next}/">${monthLabel(next, lang)} →</a>
       writePage(`${lang}/calendar/${ym}`, layout(S.cal.mMeta(monthLabel(ym, lang)), S.cal.mDesc(list.length, monthLabel(ym, lang)), `/${lang}/calendar/${ym}/`, monthContent, { lang, alternates: alts(`calendar/${ym}/`) }));
       urls.push(`/${lang}/calendar/${ym}/`);
     });
+
+    // ⚠️ 2026-09-01 감사에서 🔴로 잡혔다 — 「/en|es|ja|tw|zh/calendar/2026-08/ 고아 5건」.
+    //    monthKeys 가 `k >= 이번달` 이라 8월이 지나자 허브 표에서 빠졌는데, **파일은 그대로 남아**
+    //    링크는 없고 URL로는 열리는 유령 페이지가 됐다. 날짜가 바뀔 때마다 매달 반복되는 사고다.
+    //    (/jangteo/·/trend/·/en/festival/ 에 넣어 둔 정리 단계와 같은 것 — 여긴 빠져 있었다.)
+    const keepM = new Set(bigMonths);
+    const calDir = path.join(ROOT, lang, 'calendar');
+    if (fs.existsSync(calDir)) {
+      for (const e of fs.readdirSync(calDir, { withFileTypes: true })) {
+        if (!e.isDirectory() || keepM.has(e.name)) continue;
+        fs.rmSync(path.join(calDir, e.name), { recursive: true, force: true });
+        console.log(`  🗑 유령 페이지 삭제 /${lang}/calendar/${e.name}/`);
+      }
+    }
   });
 
   console.log(`✓ 외국어 실전 정보 — ${urls.length} 페이지 (closed/access/calendar × ${LANGS.length}개어, 달 페이지 ${bigMonths.length}개월)`);
