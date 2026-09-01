@@ -382,8 +382,11 @@ const COUPANG = {
     // 투명(86.3%)이 345개로 더 팔린다 = 사람들은 차단율보다 투명을 고른다. 그래서 98.1%는 메인이 아닌 업셀.
     suncap98: { ico: '🧢', t: '더 강하게 막고 싶다면', s: '썬캡 워터밤 · 자외선 98.1% 차단(FITI 시험 성적)', own: true, q: '썬캡', url: 'https://brand.naver.com/guung/products/4545903062',
                 upT: '🧢 98.1% 차단형 — 자외선을 더 막습니다' },
-    // 2026년 입고했는데 노출 자리가 없어 2개 판매. 여름 축제 모달 업셀로 8월 남은 기간 판단한다.
+    // ⛔ 2026-08-31 노출 중단 — 장남 님 판단(「상품이 별로」). 2026년 입고 후 8월 내내 여름 자리에
+    //    붙여 봤지만 2개 판매에 그쳤다. 항목은 남겨 두되 **어느 목록에서도 참조하지 않는다.**
+    //    ⚠️ 다시 붙일 거면 상품을 바꾼 다음에 붙일 것 — 자리가 없어서 안 팔린 게 아니었다.
     necool:   { ico: '❄️', t: '더위, 목부터 식히세요', s: 'PCM 넥쿨러 아이스넥링 · 28도에서 다시 언다', own: true, q: '넥쿨러', url: 'https://brand.naver.com/guung/products/13490127630',
+                retired: true,
                 upT: '❄️ PCM 넥쿨러 — 28도에서 다시 얼어 반복 사용' },
     // 오일장 — 카트 5색은 검색 한 칸으로, 폴딩박스는 '장 본 걸 담아 온다'는 다음 행동
     jangcolors: { ico: '🎨', t: '색상 고르기', s: '장보기카트 5색 · 네이비/레드/블랙/블루/와인', own: true, q: '장보기카트',
@@ -445,9 +448,10 @@ const FEST_KIND = [
   [/걷기|둘레길|올레|트레킹|도보|순례|숲길|마라톤|워크|뚜벅|3종|트레일|산행|등반/,                    ['trails', 'pole', 'knee']],
   [/펫스타|펫 |반려동물|반려견|댕댕|강아지|멍멍/,                                                    ['pet', 'suncap']],
   // ⚠️ `물축제` 앞에 (?<!나) 가 붙은 이유 — '홍천 산나물축제'가 물축제로 잡혀서 아쿠아슈즈를 권하고 있었다.
-  [/(?<!나)물축제|물놀이|물싸움|머드|워터|해수욕|해변|바다축제|비치|계곡|서핑|모래|백사장|갯벌|갯골|조개|바지락|은어|바닷길|어방/, ['aqua', 'suncap', 'necool']],
+  [/(?<!나)물축제|물놀이|물싸움|머드|워터|해수욕|해변|바다축제|비치|계곡|서핑|모래|백사장|갯벌|갯골|조개|바지락|은어|바닷길|어방/, ['aqua', 'suncap', 'suncap98']],
   // 여름 나잇페스타 계열 — 물에 안 들어가도 더위가 본체다
-  [/썸머|서머|여름|시원|쿨밸리|水|바캉스|납량|피서/,                                                 ['necool', 'suncap', 'chairs']],
+  // 넥쿨러 은퇴(2026-08-31) 후 여름 더위 대응은 썬캡 두 종으로 간다. 앉을 자리는 그대로 업셀.
+  [/썸머|서머|여름|시원|쿨밸리|水|바캉스|납량|피서/,                                                 ['suncap', 'suncap98', 'chairs']],
   [/눈꽃|눈축제|얼음|빙어|송어|산천어|겨울|한파|스키|썰매|빙등|해맞이|정월대보름/,                    ['hotpack', 'chairs']],
   [/벚꽃|유채|장미|연꽃|국화|철쭉|코스모스|튤립|수국|해바라기|꽃축제|꽃무릇|상사화|매화|진달래|군항제|봄꽃|봄빛|봄나들이|봄맞이|봄축제|가든|Garden|정원|라벤더|양귀비|맥문동|청보리|보리밭|작약|메밀꽃|꽃 |꽃별|꽃빛|꽃대림/, ['flower', 'gakline']],
   [/불꽃|불빛|빛축제|등축제|야행|야간|미디어아트|루미나리에|별빛|달빛|드론|라이트쇼|나잇|반딧불/,     ['chairs', 'gakline']],
@@ -472,7 +476,7 @@ const FEST_KIND = [
 ];
 // 월별 축제 페이지(7~12월) — 그 달 날씨에 맞는 준비물. 여름은 더위, 가을은 앉을 자리, 겨울은 추위.
 function monthBuyBox(m) {
-  const keys = m >= 6 && m <= 8 ? ['festival', 'necool', 'suncap']
+  const keys = m >= 6 && m <= 8 ? ['festival', 'suncap', 'chairs']
     : m >= 9 && m <= 10 ? ['maple', 'gakline', 'chairs']
       : (m >= 11 || m <= 2) ? ['hotpack', 'chairs']
         : ['flower', 'gakline'];
@@ -571,8 +575,11 @@ function renderBuyBox(mainKey, upKeys, detail) {
   if (!COUPANG.enabled) return '';
   const key = mainKey;
   const it = COUPANG.items[key]; if (!it) return '';
+  // ⚠️ retired:true 는 «판 적은 있지만 이제 안 내보내는 상품». 목록 어딘가에 참조가 남아 있어도
+  //    여기서 막는다 — 2026-08-31 넥쿨러를 뺄 때 참조가 5군데였고 하나만 놓쳐도 다시 나갔다.
+  if (it.retired) { console.log('  ⛔ 은퇴 상품 호출 무시: ' + key + ' (' + (detail || '') + ')'); return ''; }
   const ups = (upKeys || []).map(uk => {
-    const u = COUPANG.items[uk]; if (!u) return '';
+    const u = COUPANG.items[uk]; if (!u || u.retired) return '';   // 은퇴 상품은 어디서 부르든 안 나간다
     const urel = u.own ? 'nofollow noopener' : 'nofollow sponsored noopener';
     // ⚠️ 쿠팡 제휴 링크에는 우리 파라미터를 못 붙인다(딥링크가 고정 주소다).
     //    그래서 «무슨 상품을 어느 자리에서» 눌렀는지는 data 속성으로 남긴다 — 안 그러면 GA에 전부 'coupang'으로 뭉개진다.
@@ -681,7 +688,7 @@ const FEST_MAIN = seasonKey('festival');
 // 축제 모달은 922건 전체에 뜨는 최대 노출 자리다. 메인이 캠핑테이블일 때(여름·가을)만 좌석 업셀을 붙이고,
 // 겨울(캐리어)·봄(돗자리)로 바뀌면 그 상품이 원래 갖고 있는 업셀을 그대로 쓴다.
 const FEST_UP = FEST_MAIN === 'festival'
-  ? (NOW_SEASON === 'summer' ? ['necool', 'chairs'] : ['chairs', 'gakline'])
+  ? (NOW_SEASON === 'summer' ? ['suncap', 'chairs'] : ['chairs', 'gakline'])
   : (COUPANG.items[FEST_MAIN] || {}).up;
 const FEST_BB_BASE = renderBuyBox(FEST_MAIN, FEST_UP, 'festival');
 const FEST_BB_WATER = NOW_SEASON === 'summer'
@@ -5060,6 +5067,23 @@ ${buyBox(T.cp)}
     `/trend/${T.slug}/`, content, { jsonld: ld, noindex: true }));   // 위 지역 랭킹과 같은 이유
   THEME_URLS.push(`/trend/${T.slug}/`);
 });
+
+// ⚠️ 2026-08-31: 「넥쿨러를 전부 뺐는데 두 페이지에만 남아 있다」를 쫓다가 찾았다.
+//    `/trend/gwangju/`·`/trend/jeonnam/`이 **이번 빌드가 만들지 않은 유령 페이지**였다
+//    (마지막 생성 8/30 — 방문자 데이터에서 그 시·도가 빠지면 루프가 안 돌고, 옛 HTML은 그대로 서빙된다).
+//    /jangteo/ 에 이미 같은 정리 단계를 넣어 뒀는데 /trend/ 엔 없었다.
+//    ⭐ 정적 생성기는 «없어진 항목의 폴더»를 안 지운다 — 지난 정보가 URL로 계속 열린다.
+{
+  const keep = new Set([...SIDO_URLS, ...THEME_URLS].map(u => u.split('/')[2]));
+  let gone = 0;
+  for (const e of fs.readdirSync(path.join(ROOT, 'trend'), { withFileTypes: true })) {
+    if (!e.isDirectory() || keep.has(e.name)) continue;
+    fs.rmSync(path.join(ROOT, 'trend', e.name), { recursive: true, force: true });
+    console.log('  🗑 유령 페이지 삭제 /trend/' + e.name + '/');
+    gone++;
+  }
+  if (gone) console.log(`  ⚠️ /trend/ 유령 페이지 ${gone}개 삭제 — 이번 빌드가 만들지 않은 폴더입니다`);
+}
 
 // ---------- 다국어 랭킹 숫자 해설 ----------
 const EXPLAIN_L = {
