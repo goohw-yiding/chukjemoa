@@ -634,7 +634,12 @@ function ssrCards(list, n, f) {
       + '</div></div>';
   }).join('');
 }
-function festCard(f) {
+// ⚠️ 2026-09-01: 월별 페이지 축제가 18개에서 173개로 늘자 10월 페이지가 **703KB**가 됐다.
+//    원인은 카드마다 박아 둔 `data-ov`(개요 최대 600자)와 `data-near`(근처 목록 JSON)다.
+//    카드 18개일 땐 괜찮았지만 173개면 그것만 300KB가 넘는다. 네이버 유입의 99%가 모바일이다.
+//    → 카드가 많은 페이지에서는 **개요를 180자로 줄이고 근처 목록은 빼는** 가벼운 카드를 쓴다.
+//      모달에는 요약이 뜨고, 전문은 「이 축제 상세 페이지」 버튼으로 간다(이미 있는 동선).
+function festCard(f, light) {
   const emoji = CAT_EMOJI[f.category] || '🎪';
   const img = CAT_IMG[f.category] || 'etc';
   const [la, lo] = coordOf(f);
@@ -642,9 +647,10 @@ function festCard(f) {
     ? '<span class="badge ok">일정 확정</span>'
     : '<span class="badge est">예년 기준·변동 가능</span>';
   const mm = apiMatch(f);
-  const dOv = mm && mm.ov ? ` data-ov="${escA(mm.ov)}"` : '';
+  const ovTxt = mm && mm.ov ? (light ? String(mm.ov).slice(0, 180) : mm.ov) : '';
+  const dOv = ovTxt ? ` data-ov="${escA(ovTxt)}"` : '';
   const dHp = mm && mm.hp ? ` data-hp="${escA(mm.hp)}"` : '';
-  const dNear = mm && Array.isArray(nearby[mm.id]) && nearby[mm.id].length ? ` data-near="${encodeURIComponent(JSON.stringify(nearby[mm.id]))}"` : '';
+  const dNear = (!light && mm && Array.isArray(nearby[mm.id]) && nearby[mm.id].length) ? ` data-near="${encodeURIComponent(JSON.stringify(nearby[mm.id]))}"` : '';
   const pg1 = mm && mm.id ? FEST_PAGE_BY_ID.get(String(mm.id)) : null;
   const dSlug = pg1 ? ` data-slug="${escA(pg1.slug)}"` : '';
   return `<div class="card" data-region="${esc(f.region)}" data-start="${f.start}" data-end="${f.end}" data-lat="${la}" data-lng="${lo}" data-name="${escA(f.name)}" data-city="${escA(f.city)}" data-place="${escA(f.place)}" data-desc="${escA(f.desc)}" data-cat="${escA(f.category)}" data-img="${escA(thumbOf(f))}"${dOv}${dHp}${dNear}${dSlug}>
@@ -2114,7 +2120,7 @@ MONTHS.forEach(mm => {
 <p style="margin:4px 0 12px"><button id="nearby-btn" class="nearby-btn">📍 내 주변 축제 보기</button></p>
 ${mm.key === '2026-09' ? `<p style="background:#fff7ed;border:1.5px solid #fdd8ae;border-radius:12px;padding:12px 16px;margin:0 0 14px"><a href="/blog/chuseok-2026-holiday-guide/" style="color:#9a5b1f;font-weight:800;text-decoration:none">🌕 2026년 추석 연휴(9/24~27) 가이드 보기 →</a> <span style="color:#7c6650;font-size:.9rem">연휴 축제·오일장 장날을 한 번에 정리했어요.</span></p>` : ''}
 ${regionFilter(list)}
-<div class="grid">${list.map(festCard).join('\n')}</div>
+<div class="grid">${list.map(f => festCard(f, list.length > 40)).join('\n')}</div>
 
 ${deep.length ? `<h2 class="sec">${mm.short}에 자세히 볼 축제 ${deep.length}곳</h2>
 <p>아래 축제는 <b>개별 페이지</b>가 있습니다. 축제 소개뿐 아니라 그 동네가 이달 얼마나 붐비는지, 근처 맛집·카페의 영업시간, 걷기 좋은 길, 숙소, 그리고 축제를 중심으로 한 하루 코스까지 한 페이지에 정리해 두었습니다.</p>
@@ -2192,8 +2198,50 @@ const marketsAll = (() => {
   const byKey = new Map(), alias = new Map();
   const reg = (k, v) => { if (k && !byKey.has(k)) byKey.set(k, v); };
   const firstSent = s => { const t = String(s || '').trim(); const m = t.match(/^[\s\S]{20,160}?다\.(\s|$)/); return (m ? m[0] : t.slice(0, 120)).trim(); };
+
+  // ---------- ① 행정안전부 전국전통시장표준데이터 (2026-09-01 신설) ----------
+  // 이게 바닥을 깐다. TourAPI(143곳)보다 3배 많고, 무엇보다 **장날 끝자리가 데이터로 온다**
+  // (`mrktEstblCycle` = 「2일+7일」). 점포수·취급품목·개설연도·주차/화장실까지 있어
+  // 「이름만 나열」이던 시·도 페이지가 실제로 읽을 게 있는 페이지가 된다.
+  // ⚠️ 상설장 982곳은 수집기가 이미 빼고 준다 — 오일장 페이지에 매일 여는 시장을 섞지 않는다.
+  let std = [];
+  try { std = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/markets_std.json'), 'utf8')); } catch (e) { }
+  std.forEach(m => {
+    const k1 = key(m.name), k2 = key(drop1(m.name));
+    reg(k1, {
+      name: tidy(m.name), region: m.sido, city: m.city, days: m.days, daysNum: m.daysNum || [],
+      famous: m.sale || '',
+      // 표준데이터엔 «설명 문장»이 없다. 대신 있는 사실로 한 줄을 만든다 —
+      // 빈 칸을 두면 표가 허전하고, 지어내면 정확하지 않다. 사실만 이어 붙인다.
+      desc: [m.since ? `${m.since}년 개설` : '', m.stores ? `점포 ${m.stores}곳` : '',
+      m.park ? '주차 가능' : '', m.toilet ? '화장실 있음' : ''].filter(Boolean).join(' · '),
+      ov: '', open: '', rest: '',
+      park: m.park ? '있음' : '', tel: m.tel || '', fair: '', addr: m.addr || '', img: '',
+      x: m.x, y: m.y, stores: m.stores || 0, since: m.since || '', toilet: !!m.toilet, src: 'std'
+    });
+    if (k2 && k2 !== k1 && !alias.has(k2)) alias.set(k2, k1);
+  });
+
+  // ---------- ② 한국관광공사 TourAPI ----------
+  // 표준데이터에 없는 «개요·영업시간·휴무·사진»을 얹는다. 덮어쓰지 않고 **빈 칸만 채운다.**
   api.forEach(m => {
     const k1 = key(m.name), k2 = key(drop1(m.name));
+    const hit = [k1, alias.get(k1), k2, alias.get(k2)].find(k => k && byKey.has(k));
+    if (hit) {
+      const a = byKey.get(hit);
+      byKey.set(hit, Object.assign({}, a, {
+        famous: a.famous || m.sale || '',
+        desc: a.desc || firstSent(m.ov).slice(0, 120),
+        ov: a.ov || m.ov || '', open: a.open || m.open || '', rest: a.rest || m.rest || '',
+        park: a.park || m.park || '', tel: a.tel || m.tel || '', fair: a.fair || m.fair || '',
+        addr: a.addr || m.addr || '', img: a.img || m.img || '',
+        x: a.x || m.x, y: a.y || m.y,
+        daysNum: (a.daysNum && a.daysNum.length) ? a.daysNum : (m.daysNum || []),
+        days: (a.daysNum && a.daysNum.length) ? a.days : m.days,
+        src: a.src + '+api'
+      }));
+      return;
+    }
     reg(k1, {
       name: tidy(m.name), region: m.sido, city: m.city, days: m.days, daysNum: m.daysNum || [],
       // ⭐ detailIntro2 의 saleitem = 공공데이터가 적어 둔 «판매 품목». 143곳 중 139곳에 있다.
@@ -2216,7 +2264,10 @@ const marketsAll = (() => {
 })();
 const marketsDay = marketsAll.filter(m => (m.daysNum || []).length);   // 장날 아는 곳
 const marketsNoDay = marketsAll.filter(m => !(m.daysNum || []).length); // 장날 미확인
-console.log(`✓ 오일장 — 합계 ${marketsAll.length}곳(손 ${markets.length} + API ${marketsAll.length - markets.length}) · 장날 확인 ${marketsDay.length} · 미확인 ${marketsNoDay.length}`);
+console.log(`✓ 오일장 — 합계 ${marketsAll.length}곳 · 장날 확인 ${marketsDay.length} · 미확인 ${marketsNoDay.length}`
+  + ` (출처: 손 ${marketsAll.filter(m => String(m.src).includes('hand')).length}`
+  + ` · 표준데이터 ${marketsAll.filter(m => String(m.src).includes('std')).length}`
+  + ` · TourAPI만 ${marketsAll.filter(m => m.src === 'api').length})`);
 
 // ⚠️ 2026-08-22: "오늘 서는 오일장"을 홈 히어로·/jangteo/ 페이지 두 곳에서 각자 계산하면 숫자가
 //    어긋날 수 있다 — 특히 daysNum엔 10일장이 literal 10으로 들어있어(0이 아니다) 한쪽만 %10으로
@@ -2227,9 +2278,26 @@ const marketsOpenToday = marketsDay.filter(m => (m.daysNum || []).some(d => (d %
 fs.writeFileSync(path.join(ROOT, 'market-fav.json'), JSON.stringify(marketsDay.map(m => ({ n: m.name, r: m.region, c: m.city, d: m.days, dn: m.daysNum }))));
 console.log(`✓ market-fav.json 생성 — 찜하기 가능한 오일장 ${marketsDay.length}곳`);
 
+// ⚠️ 2026-09-01: 표준데이터를 합치며 오일장이 149 → 469곳이 됐다. 그런데 행마다 외부 링크
+//    2개(맛집·지도)를 HTML로 박으니 허브가 **493KB**가 됐다. 네이버 유입의 99%가 모바일이다.
+//    링크는 검색엔진에 아무 값이 없는 외부 링크이므로 **JS가 클릭 순간에 만든다**(행당 약 250바이트 절약).
+//    이름·지역·장날·품목·설명은 그대로 HTML에 남긴다 — 그건 색인돼야 하는 내용이다.
 const marketRows = marketsDay.map(m =>
-  `<tr data-days="${m.daysNum.join(',')}"><td><button class="fav fav-mini" type="button" data-name="${esc(m.name)}" aria-label="찜하기">♡</button><strong>${esc(m.name)}</strong></td><td class="nextday"></td><td>${esc(m.region)} ${esc(m.city)}</td><td>${esc(m.days)}</td><td>${esc(m.famous)}</td><td>${esc(m.desc)}</td><td class="jt-links"><a href="https://search.naver.com/search.naver?query=${encodeURIComponent(m.name + ' 맛집')}" target="_blank" rel="noopener">🍴 맛집</a><a href="https://map.naver.com/p/search/${encodeURIComponent(m.name)}" target="_blank" rel="noopener">🗺️ 지도</a></td></tr>`
+  `<tr data-days="${m.daysNum.join(',')}" data-n="${esc(m.name)}"><td><button class="fav fav-mini" type="button" data-name="${esc(m.name)}" aria-label="찜하기">♡</button><strong>${esc(m.name)}</strong></td><td class="nextday"></td><td>${esc(m.region)} ${esc(m.city)}</td><td>${esc(m.days)}</td><td>${esc(m.famous)}</td><td>${esc(m.desc)}</td><td class="jt-links"><button type="button" class="jt-go" data-k="f">🍴 맛집</button><button type="button" class="jt-go" data-k="m">🗺️ 지도</button></td></tr>`
 ).join('\n');
+const JT_LINK_JS = `<script>
+(function(){
+  document.addEventListener('click',function(e){
+    var b=e.target.closest('.jt-go'); if(!b) return;
+    var tr=b.closest('tr'); if(!tr) return;
+    var n=tr.getAttribute('data-n')||'';
+    var u=b.getAttribute('data-k')==='m'
+      ? 'https://map.naver.com/p/search/'+encodeURIComponent(n)
+      : 'https://search.naver.com/search.naver?query='+encodeURIComponent(n+' 맛집');
+    window.open(u,'_blank','noopener');
+  });
+})();
+</script>`;
 
 // ---------- 🏮 오일장 FAQ — "오늘 장날"·"장날" 검색과 AI 답변엔진이 그대로 인용할 문장 ----------
 const JANGTEO_FAQ = [
@@ -2361,7 +2429,7 @@ const jangteoModalBB = '<script>window.CJM_BUYBOX=' + JSON.stringify(buyBox('jan
 writePage('jangteo', layout(
   `오늘 장날 어디? 전국 오일장(5일장) ${marketsDay.length}곳 — 끝자리별 일정 | ${SITE_NAME}`,
   `오일장은 5일마다 서는 장입니다. 전국 ${marketsDay.length}곳의 장날을 끝자리(2·7일, 3·8일, 4·9일, 5·10일)와 시·도별로 정리했습니다. 날짜를 넣으면 그날 열리는 장이 초록색으로 표시되고 가까운 장날 순으로 정렬됩니다. 모란장(4·9일)·정선아리랑시장(2·7일)·봉평장(2·7일).`,
-  '/jangteo/', jangteoContent + buyBox('jangteo') + jangteoModalBB, { jsonld: JANGTEO_FAQ_LD }));
+  '/jangteo/', jangteoContent + buyBox('jangteo') + jangteoModalBB + JT_LINK_JS, { jsonld: JANGTEO_FAQ_LD }));
 
 // ---------- 🏮 시·도별 오일장 /jangteo/{시도}/ ----------
 // 왜 나누나: 시장마다 «판매 품목·영업시간·휴무·주차·문의»가 다 있는데(공공데이터 detailIntro2)
@@ -2469,7 +2537,7 @@ ${faq.map(([q, a]) => `<p style="line-height:1.8"><b>${esc(q)}</b><br>${esc(a)}<
       //    붙어 있고 하위는 비어 있었다 — GA4로 보면 전남·충북·경북 페이지에 실제 세션이 들어온다.
       //    그리고 시장 카드를 눌렀을 때 뜨는 모달(placemodal)도 CJM_BUYBOX 가 없어 빈 채로 떴다.
       `/jangteo/${SLUG[sido]}/`,
-      content + buyBox('jangteo') + jangteoModalBB, { jsonld: ld }));
+      content + buyBox('jangteo') + jangteoModalBB + JT_LINK_JS, { jsonld: ld }));
     JANGTEO_SIDO_URLS.push(`/jangteo/${SLUG[sido]}/`);
   });
   // ⚠️ 빌드는 페이지를 «쓰기»만 하고 지우지 않는다. 기준을 4→6으로 올렸을 때 대구 폴더가 그대로 남아

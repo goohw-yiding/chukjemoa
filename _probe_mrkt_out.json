@@ -1,0 +1,42 @@
+[
+ {
+  "mrktNm": "사기막골도자기시장",
+  "mrktType": "상설장",
+  "rdnmadr": "경기도 이천시 경충대로2993번길 24",
+  "lnmadr": "경기도 이천시 사음동 536",
+  "mrktEstblCycle": "매일",
+  "latitude": "37.29483104",
+  "longitude": "127.4119796",
+  "storNumber": "62",
+  "trtmntPrdlst": "의류+가정용품+음식점+근린생활서비스",
+  "useGcct": "",
+  "homepageUrl": "www.sagimakgol.com",
+  "pblicToiletYn": "Y",
+  "prkplceYn": "Y",
+  "estblYear": "1978",
+  "phoneNumber": "031-638-8388",
+  "referenceDate": "2025-11-10",
+  "insttCode": "B553077",
+  "insttNm": "소상공인시장진흥공단"
+ },
+ {
+  "mrktNm": "장호원전통시장",
+  "mrktType": "상설장+4일장",
+  "rdnmadr": "경기도 이천시 장호원읍 장감로77번길 14",
+  "lnmadr": "경기도 이천시 장호원읍 장호원리 350",
+  "mrktEstblCycle": "4일+9일",
+  "latitude": "37.11809055",
+  "longitude": "127.631251",
+  "storNumber": "64",
+  "trtmntPrdlst": "농산물+축산물+수산물+가공식품+의류+신발+가정용품+음식점+근린생활서비스",
+  "useGcct": "",
+  "homepageUrl": "http://www.jmarket.org/",
+  "pblicToiletYn": "Y",
+  "prkplceYn": "Y",
+  "estblYear": "1955",
+  "phoneNumber": "031-643-1330",
+  "referenceDate": "2025-11-10",
+  "insttCode": "B553077",
+  "insttNm": "소상공인시장진흥공단"
+ }
+]
