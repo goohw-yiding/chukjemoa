@@ -132,8 +132,14 @@ function build(ctx) {
   Object.keys(months).forEach(m => (months[m] || []).forEach(r => {
     (BUSY[r.sido + '|' + r.name] = BUSY[r.sido + '|' + r.name] || {})[m] = r.idx;
   }));
-  const REP = [1, 4, 8, 10];
-  const repMonth = m => REP.reduce((a, b) => (Math.abs(b - m) < Math.abs(a - m) ? b : a), REP[0]);
+  // ⚠️ 2026-08-31: 대표월을 [1,4,8,10]으로 박아 둬서 **9월 축제가 8월 붐빔을 보고 있었다.**
+  //    수집기는 「이번 달」도 같이 받아 두는데(seasonByMonth.months) 여기서 안 쓰고 있었다.
+  //    → 그 달 데이터가 있으면 그 달을 쓰고, 없을 때만 가장 가까운 달로 대체한다.
+  //    (영광불갑산상사화축제 9월 x1.09가 데이터에 있는데도 화면에 안 나오던 원인)
+  const REP = Object.keys(months).map(Number).filter(n => n >= 1 && n <= 12).sort((a, b) => a - b);
+  const repMonth = m => REP.length
+    ? (REP.includes(m) ? m : REP.reduce((a, b) => (Math.abs(b - m) < Math.abs(a - m) ? b : a), REP[0]))
+    : m;
 
   const nb = id => { const a = nearbyRaw[id]; return Array.isArray(a) ? a : (a ? [a] : []); };
   // ⚠️ 2026-08-10 장남 님 지적: 태백 축제 페이지에 「모녀떡볶이 **부평**남부역점」「**광천**막국수」가 떠서

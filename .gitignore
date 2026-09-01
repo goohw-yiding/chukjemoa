@@ -18,5 +18,6 @@ cardnews/out/
 naver-queue.md
 naver-brief-*.md
 audit-buybox.md
+audit-busy.md
 data/naver-queue.json
 data/naver-kwcache.json
