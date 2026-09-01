@@ -1781,10 +1781,17 @@ function layout(title, desc, urlPath, content, opts) {
     // ⚠️ 2026-08-10: 외국어 내비에 실전 3종(언제 가나·문 닫는 날·무장애)을 **앞쪽에** 넣었다.
     //    외국인이 오기 전에 제일 먼저 찾는 게 그것인데, 축제 검색보다 뒤에 두면 안 눌린다.
     en: `<nav><a href="/en/">Home</a><a href="/en/calendar/">🗓️ When to go</a><a href="/en/closed/">🚪 What closes</a><a href="/en/access/">♿ Barrier-free</a><a href="/en/search/">🔎 Festivals</a><a href="/en/mountains/">⛰️ Mountains</a><a href="/en/jangteo/">🏮 Markets</a><a href="/en/blog/">📝 Blog</a><a href="/en/cafe/">☕ Cafés</a><a href="/en/trend/">🔥 Rankings</a><a href="/en/trip/">🧳 1st/2nd/3rd visit</a><a href="/">🇰🇷 한국어</a></nav>`,
-    ja: `<nav><a href="/ja/">ホーム</a><a href="/ja/calendar/">🗓️ いつ行くか</a><a href="/ja/closed/">🚪 休む日</a><a href="/ja/access/">♿ バリアフリー</a><a href="/ja/search/">🔎 お祭り検索</a><a href="/ja/mountains/">⛰️ 名山</a><a href="/ja/cafe/">☕ カフェ</a><a href="/ja/trend/">🔥 人気ランキング</a><a href="/ja/trip/">🧳 何回目の訪韓</a><a href="/">🇰🇷 한국어</a></nav>`,
-    es: `<nav><a href="/es/">Inicio</a><a href="/es/calendar/">🗓️ Cuándo ir</a><a href="/es/closed/">🚪 Qué cierra</a><a href="/es/access/">♿ Accesibilidad</a><a href="/es/search/">🔎 Buscar festivales</a><a href="/es/trend/">🔥 Rankings</a><a href="/es/trip/">🧳 Según tu visita</a><a href="/">🇰🇷 한국어</a></nav>`,
-    zh: `<nav><a href="/zh/">首页</a><a href="/zh/calendar/">🗓️ 什么时候去</a><a href="/zh/closed/">🚪 哪天关门</a><a href="/zh/access/">♿ 无障碍</a><a href="/zh/search/">🔎 庆典搜索</a><a href="/zh/mountains/">⛰️ 名山</a><a href="/zh/cafe/">☕ 咖啡馆</a><a href="/zh/trend/">🔥 人气排行</a><a href="/zh/trip/">🧳 第几次来韩国</a><a href="/">🇰🇷 한국어</a></nav>`,
-    // 번체는 오일장이 주력 콘텐츠라 내비에 올린다(간체엔 없음 — 언어별 무기가 다르다)
+    ja: `<nav><a href="/ja/">ホーム</a><a href="/ja/calendar/">🗓️ いつ行くか</a><a href="/ja/closed/">🚪 休む日</a><a href="/ja/access/">♿ バリアフリー</a><a href="/ja/search/">🔎 お祭り検索</a><a href="/ja/jangteo/">🏮 五日市</a><a href="/ja/mountains/">⛰️ 名山</a><a href="/ja/cafe/">☕ カフェ</a><a href="/ja/trend/">🔥 人気ランキング</a><a href="/ja/trip/">🧳 何回目の訪韓</a><a href="/">🇰🇷 한국어</a></nav>`,
+    es: `<nav><a href="/es/">Inicio</a><a href="/es/calendar/">🗓️ Cuándo ir</a><a href="/es/closed/">🚪 Qué cierra</a><a href="/es/access/">♿ Accesibilidad</a><a href="/es/search/">🔎 Buscar festivales</a><a href="/es/jangteo/">🏮 Mercados</a><a href="/es/trend/">🔥 Rankings</a><a href="/es/trip/">🧳 Según tu visita</a><a href="/">🇰🇷 한국어</a></nav>`,
+    zh: `<nav><a href="/zh/">首页</a><a href="/zh/calendar/">🗓️ 什么时候去</a><a href="/zh/closed/">🚪 哪天关门</a><a href="/zh/access/">♿ 无障碍</a><a href="/zh/search/">🔎 庆典搜索</a><a href="/zh/jangteo/">🏮 五日集市</a><a href="/zh/mountains/">⛰️ 名山</a><a href="/zh/cafe/">☕ 咖啡馆</a><a href="/zh/trend/">🔥 人气排行</a><a href="/zh/trip/">🧳 第几次来韩国</a><a href="/">🇰🇷 한국어</a></nav>`,
+    // ⚠️ 2026-09-01 정정 — 예전 주석은 「번체만 오일장, 간체엔 없음(언어별 무기가 다르다)」였다.
+    //    그런데 **페이지 생성과 사이트맵 등재는 5개 언어 다 하고 있었다.** 결과적으로
+    //    /es/ /ja/ /zh/ 오일장이 「사이트맵엔 제출, 사이트 안에선 도달 불가」한 고아 페이지였다
+    //    (주간 품질점검에서 잡힘). 고아 페이지는 구글이 사이트 품질 신호로 나쁘게 본다 —
+    //    애드센스 저가치 반려 이력이 있는 사이트라 그냥 두면 안 된다.
+    //    90일 실측: 5개 언어 오일장 전부 클릭 0(노출 tw 30·en 15·ja 8·zh 6·es 0).
+    //    어느 쪽이든 단기 효과는 없지만, **링크 한 줄 비용이 0이고 페이지는 이미 있다.**
+    //    외국어 전략이 「공유로 온 사람이 둘러보는 것」이라면 내비가 유일한 발견 경로다. → 5개 언어 모두 올린다.
     tw: `<nav><a href="/tw/">首頁</a><a href="/tw/calendar/">🗓️ 什麼時候去</a><a href="/tw/closed/">🚪 哪天休息</a><a href="/tw/access/">♿ 無障礙</a><a href="/tw/search/">🔎 慶典搜尋</a><a href="/tw/jangteo/">🏮 五日市集</a><a href="/tw/mountains/">⛰️ 名山</a><a href="/tw/cafe/">☕ 咖啡廳</a><a href="/tw/trend/">🔥 人氣排行</a><a href="/tw/trip/">🧳 第幾次來韓國</a><a href="/">🇰🇷 한국어</a></nav>`
   };
   const nav = lang === 'ko'

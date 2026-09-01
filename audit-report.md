@@ -101,22 +101,20 @@
 | 항목 | 건수 |
 |---|---|
 | 끊긴 내부 링크 | 0 |
-| 홈에서 도달 불가(고아) | **11** |
+| 홈에서 도달 불가(고아) | **8** |
 | 렌더 사고 | 0 |
 | 사이트맵 유령 URL | 0 |
 | canonical 누락 | 0 |
 | 인라인 JS 문법오류 | 0 |
 | 개발용 주석 유출 | 0 |
 
-🔴 홈에서 도달 불가(고아) 11건
+🔴 홈에서 도달 불가(고아) 8건
 - /en/calendar/2026-08/
 - /en/festival/2025-apec-summit-special/
 - /en/festival/k-pop-cover-dance-festival-world-final/
 - /en/festival/starry-night-in-busan-night-festa/
 - /es/calendar/2026-08/
-- /es/jangteo/
 - /ja/calendar/2026-08/
-- /ja/jangteo/
 - /tw/calendar/2026-08/
 - /zh/calendar/2026-08/
 
@@ -170,7 +168,7 @@
 ---
 ## 요약
 - 🔴 즉시 고칠 것: **1건**
-  - 홈에서 도달 불가(고아) 11건
+  - 홈에서 도달 불가(고아) 8건
 - 🟠 보강할 것: **6건**
   - 21일 넘게 갱신 안 된 파일 10개
   - 온천 — 빈 시도 5개(대구,인천,광주,세종,제주)
