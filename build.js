@@ -1982,32 +1982,54 @@ const monthCatOf = t => (MONTH_CAT.find(([re]) => re.test(String(t || ''))) || [
 // ⚠️ 상설 프로그램을 걸러야 한다 — 「서울 왕궁수문장 교대의식」·「DDP 건축투어」처럼
 //    1년 내내 열리는 것이 TourAPI 축제 목록에 섞여 있다. 기간 45일이 그 경계다.
 //    개요가 없는 것도 뺀다 — 카드에 쓸 설명이 없으면 이름만 나열한 페이지가 된다.
+// 세 번째 소스 — 행안부 「전국문화축제표준데이터」(fetch-cltur-fstvl.js).
+//   지자체가 직접 올리는 자료라 TourAPI에 없는 지역 축제가 들어 있다(1,255건 중 미종료 312건).
+//   ⚠️ 개요(fstvlCo)가 한 줄짜리인 경우가 많아 TourAPI보다 설명 하한을 낮게 잡는다.
+const clturFests = (() => {
+  try { return JSON.parse(fs.readFileSync(path.join(ROOT, 'data/cltur_fstvl.json'), 'utf8')); }
+  catch (e) { return []; }
+})();
+
 const MONTH_API_ADD = (() => {
-  const curatedNames = new Set(festivals.map(f => String(f.name || '').replace(/\s/g, '')));
+  const taken = new Set(festivals.map(f => String(f.name || '').replace(/\s/g, '')));
   const out = [];
-  for (const r of apiFests) {
-    const s = ymdDash(r.start), e = ymdDash(r.end) || s;
-    if (!s || !e) continue;
-    if (e < TODAY) continue;                                   // 이미 끝난 것은 월별 목록에 안 올린다
-    const span = dayGap(r.start, r.end || r.start);
-    if (span > 45) continue;                                   // 상설 프로그램
-    if (!r.ov || String(r.ov).length < 60) continue;           // 설명 없는 것
-    if (curatedNames.has(String(r.title || '').replace(/\s/g, ''))) continue;  // 큐레이션 우선
+  const push = (title, sido, sigungu, addr, s, e, ov, src) => {
     const months = [];
     for (let d = new Date(s); d <= new Date(e); d.setMonth(d.getMonth() + 1, 1)) {
       const m = d.getMonth() + 1; if (!months.includes(m)) months.push(m);
     }
     const em = new Date(e).getMonth() + 1; if (!months.includes(em)) months.push(em);
     out.push({
-      name: r.title, region: r.sido || '', city: r.sigungu || '', place: (r.addr || '').trim(),
-      start: s, end: e, month: months, category: monthCatOf(r.title),
-      desc: String(r.ov).replace(/\s+/g, ' ').slice(0, 90).trim(), confirmed: true, _api: 1
+      name: title, region: sido || '', city: sigungu || '', place: String(addr || '').trim(),
+      start: s, end: e, month: months, category: monthCatOf(title),
+      desc: String(ov).replace(/\s+/g, ' ').slice(0, 90).trim(), confirmed: true, _api: src
     });
+    taken.add(String(title).replace(/\s/g, ''));
+  };
+
+  for (const r of apiFests) {
+    const s = ymdDash(r.start), e = ymdDash(r.end) || s;
+    if (!s || !e || e < TODAY) continue;                       // 이미 끝난 것은 월별 목록에 안 올린다
+    if (dayGap(r.start, r.end || r.start) > 45) continue;      // 연중 상설 프로그램
+    if (!r.ov || String(r.ov).length < 60) continue;           // 설명 없는 것
+    if (taken.has(String(r.title || '').replace(/\s/g, ''))) continue;  // 큐레이션 우선
+    push(r.title, r.sido, r.sigungu, r.addr, s, e, r.ov, 'tour');
+  }
+  for (const r of clturFests) {
+    const s = ymdDash(r.start), e = ymdDash(r.end) || s;
+    if (!s || !e || e < TODAY) continue;
+    if (dayGap(r.start, r.end || r.start) > 45) continue;
+    if (!r.ov || String(r.ov).length < 25) continue;
+    if (taken.has(String(r.title || '').replace(/\s/g, ''))) continue;   // TourAPI·큐레이션 우선
+    push(r.title, r.sido, r.sigungu, r.place || r.addr, s, e, r.ov, 'std');
   }
   return out;
 })();
 const monthFests = festivals.concat(MONTH_API_ADD);
-console.log(`✓ 월별 페이지 재고 — 큐레이션 ${festivals.length} + TourAPI ${MONTH_API_ADD.length} = ${monthFests.length}건`);
+console.log(`✓ 월별 페이지 재고 — 큐레이션 ${festivals.length}`
+  + ` + TourAPI ${MONTH_API_ADD.filter(f => f._api === 'tour').length}`
+  + ` + 표준데이터 ${MONTH_API_ADD.filter(f => f._api === 'std').length}`
+  + ` = ${monthFests.length}건`);
 
 const monthCnt = mm => monthFests.filter(f => f.month.some(m => mm.months.includes(m))).length;
 const [mnHero, mnNext, ...mnRest] = MONTHS_ROTATED;
