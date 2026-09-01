@@ -1995,6 +1995,11 @@ const clturFests = (() => {
   try { return JSON.parse(fs.readFileSync(path.join(ROOT, 'data/cltur_fstvl.json'), 'utf8')); }
   catch (e) { return []; }
 })();
+// 지자체 공연(축제와 섞지 않고 월별 페이지의 별도 섹션에만 쓴다)
+const performAll = (() => {
+  try { return JSON.parse(fs.readFileSync(path.join(ROOT, 'data/perform.json'), 'utf8')); }
+  catch (e) { return []; }
+})();
 
 const MONTH_API_ADD = (() => {
   const taken = new Set(festivals.map(f => String(f.name || '').replace(/\s/g, '')));
@@ -2097,6 +2102,35 @@ MONTHS.forEach(mm => {
       return true;
     }).sort((a, b) => String(a.start).localeCompare(String(b.start))).slice(0, 24);
   })();
+  // ---------- 「이달의 지역 공연」 (2026-09-01) ----------
+  // ⚠️ 공연은 «축제가 아니다». 「시립합창단 정기연주회」를 축제 목록에 섞으면 「9월축제」로 온
+  //    사람에게 틀린 답을 주는 셈이라, **목록에 섞지 않고 별도 섹션**으로만 둔다.
+  //    그래도 값어치가 있는 이유: 축제가 얇아지는 11~12월에 오히려 공연이 91·56건으로 많다.
+  const perfList = (() => {
+    const rows = performAll.filter(r => {
+      const sm = +String(r.start).slice(4, 6), em = +String(r.end || r.start).slice(4, 6);
+      return mm.months.includes(sm) || mm.months.includes(em);
+    });
+    // 한 지역이 목록을 다 차지하지 않게 시·도당 3건까지만
+    const per = {}, out = [];
+    for (const r of rows.sort((a, b) => a.start.localeCompare(b.start))) {
+      const k = r.sido || '기타';
+      if ((per[k] = (per[k] || 0) + 1) > 3) continue;
+      out.push(r);
+      if (out.length >= 18) break;
+    }
+    return out;
+  })();
+  const perfHtml = perfList.length ? `
+<h2 class="sec">${mm.short}에 지역에서 열리는 공연 ${perfList.length}개</h2>
+<p>축제는 아니지만 같은 시기에 열리는 <b>지자체 공연</b>입니다. 시·군 문화예술회관에서 하는 것이라 표값이 싸고, 축제가 없는 지역에서도 볼 게 생깁니다.</p>
+<ul class="flistm">${perfList.map(r => {
+    const s = String(r.start), e = String(r.end || r.start);
+    const d = `${+s.slice(4, 6)}/${+s.slice(6, 8)}` + (e !== s ? `~${+e.slice(4, 6)}/${+e.slice(6, 8)}` : '');
+    return `<li>🎭 <b>${esc(r.name)}</b> — ${esc(r.sido)} ${esc(r.city)}${r.place ? ' · ' + esc(r.place) : ''} · ${d}${r.time ? ' ' + esc(r.time) : ''}${r.charge ? ` · ${esc(r.charge)}` : ''}</li>`;
+  }).join('')}</ul>
+<p class="note">출처: 행정안전부 「전국공연행사정보표준데이터」. 요금·시간은 주최 측 사정으로 바뀔 수 있습니다.</p>` : '';
+
   const lastYearHtml = lastYearSame.length ? `
 <h2 class="sec">예년 이맘때 열린 축제 ${lastYearSame.length}곳</h2>
 <p>${mm.label} 일정은 아직 공공데이터에 다 올라오지 않았습니다. 축제 일정은 보통 <b>개최 2~3개월 전</b>에 등록되기 때문입니다. 그래서 <b>직전 회차가 이맘때 열렸던 축제</b>를 함께 둡니다. 매년 비슷한 시기에 열리는 곳이 많아 계획을 세울 때 참고가 됩니다.</p>
@@ -2150,13 +2184,14 @@ ${quietList.length ? `<p style="margin-top:10px">반대로, 방문 규모는 어
 <p class="note">방문자 데이터는 약 한 달 늦게 공개돼, 계절을 맞추기 위해 <b>작년 같은 달</b> 실적을 씁니다. 이 배수는 축제장이 아니라 그 <b>시·군·구 전체</b>의 값입니다.</p>` : ''}
 
 ${lastYearHtml}
+${perfHtml}
 
 <h2 class="sec">${mm.short}에 같이 보면 좋은 것</h2>
 <div class="frel2">
 <a href="/hot/">🔥 요즘 사람 몰리는 동네</a>
 <a href="/course/">🧭 조건 넣으면 코스가 나옵니다</a>
 <a href="/jangteo/">🏮 그날 열리는 오일장</a>
-<a href="/trails/">🥾 걷기 좋은 길</a>
+<a href="/citytour/">🚌 차 없이 가는 시티투어</a>
 <a href="/trip-cost/">🧮 여행비용 계산기</a>
 </div>
 <style>.frel2{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
@@ -2556,6 +2591,85 @@ ${faq.map(([q, a]) => `<p style="line-height:1.8"><b>${esc(q)}</b><br>${esc(a)}<
 
 // ---------- 신뢰 요소(E-E-A-T) 공통 블록 ----------
 // 편집 원칙: /editorial/ · 저자 명의: 축제모아 편집팀
+// ---------- 🚌 시티투어 /citytour/ (2026-09-01 신설) ----------
+// 왜 만드나: 축제 페이지에서 가장 자주 막히는 질문이 «차 없이 어떻게 가나»다.
+//   시티투어는 그 답에 가장 가깝고(탑승 장소·운행 요일·요금·소요시간이 다 있다),
+//   277개라 **페이지 하나**로 끝난다. 메뉴를 늘리지 않고 축제·오일장 쪽에서 링크로만 연결한다.
+// ⚠️ 요금·시간은 지자체가 바꾼다. 우리는 «기준일»을 밝히고 전화번호를 같이 준다.
+const CITYTOUR_URLS = [];
+{
+  let ct = [];
+  try { ct = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/citytour.json'), 'utf8')); } catch (e) { }
+  if (ct.length) {
+    const order = ['서울', '경기', '인천', '강원', '충북', '충남', '대전', '세종', '전북', '전남', '광주', '경북', '경남', '대구', '울산', '부산', '제주'];
+    const by = {};
+    ct.forEach(r => { (by[r.sido] = by[r.sido] || []).push(r); });
+    const sidos = order.filter(s => by[s]);
+    const refDate = (ct.map(r => r.ref).filter(Boolean).sort().pop() || '').slice(0, 10);
+
+    const card = r => `<details class="ctd"><summary><b>${esc(r.course)}</b> <span class="ctc">${esc(r.city)}</span>${r.days ? `<span class="ctd-day">${esc(r.days)}</span>` : ''}</summary>
+<div class="ctbody">
+${r.spots.length ? `<p><b>코스</b> ${r.spots.map(esc).join(' → ')}</p>` : ''}
+${r.board.length ? `<p><b>타는 곳</b> ${r.board.map(esc).join(' · ')}</p>` : ''}
+${(r.open || r.mins) ? `<p><b>운행</b> ${esc(r.open)}${r.close ? '~' + esc(r.close) : ''}${r.mins ? ` · 약 ${r.mins}분 소요` : ''}${r.mode ? ` · ${esc(r.mode)}` : ''}</p>` : ''}
+${r.fee.length ? `<p><b>요금</b> ${r.fee.map(esc).join(' · ')}${r.feeNote ? ` <span class="note">(${esc(r.feeNote)})</span>` : ''}</p>` : ''}
+${r.tel ? `<p><b>문의</b> ${esc(r.tel)}</p>` : ''}
+${r.note.length ? `<p class="note">${r.note.map(esc).join(' · ')}</p>` : ''}
+${r.hp ? `<p><a href="${esc(/^https?:/.test(r.hp) ? r.hp : 'http://' + r.hp)}" target="_blank" rel="noopener">공식 안내 →</a></p>` : ''}
+</div></details>`;
+
+    const ctFaq = [
+      ['시티투어 버스는 아무나 탈 수 있나요?', '대부분 예약 없이 탈 수 있지만, 좌석이 정해진 코스는 미리 신청을 받습니다. 코스마다 다르니 위 목록의 문의 전화로 확인하시는 편이 안전합니다.'],
+      ['요금은 얼마인가요?', `코스마다 다릅니다. 어린이·경로·장애인 할인이 있는 곳이 많고, 무료로 운행하는 지역도 있습니다. 이 페이지에는 지자체가 공개한 요금을 그대로 옮겨 두었습니다(기준일 ${refDate || '공공데이터 최신'}).`],
+      ['축제 가는 날에도 운행하나요?', '운행 요일이 정해져 있어 축제 날짜와 안 맞을 수 있습니다. 위에서 그 지역 코스의 운행 요일을 먼저 보시고, 축제 일정과 겹치는지 확인하세요.']
+    ];
+    const content = `<main><div class="wrap">
+<h1 style="font-size:1.5rem;margin-bottom:6px">전국 시티투어 버스 ${ct.length}개 코스 — 차 없이 가는 지역 여행</h1>
+<p class="note">지자체가 운영하는 시티투어 코스를 시·도별로 정리했습니다. 코스 경유지·타는 곳·운행 요일·요금·문의처를 한곳에 모았습니다.</p>
+<p style="margin:6px 0 14px;color:#4b5563;font-size:.95rem">축제나 오일장에 <b>차 없이</b> 가려면 시티투어가 가장 현실적인 방법일 때가 많습니다. 역·터미널에서 출발하는 코스가 많고, 요금도 대개 3,000~5,000원 선입니다.</p>
+<div class="ctnav">${sidos.map(s => `<a href="#ct-${esc(s)}">${esc(s)} ${by[s].length}</a>`).join('')}</div>
+${sidos.map(s => `<h2 class="sec" id="ct-${esc(s)}">${esc(s)} — ${by[s].length}개 코스</h2>
+${by[s].sort((a, b) => (a.city + a.course).localeCompare(b.city + b.course)).map(card).join('')}`).join('')}
+
+<h2 class="sec">같이 보면 좋은 것</h2>
+<div class="frel2">
+<a href="/jangteo/">🏮 오늘 서는 오일장</a>
+<a href="/${CUR_MONTH_KEY}/">📅 이번 달 축제</a>
+<a href="/trip-cost/">🧮 여행비용 계산기</a>
+<a href="/trails/">🥾 걷기 좋은 길</a>
+</div>
+<style>.frel2{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+.frel2 a{background:#fff;border:1.5px solid #dcefeb;color:#374151;font-weight:700;font-size:.88rem;padding:9px 15px;border-radius:999px;text-decoration:none}</style>
+
+<h2 class="sec">자주 묻는 것</h2>
+${ctFaq.map(q => `<p><b>${esc(q[0])}</b><br>${esc(q[1])}</p>`).join('')}
+<p class="note" style="margin-top:16px">데이터 출처: 행정안전부 「전국시티투어정보표준데이터」(공공데이터포털)${refDate ? ` · 기준일 ${refDate}` : ''}. 운행 요일·요금·코스는 지자체 사정으로 바뀔 수 있으니 방문 전 문의 전화로 확인하세요.</p>
+<style>
+.ctnav{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0 18px}
+.ctnav a{background:#f4faf8;border:1.5px solid #dcefeb;border-radius:999px;padding:6px 13px;font-size:.86rem;font-weight:700;color:#0a6c63;text-decoration:none}
+.ctd{background:#fff;border:1px solid #e5e7eb;border-radius:12px;margin-bottom:8px;padding:2px 14px}
+.ctd summary{cursor:pointer;padding:11px 0;font-size:.95rem;color:#374151}
+.ctd summary b{color:#0f766e}
+.ctc{color:#6b7280;font-weight:600;font-size:.86rem;margin-left:6px}
+.ctd-day{display:inline-block;background:#eef7f5;color:#0a6c63;border-radius:6px;padding:1px 7px;font-size:.78rem;font-weight:700;margin-left:6px}
+.ctbody{padding:2px 0 12px;font-size:.9rem;line-height:1.7;color:#4b5563}
+.ctbody p{margin:4px 0}
+.ctbody b{color:#374151}
+</style>
+</div></main>`;
+    const ctLd = `<script type="application/ld+json">${JSON.stringify({
+      '@context': 'https://schema.org', '@type': 'FAQPage',
+      mainEntity: ctFaq.map(q => ({ '@type': 'Question', name: q[0], acceptedAnswer: { '@type': 'Answer', text: q[1] } }))
+    })}</script>`;
+    writePage('citytour', layout(
+      `전국 시티투어 버스 ${ct.length}개 코스 — 요금·타는 곳·운행 요일 총정리 | ${SITE_NAME}`,
+      `지자체가 운영하는 시티투어 ${ct.length}개 코스를 시·도별로. 코스 경유지와 타는 곳, 운행 요일, 요금, 문의처까지 한 페이지에. 차 없이 축제·오일장 가는 가장 현실적인 방법입니다.`,
+      '/citytour/', content, { jsonld: ctLd }));
+    CITYTOUR_URLS.push('/citytour/');
+    console.log(`✓ 시티투어 — ${ct.length}개 코스 · 시·도 ${sidos.length}곳`);
+  }
+}
+
 const AUTHOR_NAME = '축제모아 편집팀';
 const EDITORIAL_URL = '/editorial/';
 const LAST_REVIEWED = '2026-07-27'; // 신뢰 블록(저자·출처·고지) 최종 검수일
@@ -6410,7 +6524,7 @@ const TRIP_URLS = require('./trip.js').build({ ROOT, layout, writePage, SITE_NAM
 }
 
 // ---------- sitemap / robots ----------
-const urls = ['/', ...MONTHS.map(m => `/${m.key}/`), '/search/', ...(holidays.length ? ['/holiday/'] : []), '/pet/', ...(apiAccessible.length ? ['/accessible/'] : []), ...(apiTrails.length ? ['/trails/'] : []), ...(apiValleys.length ? ['/valley/'] : []), ...(apiMaple.length ? ['/maple/'] : []), ...(apiFlower.length ? ['/flower/'] : []), ...(apiOnsen.length ? ['/onsen/'] : []), '/jangteo/', '/test/', '/trip-cost/', ...(visitors.kor && visitors.kor.length ? ['/trend/'] : []), ...SIDO_URLS, ...THEME_URLS, ...TRAIL_URLS, ...WALK_URLS, ...TREND_LANG_URLS, '/blog/', ...posts.map(p => `/blog/${p.slug}/`), '/about/', EDITORIAL_URL, '/contact/', '/privacy/',...(apiFestsEn.length ? ['/en/', '/en/search/'] : []), ...EN_FESTIVAL_URLS, ...EN_JANGTEO_URLS, ...EN_BLOG_URLS, ...(apiFestsJa.length ? ['/ja/', '/ja/search/'] : []), ...JA_JANGTEO_URLS, ...(apiFestsEs.length ? ['/es/', '/es/search/'] : []), ...ES_JANGTEO_URLS, ...(apiFestsZh.length ? ['/zh/', '/zh/search/'] : []), ...ZH_JANGTEO_URLS, ...(apiFestsTw.length ? ['/tw/', '/tw/search/'] : []), ...TW_EXTRA_URLS, ...MOUNTAIN_URLS, ...CAFE_URLS, ...HOT_URLS, ...HEALING_URLS, ...COURSE_URLS, ...WINTER_URLS, ...JANGTEO_SIDO_URLS, ...SIDO_HUB_URLS, ...TRIP_URLS, ...FESTIVAL_URLS, ...MAP_URLS, ...INTL_URLS, ...CHUSEOK_URLS];
+const urls = ['/', ...MONTHS.map(m => `/${m.key}/`), '/search/', ...(holidays.length ? ['/holiday/'] : []), '/pet/', ...(apiAccessible.length ? ['/accessible/'] : []), ...(apiTrails.length ? ['/trails/'] : []), ...(apiValleys.length ? ['/valley/'] : []), ...(apiMaple.length ? ['/maple/'] : []), ...(apiFlower.length ? ['/flower/'] : []), ...(apiOnsen.length ? ['/onsen/'] : []), '/jangteo/', '/test/', '/trip-cost/', ...CITYTOUR_URLS, ...(visitors.kor && visitors.kor.length ? ['/trend/'] : []), ...SIDO_URLS, ...THEME_URLS, ...TRAIL_URLS, ...WALK_URLS, ...TREND_LANG_URLS, '/blog/', ...posts.map(p => `/blog/${p.slug}/`), '/about/', EDITORIAL_URL, '/contact/', '/privacy/',...(apiFestsEn.length ? ['/en/', '/en/search/'] : []), ...EN_FESTIVAL_URLS, ...EN_JANGTEO_URLS, ...EN_BLOG_URLS, ...(apiFestsJa.length ? ['/ja/', '/ja/search/'] : []), ...JA_JANGTEO_URLS, ...(apiFestsEs.length ? ['/es/', '/es/search/'] : []), ...ES_JANGTEO_URLS, ...(apiFestsZh.length ? ['/zh/', '/zh/search/'] : []), ...ZH_JANGTEO_URLS, ...(apiFestsTw.length ? ['/tw/', '/tw/search/'] : []), ...TW_EXTRA_URLS, ...MOUNTAIN_URLS, ...CAFE_URLS, ...HOT_URLS, ...HEALING_URLS, ...COURSE_URLS, ...WINTER_URLS, ...JANGTEO_SIDO_URLS, ...SIDO_HUB_URLS, ...TRIP_URLS, ...FESTIVAL_URLS, ...MAP_URLS, ...INTL_URLS, ...CHUSEOK_URLS];
 // noindex 페이지는 사이트맵에서 뺀다 — "색인해라(사이트맵) + 하지마라(noindex)"는 모순 신호다.
 // 🔁 2026-08-19: en/ja/zh 사이트맵 제외를 되돌린다(위 layout()의 forceNoindex 주석 참고).
 //    구글 클릭 0을 보고 뺐지만 GA4로는 구글 아닌 검색엔진에서 16세션/28일이 들어오고 있었다.
