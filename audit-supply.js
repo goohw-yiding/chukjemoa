@@ -6,7 +6,15 @@
 //     → 채울 방법은 «작년 같은 달에 열린 연례 축제»다. 그게 몇 건인지 이 도구로 센다.
 // 사용: node audit-supply.js
 const fs = require('fs'), path = require('path');
-const F = JSON.parse(fs.readFileSync(path.join(__dirname, 'data', 'festivals_api.json'), 'utf8'));
+// 2026-09-01: 소스가 둘이 됐다(TourAPI + 행안부 표준데이터). 하나만 세면 재고를 과소평가한다.
+const load = f => { try { return JSON.parse(fs.readFileSync(path.join(__dirname, 'data', f), 'utf8')); } catch (e) { return []; } };
+const TOUR = load('festivals_api.json');
+const STD = load('cltur_fstvl.json');
+const normT = t => String(t || '').replace(/^제?\s*\d+\s*회\s*/, '').replace(/\d{4}\s*년?/g, '').replace(/[\s()·,'"「」]/g, '').trim();
+const F = (() => {
+  const seen = new Set(TOUR.map(r => normT(r.title)));
+  return TOUR.concat(STD.filter(r => { const n = normT(r.title); if (seen.has(n)) return false; seen.add(n); return true; }));
+})();
 const y = s => String(s || '').replace(/-/g, '').slice(0, 8);
 const kst = new Date(Date.now() + 9 * 3600e3);
 const TODAY = kst.toISOString().slice(0, 10).replace(/-/g, '');
@@ -25,7 +33,7 @@ const L = [];
 const p = s => L.push(String(s));
 p('# 축제 재고 감사 — ' + TODAY.slice(0, 4) + '-' + TODAY.slice(4, 6) + '-' + TODAY.slice(6, 8));
 p('');
-p('`node audit-supply.js` 자동 생성. 숫자는 전부 실측입니다.');
+p(`\`node audit-supply.js\` 자동 생성. 숫자는 전부 실측입니다. (TourAPI ${TOUR.length} + 표준데이터 ${STD.length} → 중복 제외 ${F.length}건)`);
 p('');
 p('| 달 | 올해 확보 | 작년 같은 달 | 부족 | 작년 것 중 «올해 아직 없는» 연례 축제 |');
 p('|---|---:|---:|---:|---:|');
