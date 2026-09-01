@@ -283,6 +283,19 @@ function build(ctx) {
     const cafeBars = DN.map((d, i) => ({ i, n: CS.day[i] })).sort((a, b) => b.n - a.n).slice(0, 4)
       .map(o => bar(WD[lang][o.i], o.n, Math.max(...CS.day), o.i === CS.day.indexOf(Math.max(...CS.day)))).join('');
 
+    // 🇯🇵 일본어만 — 연휴별 상세 페이지로 가는 길. GSC 실측상 일본 유입 1·2위가 연휴·정기휴일
+    //    검색어인데(「ハングルの日 お店 休み」「韓国 定休日」) 받을 페이지가 이 한 장뿐이었다.
+    //    ⚠️ 링크가 없으면 ja-holiday.js 가 만든 페이지가 그대로 고아가 된다.
+    const jaHolLinks = lang !== 'ja' ? '' : (() => {
+      const bs = require('./ja-holiday.js').blocks(TODAY).slice(0, 6);
+      if (!bs.length) return '';
+      return `<div class="ic-card"><h2>連休ごとに詳しく</h2>
+<p>「その日、店は開いているのか」は連休ごとに答えが違います。日付・曜日の定休日・その連休に立つ五日市まで、連休別にまとめました。</p>
+<div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:10px">${bs.map(b =>
+        `<a href="/ja/closed/${b.slug}/" style="background:#fff;border:1.5px solid #dcefeb;color:#374151;font-weight:700;font-size:.9rem;padding:9px 14px;border-radius:999px;text-decoration:none">${
+          esc(b.ja)}（${b.span.length}連休）</a>`).join('')}</div></div>`;
+    })();
+
     const closedContent = `<main><div class="wrap"><style>${CSS}</style>
 <h1 class="ic-h1">${S.cl.h1}</h1>
 <p class="ic-lead">${S.cl.lead(nf(RS.n + CS.n), nf(RS.day[worstDay] + CS.day[worstDay]), WD[lang][worstDay])}</p>
@@ -294,6 +307,8 @@ ${bigBlock ? `<div class="ic-warn"><h2>${S.cl.warnH(holName(bigBlock.days.find(d
 <p>${S.cl.pHol(upHol.length)}</p>
 <table class="ic-tbl"><thead><tr><th>${S.cl.thDate}</th><th>${S.cl.thName}</th><th class="n">${S.cl.thDays}</th></tr></thead><tbody>${holRows}</tbody></table>
 <p class="ic-note">${S.cl.holNote}</p></div>
+
+${jaHolLinks}
 
 <div class="ic-card"><h2>${S.cl.h2week}</h2>
 <p>${S.cl.pWeek(nf(RS.n), WD[lang][worstDay], nf(RS.day[worstDay]), Math.round(RS.day[worstDay] / RS.n * 100))}</p>

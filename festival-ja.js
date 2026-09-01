@@ -174,6 +174,14 @@ ${rel.length ? `<div class="frel"><h2>${esc(f.region)}のほかの祭り</h2><di
   writePage('ja/festival', layout(ix.title, ix.desc, ix.url, ix.html, { lang: 'ja' }));
   urls.push(ix.url);
 
+  // 슬러그 표를 파일로 남긴다 — ja-holiday.js 가 「이 연휴에 열리는 축제」를 링크할 때 쓴다.
+  // ⚠️ 같은 규칙을 두 곳에 다시 구현하면 반드시 어긋난다(중복 시 붙는 -2 접미사까지 맞춰야 한다).
+  //    끊긴 링크를 만드느니 «실제로 만든 슬러그»를 그대로 넘긴다.
+  const slugMap = {};
+  rows.forEach(f => { if (f.id != null) slugMap[String(f.id)] = f._slug; });
+  fs.writeFileSync(path.join(ctx.ROOT || __dirname, 'data', 'ja_festival_slugs.json'),
+    JSON.stringify(slugMap), 'utf8');
+
   // ⚠️ 유령 페이지 정리 — 영문판과 같은 이유(/jangteo/·/trend/ 에서 겪은 사고).
   const keep = new Set(rows.map(f => f._slug));
   const dir = path.join(ctx.ROOT || __dirname, 'ja', 'festival');
