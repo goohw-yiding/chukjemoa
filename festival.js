@@ -123,6 +123,10 @@ function build(ctx) {
   const FAME = (() => { try { return JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'fame.json'), 'utf8')); } catch (e) { return {}; } })();
 
   const food = load('restaurants_ko.json'), cafe = load('cafes_ko.json'), stay = load('stays_ko.json');
+  // 행정안전부 전국관광지정보표준데이터(2026-09-01). TourAPI 관광지와 이름이 겹치는 건 29%뿐이고
+  // **주차 「대수」·수용인원·편익시설**은 우리에게 아예 없던 정보다 —
+  // 축제 FAQ의 「주차는 어떻게 하나요?」에 그동안 「축제장 안내를 따르세요」밖에 못 썼다.
+  const trr = load('trrsrt.json').map(t => ({ title: t.name, x: t.x, y: t.y, kind: t.kind, park: t.park, cap: t.cap, fclty: t.fclty, intro: t.intro, tel: t.tel }));
   const spots = load('spots_ko.json'), acc = load('accessible.json'), mkts = load('markets.json');
   const walk = load('stret.json').map(w => ({ t: w.name, x: w.x, y: w.y, km: w.km, min: w.min, ov: w.intro, sg: sgOf(w.addr, w.sigungu) }))
     .concat(load('trails.json').map(w => ({ t: w.name, x: w.x, y: w.y, km: w.dist, min: w.min, lv: w.level, ov: w.summary, sg: String(w.sigun || '').split(' ').pop() })));
@@ -202,6 +206,7 @@ function build(ctx) {
     const nCafe = near(cafe, x, y, 12, 4);
     const nStay = near(stay, x, y, 15, 4);
     const nWalk = near(walk, x, y, 20, 3);
+    const nTrr = near(trr, x, y, 15, 4);
     const nSpot = near(spots, x, y, 12, 6);
     const nAcc = near(acc, x, y, 8, 3);
     const nbList = nb(f.id).slice(0, 5);
@@ -324,6 +329,10 @@ ${nFood.length ? `<h2 class="sec">근처에서 밥 먹을 곳</h2>
 
 ${nCafe.length ? `<h2 class="sec">근처 카페</h2>
 <div class="fgrid">${nCafe.map(({ o, d }) => card(o.title, `${d.toFixed(1)}km`, o.img, o.open ? `${o.open}${o.rest ? ` · 휴무 ${o.rest}` : ''}` : null, o.x, o.y)).join('')}</div>` : ''}
+
+${nTrr.length ? `<h2 class="sec">근처 관광지 — 주차 대수까지</h2>
+<p style="color:#6b7280;font-size:.92rem">행정안전부 「전국관광지정보표준데이터」에 등록된 곳입니다. <b>주차 대수·수용 인원</b>은 지자체가 직접 신고한 값이라, 축제 당일 주차를 가늠할 때 참고가 됩니다(축제장 자체의 주차와는 다릅니다).</p>
+<ul class="flist">${nTrr.map(({ o, d }) => `<li><b>${esc(o.title)}</b> — 축제장에서 ${d.toFixed(1)}km${o.kind ? ` · ${esc(o.kind)}` : ''}${o.park ? ` · <b>주차 ${o.park.toLocaleString()}대</b>` : ''}${o.cap ? ` · 수용 ${o.cap.toLocaleString()}명` : ''}${o.fclty && o.fclty.length ? `<br><em>${esc(o.fclty.join(' · '))}</em>` : ''}</li>`).join('')}</ul>` : ''}
 
 ${nWalk.length ? `<h2 class="sec">축제 보고 걷기 좋은 길</h2>
 <p style="color:#6b7280;font-size:.92rem">반경 20km 안의 걷기길입니다. 거리와 소요시간은 전국길관광정보 표준데이터에 등록된 값입니다.</p>

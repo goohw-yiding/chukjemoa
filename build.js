@@ -2037,9 +2037,18 @@ const MONTH_API_ADD = (() => {
     const s = ymdDash(r.start), e = ymdDash(r.end) || s;
     if (!s || !e || e < TODAY) continue;
     if (dayGap(r.start, r.end || r.start) > 45) continue;
-    if (!r.ov || String(r.ov).length < 25) continue;
     if (taken.has(String(r.title || '').replace(/\s/g, ''))) continue;   // TourAPI·큐레이션 우선
-    push(r.title, r.sido, r.sigungu, r.place || r.addr, s, e, r.ov, 'std');
+    // ⚠️ 2026-09-01 정정 — 전에는 「설명 25자 미만은 버린다」였는데, 그렇게 버린 157건이
+    //    「당진면천읍성축제」처럼 **이름·날짜·장소가 멀쩡한 진짜 축제**였다. 재고가 얇은
+    //    11~12월엔 그냥 손실이다. 설명이 없으면 **있는 사실로 한 줄을 만든다**(오일장과 같은 방식).
+    //    지어내지 않는다 — 지역과 장소만 적는다.
+    const ov = String(r.ov || '').trim();
+    const desc = ov.length >= 25 ? ov
+      : [ [r.sido, r.sigungu].filter(Boolean).join(' '),
+          String(r.place || '').trim(),
+          ov ].filter(Boolean).join(' · ') || [r.sido, r.sigungu].filter(Boolean).join(' ');
+    if (!desc) continue;                                   // 지역조차 없으면 카드에 쓸 게 없다
+    push(r.title, r.sido, r.sigungu, r.place || r.addr, s, e, desc, 'std');
   }
   return out;
 })();
