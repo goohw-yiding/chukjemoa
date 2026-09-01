@@ -87,7 +87,9 @@ async function listAll(id) {
       if (!ja) continue;
       const addr = clean(x.addr1 || '');
       const regnCd = String(x.lDongRegnCd || x.regnCd || '');
-      const sido = sidoOf(regnCd, addr);
+      const signguCd = String(x.lDongSignguCd || x.signguCd || '');
+      // ⚠️ 가타카나 주소라 주소 파싱이 안 된다 → 코드12는 signguCd로 갈라야 한다
+      const sido = sidoOf(regnCd, addr, signguCd);
       const okXY = x.mapx && x.mapy && validCoord(x.mapx, x.mapy);
       rows.push({
         id: String(x.contentid), kind: K.kind,

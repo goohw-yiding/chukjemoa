@@ -15,6 +15,10 @@
 // ⚠️ 상품(쿠웅샵)은 붙이지 않는다 — 2026-08-19 결정(공유용 외국어 페이지에 상품 금지).
 const fs = require('fs'), path = require('path');
 const { extras } = require('./intl-fest-extra.js');
+// 애드센스 「가치가 별로 없는 콘텐츠」 방지선 — 렌더된 본문을 직접 잰다(대리 지표 금지).
+const MIN_BODY = 2000;
+const textLen = h => String(h).replace(/<script[\s\S]*?<\/script>|<style[\s\S]*?<\/style>/g, ' ')
+  .replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim().length;
 const { indexPage } = require('./intl-fest-index.js');
 const { romanizeMixed } = require('./placename.js');
 const MIN_OV = 200;
@@ -117,7 +121,7 @@ function build(ctx) {
   };
 
   const TODAY8 = String(TODAY).replace(/-/g, '');
-  const urls = [];
+  const urls = [], thinOut = [];
   const tally = { map: 0, busy: 0, trr: 0, mkt: 0, rel: 0 };
 
   rows.forEach(f => {
@@ -162,12 +166,18 @@ ${rel.length ? `<div class="frel"><h2>${esc(f.region)}のほかの祭り</h2><di
     })}</script>`;
 
     const urlPath = `/ja/festival/${f._slug}/`;
+    // ⚠️ 2026-09-01: 위의 «개요 300자·블록 3개» 게이트는 대리 지표라 얇은 게 새어 나왔다
+    //    (통과한 90개가 실제로는 1,000~1,500자). **렌더된 본문을 직접 재서** 다시 판정한다.
+    //    얇으면 «지우지 않고» noindex + 사이트맵 제외 — 끝난 축제(2026-08-18)와 같은 방식이라
+    //    허브·근처축제 링크가 끊기지 않는다. 나중에 데이터가 차면 저절로 되살아난다.
+    const tooThin = textLen(content) < MIN_BODY;
     writePage('ja/festival/' + f._slug, layout(
       `${f.title} — 日程・場所・アクセス | 축제모아`,
       String(f.ov || '').slice(0, 110),
-      urlPath, content, { lang: 'ja', jsonld: ld }));
-    urls.push(urlPath);
+      urlPath, content, { lang: 'ja', jsonld: ld, noindex: tooThin }));
+    if (tooThin) thinOut.push(urlPath); else urls.push(urlPath);
   });
+  if (thinOut.length) console.log(`  /ja/festival/ 본문 ${MIN_BODY}자 미만 ${thinOut.length}개 → noindex+사이트맵 제외`);
 
   // 🗂️ 허브 — 「韓国 祭り」(9.3위)·「韓国の祭り」(23.5위)·「韓国お祭り」(32위)를 받을 페이지.
   const ix = indexPage('ja', rows, TODAY8);

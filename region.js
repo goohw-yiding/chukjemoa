@@ -54,11 +54,23 @@ const RCODE = {
   '36': '세종', '41': '경기', '51': '강원', '43': '충북', '44': '충남', '52': '전북', '46': '전남',
   '47': '경북', '48': '경남', '50': '제주', '12': null   // 12는 주소로 갈라야 한다
 };
-function sidoOf(regnCd, addr) {
+// 12를 «주소 없이» 가르는 표 — 광주 5개 자치구의 법정동 시군구 코드.
+// ⚠️ 왜 필요한가: 일본어 TourAPI(JpnService2)의 addr1은 가타카나 음차라 한글 파서가 못 쓴다.
+//    그래서 12가 주소로도 안 갈라져 «광주·전남이 통째로 미상»이 된다(2026-09-01 실측 342건).
+// 근거: 코드12 342건의 signguCd는 27종이었고, 아래 5종만 광주 좌표범위에 100% 들어갔다.
+//       광주 자치구 수(5개)와 정확히 일치하고, 나머지 22종은 전남 시군.
+const GWANGJU_SIGNGU = new Set(['210', '240', '270', '300', '330']);
+
+function sidoOf(regnCd, addr, signguCd) {
   const r = String(regnCd || '');
   const byCode = RCODE[r] || RCODE[r.slice(0, 2)];
   if (byCode) return byCode;
-  return parseAddr(addr).sido;
+  const byAddr = parseAddr(addr).sido;
+  if (byAddr) return byAddr;                     // 한글 주소가 있으면 그게 우선
+  if (r === '12' && signguCd) {                  // 주소로 못 가른 12만 코드로 가른다
+    return GWANGJU_SIGNGU.has(String(signguCd).slice(-3)) ? '광주' : '전남';
+  }
+  return '';
 }
 
 // 본문·주소에 그대로 박혀 나오는 통합 표기를 사람이 읽는 말로 바꾼다.

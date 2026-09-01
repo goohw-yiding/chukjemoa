@@ -17,6 +17,10 @@
 //      아무도 공유하지 않는다. 코리 QR 착지점은 별도 페이지로 만든다.
 const fs = require('fs'), path = require('path');
 const { extras } = require('./intl-fest-extra.js');
+// 애드센스 「가치가 별로 없는 콘텐츠」 방지선 — 렌더된 본문을 직접 잰다(대리 지표 금지).
+const MIN_BODY = 2000;
+const textLen = h => String(h).replace(/<script[\s\S]*?<\/script>|<style[\s\S]*?<\/style>/g, ' ')
+  .replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim().length;
 const { indexPage } = require('./intl-fest-index.js');
 const MIN_OV = 200;
 
@@ -95,7 +99,7 @@ function build(ctx) {
   };
 
   const TODAY8 = TODAY.replace(/-/g, '');
-  const urls = [];
+  const urls = [], thinOut = [];
   const tally = { map: 0, busy: 0, trr: 0, mkt: 0, rel: 0, none: 0 };
 
   rows.forEach(f => {
@@ -147,12 +151,16 @@ ${related.length ? `<div class="frel"><h2>Other festivals in ${esc(f.region)}</h
     })}</script>`;
 
     const urlPath = `/en/festival/${f.slug}/`;
+    // ⚠️ 개요 길이(MIN_OV)만으로는 얇은 게 새어 나온다 — 2026-09-01 감사에서 8개가 2,000자 미만.
+    //    렌더된 본문을 직접 재서 얇으면 noindex + 사이트맵 제외(페이지는 남겨 링크를 안 끊는다).
+    const tooThin = textLen(content) < MIN_BODY;
     writePage('en/festival/' + f.slug, layout(
       `${f.title} — Dates, Location & Info | Chukjemoa`,
       (f.ov || '').slice(0, 155) + (ended ? ' Official info from the Korea Tourism Organization.' : ''),
-      urlPath, content, { lang: 'en', jsonld: ld }));
-    urls.push(urlPath);
+      urlPath, content, { lang: 'en', jsonld: ld, noindex: tooThin }));
+    if (tooThin) thinOut.push(urlPath); else urls.push(urlPath);
   });
+  if (thinOut.length) console.log(`  /en/festival/ 본문 ${MIN_BODY}자 미만 ${thinOut.length}개 → noindex+사이트맵 제외`);
 
   // 🗂️ 허브 — 「korean festivals」(82위)·「festivals in korea」(85위) 같은 머리말을 받을 페이지.
   //    지금은 /en/(62.8위)과 /en/search/(61.9위)가 받고 있는데 둘 다 읽을 내용이 없는 검색 UI다.
