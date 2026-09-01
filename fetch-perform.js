@@ -45,11 +45,18 @@ async function page(no, rows) {
   console.log('');
   const T = new Date(Date.now() + 9 * 3600e3).toISOString().slice(0, 10).replace(/-/g, '');
   const seen = new Set(), out = [];
+  let longRun = 0;
   for (const r of all) {
     const name = clean(r.eventNm);
     const s = ymd(r.eventStartDate), e = ymd(r.eventEndDate) || s;
     if (!name || s.length < 8) continue;
     if (e < T) continue;                                  // 끝난 공연은 담지 않는다
+    // ⚠️ 「현대미술관 상설 전시(2023-06-30~)」처럼 **몇 년째 열려 있는 상설물**이 섞여 있다.
+    //    「이달의 지역 공연」에 그런 게 뜨면 이달 소식이 아니다. 축제에 쓴 45일 규칙을 여기도 쓴다.
+    //    (2026-09-01 audit-newdata.js 로 발견 — 6건)
+    const span = (new Date(+e.slice(0, 4), +e.slice(4, 6) - 1, +e.slice(6, 8))
+      - new Date(+s.slice(0, 4), +s.slice(4, 6) - 1, +s.slice(6, 8))) / 86400000;
+    if (span > 45) { longRun++; continue; }
     const addr = clean(r.rdnmadr || r.lnmadr);
     const hit = SIDO.find(([re]) => re.test(addr));
     const toks = addr.split(/\s+/);
@@ -70,6 +77,6 @@ async function page(no, rows) {
   fs.writeFileSync(path.join(__dirname, 'data', 'perform.json'), JSON.stringify(out), 'utf8');
   const byM = {};
   out.forEach(r => { byM[r.start.slice(0, 6)] = (byM[r.start.slice(0, 6)] || 0) + 1; });
-  console.log(`✓ data/perform.json — 아직 안 끝난 공연 ${out.length}건`);
+  console.log(`✓ data/perform.json — 아직 안 끝난 공연 ${out.length}건 (장기 상설 ${longRun}건 제외)`);
   console.log('  시작월:', Object.keys(byM).sort().map(k => k + ':' + byM[k]).join(' '));
 })();

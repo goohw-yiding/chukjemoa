@@ -31,6 +31,9 @@ function parseAddr(a) {
   const hit = SIDO.find(([re]) => re.test(s));
   const toks = s.split(/\s+/);
   let city = (toks[1] && /(시|군|구)$/.test(toks[1])) ? toks[1] : '';
+  // ⚠️ 세종특별자치시는 시·군·구가 없는 단층 광역시라 둘째 토큰이 「부강면」처럼 읍·면·동이다.
+  //    빈칸으로 두면 화면에 「세종 」만 남아 어디인지 알 수 없다 → 읍·면 이름을 대신 쓴다.
+  if (!city && hit && hit[1] === '세종' && toks[1] && /(읍|면|동)$/.test(toks[1])) city = toks[1];
   // '포항시 남구'처럼 시 아래 구가 또 있으면 시 단위로 통일한다(축제 데이터와 축을 맞춘다)
   return { sido: hit ? hit[1] : '', city };
 }
@@ -64,13 +67,18 @@ async function page(no, rows) {
   console.log('');
 
   const seen = new Set(), out = [];
-  let permanent = 0, noDay = 0;
+  let permanent = 0, noDay = 0, badCycle = 0;
   for (const r of all) {
     const name = String(r.mrktNm || '').trim();
     if (!name) continue;
     const daysNum = cycleDays(r.mrktEstblCycle);
     if (!daysNum.length) { permanent++; continue; }        // 상설장은 담지 않는다
-    if (daysNum.length < 2) { noDay++; continue; }          // 끝자리 한 개만 있는 건 오일장이 아니다
+    // ⚠️ 오일장은 «끝자리가 정확히 2개, 간격 5»다. 원본엔 「2일+5일」(삽교시장·간격 3)과
+    //    「2일+4일+7일+9일」(한 달 4회)처럼 다른 주기가 섞여 있다. 그대로 두면
+    //    「2·5일장」이라 적어 놓고 실제로는 안 서는 날짜를 안내하게 된다.
+    //    **날짜를 믿고 찾아오는 사람에게 틀린 날을 알려주는 건 이 사이트에서 가장 나쁜 오류다.**
+    //    (2026-09-01 audit-newdata.js 로 발견)
+    if (daysNum.length !== 2 || Math.abs(daysNum[0] - daysNum[1]) !== 5) { badCycle++; continue; }
     const addr = String(r.rdnmadr || r.lnmadr || '').trim();
     const { sido, city } = parseAddr(addr);
     const k = name.replace(/\s/g, '') + '|' + sido + city;
@@ -98,7 +106,8 @@ async function page(no, rows) {
   out.forEach(m => { const k = m.daysNum.slice(0, 2).join('·'); byEnd[k] = (byEnd[k] || 0) + 1; });
   const bySido = {};
   out.forEach(m => { bySido[m.sido || '(미상)'] = (bySido[m.sido || '(미상)'] || 0) + 1; });
-  console.log(`✓ data/markets_std.json — 오일장 ${out.length}곳 (상설장 ${permanent} 제외 · 끝자리 부족 ${noDay} 제외)`);
+  console.log(`✓ data/markets_std.json — 오일장 ${out.length}곳 (상설장 ${permanent} · 끝자리 부족 ${noDay} · 간격≠5 ${badCycle} 제외)`);
+  console.log('  좌표 없음', out.filter(m => !m.x || !m.y).length, '곳 — 지도엔 안 찍히지만 목록·장날은 정상');
   console.log('  끝자리:', Object.entries(byEnd).sort((a, b) => b[1] - a[1]).map(([k, v]) => k + '일 ' + v).join(' · '));
   console.log('  시·도:', Object.entries(bySido).sort((a, b) => b[1] - a[1]).map(([k, v]) => k + ' ' + v).join(' · '));
   console.log('  점포수 있음', out.filter(m => m.stores).length, '· 품목 있음', out.filter(m => m.sale).length,
