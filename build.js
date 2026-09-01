@@ -1957,7 +1957,59 @@ const curMonthNum = +TODAY.slice(5, 7);
 let curMonthIdx = MONTHS.findIndex(mm => mm.months.includes(curMonthNum));
 if (curMonthIdx < 0) curMonthIdx = 0;
 const MONTHS_ROTATED = MONTHS.slice(curMonthIdx).concat(MONTHS.slice(0, curMonthIdx));
-const monthCnt = mm => festivals.filter(f => f.month.some(m => mm.months.includes(m))).length;
+// ---------- 월별 페이지 재고 보강 (2026-08-31) ----------
+// 실측하고 나서야 알았다: 월별 페이지는 «수동 큐레이션» data/festivals.json(157건)만 쓰고 있었고,
+// 정작 TourAPI 904건은 축제 상세·검색·지도에만 쓰이고 있었다. 그래서 이런 격차가 났다.
+//   2026-09 → 페이지 18개 / TourAPI 147건   ·   2026-10 → 18개 / 140건   ·   2026-11 → 6개 / 44건
+// 반대로 2027-01~04는 TourAPI가 2·1·1·0건뿐이라(지자체 등록 시차) 큐레이션이 그 자리를 메우고 있었다.
+// → 둘을 합친다. 큐레이션이 우선이고, TourAPI에서 «축제답고 설명이 있는 것»만 골라 붙인다.
+const ymdDash = s => { const t = String(s || '').replace(/-/g, ''); return t.length >= 8 ? `${t.slice(0, 4)}-${t.slice(4, 6)}-${t.slice(6, 8)}` : ''; };
+const dayGap = (a, b) => (new Date(ymdDash(b)) - new Date(ymdDash(a))) / 86400000;
+// 제목으로 카테고리를 정한다(월별 카드의 색·아이콘이 여기서 나온다). FEST_KIND 와 사고 방식은 같다.
+const MONTH_CAT = [
+  [/물놀이|머드|워터|해수욕|바다|계곡|서핑|모래|갯벌/, '물놀이'],
+  [/음악|재즈|록페|뮤직|콘서트|가요|트로트|버스킹|국악/, '음악'],
+  [/김치|막걸리|맥주|커피|빵|먹거리|음식|푸드|미식|한우|사과|포도|대하|전어|인삼|산나물|치맥|국수|김밥/, '음식'],
+  [/벚꽃|유채|장미|연꽃|국화|철쭉|코스모스|튤립|수국|해바라기|꽃|매화|진달래|정원|라벤더|메밀|억새|단풍/, '꽃'],
+  [/불꽃|드론|라이트쇼/, '불꽃'],
+  [/빛축제|등축제|야행|루미나리에|별빛|달빛|미디어아트|야간/, '빛'],
+  [/눈꽃|얼음|빙어|송어|산천어|겨울|눈축제|썰매/, '눈'],
+  [/탈춤|국악|전통|문화제|민속|역사|재현|한마당|풍물|단오|한복|도자|공예/, '전통'],
+  [/예술|공연|연극|영화제|만화|디자인|비엔날레|전시/, '문화']
+];
+const monthCatOf = t => (MONTH_CAT.find(([re]) => re.test(String(t || ''))) || [null, '기타'])[1];
+
+// ⚠️ 상설 프로그램을 걸러야 한다 — 「서울 왕궁수문장 교대의식」·「DDP 건축투어」처럼
+//    1년 내내 열리는 것이 TourAPI 축제 목록에 섞여 있다. 기간 45일이 그 경계다.
+//    개요가 없는 것도 뺀다 — 카드에 쓸 설명이 없으면 이름만 나열한 페이지가 된다.
+const MONTH_API_ADD = (() => {
+  const curatedNames = new Set(festivals.map(f => String(f.name || '').replace(/\s/g, '')));
+  const out = [];
+  for (const r of apiFests) {
+    const s = ymdDash(r.start), e = ymdDash(r.end) || s;
+    if (!s || !e) continue;
+    if (e < TODAY) continue;                                   // 이미 끝난 것은 월별 목록에 안 올린다
+    const span = dayGap(r.start, r.end || r.start);
+    if (span > 45) continue;                                   // 상설 프로그램
+    if (!r.ov || String(r.ov).length < 60) continue;           // 설명 없는 것
+    if (curatedNames.has(String(r.title || '').replace(/\s/g, ''))) continue;  // 큐레이션 우선
+    const months = [];
+    for (let d = new Date(s); d <= new Date(e); d.setMonth(d.getMonth() + 1, 1)) {
+      const m = d.getMonth() + 1; if (!months.includes(m)) months.push(m);
+    }
+    const em = new Date(e).getMonth() + 1; if (!months.includes(em)) months.push(em);
+    out.push({
+      name: r.title, region: r.sido || '', city: r.sigungu || '', place: (r.addr || '').trim(),
+      start: s, end: e, month: months, category: monthCatOf(r.title),
+      desc: String(r.ov).replace(/\s+/g, ' ').slice(0, 90).trim(), confirmed: true, _api: 1
+    });
+  }
+  return out;
+})();
+const monthFests = festivals.concat(MONTH_API_ADD);
+console.log(`✓ 월별 페이지 재고 — 큐레이션 ${festivals.length} + TourAPI ${MONTH_API_ADD.length} = ${monthFests.length}건`);
+
+const monthCnt = mm => monthFests.filter(f => f.month.some(m => mm.months.includes(m))).length;
 const [mnHero, mnNext, ...mnRest] = MONTHS_ROTATED;
 const monthNavHtml = `<div class="monthnav-wrap">`
   + `<div class="monthnav-feat">`
@@ -1973,7 +2025,7 @@ const guidePostByTitle = new Map();
 posts.forEach(p => (p.tags || []).forEach(t => { if (!guidePostByTitle.has(t)) guidePostByTitle.set(t, p); }));
 
 MONTHS.forEach(mm => {
-  const list = festivals
+  const list = monthFests
     .filter(f => f.month.some(m => mm.months.includes(m)))
     .sort((a, b) => a.start.localeCompare(b.start));
   // ⚠️ 제목 앞머리는 «헤드 키워드» 그대로여야 한다. 2026-08-20 실측:
@@ -1993,6 +2045,39 @@ MONTHS.forEach(mm => {
     .filter(r => r.idx && r.num > 800000).sort((x, z) => x.idx - z.idx).slice(0, 5);
   // 개별 축제 페이지가 있는 것 = 이 달의 '깊게 볼 축제'
   const deep = FEST_PAGES.filter(f => +String(f.start).slice(4, 6) === M || +String(f.end).slice(4, 6) === M);
+  // ---------- 「예년 이맘때」 (2026-08-31) ----------
+  // 12~4월은 TourAPI에도 자료가 없다 — 지자체가 개최 2~3개월 전에야 등록하기 때문이다.
+  //   실측: 2026-11 44건 / 2026-12 19건 / 2027-01 2건 (작년 같은 달은 84·36·36건이었다)
+  // 그 빈자리를 «작년에 이맘때 열린 축제»로 채운다. 단 **올해 일정이 아닌 것을 반드시 밝힌다.**
+  //   판단 기준: TourAPI 는 같은 contentId 의 날짜를 갱신하므로, 아직 작년 날짜인 레코드 =
+  //   올해 회차가 아직 안 올라온 연례 축제다.
+  const PREV_Y = +TODAY.slice(0, 4) - (mm.months[0] >= curMonthNum ? 1 : 0);
+  const lastYearSame = (() => {
+    if (list.length >= 30) return [];                       // 이미 충분하면 안 붙인다
+    const have = new Set(list.map(f => String(f.name || '').replace(/\s/g, '')));
+    const seenN = new Set();
+    return apiFests.filter(r => {
+      const s = String(r.start || '').replace(/-/g, ''), e = String(r.end || '').replace(/-/g, '') || s;
+      if (s.length < 8) return false;
+      if (e >= String(TODAY).replace(/-/g, '')) return false;          // 아직 안 끝난 건 위 목록에 이미 있다
+      const sm = +s.slice(4, 6), em = +e.slice(4, 6);
+      if (!mm.months.includes(sm) && !mm.months.includes(em)) return false;
+      if (!r.ov || String(r.ov).length < 60) return false;
+      const n = String(r.title || '').replace(/\s/g, '');
+      if (have.has(n) || seenN.has(n)) return false;
+      seenN.add(n);
+      return true;
+    }).sort((a, b) => String(a.start).localeCompare(String(b.start))).slice(0, 24);
+  })();
+  const lastYearHtml = lastYearSame.length ? `
+<h2 class="sec">예년 이맘때 열린 축제 ${lastYearSame.length}곳</h2>
+<p>${mm.label} 일정은 아직 공공데이터에 다 올라오지 않았습니다. 축제 일정은 보통 <b>개최 2~3개월 전</b>에 등록되기 때문입니다. 그래서 <b>직전 회차가 이맘때 열렸던 축제</b>를 함께 둡니다. 매년 비슷한 시기에 열리는 곳이 많아 계획을 세울 때 참고가 됩니다.</p>
+<p class="note" style="margin:0 0 12px"><b>⚠️ 아래는 확정 일정이 아닙니다.</b> 가장 최근 회차의 날짜이며, 다음 회차는 주최 측 공지 후 공공데이터에 반영되면 이 페이지에도 자동으로 올라옵니다. 방문 전 반드시 주최 측에 확인하세요.</p>
+<ul class="flistm">${lastYearSame.map(r => {
+    const s = String(r.start).replace(/-/g, ''), e = String(r.end || r.start).replace(/-/g, '');
+    return `<li>📅 <b>${esc(r.title)}</b> — ${esc(r.sido || '')} ${esc(r.sigungu || '')} · 직전 회차 ${s.slice(0, 4)}.${+s.slice(4, 6)}/${+s.slice(6, 8)}~${+e.slice(4, 6)}/${+e.slice(6, 8)}</li>`;
+  }).join('')}</ul>` : '';
+
   const mFaq = [
     [`${mm.label}에는 어떤 축제가 몇 개나 열리나요?`, `${mm.label} 기준 ${list.length}개를 정리해 두었습니다. 지역별로는 ${topSido.slice(0, 3).map(([r, c]) => `${r} ${c}개`).join(', ')} 순으로 많습니다. 한국관광공사 TourAPI 등록 기준이라 마을 단위 소규모 행사는 빠져 있을 수 있습니다.`],
     [`${mm.label}에 사람이 가장 몰리는 지역은 어디인가요?`, busyList.length ? `${busyList.slice(0, 3).map(r => `${r.sido} ${r.name}(평소의 ×${r.idx})`).join(', ')} 순입니다. 한국관광공사 「한국관광 데이터랩」의 시·군·구 방문자 수를 그 지역 평소 하루 평균과 비교한 값입니다.` : `방문자 데이터가 준비되면 표시됩니다.`],
@@ -2035,6 +2120,8 @@ ${quietList.length ? `<p style="margin-top:10px">반대로, 방문 규모는 어
 .flistm li{background:#fff;border-radius:12px;padding:10px 14px;margin-bottom:7px;box-shadow:0 2px 8px rgba(31,41,55,.06);font-size:.92rem;color:#374151}
 .flistm li b{color:#0a6c63}</style>
 <p class="note">방문자 데이터는 약 한 달 늦게 공개돼, 계절을 맞추기 위해 <b>작년 같은 달</b> 실적을 씁니다. 이 배수는 축제장이 아니라 그 <b>시·군·구 전체</b>의 값입니다.</p>` : ''}
+
+${lastYearHtml}
 
 <h2 class="sec">${mm.short}에 같이 보면 좋은 것</h2>
 <div class="frel2">
