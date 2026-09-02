@@ -515,6 +515,9 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 .xnote{color:#9aa3af;font-size:.79rem;line-height:1.6;margin-top:10px}
 </style>
 <script>
+// ⚠️ en-nearby.js 도 같은 핸들러를 심는다 — 같은 플래그로 «한 번만» 걸리게 한다
+//    (두 번 걸리면 클릭 한 번에 클립보드를 두 번 쓴다).
+if(!window.__xcopyBound){window.__xcopyBound=1;
 document.addEventListener('click',function(e){
   var b=e.target.closest('.xcopy button'); if(!b) return;
   var t=b.getAttribute('data-v')||'';
@@ -523,7 +526,7 @@ document.addEventListener('click',function(e){
   if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,function(){});}
   else{var ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);
     ta.select();try{document.execCommand('copy');done();}catch(_){}document.body.removeChild(ta);}
-});
+});}
 </script><div class="xbox"><h2>🇰🇷 NAVERマップ・カカオマップにこのまま貼ってください</h2><p class="lead">Googleマップは韓国国内の徒歩・乗換案内が出ません（韓国の地図データ規制のため）。NAVERマップとカカオマップなら出ますが、ハングルで検索しないとほとんど出てきません。そのままコピーしてお使いください。</p>
 <div class="xcopy"><div><span class="lb">祭りの名前（ハングル）</span><span class="vl">쿠키런 : 킹덤 아트 콜라보 프로젝트 특별전 - 위대한 왕국의 유산</span></div>
 <button data-v="쿠키런 : 킹덤 아트 콜라보 프로젝트 특별전 - 위대한 왕국의 유산" data-done="コピーしました">コピー</button></div>
@@ -595,13 +598,13 @@ document.addEventListener('click',function(e){
 <ul class="jn-list"><li class="jn-item">
 <div class="jn-h"><b>ミュージアムキムチ間</b><span class="jn-tag">観光地</span><span class="jn-km">約 0.1 km</span></div>
 <p class="jn-ov">仁寺洞（インサドン）マルアートセンター内にあるキムチ博物館です。キムチの文化、歴史、変遷史、効能などに関する展示を観覧し、映像でキムチの漬け方を学び、様々な種類のキムチを試食することができます。個人や団体向けの体験プログラムがあり、参加にはメールでの予約が必要です。</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">서울특별시 종로구 관훈동 인사동길 35-4</span></div>
-<button data-v="서울특별시 종로구 관훈동 인사동길 35-4" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">서울특별시 종로구 인사동길 35-4 (관훈동)</span></div>
+<button data-v="서울특별시 종로구 인사동길 35-4 (관훈동)" data-done="コピーしました">コピー</button></div>
 </li><li class="jn-item">
 <div class="jn-h"><b>サムジキル</b><span class="jn-tag">観光地</span><span class="jn-km">約 0.1 km</span></div>
 <p class="jn-ov">仁寺洞（インサドン）のランドマークとなっている工芸品専門のショッピングモールで、韓国の伝統と現代が調和した空間です。アレッキルマダン（「下の道の庭」という意味）からハヌルマダン（「空の庭」という意味）へと道を歩いて上りながら、各階にある小さな工房に立ち寄って見て回るだけでも楽しくなります。韓国の伝統…</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">서울특별시 종로구 관훈동 인사동길 44</span></div>
-<button data-v="서울특별시 종로구 관훈동 인사동길 44" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">서울특별시 종로구 인사동길 44 (관훈동)</span></div>
+<button data-v="서울특별시 종로구 인사동길 44 (관훈동)" data-done="コピーしました">コピー</button></div>
 </li><li class="jn-item">
 <div class="jn-h"><b>曹渓寺（ソウル）（조계사（서울））</b><span class="jn-tag">観光地</span><span class="jn-km">約 0.2 km</span></div>
 <p class="jn-ov">曹渓寺（チョゲサ）は大韓仏教曹渓宗の総本山寺院です。曹渓寺の前身である覚皇寺が1910年にソウル鐘路の中心地に創建されて以来、百年余りの間「韓国仏教一番地」という象徴性をもち仏教徒の心の拠り所となってきました。 曹渓寺は都心での穏やかな休息と余裕を提供しており、また春は燃灯、夏は蓮花、秋は菊で彩られ…</p>
@@ -610,13 +613,13 @@ document.addEventListener('click',function(e){
 </li><li class="jn-item">
 <div class="jn-h"><b>仁寺洞</b><span class="jn-tag">観光地</span><span class="jn-km">約 0.2 km</span></div>
 <p class="jn-ov">仁寺洞（インサドン）は都会にありながら昔ながらの韓国の伝統を感じることのできる空間です。仁寺洞には大通りを中心に路地が迷路のように張り巡らされており、画廊、伝統工芸店、古美術店、伝統茶屋、伝統飲食店、カフェなどが所狭しと軒を連ねています。仁寺洞のお店はそれぞれ独特な趣があり、若者をはじめ中高年にいた…</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">서울특별시 종로구 관훈동 인사동길 62</span></div>
-<button data-v="서울특별시 종로구 관훈동 인사동길 62" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">서울특별시 종로구 인사동길 62 (관훈동)</span></div>
+<button data-v="서울특별시 종로구 인사동길 62 (관훈동)" data-done="コピーしました">コピー</button></div>
 </li><li class="jn-item">
 <div class="jn-h"><b>仁寺洞文化の通り</b><span class="jn-tag">観光地</span><span class="jn-km">約 0.2 km</span></div>
 <p class="jn-ov">仁寺洞（インサドン）文化の通りは、画廊や韓定食屋、伝統茶屋のほか、通りの真ん中には露天商が並んでおり、外国人旅行者はもちろん国内旅行者も訪れる観光スポットです。ほとんどの店の看板がハングルで書かれているのがこの通りの特徴で、韓国の特性とハングルの価値に触れることができます。また平日の夕方や週末に行け…</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">서울특별시 종로구 인사동 279</span></div>
-<button data-v="서울특별시 종로구 인사동 279" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">서울특별시 종로구 인사동</span></div>
+<button data-v="서울특별시 종로구 인사동" data-done="コピーしました">コピー</button></div>
 </li></ul>
 <p class="jn-src">住所は座標から逆引きした韓国語の道路名住所です。NAVER マップ・カカオマップにそのまま貼り付けて検索できます。</p></div>
 <div class="frel"><h2>ソウルのほかの祭り</h2><div class="row"><a href="/ja/festival/changdeokgung-dalbitgihaeng/">昌徳宮月明かり紀行</a><a href="/ja/festival/jeongjodaewang-neunghaengcha-gongdongjaehyeon/">正祖大王陵行次共同再現</a><a href="/ja/festival/gangdongseonsamunhwachukje/">江東先史文化祭り</a><a href="/ja/festival/gugakgongyeon-jinyeon/">国楽公演進宴</a><a href="/ja/festival/gangbuk-baengmaekchukje/">江北百麦祭り</a><a href="/ja/festival/jungangasia-bommajichukje/">K-POPカバーダンスフェスティバルワールドファイナル</a></div></div>

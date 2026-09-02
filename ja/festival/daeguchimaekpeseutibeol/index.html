@@ -515,6 +515,9 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 .xnote{color:#9aa3af;font-size:.79rem;line-height:1.6;margin-top:10px}
 </style>
 <script>
+// ⚠️ en-nearby.js 도 같은 핸들러를 심는다 — 같은 플래그로 «한 번만» 걸리게 한다
+//    (두 번 걸리면 클릭 한 번에 클립보드를 두 번 쓴다).
+if(!window.__xcopyBound){window.__xcopyBound=1;
 document.addEventListener('click',function(e){
   var b=e.target.closest('.xcopy button'); if(!b) return;
   var t=b.getAttribute('data-v')||'';
@@ -523,7 +526,7 @@ document.addEventListener('click',function(e){
   if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,function(){});}
   else{var ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);
     ta.select();try{document.execCommand('copy');done();}catch(_){}document.body.removeChild(ta);}
-});
+});}
 </script><div class="xbox"><h2>🇰🇷 NAVERマップ・カカオマップにこのまま貼ってください</h2><p class="lead">Googleマップは韓国国内の徒歩・乗換案内が出ません（韓国の地図データ規制のため）。NAVERマップとカカオマップなら出ますが、ハングルで検索しないとほとんど出てきません。そのままコピーしてお使いください。</p>
 <div class="xcopy"><div><span class="lb">祭りの名前（ハングル）</span><span class="vl">대구치맥페스티벌</span></div>
 <button data-v="대구치맥페스티벌" data-done="コピーしました">コピー</button></div>
@@ -585,28 +588,28 @@ document.addEventListener('click',function(e){
 <ul class="jn-list"><li class="jn-item">
 <div class="jn-h"><b>大邱頭流公園</b><span class="jn-tag">観光地</span><span class="jn-km">約 0.5 km</span></div>
 <p class="jn-ov">「大邱頭流（テグドゥリュ）公園」は、頭流山と金鳳山を中心に1977年に造られた公園で、韓国最大規模の展望塔である大邱タワー（頭流タワー）や文化・教養・体育施設などがあり、多くの市民に親しまれています。公園内にある娯楽施設・eworldと市民文化の殿堂である大邱文化芸術会館が有名な他、133種15万本…</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">대구광역시 달서구 성당동 두류공원로 161</span></div>
-<button data-v="대구광역시 달서구 성당동 두류공원로 161" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">대구광역시 달서구 두류공원로 161 (성당동)</span></div>
+<button data-v="대구광역시 달서구 두류공원로 161 (성당동)" data-done="コピーしました">コピー</button></div>
 </li><li class="jn-item">
 <div class="jn-h"><b>E-WORLD</b><span class="jn-tag">観光地</span><span class="jn-km">約 0.7 km</span></div>
 <p class="jn-ov">E-WORLD（イーワールド／旧友邦タワーランド）は1995年3月に開園した、滝、噴水、イルミネーション、花で飾られたヨーロッパ風の都市公園で、老若男女問わず楽しめるアトラクション、展示、アートスペース、清潔感のある食堂街などがあります。E-WORLDにはテーマごとに広場があり、訪れる人に新しさと楽…</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">대구광역시 달서구 두류동 131-2</span></div>
-<button data-v="대구광역시 달서구 두류동 131-2" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">대구광역시 달서구 두류공원로 200</span></div>
+<button data-v="대구광역시 달서구 두류공원로 200" data-done="コピーしました">コピー</button></div>
 </li><li class="jn-item">
 <div class="jn-h"><b>E-WORLD 83タワー</b><span class="jn-tag">観光地</span><span class="jn-km">約 0.8 km</span></div>
 <p class="jn-ov">「83タワー（83TOWER）」は大邱を象徴するタワーで、大邱市内を一望できる展望台と通信の広報館、科学館、企画展示館があります。また展望台にあるレストランでは食事をしながら大邱全体を眺められるよう回転するような仕組になっています。スカイラウンジから眺める大邱の夜景は下から見る景色とは全く異なり、訪…</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">대구광역시 달서구 두류동 두류공원로 200</span></div>
-<button data-v="대구광역시 달서구 두류동 두류공원로 200" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">대구광역시 달서구 두류공원로 200 (두류동)</span></div>
+<button data-v="대구광역시 달서구 두류공원로 200 (두류동)" data-done="コピーしました">コピー</button></div>
 </li><li class="jn-item">
 <div class="jn-h"><b>アンジランコプチャン屋通り</b><span class="jn-tag">観光地</span><span class="jn-km">約 2.1 km</span></div>
 <p class="jn-ov">アンジランオゴリ（五叉路）からアンジランゴルへ行く道に形成されたアンジラン市場はヤンニョムコプチャン（味付けホルモン）を提供する店が並ぶコプチャン屋通りになっています。1979年頃にアンジラン市場にオープンした忠北食堂というコプチャン店をはじめとし、1998年頃からコプチャン店が増え始め、今では「ア…</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">대구광역시 남구 대명동 안지랑로16길 67</span></div>
-<button data-v="대구광역시 남구 대명동 안지랑로16길 67" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">대구광역시 남구 안지랑로16길 67</span></div>
+<button data-v="대구광역시 남구 안지랑로16길 67" data-done="コピーしました">コピー</button></div>
 </li><li class="jn-item">
 <div class="jn-h"><b>アプ山ヘノミ展望台</b><span class="jn-tag">観光地</span><span class="jn-km">約 2.2 km</span></div>
 <p class="jn-ov">日没とともに大邱の夜景が一望できる「アプ山ヘノミ（日の入り）展望台」は、南区のアプ山パルレト（洗濯場）公園に位置します。アプ山パルレト公園の歴史とシンボルを表現している展望台のデザインは洗濯物を絞る形を形象化したものです。展望台に向かう傾斜路からはアプ山の全景と周辺景観が観賞でき、最高の散策路となっ…</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">대구광역시 남구 대명동 앞산순환로 365</span></div>
-<button data-v="대구광역시 남구 대명동 앞산순환로 365" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">대구광역시 남구 대명동</span></div>
+<button data-v="대구광역시 남구 대명동" data-done="コピーしました">コピー</button></div>
 </li></ul>
 <p class="jn-src">住所は座標から逆引きした韓国語の道路名住所です。NAVER マップ・カカオマップにそのまま貼り付けて検索できます。</p></div>
 <div class="frel"><h2>大邱のほかの祭り</h2><div class="row"><a href="/ja/festival/suseongbichyesulje/">寿城光芸術祭</a></div></div>

@@ -515,6 +515,9 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 .xnote{color:#9aa3af;font-size:.79rem;line-height:1.6;margin-top:10px}
 </style>
 <script>
+// ⚠️ en-nearby.js 도 같은 핸들러를 심는다 — 같은 플래그로 «한 번만» 걸리게 한다
+//    (두 번 걸리면 클릭 한 번에 클립보드를 두 번 쓴다).
+if(!window.__xcopyBound){window.__xcopyBound=1;
 document.addEventListener('click',function(e){
   var b=e.target.closest('.xcopy button'); if(!b) return;
   var t=b.getAttribute('data-v')||'';
@@ -523,7 +526,7 @@ document.addEventListener('click',function(e){
   if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,function(){});}
   else{var ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);
     ta.select();try{document.execCommand('copy');done();}catch(_){}document.body.removeChild(ta);}
-});
+});}
 </script><div class="xbox"><h2>🇰🇷 NAVERマップ・カカオマップにこのまま貼ってください</h2><p class="lead">Googleマップは韓国国内の徒歩・乗換案内が出ません（韓国の地図データ規制のため）。NAVERマップとカカオマップなら出ますが、ハングルで検索しないとほとんど出てきません。そのままコピーしてお使いください。</p>
 <div class="xcopy"><div><span class="lb">祭りの名前（ハングル）</span><span class="vl">단종문화제</span></div>
 <button data-v="단종문화제" data-done="コピーしました">コピー</button></div>
@@ -589,13 +592,13 @@ document.addEventListener('click',function(e){
 </li><li class="jn-item">
 <div class="jn-h"><b>寧越観光センター</b><span class="jn-tag">観光地</span><span class="jn-km">約 2.0 km</span></div>
 <p class="jn-ov">寧越（ヨンウォル）観光センターは、寧越の閉鉱地域を一体的に観光資源として活用するために整備された施設で、産炭地域の魅力を生かした観光ルートを提案する複合文化センターです。館内では主要な観光地や文化遺産に関する情報に加え、寧越の美しい自然景観や歴史的な名所も紹介しており、観光客にさまざまな情報と利便性…</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">강원특별자치도 영월군 영월읍 770</span></div>
-<button data-v="강원특별자치도 영월군 영월읍 770" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">강원특별자치도 영월군 영월읍 청령포로 126-3</span></div>
+<button data-v="강원특별자치도 영월군 영월읍 청령포로 126-3" data-done="コピーしました">コピー</button></div>
 </li><li class="jn-item">
 <div class="jn-h"><b>寧越清泠浦</b><span class="jn-tag">観光地</span><span class="jn-km">約 2.2 km</span></div>
 <p class="jn-ov">清泠浦（チョンニョンポ）は寧越（ヨンウォル）を代表する観光スポットで、南漢江上流に位置しており、王位を奪われ寧越へと流刑に処された端宗（タンジョン）が滞在した場所です。 朝鮮第6代王であった端宗は、叔父の首陽大君に王位を譲り上王となりましたが、翌1456年、成三問ら死六臣による上王復位の企てが事前に…</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">강원특별자치도 영월군 남면 67-1</span></div>
-<button data-v="강원특별자치도 영월군 남면 67-1" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">강원특별자치도 영월군 남면 광천리</span></div>
+<button data-v="강원특별자치도 영월군 남면 광천리" data-done="コピーしました">コピー</button></div>
 </li><li class="jn-item">
 <div class="jn-h"><b>寧越荘陵（端宗）［ユネスコ世界遺産（文化遺産）］（영월 장릉（단종） [유네스코 세계문화유산]）</b><span class="jn-tag">観光地</span><span class="jn-km">約 2.2 km</span></div>
 <p class="jn-ov">荘陵（チャンヌン）は朝鮮第6代王・端宗（タンジョン、在位1452～1455年）の陵墓です。1457年、端宗が魯山君（ノサングン）に降格された身分でこの世を去ると、寧越（ヨンウォル）の戸長であった厳興道（オム・フンド）が端宗の遺体を密かに収め、現在の場所に仮埋葬しました。その後、1516年に墓が見つか…</p>

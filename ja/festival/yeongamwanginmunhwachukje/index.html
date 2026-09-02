@@ -515,6 +515,9 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 .xnote{color:#9aa3af;font-size:.79rem;line-height:1.6;margin-top:10px}
 </style>
 <script>
+// ⚠️ en-nearby.js 도 같은 핸들러를 심는다 — 같은 플래그로 «한 번만» 걸리게 한다
+//    (두 번 걸리면 클릭 한 번에 클립보드를 두 번 쓴다).
+if(!window.__xcopyBound){window.__xcopyBound=1;
 document.addEventListener('click',function(e){
   var b=e.target.closest('.xcopy button'); if(!b) return;
   var t=b.getAttribute('data-v')||'';
@@ -523,7 +526,7 @@ document.addEventListener('click',function(e){
   if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,function(){});}
   else{var ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);
     ta.select();try{document.execCommand('copy');done();}catch(_){}document.body.removeChild(ta);}
-});
+});}
 </script><div class="xbox"><h2>🇰🇷 NAVERマップ・カカオマップにこのまま貼ってください</h2><p class="lead">Googleマップは韓国国内の徒歩・乗換案内が出ません（韓国の地図データ規制のため）。NAVERマップとカカオマップなら出ますが、ハングルで検索しないとほとんど出てきません。そのままコピーしてお使いください。</p>
 <div class="xcopy"><div><span class="lb">祭りの名前（ハングル）</span><span class="vl">영암왕인문화축제</span></div>
 <button data-v="영암왕인문화축제" data-done="コピーしました">コピー</button></div>
@@ -577,18 +580,18 @@ document.addEventListener('click',function(e){
 <ul class="jn-list"><li class="jn-item">
 <div class="jn-h"><b>月出山気チャンランド</b><span class="jn-tag">観光地</span><span class="jn-km">約 6.6 km</span></div>
 <p class="jn-ov">月出山（ウォルチュルサン）気（キ）チャンランドは月出山の澄んだ渓谷の水を活用した自然型のプールを設けた水遊び場です。月出山を眺めながら水遊びが楽しめる全南光州統合特別市を代表する避暑観光地として人気です。屋外プールの水深は0.5m、0.7m、0.9m、1.1m、1.5mとさまざまな深さがあり、室内の…</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">전남광주통합특별시 영암군 영암읍 기찬랜드로 19-3</span></div>
-<button data-v="전남광주통합특별시 영암군 영암읍 기찬랜드로 19-3" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">전라남도 영암군 기찬랜드로 19-3</span></div>
+<button data-v="전라남도 영암군 기찬랜드로 19-3" data-done="コピーしました">コピー</button></div>
 </li><li class="jn-item">
 <div class="jn-h"><b>康津茶園</b><span class="jn-tag">観光地</span><span class="jn-km">約 7.4 km</span></div>
 <p class="jn-ov">月出山の南側のふもとにある康津（カンジン）茶園は、昼と夜の温度差が大きく、霧の深い場所で、お茶の栽培に適した条件を備えています。茶山・丁若鏞（朝鮮時代末期の学者）は、康津の月出山のお茶が天下で2番目によいお茶であると絶賛したといわれています。康津茶園では早春から茶を摘み取り、1年に3、4回茶摘みを行…</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">전남광주통합특별시 강진군 성전면 백운로 93-25</span></div>
-<button data-v="전남광주통합특별시 강진군 성전면 백운로 93-25" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">전라남도 강진군 성전면 백운로 93-25</span></div>
+<button data-v="전라남도 강진군 성전면 백운로 93-25" data-done="コピーしました">コピー</button></div>
 </li><li class="jn-item">
 <div class="jn-h"><b>月出山国立公園</b><span class="jn-tag">観光地</span><span class="jn-km">約 8.8 km</span></div>
 <p class="jn-ov">「月が出る山」という意味の月出山（ウォルチュルサン）は、自然景観が美しく、国立公園としては韓国の最南端に位置しています。周辺が平野なので、標高810.7メートルの天皇峰を中心とする山並みがさらに際立っています。見る角度によって人の顔や動物など違った形に見える独特の奇岩怪石は、圧倒されるような威厳があ…</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">전남광주통합특별시 영암군 영암읍 천황사로 280-43</span></div>
-<button data-v="전남광주통합특별시 영암군 영암읍 천황사로 280-43" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">전라남도 영암군 영암읍 천황사로 280-43</span></div>
+<button data-v="전라남도 영암군 영암읍 천황사로 280-43" data-done="コピーしました">コピー</button></div>
 </li></ul>
 <p class="jn-src">住所は座標から逆引きした韓国語の道路名住所です。NAVER マップ・カカオマップにそのまま貼り付けて検索できます。</p></div>
 <div class="frel"><h2>のほかの祭り</h2><div class="row"><a href="/ja/festival/boseongdahyangdaechukje/">宝城茶香祭り</a><a href="/ja/festival/damyang-daenamuchukje/">潭陽竹祭り</a><a href="/ja/festival/jeongnamjin-jangheung-mulchukje/">正南津長興水祭り</a><a href="/ja/festival/sejonghangeulchukje/">世宗ハングル祭り</a><a href="/ja/festival/gwangju-chueogui-chungjangchukje/">光州思い出の忠壮祭り</a><a href="/ja/festival/mokpohangguchukje/">木浦港口祭り</a></div></div>

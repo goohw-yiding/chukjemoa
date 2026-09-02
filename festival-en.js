@@ -23,6 +23,7 @@ const textLen = h => String(h).replace(/<script[\s\S]*?<\/script>|<style[\s\S]*?
   .replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim().length;
 const { indexPage } = require('./intl-fest-index.js');
 const { mapBlock, mapScript } = require('./nmap.js');   // 좌표 기반 지도(외국인에게 가장 정확한 안내)
+const EN = require('./en-nearby.js');                   // 근처 볼거리 — 붙여넣을 수 있는 한글주소를 여기서 쓴다
 const MIN_OV = 200;
 
 function load(f) { try { return JSON.parse(fs.readFileSync(path.join(__dirname, 'data', f), 'utf8')); } catch (e) { return []; } }
@@ -101,7 +102,7 @@ function build(ctx) {
 
   const TODAY8 = TODAY.replace(/-/g, '');
   const urls = [], thinOut = [];
-  const tally = { map: 0, busy: 0, trr: 0, mkt: 0, rel: 0, none: 0 };
+  const tally = { map: 0, busy: 0, trr: 0, mkt: 0, rel: 0, near: 0, none: 0 };
 
   rows.forEach(f => {
     const ended = String(f.end || '') < TODAY8;
@@ -116,8 +117,10 @@ function build(ctx) {
     const ex = extras(f, 'en', rows);
     // ⚠️ 지도 안내 문구가 «얇은 페이지» 판정을 밀어올린다 — 길이 측정에서 뺀다(게이트를 속이지 않는다).
     const mapHtml = mapBlock({ x: f.x, y: f.y, title: f.title, lang: 'en', query: (f._ko && f._ko.title) || f.title });
+    const near = EN.nearby(f, 5);   // 영문 설명 + 붙여넣을 수 있는 한글주소
+    if (near.count) tally.near++;
     Object.keys(tally).forEach(k => { if (ex.stats[k]) tally[k]++; });
-    if (!ex.html) tally.none++;
+    if (!ex.html && !near.count) tally.none++;
 
     const content = `<main><div class="wrap">
 ${CSS}
@@ -139,6 +142,7 @@ ${mapUrl ? `<a class="fl-map" href="${esc(mapUrl)}" target="_blank" rel="noopene
 <a class="fl-map" href="${esc(googleUrl)}" target="_blank" rel="noopener">🔎 Search on Google</a>
 </div>
 ${ex.html}
+${near.html ? EN.CSS + near.html : ''}
 ${mapHtml}
 ${related.length ? `<div class="frel"><h2>Other festivals in ${esc(f.region)}</h2><div class="row">${related.map(r => `<a href="/en/festival/${esc(r.slug)}/">${esc(r.title)}</a>`).join('')}</div></div>` : ''}
 <p style="margin-top:10px"><a href="/en/search/?region=${encodeURIComponent(f.region || '')}" style="color:#0c7d72;font-weight:700">← Browse all festivals in ${esc(f.region)}</a></p>
@@ -189,7 +193,7 @@ ${mapScript('en')}
 
   console.log(`✓ /en/festival/{slug}/ — ${urls.length - 1}개 + 허브 /en/festival/ (전체 ${load('festivals_en.json').length}건 중 개요 ${MIN_OV}자↑)`);
   console.log(`   심화블록: 한글원제 ${tally.map} · 붐빔 ${tally.busy} · 주차대수 ${tally.trr}`
-    + ` · 기간중 장날 ${tally.mkt} · 동시기 근처축제 ${tally.rel} · 아무것도 없음 ${tally.none}`);
+    + ` · 기간중 장날 ${tally.mkt} · 동시기 근처축제 ${tally.rel} · 근처 볼거리 ${tally.near} · 아무것도 없음 ${tally.none}`);
   return urls;
 }
 

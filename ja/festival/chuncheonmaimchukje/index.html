@@ -515,6 +515,9 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 .xnote{color:#9aa3af;font-size:.79rem;line-height:1.6;margin-top:10px}
 </style>
 <script>
+// ⚠️ en-nearby.js 도 같은 핸들러를 심는다 — 같은 플래그로 «한 번만» 걸리게 한다
+//    (두 번 걸리면 클릭 한 번에 클립보드를 두 번 쓴다).
+if(!window.__xcopyBound){window.__xcopyBound=1;
 document.addEventListener('click',function(e){
   var b=e.target.closest('.xcopy button'); if(!b) return;
   var t=b.getAttribute('data-v')||'';
@@ -523,7 +526,7 @@ document.addEventListener('click',function(e){
   if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,function(){});}
   else{var ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);
     ta.select();try{document.execCommand('copy');done();}catch(_){}document.body.removeChild(ta);}
-});
+});}
 </script><div class="xbox"><h2>🇰🇷 NAVERマップ・カカオマップにこのまま貼ってください</h2><p class="lead">Googleマップは韓国国内の徒歩・乗換案内が出ません（韓国の地図データ規制のため）。NAVERマップとカカオマップなら出ますが、ハングルで検索しないとほとんど出てきません。そのままコピーしてお使いください。</p>
 <div class="xcopy"><div><span class="lb">祭りの名前（ハングル）</span><span class="vl">춘천마임축제</span></div>
 <button data-v="춘천마임축제" data-done="コピーしました">コピー</button></div>
@@ -581,28 +584,28 @@ document.addEventListener('click',function(e){
 <ul class="jn-list"><li class="jn-item">
 <div class="jn-h"><b>春川明洞タッカルビ通り</b><span class="jn-tag">観光地</span><span class="jn-km">約 0.7 km</span></div>
 <p class="jn-ov">春川の中心街である明洞にあるタッカルビ専門店が集まる通り。春川タッカルビは、1960年代に豚肉の代わりに鶏肉をタレに漬けてカルビのように炭火で焼いて食べられたことからその歴史が始まったとされています。その後、鶏肉にキャベツ、玉ねぎなどの野菜を加えて鉄板で炒めて食べるスタイルに変化しました。リーズナブ…</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">강원특별자치도 춘천시 조양동 금강로62번길 12</span></div>
-<button data-v="강원특별자치도 춘천시 조양동 금강로62번길 12" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">강원특별자치도 춘천시 조양동 52</span></div>
+<button data-v="강원특별자치도 춘천시 조양동 52" data-done="コピーしました">コピー</button></div>
 </li><li class="jn-item">
 <div class="jn-h"><b>春川明洞通り</b><span class="jn-tag">観光地</span><span class="jn-km">約 0.8 km</span></div>
 <p class="jn-ov">春川（チュンチョン）明洞（ミョンドン）通りは、ソウルの明洞と同じ名前を持つ春川の繁華街です。規模は大きくありませんが、若者の街である育林峠（ユンニムゴゲ）と繋がっており、商店やショッピング街があるため、多くの人が訪れます。映画館、カフェ、官庁、銀行、地下商店街などが混在しており、春川グルメの代表格、…</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">강원특별자치도 춘천시 중앙로2가 중앙로 55</span></div>
-<button data-v="강원특별자치도 춘천시 중앙로2가 중앙로 55" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">강원특별자치도 춘천시 중앙로 55</span></div>
+<button data-v="강원특별자치도 춘천시 중앙로 55" data-done="コピーしました">コピー</button></div>
 </li><li class="jn-item">
 <div class="jn-h"><b>孔之川遊園地</b><span class="jn-tag">観光地</span><span class="jn-km">約 1.6 km</span></div>
 <p class="jn-ov">北漢江とつながる地方河川の孔之川一帯は、春川を代表する街中の憩いの場です。静かに流れる孔之川の両側に、孔之川彫刻公園、衣岩公園、エチオピア韓国参戦記念館、インラインスケート場、野外公演場、噴水など多彩な施設があります。孔之川橋とその下の歩行橋を通じて、川の両側を簡単に行き来できます。水辺の散策路と自…</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">강원특별자치도 춘천시 근화동 이디오피아길 25</span></div>
-<button data-v="강원특별자치도 춘천시 근화동 이디오피아길 25" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">강원특별자치도 춘천시 이디오피아길 25</span></div>
+<button data-v="강원특별자치도 춘천시 이디오피아길 25" data-done="コピーしました">コピー</button></div>
 </li><li class="jn-item">
 <div class="jn-h"><b>春川大橋</b><span class="jn-tag">観光地</span><span class="jn-km">約 1.9 km</span></div>
 <p class="jn-ov">衣岩（ウィアム）湖に浮かぶ島、中島（チュンド）にあるレゴランドテーマパークと春川（チュンチョン）市内を結ぶ大橋。2019年に今年の土木構造賞で金賞を受賞した橋で、橋の上のケーブルを繋いだ円形の塔が印象的です。多彩な照明でライトアップされる夜景スポットで、爽快なドライブが楽しめるスポットとしても人気で…</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">강원특별자치도 춘천시 근화동 영서로 2553-17</span></div>
-<button data-v="강원특별자치도 춘천시 근화동 영서로 2553-17" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">강원특별자치도 춘천시 근화동 588</span></div>
+<button data-v="강원특별자치도 춘천시 근화동 588" data-done="コピーしました">コピー</button></div>
 </li><li class="jn-item">
 <div class="jn-h"><b>昭陽江スカイウォーク</b><span class="jn-tag">観光地</span><span class="jn-km">約 2.3 km</span></div>
 <p class="jn-ov">全長174メートルの昭陽江（ソヤンガン）スカイウォークには、透明な強化ガラスの床部分があり、長さ156メートルにも及びます。橋の端には円形広場と美景が堪能できる展望台があり、夕日スポットとなっています。ガラス床の区間では、川面に浮かんでいるようなスリルも味わえます。円形広場の向かい側にある「コウライ…</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">강원특별자치도 춘천시 근화동 영서로 2675</span></div>
-<button data-v="강원특별자치도 춘천시 근화동 영서로 2675" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">강원특별자치도 춘천시 영서로 2663</span></div>
+<button data-v="강원특별자치도 춘천시 영서로 2663" data-done="コピーしました">コピー</button></div>
 </li></ul>
 <p class="jn-src">住所は座標から逆引きした韓国語の道路名住所です。NAVER マップ・カカオマップにそのまま貼り付けて検索できます。</p></div>
 <div class="frel"><h2>江原のほかの祭り</h2><div class="row"><a href="/ja/festival/2026-pyeongchangdaegwallyeongeumakje/">平昌大関嶺音楽祭</a><a href="/ja/festival/gangneung-gukgayusanyahaeng/">江陵国家遺産夜行</a><a href="/ja/festival/pyeongchanghyoseongmunhwaje/">平昌孝石文化祭り</a><a href="/ja/festival/jeongseonarirangje/">旌善アリラン祭り</a><a href="/ja/festival/chuncheonmakguksudakgalbichukje/">春川マッククス・タッカルビ祭り</a><a href="/ja/festival/gangneungkeopichukje/">江陵コーヒー祭り</a></div></div>

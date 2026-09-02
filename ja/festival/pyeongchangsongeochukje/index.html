@@ -515,6 +515,9 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 .xnote{color:#9aa3af;font-size:.79rem;line-height:1.6;margin-top:10px}
 </style>
 <script>
+// ⚠️ en-nearby.js 도 같은 핸들러를 심는다 — 같은 플래그로 «한 번만» 걸리게 한다
+//    (두 번 걸리면 클릭 한 번에 클립보드를 두 번 쓴다).
+if(!window.__xcopyBound){window.__xcopyBound=1;
 document.addEventListener('click',function(e){
   var b=e.target.closest('.xcopy button'); if(!b) return;
   var t=b.getAttribute('data-v')||'';
@@ -523,7 +526,7 @@ document.addEventListener('click',function(e){
   if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,function(){});}
   else{var ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);
     ta.select();try{document.execCommand('copy');done();}catch(_){}document.body.removeChild(ta);}
-});
+});}
 </script><div class="xbox"><h2>🇰🇷 NAVERマップ・カカオマップにこのまま貼ってください</h2><p class="lead">Googleマップは韓国国内の徒歩・乗換案内が出ません（韓国の地図データ規制のため）。NAVERマップとカカオマップなら出ますが、ハングルで検索しないとほとんど出てきません。そのままコピーしてお使いください。</p>
 <div class="xcopy"><div><span class="lb">祭りの名前（ハングル）</span><span class="vl">평창송어축제</span></div>
 <button data-v="평창송어축제" data-done="コピーしました">コピー</button></div>
@@ -582,8 +585,8 @@ document.addEventListener('click',function(e){
 </li><li class="jn-item">
 <div class="jn-h"><b>五台山国立公園</b><span class="jn-tag">観光地</span><span class="jn-km">約 10.1 km</span></div>
 <p class="jn-ov">標高1,563メートルの毘盧峰（ピロボン）をはじめとする五つの峰々が連なって構成された五台山（オデサン）国立公園には、月精寺、上院寺などの寺院や文化財が多く含まれています。『朝鮮王朝実録』が保管されていた五台山史庫がある歴史的な場所でもあります。美しく豊かな自然に囲まれ、生態系の保存状態が良好で、五…</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">강원특별자치도 평창군 진부면 32-11</span></div>
-<button data-v="강원특별자치도 평창군 진부면 32-11" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">강원특별자치도 평창군 진부면 오대산로 2</span></div>
+<button data-v="강원특별자치도 평창군 진부면 오대산로 2" data-done="コピーしました">コピー</button></div>
 </li><li class="jn-item">
 <div class="jn-h"><b>月精寺・月精寺モミ林</b><span class="jn-tag">観光地</span><span class="jn-km">約 11.4 km</span></div>
 <p class="jn-ov">月精寺（ウォルチョンサ）は新羅時代の643年に創建されたお寺で、五台山（オデサン）にあります。高麗時代の八角九層石塔など有名文化財を保有しています。また、月精寺一柱門から金剛（クムガン）橋までの約1キロメートルの道に1,700本以上のモミ林が広がっており、お散歩に最適です。テンプルステイなどの仏教プ…</p>
@@ -597,8 +600,8 @@ document.addEventListener('click',function(e){
 </li><li class="jn-item">
 <div class="jn-h"><b>大関嶺観光特区</b><span class="jn-tag">観光地</span><span class="jn-km">約 11.5 km</span></div>
 <p class="jn-ov">大関嶺観光特区は江原道の山岳地帯や海岸沿いを囲む5つの市・郡から構成されています。高原地帯の自然の景観を誇る大関嶺観光特区は、江原道の中でも観光スポットとして人気を集める江陵市や東海市、三陟市、横城郡、平昌郡からなり、各種見どころが満載です。 江陵市は大関嶺に最も近い場所で、鏡浦湖（キョンポホ）や鏡…</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">강원특별자치도 평창군 대관령면 올림픽로 715</span></div>
-<button data-v="강원특별자치도 평창군 대관령면 올림픽로 715" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">강원특별자치도 평창군 대관령면 대관령마루길</span></div>
+<button data-v="강원특별자치도 평창군 대관령면 대관령마루길" data-done="コピーしました">コピー</button></div>
 </li></ul>
 <p class="jn-src">住所は座標から逆引きした韓国語の道路名住所です。NAVER マップ・カカオマップにそのまま貼り付けて検索できます。</p></div>
 <div class="frel"><h2>江原のほかの祭り</h2><div class="row"><a href="/ja/festival/danjongmunhwaje/">端宗文化祭り</a><a href="/ja/festival/duwibong-cheoljjukchukje-sanmaekpeseutibeol/">斗囲峰クロフネツツジ祭り&amp;山麦フェスティバル</a><a href="/ja/festival/chuncheonmaimchukje/">春川マイム祭り</a><a href="/ja/festival/2026-pyeongchangdaegwallyeongeumakje/">平昌大関嶺音楽祭</a><a href="/ja/festival/gangneung-gukgayusanyahaeng/">江陵国家遺産夜行</a><a href="/ja/festival/pyeongchanghyoseongmunhwaje/">平昌孝石文化祭り</a></div></div>

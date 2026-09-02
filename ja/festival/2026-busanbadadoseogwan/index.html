@@ -515,6 +515,9 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 .xnote{color:#9aa3af;font-size:.79rem;line-height:1.6;margin-top:10px}
 </style>
 <script>
+// ⚠️ en-nearby.js 도 같은 핸들러를 심는다 — 같은 플래그로 «한 번만» 걸리게 한다
+//    (두 번 걸리면 클릭 한 번에 클립보드를 두 번 쓴다).
+if(!window.__xcopyBound){window.__xcopyBound=1;
 document.addEventListener('click',function(e){
   var b=e.target.closest('.xcopy button'); if(!b) return;
   var t=b.getAttribute('data-v')||'';
@@ -523,7 +526,7 @@ document.addEventListener('click',function(e){
   if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,function(){});}
   else{var ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);
     ta.select();try{document.execCommand('copy');done();}catch(_){}document.body.removeChild(ta);}
-});
+});}
 </script><div class="xbox"><h2>🇰🇷 NAVERマップ・カカオマップにこのまま貼ってください</h2><p class="lead">Googleマップは韓国国内の徒歩・乗換案内が出ません（韓国の地図データ規制のため）。NAVERマップとカカオマップなら出ますが、ハングルで検索しないとほとんど出てきません。そのままコピーしてお使いください。</p>
 <div class="xcopy"><div><span class="lb">祭りの名前（ハングル）</span><span class="vl">2026 부산바다도서관</span></div>
 <button data-v="2026 부산바다도서관" data-done="コピーしました">コピー</button></div>
@@ -587,18 +590,18 @@ document.addEventListener('click',function(e){
 <ul class="jn-list"><li class="jn-item">
 <div class="jn-h"><b>MILLAC THE MARKET</b><span class="jn-tag">観光地</span><span class="jn-km">約 0.5 km</span></div>
 <p class="jn-ov">釜山（プサン）広域市水営（スヨン）区に位置している「MILLAC THE MARKET」は、「ボリエ（BORIE）」が運営する複合文化空間です。両側にエスカレーターやエレベーターが設置されていて、便利に利用できます。店内には印象的なグラフィティアートが描かれた壁面があり、フォトスポットとなっています…</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">부산광역시 수영구 민락동 민락수변로17번길 56</span></div>
-<button data-v="부산광역시 수영구 민락동 민락수변로17번길 56" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">부산광역시 수영구 민락수변로17번길 56</span></div>
+<button data-v="부산광역시 수영구 민락수변로17번길 56" data-done="コピーしました">コピー</button></div>
 </li><li class="jn-item">
 <div class="jn-h"><b>広安里海辺テーマ通り</b><span class="jn-tag">観光地</span><span class="jn-km">約 1.0 km</span></div>
 <p class="jn-ov">広安里海辺テーマ通り（クァンアンリへビョン・テマゴリ）は、様々なフェスティバルやイベントが行われる場所で、人工ヤシの木、造形物、ベンチ、緑地帯などがある全長1,250メートルの広安里海岸道路です。ロマン通り、日の出広場、若者の通りに分かれています。広安（クァンアン）大橋の輝かしい夜景と、広安里カフェ…</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">부산광역시 수영구 민락동 209-2</span></div>
-<button data-v="부산광역시 수영구 민락동 209-2" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">부산광역시 수영구 민락동</span></div>
+<button data-v="부산광역시 수영구 민락동" data-done="コピーしました">コピー</button></div>
 </li><li class="jn-item">
 <div class="jn-h"><b>広安里海水浴場</b><span class="jn-tag">観光地</span><span class="jn-km">約 1.3 km</span></div>
 <p class="jn-ov">広安里（クァンアンリ）海水浴場は澄んだ蒼い海ときれいな砂が特徴で、夏場には多くの観光客が訪れる名所です。広安大橋と海が調和する風景が美しく、夜景スポットとしても有名。海水浴の他にもさまざまな海洋スポーツが楽しめる他、近くにはカフェやレストランもあり、おいしいものを楽しみながらゆったりとした時間を過ご…</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">부산광역시 수영구 광안동 1306-2</span></div>
-<button data-v="부산광역시 수영구 광안동 1306-2" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">부산광역시 수영구 광안해변로 219 (광안동)</span></div>
+<button data-v="부산광역시 수영구 광안해변로 219 (광안동)" data-done="コピーしました">コピー</button></div>
 </li><li class="jn-item">
 <div class="jn-h"><b>ベース皮膚科医院</b><span class="jn-tag">観光地</span><span class="jn-km">約 1.3 km</span></div>
 <p class="jn-ov">釜山・海雲台センタムシティに位置するベース皮膚科は、肌の一時的な変化ではなく根本的な改善を目指している。10年以上にわたり皮膚を研究してきた皮膚科専門医が直接診断し、必要な治療のみを設計して個別に最適なケアを提供する。豊富な臨床経験と細やかな対応に基づき、リフティング、スキンブースター施術、色素・赤…</p>

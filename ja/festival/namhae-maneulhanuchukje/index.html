@@ -515,6 +515,9 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 .xnote{color:#9aa3af;font-size:.79rem;line-height:1.6;margin-top:10px}
 </style>
 <script>
+// ⚠️ en-nearby.js 도 같은 핸들러를 심는다 — 같은 플래그로 «한 번만» 걸리게 한다
+//    (두 번 걸리면 클릭 한 번에 클립보드를 두 번 쓴다).
+if(!window.__xcopyBound){window.__xcopyBound=1;
 document.addEventListener('click',function(e){
   var b=e.target.closest('.xcopy button'); if(!b) return;
   var t=b.getAttribute('data-v')||'';
@@ -523,7 +526,7 @@ document.addEventListener('click',function(e){
   if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,function(){});}
   else{var ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);
     ta.select();try{document.execCommand('copy');done();}catch(_){}document.body.removeChild(ta);}
-});
+});}
 </script><div class="xbox"><h2>🇰🇷 NAVERマップ・カカオマップにこのまま貼ってください</h2><p class="lead">Googleマップは韓国国内の徒歩・乗換案内が出ません（韓国の地図データ規制のため）。NAVERマップとカカオマップなら出ますが、ハングルで検索しないとほとんど出てきません。そのままコピーしてお使いください。</p>
 <div class="xcopy"><div><span class="lb">祭りの名前（ハングル）</span><span class="vl">남해 마늘한우축제</span></div>
 <button data-v="남해 마늘한우축제" data-done="コピーしました">コピー</button></div>
@@ -564,13 +567,13 @@ document.addEventListener('click',function(e){
 <ul class="jn-list"><li class="jn-item">
 <div class="jn-h"><b>AMERICAN VILLAGE</b><span class="jn-tag">観光地</span><span class="jn-km">約 0.9 km</span></div>
 <p class="jn-ov">AMERICAN VILLAGE（アメリカ村）は、母国に戻り老後を過ごす在米韓国人のためにつくられた集落です。その名にふさわしく、アメリカンスタイルで建てられた22世帯の住宅と民宿型ペンションがあり、アメリカ文化を体験することができます。住宅はすべて木材で建てられ、家ごとに個性がはっきりしていて、見…</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">경상남도 남해군 남해읍 망운로9번길 12</span></div>
-<button data-v="경상남도 남해군 남해읍 망운로9번길 12" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">경상남도 남해군 이동면 미국마을길 8</span></div>
+<button data-v="경상남도 남해군 이동면 미국마을길 8" data-done="コピーしました">コピー</button></div>
 </li><li class="jn-item">
 <div class="jn-h"><b>斗谷・月浦海水浴場</b><span class="jn-tag">観光地</span><span class="jn-km">約 7.1 km</span></div>
 <p class="jn-ov">斗谷（トゥゴク）・月浦（ウォルポ）海水浴場では松林とモンドル（角のない丸い石）と砂が調和した風景を楽しめます。砂浜は幅70m、長さ約900m、平均水深は1～2m、磯釣りもでき、家族連れで静かに過ごせるこぢんまりとした海水浴場です。海水浴場左側には趣のある小さな岩の島「コットゥバン」、近くには海岸観光…</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">경상남도 남해군 남면 남면로111번길 91</span></div>
-<button data-v="경상남도 남해군 남면 남면로111번길 91" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">경상남도 남해군 남면 당항리</span></div>
+<button data-v="경상남도 남해군 남면 당항리" data-done="コピーしました">コピー</button></div>
 </li><li class="jn-item">
 <div class="jn-h"><b>ソミ庭園</b><span class="jn-tag">観光地</span><span class="jn-km">約 9.5 km</span></div>
 <p class="jn-ov">ソミ庭園は南海に位置する閑麗（ハンリョ）海上国立公園の美しい海が見下ろせる棚田の古い石垣と池、そして生垣に多様な草やススキで演出したフォーマルで自然美のある欧州風の庭園です。高さの異なる棚田を利用して9つの小さな庭園が部屋のように分離し、それぞれが個性にあふれ、ときにはそれらが調和して特別な風景を作…</p>

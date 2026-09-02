@@ -515,6 +515,9 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 .xnote{color:#9aa3af;font-size:.79rem;line-height:1.6;margin-top:10px}
 </style>
 <script>
+// ⚠️ en-nearby.js 도 같은 핸들러를 심는다 — 같은 플래그로 «한 번만» 걸리게 한다
+//    (두 번 걸리면 클릭 한 번에 클립보드를 두 번 쓴다).
+if(!window.__xcopyBound){window.__xcopyBound=1;
 document.addEventListener('click',function(e){
   var b=e.target.closest('.xcopy button'); if(!b) return;
   var t=b.getAttribute('data-v')||'';
@@ -523,7 +526,7 @@ document.addEventListener('click',function(e){
   if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,function(){});}
   else{var ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);
     ta.select();try{document.execCommand('copy');done();}catch(_){}document.body.removeChild(ta);}
-});
+});}
 </script><div class="xbox"><h2>🇰🇷 NAVERマップ・カカオマップにこのまま貼ってください</h2><p class="lead">Googleマップは韓国国内の徒歩・乗換案内が出ません（韓国の地図データ規制のため）。NAVERマップとカカオマップなら出ますが、ハングルで検索しないとほとんど出てきません。そのままコピーしてお使いください。</p>
 <div class="xcopy"><div><span class="lb">祭りの名前（ハングル）</span><span class="vl">에덴벚꽃길 벚꽃축제</span></div>
 <button data-v="에덴벚꽃길 벚꽃축제" data-done="コピーしました">コピー</button></div>
@@ -587,8 +590,8 @@ document.addEventListener('click',function(e){
 <ul class="jn-list"><li class="jn-item">
 <div class="jn-h"><b>南怡島</b><span class="jn-tag">観光地</span><span class="jn-km">約 4.4 km</span></div>
 <p class="jn-ov">南怡島（ナミソム）は「童話の国、歌の島」をコンセプトにさまざまな文化イベント、コンサート、展示を絶えず開催しており、子どもたちには夢と希望を、恋人たちには愛と思い出を、文化界の人々には創作基盤を提供する自然生態文化空間です。主な施設には、歌博物館、絵本の遊び場、MICEセンター、トゥギャザーパーク、…</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">강원특별자치도 춘천시 남산면 159</span></div>
-<button data-v="강원특별자치도 춘천시 남산면 159" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">강원특별자치도 춘천시 남이섬길 1 남이섬</span></div>
+<button data-v="강원특별자치도 춘천시 남이섬길 1 남이섬" data-done="コピーしました">コピー</button></div>
 </li><li class="jn-item">
 <div class="jn-h"><b>NINE FOREST二和園</b><span class="jn-tag">観光地</span><span class="jn-km">約 5.2 km</span></div>
 <p class="jn-ov">現在、休業中 2015年にリニューアルオープンした加平郡チャラ島内にある二和園（イファウォン）は、総面積約1万坪の敷地に、330坪規模を誇る蝶生態館を保有する世界最大の蝶の公園です。生きている蝶や標本を1年中観覧することができ、2,300坪もの温室があるため、天候に左右されること無くいつでも観覧する…</p>
@@ -597,8 +600,8 @@ document.addEventListener('click',function(e){
 </li><li class="jn-item">
 <div class="jn-h"><b>チャラ島</b><span class="jn-tag">観光地</span><span class="jn-km">約 5.5 km</span></div>
 <p class="jn-ov">「チャラ（スッポン）のような形の丘」があることから「チャラ島」と名付けられました。東島、西島、中島、南島の4つの島からなるチャラ島には、レジャー施設や生態公園が設けられています。中島には直径100メートル以上の芝生広場を備えた生態文化公園、チャラ島キャンプ場の西端には自然生態テーマパーク「二和園」が…</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">경기도 가평군 가평읍 자라섬물길 119</span></div>
-<button data-v="경기도 가평군 가평읍 자라섬물길 119" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">경기도 가평군 가평읍 자라섬로 60</span></div>
+<button data-v="경기도 가평군 가평읍 자라섬로 60" data-done="コピーしました">コピー</button></div>
 </li><li class="jn-item">
 <div class="jn-h"><b>カルボン山自然休養林</b><span class="jn-tag">観光地</span><span class="jn-km">約 5.6 km</span></div>
 <p class="jn-ov">「カルボン山自然休養林」は、2008年にオープンしました。森の中の家や山林文化休養館といった宿泊施設、キャンプ場、散策路、森林浴場、多目的運動場、駐車場、シャワー室などの施設を備えています。奇岩怪石と木々の間を流れる鏡盤渓谷、鏡盤湖、クリの木やゴヨウマツの森の道といった自然に加え、清平ダムなどが近く…</p>

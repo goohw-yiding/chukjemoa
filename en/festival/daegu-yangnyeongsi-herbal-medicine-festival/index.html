@@ -517,6 +517,9 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 .xnote{color:#9aa3af;font-size:.79rem;line-height:1.6;margin-top:10px}
 </style>
 <script>
+// ⚠️ en-nearby.js 도 같은 핸들러를 심는다 — 같은 플래그로 «한 번만» 걸리게 한다
+//    (두 번 걸리면 클릭 한 번에 클립보드를 두 번 쓴다).
+if(!window.__xcopyBound){window.__xcopyBound=1;
 document.addEventListener('click',function(e){
   var b=e.target.closest('.xcopy button'); if(!b) return;
   var t=b.getAttribute('data-v')||'';
@@ -525,7 +528,7 @@ document.addEventListener('click',function(e){
   if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,function(){});}
   else{var ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);
     ta.select();try{document.execCommand('copy');done();}catch(_){}document.body.removeChild(ta);}
-});
+});}
 </script><div class="xbox"><h2>🅿️ Nearby attractions — with actual parking capacity</h2><p class="lead">Most sites only say &quot;parking available.&quot; These are official figures from the Ministry of the Interior and Safety, so you can judge before you drive.</p><div class="xlist"><div class="xitem"><div class="nm">달성토성마을</div>
 <div class="mt">1.5 km away · 대구광역시 서구 국채보상로 83길 21 (비산동) 일대</div>
 <span class="xtag">26 parking spaces</span>
@@ -550,6 +553,73 @@ document.addEventListener('click',function(e){
 <div class="mt">9.1 km away · opens on days ending in 1, 6 · 58 stalls</div>
 <div style="margin-top:5px"><span class="lb" style="font-size:.74rem;font-weight:800;color:#9a5b00">Open on</span> <span class="xtag d">May 11</span></div>
 </div></div></div>
+<style>
+.ennear{margin:22px 0}
+.ennear h2{font-size:1.08rem;font-weight:900;margin:0 0 6px}
+.en-note,.en-src{font-size:.8rem;color:#8a939d;line-height:1.6;margin:0 0 10px}
+.en-src{margin-top:10px}
+.en-list{list-style:none;padding:0;margin:0;display:grid;gap:10px}
+.en-item{border:1px solid #e6eaee;border-radius:12px;padding:12px 13px;background:#fff}
+.en-h{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-bottom:5px}
+.en-h b{font-size:1rem;font-weight:800;color:#111827}
+.en-ko{font-size:.82rem;color:#6b7280;font-weight:700}
+.en-tag{font-size:.72rem;font-weight:800;color:#0a6c63;background:#e7f6f3;border-radius:6px;padding:2px 7px}
+.en-km{font-size:.78rem;color:#8a939d;margin-left:auto}
+.en-ov{font-size:.88rem;line-height:1.65;color:#374151;margin:0 0 9px}
+.xcopy{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;
+  background:#f6fbfa;border:1.5px solid #dcefeb;border-radius:12px;padding:11px 13px;margin:8px 0}
+.xcopy .lb{font-size:.74rem;font-weight:800;color:#0a6c63;letter-spacing:.02em;display:block;margin-bottom:3px}
+.xcopy .vl{font-size:1rem;font-weight:800;color:#111827;word-break:keep-all;line-height:1.45}
+.xcopy button{background:#0f9d8f;color:#fff;border:0;border-radius:9px;padding:9px 14px;
+  font-weight:800;font-size:.84rem;cursor:pointer;white-space:nowrap}
+</style>
+<script>
+// ⚠️ intl-fest-extra.js 도 같은 핸들러를 심는다 — 같은 플래그로 «한 번만» 걸리게 한다
+//    (두 번 걸리면 클릭 한 번에 클립보드를 두 번 쓴다).
+if(!window.__xcopyBound){window.__xcopyBound=1;
+document.addEventListener('click',function(e){
+  var b=e.target.closest('.xcopy button'); if(!b) return;
+  var t=b.getAttribute('data-v')||'';
+  var done=function(){var o=b.textContent;b.textContent=b.getAttribute('data-done')||'OK';
+    setTimeout(function(){b.textContent=o;},1400);};
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,function(){});}
+  else{var ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);
+    ta.select();try{document.execCommand('copy');done();}catch(_){}document.body.removeChild(ta);}
+});}
+</script><div class="ennear"><h2>Nearby Attractions</h2>
+<p class="en-note">Places within 12&nbsp;km of the festival venue (straight-line distance), described in English by the Korea Tourism Organization. Travel time depends on roads and traffic, so only distance is shown.</p>
+<ul class="en-list"><li class="en-item">
+<div class="en-h"><b>Daegu Yangnyeongsi Museum of Oriental Medicine</b><span class="en-ko">대구약령시 한의약박물관</span>
+<span class="en-tag">Attraction</span><span class="en-km">approx. 0.1 km</span></div>
+<p class="en-ov">Yangnyeongsi Museum of Oriental Medicine continues to provide an opportunity to experience the 350-year-old traditions of Oriental medicine and medicine markets through…</p>
+<div class="xcopy"><div><span class="lb">Korean address for map apps</span><span class="vl">대구광역시 중구 달구벌대로415길 49 (남성로)</span></div>
+<button data-v="대구광역시 중구 달구벌대로415길 49 (남성로)" data-done="Copied">Copy</button></div>
+</li><li class="en-item">
+<div class="en-h"><b>Daegu Jeil Church</b><span class="en-ko">대구제일교회</span>
+<span class="en-tag">Attraction</span><span class="en-km">approx. 0.1 km</span></div>
+<p class="en-ov">Daegu Jeil Church is the oldest Protestant Church in Gyeongsangbuk-do Province. Initially established in 1898 over four tile-roofed houses, Daegu Jeil Church was rebuilt…</p>
+<div class="xcopy"><div><span class="lb">Korean address for map apps</span><span class="vl">대구광역시 중구 국채보상로102길 50 (동산동)</span></div>
+<button data-v="대구광역시 중구 국채보상로102길 50 (동산동)" data-done="Copied">Copy</button></div>
+</li><li class="en-item">
+<div class="en-h"><b>Daegu Korean Chinese Association</b><span class="en-ko">대구화교협회</span>
+<span class="en-tag">Attraction</span><span class="en-km">approx. 0.2 km</span></div>
+<p class="en-ov">Daegu Korean Chinese Association building is a red brick two-story Western-style house built in 1929. Seo Byeong-guk, a rich man in Daegu, entrusted the design and…</p>
+<div class="xcopy"><div><span class="lb">Korean address for map apps</span><span class="vl">대구광역시 중구 종로 34 대구화교소학교</span></div>
+<button data-v="대구광역시 중구 종로 34 대구화교소학교" data-done="Copied">Copy</button></div>
+</li><li class="en-item">
+<div class="en-h"><b>Daegu Gyesan Cathedral</b><span class="en-ko">대구 계산동성당</span>
+<span class="en-tag">Attraction</span><span class="en-km">approx. 0.3 km</span></div>
+<p class="en-ov">Daegu Gyesan Cathedral is one of Daegu's main churches, designed by Father Poisnel, who also designed Myeongdong Cathedral and imported stained glass for the windows…</p>
+<div class="xcopy"><div><span class="lb">Korean address for map apps</span><span class="vl">대구광역시 중구 서성로 10 (계산동2가)</span></div>
+<button data-v="대구광역시 중구 서성로 10 (계산동2가)" data-done="Copied">Copy</button></div>
+</li><li class="en-item">
+<div class="en-h"><b>Daegu Dongseong-ro Street</b><span class="en-ko">대구 동성로거리</span>
+<span class="en-tag">Attraction</span><span class="en-km">approx. 0.4 km</span></div>
+<p class="en-ov">Dongseong-ro Street, named for its location in relation to the old Daegueupseong Walled Town's wall, is the epicenter of youth culture in Daegu. It is the central…</p>
+<div class="xcopy"><div><span class="lb">Korean address for map apps</span><span class="vl">대구광역시 중구 동성로2길 27</span></div>
+<button data-v="대구광역시 중구 동성로2길 27" data-done="Copied">Copy</button></div>
+</li></ul>
+<p class="en-src">Google Maps cannot provide driving or transit directions inside South Korea. Paste the Korean addresses above into <b>NAVER Map</b> or <b>KakaoMap</b> — both work with these addresses and are what people here actually use.</p></div>
 <div class="nmap-wrap">
 <div class="nmap" style="height:300px" data-x="128.590614" data-y="35.867583" data-t="Daegu Yangnyeongsi Herbal Medicine Festival"><span class="nmap-ph">Loading map…</span></div>
 <a class="nmap-open" href="https://map.naver.com/p/search/Daegu%20Yangnyeongsi%20Herbal%20Medicine%20Festival" target="_blank" rel="noopener">🗺️ Open in Naver Map</a>

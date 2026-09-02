@@ -515,6 +515,9 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 .xnote{color:#9aa3af;font-size:.79rem;line-height:1.6;margin-top:10px}
 </style>
 <script>
+// ⚠️ en-nearby.js 도 같은 핸들러를 심는다 — 같은 플래그로 «한 번만» 걸리게 한다
+//    (두 번 걸리면 클릭 한 번에 클립보드를 두 번 쓴다).
+if(!window.__xcopyBound){window.__xcopyBound=1;
 document.addEventListener('click',function(e){
   var b=e.target.closest('.xcopy button'); if(!b) return;
   var t=b.getAttribute('data-v')||'';
@@ -523,7 +526,7 @@ document.addEventListener('click',function(e){
   if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,function(){});}
   else{var ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);
     ta.select();try{document.execCommand('copy');done();}catch(_){}document.body.removeChild(ta);}
-});
+});}
 </script><div class="xbox"><h2>🇰🇷 NAVERマップ・カカオマップにこのまま貼ってください</h2><p class="lead">Googleマップは韓国国内の徒歩・乗換案内が出ません（韓国の地図データ規制のため）。NAVERマップとカカオマップなら出ますが、ハングルで検索しないとほとんど出てきません。そのままコピーしてお使いください。</p>
 <div class="xcopy"><div><span class="lb">祭りの名前（ハングル）</span><span class="vl">해운대 모래축제</span></div>
 <button data-v="해운대 모래축제" data-done="コピーしました">コピー</button></div>
@@ -587,8 +590,8 @@ document.addEventListener('click',function(e){
 <ul class="jn-list"><li class="jn-item">
 <div class="jn-h"><b>SEA LIFE 釜山アクアリウム</b><span class="jn-tag">観光地</span><span class="jn-km">約 0.1 km</span></div>
 <p class="jn-ov">「SEA LIFE釜山アクアリウム」は、地上1階・地下3階、延面積4,000坪、8つの展示ゾーンに250種・約10,000匹の海洋生物を展示しています。テーマ別に特性を活かした水槽や、海底トンネル、水中生態系などを楽しめる施設を備えており、大きなサメやカメだけでなく、小さなヒトデやタツノオトシゴ、優…</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">부산광역시 해운대구 중동 해운대해변로 266</span></div>
-<button data-v="부산광역시 해운대구 중동 해운대해변로 266" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">부산광역시 해운대구 해운대해변로 266</span></div>
+<button data-v="부산광역시 해운대구 해운대해변로 266" data-done="コピーしました">コピー</button></div>
 </li><li class="jn-item">
 <div class="jn-h"><b>オーシャンスパCIMER</b><span class="jn-tag">観光地</span><span class="jn-km">約 0.2 km</span></div>
 <p class="jn-ov">オーシャンスパCIMERは、空を意味するフランス語「ciel」と海を意味する「mer」を合わせた「CIMER（シメル）」という名前のように、果てしない空とエメラルドグリーンの海が触れ合っているような風景で有名なスパ。海水温泉に浸かったまま、かすかに吹いてくる潮風を満喫しながら水平線を眺めれば、まるで…</p>
@@ -597,13 +600,13 @@ document.addEventListener('click',function(e){
 </li><li class="jn-item">
 <div class="jn-h"><b>BUSAN X the SKY</b><span class="jn-tag">観光地</span><span class="jn-km">約 0.5 km</span></div>
 <p class="jn-ov">BUSAN X the SKY（釜山エックスザスカイ）は韓国で2番目に高い（411.6メートル）海雲台LCTランドマークタワーに位置しており、シーサイドビューとシティービューが同時に楽しめる韓国最大規模の展望台です。海雲台ビーチと都市の夜景、広安大橋、釜山港大橋、二妓台、タルマジゴゲ（月見峠）、冬柏…</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">부산광역시 해운대구 중동 달맞이길 30</span></div>
-<button data-v="부산광역시 해운대구 중동 달맞이길 30" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">부산광역시 해운대구 달맞이길 30</span></div>
+<button data-v="부산광역시 해운대구 달맞이길 30" data-done="コピーしました">コピー</button></div>
 </li><li class="jn-item">
 <div class="jn-h"><b>クラブDオアシス</b><span class="jn-tag">観光地</span><span class="jn-km">約 0.5 km</span></div>
 <p class="jn-ov">クラブDオアシスはヘウンデ(海雲台)LCT内にあるプレミアムスパ&amp;ウォーターパークです。延べ面積30,383㎡規模でLCTの地上3～6階にあり、最大3,500人が同時に収容可能です。ヘウンデの海を眺めながら楽しめる屋外足湯と、プレミアムキャビンサウナを体験できるテラスバー、他にも「免疫工房」をはじめ…</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">부산광역시 해운대구 중동 달맞이길 30</span></div>
-<button data-v="부산광역시 해운대구 중동 달맞이길 30" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">부산광역시 해운대구 달맞이길 30 엘시티</span></div>
+<button data-v="부산광역시 해운대구 달맞이길 30 엘시티" data-done="コピーしました">コピー</button></div>
 </li><li class="jn-item">
 <div class="jn-h"><b>ヘリダンギル</b><span class="jn-tag">観光地</span><span class="jn-km">約 0.7 km</span></div>
 <p class="jn-ov">釜山地下鉄「海雲台駅」4番出口付近にあるヘリダンギルはソウルのキョンニダンギルからアイデアを得て名づけられた通りです。狭い道路沿いに個性あるカフェや飲食店が続々とでき、海雲台の名所となりました。路地の塀に描かれたウィットあふれる絵など、自由な街の雰囲気を楽しむことができ、市民はもちろん観光客もたくさ…</p>

@@ -514,6 +514,9 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 .xnote{color:#9aa3af;font-size:.79rem;line-height:1.6;margin-top:10px}
 </style>
 <script>
+// ⚠️ en-nearby.js 도 같은 핸들러를 심는다 — 같은 플래그로 «한 번만» 걸리게 한다
+//    (두 번 걸리면 클릭 한 번에 클립보드를 두 번 쓴다).
+if(!window.__xcopyBound){window.__xcopyBound=1;
 document.addEventListener('click',function(e){
   var b=e.target.closest('.xcopy button'); if(!b) return;
   var t=b.getAttribute('data-v')||'';
@@ -522,7 +525,7 @@ document.addEventListener('click',function(e){
   if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,function(){});}
   else{var ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);
     ta.select();try{document.execCommand('copy');done();}catch(_){}document.body.removeChild(ta);}
-});
+});}
 </script><div class="xbox"><h2>🇰🇷 NAVERマップ・カカオマップにこのまま貼ってください</h2><p class="lead">Googleマップは韓国国内の徒歩・乗換案内が出ません（韓国の地図データ規制のため）。NAVERマップとカカオマップなら出ますが、ハングルで検索しないとほとんど出てきません。そのままコピーしてお使いください。</p>
 <div class="xcopy"><div><span class="lb">祭りの名前（ハングル）</span><span class="vl">천안흥타령춤축제</span></div>
 <button data-v="천안흥타령춤축제" data-done="コピーしました">コピー</button></div>
@@ -576,8 +579,8 @@ document.addEventListener('click',function(e){
 <ul class="jn-list"><li class="jn-item">
 <div class="jn-h"><b>エコヒーリング黄土道</b><span class="jn-tag">観光地</span><span class="jn-km">約 2.7 km</span></div>
 <p class="jn-ov">エコヒーリング黄土道は、天安と牙山の境界に位置している散策路です。黄土道は延長が約2.5㎞で、健康に役立つよう素足で歩けるようにマットと黄土で整備されました。通常の登山路ともつながり、登山も楽しめます。森が茂っているため森林浴も体験でき、小さな野生動物も見られます。道の途中には亭、椅子が用意され休む…</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">충청남도 천안시 서북구 불당동 공원로 159</span></div>
-<button data-v="충청남도 천안시 서북구 불당동 공원로 159" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">충청남도 천안시 서북구 공원로 159</span></div>
+<button data-v="충청남도 천안시 서북구 공원로 159" data-done="コピーしました">コピー</button></div>
 </li><li class="jn-item">
 <div class="jn-h"><b>イヨンジュン韓医院</b><span class="jn-tag">観光地</span><span class="jn-km">約 3.6 km</span></div>
 <p class="jn-ov">イヨンジュン韓医院では、顎関節を用いた全身治療法(TBT )により、身体の構造的な不均衡とこれに起因する脳神経系の異常を顎関節のバランス調整によって正常化させ、体の免疫力と自然治癒力を高めて自ら治癒するように助ける非外科的治療を行っています。 顎関節障害、脊椎椎間板ヘルニア、疼痛性疾患などの一般的な…</p>

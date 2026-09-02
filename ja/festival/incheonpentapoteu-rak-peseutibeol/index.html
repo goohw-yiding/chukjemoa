@@ -515,6 +515,9 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 .xnote{color:#9aa3af;font-size:.79rem;line-height:1.6;margin-top:10px}
 </style>
 <script>
+// ⚠️ en-nearby.js 도 같은 핸들러를 심는다 — 같은 플래그로 «한 번만» 걸리게 한다
+//    (두 번 걸리면 클릭 한 번에 클립보드를 두 번 쓴다).
+if(!window.__xcopyBound){window.__xcopyBound=1;
 document.addEventListener('click',function(e){
   var b=e.target.closest('.xcopy button'); if(!b) return;
   var t=b.getAttribute('data-v')||'';
@@ -523,7 +526,7 @@ document.addEventListener('click',function(e){
   if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,function(){});}
   else{var ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);
     ta.select();try{document.execCommand('copy');done();}catch(_){}document.body.removeChild(ta);}
-});
+});}
 </script><div class="xbox"><h2>🇰🇷 NAVERマップ・カカオマップにこのまま貼ってください</h2><p class="lead">Googleマップは韓国国内の徒歩・乗換案内が出ません（韓国の地図データ規制のため）。NAVERマップとカカオマップなら出ますが、ハングルで検索しないとほとんど出てきません。そのままコピーしてお使いください。</p>
 <div class="xcopy"><div><span class="lb">祭りの名前（ハングル）</span><span class="vl">인천펜타포트 락 페스티벌</span></div>
 <button data-v="인천펜타포트 락 페스티벌" data-done="コピーしました">コピー</button></div>
@@ -588,18 +591,18 @@ document.addEventListener('click',function(e){
 </li><li class="jn-item">
 <div class="jn-h"><b>松島韓屋村</b><span class="jn-tag">観光地</span><span class="jn-km">約 2.0 km</span></div>
 <p class="jn-ov">松島（ソンド）韓屋村は古い伝統家屋が集まっているのではなく、2013年に新しくつくられた韓屋団地です。松島国際都市の高層ビルと韓屋村がコントラストをなし、西洋と東洋が調和した空間となっています。当初は、伝統文化の体験空間の性格を前面に出す計画でしたが、現在は韓屋村全体が韓屋ホテルやレストラン、カフェ…</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">인천광역시 연수구 송도동 테크노파크로 180</span></div>
-<button data-v="인천광역시 연수구 송도동 테크노파크로 180" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">인천광역시 연수구 테크노파크로 180</span></div>
+<button data-v="인천광역시 연수구 테크노파크로 180" data-done="コピーしました">コピー</button></div>
 </li><li class="jn-item">
 <div class="jn-h"><b>松島セントラルパーク</b><span class="jn-tag">観光地</span><span class="jn-km">約 2.2 km</span></div>
 <p class="jn-ov">高層ビルの森のなかに自然を盛り込んだ公園、松島（ソンド）セントラルパークはニューヨークのセントラルパークをモチーフにしています。また海水を利用した海水公園であり、韓国の地形的特性を生かした都市公園となっています。人工水路には水上タクシー、カヌーなど水上レジャー施設が備わっており、公園の随所で多様な文…</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">인천광역시 연수구 송도동 컨벤시아대로 160</span></div>
-<button data-v="인천광역시 연수구 송도동 컨벤시아대로 160" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">인천광역시 연수구 컨벤시아대로 160</span></div>
+<button data-v="인천광역시 연수구 컨벤시아대로 160" data-done="コピーしました">コピー</button></div>
 </li><li class="jn-item">
 <div class="jn-h"><b>ザ・スパ・ハスタ</b><span class="jn-tag">観光地</span><span class="jn-km">約 2.3 km</span></div>
 <p class="jn-ov">ザ・スパ・ハスタでは日常生活で溜まった疲れを一気に解きほぐしてくれるような、気持ちいいマッサージを受けることができます。世界中の8種のマッサージ技法による手技療法(全身マッサージ、スリミングなど)が施され、多様なスパプログラムを提供することでお客様にご満足いただけるデスティネーションスパです。疲れた…</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">인천광역시 연수구 송도동 컨벤시아대로 153</span></div>
-<button data-v="인천광역시 연수구 송도동 컨벤시아대로 153" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">인천광역시 연수구 컨벤시아대로 153 (송도동)</span></div>
+<button data-v="인천광역시 연수구 컨벤시아대로 153 (송도동)" data-done="コピーしました">コピー</button></div>
 </li><li class="jn-item">
 <div class="jn-h"><b>仁川港国際旅客船ターミナル</b><span class="jn-tag">観光地</span><span class="jn-km">約 3.0 km</span></div>
 <p class="jn-ov">仁川港（インチョンハン）国際旅客船ターミナルは、仁川港国際旅客埠頭およびターミナルを建設することで、二元化（内港および沿岸港）運営により利用者の不便を解消するとともに港湾運営の効率を増大させ、仁川港を国際的な観光美港として開発するためにつくられました。2016年12月着工、2019年6月竣工、202…</p>

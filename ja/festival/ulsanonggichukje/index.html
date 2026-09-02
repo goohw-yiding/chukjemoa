@@ -515,6 +515,9 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 .xnote{color:#9aa3af;font-size:.79rem;line-height:1.6;margin-top:10px}
 </style>
 <script>
+// ⚠️ en-nearby.js 도 같은 핸들러를 심는다 — 같은 플래그로 «한 번만» 걸리게 한다
+//    (두 번 걸리면 클릭 한 번에 클립보드를 두 번 쓴다).
+if(!window.__xcopyBound){window.__xcopyBound=1;
 document.addEventListener('click',function(e){
   var b=e.target.closest('.xcopy button'); if(!b) return;
   var t=b.getAttribute('data-v')||'';
@@ -523,7 +526,7 @@ document.addEventListener('click',function(e){
   if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,function(){});}
   else{var ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);
     ta.select();try{document.execCommand('copy');done();}catch(_){}document.body.removeChild(ta);}
-});
+});}
 </script><div class="xbox"><h2>🇰🇷 NAVERマップ・カカオマップにこのまま貼ってください</h2><p class="lead">Googleマップは韓国国内の徒歩・乗換案内が出ません（韓国の地図データ規制のため）。NAVERマップとカカオマップなら出ますが、ハングルで検索しないとほとんど出てきません。そのままコピーしてお使いください。</p>
 <div class="xcopy"><div><span class="lb">祭りの名前（ハングル）</span><span class="vl">울산옹기축제</span></div>
 <button data-v="울산옹기축제" data-done="コピーしました">コピー</button></div>
@@ -581,8 +584,8 @@ document.addEventListener('click',function(e){
 <ul class="jn-list"><li class="jn-item">
 <div class="jn-h"><b>外高山甕器村</b><span class="jn-tag">観光地</span><span class="jn-km">約 0.2 km</span></div>
 <p class="jn-ov">「外高山甕器村（ウェゴサンオンギマウル）」は1957年ホ・ドクマン氏がここに根付いたことで形成されはじめた韓国の日常生活でよく使われる陶器・甕器（オンギ）を数多く作る村です。村全体が甕器と調和した姿が独特で素敵な空間を作り出しています。外高山甕器村は韓国全国における甕器の50%以上を生産している他、…</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">울산광역시 울주군 온양읍 외고산길 23</span></div>
-<button data-v="울산광역시 울주군 온양읍 외고산길 23" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">울산광역시 울주군 온양읍 외고산3길 36</span></div>
+<button data-v="울산광역시 울주군 온양읍 외고산3길 36" data-done="コピーしました">コピー</button></div>
 </li><li class="jn-item">
 <div class="jn-h"><b>内院庵（蔚山）（내원암（울산））</b><span class="jn-tag">観光地</span><span class="jn-km">約 5.9 km</span></div>
 <p class="jn-ov">大雲山のふもとであるこの地には、新羅中期に大原寺を創建した高峰禅師が「嶺南第一の名堂」と絶賛した「内院庵（ネウォンアム）」があります。内院庵の入口には、内院庵の本寺であった大原寺の址があり、近くを流れる渓谷の水は清くきれいなことでも知られています。内院庵が誇る樹齢500年を越すエノキの古木は、時の流…</p>
@@ -596,8 +599,8 @@ document.addEventListener('click',function(e){
 </li><li class="jn-item">
 <div class="jn-h"><b>スペソ</b><span class="jn-tag">観光地</span><span class="jn-km">約 6.9 km</span></div>
 <p class="jn-ov">スペソは2021年7月にオープンした、韓国初の「公立ヒーリングサービス体験館」です。ヤンサン(梁山)市にあるテウンサン(大雲山)のキレイな森の中で「愛」に包まれ、健やかな暮らしをゆっくり(徐)と楽しめるようにサポートしてくれるヒーリング体験館で、癒しプログラムの体験や癒しの食事、休養型宿泊を全て体験…</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">경상남도 양산시 용당동 탑골길 248</span></div>
-<button data-v="경상남도 양산시 용당동 탑골길 248" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">경상남도 양산시 탑골길 248 (용당동)</span></div>
+<button data-v="경상남도 양산시 탑골길 248 (용당동)" data-done="コピーしました">コピー</button></div>
 </li><li class="jn-item">
 <div class="jn-h"><b>処容岩</b><span class="jn-tag">観光地</span><span class="jn-km">約 7.3 km</span></div>
 <p class="jn-ov">処容岩（チョヨンアム）は蔚山広域市南区黄城洞（ファンソンドン）セチュク村前の外煌江（ウェファンガン）という川にある開雲浦（ケウンポ）という浅瀬の真ん中に浮かぶ岩の島です。 30平方メートルほどの小さな岩で出来たこの島は疫病神を追いやる力を発揮するという処容符籍にまつわる伝説が伝えられている中州で、三…</p>

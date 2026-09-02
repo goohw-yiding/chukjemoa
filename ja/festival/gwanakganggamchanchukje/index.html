@@ -515,6 +515,9 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 .xnote{color:#9aa3af;font-size:.79rem;line-height:1.6;margin-top:10px}
 </style>
 <script>
+// ⚠️ en-nearby.js 도 같은 핸들러를 심는다 — 같은 플래그로 «한 번만» 걸리게 한다
+//    (두 번 걸리면 클릭 한 번에 클립보드를 두 번 쓴다).
+if(!window.__xcopyBound){window.__xcopyBound=1;
 document.addEventListener('click',function(e){
   var b=e.target.closest('.xcopy button'); if(!b) return;
   var t=b.getAttribute('data-v')||'';
@@ -523,7 +526,7 @@ document.addEventListener('click',function(e){
   if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,function(){});}
   else{var ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);
     ta.select();try{document.execCommand('copy');done();}catch(_){}document.body.removeChild(ta);}
-});
+});}
 </script><div class="xbox"><h2>🇰🇷 NAVERマップ・カカオマップにこのまま貼ってください</h2><p class="lead">Googleマップは韓国国内の徒歩・乗換案内が出ません（韓国の地図データ規制のため）。NAVERマップとカカオマップなら出ますが、ハングルで検索しないとほとんど出てきません。そのままコピーしてお使いください。</p>
 <div class="xcopy"><div><span class="lb">祭りの名前（ハングル）</span><span class="vl">관악강감찬축제</span></div>
 <button data-v="관악강감찬축제" data-done="コピーしました">コピー</button></div>
@@ -597,8 +600,8 @@ document.addEventListener('click',function(e){
 </li><li class="jn-item">
 <div class="jn-h"><b>冠岳山</b><span class="jn-tag">観光地</span><span class="jn-km">約 2.6 km</span></div>
 <p class="jn-ov">「冠岳山（クァナクサン／標高632.2メートル）」のあるソウル冠岳区は1973年永登浦区（ヨンドゥンポグ）から分区した際、区名にこの名山の名前をとり冠岳区と命名、以降冠岳山は区の象徴であり誇りともいうべき存在となりました。また冠岳区の文化遺産は冠岳山に関連するものが大部分を占めています。1968年に…</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">서울특별시 관악구 신림동 관악로 1</span></div>
-<button data-v="서울특별시 관악구 신림동 관악로 1" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">서울특별시 관악구 관악로</span></div>
+<button data-v="서울특별시 관악구 관악로" data-done="コピーしました">コピー</button></div>
 </li><li class="jn-item">
 <div class="jn-h"><b>H+陽地病院</b><span class="jn-tag">観光地</span><span class="jn-km">約 2.7 km</span></div>
 <p class="jn-ov">ワンストップ診療（15センター、21診療科）システムを導入し、24時間体制の救急室を運営しており、消化器内視鏡専門医過程の研修病院として優秀内視鏡室認証を3回連続取得し、ハイエンドな内視鏡・肝臓検査装置を備えています。米SRCによるマスター サージャン認証を受けた専門的な医療スタッフが患者一人ひとり…</p>

@@ -514,6 +514,9 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 .xnote{color:#9aa3af;font-size:.79rem;line-height:1.6;margin-top:10px}
 </style>
 <script>
+// ⚠️ en-nearby.js 도 같은 핸들러를 심는다 — 같은 플래그로 «한 번만» 걸리게 한다
+//    (두 번 걸리면 클릭 한 번에 클립보드를 두 번 쓴다).
+if(!window.__xcopyBound){window.__xcopyBound=1;
 document.addEventListener('click',function(e){
   var b=e.target.closest('.xcopy button'); if(!b) return;
   var t=b.getAttribute('data-v')||'';
@@ -522,7 +525,7 @@ document.addEventListener('click',function(e){
   if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,function(){});}
   else{var ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);
     ta.select();try{document.execCommand('copy');done();}catch(_){}document.body.removeChild(ta);}
-});
+});}
 </script><div class="xbox"><h2>🇰🇷 NAVERマップ・カカオマップにこのまま貼ってください</h2><p class="lead">Googleマップは韓国国内の徒歩・乗換案内が出ません（韓国の地図データ規制のため）。NAVERマップとカカオマップなら出ますが、ハングルで検索しないとほとんど出てきません。そのままコピーしてお使いください。</p>
 <div class="xcopy"><div><span class="lb">祭りの名前（ハングル）</span><span class="vl">강릉커피축제</span></div>
 <button data-v="강릉커피축제" data-done="コピーしました">コピー</button></div>
@@ -563,8 +566,8 @@ document.addEventListener('click',function(e){
 <ul class="jn-list"><li class="jn-item">
 <div class="jn-h"><b>ソルバラム橋</b><span class="jn-tag">観光地</span><span class="jn-km">約 0.6 km</span></div>
 <p class="jn-ov">南項津と安木をつなぐ人道橋であるソルバラム橋は2010年4月に完工しました。全長197mの歩行者・自転車専用橋で、3階ほどの高さがあり、見晴らしの良い橋です。松香（ソルヒャン）江陵（カンヌン）の松と風の多いここの特性を組み合わせて「ソルバラム（松風）橋」と名付けられました。海と川の間に架かる橋の特性…</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">강원특별자치도 강릉시 병산동 948</span></div>
-<button data-v="강원특별자치도 강릉시 병산동 948" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">강원특별자치도 강릉시 병산동</span></div>
+<button data-v="강원특별자치도 강릉시 병산동" data-done="コピーしました">コピー</button></div>
 </li><li class="jn-item">
 <div class="jn-h"><b>松亭海辺（松亭海水浴場）（송정해변（송정해수욕장））</b><span class="jn-tag">観光地</span><span class="jn-km">約 0.9 km</span></div>
 <p class="jn-ov">長さ700メートル、25,000平方メートルの砂浜が広がる松亭海辺（ソンジョンヘビョン）は、海岸近くの松林が有名です。その昔、高麗の忠粛王の娘婿であった崔文漢が松都（今の開城）から江陵に来るときに松8株を持ってきてここに植えたことが伝えられており、当初は八松亭と呼ばれていましたが、その後、松亭と呼ば…</p>
@@ -573,18 +576,18 @@ document.addEventListener('click',function(e){
 </li><li class="jn-item">
 <div class="jn-h"><b>江門海岸</b><span class="jn-tag">観光地</span><span class="jn-km">約 3.5 km</span></div>
 <p class="jn-ov">江原道（カンウォンド）江陵市（カンヌンシ）江門洞（カンムンドン）にある海岸で、近くに江門港があり、周辺の刺身屋では夜明け前に沖合で水揚げされた新鮮な刺身を味わうことができます。また、快適な宿泊施設や観光スポットとしても有名な鏡浦エリアにも隣接しています。江門海岸からボートで5分から10分ほど移動した…</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">강원특별자치도 강릉시 강문동 창해로350번길 4</span></div>
-<button data-v="강원특별자치도 강릉시 강문동 창해로350번길 4" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">강원특별자치도 강릉시 창해로 352</span></div>
+<button data-v="강원특별자치도 강릉시 창해로 352" data-done="コピーしました">コピー</button></div>
 </li><li class="jn-item">
 <div class="jn-h"><b>江陵メタバース体験館</b><span class="jn-tag">観光地</span><span class="jn-km">約 4.0 km</span></div>
 <p class="jn-ov">鏡浦湖（キョンポホ）のそばにある江陵（カンヌン）メタバース体験館は、先端技術を活用して江陵の歴史や文化を仮想現実（VR）で体験できる施設です。3階建ての館内には、目で楽しみ、体で体験する様々なメタバースコンテンツが用意されています。伝統と現代が融合したインタラクティブ展示やVR・拡張現実（AR）プロ…</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">강원특별자치도 강릉시 운정동 난설헌로 131</span></div>
-<button data-v="강원특별자치도 강릉시 운정동 난설헌로 131" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">강원특별자치도 강릉시 난설헌로 131 (초당동)</span></div>
+<button data-v="강원특별자치도 강릉시 난설헌로 131 (초당동)" data-done="コピーしました">コピー</button></div>
 </li><li class="jn-item">
 <div class="jn-h"><b>ハスラ江陵イマーシブアートショー</b><span class="jn-tag">観光地</span><span class="jn-km">約 4.0 km</span></div>
 <p class="jn-ov">「ハスラ江陵（カンヌン）イマーシブアートショー」は江陵市草堂洞の鬱蒼とした松林で繰り広げられる屋外没入型メディアアートショーです。森の小道を歩きながら光や音楽、自然が調和する幻想的な雰囲気を体験することができます。新たな夜間観光として注目を集めており、季節や天候によって変化する風景が江陵の夜を特別に…</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">강원특별자치도 강릉시 초당동 474</span></div>
-<button data-v="강원특별자치도 강릉시 초당동 474" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">강원특별자치도 강릉시 초당동 474-4</span></div>
+<button data-v="강원특별자치도 강릉시 초당동 474-4" data-done="コピーしました">コピー</button></div>
 </li></ul>
 <p class="jn-src">住所は座標から逆引きした韓国語の道路名住所です。NAVER マップ・カカオマップにそのまま貼り付けて検索できます。</p></div>
 <div class="frel"><h2>江原のほかの祭り</h2><div class="row"><a href="/ja/festival/eoreumnarahwacheon-sancheoneochukje/">氷の国華川ヤマメ祭り</a><a href="/ja/festival/cheorwon-hantangang-eoreumteureking-chukje/">鉄原漢灘江氷トレッキング祭り</a><a href="/ja/festival/pyeongchangsongeochukje/">平昌マス祭り</a><a href="/ja/festival/danjongmunhwaje/">端宗文化祭り</a><a href="/ja/festival/duwibong-cheoljjukchukje-sanmaekpeseutibeol/">斗囲峰クロフネツツジ祭り&amp;山麦フェスティバル</a><a href="/ja/festival/chuncheonmaimchukje/">春川マイム祭り</a></div></div>

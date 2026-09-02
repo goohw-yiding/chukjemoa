@@ -514,6 +514,9 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 .xnote{color:#9aa3af;font-size:.79rem;line-height:1.6;margin-top:10px}
 </style>
 <script>
+// ⚠️ en-nearby.js 도 같은 핸들러를 심는다 — 같은 플래그로 «한 번만» 걸리게 한다
+//    (두 번 걸리면 클릭 한 번에 클립보드를 두 번 쓴다).
+if(!window.__xcopyBound){window.__xcopyBound=1;
 document.addEventListener('click',function(e){
   var b=e.target.closest('.xcopy button'); if(!b) return;
   var t=b.getAttribute('data-v')||'';
@@ -522,7 +525,7 @@ document.addEventListener('click',function(e){
   if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,function(){});}
   else{var ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);
     ta.select();try{document.execCommand('copy');done();}catch(_){}document.body.removeChild(ta);}
-});
+});}
 </script><div class="xbox"><h2>🇰🇷 NAVERマップ・カカオマップにこのまま貼ってください</h2><p class="lead">Googleマップは韓国国内の徒歩・乗換案内が出ません（韓国の地図データ規制のため）。NAVERマップとカカオマップなら出ますが、ハングルで検索しないとほとんど出てきません。そのままコピーしてお使いください。</p>
 <div class="xcopy"><div><span class="lb">祭りの名前（ハングル）</span><span class="vl">평창효석문화제</span></div>
 <button data-v="평창효석문화제" data-done="コピーしました">コピー</button></div>
@@ -580,8 +583,8 @@ document.addEventListener('click',function(e){
 <ul class="jn-list"><li class="jn-item">
 <div class="jn-h"><b>李孝石文化村</b><span class="jn-tag">観光地</span><span class="jn-km">約 0.1 km</span></div>
 <p class="jn-ov">韓国の短編文学の白眉と称えられる『蕎麦の花咲く頃』の舞台であり、可山・李孝石（イ・ヒョソク）が生まれ育ったところです。1990年度に文化観光部から「全国第1号文化村」に指定され、孝石文化村を舞台に毎年「孝石文化祭り」と呼ばれるお祭りが晩夏の8月末から9月初めに開催されます。 李孝石の生家、水車小屋、…</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">강원특별자치도 평창군 봉평면 262-6</span></div>
-<button data-v="강원특별자치도 평창군 봉평면 262-6" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">강원특별자치도 평창군 봉평면 원길리</span></div>
+<button data-v="강원특별자치도 평창군 봉평면 원길리" data-done="コピーしました">コピー</button></div>
 </li><li class="jn-item">
 <div class="jn-h"><b>孝石文学100里道</b><span class="jn-tag">観光地</span><span class="jn-km">約 0.9 km</span></div>
 <p class="jn-ov">大自然が広がる平昌（ピョンチャン）は、四季がはっきりしていて美しい自然がそのまま保たれており、「アジアのアルプス」と呼ばれる広大な自然景観がパノラマビューで楽しめます。また平昌は全体面積の約65パーセントが標高700メートル以上の高原地帯にあるクリーンな地域で保養地として最適です。</p>
@@ -590,8 +593,8 @@ document.addEventListener('click',function(e){
 </li><li class="jn-item">
 <div class="jn-h"><b>ハーブの国農園</b><span class="jn-tag">観光地</span><span class="jn-km">約 3.9 km</span></div>
 <p class="jn-ov">ハーブの国農園はハーブと花を栽培する農地とハーブを見ながら休息できる観光農園からなります。ラベンダー、セージ、ソバなど約150種のハーブをテーマ別に分けた10余りのテーマ庭園はハーブに関するそれぞれのストーリーを基にしています。色とりどりのハーブと花が咲くパレットガーデン、シェイクスピアの作品に登場…</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">강원특별자치도 평창군 봉평면 39-15</span></div>
-<button data-v="강원특별자치도 평창군 봉평면 39-15" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">강원특별자치도 평창군 봉평면 흥정계곡길 225</span></div>
+<button data-v="강원특별자치도 평창군 봉평면 흥정계곡길 225" data-done="コピーしました">コピー</button></div>
 </li><li class="jn-item">
 <div class="jn-h"><b>フェニックス平昌</b><span class="jn-tag">観光地</span><span class="jn-km">約 5.6 km</span></div>
 <p class="jn-ov">平昌（ピョンチャン）の四季を満喫できる複合リゾートで、標高700メートルの高原地帯にあります。フェニックススノーパーク、ホテル、コンドミニアム、フェニックスカントリークラブ、ブルーキャニオンなどのレジャー施設を備えており、コンドミニアム内には各種アメニティ施設を完備し、ブルー棟、グリーン棟、オレンジ…</p>

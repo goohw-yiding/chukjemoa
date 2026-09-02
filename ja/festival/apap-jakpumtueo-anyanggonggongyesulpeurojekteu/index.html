@@ -518,6 +518,9 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 .xnote{color:#9aa3af;font-size:.79rem;line-height:1.6;margin-top:10px}
 </style>
 <script>
+// ⚠️ en-nearby.js 도 같은 핸들러를 심는다 — 같은 플래그로 «한 번만» 걸리게 한다
+//    (두 번 걸리면 클릭 한 번에 클립보드를 두 번 쓴다).
+if(!window.__xcopyBound){window.__xcopyBound=1;
 document.addEventListener('click',function(e){
   var b=e.target.closest('.xcopy button'); if(!b) return;
   var t=b.getAttribute('data-v')||'';
@@ -526,7 +529,7 @@ document.addEventListener('click',function(e){
   if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,function(){});}
   else{var ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);
     ta.select();try{document.execCommand('copy');done();}catch(_){}document.body.removeChild(ta);}
-});
+});}
 </script><div class="xbox"><h2>🇰🇷 NAVERマップ・カカオマップにこのまま貼ってください</h2><p class="lead">Googleマップは韓国国内の徒歩・乗換案内が出ません（韓国の地図データ規制のため）。NAVERマップとカカオマップなら出ますが、ハングルで検索しないとほとんど出てきません。そのままコピーしてお使いください。</p>
 <div class="xcopy"><div><span class="lb">祭りの名前（ハングル）</span><span class="vl">APAP 작품투어 (안양공공예술프로젝트)</span></div>
 <button data-v="APAP 작품투어 (안양공공예술프로젝트)" data-done="コピーしました">コピー</button></div>
@@ -592,13 +595,13 @@ document.addEventListener('click',function(e){
 <ul class="jn-list"><li class="jn-item">
 <div class="jn-h"><b>安養芸術公園</b><span class="jn-tag">観光地</span><span class="jn-km">約 0.5 km</span></div>
 <p class="jn-ov">安養（アニャン）芸術公園は、インフラがよく整備されたリラックスできる公園です。本来は安養遊園地でしたが、新しい文化スペースとして生まれ変わりました。人工滝、屋外ステージ、広場、散策路、照明などを新しく整備しました。芸術プロジェクトを推進して空の屋根裏部屋、１坪タワーなど、あちこちに国内外の有名作家が…</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">경기도 안양시 만안구 석수동 예술공원로131번길 7</span></div>
-<button data-v="경기도 안양시 만안구 석수동 예술공원로131번길 7" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">경기도 안양시 만안구 예술공원로131번길 7 (석수동)</span></div>
+<button data-v="경기도 안양시 만안구 예술공원로131번길 7 (석수동)" data-done="コピーしました">コピー</button></div>
 </li><li class="jn-item">
 <div class="jn-h"><b>三幕寺</b><span class="jn-tag">観光地</span><span class="jn-km">約 1.9 km</span></div>
 <p class="jn-ov">三幕寺（サンマクサ）は、三聖山（サムソンサン）にある寺院です。667年に元暁大師（新羅時代の高僧）が創建したと伝えられており、境内には千仏殿、六観音殿、冥府殿、望海楼、七宝閣などが建っています。仏教と民間信仰の融合を示す三幕寺磨崖三尊仏、男女根石などの文化財は、その長い歴史を物語っています。</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">경기도 안양시 만안구 석수동 삼막로 478</span></div>
-<button data-v="경기도 안양시 만안구 석수동 삼막로 478" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">경기도 안양시 만안구 삼막로 478 (석수동)</span></div>
+<button data-v="경기도 안양시 만안구 삼막로 478 (석수동)" data-done="コピーしました">コピー</button></div>
 </li><li class="jn-item">
 <div class="jn-h"><b>中央大学光明病院</b><span class="jn-tag">観光地</span><span class="jn-km">約 3.6 km</span></div>
 <p class="jn-ov">中央大学光明病院は病床数700余床規模の総合病院です。2022年3月に開院しており、延べ面積97,000㎡、地上14階、地下8階の規模で構成されています。がん病院、心臓脳血管病院、呼吸器アレルギーセンター、消化器センター、脊椎センター、関節センターの6つの重症疾患専門クラスターを中心に運営され、各分…</p>
@@ -612,8 +615,8 @@ document.addEventListener('click',function(e){
 </li><li class="jn-item">
 <div class="jn-h"><b>冠岳山</b><span class="jn-tag">観光地</span><span class="jn-km">約 4.1 km</span></div>
 <p class="jn-ov">「冠岳山（クァナクサン／標高632.2メートル）」のあるソウル冠岳区は1973年永登浦区（ヨンドゥンポグ）から分区した際、区名にこの名山の名前をとり冠岳区と命名、以降冠岳山は区の象徴であり誇りともいうべき存在となりました。また冠岳区の文化遺産は冠岳山に関連するものが大部分を占めています。1968年に…</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">서울특별시 관악구 신림동 관악로 1</span></div>
-<button data-v="서울특별시 관악구 신림동 관악로 1" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">서울특별시 관악구 관악로</span></div>
+<button data-v="서울특별시 관악구 관악로" data-done="コピーしました">コピー</button></div>
 </li></ul>
 <p class="jn-src">住所は座標から逆引きした韓国語の道路名住所です。NAVER マップ・カカオマップにそのまま貼り付けて検索できます。</p></div>
 <div class="frel"><h2>京畿のほかの祭り</h2><div class="row"><a href="/ja/festival/segyekkot-munhwagwangwangchukje-hosuya-nolja/">高陽湖水芸術祭り</a><a href="/ja/festival/2025-je7hoe-bmf-beullaengmyujikpeseutibeol/">BMF</a><a href="/ja/festival/edenbeotkkotgil-beotkkotchukje/">エデン桜並木桜祭り</a><a href="/ja/festival/icheondojagichukje/">利川陶磁器祭り</a><a href="/ja/festival/yeoncheonguseokgichukje/">漣川旧石器祭り</a><a href="/ja/festival/goyanggaeulkkotchukje/">高陽国際花博覧会</a></div></div>

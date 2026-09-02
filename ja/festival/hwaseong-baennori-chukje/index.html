@@ -515,6 +515,9 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 .xnote{color:#9aa3af;font-size:.79rem;line-height:1.6;margin-top:10px}
 </style>
 <script>
+// ⚠️ en-nearby.js 도 같은 핸들러를 심는다 — 같은 플래그로 «한 번만» 걸리게 한다
+//    (두 번 걸리면 클릭 한 번에 클립보드를 두 번 쓴다).
+if(!window.__xcopyBound){window.__xcopyBound=1;
 document.addEventListener('click',function(e){
   var b=e.target.closest('.xcopy button'); if(!b) return;
   var t=b.getAttribute('data-v')||'';
@@ -523,7 +526,7 @@ document.addEventListener('click',function(e){
   if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,function(){});}
   else{var ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);
     ta.select();try{document.execCommand('copy');done();}catch(_){}document.body.removeChild(ta);}
-});
+});}
 </script><div class="xbox"><h2>🇰🇷 NAVERマップ・カカオマップにこのまま貼ってください</h2><p class="lead">Googleマップは韓国国内の徒歩・乗換案内が出ません（韓国の地図データ規制のため）。NAVERマップとカカオマップなら出ますが、ハングルで検索しないとほとんど出てきません。そのままコピーしてお使いください。</p>
 <div class="xcopy"><div><span class="lb">祭りの名前（ハングル）</span><span class="vl">화성 뱃놀이 축제</span></div>
 <button data-v="화성 뱃놀이 축제" data-done="コピーしました">コピー</button></div>
@@ -572,28 +575,28 @@ document.addEventListener('click',function(e){
 <ul class="jn-list"><li class="jn-item">
 <div class="jn-h"><b>前谷港</b><span class="jn-tag">観光地</span><span class="jn-km">約 0.2 km</span></div>
 <p class="jn-ov">前谷（チョンゴク）港は、済扶島（チェブド）とヌエ島と向かい合う港です。漁船が停泊し、水揚げされた魚を流通、販売、輸送するための建物などがあるレジャー漁港モデル地区に指定され、開発が始まったエリアです。指定後に多機能テーマ漁港が造成され、マリーナがあり、漁業・ヨット体験、前谷港ハゼ釣り大会（毎年9月）…</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">경기도 화성시 만세구 서신면 전곡항로 5</span></div>
-<button data-v="경기도 화성시 만세구 서신면 전곡항로 5" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">경기도 화성시 서신면 전곡리</span></div>
+<button data-v="경기도 화성시 서신면 전곡리" data-done="コピーしました">コピー</button></div>
 </li><li class="jn-item">
 <div class="jn-h"><b>嶼海浪済扶島海上ケーブルカー</b><span class="jn-tag">観光地</span><span class="jn-km">約 0.2 km</span></div>
 <p class="jn-ov">嶼海浪（ソヘラン）済扶島（チェブド）海上ケーブルカーは西海岸の美しい自然景観が楽しめる前谷（チョンゴク）港と済扶島（チェブド）の海上を運行する2.12kmの海上ケーブルカー（ロープウェイ）で、自然と人が一つになれる新しいランドマークとして人気です。済扶島地域ならではの特徴と美を取り入れた姿と機能を持…</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">경기도 화성시 만세구 서신면 618-15</span></div>
-<button data-v="경기도 화성시 만세구 서신면 618-15" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">경기도 화성시 서신면 전곡항로 1-10</span></div>
+<button data-v="경기도 화성시 서신면 전곡항로 1-10" data-done="コピーしました">コピー</button></div>
 </li><li class="jn-item">
 <div class="jn-h"><b>ヌエソム灯台展望台</b><span class="jn-tag">観光地</span><span class="jn-km">約 1.7 km</span></div>
 <p class="jn-ov">ヌエソム（蚕島）灯台展望台は、大阜島（テブド）炭島港（タンドハン）から船で渡ることができる小さな無人島のヌエソムに設置された灯台兼展望台です。西海岸の漁船の安全な操業のために設置されたものであり、さらに漁村の観光と自然学習の機会を提供する役割も果たしています。1、2階ではヌエソムと国内外の灯台に関す…</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">경기도 안산시 단원구 선감동 대부황금로 17-156</span></div>
-<button data-v="경기도 안산시 단원구 선감동 대부황금로 17-156" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">경기도 안산시 단원구 선감동</span></div>
+<button data-v="경기도 안산시 단원구 선감동" data-done="コピーしました">コピー</button></div>
 </li><li class="jn-item">
 <div class="jn-h"><b>宮坪里海水浴場</b><span class="jn-tag">観光地</span><span class="jn-km">約 7.5 km</span></div>
 <p class="jn-ov">宮坪里海水浴場（クンピョンリ・ヘスヨクチャン）は、長さ2キロメートル、幅50メートルの砂浜をもつ海辺です。水上レジャー体験と干潟体験などが楽しめます。デッキでできた宮坪落照道があるため、日が暮れる海を眺めることもできます。24時間開放され、夜間には景観照明が道を明かします。道に沿って歩いているとあち…</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">경기도 화성시 만세구 서신면 수문개길 81-36</span></div>
-<button data-v="경기도 화성시 만세구 서신면 수문개길 81-36" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">경기도 화성시 서신면 수문개길 81-36</span></div>
+<button data-v="경기도 화성시 서신면 수문개길 81-36" data-done="コピーしました">コピー</button></div>
 </li><li class="jn-item">
 <div class="jn-h"><b>宮坪港</b><span class="jn-tag">観光地</span><span class="jn-km">約 8.2 km</span></div>
 <p class="jn-ov">夜景の美しさで有名な宮坪港は、2008年に国家漁港に指定された。新鮮で美味しい水産物が豊富な水産市場がよく整っている小さな港だ。小さな船と釣り人を魅了するフィッシングピアで釣りの楽しみを味わえる。また、華城市海辺側を歩ける華城シルクロード散策道がウッドデッキで作られており、美しい風景を見ながら散策や…</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">경기도 화성시 만세구 서신면 691</span></div>
-<button data-v="경기도 화성시 만세구 서신면 691" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">경기도 화성시 서신면 궁평항로 1049-24</span></div>
+<button data-v="경기도 화성시 서신면 궁평항로 1049-24" data-done="コピーしました">コピー</button></div>
 </li></ul>
 <p class="jn-src">住所は座標から逆引きした韓国語の道路名住所です。NAVER マップ・カカオマップにそのまま貼り付けて検索できます。</p></div>
 <div class="frel"><h2>京畿のほかの祭り</h2><div class="row"><a href="/ja/festival/siheunggaetgolchukje/">始興ケッコル祭り</a><a href="/ja/festival/bucheongukjemanhwachukje/">富川国際漫画フェスティバル</a><a href="/ja/festival/anseong-namsadangbaudeogi-pungmuldan-sangseol-gongyeon-gomba/">安城マッチュム男寺党バウドギ祭り</a><a href="/ja/festival/suwonhwaseongmunhwaje/">水原華城文化祭り</a><a href="/ja/festival/apap-jakpumtueo-anyanggonggongyesulpeurojekteu/">APAP作品ツアー</a><a href="/ja/festival/segyekkot-munhwagwangwangchukje-hosuya-nolja/">高陽湖水芸術祭り</a></div></div>

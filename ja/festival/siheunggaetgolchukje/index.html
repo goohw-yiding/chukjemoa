@@ -514,6 +514,9 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 .xnote{color:#9aa3af;font-size:.79rem;line-height:1.6;margin-top:10px}
 </style>
 <script>
+// ⚠️ en-nearby.js 도 같은 핸들러를 심는다 — 같은 플래그로 «한 번만» 걸리게 한다
+//    (두 번 걸리면 클릭 한 번에 클립보드를 두 번 쓴다).
+if(!window.__xcopyBound){window.__xcopyBound=1;
 document.addEventListener('click',function(e){
   var b=e.target.closest('.xcopy button'); if(!b) return;
   var t=b.getAttribute('data-v')||'';
@@ -522,7 +525,7 @@ document.addEventListener('click',function(e){
   if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,function(){});}
   else{var ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);
     ta.select();try{document.execCommand('copy');done();}catch(_){}document.body.removeChild(ta);}
-});
+});}
 </script><div class="xbox"><h2>🇰🇷 NAVERマップ・カカオマップにこのまま貼ってください</h2><p class="lead">Googleマップは韓国国内の徒歩・乗換案内が出ません（韓国の地図データ規制のため）。NAVERマップとカカオマップなら出ますが、ハングルで検索しないとほとんど出てきません。そのままコピーしてお使いください。</p>
 <div class="xcopy"><div><span class="lb">祭りの名前（ハングル）</span><span class="vl">시흥갯골축제</span></div>
 <button data-v="시흥갯골축제" data-done="コピーしました">コピー</button></div>
@@ -587,13 +590,13 @@ document.addEventListener('click',function(e){
 <ul class="jn-list"><li class="jn-item">
 <div class="jn-h"><b>月串浦口</b><span class="jn-tag">観光地</span><span class="jn-km">約 3.6 km</span></div>
 <p class="jn-ov">月串（ウォルゴッ）の串（ゴッ）は「海に向ってひょこっと飛び出ている土地」という意味で、ここに住む人々の間では月串を通称「達月（タロル）」と呼んでいました。朝鮮時代には各道に水軍の陣地が設置されその水軍を統帥する大将・水軍万戸がこの場所にいたことからも軍事上の要所として重要視していたことがわかります。…</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">경기도 시흥시 월곶동 월곶해안로 188</span></div>
-<button data-v="경기도 시흥시 월곶동 월곶해안로 188" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">경기도 시흥시 월곶동</span></div>
+<button data-v="경기도 시흥시 월곶동" data-done="コピーしました">コピー</button></div>
 </li><li class="jn-item">
 <div class="jn-h"><b>ヌルソルギル公園</b><span class="jn-tag">観光地</span><span class="jn-km">約 5.3 km</span></div>
 <p class="jn-ov">ヌルソルギル公園は、仁川（インチョン）の論峴（ノンヒョン）洞に位置する自然親和型公園です。既存の森を最大限に生かしながら造成された公園で、ヒノキの森、メタセコイアの森、イチョウの森、カツラの森など様々な森の道があります。また、羊牧場、薔薇園、森の中の遊び場など様々な利便施設や遊戯施設も整えられていま…</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">인천광역시 남동구 논현동 앵고개로 771</span></div>
-<button data-v="인천광역시 남동구 논현동 앵고개로 771" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">인천광역시 남동구 앵고개로 771 (논현동)</span></div>
+<button data-v="인천광역시 남동구 앵고개로 771 (논현동)" data-done="コピーしました">コピー</button></div>
 </li><li class="jn-item">
 <div class="jn-h"><b>南村医療財団始華病院</b><span class="jn-tag">観光地</span><span class="jn-km">約 5.9 km</span></div>
 <p class="jn-ov">外国人専用の診療スペースを設置して予約・受付・診療・会計をワンストップで行うことができます。 ネイティブコーディネーターが常駐し、スムーズな通訳サービスを無料提供(対応言語：英語、中国語、ベトナム語、ロシア語)し、医療観光客には、空港と病院との送迎サービス、病院内での治療・健診過程の通訳サービスなど…</p>

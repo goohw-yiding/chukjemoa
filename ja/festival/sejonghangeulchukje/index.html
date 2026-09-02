@@ -514,6 +514,9 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 .xnote{color:#9aa3af;font-size:.79rem;line-height:1.6;margin-top:10px}
 </style>
 <script>
+// ⚠️ en-nearby.js 도 같은 핸들러를 심는다 — 같은 플래그로 «한 번만» 걸리게 한다
+//    (두 번 걸리면 클릭 한 번에 클립보드를 두 번 쓴다).
+if(!window.__xcopyBound){window.__xcopyBound=1;
 document.addEventListener('click',function(e){
   var b=e.target.closest('.xcopy button'); if(!b) return;
   var t=b.getAttribute('data-v')||'';
@@ -522,7 +525,7 @@ document.addEventListener('click',function(e){
   if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,function(){});}
   else{var ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);
     ta.select();try{document.execCommand('copy');done();}catch(_){}document.body.removeChild(ta);}
-});
+});}
 </script><div class="xbox"><h2>🇰🇷 NAVERマップ・カカオマップにこのまま貼ってください</h2><p class="lead">Googleマップは韓国国内の徒歩・乗換案内が出ません（韓国の地図データ規制のため）。NAVERマップとカカオマップなら出ますが、ハングルで検索しないとほとんど出てきません。そのままコピーしてお使いください。</p>
 <div class="xcopy"><div><span class="lb">祭りの名前（ハングル）</span><span class="vl">세종한글축제</span></div>
 <button data-v="세종한글축제" data-done="コピーしました">コピー</button></div>
@@ -572,20 +575,30 @@ document.addEventListener('click',function(e){
 </style><div class="jnear"><h2>近くの見どころ</h2>
 <p class="jn-note">この祭りの会場から直線距離で 12km 以内にある、韓国観光公社が日本語で案内している場所です。所要時間は道路事情で変わるため、距離のみ記載しています。</p>
 <ul class="jn-list"><li class="jn-item">
+<div class="jn-h"><b>世宗湖水公園</b><span class="jn-tag">観光地</span><span class="jn-km">約 0.5 km</span></div>
+<p class="jn-ov">世宗（セジョン）湖水公園は世宗市の中心に位置する湖で、休息および文化空間です。湖水公園には錦江の水波によって削られた小石を形象化した672席規模の水上舞台島、公園活性化のために各種文化芸術イベントを開催する独立した構造の祝祭島、水遊び施設ときらめく砂浜があるムルノリ（水遊び）島、デッキに沿ってさまざ…</p>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">세종특별자치시 다솜로 216 (세종동)</span></div>
+<button data-v="세종특별자치시 다솜로 216 (세종동)" data-done="コピーしました">コピー</button></div>
+</li><li class="jn-item">
+<div class="jn-h"><b>世宗中央公園</b><span class="jn-tag">観光地</span><span class="jn-km">約 0.8 km</span></div>
+<p class="jn-ov">世宗（セジョン）中央公園は約138万㎡規模の大型公園で、多様な植物とテーマ型庭園を観賞できる空間です。2020年11月に開放された1段階区域（約52万㎡）にはチャンナムドゥル広場、複合体育施設、家族余暇の森、家族芸術の森などがあります。池や音楽噴水、ドライミストなどが設置され、自然と調和した休息空間…</p>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">세종특별자치시 중앙공원로 60 (세종동)</span></div>
+<button data-v="세종특별자치시 중앙공원로 60 (세종동)" data-done="コピーしました">コピー</button></div>
+</li><li class="jn-item">
+<div class="jn-h"><b>国立世宗樹木園</b><span class="jn-tag">観光地</span><span class="jn-km">約 1.4 km</span></div>
+<p class="jn-ov">国立世宗（セジョン）樹木園は、多くの政府機関が位置している世宗政府庁舎の近くに65ヘクタール規模で整備されました。韓国最大の四季温室、韓国伝統庭園、盆栽園など、多様なテーマで2,834種類172万本（高木45,958株を含む）の植物を観覧することができます。気候・植生帯別の樹木遺伝資源の保存及び資源…</p>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">세종특별자치시 수목원로 136 (세종동)</span></div>
+<button data-v="세종특별자치시 수목원로 136 (세종동)" data-done="コピーしました">コピー</button></div>
+</li><li class="jn-item">
+<div class="jn-h"><b>世宗伝統文化体験館</b><span class="jn-tag">観光地</span><span class="jn-km">約 2.1 km</span></div>
+<p class="jn-ov">世宗（セジョン）伝統文化体験館は、韓国の伝統工芸や文化を体験し、韓国ならではの情緒を肌で感じることができる場所です。展示室と広報館には寺院の衣食住に関わる工芸品や伝統絵画が展示されており、体験室も備わっています。サムルノリ、タルチュム（仮面舞）、丹青、民画、書道などの伝統芸術体験、ビーガンフードと発…</p>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">세종특별자치시 모롱지로 94 (세종동)</span></div>
+<button data-v="세종특별자치시 모롱지로 94 (세종동)" data-done="コピーしました">コピー</button></div>
+</li><li class="jn-item">
 <div class="jn-h"><b>公州石壮里遺跡</b><span class="jn-tag">観光地</span><span class="jn-km">約 9.2 km</span></div>
 <p class="jn-ov">公州の石壮里（ソクチャンリ）にある旧石器遺跡は、韓国の旧石器時代を代表する遺跡で、公州市から直線距離で約6キロメートルのところにあります。史跡に指定されており、この遺跡の調査は1964年から1974年まで10回に渡って延世大学博物館により実施されました。その結果、地層は27の層位で形成されており、遺…</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">충청남도 공주시 석장리동 금벽로 990</span></div>
-<button data-v="충청남도 공주시 석장리동 금벽로 990" data-done="コピーしました">コピー</button></div>
-</li><li class="jn-item">
-<div class="jn-h"><b>E-AN FOREST</b><span class="jn-tag">観光地</span><span class="jn-km">約 10.6 km</span></div>
-<p class="jn-ov">E-AN FOREST（イアンスプソク）は様々な体験ができるテーマパーク型の樹木園です。一年中利用できるそりゲレンデや子ども動物園、恐竜ランド、遊園地、水遊び場、ハーブガーデンカフェなどがあり、ペンション、キャンプ場、グランピング施設なども備わっています。動物への餌やり、栗拾い、鉢植え、コマ作り、マ…</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">충청남도 공주시 반포면 수목원길 25</span></div>
-<button data-v="충청남도 공주시 반포면 수목원길 25" data-done="コピーしました">コピー</button></div>
-</li><li class="jn-item">
-<div class="jn-h"><b>マルジェ農園</b><span class="jn-tag">観光地</span><span class="jn-km">約 10.6 km</span></div>
-<p class="jn-ov">マルジェ農園は公州（コンジュ）市反浦面馬岩里にある栗農場です。公州は昔から栗の産地として知られ、またここはマティ峠頂上部の高山地帯に位置していることから他地域に比べて栗の品質が良いとされています。マルジェ農園は栗の収穫期である8月末から10月中旬まで栗拾い体験ができるように農場を開放しています。農場…</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">충청남도 공주시 반포면 마티고개로 209</span></div>
-<button data-v="충청남도 공주시 반포면 마티고개로 209" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">충청남도 공주시 금벽로 990 (석장리동)</span></div>
+<button data-v="충청남도 공주시 금벽로 990 (석장리동)" data-done="コピーしました">コピー</button></div>
 </li></ul>
 <p class="jn-src">住所は座標から逆引きした韓国語の道路名住所です。NAVER マップ・カカオマップにそのまま貼り付けて検索できます。</p></div>
 <div class="frel"><h2>のほかの祭り</h2><div class="row"><a href="/ja/festival/gwangju-chueogui-chungjangchukje/">光州思い出の忠壮祭り</a><a href="/ja/festival/mokpohangguchukje/">木浦港口祭り</a><a href="/ja/festival/dogi-urireul-dameun-jilgeureut/">陶器、私たちの暮らしを映す器</a><a href="/ja/festival/jindosinbiuibadatgilchukje/">珍島神秘の海割れ祭り</a><a href="/ja/festival/yeongamwanginmunhwachukje/">霊岩王仁文化祭り</a><a href="/ja/festival/boseongdahyangdaechukje/">宝城茶香祭り</a></div></div>

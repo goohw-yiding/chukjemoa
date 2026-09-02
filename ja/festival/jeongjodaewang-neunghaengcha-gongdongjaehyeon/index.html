@@ -514,6 +514,9 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 .xnote{color:#9aa3af;font-size:.79rem;line-height:1.6;margin-top:10px}
 </style>
 <script>
+// ⚠️ en-nearby.js 도 같은 핸들러를 심는다 — 같은 플래그로 «한 번만» 걸리게 한다
+//    (두 번 걸리면 클릭 한 번에 클립보드를 두 번 쓴다).
+if(!window.__xcopyBound){window.__xcopyBound=1;
 document.addEventListener('click',function(e){
   var b=e.target.closest('.xcopy button'); if(!b) return;
   var t=b.getAttribute('data-v')||'';
@@ -522,7 +525,7 @@ document.addEventListener('click',function(e){
   if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,function(){});}
   else{var ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);
     ta.select();try{document.execCommand('copy');done();}catch(_){}document.body.removeChild(ta);}
-});
+});}
 </script><div class="xbox"><h2>🇰🇷 NAVERマップ・カカオマップにこのまま貼ってください</h2><p class="lead">Googleマップは韓国国内の徒歩・乗換案内が出ません（韓国の地図データ規制のため）。NAVERマップとカカオマップなら出ますが、ハングルで検索しないとほとんど出てきません。そのままコピーしてお使いください。</p>
 <div class="xcopy"><div><span class="lb">祭りの名前（ハングル）</span><span class="vl">정조대왕 능행차 공동재현</span></div>
 <button data-v="정조대왕 능행차 공동재현" data-done="コピーしました">コピー</button></div>
@@ -586,28 +589,28 @@ document.addEventListener('click',function(e){
 <ul class="jn-list"><li class="jn-item">
 <div class="jn-h"><b>世宗路公園</b><span class="jn-tag">観光地</span><span class="jn-km">約 0.3 km</span></div>
 <p class="jn-ov">世宗路（セジョンノ）公園はソウル都心の中心地・光化門交差点から光化門に至る世宗路（セジョンノ）にあり、世宗文化会館の右手に造成された公園です。 園内には木陰や木製のベンチもあり、近くで働く人々の憩いの場となっています。 また、噴水、野外円形ステージ、各種オブジェなどなどもあり、週末には野外結婚式の会…</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">서울특별시 종로구 세종로 세종대로 189</span></div>
-<button data-v="서울특별시 종로구 세종로 세종대로 189" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">서울특별시 종로구 세종대로 지하189 (세종로)</span></div>
+<button data-v="서울특별시 종로구 세종대로 지하189 (세종로)" data-done="コピーしました">コピー</button></div>
 </li><li class="jn-item">
 <div class="jn-h"><b>感謝の庭園</b><span class="jn-tag">観光地</span><span class="jn-km">約 0.3 km</span></div>
 <p class="jn-ov">光化門（クァンファムン）広場に作られた感謝の庭園（カムサエチョンウォン）は、韓国戦争の参戦勇士への感謝を表すとともに、かつて支援を受ける側だった国から、現在は支援を行う国へと躍進を遂げた大韓民国の成果と繁栄を振り返る空間です。広場の中心で静かに圧倒的な存在感を放つ23基のモニュメント「感謝の光23」…</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">서울특별시 종로구 세종로 세종대로 193</span></div>
-<button data-v="서울특별시 종로구 세종로 세종대로 193" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">서울특별시 종로구 세종대로 175 (세종로)</span></div>
+<button data-v="서울특별시 종로구 세종대로 175 (세종로)" data-done="コピーしました">コピー</button></div>
 </li><li class="jn-item">
 <div class="jn-h"><b>光化門広場</b><span class="jn-tag">観光地</span><span class="jn-km">約 0.4 km</span></div>
 <p class="jn-ov">2022年8月に新たな姿にリノベーションされ、一般開放された光化門（クァンファムン）広場。600年の歴史を持つソウルの中心にある通り、世宗路のかつての姿である六曹通りの復元を通じ、歴史・文化体験空間として生まれ変わりました。入口の「光化門の歴史をよみがえらせる広場」には月台（ウォルテ）が再現され、悪…</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">서울특별시 종로구 세종로 세종대로 193</span></div>
-<button data-v="서울특별시 종로구 세종로 세종대로 193" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">서울특별시 종로구 세종대로 172</span></div>
+<button data-v="서울특별시 종로구 세종대로 172" data-done="コピーしました">コピー</button></div>
 </li><li class="jn-item">
 <div class="jn-h"><b>忠武公李舜臣銅像</b><span class="jn-tag">観光地</span><span class="jn-km">約 0.4 km</span></div>
 <p class="jn-ov">ソウル光化門（クァンファムン）広場にある忠武公（チュンムゴン）李舜臣（イ・スンシン）将軍の銅像です。李舜臣将軍は、日本が朝鮮に侵攻した壬辰倭乱（1592～1598）の時、海軍司令官として先進的な戦術により日本の海軍との23回にわたる戦いですべて勝利を収めた名将で、韓国史上最も優れた武将の一人とされて…</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">서울특별시 종로구 세종로 세종대로 172</span></div>
-<button data-v="서울특별시 종로구 세종로 세종대로 172" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">서울특별시 종로구 세종로</span></div>
+<button data-v="서울특별시 종로구 세종로" data-done="コピーしました">コピー</button></div>
 </li><li class="jn-item">
 <div class="jn-h"><b>世宗大王銅像</b><span class="jn-tag">観光地</span><span class="jn-km">約 0.4 km</span></div>
 <p class="jn-ov">ソウルの光化門（クァンファムン）広場にある世宗（セジョン）大王の銅像です。世宗大王は朝鮮（1392～1897）の第4代王です。「ハングル」を創製するとともに科学技術を発展させ、朝鮮の領土を拡大した王として韓国史上最高の王とされています。韓国の１万ウォン札の肖像にもなっています。</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">서울특별시 종로구 세종로 세종대로 172</span></div>
-<button data-v="서울특별시 종로구 세종로 세종대로 172" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">서울특별시 종로구 세종로</span></div>
+<button data-v="서울특별시 종로구 세종로" data-done="コピーしました">コピー</button></div>
 </li></ul>
 <p class="jn-src">住所は座標から逆引きした韓国語の道路名住所です。NAVER マップ・カカオマップにそのまま貼り付けて検索できます。</p></div>
 <div class="frel"><h2>ソウルのほかの祭り</h2><div class="row"><a href="/ja/festival/gangdongseonsamunhwachukje/">江東先史文化祭り</a><a href="/ja/festival/gugakgongyeon-jinyeon/">国楽公演進宴</a><a href="/ja/festival/gangbuk-baengmaekchukje/">江北百麦祭り</a><a href="/ja/festival/jungangasia-bommajichukje/">K-POPカバーダンスフェスティバルワールドファイナル</a><a href="/ja/festival/yongsancheongnyeonchukje/">龍山青年祭り</a><a href="/ja/festival/hanhwawa-hamkkehaneun-seoulsegyebulkkotchukje/">ソウル世界花火祭り</a></div></div>

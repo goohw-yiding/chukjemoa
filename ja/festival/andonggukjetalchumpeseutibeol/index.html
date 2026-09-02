@@ -514,6 +514,9 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 .xnote{color:#9aa3af;font-size:.79rem;line-height:1.6;margin-top:10px}
 </style>
 <script>
+// ⚠️ en-nearby.js 도 같은 핸들러를 심는다 — 같은 플래그로 «한 번만» 걸리게 한다
+//    (두 번 걸리면 클릭 한 번에 클립보드를 두 번 쓴다).
+if(!window.__xcopyBound){window.__xcopyBound=1;
 document.addEventListener('click',function(e){
   var b=e.target.closest('.xcopy button'); if(!b) return;
   var t=b.getAttribute('data-v')||'';
@@ -522,7 +525,7 @@ document.addEventListener('click',function(e){
   if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,function(){});}
   else{var ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);
     ta.select();try{document.execCommand('copy');done();}catch(_){}document.body.removeChild(ta);}
-});
+});}
 </script><div class="xbox"><h2>🇰🇷 NAVERマップ・カカオマップにこのまま貼ってください</h2><p class="lead">Googleマップは韓国国内の徒歩・乗換案内が出ません（韓国の地図データ規制のため）。NAVERマップとカカオマップなら出ますが、ハングルで検索しないとほとんど出てきません。そのままコピーしてお使いください。</p>
 <div class="xcopy"><div><span class="lb">祭りの名前（ハングル）</span><span class="vl">안동국제탈춤페스티벌</span></div>
 <button data-v="안동국제탈춤페스티벌" data-done="コピーしました">コピー</button></div>
@@ -574,23 +577,23 @@ document.addEventListener('click',function(e){
 <ul class="jn-list"><li class="jn-item">
 <div class="jn-h"><b>グラス園</b><span class="jn-tag">観光地</span><span class="jn-km">約 0.1 km</span></div>
 <p class="jn-ov">安東を横切る洛東江沿いに散策路が設けられています。この散策路に沿って行くとヨンガ大橋の北端にさまざまな花と植物が植栽されたグラス園テーマ公園があります。グラス園は季節ごとに異なる魅力を誇り、特に秋はピンクミューリーが壮観を成し、人気フォトスポットとなっています。</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">경상북도 안동시 운흥동 육사로 218-12</span></div>
-<button data-v="경상북도 안동시 운흥동 육사로 218-12" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">경상북도 안동시 운흥동</span></div>
+<button data-v="경상북도 안동시 운흥동" data-done="コピーしました">コピー</button></div>
 </li><li class="jn-item">
 <div class="jn-h"><b>安東市場チムダク屋通り</b><span class="jn-tag">観光地</span><span class="jn-km">約 0.6 km</span></div>
 <p class="jn-ov">安東（アンドン）旧市場には、1970年代から生鶏肉やローストチキンを販売するローストチキン屋通りがありました。ヤンニョムチキンが流行りだしたことから商人たちは対策を模索し、そうして生まれたのがフュージョン料理の安東チムダクです。カルビの蒸し物のソースに春雨や各種野菜を入れて調理したヤンニョムチムダク…</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">경상북도 안동시 남문동 번영길 30</span></div>
-<button data-v="경상북도 안동시 남문동 번영길 30" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">경상북도 안동시 번영길 30</span></div>
+<button data-v="경상북도 안동시 번영길 30" data-done="コピーしました">コピー</button></div>
 </li><li class="jn-item">
 <div class="jn-h"><b>新世洞壁画村</b><span class="jn-tag">観光地</span><span class="jn-km">約 0.8 km</span></div>
 <p class="jn-ov">新世洞壁画村はかつては暗い雰囲気の貧しい集落でしたが、2009年の地域アートプロジェクトを皮切りに都市再生事業と創造地域事業が実施され、安東の代表的な観光名所に変身しました。路地のあちこちで様々な壁画を鑑賞することができ、毎月フリーマーケット「クリメ（絵・愛）市場」と月映市場も開かれます。</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">경상북도 안동시 동문동 태사길 78</span></div>
-<button data-v="경상북도 안동시 동문동 태사길 78" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">경상북도 안동시 동문동</span></div>
+<button data-v="경상북도 안동시 동문동" data-done="コピーしました">コピー</button></div>
 </li><li class="jn-item">
 <div class="jn-h"><b>安東 臨清閣</b><span class="jn-tag">観光地</span><span class="jn-km">約 1.4 km</span></div>
 <p class="jn-ov">臨清閣（イムチョンガク）は、中宗の時代に刑曹佐郞を務めた李洺（イ・ミョン）が建立しました。韓国に現存する住宅のなかでも最大規模で500年の歴史を持つ安東固城李氏の大宗宅です。 臨清閣という堂号は、陶淵明の「帰去来辞」のうち「登東皋以舒嘯、臨清流而賦詩」からとったものです。李重煥の『択里志』には「臨清…</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">경상북도 안동시 법흥동 임청각길 63</span></div>
-<button data-v="경상북도 안동시 법흥동 임청각길 63" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">경상북도 안동시 임청각길 63 (법흥동)</span></div>
+<button data-v="경상북도 안동시 임청각길 63 (법흥동)" data-done="コピーしました">コピー</button></div>
 </li><li class="jn-item">
 <div class="jn-h"><b>法興洞 固城李氏塔洞派宗宅</b><span class="jn-tag">観光地</span><span class="jn-km">約 1.6 km</span></div>
 <p class="jn-ov">固城李氏（コソン・イシ）塔洞派（タプトンパ）の宗宅（チョンテク：本家）で、今も固城李氏塔洞派の子孫が暮らしています。朝鮮時代に李後植（イ・フシク／1635-1765）が母屋を建て、その後サランチェ（別棟）や永慕堂（ヨンモダン）が彼の孫の元美（ウォンミ／1690-1765）の代に完成しました。永慕堂の…</p>

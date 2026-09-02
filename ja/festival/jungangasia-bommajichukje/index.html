@@ -515,6 +515,9 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 .xnote{color:#9aa3af;font-size:.79rem;line-height:1.6;margin-top:10px}
 </style>
 <script>
+// ⚠️ en-nearby.js 도 같은 핸들러를 심는다 — 같은 플래그로 «한 번만» 걸리게 한다
+//    (두 번 걸리면 클릭 한 번에 클립보드를 두 번 쓴다).
+if(!window.__xcopyBound){window.__xcopyBound=1;
 document.addEventListener('click',function(e){
   var b=e.target.closest('.xcopy button'); if(!b) return;
   var t=b.getAttribute('data-v')||'';
@@ -523,7 +526,7 @@ document.addEventListener('click',function(e){
   if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,function(){});}
   else{var ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);
     ta.select();try{document.execCommand('copy');done();}catch(_){}document.body.removeChild(ta);}
-});
+});}
 </script><div class="xbox"><h2>🇰🇷 NAVERマップ・カカオマップにこのまま貼ってください</h2><p class="lead">Googleマップは韓国国内の徒歩・乗換案内が出ません（韓国の地図データ規制のため）。NAVERマップとカカオマップなら出ますが、ハングルで検索しないとほとんど出てきません。そのままコピーしてお使いください。</p>
 <div class="xcopy"><div><span class="lb">祭りの名前（ハングル）</span><span class="vl">중앙아시아 봄맞이축제</span></div>
 <button data-v="중앙아시아 봄맞이축제" data-done="コピーしました">コピー</button></div>
@@ -580,8 +583,8 @@ document.addEventListener('click',function(e){
 <ul class="jn-list"><li class="jn-item">
 <div class="jn-h"><b>ソウル広場</b><span class="jn-tag">観光地</span><span class="jn-km">約 0.1 km</span></div>
 <p class="jn-ov">ソウル広場は、2002年韓日ワールドカップ当時、数十万の市民が集い、熱狂的な街頭応援を繰り広げた場所です。ここは元々ソウルの金融機関や商業施設が集まる中心地で、常に人や車の行き来が絶えないところでした。それまでも大きなイベントがある際には交通規制し、イベント会場としての役割をしていましたが、ワールド…</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">서울특별시 중구 태평로1가 54-3</span></div>
-<button data-v="서울특별시 중구 태평로1가 54-3" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">서울특별시 중구 을지로 지하12 (을지로1가)</span></div>
+<button data-v="서울특별시 중구 을지로 지하12 (을지로1가)" data-done="コピーしました">コピー</button></div>
 </li><li class="jn-item">
 <div class="jn-h"><b>惇徳殿</b><span class="jn-tag">観光地</span><span class="jn-km">約 0.2 km</span></div>
 <p class="jn-ov">大韓帝国の外交空間として企画された惇徳殿（トンドクチョン）は、徳寿宮内にある2階建ての洋館。惇徳殿は高宗が即位40周年記念行事の場として使用するため 建てた洋館で日本によって取り壊されたものの、2017年発掘調査をスタートし2023年9月正式に一般公開されました。新しく開館した「惇徳殿」は、大韓帝国…</p>
@@ -590,18 +593,18 @@ document.addEventListener('click',function(e){
 </li><li class="jn-item">
 <div class="jn-h"><b>徳寿宮大漢門</b><span class="jn-tag">観光地</span><span class="jn-km">約 0.2 km</span></div>
 <p class="jn-ov">大漢門（テハンムン）は、シチョン駅近くに位置している朝鮮の５大宮殿の一つである徳寿宮（トクスグン）の正門です。「大漢」という名前には、大韓帝国の永遠なる繁栄と発展を祈る意味が込められています。大漢門の前では毎日2回、守門将交代式が朝鮮の伝統的な服装と方式で年中実施されます。</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">서울특별시 중구 정동 세종대로 99</span></div>
-<button data-v="서울특별시 중구 정동 세종대로 99" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">서울특별시 중구 세종대로 99 (정동)</span></div>
+<button data-v="서울특별시 중구 세종대로 99 (정동)" data-done="コピーしました">コピー</button></div>
 </li><li class="jn-item">
 <div class="jn-h"><b>徳寿宮</b><span class="jn-tag">観光地</span><span class="jn-km">約 0.2 km</span></div>
 <p class="jn-ov">史跡・徳寿宮（トクスグン）は、元々王宮ではなく、成宗（ソンジョン＝1457～1494年・在位：1469～1494年）の兄にあたる月山大君（ウォルサンデグン＝1454～1488年）の住居として使われていました。1592年壬辰倭乱（日本で言う「文禄・慶長の役」）により王宮が全焼し、翌1593年、仮の王宮…</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">서울특별시 중구 정동 세종대로 99</span></div>
-<button data-v="서울특별시 중구 정동 세종대로 99" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">서울특별시 중구 세종대로 99 (정동)</span></div>
+<button data-v="서울특별시 중구 세종대로 99 (정동)" data-done="コピーしました">コピー</button></div>
 </li><li class="jn-item">
 <div class="jn-h"><b>徳寿宮石垣道</b><span class="jn-tag">観光地</span><span class="jn-km">約 0.3 km</span></div>
 <p class="jn-ov">徳寿宮（トクスグン）石垣道は、徳寿宮の石垣沿いに続く道です。美しい照明と造景のため夜にもロマンチックな雰囲気が感じられます。ストリートパフォーマンス、フリーマーケットが開かれたり、貞洞道（チョンドンギル）沿いに立ち並ぶカフェ、グルメ店も多いです。秋にはイチョウと石垣が融合して素晴らしい景色を誇ります…</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">서울특별시 중구 정동 세종대로 99</span></div>
-<button data-v="서울특별시 중구 정동 세종대로 99" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">서울특별시 중구 세종대로 지하 101</span></div>
+<button data-v="서울특별시 중구 세종대로 지하 101" data-done="コピーしました">コピー</button></div>
 </li></ul>
 <p class="jn-src">住所は座標から逆引きした韓国語の道路名住所です。NAVER マップ・カカオマップにそのまま貼り付けて検索できます。</p></div>
 <div class="frel"><h2>ソウルのほかの祭り</h2><div class="row"><a href="/ja/festival/yongsancheongnyeonchukje/">龍山青年祭り</a><a href="/ja/festival/hanhwawa-hamkkehaneun-seoulsegyebulkkotchukje/">ソウル世界花火祭り</a><a href="/ja/festival/baengnyeonnaiteu-yasijang-megiui-gwihwan/">百年市場百年ナイト</a><a href="/ja/festival/gwanakganggamchanchukje/">冠岳姜邯贊祭り</a><a href="/ja/festival/2025-daehanminguk-gwangwangginyeompum-bangnamhoe/">大韓民国観光記念品博覧会</a><a href="/ja/festival/gwanakbyeolbitsanchaek/">冠岳ピョルピッ散策</a></div></div>

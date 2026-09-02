@@ -31,7 +31,6 @@
 <meta name="twitter:title" content="Pohang International Fireworks Festival — Dates, Location &amp; Info | Chukjemoa">
 <meta name="twitter:description" content="*The information below is based on the 2025 festivals. Details for the 2026 festivals will be updated as they become available.*The Pohang International Fi">
 <meta name="twitter:image" content="https://chukjemoa.co.kr/img/hero.webp">
-<meta name="robots" content="noindex, follow">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3293445488923111" crossorigin="anonymous"></script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Festival","name":"Pohang International Fireworks Festival","description":"*The information below is based on the 2025 festivals. Details for the 2026 festivals will be updated as they become available.*The Pohang International Fire & Light Festival is an internationally renowned event themed around the images of “light,” symbolizing the global steel city of Pohang, and “fire,” representing the hot blast furnaces. Performers and local citizens dress up in all sorts of costumes and masks to join in the Fire & Light Parade, which marks the colorful beginning of the festival. The festival culminates in the International Fireworks Show, the highlight of the evening. The ","startDate":"2026-11-20","endDate":"2026-11-20","image":"https://tong.visitkorea.or.kr/cms/resource/88/3484788_image2_1.jpg","location":{"@type":"Place","name":"Duho-dong, Buk-gu, Pohang-si, Gyeongsangbuk-do","address":"Duho-dong, Buk-gu, Pohang-si, Gyeongsangbuk-do","geo":{"@type":"GeoCoordinates","latitude":36.017732,"longitude":129.374477}},"url":"https://chukjemoa.co.kr/en/festival/pohang-international-fireworks-festival/"}</script>
@@ -517,6 +516,9 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 .xnote{color:#9aa3af;font-size:.79rem;line-height:1.6;margin-top:10px}
 </style>
 <script>
+// ⚠️ en-nearby.js 도 같은 핸들러를 심는다 — 같은 플래그로 «한 번만» 걸리게 한다
+//    (두 번 걸리면 클릭 한 번에 클립보드를 두 번 쓴다).
+if(!window.__xcopyBound){window.__xcopyBound=1;
 document.addEventListener('click',function(e){
   var b=e.target.closest('.xcopy button'); if(!b) return;
   var t=b.getAttribute('data-v')||'';
@@ -525,11 +527,54 @@ document.addEventListener('click',function(e){
   if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,function(){});}
   else{var ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);
     ta.select();try{document.execCommand('copy');done();}catch(_){}document.body.removeChild(ta);}
-});
+});}
 </script><div class="xbox"><h2>🏮 Traditional market days during the festival</h2><p class="lead">Korean country markets open only on days ending in fixed digits — every 5 days. These are the actual dates they open while the festival runs, so you can add one to the same trip.</p><div class="xlist"><div class="xitem"><div class="nm">오천시장</div>
 <div class="mt">6.7 km away · opens on days ending in 5, 10 · 105 stalls</div>
 <div style="margin-top:5px"><span class="lb" style="font-size:.74rem;font-weight:800;color:#9a5b00">Open on</span> <span class="xtag d">Nov 20</span></div>
 </div></div></div>
+<style>
+.ennear{margin:22px 0}
+.ennear h2{font-size:1.08rem;font-weight:900;margin:0 0 6px}
+.en-note,.en-src{font-size:.8rem;color:#8a939d;line-height:1.6;margin:0 0 10px}
+.en-src{margin-top:10px}
+.en-list{list-style:none;padding:0;margin:0;display:grid;gap:10px}
+.en-item{border:1px solid #e6eaee;border-radius:12px;padding:12px 13px;background:#fff}
+.en-h{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-bottom:5px}
+.en-h b{font-size:1rem;font-weight:800;color:#111827}
+.en-ko{font-size:.82rem;color:#6b7280;font-weight:700}
+.en-tag{font-size:.72rem;font-weight:800;color:#0a6c63;background:#e7f6f3;border-radius:6px;padding:2px 7px}
+.en-km{font-size:.78rem;color:#8a939d;margin-left:auto}
+.en-ov{font-size:.88rem;line-height:1.65;color:#374151;margin:0 0 9px}
+.xcopy{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;
+  background:#f6fbfa;border:1.5px solid #dcefeb;border-radius:12px;padding:11px 13px;margin:8px 0}
+.xcopy .lb{font-size:.74rem;font-weight:800;color:#0a6c63;letter-spacing:.02em;display:block;margin-bottom:3px}
+.xcopy .vl{font-size:1rem;font-weight:800;color:#111827;word-break:keep-all;line-height:1.45}
+.xcopy button{background:#0f9d8f;color:#fff;border:0;border-radius:9px;padding:9px 14px;
+  font-weight:800;font-size:.84rem;cursor:pointer;white-space:nowrap}
+</style>
+<script>
+// ⚠️ intl-fest-extra.js 도 같은 핸들러를 심는다 — 같은 플래그로 «한 번만» 걸리게 한다
+//    (두 번 걸리면 클릭 한 번에 클립보드를 두 번 쓴다).
+if(!window.__xcopyBound){window.__xcopyBound=1;
+document.addEventListener('click',function(e){
+  var b=e.target.closest('.xcopy button'); if(!b) return;
+  var t=b.getAttribute('data-v')||'';
+  var done=function(){var o=b.textContent;b.textContent=b.getAttribute('data-done')||'OK';
+    setTimeout(function(){b.textContent=o;},1400);};
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,function(){});}
+  else{var ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);
+    ta.select();try{document.execCommand('copy');done();}catch(_){}document.body.removeChild(ta);}
+});}
+</script><div class="ennear"><h2>Nearby Attractions</h2>
+<p class="en-note">Places within 12&nbsp;km of the festival venue (straight-line distance), described in English by the Korea Tourism Organization. Travel time depends on roads and traffic, so only distance is shown.</p>
+<ul class="en-list"><li class="en-item">
+<div class="en-h"><b>Dogu Beach</b><span class="en-ko">도구 해수욕장</span>
+<span class="en-tag">Attraction</span><span class="en-km">approx. 6.9 km</span></div>
+<p class="en-ov">This small beach is located about 20 minutes away from Pohang city center, near Pohang Gyeongju Airport. Despite its small size, its fine sand and wonderful sea view…</p>
+<div class="xcopy"><div><span class="lb">Korean address for map apps</span><span class="vl">경상북도 포항시 남구 동해면 일월로81번길</span></div>
+<button data-v="경상북도 포항시 남구 동해면 일월로81번길" data-done="Copied">Copy</button></div>
+</li></ul>
+<p class="en-src">Google Maps cannot provide driving or transit directions inside South Korea. Paste the Korean addresses above into <b>NAVER Map</b> or <b>KakaoMap</b> — both work with these addresses and are what people here actually use.</p></div>
 <div class="nmap-wrap">
 <div class="nmap" style="height:300px" data-x="129.374477" data-y="36.017732" data-t="Pohang International Fireworks Festival"><span class="nmap-ph">Loading map…</span></div>
 <a class="nmap-open" href="https://map.naver.com/p/search/Pohang%20International%20Fireworks%20Festival" target="_blank" rel="noopener">🗺️ Open in Naver Map</a>

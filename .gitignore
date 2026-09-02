@@ -23,3 +23,9 @@ audit-supply.md
 audit-newdata.md
 data/naver-queue.json
 data/naver-kwcache.json
+# 진단·백업용 임시 JSON — 1.8MB 짜리 places_ja 백업이 커밋에 딸려 들어갈 뻔했다(2026-09-02).
+#   _*.txt / _*.js / _*.log 는 이미 막고 있었는데 .json 만 뚫려 있었다.
+_*.json
+# 2026-09-01 일회성 진단 산출물 — 어떤 코드도 읽지 않는다.
+data/thin_intl.json
+data/thin_intl_age.json

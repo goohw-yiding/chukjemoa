@@ -514,6 +514,9 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 .xnote{color:#9aa3af;font-size:.79rem;line-height:1.6;margin-top:10px}
 </style>
 <script>
+// ⚠️ en-nearby.js 도 같은 핸들러를 심는다 — 같은 플래그로 «한 번만» 걸리게 한다
+//    (두 번 걸리면 클릭 한 번에 클립보드를 두 번 쓴다).
+if(!window.__xcopyBound){window.__xcopyBound=1;
 document.addEventListener('click',function(e){
   var b=e.target.closest('.xcopy button'); if(!b) return;
   var t=b.getAttribute('data-v')||'';
@@ -522,7 +525,7 @@ document.addEventListener('click',function(e){
   if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,function(){});}
   else{var ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);
     ta.select();try{document.execCommand('copy');done();}catch(_){}document.body.removeChild(ta);}
-});
+});}
 </script><div class="xbox"><h2>🇰🇷 NAVERマップ・カカオマップにこのまま貼ってください</h2><p class="lead">Googleマップは韓国国内の徒歩・乗換案内が出ません（韓国の地図データ規制のため）。NAVERマップとカカオマップなら出ますが、ハングルで検索しないとほとんど出てきません。そのままコピーしてお使いください。</p>
 <div class="xcopy"><div><span class="lb">祭りの名前（ハングル）</span><span class="vl">영동난계국악축제</span></div>
 <button data-v="영동난계국악축제" data-done="コピーしました">コピー</button></div>
@@ -569,8 +572,8 @@ document.addEventListener('click',function(e){
 <ul class="jn-list"><li class="jn-item">
 <div class="jn-h"><b>レインボーヒーリングセンター</b><span class="jn-tag">観光地</span><span class="jn-km">約 0.1 km</span></div>
 <p class="jn-ov">ヨンドン(永同)エリアにレインボーヒーリング観光スポットを造成する中で、ヨンドン郡の4大祭りが開催されるレインボーヒーリング広場が構想され始めました。農村の情熱と歓喜をシェアできる広場と、ヨンドンのヒーリングを定義・表現するためにレインボーヒーリングセンターが開設されました。人口減少に直面している農…</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">충청북도 영동군 영동읍 35-74</span></div>
-<button data-v="충청북도 영동군 영동읍 35-74" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">충청북도 영동군 영동읍 영동힐링로 95</span></div>
+<button data-v="충청북도 영동군 영동읍 영동힐링로 95" data-done="コピーしました">コピー</button></div>
 </li><li class="jn-item">
 <div class="jn-h"><b>永同ワイントンネル</b><span class="jn-tag">観光地</span><span class="jn-km">約 0.6 km</span></div>
 <p class="jn-ov">永同（ヨンドン）ワイントンネルは、永同レインボーヒーリング観光地に造成された長さ420メートルのトンネルです。トンネルがワインの保存に適した環境であるという点に着目して造られました。ワインの歴史を紹介するワイン文化館、永同産のワインを販売する永同ワイン館、日帝強占期の弾薬貯蔵庫などを観覧することがで…</p>

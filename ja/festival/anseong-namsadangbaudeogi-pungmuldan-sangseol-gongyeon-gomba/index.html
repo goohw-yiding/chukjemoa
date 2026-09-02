@@ -514,6 +514,9 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 .xnote{color:#9aa3af;font-size:.79rem;line-height:1.6;margin-top:10px}
 </style>
 <script>
+// ⚠️ en-nearby.js 도 같은 핸들러를 심는다 — 같은 플래그로 «한 번만» 걸리게 한다
+//    (두 번 걸리면 클릭 한 번에 클립보드를 두 번 쓴다).
+if(!window.__xcopyBound){window.__xcopyBound=1;
 document.addEventListener('click',function(e){
   var b=e.target.closest('.xcopy button'); if(!b) return;
   var t=b.getAttribute('data-v')||'';
@@ -522,7 +525,7 @@ document.addEventListener('click',function(e){
   if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,function(){});}
   else{var ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);
     ta.select();try{document.execCommand('copy');done();}catch(_){}document.body.removeChild(ta);}
-});
+});}
 </script><div class="xbox"><h2>🇰🇷 NAVERマップ・カカオマップにこのまま貼ってください</h2><p class="lead">Googleマップは韓国国内の徒歩・乗換案内が出ません（韓国の地図データ規制のため）。NAVERマップとカカオマップなら出ますが、ハングルで検索しないとほとんど出てきません。そのままコピーしてお使いください。</p>
 <div class="xcopy"><div><span class="lb">祭りの名前（ハングル）</span><span class="vl">안성 남사당바우덕이 풍물단 상설 공연 ‘곰뱅이텄다’</span></div>
 <button data-v="안성 남사당바우덕이 풍물단 상설 공연 ‘곰뱅이텄다’" data-done="コピーしました">コピー</button></div>
@@ -587,8 +590,8 @@ document.addEventListener('click',function(e){
 <ul class="jn-list"><li class="jn-item">
 <div class="jn-h"><b>安城マッチュムランド</b><span class="jn-tag">観光地</span><span class="jn-km">約 0.1 km</span></div>
 <p class="jn-ov">安城（アンソン）マッチュムランドは安城市民の緑の憩い場であり、様々な体験や見どころを提供する文化芸術の場でもあります。男寺党公演場（朝鮮時代に活動していた流浪劇団。平民向けに大衆受けする出し物を行い、農楽隊、仮面劇、人形劇、皿回し、綱渡りなど様々な芸を披露した）をはじめ安城マッチュム工芸文化センター…</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">경기도 안성시 보개면 남사당로 196-31</span></div>
-<button data-v="경기도 안성시 보개면 남사당로 196-31" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">경기도 안성시 보개면 남사당로 198</span></div>
+<button data-v="경기도 안성시 보개면 남사당로 198" data-done="コピーしました">コピー</button></div>
 </li><li class="jn-item">
 <div class="jn-h"><b>ノリグル文化村</b><span class="jn-tag">観光地</span><span class="jn-km">約 2.9 km</span></div>
 <p class="jn-ov">ノリグル文化村は、キャンプ場やペンション、様々な文化空間を備えた山の中にある村です。「ノリグル」とは「広い村」を意味する安城（アンソン）の固有語です。村のあちこちには芸術作品やペンション、キャンピングトレーラー、プール、カフェ、アートショップなどが点在しています。アートショップには陶磁器、アクセサリ…</p>

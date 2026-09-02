@@ -516,6 +516,9 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 .xnote{color:#9aa3af;font-size:.79rem;line-height:1.6;margin-top:10px}
 </style>
 <script>
+// ⚠️ en-nearby.js 도 같은 핸들러를 심는다 — 같은 플래그로 «한 번만» 걸리게 한다
+//    (두 번 걸리면 클릭 한 번에 클립보드를 두 번 쓴다).
+if(!window.__xcopyBound){window.__xcopyBound=1;
 document.addEventListener('click',function(e){
   var b=e.target.closest('.xcopy button'); if(!b) return;
   var t=b.getAttribute('data-v')||'';
@@ -524,7 +527,7 @@ document.addEventListener('click',function(e){
   if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,function(){});}
   else{var ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);
     ta.select();try{document.execCommand('copy');done();}catch(_){}document.body.removeChild(ta);}
-});
+});}
 </script><div class="xbox"><h2>🇰🇷 Copy this into Naver Map or Kakao Map</h2><p class="lead">Google Maps cannot give walking or transit directions inside Korea — Korean law restricts map-data export. Naver Map and Kakao Map can, but they find far more when you search in Korean. Copy and paste:</p>
 <div class="xcopy"><div><span class="lb">Festival name (Korean)</span><span class="vl">경북영주 풍기인삼축제</span></div>
 <button data-v="경북영주 풍기인삼축제" data-done="Copied">Copy</button></div>
@@ -555,6 +558,7 @@ document.addEventListener('click',function(e){
 <div class="mt">39.1 km away · 09/24 – 10/04</div></a><a class="xitem" style="display:block;text-decoration:none" href="/en/festival/jeongseon-arirang-festival/">
 <div class="nm" style="color:#0c7d72">Jeongseon Arirang Festival</div>
 <div class="mt">58.0 km away · 10/01 – 10/04</div></a></div></div>
+
 <div class="nmap-wrap">
 <div class="nmap" style="height:300px" data-x="128.521583" data-y="36.868671" data-t="Yeongju Punggi Insam Festival"><span class="nmap-ph">Loading map…</span></div>
 <a class="nmap-open" href="https://map.naver.com/p/search/Yeongju%20Punggi%20Insam%20Festival" target="_blank" rel="noopener">🗺️ Open in Naver Map</a>

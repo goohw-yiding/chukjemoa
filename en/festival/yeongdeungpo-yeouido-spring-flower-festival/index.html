@@ -517,6 +517,9 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 .xnote{color:#9aa3af;font-size:.79rem;line-height:1.6;margin-top:10px}
 </style>
 <script>
+// ⚠️ en-nearby.js 도 같은 핸들러를 심는다 — 같은 플래그로 «한 번만» 걸리게 한다
+//    (두 번 걸리면 클릭 한 번에 클립보드를 두 번 쓴다).
+if(!window.__xcopyBound){window.__xcopyBound=1;
 document.addEventListener('click',function(e){
   var b=e.target.closest('.xcopy button'); if(!b) return;
   var t=b.getAttribute('data-v')||'';
@@ -525,7 +528,7 @@ document.addEventListener('click',function(e){
   if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,function(){});}
   else{var ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);
     ta.select();try{document.execCommand('copy');done();}catch(_){}document.body.removeChild(ta);}
-});
+});}
 </script><div class="xbox"><h2>🇰🇷 Copy this into Naver Map or Kakao Map</h2><p class="lead">Google Maps cannot give walking or transit directions inside Korea — Korean law restricts map-data export. Naver Map and Kakao Map can, but they find far more when you search in Korean. Copy and paste:</p>
 <div class="xcopy"><div><span class="lb">Festival name (Korean)</span><span class="vl">영등포 여의도 봄꽃축제</span></div>
 <button data-v="영등포 여의도 봄꽃축제" data-done="Copied">Copy</button></div>
@@ -577,6 +580,73 @@ document.addEventListener('click',function(e){
 <div class="mt">12.5 km away · 03/10 – 11/30</div></a><a class="xitem" style="display:block;text-decoration:none" href="/en/festival/ssokssokdeul-i-festival/">
 <div class="nm" style="color:#0c7d72">Ssokssokdeul-i Festival</div>
 <div class="mt">34.4 km away · 03/14 – 12/26</div></a></div></div>
+<style>
+.ennear{margin:22px 0}
+.ennear h2{font-size:1.08rem;font-weight:900;margin:0 0 6px}
+.en-note,.en-src{font-size:.8rem;color:#8a939d;line-height:1.6;margin:0 0 10px}
+.en-src{margin-top:10px}
+.en-list{list-style:none;padding:0;margin:0;display:grid;gap:10px}
+.en-item{border:1px solid #e6eaee;border-radius:12px;padding:12px 13px;background:#fff}
+.en-h{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-bottom:5px}
+.en-h b{font-size:1rem;font-weight:800;color:#111827}
+.en-ko{font-size:.82rem;color:#6b7280;font-weight:700}
+.en-tag{font-size:.72rem;font-weight:800;color:#0a6c63;background:#e7f6f3;border-radius:6px;padding:2px 7px}
+.en-km{font-size:.78rem;color:#8a939d;margin-left:auto}
+.en-ov{font-size:.88rem;line-height:1.65;color:#374151;margin:0 0 9px}
+.xcopy{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;
+  background:#f6fbfa;border:1.5px solid #dcefeb;border-radius:12px;padding:11px 13px;margin:8px 0}
+.xcopy .lb{font-size:.74rem;font-weight:800;color:#0a6c63;letter-spacing:.02em;display:block;margin-bottom:3px}
+.xcopy .vl{font-size:1rem;font-weight:800;color:#111827;word-break:keep-all;line-height:1.45}
+.xcopy button{background:#0f9d8f;color:#fff;border:0;border-radius:9px;padding:9px 14px;
+  font-weight:800;font-size:.84rem;cursor:pointer;white-space:nowrap}
+</style>
+<script>
+// ⚠️ intl-fest-extra.js 도 같은 핸들러를 심는다 — 같은 플래그로 «한 번만» 걸리게 한다
+//    (두 번 걸리면 클릭 한 번에 클립보드를 두 번 쓴다).
+if(!window.__xcopyBound){window.__xcopyBound=1;
+document.addEventListener('click',function(e){
+  var b=e.target.closest('.xcopy button'); if(!b) return;
+  var t=b.getAttribute('data-v')||'';
+  var done=function(){var o=b.textContent;b.textContent=b.getAttribute('data-done')||'OK';
+    setTimeout(function(){b.textContent=o;},1400);};
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,function(){});}
+  else{var ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);
+    ta.select();try{document.execCommand('copy');done();}catch(_){}document.body.removeChild(ta);}
+});}
+</script><div class="ennear"><h2>Nearby Attractions</h2>
+<p class="en-note">Places within 12&nbsp;km of the festival venue (straight-line distance), described in English by the Korea Tourism Organization. Travel time depends on roads and traffic, so only distance is shown.</p>
+<ul class="en-list"><li class="en-item">
+<div class="en-h"><b>E-Land Cruise (Hangang River Ferry Cruise)</b><span class="en-ko">이랜드크루즈 (한강유람선</span>
+<span class="en-tag">Attraction</span><span class="en-km">approx. 1.6 km</span></div>
+<p class="en-ov">The E-Land Cruise cuts across the Hangang River along the east-west axis. It connects two terminals, one in Yeouido and the other in Jamsil. The company offers a number…</p>
+<div class="xcopy"><div><span class="lb">Korean address for map apps</span><span class="vl">서울특별시 영등포구 여의동로 280 (여의도동)</span></div>
+<button data-v="서울특별시 영등포구 여의동로 280 (여의도동)" data-done="Copied">Copy</button></div>
+</li><li class="en-item">
+<div class="en-h"><b>G-line Book Street</b><span class="en-ko">경의선책거리</span>
+<span class="en-tag">Attraction</span><span class="en-km">approx. 2.8 km</span></div>
+<p class="en-ov">G-line Book Street spans approximately 250 meters from Exit 6 of Hongik University Station to Wau Bridge, where the old train tracks remain intact. It serves as a…</p>
+<div class="xcopy"><div><span class="lb">Korean address for map apps</span><span class="vl">서울특별시 마포구 와우산로37길 35</span></div>
+<button data-v="서울특별시 마포구 와우산로37길 35" data-done="Copied">Copy</button></div>
+</li><li class="en-item">
+<div class="en-h"><b>Culture Station Seoul 284</b><span class="en-ko">문화역 서울 284</span>
+<span class="en-tag">Attraction</span><span class="en-km">approx. 5.1 km</span></div>
+<p class="en-ov">Culture Station Seoul 284 opened in 2011 by restoring the old Seoul Station. The complex holds various programs including exhibitions, performances, cultural events and…</p>
+<div class="xcopy"><div><span class="lb">Korean address for map apps</span><span class="vl">서울특별시 중구 통일로 1 (봉래동2가)</span></div>
+<button data-v="서울특별시 중구 통일로 1 (봉래동2가)" data-done="Copied">Copy</button></div>
+</li><li class="en-item">
+<div class="en-h"><b>Dongnimmun Gate</b><span class="en-ko">독립문</span>
+<span class="en-tag">Attraction</span><span class="en-km">approx. 5.6 km</span></div>
+<p class="en-ov">Dongnimmun stands at the location originally known as Yeongeun, where envoys were once treated. When a Chinese envoy visited, the King would go out through this door to…</p>
+<div class="xcopy"><div><span class="lb">Korean address for map apps</span><span class="vl">서울특별시 서대문구 현저동</span></div>
+<button data-v="서울특별시 서대문구 현저동" data-done="Copied">Copy</button></div>
+</li><li class="en-item">
+<div class="en-h"><b>Deoksugung Stone Wall Path</b><span class="en-ko">덕수궁 돌담길</span>
+<span class="en-tag">Attraction</span><span class="en-km">approx. 6.0 km</span></div>
+<p class="en-ov">The Deoksugung Stone Wall Path runs along the wall of Deoksugung Palace. It is beautifully lit and landscaped, giving it a romantic atmosphere even at night. There are…</p>
+<div class="xcopy"><div><span class="lb">Korean address for map apps</span><span class="vl">서울특별시 중구 세종대로 지하 101</span></div>
+<button data-v="서울특별시 중구 세종대로 지하 101" data-done="Copied">Copy</button></div>
+</li></ul>
+<p class="en-src">Google Maps cannot provide driving or transit directions inside South Korea. Paste the Korean addresses above into <b>NAVER Map</b> or <b>KakaoMap</b> — both work with these addresses and are what people here actually use.</p></div>
 <div class="nmap-wrap">
 <div class="nmap" style="height:300px" data-x="126.922645" data-y="37.532051" data-t="Yeongdeungpo Yeouido Spring Flower Festival"><span class="nmap-ph">Loading map…</span></div>
 <a class="nmap-open" href="https://map.naver.com/p/search/Yeongdeungpo%20Yeouido%20Spring%20Flower%20Festival" target="_blank" rel="noopener">🗺️ Open in Naver Map</a>

@@ -514,6 +514,9 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 .xnote{color:#9aa3af;font-size:.79rem;line-height:1.6;margin-top:10px}
 </style>
 <script>
+// ⚠️ en-nearby.js 도 같은 핸들러를 심는다 — 같은 플래그로 «한 번만» 걸리게 한다
+//    (두 번 걸리면 클릭 한 번에 클립보드를 두 번 쓴다).
+if(!window.__xcopyBound){window.__xcopyBound=1;
 document.addEventListener('click',function(e){
   var b=e.target.closest('.xcopy button'); if(!b) return;
   var t=b.getAttribute('data-v')||'';
@@ -522,7 +525,7 @@ document.addEventListener('click',function(e){
   if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,function(){});}
   else{var ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);
     ta.select();try{document.execCommand('copy');done();}catch(_){}document.body.removeChild(ta);}
-});
+});}
 </script><div class="xbox"><h2>🇰🇷 NAVERマップ・カカオマップにこのまま貼ってください</h2><p class="lead">Googleマップは韓国国内の徒歩・乗換案内が出ません（韓国の地図データ規制のため）。NAVERマップとカカオマップなら出ますが、ハングルで検索しないとほとんど出てきません。そのままコピーしてお使いください。</p>
 <div class="xcopy"><div><span class="lb">祭りの名前（ハングル）</span><span class="vl">강동선사문화축제</span></div>
 <button data-v="강동선사문화축제" data-done="コピーしました">コピー</button></div>
@@ -583,13 +586,13 @@ document.addEventListener('click',function(e){
 <ul class="jn-list"><li class="jn-item">
 <div class="jn-h"><b>ソウル岩寺洞遺跡</b><span class="jn-tag">観光地</span><span class="jn-km">約 0.2 km</span></div>
 <p class="jn-ov">1925年の漢江大洪水で遺跡が発見されて以降、発掘調査を重ね、1979年7月26日に「岩寺洞（アムサドン）先史住居址」として国家指定文化財史跡に指定され、2011年「ソウル岩寺洞遺跡」に名称変更されました。韓国で発見された新石器時代の人々の最大集落であり、約23,600坪の敷地には芝生や木が茂り、5…</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">서울특별시 강동구 암사동 올림픽로 875</span></div>
-<button data-v="서울특별시 강동구 암사동 올림픽로 875" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">서울특별시 강동구 올림픽로 875 (암사동)</span></div>
+<button data-v="서울특별시 강동구 올림픽로 875 (암사동)" data-done="コピーしました">コピー</button></div>
 </li><li class="jn-item">
 <div class="jn-h"><b>広津橋八番街</b><span class="jn-tag">観光地</span><span class="jn-km">約 2.2 km</span></div>
 <p class="jn-ov">広津橋（クァンジンギョ）の道路の直下、8番橋脚付近にある広津橋八番街（パルボンガ）は、最高の景色の中、公演や展示を楽しめ、またさまざまな文化コンテンツを作り出すとともに人々の文化的感性を満たし、憩いのひとときが楽しめる文化空間です。 ガラスの壁となっている外側には、涼しげな風に吹かれながら漢江の素晴…</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">서울특별시 강동구 천호동 구천면로 77</span></div>
-<button data-v="서울특별시 강동구 천호동 구천면로 77" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">서울특별시 강동구 구천면로 77</span></div>
+<button data-v="서울특별시 강동구 구천면로 77" data-done="コピーしました">コピー</button></div>
 </li><li class="jn-item">
 <div class="jn-h"><b>千戸洞バラ村</b><span class="jn-tag">観光地</span><span class="jn-km">約 2.3 km</span></div>
 <p class="jn-ov">ソウルの古い町並みとあちこちの塀に咲いたバラを一緒に眺められるスポットです。古くて背の低い家からは30～40年前の面影が感じられ、家ごとに咲いている赤やピンクのバラが温かく迎えてくれます。道は狭いものの住民たちが丹念に手入れと整備を行ったおかげで、今日のようなバラの名所、フォトスポットに生まれ変わり…</p>

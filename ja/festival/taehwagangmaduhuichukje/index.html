@@ -515,6 +515,9 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 .xnote{color:#9aa3af;font-size:.79rem;line-height:1.6;margin-top:10px}
 </style>
 <script>
+// ⚠️ en-nearby.js 도 같은 핸들러를 심는다 — 같은 플래그로 «한 번만» 걸리게 한다
+//    (두 번 걸리면 클릭 한 번에 클립보드를 두 번 쓴다).
+if(!window.__xcopyBound){window.__xcopyBound=1;
 document.addEventListener('click',function(e){
   var b=e.target.closest('.xcopy button'); if(!b) return;
   var t=b.getAttribute('data-v')||'';
@@ -523,7 +526,7 @@ document.addEventListener('click',function(e){
   if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,function(){});}
   else{var ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);
     ta.select();try{document.execCommand('copy');done();}catch(_){}document.body.removeChild(ta);}
-});
+});}
 </script><div class="xbox"><h2>🇰🇷 NAVERマップ・カカオマップにこのまま貼ってください</h2><p class="lead">Googleマップは韓国国内の徒歩・乗換案内が出ません（韓国の地図データ規制のため）。NAVERマップとカカオマップなら出ますが、ハングルで検索しないとほとんど出てきません。そのままコピーしてお使いください。</p>
 <div class="xcopy"><div><span class="lb">祭りの名前（ハングル）</span><span class="vl">태화강마두희축제</span></div>
 <button data-v="태화강마두희축제" data-done="コピーしました">コピー</button></div>
@@ -580,18 +583,18 @@ document.addEventListener('click',function(e){
 <ul class="jn-list"><li class="jn-item">
 <div class="jn-h"><b>太和江洞窟ピア</b><span class="jn-tag">観光地</span><span class="jn-km">約 1.1 km</span></div>
 <p class="jn-ov">太和江（テファガン）洞窟ピアは、日帝強占期に日本軍が軍需物資を保管するために作った複数の人工洞窟が観光スポットとしてリニューアルされた場所で、当時の蔚山（ウルサン）の歴史と人々の暮らしぶりを垣間見ることができる所です。洞窟の外には人工滝があり、洞窟の中には洞窟アドベンチャー体験ゾーン、デジタルスケッ…</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">울산광역시 남구 신정동 94-17</span></div>
-<button data-v="울산광역시 남구 신정동 94-17" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">울산광역시 남구 남산로 306</span></div>
+<button data-v="울산광역시 남구 남산로 306" data-done="コピーしました">コピー</button></div>
 </li><li class="jn-item">
 <div class="jn-h"><b>太和江国家庭園</b><span class="jn-tag">観光地</span><span class="jn-km">約 1.8 km</span></div>
 <p class="jn-ov">2019年、国家庭園2号に指定された太和江（テファガン）国家庭園は83万5452平方メートルで、生態・竹・ムクゲ・参加・季節・水生という6つのテーマを持つ庭園や緑地、その他利便施設などを備えています。◎ 韓流旅行情報-ドラマ『もうすぐ死にます』自身の母親に転生したイジェが母を思い出しながら訪れた場所…</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">울산광역시 중구 태화동 665-8</span></div>
-<button data-v="울산광역시 중구 태화동 665-8" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">울산광역시 중구 샛강남길 5 (태화동)</span></div>
+<button data-v="울산광역시 중구 샛강남길 5 (태화동)" data-done="コピーしました">コピー</button></div>
 </li><li class="jn-item">
 <div class="jn-h"><b>朴尚鎮義士生家</b><span class="jn-tag">観光地</span><span class="jn-km">約 7.1 km</span></div>
 <p class="jn-ov">朴尚鎮（パク・サンジン）義士生家は、日帝強占期に独立運動家の朴尚鎮義士が住んでいた場所です。すべての財産を独立運動資金に投じたため、家が没落し、この家も他人の手に渡りましたが、政府が買い取って整備しました。サランチェ（客棟）、アンチェ（母屋）など計6棟の建物で構成された瓦屋根の家屋で、韓国の19世紀…</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">울산광역시 북구 송정동 박상진5로 10</span></div>
-<button data-v="울산광역시 북구 송정동 박상진5로 10" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">울산광역시 북구 박상진5로 10 (송정동)</span></div>
+<button data-v="울산광역시 북구 박상진5로 10 (송정동)" data-done="コピーしました">コピー</button></div>
 </li><li class="jn-item">
 <div class="jn-h"><b>処容岩</b><span class="jn-tag">観光地</span><span class="jn-km">約 10.1 km</span></div>
 <p class="jn-ov">処容岩（チョヨンアム）は蔚山広域市南区黄城洞（ファンソンドン）セチュク村前の外煌江（ウェファンガン）という川にある開雲浦（ケウンポ）という浅瀬の真ん中に浮かぶ岩の島です。 30平方メートルほどの小さな岩で出来たこの島は疫病神を追いやる力を発揮するという処容符籍にまつわる伝説が伝えられている中州で、三…</p>

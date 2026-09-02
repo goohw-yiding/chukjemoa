@@ -514,6 +514,9 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 .xnote{color:#9aa3af;font-size:.79rem;line-height:1.6;margin-top:10px}
 </style>
 <script>
+// ⚠️ en-nearby.js 도 같은 핸들러를 심는다 — 같은 플래그로 «한 번만» 걸리게 한다
+//    (두 번 걸리면 클릭 한 번에 클립보드를 두 번 쓴다).
+if(!window.__xcopyBound){window.__xcopyBound=1;
 document.addEventListener('click',function(e){
   var b=e.target.closest('.xcopy button'); if(!b) return;
   var t=b.getAttribute('data-v')||'';
@@ -522,7 +525,7 @@ document.addEventListener('click',function(e){
   if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,function(){});}
   else{var ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);
     ta.select();try{document.execCommand('copy');done();}catch(_){}document.body.removeChild(ta);}
-});
+});}
 </script><div class="xbox"><h2>🇰🇷 NAVERマップ・カカオマップにこのまま貼ってください</h2><p class="lead">Googleマップは韓国国内の徒歩・乗換案内が出ません（韓国の地図データ規制のため）。NAVERマップとカカオマップなら出ますが、ハングルで検索しないとほとんど出てきません。そのままコピーしてお使いください。</p>
 <div class="xcopy"><div><span class="lb">祭りの名前（ハングル）</span><span class="vl">부산국제록페스티벌</span></div>
 <button data-v="부산국제록페스티벌" data-done="コピーしました">コピー</button></div>
@@ -580,13 +583,13 @@ document.addEventListener('click',function(e){
 <ul class="jn-list"><li class="jn-item">
 <div class="jn-h"><b>三楽エコパーク</b><span class="jn-tag">観光地</span><span class="jn-km">約 0.8 km</span></div>
 <p class="jn-ov">三楽（サムナク）エコパークは、洛東江（ナクトンガン）沿いに造成された4つの公園の一つで、面積4.89平方キロメートル・長さ7キロメートルの自然生態公園です。渡り鳥のための湿地生態園、渡り鳥の餌場、芝生広場、野生の花団地、生態散策コースはもちろん、屋外プール、サッカー場、テニスコート、自転車レンタル所…</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">부산광역시 사상구 삼락동 29-32</span></div>
-<button data-v="부산광역시 사상구 삼락동 29-32" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">부산광역시 사상구 삼락동 29-46</span></div>
+<button data-v="부산광역시 사상구 삼락동 29-46" data-done="コピーしました">コピー</button></div>
 </li><li class="jn-item">
 <div class="jn-h"><b>大渚生態公園</b><span class="jn-tag">観光地</span><span class="jn-km">約 4.4 km</span></div>
 <p class="jn-ov">大渚（テジョ）生態公園は、亀浦（クポ）大橋から洛東江（ナクトンガン）下流の渡り鳥飛来地まで含まれる生態公園です。新徳（シンドク）湿地をはじめとする様々な湿地と水路があり、草地、菜の花団地、各種体育施設が整えられており、レジャーや憩いの時間を楽しむことができる場所です。特に、亀浦大橋の下側に造成された…</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">부산광역시 강서구 대저1동 공항로 1246</span></div>
-<button data-v="부산광역시 강서구 대저1동 공항로 1246" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">부산광역시 강서구 공항로 1246 (대저1동)</span></div>
+<button data-v="부산광역시 강서구 공항로 1246 (대저1동)" data-done="コピーしました">コピー</button></div>
 </li><li class="jn-item">
 <div class="jn-h"><b>バログ医院（徳川）（바로그의원（덕천））</b><span class="jn-tag">観光地</span><span class="jn-km">約 5.5 km</span></div>
 <p class="jn-ov">バログ医院徳川店はイェプダ医院として開業して7年にわたり安定した成長を続け、お客様に最高の医療サービスを提供してきました。 面積207坪（約684㎡）で25名の専門スタッフが在籍する当院は、お客様中心のオーダーメイド治療により高い信頼をいただいています。 1日平均200～250人の患者が来院しており…</p>
@@ -600,8 +603,8 @@ document.addEventListener('click',function(e){
 </li><li class="jn-item">
 <div class="jn-h"><b>乗鶴山</b><span class="jn-tag">観光地</span><span class="jn-km">約 6.6 km</span></div>
 <p class="jn-ov">乗鶴山（スンハクサン）は、山の形に勢いがあり、まるで鶴が飛んでいるように見えることからその名が付けられたという伝説を持ちます。海抜496メートルの山には5つの登山コースがあります。ススキ群落地、森林公園、ヒノキの森、瞑想治癒スギの森、気象観測所、薬水場、体育施設、展望台があります。山頂のススキは美し…</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">부산광역시 사하구 당리동 45-1</span></div>
-<button data-v="부산광역시 사하구 당리동 45-1" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">부산광역시 사하구 하단동</span></div>
+<button data-v="부산광역시 사하구 하단동" data-done="コピーしました">コピー</button></div>
 </li></ul>
 <p class="jn-src">住所は座標から逆引きした韓国語の道路名住所です。NAVER マップ・カカオマップにそのまま貼り付けて検索できます。</p></div>
 <div class="frel"><h2>釜山のほかの祭り</h2><div class="row"><a href="/ja/festival/gwangalli-m-marvelous-deuron-raiteusyo/">広安里M</a><a href="/ja/festival/kaunteudaun-busan/">釜山花火祭り</a><a href="/ja/festival/haeundae-moraechukje/">海雲台砂祭り</a><a href="/ja/festival/gwangallieobangchukje/">広安里漁坊祭り</a><a href="/ja/festival/poteubilliji-busan-2026/">PORT VILLAGE BUSAN 2026</a><a href="/ja/festival/2026-busanbadadoseogwan/">釜山パダ図書館</a></div></div>

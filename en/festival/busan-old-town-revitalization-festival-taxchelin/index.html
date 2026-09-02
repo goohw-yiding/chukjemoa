@@ -517,6 +517,9 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 .xnote{color:#9aa3af;font-size:.79rem;line-height:1.6;margin-top:10px}
 </style>
 <script>
+// ⚠️ en-nearby.js 도 같은 핸들러를 심는다 — 같은 플래그로 «한 번만» 걸리게 한다
+//    (두 번 걸리면 클릭 한 번에 클립보드를 두 번 쓴다).
+if(!window.__xcopyBound){window.__xcopyBound=1;
 document.addEventListener('click',function(e){
   var b=e.target.closest('.xcopy button'); if(!b) return;
   var t=b.getAttribute('data-v')||'';
@@ -525,7 +528,7 @@ document.addEventListener('click',function(e){
   if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,function(){});}
   else{var ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);
     ta.select();try{document.execCommand('copy');done();}catch(_){}document.body.removeChild(ta);}
-});
+});}
 </script><div class="xbox"><h2>🅿️ Nearby attractions — with actual parking capacity</h2><p class="lead">Most sites only say &quot;parking available.&quot; These are official figures from the Ministry of the Interior and Safety, so you can judge before you drive.</p><div class="xlist"><div class="xitem"><div class="nm">소흥관(한중우호센터)</div>
 <div class="mt">0.3 km away · 부산광역시 동구 초량중로 36</div>
 
@@ -553,6 +556,73 @@ document.addEventListener('click',function(e){
 <div class="mt">22.6 km away · opens on days ending in 3, 8 · 98 stalls</div>
 <div style="margin-top:5px"><span class="lb" style="font-size:.74rem;font-weight:800;color:#9a5b00">Open on</span> <span class="xtag d">May 23</span></div>
 </div></div></div>
+<style>
+.ennear{margin:22px 0}
+.ennear h2{font-size:1.08rem;font-weight:900;margin:0 0 6px}
+.en-note,.en-src{font-size:.8rem;color:#8a939d;line-height:1.6;margin:0 0 10px}
+.en-src{margin-top:10px}
+.en-list{list-style:none;padding:0;margin:0;display:grid;gap:10px}
+.en-item{border:1px solid #e6eaee;border-radius:12px;padding:12px 13px;background:#fff}
+.en-h{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-bottom:5px}
+.en-h b{font-size:1rem;font-weight:800;color:#111827}
+.en-ko{font-size:.82rem;color:#6b7280;font-weight:700}
+.en-tag{font-size:.72rem;font-weight:800;color:#0a6c63;background:#e7f6f3;border-radius:6px;padding:2px 7px}
+.en-km{font-size:.78rem;color:#8a939d;margin-left:auto}
+.en-ov{font-size:.88rem;line-height:1.65;color:#374151;margin:0 0 9px}
+.xcopy{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;
+  background:#f6fbfa;border:1.5px solid #dcefeb;border-radius:12px;padding:11px 13px;margin:8px 0}
+.xcopy .lb{font-size:.74rem;font-weight:800;color:#0a6c63;letter-spacing:.02em;display:block;margin-bottom:3px}
+.xcopy .vl{font-size:1rem;font-weight:800;color:#111827;word-break:keep-all;line-height:1.45}
+.xcopy button{background:#0f9d8f;color:#fff;border:0;border-radius:9px;padding:9px 14px;
+  font-weight:800;font-size:.84rem;cursor:pointer;white-space:nowrap}
+</style>
+<script>
+// ⚠️ intl-fest-extra.js 도 같은 핸들러를 심는다 — 같은 플래그로 «한 번만» 걸리게 한다
+//    (두 번 걸리면 클릭 한 번에 클립보드를 두 번 쓴다).
+if(!window.__xcopyBound){window.__xcopyBound=1;
+document.addEventListener('click',function(e){
+  var b=e.target.closest('.xcopy button'); if(!b) return;
+  var t=b.getAttribute('data-v')||'';
+  var done=function(){var o=b.textContent;b.textContent=b.getAttribute('data-done')||'OK';
+    setTimeout(function(){b.textContent=o;},1400);};
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,function(){});}
+  else{var ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);
+    ta.select();try{document.execCommand('copy');done();}catch(_){}document.body.removeChild(ta);}
+});}
+</script><div class="ennear"><h2>Nearby Attractions</h2>
+<p class="en-note">Places within 12&nbsp;km of the festival venue (straight-line distance), described in English by the Korea Tourism Organization. Travel time depends on roads and traffic, so only distance is shown.</p>
+<ul class="en-list"><li class="en-item">
+<div class="en-h"><b>Busan Chinatown</b><span class="en-ko">부산 차이나타운(상해문.상해거리</span>
+<span class="en-tag">Attraction</span><span class="en-km">approx. 0.3 km</span></div>
+<p class="en-ov">Busan Chinatown, also called Busan Shanghai Street, is a place where visitors can experience diverse Chinese culture and cuisine. The Chinese restaurants and dumpling…</p>
+<div class="xcopy"><div><span class="lb">Korean address for map apps</span><span class="vl">부산광역시 동구 중앙대로179번길 1 (초량동)</span></div>
+<button data-v="부산광역시 동구 중앙대로179번길 1 (초량동)" data-done="Copied">Copy</button></div>
+</li><li class="en-item">
+<div class="en-h"><b>168 Stairs</b><span class="en-ko">168계단</span>
+<span class="en-tag">Attraction</span><span class="en-km">approx. 0.5 km</span></div>
+<p class="en-ov">This is the fastest way to go downhill from Sanbok road to Busan port. The stairs are known to be as tall as a 6-story building and have exactly 168 steps. In the past,…</p>
+<div class="xcopy"><div><span class="lb">Korean address for map apps</span><span class="vl">부산광역시 동구 영초길197번길 9</span></div>
+<button data-v="부산광역시 동구 영초길197번길 9" data-done="Copied">Copy</button></div>
+</li><li class="en-item">
+<div class="en-h"><b>40-step Culture &amp; Tourism Theme Street</b><span class="en-ko">40계단 문화관광테마거리</span>
+<span class="en-tag">Attraction</span><span class="en-km">approx. 1.3 km</span></div>
+<p class="en-ov">The 40-step Culture Tourism Theme Street is a 450-meter street leading up to the 40-step stairway of the '40-step Cultural Center' and continues to the Palseong Tour.…</p>
+<div class="xcopy"><div><span class="lb">Korean address for map apps</span><span class="vl">부산광역시 중구 중앙대로 73 (중앙동4가)</span></div>
+<button data-v="부산광역시 중구 중앙대로 73 (중앙동4가)" data-done="Copied">Copy</button></div>
+</li><li class="en-item">
+<div class="en-h"><b>Busan Museum of Movies</b><span class="en-ko">부산영화체험박물관</span>
+<span class="en-tag">Attraction</span><span class="en-km">approx. 1.6 km</span></div>
+<p class="en-ov">The Busan Museum of Movies is Korea's first exhibition &amp; experience space dedicated to films. Visitors can learn more about the process of making movies, as well as the…</p>
+<div class="xcopy"><div><span class="lb">Korean address for map apps</span><span class="vl">부산광역시 중구 대청로126번길 12</span></div>
+<button data-v="부산광역시 중구 대청로126번길 12" data-done="Copied">Copy</button></div>
+</li><li class="en-item">
+<div class="en-h"><b>Busan Tower</b><span class="en-ko">부산타워</span>
+<span class="en-tag">Attraction</span><span class="en-km">approx. 1.7 km</span></div>
+<p class="en-ov">Busan Tower, standing at 120 meters tall, is an iconic observation tower situated in Busan's Yongdusan Park. This tower offers visitors panoramic views of Busan Port and…</p>
+<div class="xcopy"><div><span class="lb">Korean address for map apps</span><span class="vl">부산광역시 중구 용두산길 37-30</span></div>
+<button data-v="부산광역시 중구 용두산길 37-30" data-done="Copied">Copy</button></div>
+</li></ul>
+<p class="en-src">Google Maps cannot provide driving or transit directions inside South Korea. Paste the Korean addresses above into <b>NAVER Map</b> or <b>KakaoMap</b> — both work with these addresses and are what people here actually use.</p></div>
 <div class="nmap-wrap">
 <div class="nmap" style="height:300px" data-x="129.04083476323927" data-y="35.11514672505485" data-t="Busan Old Town Revitalization Festival [Taxchelin]"><span class="nmap-ph">Loading map…</span></div>
 <a class="nmap-open" href="https://map.naver.com/p/search/Busan%20Old%20Town%20Revitalization%20Festival%20%5BTaxchelin%5D" target="_blank" rel="noopener">🗺️ Open in Naver Map</a>

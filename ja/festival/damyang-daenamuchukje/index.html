@@ -515,6 +515,9 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 .xnote{color:#9aa3af;font-size:.79rem;line-height:1.6;margin-top:10px}
 </style>
 <script>
+// ⚠️ en-nearby.js 도 같은 핸들러를 심는다 — 같은 플래그로 «한 번만» 걸리게 한다
+//    (두 번 걸리면 클릭 한 번에 클립보드를 두 번 쓴다).
+if(!window.__xcopyBound){window.__xcopyBound=1;
 document.addEventListener('click',function(e){
   var b=e.target.closest('.xcopy button'); if(!b) return;
   var t=b.getAttribute('data-v')||'';
@@ -523,7 +526,7 @@ document.addEventListener('click',function(e){
   if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,function(){});}
   else{var ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);
     ta.select();try{document.execCommand('copy');done();}catch(_){}document.body.removeChild(ta);}
-});
+});}
 </script><div class="xbox"><h2>🇰🇷 NAVERマップ・カカオマップにこのまま貼ってください</h2><p class="lead">Googleマップは韓国国内の徒歩・乗換案内が出ません（韓国の地図データ規制のため）。NAVERマップとカカオマップなら出ますが、ハングルで検索しないとほとんど出てきません。そのままコピーしてお使いください。</p>
 <div class="xcopy"><div><span class="lb">祭りの名前（ハングル）</span><span class="vl">담양 대나무축제</span></div>
 <button data-v="담양 대나무축제" data-done="コピーしました">コピー</button></div>
@@ -584,18 +587,18 @@ document.addEventListener('click',function(e){
 <ul class="jn-list"><li class="jn-item">
 <div class="jn-h"><b>官防堤林</b><span class="jn-tag">観光地</span><span class="jn-km">約 0.2 km</span></div>
 <p class="jn-ov">全南光州統合特別市潭陽にある官防堤林は天然記念物で、潭陽邑を漂って流れる潭陽川北側堤防に造成されています。南山里の東亭村から水北面、黄金里を経て大田面、講義里までその長さは2kmに達します。官防堤林 は潭陽川が氾濫することを防ぐために作った人工の森で、樹齢200～300年あまりと推定されるムクノキ、…</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">전남광주통합특별시 담양군 담양읍 1</span></div>
-<button data-v="전남광주통합특별시 담양군 담양읍 1" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">전라남도 담양군 담양읍 남사리 일원</span></div>
+<button data-v="전라남도 담양군 담양읍 남사리 일원" data-done="コピーしました">コピー</button></div>
 </li><li class="jn-item">
 <div class="jn-h"><b>全南潭陽昌平[スローシティ]</b><span class="jn-tag">観光地</span><span class="jn-km">約 10.4 km</span></div>
 <p class="jn-ov">全南光州統合特別市潭陽（タミャン）郡昌平（チャンピョン）は農村地帯でトマト、イチゴ、ハウス栽培の野菜など近郊農業が盛んな所で、素晴らしい自然環境がいまもなお残りつつ、田園都市など今後の発展への潜在力を持つ、人情にもあふれ住みやすい美しいところです。 昌平（チャンピョン）という地名は高麗時代初期まで遡…</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">전남광주통합특별시 담양군 창평면 돌담길 56-24</span></div>
-<button data-v="전남광주통합특별시 담양군 창평면 돌담길 56-24" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">전라남도 담양군 창평면 돌담길 56-24</span></div>
+<button data-v="전라남도 담양군 창평면 돌담길 56-24" data-done="コピーしました">コピー</button></div>
 </li><li class="jn-item">
 <div class="jn-h"><b>国立5·18民主墓地</b><span class="jn-tag">観光地</span><span class="jn-km">約 10.9 km</span></div>
 <p class="jn-ov">光州民主抗戦を称える場所、国立5.18民主墓地 国立5.18民主墓地は光州（クァンジュ）広域市北区にある公園で、5・18墓域とも呼ばれています。 文民政府（金泳三政権=1993～98年）発足とともに、5.18光州民主抗戦に対する再評価事業が行われ、また5.18民主化運動による犠牲者の墓地を民主化の聖…</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">전남광주통합특별시 북구 운정동 민주로 200</span></div>
-<button data-v="전남광주통합특별시 북구 운정동 민주로 200" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">광주광역시 북구 민주로 200 (운정동)</span></div>
+<button data-v="광주광역시 북구 민주로 200 (운정동)" data-done="コピーしました">コピー</button></div>
 </li><li class="jn-item">
 <div class="jn-h"><b>剛泉山郡立公園</b><span class="jn-tag">観光地</span><span class="jn-km">約 11.8 km</span></div>
 <p class="jn-ov">剛泉山（カンチョンサン）は1981年1月7日に全国で最初に郡立公園に指定されました。淳昌邑から10キロメートルほどのところにある高さ583.7メートルの剛泉山は、湖南の小金剛とも呼ばれるほど至る所に珍しい形の峰がそびえ立っており、大小の岩の間に滝ができており、渓谷と渓谷を覆うように青々とした森が広が…</p>

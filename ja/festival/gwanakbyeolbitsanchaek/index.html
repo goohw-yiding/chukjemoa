@@ -515,6 +515,9 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 .xnote{color:#9aa3af;font-size:.79rem;line-height:1.6;margin-top:10px}
 </style>
 <script>
+// ⚠️ en-nearby.js 도 같은 핸들러를 심는다 — 같은 플래그로 «한 번만» 걸리게 한다
+//    (두 번 걸리면 클릭 한 번에 클립보드를 두 번 쓴다).
+if(!window.__xcopyBound){window.__xcopyBound=1;
 document.addEventListener('click',function(e){
   var b=e.target.closest('.xcopy button'); if(!b) return;
   var t=b.getAttribute('data-v')||'';
@@ -523,7 +526,7 @@ document.addEventListener('click',function(e){
   if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,function(){});}
   else{var ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);
     ta.select();try{document.execCommand('copy');done();}catch(_){}document.body.removeChild(ta);}
-});
+});}
 </script><div class="xbox"><h2>🇰🇷 NAVERマップ・カカオマップにこのまま貼ってください</h2><p class="lead">Googleマップは韓国国内の徒歩・乗換案内が出ません（韓国の地図データ規制のため）。NAVERマップとカカオマップなら出ますが、ハングルで検索しないとほとんど出てきません。そのままコピーしてお使いください。</p>
 <div class="xcopy"><div><span class="lb">祭りの名前（ハングル）</span><span class="vl">관악별빛산책</span></div>
 <button data-v="관악별빛산책" data-done="コピーしました">コピー</button></div>
@@ -588,8 +591,8 @@ document.addEventListener('click',function(e){
 <ul class="jn-list"><li class="jn-item">
 <div class="jn-h"><b>ソウル新林洞民俗スンデタウン</b><span class="jn-tag">観光地</span><span class="jn-km">約 0.1 km</span></div>
 <p class="jn-ov">ソウル新林洞民俗スンデタウン（ソウル・シンリムドン・ミンソクスンデタウン）は、「シンリム（新林）駅」の近くにある、スンデのお店が密集している所です。スンデは、野菜と春雨、調味料、豚の血を混ぜて豚の腸に詰め、水蒸気で蒸した韓国の代表的な屋台料理です。スンデ炒めが代表メニューで、スライスしたスンデに様々…</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">서울특별시 관악구 신림동 신림로59길 14</span></div>
-<button data-v="서울특별시 관악구 신림동 신림로59길 14" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">서울특별시 관악구 신림로59길 14</span></div>
+<button data-v="서울특별시 관악구 신림로59길 14" data-done="コピーしました">コピー</button></div>
 </li><li class="jn-item">
 <div class="jn-h"><b>H+陽地病院</b><span class="jn-tag">観光地</span><span class="jn-km">約 0.5 km</span></div>
 <p class="jn-ov">ワンストップ診療（15センター、21診療科）システムを導入し、24時間体制の救急室を運営しており、消化器内視鏡専門医過程の研修病院として優秀内視鏡室認証を3回連続取得し、ハイエンドな内視鏡・肝臓検査装置を備えています。米SRCによるマスター サージャン認証を受けた専門的な医療スタッフが患者一人ひとり…</p>
@@ -598,8 +601,8 @@ document.addEventListener('click',function(e){
 </li><li class="jn-item">
 <div class="jn-h"><b>ポラメ公園</b><span class="jn-tag">観光地</span><span class="jn-km">約 1.2 km</span></div>
 <p class="jn-ov">ポラメ公園は、旧空軍士官学校の跡地に造られ、学校時の象徴であった「ポラメ」という名をそのまま使用しているテーマ公園です。多目的運動場、バドミントンコート、Xゲーム場、子どもの遊び場、人工クライミング場などピクニックとレジャー施設が揃っています。 特に空軍士官学校当時のシンボルタワーであった忠孝精神を…</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">서울특별시 동작구 신대방동 보라매로5길 24</span></div>
-<button data-v="서울특별시 동작구 신대방동 보라매로5길 24" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">서울특별시 동작구 여의대방로20길 33 (신대방동)</span></div>
+<button data-v="서울특별시 동작구 여의대방로20길 33 (신대방동)" data-done="コピーしました">コピー</button></div>
 </li><li class="jn-item">
 <div class="jn-h"><b>メディパクト</b><span class="jn-tag">観光地</span><span class="jn-km">約 1.2 km</span></div>
 <p class="jn-ov">メディパクトは、外国人患者の誘致、グローバルインフルエンサーマーケティング、通訳支援サービスを包括する統合医療プラットフォームを提供する企業です。外国人患者に対しては、1対1のパーソナライズドサービスを通じて最適な医療体験を提供し、またグローバルインフルエンサーネットワークを活用したマーケティングに…</p>
@@ -608,8 +611,8 @@ document.addEventListener('click',function(e){
 </li><li class="jn-item">
 <div class="jn-h"><b>ポラメ安全体験館</b><span class="jn-tag">観光地</span><span class="jn-km">約 1.5 km</span></div>
 <p class="jn-ov">ポラメ公園内にある「ポラメ安全体験館」は、「安全なソウル」の実現を目標とした総合災難体験ができるよう、様々な専門体験の過程を運営し、災難時に市民が対応できることを目指した施設です。 自然災害や人為災害など各種災害や災難の状況を市民が直接体験をしたり、現場経験が豊富な現職の消防官たちから災難時の安全の…</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">서울특별시 동작구 신대방동 여의대방로20나길 16</span></div>
-<button data-v="서울특별시 동작구 신대방동 여의대방로20나길 16" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">서울특별시 동작구 여의대방로20나길 16 (신대방동)</span></div>
+<button data-v="서울특별시 동작구 여의대방로20나길 16 (신대방동)" data-done="コピーしました">コピー</button></div>
 </li></ul>
 <p class="jn-src">住所は座標から逆引きした韓国語の道路名住所です。NAVER マップ・カカオマップにそのまま貼り付けて検索できます。</p></div>
 <div class="frel"><h2>ソウルのほかの祭り</h2><div class="row"><a href="/ja/festival/yeongdeungpo-yeouido-bomkkotchukje/">永登浦汝矣島春の花祭り</a><a href="/ja/festival/kukireon-kingdeom-ateu-kollabo-peurojekteu-teukbyeoljeon-wid/">クッキーラン:キングダム アートコラボプロジェクト特別展 - 偉大な王国の遺産</a><a href="/ja/festival/changdeokgung-dalbitgihaeng/">昌徳宮月明かり紀行</a><a href="/ja/festival/jeongjodaewang-neunghaengcha-gongdongjaehyeon/">正祖大王陵行次共同再現</a><a href="/ja/festival/gangdongseonsamunhwachukje/">江東先史文化祭り</a><a href="/ja/festival/gugakgongyeon-jinyeon/">国楽公演進宴</a></div></div>

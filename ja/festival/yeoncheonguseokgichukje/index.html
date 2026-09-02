@@ -515,6 +515,9 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 .xnote{color:#9aa3af;font-size:.79rem;line-height:1.6;margin-top:10px}
 </style>
 <script>
+// ⚠️ en-nearby.js 도 같은 핸들러를 심는다 — 같은 플래그로 «한 번만» 걸리게 한다
+//    (두 번 걸리면 클릭 한 번에 클립보드를 두 번 쓴다).
+if(!window.__xcopyBound){window.__xcopyBound=1;
 document.addEventListener('click',function(e){
   var b=e.target.closest('.xcopy button'); if(!b) return;
   var t=b.getAttribute('data-v')||'';
@@ -523,7 +526,7 @@ document.addEventListener('click',function(e){
   if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,function(){});}
   else{var ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);
     ta.select();try{document.execCommand('copy');done();}catch(_){}document.body.removeChild(ta);}
-});
+});}
 </script><div class="xbox"><h2>🇰🇷 NAVERマップ・カカオマップにこのまま貼ってください</h2><p class="lead">Googleマップは韓国国内の徒歩・乗換案内が出ません（韓国の地図データ規制のため）。NAVERマップとカカオマップなら出ますが、ハングルで検索しないとほとんど出てきません。そのままコピーしてお使いください。</p>
 <div class="xcopy"><div><span class="lb">祭りの名前（ハングル）</span><span class="vl">연천구석기축제</span></div>
 <button data-v="연천구석기축제" data-done="コピーしました">コピー</button></div>
@@ -593,18 +596,18 @@ document.addEventListener('click',function(e){
 <ul class="jn-list"><li class="jn-item">
 <div class="jn-h"><b>十二渓谷</b><span class="jn-tag">観光地</span><span class="jn-km">約 3.9 km</span></div>
 <p class="jn-ov">十二渓谷（ヨルトゥゲウル）は、奇岩絶壁と清らかな渓谷が絵画のような景色を自慢する漣川（ヨンチョン）の渓谷です。橋がなかった昔は、法水洞（ポプスドン）から德屯里（トクドゥンリ）に行くには12回も渓谷を渡らないといけなかったということから十二渓谷という名前が付けられました。水がきれいで浅い小川があるので…</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">경기도 연천군 청산면 청신로 343</span></div>
-<button data-v="경기도 연천군 청산면 청신로 343" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">경기도 연천군 청산면 초성리</span></div>
+<button data-v="경기도 연천군 청산면 초성리" data-done="コピーしました">コピー</button></div>
 </li><li class="jn-item">
 <div class="jn-h"><b>東豆川観光特区</b><span class="jn-tag">観光地</span><span class="jn-km">約 7.3 km</span></div>
 <p class="jn-ov">東豆川（トンドゥチョン）観光特区は、名山である逍遥山（ソヨサン）と、多民族・多文化に触れることができる保山（ポサン）洞周辺の商店街のキャンプ保山を含む地域です。逍遥山は、春にはツツジが、秋には紅葉が絶景を織りなす場所で、奇岩怪石や冷たい渓流が流れる谷、自在庵（チャジェアム）、森林浴場など楽しめる場所…</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">경기도 동두천시 상봉암동 평화로2910번길 148-52</span></div>
-<button data-v="경기도 동두천시 상봉암동 평화로2910번길 148-52" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">경기도 동두천시</span></div>
+<button data-v="경기도 동두천시" data-done="コピーしました">コピー</button></div>
 </li><li class="jn-item">
 <div class="jn-h"><b>ハーブアイランド</b><span class="jn-tag">観光地</span><span class="jn-km">約 8.0 km</span></div>
 <p class="jn-ov">ハーブアイランドは、地中海をテーマに異色で多様に楽しめる植物園です。水の都市・ベネチアを真似して作ったベネチア村、韓国最大規模のハーブ植物博物館、屋外庭園、ハーブヒーリングセンターなどの建物とカフェ、レストランなどの便利施設を整備しています。季節に応じてラベンダー祭り、光祭りなど多様なイベントを開催…</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">경기도 포천시 신북면 청신로947번길 35</span></div>
-<button data-v="경기도 포천시 신북면 청신로947번길 35" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">경기도 포천시 신북면 청신로947번길 51</span></div>
+<button data-v="경기도 포천시 신북면 청신로947번길 51" data-done="コピーしました">コピー</button></div>
 </li><li class="jn-item">
 <div class="jn-h"><b>ハーブアイランド・ハーブヒーリングセンター</b><span class="jn-tag">観光地</span><span class="jn-km">約 8.1 km</span></div>
 <p class="jn-ov">ハーブヒーリングセンターは観光農園のハーブアイランド(329,000㎡)内にあり、植物園と展示室(110,000㎡)を備えた「1種専門博物館(植物園)」として登録された韓国最大級のハーブ植物園です。ハーブ植物の博物館内には約250種のハーブと多種多様な植物が植栽されており、一年中華やかな緑色の植物を…</p>

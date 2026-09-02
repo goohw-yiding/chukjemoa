@@ -515,6 +515,9 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 .xnote{color:#9aa3af;font-size:.79rem;line-height:1.6;margin-top:10px}
 </style>
 <script>
+// ⚠️ en-nearby.js 도 같은 핸들러를 심는다 — 같은 플래그로 «한 번만» 걸리게 한다
+//    (두 번 걸리면 클릭 한 번에 클립보드를 두 번 쓴다).
+if(!window.__xcopyBound){window.__xcopyBound=1;
 document.addEventListener('click',function(e){
   var b=e.target.closest('.xcopy button'); if(!b) return;
   var t=b.getAttribute('data-v')||'';
@@ -523,7 +526,7 @@ document.addEventListener('click',function(e){
   if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,function(){});}
   else{var ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);
     ta.select();try{document.execCommand('copy');done();}catch(_){}document.body.removeChild(ta);}
-});
+});}
 </script><div class="xbox"><h2>🇰🇷 NAVERマップ・カカオマップにこのまま貼ってください</h2><p class="lead">Googleマップは韓国国内の徒歩・乗換案内が出ません（韓国の地図データ規制のため）。NAVERマップとカカオマップなら出ますが、ハングルで検索しないとほとんど出てきません。そのままコピーしてお使いください。</p>
 <div class="xcopy"><div><span class="lb">祭りの名前（ハングル）</span><span class="vl">백년나이트 야시장 (메기의 귀환)</span></div>
 <button data-v="백년나이트 야시장 (메기의 귀환)" data-done="コピーしました">コピー</button></div>
@@ -586,13 +589,13 @@ document.addEventListener('click',function(e){
 <ul class="jn-list"><li class="jn-item">
 <div class="jn-h"><b>国立4.19民主墓地</b><span class="jn-tag">観光地</span><span class="jn-km">約 1.7 km</span></div>
 <p class="jn-ov">三角山（北漢山）の麓にある国立4.19墓地は李承晩政権打倒を叫び1960年4月19日に起きた4.19革命（民主化運動）の際、犠牲となった224人の合同墳墓です。犠牲となった人々をたたえる記念塔が建てられ、記念塔の中央には志半ばで犠牲となった人々をたたえる碑文がきざまれています。 135,901平方メ…</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">서울특별시 강북구 수유동 4.19로8길 17</span></div>
-<button data-v="서울특별시 강북구 수유동 4.19로8길 17" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">서울특별시 강북구 4.19로8길 17</span></div>
+<button data-v="서울특별시 강북구 4.19로8길 17" data-done="コピーしました">コピー</button></div>
 </li><li class="jn-item">
 <div class="jn-h"><b>ウォンダンセム公園</b><span class="jn-tag">観光地</span><span class="jn-km">約 2.1 km</span></div>
 <p class="jn-ov">ウォンダンセム公園は、約600年前に尹（ユン）家が定着して形成されたウォンダン村の名前に因んだものです。伝統的な池とその隣に位置する東屋のサモ亭、壁泉、花柄の塀が調和しています。秋になると樹齢800年以上のイチョウが黄色く染まり、その周辺にはボードウォークがあるため、散歩コースとしておすすめです。</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">서울특별시 도봉구 방학동 해등로32가길 16</span></div>
-<button data-v="서울특별시 도봉구 방학동 해등로32가길 16" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">서울특별시 도봉구 해등로32가길 16 (방학동)</span></div>
+<button data-v="서울특별시 도봉구 해등로32가길 16 (방학동)" data-done="コピーしました">コピー</button></div>
 </li><li class="jn-item">
 <div class="jn-h"><b>ソウル都心登山観光センター（北漢山）（서울도심등산관광센터（북한산））</b><span class="jn-tag">観光地</span><span class="jn-km">約 2.7 km</span></div>
 <p class="jn-ov">牛耳新設線「プカンサンウイ駅」2番出口から徒歩5分のところにあるソウル都心登山観光センター（北漢山プカンサン）では、登山客にさまざまなサービスを提供しています。北漢山、北岳山（プガクサン）、仁王山（イヌァンサン）など、ソウル都心の登山コース情報を案内しており（日本語可）、センター内にはソウル観光ガイ…</p>

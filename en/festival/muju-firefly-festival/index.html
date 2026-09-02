@@ -516,6 +516,9 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 .xnote{color:#9aa3af;font-size:.79rem;line-height:1.6;margin-top:10px}
 </style>
 <script>
+// ⚠️ en-nearby.js 도 같은 핸들러를 심는다 — 같은 플래그로 «한 번만» 걸리게 한다
+//    (두 번 걸리면 클릭 한 번에 클립보드를 두 번 쓴다).
+if(!window.__xcopyBound){window.__xcopyBound=1;
 document.addEventListener('click',function(e){
   var b=e.target.closest('.xcopy button'); if(!b) return;
   var t=b.getAttribute('data-v')||'';
@@ -524,7 +527,7 @@ document.addEventListener('click',function(e){
   if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,function(){});}
   else{var ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);
     ta.select();try{document.execCommand('copy');done();}catch(_){}document.body.removeChild(ta);}
-});
+});}
 </script><div class="xbox"><h2>🅿️ Nearby attractions — with actual parking capacity</h2><p class="lead">Most sites only say &quot;parking available.&quot; These are official figures from the Ministry of the Interior and Safety, so you can judge before you drive.</p><div class="xlist"><div class="xitem"><div class="nm">용담호및주변시설</div>
 <div class="mt">13.8 km away · 전북특별자치도 진안군 안천면 안용로 793</div>
 <span class="xtag">100 parking spaces</span>
@@ -555,6 +558,7 @@ document.addEventListener('click',function(e){
 <div class="mt">42.2 km away · 09/10 – 09/13</div></a><a class="xitem" style="display:block;text-decoration:none" href="/en/festival/jeonju-hanok-village-traditional-performance-parade/">
 <div class="nm" style="color:#0c7d72">Jeonju Hanok Village Traditional Performance Parade</div>
 <div class="mt">50.6 km away · 04/18 – 10/31</div></a></div></div>
+
 <div class="nmap-wrap">
 <div class="nmap" style="height:300px" data-x="127.6615029216" data-y="36.0026235654" data-t="Muju Firefly Festival"><span class="nmap-ph">Loading map…</span></div>
 <a class="nmap-open" href="https://map.naver.com/p/search/Muju%20Firefly%20Festival" target="_blank" rel="noopener">🗺️ Open in Naver Map</a>

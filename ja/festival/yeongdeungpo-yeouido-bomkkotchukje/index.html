@@ -522,6 +522,9 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 .xnote{color:#9aa3af;font-size:.79rem;line-height:1.6;margin-top:10px}
 </style>
 <script>
+// ⚠️ en-nearby.js 도 같은 핸들러를 심는다 — 같은 플래그로 «한 번만» 걸리게 한다
+//    (두 번 걸리면 클릭 한 번에 클립보드를 두 번 쓴다).
+if(!window.__xcopyBound){window.__xcopyBound=1;
 document.addEventListener('click',function(e){
   var b=e.target.closest('.xcopy button'); if(!b) return;
   var t=b.getAttribute('data-v')||'';
@@ -530,7 +533,7 @@ document.addEventListener('click',function(e){
   if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,function(){});}
   else{var ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);
     ta.select();try{document.execCommand('copy');done();}catch(_){}document.body.removeChild(ta);}
-});
+});}
 </script><div class="xbox"><h2>🇰🇷 NAVERマップ・カカオマップにこのまま貼ってください</h2><p class="lead">Googleマップは韓国国内の徒歩・乗換案内が出ません（韓国の地図データ規制のため）。NAVERマップとカカオマップなら出ますが、ハングルで検索しないとほとんど出てきません。そのままコピーしてお使いください。</p>
 <div class="xcopy"><div><span class="lb">祭りの名前（ハングル）</span><span class="vl">영등포 여의도 봄꽃축제</span></div>
 <button data-v="영등포 여의도 봄꽃축제" data-done="コピーしました">コピー</button></div>
@@ -599,18 +602,18 @@ document.addEventListener('click',function(e){
 <ul class="jn-list"><li class="jn-item">
 <div class="jn-h"><b>汝矣島公園</b><span class="jn-tag">観光地</span><span class="jn-km">約 0.6 km</span></div>
 <p class="jn-ov">ニューヨークにセントラルパーク、ロンドンにハイドパークがあれば、ソウルには汝矣島（ヨイド）公園があります。27年の間黒いアスファルトに覆われていた汝矣島広場が森と芝、水が織りなす都心公園として1999年に生まれ変わりました。 汝矣島公園は1997年4月10日に汝矣島広場の公園化を目標に起工、1999…</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">서울특별시 영등포구 여의도동 여의대로 76</span></div>
-<button data-v="서울특별시 영등포구 여의도동 여의대로 76" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">서울특별시 영등포구 여의공원로 68 (여의도동)</span></div>
+<button data-v="서울특별시 영등포구 여의공원로 68 (여의도동)" data-done="コピーしました">コピー</button></div>
 </li><li class="jn-item">
 <div class="jn-h"><b>ソウルダル</b><span class="jn-tag">観光地</span><span class="jn-km">約 0.6 km</span></div>
 <p class="jn-ov">2024年にソウルの新しいアトラクションとして誕生した「ソウルダル（SEOULDAL／ソウルの月）」は、汝矣島公園の上空からソウルの素晴らしい夜景を眺望できる係留型ヘリウム気球です。遠くから眺める「ソウルダル」そのものもまた、ソウルの美しい夜景の一部として輝きます。 ※気象条件によって変更されること…</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">서울특별시 영등포구 여의도동 여의대로 76</span></div>
-<button data-v="서울특별시 영등포구 여의도동 여의대로 76" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">서울특별시 영등포구 여의공원로 68-1 (여의도동)</span></div>
+<button data-v="서울특별시 영등포구 여의공원로 68-1 (여의도동)" data-done="コピーしました">コピー</button></div>
 </li><li class="jn-item">
 <div class="jn-h"><b>国会議事堂</b><span class="jn-tag">観光地</span><span class="jn-km">約 0.7 km</span></div>
 <p class="jn-ov">国会議事堂（ククェウィサダン）は、大韓民国の民主主義を象徴する建物です。主要施設としては本館、国会図書館、憲政記念館などがあり、本会議場の見学や子供博物館の観覧などのプログラムを運営しています。韓国の歴史と政治について学べる場所で、人気の高い観光スポットです。事前予約が必要で、ホームページから予約で…</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">서울특별시 영등포구 여의도동 의사당대로 1</span></div>
-<button data-v="서울특별시 영등포구 여의도동 의사당대로 1" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">서울특별시 영등포구 의사당대로 1 (여의도동)</span></div>
+<button data-v="서울특별시 영등포구 의사당대로 1 (여의도동)" data-done="コピーしました">コピー</button></div>
 </li><li class="jn-item">
 <div class="jn-h"><b>(財)韓国医学研究所 KMI汝矣島医院 ((재)한국의학연구소 케이엠아이여의도의원)</b><span class="jn-tag">観光地</span><span class="jn-km">約 0.9 km</span></div>
 <p class="jn-ov">「K-健康診断」をリードする韓国医学研究所(KMI)は、ソウル市からチェジュ(済州)まで全国8つの地域で健康診断センターを運営しており、疾病の予防と早期発見に力を入れています。韓国で総合健診の大衆化をリードしてきたKMIは、39年にわたって蓄積してきたデータとノウハウに基づき健康診断の実力やサービス…</p>
@@ -619,8 +622,8 @@ document.addEventListener('click',function(e){
 </li><li class="jn-item">
 <div class="jn-h"><b>ソウルクルーズ</b><span class="jn-tag">観光地</span><span class="jn-km">約 1.0 km</span></div>
 <p class="jn-ov">韓国初の海洋観光遊覧船事業者として1983年に設立された現代遊覧船は、汝矣島（ヨイド）に新たなターミナルを開設し、社名を「ソウルクルーズ」に変更しました。ソウルクルーズは汝矣島遊覧船ターミナルを拠点に、アラ閘門を経由して漢江とアラベッキルをつなぎ、漢江から西海まで運航する唯一の旅客・遊覧船会社です。…</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">서울특별시 영등포구 여의도동 여의도한강공원길 231</span></div>
-<button data-v="서울특별시 영등포구 여의도동 여의도한강공원길 231" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">서울특별시 영등포구 여의도한강공원길 231 (여의도동)</span></div>
+<button data-v="서울특별시 영등포구 여의도한강공원길 231 (여의도동)" data-done="コピーしました">コピー</button></div>
 </li></ul>
 <p class="jn-src">住所は座標から逆引きした韓国語の道路名住所です。NAVER マップ・カカオマップにそのまま貼り付けて検索できます。</p></div>
 <div class="frel"><h2>ソウルのほかの祭り</h2><div class="row"><a href="/ja/festival/kukireon-kingdeom-ateu-kollabo-peurojekteu-teukbyeoljeon-wid/">クッキーラン:キングダム アートコラボプロジェクト特別展 - 偉大な王国の遺産</a><a href="/ja/festival/changdeokgung-dalbitgihaeng/">昌徳宮月明かり紀行</a><a href="/ja/festival/jeongjodaewang-neunghaengcha-gongdongjaehyeon/">正祖大王陵行次共同再現</a><a href="/ja/festival/gangdongseonsamunhwachukje/">江東先史文化祭り</a><a href="/ja/festival/gugakgongyeon-jinyeon/">国楽公演進宴</a><a href="/ja/festival/gangbuk-baengmaekchukje/">江北百麦祭り</a></div></div>

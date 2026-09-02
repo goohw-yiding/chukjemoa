@@ -514,6 +514,9 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 .xnote{color:#9aa3af;font-size:.79rem;line-height:1.6;margin-top:10px}
 </style>
 <script>
+// ⚠️ en-nearby.js 도 같은 핸들러를 심는다 — 같은 플래그로 «한 번만» 걸리게 한다
+//    (두 번 걸리면 클릭 한 번에 클립보드를 두 번 쓴다).
+if(!window.__xcopyBound){window.__xcopyBound=1;
 document.addEventListener('click',function(e){
   var b=e.target.closest('.xcopy button'); if(!b) return;
   var t=b.getAttribute('data-v')||'';
@@ -522,7 +525,7 @@ document.addEventListener('click',function(e){
   if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,function(){});}
   else{var ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);
     ta.select();try{document.execCommand('copy');done();}catch(_){}document.body.removeChild(ta);}
-});
+});}
 </script><div class="xbox"><h2>🇰🇷 NAVERマップ・カカオマップにこのまま貼ってください</h2><p class="lead">Googleマップは韓国国内の徒歩・乗換案内が出ません（韓国の地図データ規制のため）。NAVERマップとカカオマップなら出ますが、ハングルで検索しないとほとんど出てきません。そのままコピーしてお使いください。</p>
 <div class="xcopy"><div><span class="lb">祭りの名前（ハングル）</span><span class="vl">부천국제만화축제</span></div>
 <button data-v="부천국제만화축제" data-done="コピーしました">コピー</button></div>
@@ -581,8 +584,8 @@ document.addEventListener('click',function(e){
 <ul class="jn-list"><li class="jn-item">
 <div class="jn-h"><b>富川湖水植物園スピア</b><span class="jn-tag">観光地</span><span class="jn-km">約 0.8 km</span></div>
 <p class="jn-ov">富川（プチョン）湖水植物園スピアは、上洞湖水公園に2022年6月にオープンした特化植物園。「雨が降ろうが雪が降ろうが、私たちはいつでも森へ遠足に行く」をテーマに、四季折々の見どころや楽しみどころ、グルメを提供しています。熱帯および亜熱帯地方の特別な樹種を導入し、自然と都市生活が一緒になった空間で、シ…</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">경기도 부천시 원미구 상동 조마루로 15</span></div>
-<button data-v="경기도 부천시 원미구 상동 조마루로 15" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">경기도 부천시 조마루로 15 (상동)</span></div>
+<button data-v="경기도 부천시 조마루로 15 (상동)" data-done="コピーしました">コピー</button></div>
 </li><li class="jn-item">
 <div class="jn-h"><b>株式会社ニューCFC</b><span class="jn-tag">観光地</span><span class="jn-km">約 0.9 km</span></div>
 <p class="jn-ov">ニューCFCは、保健福祉部に登録されている外国人患者誘致機関で、医療観光（K-Medical）とK-POP・K-Beauty体験型コンテンツを連携させたプレミアム観光パッケージを企画・運営している専門企業です。 現在、ドバイ、タイ、中国、ロシア、ヨーロッパなどの海外パートナーと連携して外国人向けにオ…</p>
@@ -591,8 +594,8 @@ document.addEventListener('click',function(e){
 </li><li class="jn-item">
 <div class="jn-h"><b>富平ヘムルタン通り</b><span class="jn-tag">観光地</span><span class="jn-km">約 1.9 km</span></div>
 <p class="jn-ov">今から約30～40年前に3店舗から始まった「ヘムルタン（海鮮鍋）通り」が今では10店舗ほどに増えました。毎朝可楽洞市場などから新鮮な材料を仕入れており、様々な海産物やセリ、豆もやしが入ったヘムルタンの濃く深いスープの味が逸品です。ほとんどのお店は海産物のスープや蒸し煮料理が専門ですが、中には海鮮おこ…</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">인천광역시 부평구 부평동 부평문화로 113</span></div>
-<button data-v="인천광역시 부평구 부평동 부평문화로 113" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">인천광역시 부평구 부평동</span></div>
+<button data-v="인천광역시 부평구 부평동" data-done="コピーしました">コピー</button></div>
 </li><li class="jn-item">
 <div class="jn-h"><b>Wowvos ((주)와우보스)</b><span class="jn-tag">観光地</span><span class="jn-km">約 1.9 km</span></div>
 <p class="jn-ov">社名のWOWVOS(ワウヴォス)は、感嘆詞のWOWとVITAL(生命維持に必要な)のV、OPTIMAL(最適な)のO、SUPPORT(サポート)のSを組み合わせて名付けられました。これには、生命維持に必要で最適なサポートを患者さんに提供し、世界における医療ツーリズムのハブになるという当社の願いが込め…</p>

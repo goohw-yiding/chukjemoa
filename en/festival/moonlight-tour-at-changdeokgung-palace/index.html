@@ -517,6 +517,9 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 .xnote{color:#9aa3af;font-size:.79rem;line-height:1.6;margin-top:10px}
 </style>
 <script>
+// ⚠️ en-nearby.js 도 같은 핸들러를 심는다 — 같은 플래그로 «한 번만» 걸리게 한다
+//    (두 번 걸리면 클릭 한 번에 클립보드를 두 번 쓴다).
+if(!window.__xcopyBound){window.__xcopyBound=1;
 document.addEventListener('click',function(e){
   var b=e.target.closest('.xcopy button'); if(!b) return;
   var t=b.getAttribute('data-v')||'';
@@ -525,7 +528,7 @@ document.addEventListener('click',function(e){
   if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,function(){});}
   else{var ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);
     ta.select();try{document.execCommand('copy');done();}catch(_){}document.body.removeChild(ta);}
-});
+});}
 </script><div class="xbox"><h2>🇰🇷 Copy this into Naver Map or Kakao Map</h2><p class="lead">Google Maps cannot give walking or transit directions inside Korea — Korean law restricts map-data export. Naver Map and Kakao Map can, but they find far more when you search in Korean. Copy and paste:</p>
 <div class="xcopy"><div><span class="lb">Festival name (Korean)</span><span class="vl">창덕궁 달빛기행</span></div>
 <button data-v="창덕궁 달빛기행" data-done="Copied">Copy</button></div>
@@ -576,6 +579,73 @@ document.addEventListener('click',function(e){
 <div class="mt">6.9 km away · 05/02 – 05/10</div></a><a class="xitem" style="display:block;text-decoration:none" href="/en/festival/apap-artwork-tour/">
 <div class="nm" style="color:#0c7d72">APAP Artwork Tour</div>
 <div class="mt">18.5 km away · 03/10 – 11/30</div></a></div></div>
+<style>
+.ennear{margin:22px 0}
+.ennear h2{font-size:1.08rem;font-weight:900;margin:0 0 6px}
+.en-note,.en-src{font-size:.8rem;color:#8a939d;line-height:1.6;margin:0 0 10px}
+.en-src{margin-top:10px}
+.en-list{list-style:none;padding:0;margin:0;display:grid;gap:10px}
+.en-item{border:1px solid #e6eaee;border-radius:12px;padding:12px 13px;background:#fff}
+.en-h{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-bottom:5px}
+.en-h b{font-size:1rem;font-weight:800;color:#111827}
+.en-ko{font-size:.82rem;color:#6b7280;font-weight:700}
+.en-tag{font-size:.72rem;font-weight:800;color:#0a6c63;background:#e7f6f3;border-radius:6px;padding:2px 7px}
+.en-km{font-size:.78rem;color:#8a939d;margin-left:auto}
+.en-ov{font-size:.88rem;line-height:1.65;color:#374151;margin:0 0 9px}
+.xcopy{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;
+  background:#f6fbfa;border:1.5px solid #dcefeb;border-radius:12px;padding:11px 13px;margin:8px 0}
+.xcopy .lb{font-size:.74rem;font-weight:800;color:#0a6c63;letter-spacing:.02em;display:block;margin-bottom:3px}
+.xcopy .vl{font-size:1rem;font-weight:800;color:#111827;word-break:keep-all;line-height:1.45}
+.xcopy button{background:#0f9d8f;color:#fff;border:0;border-radius:9px;padding:9px 14px;
+  font-weight:800;font-size:.84rem;cursor:pointer;white-space:nowrap}
+</style>
+<script>
+// ⚠️ intl-fest-extra.js 도 같은 핸들러를 심는다 — 같은 플래그로 «한 번만» 걸리게 한다
+//    (두 번 걸리면 클릭 한 번에 클립보드를 두 번 쓴다).
+if(!window.__xcopyBound){window.__xcopyBound=1;
+document.addEventListener('click',function(e){
+  var b=e.target.closest('.xcopy button'); if(!b) return;
+  var t=b.getAttribute('data-v')||'';
+  var done=function(){var o=b.textContent;b.textContent=b.getAttribute('data-done')||'OK';
+    setTimeout(function(){b.textContent=o;},1400);};
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,function(){});}
+  else{var ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);
+    ta.select();try{document.execCommand('copy');done();}catch(_){}document.body.removeChild(ta);}
+});}
+</script><div class="ennear"><h2>Nearby Attractions</h2>
+<p class="en-note">Places within 12&nbsp;km of the festival venue (straight-line distance), described in English by the Korea Tourism Organization. Travel time depends on roads and traffic, so only distance is shown.</p>
+<ul class="en-list"><li class="en-item">
+<div class="en-h"><b>Changdeokgung Injeongmun Gate</b><span class="en-ko">창덕궁 인정문</span>
+<span class="en-tag">Attraction</span><span class="en-km">approx. 0.2 km</span></div>
+<p class="en-ov">Serving as the main gate of Injeongjeon Hall, Injeongmun Gate was established in 1405 (5th year of King Taejo’s reign during the Joseon dynasty). Later on, the gate was…</p>
+<div class="xcopy"><div><span class="lb">Korean address for map apps</span><span class="vl">서울특별시 종로구 율곡로 99</span></div>
+<button data-v="서울특별시 종로구 율곡로 99" data-done="Copied">Copy</button></div>
+</li><li class="en-item">
+<div class="en-h"><b>Bukchon Hanok Village</b><span class="en-ko">북촌한옥마을</span>
+<span class="en-tag">Attraction</span><span class="en-km">approx. 0.4 km</span></div>
+<p class="en-ov">Surrounded by Gyeongbokgung Palace, Changdeokgung Palace and Jongmyo Shrine, Bukchon Hanok Village is home to hundreds of traditional houses, called hanok , that date…</p>
+<div class="xcopy"><div><span class="lb">Korean address for map apps</span><span class="vl">서울특별시 종로구 계동길 37 (계동)</span></div>
+<button data-v="서울특별시 종로구 계동길 37 (계동)" data-done="Copied">Copy</button></div>
+</li><li class="en-item">
+<div class="en-h"><b>Bukchon Cultural Center</b><span class="en-ko">북촌문화센터</span>
+<span class="en-tag">Attraction</span><span class="en-km">approx. 0.4 km</span></div>
+<p class="en-ov">Bukchon Cultural Center, located in a hanok, was established to offer traditional cultural experience opportunities for visitors to the area. The programs include tea…</p>
+<div class="xcopy"><div><span class="lb">Korean address for map apps</span><span class="vl">서울특별시 종로구 계동길 37 (계동)</span></div>
+<button data-v="서울특별시 종로구 계동길 37 (계동)" data-done="Copied">Copy</button></div>
+</li><li class="en-item">
+<div class="en-h"><b>Eight Scenic Views of Bukchon</b><span class="en-ko">북촌 8경</span>
+<span class="en-tag">Attraction</span><span class="en-km">approx. 0.4 km</span></div>
+<p class="en-ov">The Eight Scenic Views of Bukchon can be found at the Bukchon Hanok Village between Gyeongbokgung Palace and Changdeokgung Palace. Bukchon was historically a district…</p>
+<div class="xcopy"><div><span class="lb">Korean address for map apps</span><span class="vl">서울특별시 종로구 계동길 37 (계동)</span></div>
+<button data-v="서울특별시 종로구 계동길 37 (계동)" data-done="Copied">Copy</button></div>
+</li><li class="en-item">
+<div class="en-h"><b>Changgyeonggung Palace</b><span class="en-ko">창경궁</span>
+<span class="en-tag">Attraction</span><span class="en-km">approx. 0.6 km</span></div>
+<p class="en-ov">Located in the heart of Seoul, Changgyeonggung Palace was originally built as Suganggung Palace by the 4th ruler of the Joseon dynasty, King Sejong (r.1418-1450), for…</p>
+<div class="xcopy"><div><span class="lb">Korean address for map apps</span><span class="vl">서울특별시 종로구 창경궁로 185 (와룡동)</span></div>
+<button data-v="서울특별시 종로구 창경궁로 185 (와룡동)" data-done="Copied">Copy</button></div>
+</li></ul>
+<p class="en-src">Google Maps cannot provide driving or transit directions inside South Korea. Paste the Korean addresses above into <b>NAVER Map</b> or <b>KakaoMap</b> — both work with these addresses and are what people here actually use.</p></div>
 <div class="nmap-wrap">
 <div class="nmap" style="height:300px" data-x="126.99023063100555" data-y="37.57765074254216" data-t="Moonlight Tour at Changdeokgung Palace"><span class="nmap-ph">Loading map…</span></div>
 <a class="nmap-open" href="https://map.naver.com/p/search/Moonlight%20Tour%20at%20Changdeokgung%20Palace" target="_blank" rel="noopener">🗺️ Open in Naver Map</a>

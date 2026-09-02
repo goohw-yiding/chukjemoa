@@ -515,6 +515,9 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 .xnote{color:#9aa3af;font-size:.79rem;line-height:1.6;margin-top:10px}
 </style>
 <script>
+// ⚠️ en-nearby.js 도 같은 핸들러를 심는다 — 같은 플래그로 «한 번만» 걸리게 한다
+//    (두 번 걸리면 클릭 한 번에 클립보드를 두 번 쓴다).
+if(!window.__xcopyBound){window.__xcopyBound=1;
 document.addEventListener('click',function(e){
   var b=e.target.closest('.xcopy button'); if(!b) return;
   var t=b.getAttribute('data-v')||'';
@@ -523,7 +526,7 @@ document.addEventListener('click',function(e){
   if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,function(){});}
   else{var ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);
     ta.select();try{document.execCommand('copy');done();}catch(_){}document.body.removeChild(ta);}
-});
+});}
 </script><div class="xbox"><h2>🇰🇷 NAVERマップ・カカオマップにこのまま貼ってください</h2><p class="lead">Googleマップは韓国国内の徒歩・乗換案内が出ません（韓国の地図データ規制のため）。NAVERマップとカカオマップなら出ますが、ハングルで検索しないとほとんど出てきません。そのままコピーしてお使いください。</p>
 <div class="xcopy"><div><span class="lb">祭りの名前（ハングル）</span><span class="vl">용산청년축제</span></div>
 <button data-v="용산청년축제" data-done="コピーしました">コピー</button></div>
@@ -578,28 +581,28 @@ document.addEventListener('click',function(e){
 <ul class="jn-list"><li class="jn-item">
 <div class="jn-h"><b>セビッソム</b><span class="jn-tag">観光地</span><span class="jn-km">約 1.2 km</span></div>
 <p class="jn-ov">「セビッソム（some sevit）」はソウルの中心・漢江でひと味違った文化を楽しむことができる、浮体上に建てられたフローティング形態の水上複合文化空間です。漢江を美しく照らす3つの人工島「カビッソム（some gavit）」「チェビッソム（some chavit）」「ソルビッソム（some sol…</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">서울특별시 서초구 반포동 올림픽대로 2085-14</span></div>
-<button data-v="서울특별시 서초구 반포동 올림픽대로 2085-14" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">서울특별시 서초구 올림픽대로 2085-14 (반포동)</span></div>
+<button data-v="서울특별시 서초구 올림픽대로 2085-14 (반포동)" data-done="コピーしました">コピー</button></div>
 </li><li class="jn-item">
 <div class="jn-h"><b>梨泰院アンティーク家具通り</b><span class="jn-tag">観光地</span><span class="jn-km">約 1.4 km</span></div>
 <p class="jn-ov">梨泰院（イテウォン）アンティーク家具通りは、1990年代後半から形成された家具通りです。アジアはもちろんヨーロッパや米州など多様な地域の古家具を扱うショップが集まっており、活発に取引されています。ソファや椅子、テーブルなどのアンティーク家具販売店が1キロメートルに及び建ち並んでします。家具の他にも、…</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">서울특별시 용산구 이태원동 보광로 109-1</span></div>
-<button data-v="서울특별시 용산구 이태원동 보광로 109-1" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">서울특별시 용산구 보광로 109-1</span></div>
+<button data-v="서울특별시 용산구 보광로 109-1" data-done="コピーしました">コピー</button></div>
 </li><li class="jn-item">
 <div class="jn-h"><b>梨泰院観光特区</b><span class="jn-tag">観光地</span><span class="jn-km">約 1.5 km</span></div>
 <p class="jn-ov">梨泰院は1997年にソウル市で初めて観光特区に指定されたところで、2万人以上の外国人が暮らす多国籍・多文化なエリアです。1980年代に入ると各種国際会議をはじめ、1986年アジア競技大会や1988年ソウルオリンピックがソウルで開催され、世界的にその名が知られるようになり、多くの観光客が訪れる名所とな…</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">서울특별시 용산구 이태원동 이태원로 150-1</span></div>
-<button data-v="서울특별시 용산구 이태원동 이태원로 150-1" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">서울특별시 용산구 이태원로 150</span></div>
+<button data-v="서울특별시 용산구 이태원로 150" data-done="コピーしました">コピー</button></div>
 </li><li class="jn-item">
 <div class="jn-h"><b>ピカソ壁画</b><span class="jn-tag">観光地</span><span class="jn-km">約 1.6 km</span></div>
 <p class="jn-ov">ソウル地下鉄3・7・9号線「コソクターミナル駅」から盤浦漢江公園を結ぶ地下公共歩行通路はソウル市民のためのストリートギャラリーとなっています。スペイン政府観光局、マラガ市観光局、瑞草区の協力を通じて誕生した「ピカソ壁画」は、ピカソの視点から建築、食、伝統、日常生活など、スペイン・マラガとソウルのさま…</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">서울특별시 서초구 반포동 반포대로 333</span></div>
-<button data-v="서울특별시 서초구 반포동 반포대로 333" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">서울특별시 서초구 반포대로 333 (반포동, 래미안 원베일리)</span></div>
+<button data-v="서울특별시 서초구 반포대로 333 (반포동, 래미안 원베일리)" data-done="コピーしました">コピー</button></div>
 </li><li class="jn-item">
 <div class="jn-h"><b>二村漢江公園</b><span class="jn-tag">観光地</span><span class="jn-km">約 1.6 km</span></div>
 <p class="jn-ov">二村漢江（イチョンハンガン）公園は、龍山（ヨンサン）の漢江沿いに整備された公園で、漢江を近くから眺められるだけでなく、サッカー場、フットバレーコート、インラインスケート場などの体育施設やウォータースポーツ施設、自転車道、湿地が復元された自然学習場、芝生広場なども整備されています。漢江大橋から漢江に浮…</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">서울특별시 용산구 이촌동 이촌로72길 62</span></div>
-<button data-v="서울특별시 용산구 이촌동 이촌로72길 62" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">서울특별시 용산구 이촌로72길 62 (이촌동)</span></div>
+<button data-v="서울특별시 용산구 이촌로72길 62 (이촌동)" data-done="コピーしました">コピー</button></div>
 </li></ul>
 <p class="jn-src">住所は座標から逆引きした韓国語の道路名住所です。NAVER マップ・カカオマップにそのまま貼り付けて検索できます。</p></div>
 <div class="frel"><h2>ソウルのほかの祭り</h2><div class="row"><a href="/ja/festival/hanhwawa-hamkkehaneun-seoulsegyebulkkotchukje/">ソウル世界花火祭り</a><a href="/ja/festival/baengnyeonnaiteu-yasijang-megiui-gwihwan/">百年市場百年ナイト</a><a href="/ja/festival/gwanakganggamchanchukje/">冠岳姜邯贊祭り</a><a href="/ja/festival/2025-daehanminguk-gwangwangginyeompum-bangnamhoe/">大韓民国観光記念品博覧会</a><a href="/ja/festival/gwanakbyeolbitsanchaek/">冠岳ピョルピッ散策</a><a href="/ja/festival/yeongdeungpo-yeouido-bomkkotchukje/">永登浦汝矣島春の花祭り</a></div></div>

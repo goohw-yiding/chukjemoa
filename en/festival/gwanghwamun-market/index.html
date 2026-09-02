@@ -517,6 +517,9 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 .xnote{color:#9aa3af;font-size:.79rem;line-height:1.6;margin-top:10px}
 </style>
 <script>
+// ⚠️ en-nearby.js 도 같은 핸들러를 심는다 — 같은 플래그로 «한 번만» 걸리게 한다
+//    (두 번 걸리면 클릭 한 번에 클립보드를 두 번 쓴다).
+if(!window.__xcopyBound){window.__xcopyBound=1;
 document.addEventListener('click',function(e){
   var b=e.target.closest('.xcopy button'); if(!b) return;
   var t=b.getAttribute('data-v')||'';
@@ -525,7 +528,7 @@ document.addEventListener('click',function(e){
   if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,function(){});}
   else{var ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);
     ta.select();try{document.execCommand('copy');done();}catch(_){}document.body.removeChild(ta);}
-});
+});}
 </script><div class="xbox"><h2>🇰🇷 Copy this into Naver Map or Kakao Map</h2><p class="lead">Google Maps cannot give walking or transit directions inside Korea — Korean law restricts map-data export. Naver Map and Kakao Map can, but they find far more when you search in Korean. Copy and paste:</p>
 <div class="xcopy"><div><span class="lb">Festival name (Korean)</span><span class="vl">서울라이트 광화문</span></div>
 <button data-v="서울라이트 광화문" data-done="Copied">Copy</button></div>
@@ -572,6 +575,73 @@ document.addEventListener('click',function(e){
 <div class="mt">33.7 km away · 10/04 – 12/27</div></a><a class="xitem" style="display:block;text-decoration:none" href="/en/festival/lighting-festival-at-the-garden-of-morning-calm/">
 <div class="nm" style="color:#0c7d72">Lighting Festival at The Garden of Morning Calm</div>
 <div class="mt">38.3 km away · 12/05 – 03/15</div></a></div></div>
+<style>
+.ennear{margin:22px 0}
+.ennear h2{font-size:1.08rem;font-weight:900;margin:0 0 6px}
+.en-note,.en-src{font-size:.8rem;color:#8a939d;line-height:1.6;margin:0 0 10px}
+.en-src{margin-top:10px}
+.en-list{list-style:none;padding:0;margin:0;display:grid;gap:10px}
+.en-item{border:1px solid #e6eaee;border-radius:12px;padding:12px 13px;background:#fff}
+.en-h{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-bottom:5px}
+.en-h b{font-size:1rem;font-weight:800;color:#111827}
+.en-ko{font-size:.82rem;color:#6b7280;font-weight:700}
+.en-tag{font-size:.72rem;font-weight:800;color:#0a6c63;background:#e7f6f3;border-radius:6px;padding:2px 7px}
+.en-km{font-size:.78rem;color:#8a939d;margin-left:auto}
+.en-ov{font-size:.88rem;line-height:1.65;color:#374151;margin:0 0 9px}
+.xcopy{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;
+  background:#f6fbfa;border:1.5px solid #dcefeb;border-radius:12px;padding:11px 13px;margin:8px 0}
+.xcopy .lb{font-size:.74rem;font-weight:800;color:#0a6c63;letter-spacing:.02em;display:block;margin-bottom:3px}
+.xcopy .vl{font-size:1rem;font-weight:800;color:#111827;word-break:keep-all;line-height:1.45}
+.xcopy button{background:#0f9d8f;color:#fff;border:0;border-radius:9px;padding:9px 14px;
+  font-weight:800;font-size:.84rem;cursor:pointer;white-space:nowrap}
+</style>
+<script>
+// ⚠️ intl-fest-extra.js 도 같은 핸들러를 심는다 — 같은 플래그로 «한 번만» 걸리게 한다
+//    (두 번 걸리면 클릭 한 번에 클립보드를 두 번 쓴다).
+if(!window.__xcopyBound){window.__xcopyBound=1;
+document.addEventListener('click',function(e){
+  var b=e.target.closest('.xcopy button'); if(!b) return;
+  var t=b.getAttribute('data-v')||'';
+  var done=function(){var o=b.textContent;b.textContent=b.getAttribute('data-done')||'OK';
+    setTimeout(function(){b.textContent=o;},1400);};
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,function(){});}
+  else{var ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);
+    ta.select();try{document.execCommand('copy');done();}catch(_){}document.body.removeChild(ta);}
+});}
+</script><div class="ennear"><h2>Nearby Attractions</h2>
+<p class="en-note">Places within 12&nbsp;km of the festival venue (straight-line distance), described in English by the Korea Tourism Organization. Travel time depends on roads and traffic, so only distance is shown.</p>
+<ul class="en-list"><li class="en-item">
+<div class="en-h"><b>Bosingak Belfry</b><span class="en-ko">보신각 터</span>
+<span class="en-tag">Attraction</span><span class="en-km">approx. 0.6 km</span></div>
+<p class="en-ov">Bosingak Belfry is also known as Jonggak. It was the site in which a large bell, used to keep the time in Seoul, was found during the Joseon period (1392-1897). Bosingak…</p>
+<div class="xcopy"><div><span class="lb">Korean address for map apps</span><span class="vl">서울특별시 종로구 종로 54</span></div>
+<button data-v="서울특별시 종로구 종로 54" data-done="Copied">Copy</button></div>
+</li><li class="en-item">
+<div class="en-h"><b>Deoksugung Stone Wall Path</b><span class="en-ko">덕수궁 돌담길</span>
+<span class="en-tag">Attraction</span><span class="en-km">approx. 0.6 km</span></div>
+<p class="en-ov">The Deoksugung Stone Wall Path runs along the wall of Deoksugung Palace. It is beautifully lit and landscaped, giving it a romantic atmosphere even at night. There are…</p>
+<div class="xcopy"><div><span class="lb">Korean address for map apps</span><span class="vl">서울특별시 중구 세종대로 지하 101</span></div>
+<button data-v="서울특별시 중구 세종대로 지하 101" data-done="Copied">Copy</button></div>
+</li><li class="en-item">
+<div class="en-h"><b>Deoksugung Palace's Daehanmun Gate</b><span class="en-ko">덕수궁 대한문</span>
+<span class="en-tag">Attraction</span><span class="en-km">approx. 0.7 km</span></div>
+<p class="en-ov">Located near City Hall station, Daehanmun Gate is the main gate of Deoksugung Palace, one of the princiapl five palaces of Joseon dynasty. The name &quot;Daehan&quot; means wish…</p>
+<div class="xcopy"><div><span class="lb">Korean address for map apps</span><span class="vl">서울특별시 중구 세종대로 99 (정동)</span></div>
+<button data-v="서울특별시 중구 세종대로 99 (정동)" data-done="Copied">Copy</button></div>
+</li><li class="en-item">
+<div class="en-h"><b>Deoksugung Palace</b><span class="en-ko">덕수궁</span>
+<span class="en-tag">Attraction</span><span class="en-km">approx. 0.7 km</span></div>
+<p class="en-ov">* Special closure on March 21, 2026 Registered as a Historic Site, Deoksugung Palace was initially not a royal palace, but the residential home of Grand Prince Wolsan…</p>
+<div class="xcopy"><div><span class="lb">Korean address for map apps</span><span class="vl">서울특별시 중구 세종대로 99 (정동)</span></div>
+<button data-v="서울특별시 중구 세종대로 99 (정동)" data-done="Copied">Copy</button></div>
+</li><li class="en-item">
+<div class="en-h"><b>Bukchon Hanok Village Gamgodang Street</b><span class="en-ko">북촌한옥마을 감고당길</span>
+<span class="en-tag">Attraction</span><span class="en-km">approx. 0.9 km</span></div>
+<p class="en-ov">An alley with cute cafes and galleries This is the road that appeared in the last episode and the flashback scene where Choi Ung (played by Choi Woosik) and Kuk Yeonsoo…</p>
+<div class="xcopy"><div><span class="lb">Korean address for map apps</span><span class="vl">서울특별시 종로구 송현동</span></div>
+<button data-v="서울특별시 종로구 송현동" data-done="Copied">Copy</button></div>
+</li></ul>
+<p class="en-src">Google Maps cannot provide driving or transit directions inside South Korea. Paste the Korean addresses above into <b>NAVER Map</b> or <b>KakaoMap</b> — both work with these addresses and are what people here actually use.</p></div>
 <div class="nmap-wrap">
 <div class="nmap" style="height:300px" data-x="126.9767821434" data-y="37.5716786179" data-t="Gwanghwamun Market"><span class="nmap-ph">Loading map…</span></div>
 <a class="nmap-open" href="https://map.naver.com/p/search/Gwanghwamun%20Market" target="_blank" rel="noopener">🗺️ Open in Naver Map</a>

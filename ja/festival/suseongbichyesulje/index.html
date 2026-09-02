@@ -515,6 +515,9 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 .xnote{color:#9aa3af;font-size:.79rem;line-height:1.6;margin-top:10px}
 </style>
 <script>
+// ⚠️ en-nearby.js 도 같은 핸들러를 심는다 — 같은 플래그로 «한 번만» 걸리게 한다
+//    (두 번 걸리면 클릭 한 번에 클립보드를 두 번 쓴다).
+if(!window.__xcopyBound){window.__xcopyBound=1;
 document.addEventListener('click',function(e){
   var b=e.target.closest('.xcopy button'); if(!b) return;
   var t=b.getAttribute('data-v')||'';
@@ -523,7 +526,7 @@ document.addEventListener('click',function(e){
   if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,function(){});}
   else{var ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);
     ta.select();try{document.execCommand('copy');done();}catch(_){}document.body.removeChild(ta);}
-});
+});}
 </script><div class="xbox"><h2>🇰🇷 NAVERマップ・カカオマップにこのまま貼ってください</h2><p class="lead">Googleマップは韓国国内の徒歩・乗換案内が出ません（韓国の地図データ規制のため）。NAVERマップとカカオマップなら出ますが、ハングルで検索しないとほとんど出てきません。そのままコピーしてお使いください。</p>
 <div class="xcopy"><div><span class="lb">祭りの名前（ハングル）</span><span class="vl">수성빛예술제</span></div>
 <button data-v="수성빛예술제" data-done="コピーしました">コピー</button></div>
@@ -585,18 +588,18 @@ document.addEventListener('click',function(e){
 <ul class="jn-list"><li class="jn-item">
 <div class="jn-h"><b>寿城池遊園地</b><span class="jn-tag">観光地</span><span class="jn-km">約 0.8 km</span></div>
 <p class="jn-ov">「寿城池（スソンモッ）遊園地」は凡勿洞の龍池峰（629メートル）から北西部に伸びる峰のふもとにあり、周辺の緩やかな山地と寿城池が美しい風景を織り成しています。寿城遊園地は1925年に造成された寿城池を中心として形成されており、池の周囲は2,020メートルほどになります。寿城池は1925年の日帝強占期…</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">대구광역시 수성구 상동 용학로 35-5</span></div>
-<button data-v="대구광역시 수성구 상동 용학로 35-5" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">대구광역시 수성구 두산동</span></div>
+<button data-v="대구광역시 수성구 두산동" data-done="コピーしました">コピー</button></div>
 </li><li class="jn-item">
 <div class="jn-h"><b>恐竜公園</b><span class="jn-tag">観光地</span><span class="jn-km">約 1.5 km</span></div>
 <p class="jn-ov">恐竜公園には実物大のティラノサウルスやスピノサウルス、ステゴサウルス、ブラキオサウルスなどの恐竜の模型が展示されています。模型の周辺には子恐竜や卵なども設置されていてフォトスポットとして自由に写真を撮ることができます。またスマートフォンでアクセスできるAR（拡張現実）アプリを利用して恐竜化石の生成過…</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">대구광역시 남구 봉덕동 용두2길 43</span></div>
-<button data-v="대구광역시 남구 봉덕동 용두2길 43" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">대구광역시 남구 용두2길 43</span></div>
+<button data-v="대구광역시 남구 용두2길 43" data-done="コピーしました">コピー</button></div>
 </li><li class="jn-item">
 <div class="jn-h"><b>大邱アプ山公園</b><span class="jn-tag">観光地</span><span class="jn-km">約 2.8 km</span></div>
 <p class="jn-ov">大邱（テグ）の前方にある山という意味の自然公園です。ロープウェイで頂上の展望台まで行くと市街地が一望できます。渓谷や湧水がいくつもあり、洛東江（ナクトンガン）勝戦記念館、忠魂塔、青少年修練院、弓道場、乗馬場、子供遊び場、図書館、博物館、植物園などがあります。</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">대구광역시 남구 대명동 앞산순환로 574-87</span></div>
-<button data-v="대구광역시 남구 대명동 앞산순환로 574-87" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">대구광역시 남구 앞산순환로 574-87</span></div>
+<button data-v="대구광역시 남구 앞산순환로 574-87" data-done="コピーしました">コピー</button></div>
 </li><li class="jn-item">
 <div class="jn-h"><b>アプ山ケーブルカー（アプ山展望台）（앞산 케이블카（앞산 전망대））</b><span class="jn-tag">観光地</span><span class="jn-km">約 3.1 km</span></div>
 <p class="jn-ov">アプ山展望台は大邱（テグ）広域市南区にある展望台で大邱市街地を一望できる観光スポットです。アプ山展望台の建物は都市と自然、歴史と未来、それぞれを織りまぜ作り上げた建造物の好例として高く評価されています。◎ 韓流旅行情報-ドラマ『キム秘書はいったい、なぜ？』ヨンジュンとの交際を会社の同僚にバレて困って…</p>

@@ -514,6 +514,9 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 .xnote{color:#9aa3af;font-size:.79rem;line-height:1.6;margin-top:10px}
 </style>
 <script>
+// ⚠️ en-nearby.js 도 같은 핸들러를 심는다 — 같은 플래그로 «한 번만» 걸리게 한다
+//    (두 번 걸리면 클릭 한 번에 클립보드를 두 번 쓴다).
+if(!window.__xcopyBound){window.__xcopyBound=1;
 document.addEventListener('click',function(e){
   var b=e.target.closest('.xcopy button'); if(!b) return;
   var t=b.getAttribute('data-v')||'';
@@ -522,7 +525,7 @@ document.addEventListener('click',function(e){
   if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,function(){});}
   else{var ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);
     ta.select();try{document.execCommand('copy');done();}catch(_){}document.body.removeChild(ta);}
-});
+});}
 </script><div class="xbox"><h2>🇰🇷 NAVERマップ・カカオマップにこのまま貼ってください</h2><p class="lead">Googleマップは韓国国内の徒歩・乗換案内が出ません（韓国の地図データ規制のため）。NAVERマップとカカオマップなら出ますが、ハングルで検索しないとほとんど出てきません。そのままコピーしてお使いください。</p>
 <div class="xcopy"><div><span class="lb">祭りの名前（ハングル）</span><span class="vl">서산해미읍성축제</span></div>
 <button data-v="서산해미읍성축제" data-done="コピーしました">コピー</button></div>
@@ -583,8 +586,8 @@ document.addEventListener('click',function(e){
 </li><li class="jn-item">
 <div class="jn-h"><b>徳山道立公園</b><span class="jn-tag">観光地</span><span class="jn-km">約 7.4 km</span></div>
 <p class="jn-ov">「徳山（トクサン）道立公園」は徳山面の柿梁里、斜川里、屯里、上加里、光川里などを含み、1973年に道立公園に指定されました。公園内には元暁峰、石門峰、韓国・湖西地方の小金剛と呼ばれる徳崇山、ヘテ岩など美しい渓谷や滝や修徳寺があります。 修徳寺の大雄殿は浮石寺の無量寿殿、安東市の鳳停寺の極楽殿とともに…</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">충청남도 예산군 덕산면 윤봉길로 400-72</span></div>
-<button data-v="충청남도 예산군 덕산면 윤봉길로 400-72" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">충청남도 예산군 덕산면</span></div>
+<button data-v="충청남도 예산군 덕산면" data-done="コピーしました">コピー</button></div>
 </li><li class="jn-item">
 <div class="jn-h"><b>修徳寺</b><span class="jn-tag">観光地</span><span class="jn-km">約 8.5 km</span></div>
 <p class="jn-ov">忠清南道礼山郡徳山面の徳崇山に位置する修徳寺（スドクサ）は百済末に建てられた寺院です。国宝に指定された修徳寺大雄殿は現存する韓国最古の木造建築物です。修徳寺大雄殿は建立した時期（1308年）を正確に知ることのできる建造物の中で最古の建築物で、他の建築物の建立年代を推定する際の貴重な資料となっています…</p>

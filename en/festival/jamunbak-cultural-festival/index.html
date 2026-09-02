@@ -517,6 +517,9 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 .xnote{color:#9aa3af;font-size:.79rem;line-height:1.6;margin-top:10px}
 </style>
 <script>
+// ⚠️ en-nearby.js 도 같은 핸들러를 심는다 — 같은 플래그로 «한 번만» 걸리게 한다
+//    (두 번 걸리면 클릭 한 번에 클립보드를 두 번 쓴다).
+if(!window.__xcopyBound){window.__xcopyBound=1;
 document.addEventListener('click',function(e){
   var b=e.target.closest('.xcopy button'); if(!b) return;
   var t=b.getAttribute('data-v')||'';
@@ -525,7 +528,7 @@ document.addEventListener('click',function(e){
   if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,function(){});}
   else{var ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);
     ta.select();try{document.execCommand('copy');done();}catch(_){}document.body.removeChild(ta);}
-});
+});}
 </script><div class="xbox"><h2>🅿️ Nearby attractions — with actual parking capacity</h2><p class="lead">Most sites only say &quot;parking available.&quot; These are official figures from the Ministry of the Interior and Safety, so you can judge before you drive.</p><div class="xlist"><div class="xitem"><div class="nm">한국가구박물관</div>
 <div class="mt">2.0 km away · 서울특별시 성북구 대사관로121</div>
 <span class="xtag">35 parking spaces</span>
@@ -556,6 +559,73 @@ document.addEventListener('click',function(e){
 <div class="xbox"><h2>🎪 Other festivals nearby at the same time</h2><p class="lead">Overlapping dates, within 60 km.</p><div class="xlist"><a class="xitem" style="display:block;text-decoration:none" href="/en/festival/yongsan-youth-festival/">
 <div class="nm" style="color:#0c7d72">Yongsan Youth Festival</div>
 <div class="mt">10.2 km away · 09/20 – 09/20</div></a></div></div>
+<style>
+.ennear{margin:22px 0}
+.ennear h2{font-size:1.08rem;font-weight:900;margin:0 0 6px}
+.en-note,.en-src{font-size:.8rem;color:#8a939d;line-height:1.6;margin:0 0 10px}
+.en-src{margin-top:10px}
+.en-list{list-style:none;padding:0;margin:0;display:grid;gap:10px}
+.en-item{border:1px solid #e6eaee;border-radius:12px;padding:12px 13px;background:#fff}
+.en-h{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-bottom:5px}
+.en-h b{font-size:1rem;font-weight:800;color:#111827}
+.en-ko{font-size:.82rem;color:#6b7280;font-weight:700}
+.en-tag{font-size:.72rem;font-weight:800;color:#0a6c63;background:#e7f6f3;border-radius:6px;padding:2px 7px}
+.en-km{font-size:.78rem;color:#8a939d;margin-left:auto}
+.en-ov{font-size:.88rem;line-height:1.65;color:#374151;margin:0 0 9px}
+.xcopy{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;
+  background:#f6fbfa;border:1.5px solid #dcefeb;border-radius:12px;padding:11px 13px;margin:8px 0}
+.xcopy .lb{font-size:.74rem;font-weight:800;color:#0a6c63;letter-spacing:.02em;display:block;margin-bottom:3px}
+.xcopy .vl{font-size:1rem;font-weight:800;color:#111827;word-break:keep-all;line-height:1.45}
+.xcopy button{background:#0f9d8f;color:#fff;border:0;border-radius:9px;padding:9px 14px;
+  font-weight:800;font-size:.84rem;cursor:pointer;white-space:nowrap}
+</style>
+<script>
+// ⚠️ intl-fest-extra.js 도 같은 핸들러를 심는다 — 같은 플래그로 «한 번만» 걸리게 한다
+//    (두 번 걸리면 클릭 한 번에 클립보드를 두 번 쓴다).
+if(!window.__xcopyBound){window.__xcopyBound=1;
+document.addEventListener('click',function(e){
+  var b=e.target.closest('.xcopy button'); if(!b) return;
+  var t=b.getAttribute('data-v')||'';
+  var done=function(){var o=b.textContent;b.textContent=b.getAttribute('data-done')||'OK';
+    setTimeout(function(){b.textContent=o;},1400);};
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,function(){});}
+  else{var ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);
+    ta.select();try{document.execCommand('copy');done();}catch(_){}document.body.removeChild(ta);}
+});}
+</script><div class="ennear"><h2>Nearby Attractions</h2>
+<p class="en-note">Places within 12&nbsp;km of the festival venue (straight-line distance), described in English by the Korea Tourism Organization. Travel time depends on roads and traffic, so only distance is shown.</p>
+<ul class="en-list"><li class="en-item">
+<div class="en-h"><b>Bugak Skyway Palgakjeong Pavilion</b><span class="en-ko">북악스카이 팔각정</span>
+<span class="en-tag">Attraction</span><span class="en-km">approx. 1.2 km</span></div>
+<p class="en-ov">Bugak Skyway Palgakjeong Pavilion exudes a tranquil, serene beauty regardless of the season. The pavilion, which sits on Bugaksan's 1,652,900 square meter summit at an…</p>
+<div class="xcopy"><div><span class="lb">Korean address for map apps</span><span class="vl">서울특별시 종로구 북악산로 267 (평창동)</span></div>
+<button data-v="서울특별시 종로구 북악산로 267 (평창동)" data-done="Copied">Copy</button></div>
+</li><li class="en-item">
+<div class="en-h"><b>Bukhansan National Park (Seoul District)</b><span class="en-ko">북한산국립공원(서울</span>
+<span class="en-tag">Attraction</span><span class="en-km">approx. 2.0 km</span></div>
+<p class="en-ov">Bukhansan Mountain was officially designated as a national park in 1983. Bukhansan National Park covers both Bukhansan and Dobongsan Mountains, and spans a total area of…</p>
+<div class="xcopy"><div><span class="lb">Korean address for map apps</span><span class="vl">서울특별시 성북구 보국문로 262 (정릉동)</span></div>
+<button data-v="서울특별시 성북구 보국문로 262 (정릉동)" data-done="Copied">Copy</button></div>
+</li><li class="en-item">
+<div class="en-h"><b>Bugaksan Mountain</b><span class="en-ko">북악산</span>
+<span class="en-tag">Attraction</span><span class="en-km">approx. 2.3 km</span></div>
+<p class="en-ov">Bugaksan Mountain is the mountain that one can see behind the Gyeongbokgung Palace and the Cheong Wa Dae to the north. Hanyangdoseong, the city wall that surrounded the…</p>
+<div class="xcopy"><div><span class="lb">Korean address for map apps</span><span class="vl">서울특별시 종로구 청운동</span></div>
+<button data-v="서울특별시 종로구 청운동" data-done="Copied">Copy</button></div>
+</li><li class="en-item">
+<div class="en-h"><b>Buam-dong</b><span class="en-ko">부암동</span>
+<span class="en-tag">Attraction</span><span class="en-km">approx. 2.4 km</span></div>
+<p class="en-ov">Buam-dong is a village located north of Gyeongbokgung Palace. It is designated as a development-restricted zone due to its proximity to the Cheong Wa Dae, preserving the…</p>
+<div class="xcopy"><div><span class="lb">Korean address for map apps</span><span class="vl">서울특별시 종로구 창의문로 145</span></div>
+<button data-v="서울특별시 종로구 창의문로 145" data-done="Copied">Copy</button></div>
+</li><li class="en-item">
+<div class="en-h"><b>Bukjeong Village</b><span class="en-ko">북정마을</span>
+<span class="en-tag">Attraction</span><span class="en-km">approx. 2.5 km</span></div>
+<p class="en-ov">Bukjeong Village, situated along the slopes of Seongbuk-dong, offers a glimpse into Korea's old alleyways. The village expanded as refugees from the Korean War (1950…</p>
+<div class="xcopy"><div><span class="lb">Korean address for map apps</span><span class="vl">서울특별시 성북구 성북로23길 87 (성북동)</span></div>
+<button data-v="서울특별시 성북구 성북로23길 87 (성북동)" data-done="Copied">Copy</button></div>
+</li></ul>
+<p class="en-src">Google Maps cannot provide driving or transit directions inside South Korea. Paste the Korean addresses above into <b>NAVER Map</b> or <b>KakaoMap</b> — both work with these addresses and are what people here actually use.</p></div>
 <div class="nmap-wrap">
 <div class="nmap" style="height:300px" data-x="126.9755755538" data-y="37.612035016" data-t="Jamunbak Cultural Festival"><span class="nmap-ph">Loading map…</span></div>
 <a class="nmap-open" href="https://map.naver.com/p/search/Jamunbak%20Cultural%20Festival" target="_blank" rel="noopener">🗺️ Open in Naver Map</a>

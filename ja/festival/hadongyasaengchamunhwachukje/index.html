@@ -515,6 +515,9 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 .xnote{color:#9aa3af;font-size:.79rem;line-height:1.6;margin-top:10px}
 </style>
 <script>
+// ⚠️ en-nearby.js 도 같은 핸들러를 심는다 — 같은 플래그로 «한 번만» 걸리게 한다
+//    (두 번 걸리면 클릭 한 번에 클립보드를 두 번 쓴다).
+if(!window.__xcopyBound){window.__xcopyBound=1;
 document.addEventListener('click',function(e){
   var b=e.target.closest('.xcopy button'); if(!b) return;
   var t=b.getAttribute('data-v')||'';
@@ -523,7 +526,7 @@ document.addEventListener('click',function(e){
   if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,function(){});}
   else{var ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);
     ta.select();try{document.execCommand('copy');done();}catch(_){}document.body.removeChild(ta);}
-});
+});}
 </script><div class="xbox"><h2>🇰🇷 NAVERマップ・カカオマップにこのまま貼ってください</h2><p class="lead">Googleマップは韓国国内の徒歩・乗換案内が出ません（韓国の地図データ規制のため）。NAVERマップとカカオマップなら出ますが、ハングルで検索しないとほとんど出てきません。そのままコピーしてお使いください。</p>
 <div class="xcopy"><div><span class="lb">祭りの名前（ハングル）</span><span class="vl">하동야생차문화축제</span></div>
 <button data-v="하동야생차문화축제" data-done="コピーしました">コピー</button></div>
@@ -584,8 +587,8 @@ document.addEventListener('click',function(e){
 <ul class="jn-list"><li class="jn-item">
 <div class="jn-h"><b>仏日滝</b><span class="jn-tag">観光地</span><span class="jn-km">約 1.3 km</span></div>
 <p class="jn-ov">標高720メートルに位置する仏日滝（プリルポクポ）は、高さ60メートル・幅3メートルで智異山（チリサン）最大の滝です。上下2段になっており、滝の下にあるヨンチュ池とハク池が自然の神秘を感じさせます。双磎寺（サンギェサ）から3キロメートルの地点にあり、双磎寺を見て回ってから仏日滝へ行くのがおすすめのコ…</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">경상남도 하동군 화개면 47-9</span></div>
-<button data-v="경상남도 하동군 화개면 47-9" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">경상남도 하동군 화개면 목압길</span></div>
+<button data-v="경상남도 하동군 화개면 목압길" data-done="コピーしました">コピー</button></div>
 </li><li class="jn-item">
 <div class="jn-h"><b>双磎寺（河東）（쌍계사（하동））</b><span class="jn-tag">観光地</span><span class="jn-km">約 2.1 km</span></div>
 <p class="jn-ov">聖徳王21年（722年）に義湘大師の弟子である三法が創建した双磎寺（サンゲサ）は、全羅南道求礼邑から21キロメートル地点の、慶尚南道河東郡花開面花開里から雲樹里までの6キロメートル桜の木が並んでいる智異山の南の麓にあります。初期の名前は玉泉寺でしたが、その後、文聖王2年（840年）に真鑑国師 が再建…</p>
@@ -599,13 +602,13 @@ document.addEventListener('click',function(e){
 </li><li class="jn-item">
 <div class="jn-h"><b>三聖宮</b><span class="jn-tag">観光地</span><span class="jn-km">約 5.5 km</span></div>
 <p class="jn-ov">三聖宮（サムソングン）は、智異山（チリサン）の標高850メートルに位置し、民族文化である神仙道を修行するための宗教施設です。カン・ミンジュ（ハンプル禅師）が1983年に弟子たちと一緒に古朝鮮時代の蘇塗を復元したもので、韓民族の祖先である桓因、桓雄、檀君を祀る神殿の役割を果たしています。</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">경상남도 하동군 청암면 1561-8</span></div>
-<button data-v="경상남도 하동군 청암면 1561-8" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">경상남도 하동군 청암면 삼성궁길 13</span></div>
+<button data-v="경상남도 하동군 청암면 삼성궁길 13" data-done="コピーしました">コピー</button></div>
 </li><li class="jn-item">
 <div class="jn-h"><b>ピアゴル渓谷</b><span class="jn-tag">観光地</span><span class="jn-km">約 6.6 km</span></div>
 <p class="jn-ov">「ピアゴル」は智異山・老姑壇（ノゴダン）と盤若峰（パニャボン）の間に位置する渓谷です。秋の紅葉が真っ赤なのが血のように見えることからつけられた名前（血は韓国語で「ピ」）で、智異山十景のひとつに数えられています。 ここは韓国内でも有名な紅葉の名所であり、四季折々の美しさが感じられるところです。春にはツ…</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">전남광주통합특별시 구례군 토지면 42</span></div>
-<button data-v="전남광주통합특별시 구례군 토지면 42" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">전라남도 구례군 토지면 내서리</span></div>
+<button data-v="전라남도 구례군 토지면 내서리" data-done="コピーしました">コピー</button></div>
 </li></ul>
 <p class="jn-src">住所は座標から逆引きした韓国語の道路名住所です。NAVER マップ・カカオマップにそのまま貼り付けて検索できます。</p></div>
 <div class="frel"><h2>慶南のほかの祭り</h2><div class="row"><a href="/ja/festival/miryangarirangdaechukje/">密陽アリラン祭り</a><a href="/ja/festival/namhae-maneulhanuchukje/">南海ニンニク・韓牛祭り</a><a href="/ja/festival/tongyeonghansandaecheopchukje/">統営閑山大捷祭り</a><a href="/ja/festival/gayatemapakeu-bit-chukje-bicheul-hyanghan-hanghae/">伽倻テーマパーク光祭り「光への航海」</a><a href="/ja/festival/jinjuui-suhojadeul/">晋州南江流灯祭り</a><a href="/ja/festival/daejanggyeonggirongmunhwachukje/">大蔵経記録文化祭り</a></div></div>

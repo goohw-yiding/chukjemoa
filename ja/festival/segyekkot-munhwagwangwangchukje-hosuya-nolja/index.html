@@ -519,6 +519,9 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 .xnote{color:#9aa3af;font-size:.79rem;line-height:1.6;margin-top:10px}
 </style>
 <script>
+// ⚠️ en-nearby.js 도 같은 핸들러를 심는다 — 같은 플래그로 «한 번만» 걸리게 한다
+//    (두 번 걸리면 클릭 한 번에 클립보드를 두 번 쓴다).
+if(!window.__xcopyBound){window.__xcopyBound=1;
 document.addEventListener('click',function(e){
   var b=e.target.closest('.xcopy button'); if(!b) return;
   var t=b.getAttribute('data-v')||'';
@@ -527,7 +530,7 @@ document.addEventListener('click',function(e){
   if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,function(){});}
   else{var ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);
     ta.select();try{document.execCommand('copy');done();}catch(_){}document.body.removeChild(ta);}
-});
+});}
 </script><div class="xbox"><h2>🇰🇷 NAVERマップ・カカオマップにこのまま貼ってください</h2><p class="lead">Googleマップは韓国国内の徒歩・乗換案内が出ません（韓国の地図データ規制のため）。NAVERマップとカカオマップなら出ますが、ハングルで検索しないとほとんど出てきません。そのままコピーしてお使いください。</p>
 <div class="xcopy"><div><span class="lb">祭りの名前（ハングル）</span><span class="vl">세계꽃 · 문화관광축제 호수야 놀자</span></div>
 <button data-v="세계꽃 · 문화관광축제 호수야 놀자" data-done="コピーしました">コピー</button></div>
@@ -587,8 +590,8 @@ document.addEventListener('click',function(e){
 <ul class="jn-list"><li class="jn-item">
 <div class="jn-h"><b>一山湖水公園</b><span class="jn-tag">観光地</span><span class="jn-km">約 0.5 km</span></div>
 <p class="jn-ov">一山湖水（イルサンホス）公園は、韓国最大規模の人工湖を造り、都市に住む人々が接する機会のない自然生態系を再現し、多様な周辺景観や湖を利用したレクリエーション空間を提供しています。湖を中心とした4.7kmのサイクリングロードとメタセコイア道など9.1kmの散策路は市民に特に人気です。他にも生態自然学習…</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">경기도 고양시 일산동구 장항동 호수로 595</span></div>
-<button data-v="경기도 고양시 일산동구 장항동 호수로 595" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">경기도 고양시 일산동구 호수로 595 (장항동)</span></div>
+<button data-v="경기도 고양시 일산동구 호수로 595 (장항동)" data-done="コピーしました">コピー</button></div>
 </li><li class="jn-item">
 <div class="jn-h"><b>オーキムス皮膚科医院</b><span class="jn-tag">観光地</span><span class="jn-km">約 0.9 km</span></div>
 <p class="jn-ov">オーキムス皮膚科医院は、今この瞬間を人生最高の全盛期として享受できるように絶え間なく努力・研究し、一歩先を進み続ける病院であり、いつも細やかな心遣いで患者さんに寄り添っています。 皮膚科専門医のみで構成されており、代表院長のチョ・ハンネはアメリカで自毛植毛手術の資格を取得した皮膚科専門医であると同時…</p>
@@ -607,8 +610,8 @@ document.addEventListener('click',function(e){
 </li><li class="jn-item">
 <div class="jn-h"><b>EBS放送局</b><span class="jn-tag">観光地</span><span class="jn-km">約 1.4 km</span></div>
 <p class="jn-ov">EBS放送局は、韓国の教育専門の公共放送局EBSの本社ビルです。教育番組をはじめとし、教養、芸能、報道、子供向けアニメーションを制作しています。放送スタジオや編集室などの施設を見学し、EBSのキャラクターに会える見学プログラムを実施しています。</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">경기도 고양시 일산동구 장항동 한류월드로 281</span></div>
-<button data-v="경기도 고양시 일산동구 장항동 한류월드로 281" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">경기도 고양시 일산동구 한류월드로 281 (장항동)</span></div>
+<button data-v="경기도 고양시 일산동구 한류월드로 281 (장항동)" data-done="コピーしました">コピー</button></div>
 </li></ul>
 <p class="jn-src">住所は座標から逆引きした韓国語の道路名住所です。NAVER マップ・カカオマップにそのまま貼り付けて検索できます。</p></div>
 <div class="frel"><h2>京畿のほかの祭り</h2><div class="row"><a href="/ja/festival/2025-je7hoe-bmf-beullaengmyujikpeseutibeol/">BMF</a><a href="/ja/festival/edenbeotkkotgil-beotkkotchukje/">エデン桜並木桜祭り</a><a href="/ja/festival/icheondojagichukje/">利川陶磁器祭り</a><a href="/ja/festival/yeoncheonguseokgichukje/">漣川旧石器祭り</a><a href="/ja/festival/goyanggaeulkkotchukje/">高陽国際花博覧会</a><a href="/ja/festival/hwaseong-baennori-chukje/">華城船遊び祭り</a></div></div>

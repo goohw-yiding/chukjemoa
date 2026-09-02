@@ -516,6 +516,9 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 .xnote{color:#9aa3af;font-size:.79rem;line-height:1.6;margin-top:10px}
 </style>
 <script>
+// ⚠️ en-nearby.js 도 같은 핸들러를 심는다 — 같은 플래그로 «한 번만» 걸리게 한다
+//    (두 번 걸리면 클릭 한 번에 클립보드를 두 번 쓴다).
+if(!window.__xcopyBound){window.__xcopyBound=1;
 document.addEventListener('click',function(e){
   var b=e.target.closest('.xcopy button'); if(!b) return;
   var t=b.getAttribute('data-v')||'';
@@ -524,7 +527,7 @@ document.addEventListener('click',function(e){
   if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,function(){});}
   else{var ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);
     ta.select();try{document.execCommand('copy');done();}catch(_){}document.body.removeChild(ta);}
-});
+});}
 </script><div class="xbox"><h2>🇰🇷 NAVERマップ・カカオマップにこのまま貼ってください</h2><p class="lead">Googleマップは韓国国内の徒歩・乗換案内が出ません（韓国の地図データ規制のため）。NAVERマップとカカオマップなら出ますが、ハングルで検索しないとほとんど出てきません。そのままコピーしてお使いください。</p>
 <div class="xcopy"><div><span class="lb">祭りの名前（ハングル）</span><span class="vl">보령머드축제</span></div>
 <button data-v="보령머드축제" data-done="コピーしました">コピー</button></div>
@@ -575,6 +578,11 @@ document.addEventListener('click',function(e){
 </style><div class="jnear"><h2>近くの見どころ</h2>
 <p class="jn-note">この祭りの会場から直線距離で 12km 以内にある、韓国観光公社が日本語で案内している場所です。所要時間は道路事情で変わるため、距離のみ記載しています。</p>
 <ul class="jn-list"><li class="jn-item">
+<div class="jn-h"><b>大川海水浴場</b><span class="jn-tag">観光地</span><span class="jn-km">約 0.5 km</span></div>
+<p class="jn-ov">大川（テチョン）海水浴場は、1930年代から外国人向けの休養地となっていた西海岸最大のビーチです。砂浜の長さだけで3.5kmに達し、幅も100mあります。遠浅になっていて、砂質がきれいです。ここでは多宝島（タボド）の向こうに夕陽が沈む美しいサンセットが楽しめます。大川海水浴場は大きくノウル（夕焼け）…</p>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">충청남도 보령시 머드로 123</span></div>
+<button data-v="충청남도 보령시 머드로 123" data-done="コピーしました">コピー</button></div>
+</li><li class="jn-item">
 <div class="jn-h"><b>ホテルマスター大川ウォーターパーク</b><span class="jn-tag">観光地</span><span class="jn-km">約 0.9 km</span></div>
 <p class="jn-ov">ホテルマスター大川（テチョン）にあるウォーターパークで、夏季にのみ開場します。 室内にはスパ、キッズプール、チムジルゾーンがあり、屋外には100メートルのスライダー、カーブスライド、流水プール、波のプールなどがあって、アクティビティを楽しむことができます。レストランやカフェなどの設備も整えられていま…</p>
 <div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">충청남도 보령시 신흑동 대해로 876</span></div>
@@ -582,13 +590,13 @@ document.addEventListener('click',function(e){
 </li><li class="jn-item">
 <div class="jn-h"><b>大川港</b><span class="jn-tag">観光地</span><span class="jn-km">約 1.5 km</span></div>
 <p class="jn-ov">大川港（テチョンハン）は、保寧（ポリョン）の港で海路の要衝であり、漁業基地としての役割を果たしています。また水産市場では魚、ワタリガニ、エビなど黄海（ファンヘ）で獲れる様々な海産物を見物したり、購入して味わうことができます。夜明けに開かれる競り市も見どころです。沿岸旅客船ターミナルは、挿矢島（サプシ…</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">충청남도 보령시 신흑동 대천항중앙길 52</span></div>
-<button data-v="충청남도 보령시 신흑동 대천항중앙길 52" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">충청남도 보령시 신흑동</span></div>
+<button data-v="충청남도 보령시 신흑동" data-done="コピーしました">コピー</button></div>
 </li><li class="jn-item">
 <div class="jn-h"><b>尚和園</b><span class="jn-tag">観光地</span><span class="jn-km">約 4.7 km</span></div>
 <p class="jn-ov">尚和園（サンファウォン）は、竹島（チュクト）の自然を守るために設けられた韓国式伝統庭園で、草花を尊ぶという意味で「尚和園」と名付けられたそうです。島の周囲には全長1kmの屋根付きの回廊があります。尚和園には、朝鮮時代初期に建てられたと推定されている韓屋の義谷堂をはじめ、韓屋村、板石広場、ハヌル（空）…</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">충청남도 보령시 남포면 844-15</span></div>
-<button data-v="충청남도 보령시 남포면 844-15" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">충청남도 보령시 남포면 남포방조제로 408-52</span></div>
+<button data-v="충청남도 보령시 남포면 남포방조제로 408-52" data-done="コピーしました">コピー</button></div>
 </li><li class="jn-item">
 <div class="jn-h"><b>武昌浦海水浴場</b><span class="jn-tag">観光地</span><span class="jn-km">約 8.1 km</span></div>
 <p class="jn-ov">「武昌浦（ムチャンポ）海水浴場」は、朝鮮時代の軍倉址であり、1928年に西海岸で初めて開放された海水浴場です。砂浜は長さ1.5キロメートル、水深1～2メートル程度と浅く、海水浴場の周辺に松林が茂り、海水浴と森林浴を同時に楽しめます。毎月引き潮の時にはこの海水浴場から無人島であるソクデ島までの1.5キ…</p>

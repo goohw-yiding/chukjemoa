@@ -515,6 +515,9 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 .xnote{color:#9aa3af;font-size:.79rem;line-height:1.6;margin-top:10px}
 </style>
 <script>
+// ⚠️ en-nearby.js 도 같은 핸들러를 심는다 — 같은 플래그로 «한 번만» 걸리게 한다
+//    (두 번 걸리면 클릭 한 번에 클립보드를 두 번 쓴다).
+if(!window.__xcopyBound){window.__xcopyBound=1;
 document.addEventListener('click',function(e){
   var b=e.target.closest('.xcopy button'); if(!b) return;
   var t=b.getAttribute('data-v')||'';
@@ -523,7 +526,7 @@ document.addEventListener('click',function(e){
   if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,function(){});}
   else{var ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);
     ta.select();try{document.execCommand('copy');done();}catch(_){}document.body.removeChild(ta);}
-});
+});}
 </script><div class="xbox"><h2>🇰🇷 NAVERマップ・カカオマップにこのまま貼ってください</h2><p class="lead">Googleマップは韓国国内の徒歩・乗換案内が出ません（韓国の地図データ規制のため）。NAVERマップとカカオマップなら出ますが、ハングルで検索しないとほとんど出てきません。そのままコピーしてお使いください。</p>
 <div class="xcopy"><div><span class="lb">祭りの名前（ハングル）</span><span class="vl">포트빌리지 부산 2026</span></div>
 <button data-v="포트빌리지 부산 2026" data-done="コピーしました">コピー</button></div>
@@ -608,13 +611,13 @@ document.addEventListener('click',function(e){
 </li><li class="jn-item">
 <div class="jn-h"><b>宝水洞本屋通り</b><span class="jn-tag">観光地</span><span class="jn-km">約 1.2 km</span></div>
 <p class="jn-ov">6 25戦争（韓国戦争）開戦後、宝水洞（ポスドン）の通りに戦争で避難してきた人々が古本屋の露天を釜山・宝水洞（ポスドン）ではじめたのが宝水洞本屋通りの始まりです。この本屋通りは新刊本と古本がともに流通するところで、手ごろな価格で本を買い求めに来る人々でいつも賑わい、またその独特な雰囲気を味わいたい人…</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">부산광역시 중구 보수동1가 중구로75번길 25</span></div>
-<button data-v="부산광역시 중구 보수동1가 중구로75번길 25" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">부산광역시 중구 대청로 67-1</span></div>
+<button data-v="부산광역시 중구 대청로 67-1" data-done="コピーしました">コピー</button></div>
 </li><li class="jn-item">
 <div class="jn-h"><b>国際市場グルメ横丁</b><span class="jn-tag">観光地</span><span class="jn-km">約 1.3 km</span></div>
 <p class="jn-ov">国際市場グルメ横丁は、釜山（プサン）の伝統市場にあるグルメ通りで、60年以上の歴史を持っています。酸っぱい辛いがクセになるイカの和え物が添えられたチュンムキンパプ、甘辛いトッポッキ、ミルミョン、練り物、豚肉クッパ、スンデ、釜山の名物料理の混ぜ春雨、氷小豆など多彩なストリートフードが販売されています。…</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">부산광역시 중구 신창동4가 중구로 36</span></div>
-<button data-v="부산광역시 중구 신창동4가 중구로 36" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">부산광역시 중구 중구로 36</span></div>
+<button data-v="부산광역시 중구 중구로 36" data-done="コピーしました">コピー</button></div>
 </li></ul>
 <p class="jn-src">住所は座標から逆引きした韓国語の道路名住所です。NAVER マップ・カカオマップにそのまま貼り付けて検索できます。</p></div>
 <div class="frel"><h2>釜山のほかの祭り</h2><div class="row"><a href="/ja/festival/2026-busanbadadoseogwan/">釜山パダ図書館</a><a href="/ja/festival/busangukjerokpeseutibeol/">釜山国際ロックフェスティバル</a><a href="/ja/festival/gwangalli-m-marvelous-deuron-raiteusyo/">広安里M</a><a href="/ja/festival/kaunteudaun-busan/">釜山花火祭り</a><a href="/ja/festival/haeundae-moraechukje/">海雲台砂祭り</a><a href="/ja/festival/gwangallieobangchukje/">広安里漁坊祭り</a></div></div>

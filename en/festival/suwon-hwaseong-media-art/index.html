@@ -516,6 +516,9 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 .xnote{color:#9aa3af;font-size:.79rem;line-height:1.6;margin-top:10px}
 </style>
 <script>
+// ⚠️ en-nearby.js 도 같은 핸들러를 심는다 — 같은 플래그로 «한 번만» 걸리게 한다
+//    (두 번 걸리면 클릭 한 번에 클립보드를 두 번 쓴다).
+if(!window.__xcopyBound){window.__xcopyBound=1;
 document.addEventListener('click',function(e){
   var b=e.target.closest('.xcopy button'); if(!b) return;
   var t=b.getAttribute('data-v')||'';
@@ -524,7 +527,7 @@ document.addEventListener('click',function(e){
   if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,function(){});}
   else{var ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);
     ta.select();try{document.execCommand('copy');done();}catch(_){}document.body.removeChild(ta);}
-});
+});}
 </script><div class="xbox"><h2>🇰🇷 Copy this into Naver Map or Kakao Map</h2><p class="lead">Google Maps cannot give walking or transit directions inside Korea — Korean law restricts map-data export. Naver Map and Kakao Map can, but they find far more when you search in Korean. Copy and paste:</p>
 <div class="xcopy"><div><span class="lb">Festival name (Korean)</span><span class="vl">수원화성 미디어아트</span></div>
 <button data-v="수원화성 미디어아트" data-done="Copied">Copy</button></div>
@@ -569,6 +572,67 @@ document.addEventListener('click',function(e){
 <div class="mt">23.3 km away · 09/18 – 09/20</div></a><a class="xitem" style="display:block;text-decoration:none" href="/en/festival/soraepogu-festival/">
 <div class="nm" style="color:#0c7d72">Soraepogu Festival</div>
 <div class="mt">27.0 km away · 10/02 – 10/04</div></a></div></div>
+<style>
+.ennear{margin:22px 0}
+.ennear h2{font-size:1.08rem;font-weight:900;margin:0 0 6px}
+.en-note,.en-src{font-size:.8rem;color:#8a939d;line-height:1.6;margin:0 0 10px}
+.en-src{margin-top:10px}
+.en-list{list-style:none;padding:0;margin:0;display:grid;gap:10px}
+.en-item{border:1px solid #e6eaee;border-radius:12px;padding:12px 13px;background:#fff}
+.en-h{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-bottom:5px}
+.en-h b{font-size:1rem;font-weight:800;color:#111827}
+.en-ko{font-size:.82rem;color:#6b7280;font-weight:700}
+.en-tag{font-size:.72rem;font-weight:800;color:#0a6c63;background:#e7f6f3;border-radius:6px;padding:2px 7px}
+.en-km{font-size:.78rem;color:#8a939d;margin-left:auto}
+.en-ov{font-size:.88rem;line-height:1.65;color:#374151;margin:0 0 9px}
+.xcopy{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;
+  background:#f6fbfa;border:1.5px solid #dcefeb;border-radius:12px;padding:11px 13px;margin:8px 0}
+.xcopy .lb{font-size:.74rem;font-weight:800;color:#0a6c63;letter-spacing:.02em;display:block;margin-bottom:3px}
+.xcopy .vl{font-size:1rem;font-weight:800;color:#111827;word-break:keep-all;line-height:1.45}
+.xcopy button{background:#0f9d8f;color:#fff;border:0;border-radius:9px;padding:9px 14px;
+  font-weight:800;font-size:.84rem;cursor:pointer;white-space:nowrap}
+</style>
+<script>
+// ⚠️ intl-fest-extra.js 도 같은 핸들러를 심는다 — 같은 플래그로 «한 번만» 걸리게 한다
+//    (두 번 걸리면 클릭 한 번에 클립보드를 두 번 쓴다).
+if(!window.__xcopyBound){window.__xcopyBound=1;
+document.addEventListener('click',function(e){
+  var b=e.target.closest('.xcopy button'); if(!b) return;
+  var t=b.getAttribute('data-v')||'';
+  var done=function(){var o=b.textContent;b.textContent=b.getAttribute('data-done')||'OK';
+    setTimeout(function(){b.textContent=o;},1400);};
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,function(){});}
+  else{var ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);
+    ta.select();try{document.execCommand('copy');done();}catch(_){}document.body.removeChild(ta);}
+});}
+</script><div class="ennear"><h2>Nearby Attractions</h2>
+<p class="en-note">Places within 12&nbsp;km of the festival venue (straight-line distance), described in English by the Korea Tourism Organization. Travel time depends on roads and traffic, so only distance is shown.</p>
+<ul class="en-list"><li class="en-item">
+<div class="en-h"><b>Banghwasuryujeong Pavilion</b><span class="en-ko">방화수류정(동북각루</span>
+<span class="en-tag">Attraction</span><span class="en-km">approx. 0.8 km</span></div>
+<p class="en-ov">Banghwasuryujeong Pavilion, officially called Dongbukgangnu Pavilion, was built in 1794 during the construction of Suwon Hwaseong Fortress. It sits atop a hill east of…</p>
+<div class="xcopy"><div><span class="lb">Korean address for map apps</span><span class="vl">경기도 수원시 팔달구 수원천로392번길 44-6 (매향동)</span></div>
+<button data-v="경기도 수원시 팔달구 수원천로392번길 44-6 (매향동)" data-done="Copied">Copy</button></div>
+</li><li class="en-item">
+<div class="en-h"><b>Changnyongmun Gate</b><span class="en-ko">창룡문</span>
+<span class="en-tag">Attraction</span><span class="en-km">approx. 1.4 km</span></div>
+<p class="en-ov">Changnyeongmun Gate, the eastern gate of Hwaseong Fortress, is similar in shape and size to Hwaseomun Gate to the east. Something to take note of is the nameplate carved…</p>
+<div class="xcopy"><div><span class="lb">Korean address for map apps</span><span class="vl">경기도 수원시 팔달구 남수동</span></div>
+<button data-v="경기도 수원시 팔달구 남수동" data-done="Copied">Copy</button></div>
+</li><li class="en-item">
+<div class="en-h"><b>Dongtan Central Park</b><span class="en-ko">동탄센트럴파크</span>
+<span class="en-tag">Attraction</span><span class="en-km">approx. 10.1 km</span></div>
+<p class="en-ov">Dongtan Central Park is a sports facility and park in Hwaseong, Gyeonggi-do. Completed in 2008, the facility has a variety of sports amenities and equipment as well as a…</p>
+<div class="xcopy"><div><span class="lb">Korean address for map apps</span><span class="vl">경기도 화성시 동탄공원로2길 22 (반송동)</span></div>
+<button data-v="경기도 화성시 동탄공원로2길 22 (반송동)" data-done="Copied">Copy</button></div>
+</li><li class="en-item">
+<div class="en-h"><b>Baegunhosu Lake</b><span class="en-ko">백운호수</span>
+<span class="en-tag">Attraction</span><span class="en-km">approx. 10.9 km</span></div>
+<p class="en-ov">Baegunhosu Lake is an artificial lake that was completed in 1953. The lake is surrounded by mountains made up of Cheonggyesan Mountain in the northeast, Baegunsan…</p>
+<div class="xcopy"><div><span class="lb">Korean address for map apps</span><span class="vl">경기도 의왕시 백운로 526 (학의동)</span></div>
+<button data-v="경기도 의왕시 백운로 526 (학의동)" data-done="Copied">Copy</button></div>
+</li></ul>
+<p class="en-src">Google Maps cannot provide driving or transit directions inside South Korea. Paste the Korean addresses above into <b>NAVER Map</b> or <b>KakaoMap</b> — both work with these addresses and are what people here actually use.</p></div>
 <div class="nmap-wrap">
 <div class="nmap" style="height:300px" data-x="127.009673" data-y="37.285512" data-t="Suwon Hwaseong Media Art"><span class="nmap-ph">Loading map…</span></div>
 <a class="nmap-open" href="https://map.naver.com/p/search/Suwon%20Hwaseong%20Media%20Art" target="_blank" rel="noopener">🗺️ Open in Naver Map</a>

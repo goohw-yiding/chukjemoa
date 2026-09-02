@@ -515,6 +515,9 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 .xnote{color:#9aa3af;font-size:.79rem;line-height:1.6;margin-top:10px}
 </style>
 <script>
+// ⚠️ en-nearby.js 도 같은 핸들러를 심는다 — 같은 플래그로 «한 번만» 걸리게 한다
+//    (두 번 걸리면 클릭 한 번에 클립보드를 두 번 쓴다).
+if(!window.__xcopyBound){window.__xcopyBound=1;
 document.addEventListener('click',function(e){
   var b=e.target.closest('.xcopy button'); if(!b) return;
   var t=b.getAttribute('data-v')||'';
@@ -523,7 +526,7 @@ document.addEventListener('click',function(e){
   if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,function(){});}
   else{var ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);
     ta.select();try{document.execCommand('copy');done();}catch(_){}document.body.removeChild(ta);}
-});
+});}
 </script><div class="xbox"><h2>🇰🇷 NAVERマップ・カカオマップにこのまま貼ってください</h2><p class="lead">Googleマップは韓国国内の徒歩・乗換案内が出ません（韓国の地図データ規制のため）。NAVERマップとカカオマップなら出ますが、ハングルで検索しないとほとんど出てきません。そのままコピーしてお使いください。</p>
 <div class="xcopy"><div><span class="lb">祭りの名前（ハングル）</span><span class="vl">창덕궁 달빛기행</span></div>
 <button data-v="창덕궁 달빛기행" data-done="コピーしました">コピー</button></div>
@@ -595,8 +598,8 @@ document.addEventListener('click',function(e){
 <ul class="jn-list"><li class="jn-item">
 <div class="jn-h"><b>昌徳宮 仁政門</b><span class="jn-tag">観光地</span><span class="jn-km">約 0.2 km</span></div>
 <p class="jn-ov">昌徳宮仁政門（インジョンムン）」は仁政殿の正門で太宗5年（1405年）に創建されました。しかし、壬辰倭乱の際に焼失してしまい、光海君元年（1608年）に再建されました。その後英祖20年（1744年）10月、承政院の火災により左右の行閣とともに焼失、翌年3月に再建。そして純祖3年（1803年）12月に…</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">서울특별시 종로구 원서동 창덕궁길 94</span></div>
-<button data-v="서울특별시 종로구 원서동 창덕궁길 94" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">서울특별시 종로구 율곡로 99</span></div>
+<button data-v="서울특별시 종로구 율곡로 99" data-done="コピーしました">コピー</button></div>
 </li><li class="jn-item">
 <div class="jn-h"><b>株式会社ゴンガムHLマネジメント（(주)공감에이치엘 매니지먼트）</b><span class="jn-tag">観光地</span><span class="jn-km">約 0.3 km</span></div>
 <p class="jn-ov">(株)JDIインターナショナルは、外国人患者誘致事業を行っている企業です。 アメリカ、ヨーロッパ、中国、ロシア、東南アジア諸国からの患者を誘致しています。 外国人患者が信頼性の高い韓国の医療サービスを利用できるように、オーダーメイド治療と観光を組み合わせた医療ツーリズム商品をご案内しています。 韓国…</p>
@@ -605,8 +608,8 @@ document.addEventListener('click',function(e){
 </li><li class="jn-item">
 <div class="jn-h"><b>ソウル雲峴宮</b><span class="jn-tag">観光地</span><span class="jn-km">約 0.3 km</span></div>
 <p class="jn-ov">景福宮（キョンボックン）の近くにある雲峴宮（ウンヒョングン）は、朝鮮の王族が住んでいたところです。朝鮮（1392～1897）の王で後に大韓帝国（1897～1910）の初代皇帝となった高宗（コジョン）の生家で、その父である興宣大院君（フンソンテウォングン）の邸宅でした。建物としては老安堂（ノアンダン）…</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">서울특별시 종로구 운니동 삼일대로 464</span></div>
-<button data-v="서울특별시 종로구 운니동 삼일대로 464" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">서울특별시 종로구 삼일대로 464</span></div>
+<button data-v="서울특별시 종로구 삼일대로 464" data-done="コピーしました">コピー</button></div>
 </li><li class="jn-item">
 <div class="jn-h"><b>楽善斎</b><span class="jn-tag">観光地</span><span class="jn-km">約 0.3 km</span></div>
 <p class="jn-ov">正面6間、側面2間の平屋入母屋屋根・翼工造りの家屋である楽善斎（ナクソンジェ）は、元々は昌慶宮（チャンギョングン）に属する建物でしたが、近年、昌徳宮（チャンドックン）の建物として管理されるようになりました。 楽善斎の建物は、憲宗12（1846）年に建てられたもので、錫福軒（ソッポコン）や寿康斎（スガ…</p>
@@ -615,8 +618,8 @@ document.addEventListener('click',function(e){
 </li><li class="jn-item">
 <div class="jn-h"><b>昌慶宮 弘化門</b><span class="jn-tag">観光地</span><span class="jn-km">約 0.3 km</span></div>
 <p class="jn-ov">「弘化門（ホンファムン）」は昌慶宮の正門に正面3間、側面2間の重層寄棟屋根で多包式で作られています。石造の基壇の上に、原型の礎石を置いており、門楼下層は両開きの板門が設置され、出入りできるようにし、上層は板床の楼が設置されています。大韓民国の宝物に指定されています。当初1484年に建てられましたが壬…</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">서울특별시 종로구 와룡동 창경궁로 185</span></div>
-<button data-v="서울특별시 종로구 와룡동 창경궁로 185" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">서울특별시 종로구 창경궁로 185 (와룡동)</span></div>
+<button data-v="서울특별시 종로구 창경궁로 185 (와룡동)" data-done="コピーしました">コピー</button></div>
 </li></ul>
 <p class="jn-src">住所は座標から逆引きした韓国語の道路名住所です。NAVER マップ・カカオマップにそのまま貼り付けて検索できます。</p></div>
 <div class="frel"><h2>ソウルのほかの祭り</h2><div class="row"><a href="/ja/festival/jeongjodaewang-neunghaengcha-gongdongjaehyeon/">正祖大王陵行次共同再現</a><a href="/ja/festival/gangdongseonsamunhwachukje/">江東先史文化祭り</a><a href="/ja/festival/gugakgongyeon-jinyeon/">国楽公演進宴</a><a href="/ja/festival/gangbuk-baengmaekchukje/">江北百麦祭り</a><a href="/ja/festival/jungangasia-bommajichukje/">K-POPカバーダンスフェスティバルワールドファイナル</a><a href="/ja/festival/yongsancheongnyeonchukje/">龍山青年祭り</a></div></div>

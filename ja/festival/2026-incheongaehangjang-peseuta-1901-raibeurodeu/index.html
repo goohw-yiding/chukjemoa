@@ -521,6 +521,9 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 .xnote{color:#9aa3af;font-size:.79rem;line-height:1.6;margin-top:10px}
 </style>
 <script>
+// ⚠️ en-nearby.js 도 같은 핸들러를 심는다 — 같은 플래그로 «한 번만» 걸리게 한다
+//    (두 번 걸리면 클릭 한 번에 클립보드를 두 번 쓴다).
+if(!window.__xcopyBound){window.__xcopyBound=1;
 document.addEventListener('click',function(e){
   var b=e.target.closest('.xcopy button'); if(!b) return;
   var t=b.getAttribute('data-v')||'';
@@ -529,7 +532,7 @@ document.addEventListener('click',function(e){
   if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,function(){});}
   else{var ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);
     ta.select();try{document.execCommand('copy');done();}catch(_){}document.body.removeChild(ta);}
-});
+});}
 </script><div class="xbox"><h2>🇰🇷 NAVERマップ・カカオマップにこのまま貼ってください</h2><p class="lead">Googleマップは韓国国内の徒歩・乗換案内が出ません（韓国の地図データ規制のため）。NAVERマップとカカオマップなら出ますが、ハングルで検索しないとほとんど出てきません。そのままコピーしてお使いください。</p>
 <div class="xcopy"><div><span class="lb">祭りの名前（ハングル）</span><span class="vl">2026 인천개항장 페스타 - 1901 라이브로드</span></div>
 <button data-v="2026 인천개항장 페스타 - 1901 라이브로드" data-done="コピーしました">コピー</button></div>
@@ -585,28 +588,28 @@ document.addEventListener('click',function(e){
 <ul class="jn-list"><li class="jn-item">
 <div class="jn-h"><b>仁川チャイナタウン</b><span class="jn-tag">観光地</span><span class="jn-km">約 0.5 km</span></div>
 <p class="jn-ov">「仁川（インチョン）チャイナタウン」は1883年仁川港開港後、1884年にこの地域が清の治外法権地域に指定されることにより形成されました。かつては中国から輸入された品物を販売する商店が大部分でしたが、現在はほとんどが中国料理店です。 現在この通りを守っている韓国在住の中国人は初期定着民の2世や3世で…</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">인천광역시 제물포구 선린동 차이나타운로59번길 20</span></div>
-<button data-v="인천광역시 제물포구 선린동 차이나타운로59번길 20" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">인천광역시 제물포구 차이나타운로59번길 20</span></div>
+<button data-v="인천광역시 제물포구 차이나타운로59번길 20" data-done="コピーしました">コピー</button></div>
 </li><li class="jn-item">
 <div class="jn-h"><b>松月洞童話村</b><span class="jn-tag">観光地</span><span class="jn-km">約 0.5 km</span></div>
 <p class="jn-ov">このあたりは昔、ソルゴル（松谷）またはソンサン（松山）と呼ばれていましたが、松林の間から見える月が風情があるということでソンウォル（松月）と呼ばれるようになりました。1883年の仁川港開港後には外国人が多く住む裕福な集落だったといいます。しかしその後、若者が去って高齢化が進み、建物は古くなり、空家も…</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">인천광역시 제물포구 송월동3가 17-1</span></div>
-<button data-v="인천광역시 제물포구 송월동3가 17-1" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">인천광역시 제물포구 송월동3가</span></div>
+<button data-v="인천광역시 제물포구 송월동3가" data-done="コピーしました">コピー</button></div>
 </li><li class="jn-item">
 <div class="jn-h"><b>仁川日本風通り</b><span class="jn-tag">観光地</span><span class="jn-km">約 0.6 km</span></div>
 <p class="jn-ov">仁川（インチョン）日本風通りは、1883年に仁川港（インチョンハン）と済物浦港（チェムルポハン）の開港により形成された租界エリアで、日本が管轄していました。近代に建てられた和風木造住宅や石造りの建築物が一部保存されています。商店と住宅が組み合わせられた日本特有の木造住宅がカフェや展示館などに改装され…</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">인천광역시 제물포구 관동1가 자유공원남로 1</span></div>
-<button data-v="인천광역시 제물포구 관동1가 자유공원남로 1" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">인천광역시 제물포구 관동1가</span></div>
+<button data-v="인천광역시 제물포구 관동1가" data-done="コピーしました">コピー</button></div>
 </li><li class="jn-item">
 <div class="jn-h"><b>月尾公園月尾展望台</b><span class="jn-tag">観光地</span><span class="jn-km">約 0.9 km</span></div>
 <p class="jn-ov">月尾山頂上にある月尾（ウォルミ）展望台は仁川港と仁川大橋、沿岸旅客船ターミナル、周辺の島などを眺望するのに良いスポットです。月尾展望台の螺旋階段を上ると仁川市内、自由公園、仁川港、西海と夕暮れ時には美しい夕日も鑑賞できます。高さ23mのガラス張りの展望台は夜間に幻想的な雰囲気を演出し夜景スポットとし…</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">인천광역시 제물포구 북성동1가 월미로 131-9</span></div>
-<button data-v="인천광역시 제물포구 북성동1가 월미로 131-9" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">인천광역시 제물포구 북성동1가 125</span></div>
+<button data-v="인천광역시 제물포구 북성동1가 125" data-done="コピーしました">コピー</button></div>
 </li><li class="jn-item">
 <div class="jn-h"><b>月尾公園</b><span class="jn-tag">観光地</span><span class="jn-km">約 1.0 km</span></div>
 <p class="jn-ov">月尾（ウォルミ）公園は、韓国戦争（1950～1953）以降に50年間も軍部隊が位置していた場所に公園を整備したもので、自然生態系がよく保全されています。月尾山を中心として公園を整備し、宮殿庭園、別墅庭園、民家庭園など韓国風の伝統庭園も整備しました。頂上近くの月尾展望台からは仁川（インチョン）港と西海…</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">인천광역시 제물포구 북성동1가 월미로 131-22</span></div>
-<button data-v="인천광역시 제물포구 북성동1가 월미로 131-22" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">인천광역시 제물포구 월미로 131-31 (북성동1가)</span></div>
+<button data-v="인천광역시 제물포구 월미로 131-31 (북성동1가)" data-done="コピーしました">コピー</button></div>
 </li></ul>
 <p class="jn-src">住所は座標から逆引きした韓国語の道路名住所です。NAVER マップ・カカオマップにそのまま貼り付けて検索できます。</p></div>
 <div class="frel"><h2>仁川のほかの祭り</h2><div class="row"><a href="/ja/festival/incheonpentapoteu-rak-peseutibeol/">仁川ペンタポート・ロックフェスティバル</a><a href="/ja/festival/bupyeongpungmuldaechukje/">富平風物祭り</a><a href="/ja/festival/gaehangjang-daengdaeng-doseogwan/">仁川ローカルフェスタ</a><a href="/ja/festival/opeun-poteu-keuriseumaseu-bulmeong-open-port-christmas/">Oh！Slow Vintage Market</a></div></div>

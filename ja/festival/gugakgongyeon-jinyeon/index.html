@@ -514,6 +514,9 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 .xnote{color:#9aa3af;font-size:.79rem;line-height:1.6;margin-top:10px}
 </style>
 <script>
+// ⚠️ en-nearby.js 도 같은 핸들러를 심는다 — 같은 플래그로 «한 번만» 걸리게 한다
+//    (두 번 걸리면 클릭 한 번에 클립보드를 두 번 쓴다).
+if(!window.__xcopyBound){window.__xcopyBound=1;
 document.addEventListener('click',function(e){
   var b=e.target.closest('.xcopy button'); if(!b) return;
   var t=b.getAttribute('data-v')||'';
@@ -522,7 +525,7 @@ document.addEventListener('click',function(e){
   if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,function(){});}
   else{var ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);
     ta.select();try{document.execCommand('copy');done();}catch(_){}document.body.removeChild(ta);}
-});
+});}
 </script><div class="xbox"><h2>🇰🇷 NAVERマップ・カカオマップにこのまま貼ってください</h2><p class="lead">Googleマップは韓国国内の徒歩・乗換案内が出ません（韓国の地図データ規制のため）。NAVERマップとカカオマップなら出ますが、ハングルで検索しないとほとんど出てきません。そのままコピーしてお使いください。</p>
 <div class="xcopy"><div><span class="lb">祭りの名前（ハングル）</span><span class="vl">국악공연 진연</span></div>
 <button data-v="국악공연 진연" data-done="コピーしました">コピー</button></div>
@@ -594,13 +597,13 @@ document.addEventListener('click',function(e){
 <ul class="jn-list"><li class="jn-item">
 <div class="jn-h"><b>ミュージアムキムチ間</b><span class="jn-tag">観光地</span><span class="jn-km">約 0.1 km</span></div>
 <p class="jn-ov">仁寺洞（インサドン）マルアートセンター内にあるキムチ博物館です。キムチの文化、歴史、変遷史、効能などに関する展示を観覧し、映像でキムチの漬け方を学び、様々な種類のキムチを試食することができます。個人や団体向けの体験プログラムがあり、参加にはメールでの予約が必要です。</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">서울특별시 종로구 관훈동 인사동길 35-4</span></div>
-<button data-v="서울특별시 종로구 관훈동 인사동길 35-4" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">서울특별시 종로구 인사동길 35-4 (관훈동)</span></div>
+<button data-v="서울특별시 종로구 인사동길 35-4 (관훈동)" data-done="コピーしました">コピー</button></div>
 </li><li class="jn-item">
 <div class="jn-h"><b>サムジキル</b><span class="jn-tag">観光地</span><span class="jn-km">約 0.1 km</span></div>
 <p class="jn-ov">仁寺洞（インサドン）のランドマークとなっている工芸品専門のショッピングモールで、韓国の伝統と現代が調和した空間です。アレッキルマダン（「下の道の庭」という意味）からハヌルマダン（「空の庭」という意味）へと道を歩いて上りながら、各階にある小さな工房に立ち寄って見て回るだけでも楽しくなります。韓国の伝統…</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">서울특별시 종로구 관훈동 인사동길 44</span></div>
-<button data-v="서울특별시 종로구 관훈동 인사동길 44" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">서울특별시 종로구 인사동길 44 (관훈동)</span></div>
+<button data-v="서울특별시 종로구 인사동길 44 (관훈동)" data-done="コピーしました">コピー</button></div>
 </li><li class="jn-item">
 <div class="jn-h"><b>DYNAMIC MAZE（ソウル仁寺洞店）（다이나믹 메이즈（서울 인사동점））</b><span class="jn-tag">観光地</span><span class="jn-km">約 0.2 km</span></div>
 <p class="jn-ov">仁寺洞（インサドン）にあるDYNAMIC MAZE（ダイナミックメイズ）は、エキサイティングなプログラムが楽しめる屋内アミューズメント施設です。迷路の中の異次元空間を行き来しながら仲間が協力し合って障害物を乗り越え、瞬発力と集中力が必要なミッションを次々とクリアするゲームに挑みましょう。鏡の部屋を通…</p>
@@ -614,8 +617,8 @@ document.addEventListener('click',function(e){
 </li><li class="jn-item">
 <div class="jn-h"><b>タプコル公園</b><span class="jn-tag">観光地</span><span class="jn-km">約 0.3 km</span></div>
 <p class="jn-ov">ソウルで最初の近代公園です。1467年に建てられた円覚寺（ウォンガクサ）があった場所で、1897年に公園化されました。1919年に3.1運動が始まった場所でもあり、韓国の歴史において重要な意味を持っています。3.1運動の中心となった八角亭、円覚寺址十層石塔や円覚寺碑などの文化財をはじめ、3.1運動記…</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">서울특별시 종로구 종로2가 종로 99</span></div>
-<button data-v="서울특별시 종로구 종로2가 종로 99" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">서울특별시 종로구 종로 99 (종로2가)</span></div>
+<button data-v="서울특별시 종로구 종로 99 (종로2가)" data-done="コピーしました">コピー</button></div>
 </li></ul>
 <p class="jn-src">住所は座標から逆引きした韓国語の道路名住所です。NAVER マップ・カカオマップにそのまま貼り付けて検索できます。</p></div>
 <div class="frel"><h2>ソウルのほかの祭り</h2><div class="row"><a href="/ja/festival/gangbuk-baengmaekchukje/">江北百麦祭り</a><a href="/ja/festival/jungangasia-bommajichukje/">K-POPカバーダンスフェスティバルワールドファイナル</a><a href="/ja/festival/yongsancheongnyeonchukje/">龍山青年祭り</a><a href="/ja/festival/hanhwawa-hamkkehaneun-seoulsegyebulkkotchukje/">ソウル世界花火祭り</a><a href="/ja/festival/baengnyeonnaiteu-yasijang-megiui-gwihwan/">百年市場百年ナイト</a><a href="/ja/festival/gwanakganggamchanchukje/">冠岳姜邯贊祭り</a></div></div>

@@ -515,6 +515,9 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 .xnote{color:#9aa3af;font-size:.79rem;line-height:1.6;margin-top:10px}
 </style>
 <script>
+// ⚠️ en-nearby.js 도 같은 핸들러를 심는다 — 같은 플래그로 «한 번만» 걸리게 한다
+//    (두 번 걸리면 클릭 한 번에 클립보드를 두 번 쓴다).
+if(!window.__xcopyBound){window.__xcopyBound=1;
 document.addEventListener('click',function(e){
   var b=e.target.closest('.xcopy button'); if(!b) return;
   var t=b.getAttribute('data-v')||'';
@@ -523,7 +526,7 @@ document.addEventListener('click',function(e){
   if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,function(){});}
   else{var ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);
     ta.select();try{document.execCommand('copy');done();}catch(_){}document.body.removeChild(ta);}
-});
+});}
 </script><div class="xbox"><h2>🇰🇷 NAVERマップ・カカオマップにこのまま貼ってください</h2><p class="lead">Googleマップは韓国国内の徒歩・乗換案内が出ません（韓国の地図データ規制のため）。NAVERマップとカカオマップなら出ますが、ハングルで検索しないとほとんど出てきません。そのままコピーしてお使いください。</p>
 <div class="xcopy"><div><span class="lb">祭りの名前（ハングル）</span><span class="vl">정남진 장흥 물축제</span></div>
 <button data-v="정남진 장흥 물축제" data-done="コピーしました">コピー</button></div>
@@ -569,23 +572,28 @@ document.addEventListener('click',function(e){
 <ul class="jn-list"><li class="jn-item">
 <div class="jn-h"><b>チョンナムジン(正南津)ヒノキの森ウッドランド</b><span class="jn-tag">観光地</span><span class="jn-km">約 3.1 km</span></div>
 <p class="jn-ov">チョンナムジン・チャンフン(正南津長興)は山と海と川のある美しい生態村です。中でも爽やかな緑の風と、樹齢40年の大きなヒノキがぎっしりのチョンナムジンヒノキの森ウッドランドはその風景が最も美しいと言われています。チャンフン邑内が見渡せるオップルサン(億仏山)麓にあるウッドランドは、木材文化体験館や伝…</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">전남광주통합특별시 장흥군 장흥읍 우드랜드길 180</span></div>
-<button data-v="전남광주통합특별시 장흥군 장흥읍 우드랜드길 180" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">전라남도 장흥군 장흥읍 우드랜드길 180</span></div>
+<button data-v="전라남도 장흥군 장흥읍 우드랜드길 180" data-done="コピーしました">コピー</button></div>
 </li><li class="jn-item">
 <div class="jn-h"><b>チョンラナム道心の健康治癒センター</b><span class="jn-tag">観光地</span><span class="jn-km">約 5.1 km</span></div>
 <p class="jn-ov">チョンラナム道心の健康治癒センターは、ウォングァン(圓光)大学チャンフン統合医療病院の2階に位置するメンタルヘルスケア専門の医療機関である。コロナ禍以降、うつや不安、ストレスなど、心の不調を抱える人々のために設立され、韓医学を基盤とした統合医療を中心に統合医学治療、森林セラピー、アロマセラピーなど、…</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">전남광주통합특별시 장흥군 안양면 로하스로 121</span></div>
-<button data-v="전남광주통합특별시 장흥군 안양면 로하스로 121" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">전라남도 장흥군 안양면 로하스로 121</span></div>
+<button data-v="전라남도 장흥군 안양면 로하스로 121" data-done="コピーしました">コピー</button></div>
+</li><li class="jn-item">
+<div class="jn-h"><b>帝岩山自然休養林</b><span class="jn-tag">観光地</span><span class="jn-km">約 8.2 km</span></div>
+<p class="jn-ov">全南光州統合特別市宝城の「帝岩山（チェアムサン）自然休養林」は宝城と長興地域にわたり続いている帝岩山（807メートル）の東側にあります。登山路と休養林内に続いている渓谷は特に美しい場所で入口から始まる渓谷は水が澄んでいて水遊びも可能です。また、春となるにはツヅジと緑茶畑、野生花などが美しいです。休養…</p>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">전라남도 보성군 웅치면 대산길 330</span></div>
+<button data-v="전라남도 보성군 웅치면 대산길 330" data-done="コピーしました">コピー</button></div>
 </li><li class="jn-item">
 <div class="jn-h"><b>チョンナムクォン(全南圏)環境性疾患予防管理センター</b><span class="jn-tag">観光地</span><span class="jn-km">約 8.2 km</span></div>
 <p class="jn-ov">チョンナムクォン環境性疾患予防管理センターは地球温暖化や産業化、食の西欧化など様々な環境的要因によって発生頻度が着実に増加している環境性疾患の予防・管理のために設立されたチョルラナム(全羅南)道エリアの「環境に配慮したヒーリングセンター」です。アトピー性皮膚炎など環境性疾患に対する正しい理解と情報提…</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">전남광주통합특별시 보성군 웅치면 대산길 329-126</span></div>
-<button data-v="전남광주통합특별시 보성군 웅치면 대산길 329-126" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">전라남도 보성군 웅치면 대산길 329-126</span></div>
+<button data-v="전라남도 보성군 웅치면 대산길 329-126" data-done="コピーしました">コピー</button></div>
 </li><li class="jn-item">
 <div class="jn-h"><b>康津 全羅兵営城</b><span class="jn-tag">観光地</span><span class="jn-km">約 9.0 km</span></div>
 <p class="jn-ov">全羅兵営城は全南光州統合特別市康津郡兵栄面城東里にあります。朝鮮時代の地方軍事組織で、壬辰倭乱と丁酉再乱当時、西南部地域の軍事本部として大きな役割を果たした場所です。1417年に造られた長さ約1,060メートルの城で南海地域に残っている兵営施設の中で一番保存状態が良いとされています。</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">전남광주통합특별시 강진군 병영면 596-4</span></div>
-<button data-v="전남광주통합특별시 강진군 병영면 596-4" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">전라남도 강진군 병영면 병영성로 175</span></div>
+<button data-v="전라남도 강진군 병영면 병영성로 175" data-done="コピーしました">コピー</button></div>
 </li></ul>
 <p class="jn-src">住所は座標から逆引きした韓国語の道路名住所です。NAVER マップ・カカオマップにそのまま貼り付けて検索できます。</p></div>
 <div class="frel"><h2>のほかの祭り</h2><div class="row"><a href="/ja/festival/sejonghangeulchukje/">世宗ハングル祭り</a><a href="/ja/festival/gwangju-chueogui-chungjangchukje/">光州思い出の忠壮祭り</a><a href="/ja/festival/mokpohangguchukje/">木浦港口祭り</a><a href="/ja/festival/dogi-urireul-dameun-jilgeureut/">陶器、私たちの暮らしを映す器</a><a href="/ja/festival/jindosinbiuibadatgilchukje/">珍島神秘の海割れ祭り</a><a href="/ja/festival/yeongamwanginmunhwachukje/">霊岩王仁文化祭り</a></div></div>

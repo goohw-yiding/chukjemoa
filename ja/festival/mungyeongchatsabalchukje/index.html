@@ -515,6 +515,9 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 .xnote{color:#9aa3af;font-size:.79rem;line-height:1.6;margin-top:10px}
 </style>
 <script>
+// ⚠️ en-nearby.js 도 같은 핸들러를 심는다 — 같은 플래그로 «한 번만» 걸리게 한다
+//    (두 번 걸리면 클릭 한 번에 클립보드를 두 번 쓴다).
+if(!window.__xcopyBound){window.__xcopyBound=1;
 document.addEventListener('click',function(e){
   var b=e.target.closest('.xcopy button'); if(!b) return;
   var t=b.getAttribute('data-v')||'';
@@ -523,7 +526,7 @@ document.addEventListener('click',function(e){
   if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,function(){});}
   else{var ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);
     ta.select();try{document.execCommand('copy');done();}catch(_){}document.body.removeChild(ta);}
-});
+});}
 </script><div class="xbox"><h2>🇰🇷 NAVERマップ・カカオマップにこのまま貼ってください</h2><p class="lead">Googleマップは韓国国内の徒歩・乗換案内が出ません（韓国の地図データ規制のため）。NAVERマップとカカオマップなら出ますが、ハングルで検索しないとほとんど出てきません。そのままコピーしてお使いください。</p>
 <div class="xcopy"><div><span class="lb">祭りの名前（ハングル）</span><span class="vl">문경찻사발축제</span></div>
 <button data-v="문경찻사발축제" data-done="コピーしました">コピー</button></div>
@@ -584,8 +587,8 @@ document.addEventListener('click',function(e){
 <ul class="jn-list"><li class="jn-item">
 <div class="jn-h"><b>OmyNara</b><span class="jn-tag">観光地</span><span class="jn-km">約 3.1 km</span></div>
 <p class="jn-ov">OmyNara（オミナラ）は聞慶（ムンギョン）産の五味子とリンゴで造られたワインや蒸留酒の試飲・購入ができる伝統酒体験販売店です。五味子の発酵・熟成・蒸留の工程に関する説明を聞きながら見学するツアープログラム（所要時間約30分）が実施されており、さまざまな酒類の試飲が可能です。販売・試飲スペースや製…</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">경상북도 문경시 문경읍 84-3</span></div>
-<button data-v="경상북도 문경시 문경읍 84-3" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">경상북도 문경시 문경읍 새재로 609</span></div>
+<button data-v="경상북도 문경시 문경읍 새재로 609" data-done="コピーしました">コピー</button></div>
 </li><li class="jn-item">
 <div class="jn-h"><b>延豊聖地</b><span class="jn-tag">観光地</span><span class="jn-km">約 7.4 km</span></div>
 <p class="jn-ov">延豊（ヨンプン）聖地は、1791年のカトリック迫害以来ひっそりと隠れ住みながら信仰を守っていたカトリック教徒たちが1801年に再び迫害を受けて処刑されたところで、現在は聖域化されています。カトリック聖堂や十字架像をはじめ、槐山（クェサン）延豊出身で迫害・処刑され韓国カトリック聖人となった黄錫斗（ファ…</p>
@@ -594,8 +597,8 @@ document.addEventListener('click',function(e){
 </li><li class="jn-item">
 <div class="jn-h"><b>姑母山城</b><span class="jn-tag">観光地</span><span class="jn-km">約 12.0 km</span></div>
 <p class="jn-ov">姑母山城（コモサンソン）は三国時代、新羅で軍事的な防御のために築かれた石城です。築造年代は156年以後、2世紀末頃と推定されています。包谷式山城で、四方から侵入する敵を全て防御できるようにつくられ、本城1256メートル、翼城390メートルを合わせて計1646メートルに達します。 城郭に沿って山城に登…</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">경상북도 문경시 마성면 30-3</span></div>
-<button data-v="경상북도 문경시 마성면 30-3" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">경상북도 문경시 마성면 신현리</span></div>
+<button data-v="경상북도 문경시 마성면 신현리" data-done="コピーしました">コピー</button></div>
 </li></ul>
 <p class="jn-src">住所は座標から逆引きした韓国語の道路名住所です。NAVER マップ・カカオマップにそのまま貼り付けて検索できます。</p></div>
 <div class="frel"><h2>慶北のほかの祭り</h2><div class="row"><a href="/ja/festival/andonggukjetalchumpeseutibeol/">安東国際仮面舞フェスティバル</a><a href="/ja/festival/gyeongbugyeongju-punggiinsamchukje/">慶北栄州 豊基高麗人参祭り</a><a href="/ja/festival/gimcheongimbapchukje/">金泉キムパプフェスティバル</a><a href="/ja/festival/goryeong-daegayachukje/">高霊大伽倻祭り</a></div></div>

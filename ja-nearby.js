@@ -15,13 +15,20 @@ const fs = require('fs'), path = require('path');
 const esc = s => String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;')
   .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 
+// 개요가 정말 일본어인지 재는 자 — 「번역돼 있다」는 API 설명을 그대로 믿지 않는다
+const kanaRatio = s => ((String(s).match(/[ぁ-んァ-ヴー]/g) || []).length) / Math.max(1, String(s).length);
+
 let PLACES = null;
 function places() {
   if (PLACES) return PLACES;
   try { PLACES = JSON.parse(fs.readFileSync(path.join(__dirname, 'data', 'places_ja.json'), 'utf8')); }
   catch (e) { PLACES = []; }
   // 쓸 수 있는 것만 남긴다 — 좌표 + 일본어 개요 + 검증된 한글주소
-  PLACES = PLACES.filter(p => +p.x && +p.y && String(p.ov || '').length >= 120 && p.addrKo);
+  // ⚠️ 2026-09-02 추가: **JpnService2 도 다른 언어 원문을 그대로 주는 것이 섞여 있다**
+  //    (慶州国立公園이 영어 문장으로 들어와 라이브에 나가 있었다 — 1,725건 중 1건).
+  //    길이만 재면 못 잡는다. **가나가 실제로 들어 있는지**를 재서 거른다.
+  PLACES = PLACES.filter(p => +p.x && +p.y && String(p.ov || '').length >= 120 && p.addrKo
+    && kanaRatio(p.ov) >= 0.03);
   return PLACES;
 }
 

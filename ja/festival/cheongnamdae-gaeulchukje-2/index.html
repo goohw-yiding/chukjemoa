@@ -515,6 +515,9 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 .xnote{color:#9aa3af;font-size:.79rem;line-height:1.6;margin-top:10px}
 </style>
 <script>
+// ⚠️ en-nearby.js 도 같은 핸들러를 심는다 — 같은 플래그로 «한 번만» 걸리게 한다
+//    (두 번 걸리면 클릭 한 번에 클립보드를 두 번 쓴다).
+if(!window.__xcopyBound){window.__xcopyBound=1;
 document.addEventListener('click',function(e){
   var b=e.target.closest('.xcopy button'); if(!b) return;
   var t=b.getAttribute('data-v')||'';
@@ -523,7 +526,7 @@ document.addEventListener('click',function(e){
   if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,function(){});}
   else{var ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);
     ta.select();try{document.execCommand('copy');done();}catch(_){}document.body.removeChild(ta);}
-});
+});}
 </script><div class="xbox"><h2>🇰🇷 NAVERマップ・カカオマップにこのまま貼ってください</h2><p class="lead">Googleマップは韓国国内の徒歩・乗換案内が出ません（韓国の地図データ規制のため）。NAVERマップとカカオマップなら出ますが、ハングルで検索しないとほとんど出てきません。そのままコピーしてお使いください。</p>
 <div class="xcopy"><div><span class="lb">祭りの名前（ハングル）</span><span class="vl">청남대 가을축제</span></div>
 <button data-v="청남대 가을축제" data-done="コピーしました">コピー</button></div>
@@ -578,13 +581,18 @@ document.addEventListener('click',function(e){
 <ul class="jn-list"><li class="jn-item">
 <div class="jn-h"><b>マルバヤナギ群生地</b><span class="jn-tag">観光地</span><span class="jn-km">約 2.3 km</span></div>
 <p class="jn-ov">マルバヤナギ群生地は、大清（テチョン）ダムや錦江（クムガン）ロハス大清公園の近くにあり、錦江本流沿いにマルバヤナギが自生している場所です。写真撮影に適しており、日の出と日の入りの時、太陽の光と水霧が調和して壮観です。湿地で腐敗するヤナギは、夜になると自ら光を発することもあります。</p>
-<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">대전광역시 대덕구 미호동 711</span></div>
-<button data-v="대전광역시 대덕구 미호동 711" data-done="コピーしました">コピー</button></div>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">대전광역시 대덕구 미호동</span></div>
+<button data-v="대전광역시 대덕구 미호동" data-done="コピーしました">コピー</button></div>
 </li><li class="jn-item">
 <div class="jn-h"><b>文義文化財団地</b><span class="jn-tag">観光地</span><span class="jn-km">約 4.5 km</span></div>
 <p class="jn-ov">文義文化財団地は、消えゆく固有の伝統文化を再現し先祖の生き方と魂を称え学ぶために造られた歴史教育の場・文化芸術の空間で、大清湖を見下ろす美しい場所に位置しているため多くの家族連れが訪れるところです。4万坪の敷地に忠清北道有形文化財である文山館と両班家屋、文化遺物展示館をはじめとした全10棟の古い建物…</p>
 <div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">충청북도 청주시 상당구 문의면 대청호반로 721</span></div>
 <button data-v="충청북도 청주시 상당구 문의면 대청호반로 721" data-done="コピーしました">コピー</button></div>
+</li><li class="jn-item">
+<div class="jn-h"><b>大清湖</b><span class="jn-tag">観光地</span><span class="jn-km">約 7.5 km</span></div>
+<p class="jn-ov">大田（テジョン）広域市と忠清北道（チュンチョンプクド）清州市（チョンジュシ）・沃川郡（オクチョングン）・報恩郡（ポウングン）にまたがる人造湖・大清湖（テチョンホ）。 大清湖は1975年に着工し、5年後の1980年に完成しました。大田、清州地域の水道をはじめ、工業用水なども供給するこの地域の大切な水が…</p>
+<div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">대전광역시 동구</span></div>
+<button data-v="대전광역시 동구" data-done="コピーしました">コピー</button></div>
 </li><li class="jn-item">
 <div class="jn-h"><b>水生植物学習園</b><span class="jn-tag">観光地</span><span class="jn-km">約 10.0 km</span></div>
 <p class="jn-ov">美しい湖庭園の上にある絵のような植物園「水生植物学習園」は、韓国に生息する各種水生植物や熱帯地方の水生植物などを見ることができる場所だ。韓国で最も美しい湖庭園とも呼ばれるここは、入場時に事前予約が必要なので、必ずホームページで予約するようにしよう。</p>
