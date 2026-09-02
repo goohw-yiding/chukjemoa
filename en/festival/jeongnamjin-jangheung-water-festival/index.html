@@ -553,7 +553,73 @@ document.addEventListener('click',function(e){
 <div class="xbox"><h2>🎪 Other festivals nearby at the same time</h2><p class="lead">Overlapping dates, within 60 km.</p><div class="xlist"><a class="xitem" style="display:block;text-decoration:none" href="/en/festival/earthen-vessels-stories-of-our-lives/">
 <div class="nm" style="color:#0c7d72">Earthen Vessels: Stories of Our Lives</div>
 <div class="mt">56.7 km away · 07/29 – 10/25</div></a></div></div>
-
+<style>
+.ennear{margin:22px 0}
+.ennear h2{font-size:1.08rem;font-weight:900;margin:0 0 6px}
+.en-note,.en-src{font-size:.8rem;color:#8a939d;line-height:1.6;margin:0 0 10px}
+.en-src{margin-top:10px}
+.en-list{list-style:none;padding:0;margin:0;display:grid;gap:10px}
+.en-item{border:1px solid #e6eaee;border-radius:12px;padding:12px 13px;background:#fff}
+.en-h{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-bottom:5px}
+.en-h b{font-size:1rem;font-weight:800;color:#111827}
+.en-ko{font-size:.82rem;color:#6b7280;font-weight:700}
+.en-tag{font-size:.72rem;font-weight:800;color:#0a6c63;background:#e7f6f3;border-radius:6px;padding:2px 7px}
+.en-km{font-size:.78rem;color:#8a939d;margin-left:auto}
+.en-ov{font-size:.88rem;line-height:1.65;color:#374151;margin:0 0 9px}
+.xcopy{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;
+  background:#f6fbfa;border:1.5px solid #dcefeb;border-radius:12px;padding:11px 13px;margin:8px 0}
+.xcopy .lb{font-size:.74rem;font-weight:800;color:#0a6c63;letter-spacing:.02em;display:block;margin-bottom:3px}
+.xcopy .vl{font-size:1rem;font-weight:800;color:#111827;word-break:keep-all;line-height:1.45}
+.xcopy button{background:#0f9d8f;color:#fff;border:0;border-radius:9px;padding:9px 14px;
+  font-weight:800;font-size:.84rem;cursor:pointer;white-space:nowrap}
+</style>
+<script>
+// ⚠️ intl-fest-extra.js 도 같은 핸들러를 심는다 — 같은 플래그로 «한 번만» 걸리게 한다
+//    (두 번 걸리면 클릭 한 번에 클립보드를 두 번 쓴다).
+if(!window.__xcopyBound){window.__xcopyBound=1;
+document.addEventListener('click',function(e){
+  var b=e.target.closest('.xcopy button'); if(!b) return;
+  var t=b.getAttribute('data-v')||'';
+  var done=function(){var o=b.textContent;b.textContent=b.getAttribute('data-done')||'OK';
+    setTimeout(function(){b.textContent=o;},1400);};
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,function(){});}
+  else{var ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);
+    ta.select();try{document.execCommand('copy');done();}catch(_){}document.body.removeChild(ta);}
+});}
+</script><div class="ennear"><h2>Nearby Attractions</h2>
+<p class="en-note">Places within 12&nbsp;km of the festival venue (straight-line distance), described in English by the Korea Tourism Organization. Travel time depends on roads and traffic, so only distance is shown.</p>
+<ul class="en-list"><li class="en-item">
+<div class="en-h"><b>Jeongnamjin Cypress Forest Woodland</b><span class="en-ko">정남진 편백숲 우드랜드</span>
+<span class="en-tag">Attraction</span><span class="en-km">approx. 3.1 km</span></div>
+<p class="en-ov">Jangheung Jeongnamjin is an ecological village situated next to mountains, the sea, and the river. The Jeongnamjin Cypress Forest Woodland is the best spot in the area…</p>
+<div class="xcopy"><div><span class="lb">Korean address for map apps</span><span class="vl">전라남도 장흥군 장흥읍 우드랜드길 180</span></div>
+<button data-v="전라남도 장흥군 장흥읍 우드랜드길 180" data-done="Copied">Copy</button></div>
+</li><li class="en-item">
+<div class="en-h"><b>Jeollanam-do Heart Health Healing Center</b><span class="en-ko">전라남도 마음건강치유센터</span>
+<span class="en-tag">Attraction</span><span class="en-km">approx. 5.1 km</span></div>
+<p class="en-ov">Jeollanam-do Heart Health Healing Center is a specialized mental health and wellness facility located on the second floor of Wonkwang University Jangheung Integrative…</p>
+<div class="xcopy"><div><span class="lb">Korean address for map apps</span><span class="vl">전라남도 장흥군 안양면 로하스로 121</span></div>
+<button data-v="전라남도 장흥군 안양면 로하스로 121" data-done="Copied">Copy</button></div>
+</li><li class="en-item">
+<div class="en-h"><b>Jeamsan Recreational Forest</b><span class="en-ko">제암산자연휴양림</span>
+<span class="en-tag">Attraction</span><span class="en-km">approx. 7.7 km</span></div>
+<p class="en-ov">Jeamsan Mountain is beautiful throughout the year with royal azaleas in spring, cool water in summer, silver grass in fall, and a snow-covered mountain in winter. The…</p>
+<div class="xcopy"><div><span class="lb">Korean address for map apps</span><span class="vl">전라남도 보성군 웅치면 대산길 330</span></div>
+<button data-v="전라남도 보성군 웅치면 대산길 330" data-done="Copied">Copy</button></div>
+</li><li class="en-item">
+<div class="en-h"><b>Jeonnam Area Environmental Disease Prevention Management Center</b><span class="en-ko">전남권 환경성질환 예방관리센터</span>
+<span class="en-tag">Attraction</span><span class="en-km">approx. 8.2 km</span></div>
+<p class="en-ov">The Jeonnam Area Environmental Disease Prevention Management Center is an eco-friendly healing center developed in Jeollanam-do to prevent and manage environmental…</p>
+<div class="xcopy"><div><span class="lb">Korean address for map apps</span><span class="vl">전라남도 보성군 웅치면 대산길 329-126</span></div>
+<button data-v="전라남도 보성군 웅치면 대산길 329-126" data-done="Copied">Copy</button></div>
+</li><li class="en-item">
+<div class="en-h"><b>Military Headquarters of Jeolla-do Province, Gangjin</b><span class="en-ko">강진 전라병영성</span>
+<span class="en-tag">Attraction</span><span class="en-km">approx. 9.0 km</span></div>
+<p class="en-ov">Jeolla Byeongyeongseong is a fortress located in Seongdong-ri, Byeongyeong-myeon, Gangjin-gun, Jeonnam-Gwangju Special Metropolitan City. It played an important role as…</p>
+<div class="xcopy"><div><span class="lb">Korean address for map apps</span><span class="vl">전라남도 강진군 병영면 병영성로 175</span></div>
+<button data-v="전라남도 강진군 병영면 병영성로 175" data-done="Copied">Copy</button></div>
+</li></ul>
+<p class="en-src">Google Maps cannot provide driving or transit directions inside South Korea. Paste the Korean addresses above into <b>NAVER Map</b> or <b>KakaoMap</b> — both work with these addresses and are what people here actually use.</p></div>
 <div class="nmap-wrap">
 <div class="nmap" style="height:300px" data-x="126.9026698466" data-y="34.6797623326" data-t="Jeongnamjin Jangheung Water Festival"><span class="nmap-ph">Loading map…</span></div>
 <a class="nmap-open" href="https://map.naver.com/p/search/Jeongnamjin%20Jangheung%20Water%20Festival" target="_blank" rel="noopener">🗺️ Open in Naver Map</a>
@@ -635,7 +701,7 @@ document.addEventListener('click',function(e){
 <p>Schedules may change; please check the official website before visiting.</p>
 <p><a href="/about/">About</a> · <a href="/editorial/">Editorial Policy</a> · <a href="/contact/">Contact</a> · <a href="/privacy/">Privacy</a></p>
 <p>Data: Korea Tourism Organization (TourAPI) · Contact: goohw593@gmail.com</p>
-<p class="srcnote">Festival data source: Korea Tourism Organization TourAPI and other open public data. Last updated 2026-09-02.</p>
+<p class="srcnote">Festival data source: Korea Tourism Organization TourAPI and other open public data. Last updated 2026-09-03.</p>
 <p>© 2026 Chukjemoa</p>
 </div></footer>
 

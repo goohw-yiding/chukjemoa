@@ -550,7 +550,73 @@ document.addEventListener('click',function(e){
 <div class="mt">0.7 km away · opens on days ending in 1, 6 · 220 stalls</div>
 <div style="margin-top:5px"><span class="lb" style="font-size:.74rem;font-weight:800;color:#9a5b00">Open on</span> <span class="xtag d">Oct 31</span><span class="xtag d">Nov 1</span></div>
 </div></div></div>
-
+<style>
+.ennear{margin:22px 0}
+.ennear h2{font-size:1.08rem;font-weight:900;margin:0 0 6px}
+.en-note,.en-src{font-size:.8rem;color:#8a939d;line-height:1.6;margin:0 0 10px}
+.en-src{margin-top:10px}
+.en-list{list-style:none;padding:0;margin:0;display:grid;gap:10px}
+.en-item{border:1px solid #e6eaee;border-radius:12px;padding:12px 13px;background:#fff}
+.en-h{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-bottom:5px}
+.en-h b{font-size:1rem;font-weight:800;color:#111827}
+.en-ko{font-size:.82rem;color:#6b7280;font-weight:700}
+.en-tag{font-size:.72rem;font-weight:800;color:#0a6c63;background:#e7f6f3;border-radius:6px;padding:2px 7px}
+.en-km{font-size:.78rem;color:#8a939d;margin-left:auto}
+.en-ov{font-size:.88rem;line-height:1.65;color:#374151;margin:0 0 9px}
+.xcopy{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;
+  background:#f6fbfa;border:1.5px solid #dcefeb;border-radius:12px;padding:11px 13px;margin:8px 0}
+.xcopy .lb{font-size:.74rem;font-weight:800;color:#0a6c63;letter-spacing:.02em;display:block;margin-bottom:3px}
+.xcopy .vl{font-size:1rem;font-weight:800;color:#111827;word-break:keep-all;line-height:1.45}
+.xcopy button{background:#0f9d8f;color:#fff;border:0;border-radius:9px;padding:9px 14px;
+  font-weight:800;font-size:.84rem;cursor:pointer;white-space:nowrap}
+</style>
+<script>
+// ⚠️ intl-fest-extra.js 도 같은 핸들러를 심는다 — 같은 플래그로 «한 번만» 걸리게 한다
+//    (두 번 걸리면 클릭 한 번에 클립보드를 두 번 쓴다).
+if(!window.__xcopyBound){window.__xcopyBound=1;
+document.addEventListener('click',function(e){
+  var b=e.target.closest('.xcopy button'); if(!b) return;
+  var t=b.getAttribute('data-v')||'';
+  var done=function(){var o=b.textContent;b.textContent=b.getAttribute('data-done')||'OK';
+    setTimeout(function(){b.textContent=o;},1400);};
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,function(){});}
+  else{var ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);
+    ta.select();try{document.execCommand('copy');done();}catch(_){}document.body.removeChild(ta);}
+});}
+</script><div class="ennear"><h2>Nearby Attractions</h2>
+<p class="en-note">Places within 12&nbsp;km of the festival venue (straight-line distance), described in English by the Korea Tourism Organization. Travel time depends on roads and traffic, so only distance is shown.</p>
+<ul class="en-list"><li class="en-item">
+<div class="en-h"><b>Hongju Millennium Monument</b><span class="en-ko">홍주천년기념탑</span>
+<span class="en-tag">Attraction</span><span class="en-km">approx. 0.6 km</span></div>
+<p class="en-ov">The Hongju Millennium Monument was created in 2018 to commemorate the past one thousand years of history in Hongseong (previously called Hongju), while also looking to…</p>
+<div class="xcopy"><div><span class="lb">Korean address for map apps</span><span class="vl">충청남도 홍성군 홍성읍 옥암리</span></div>
+<button data-v="충청남도 홍성군 홍성읍 옥암리" data-done="Copied">Copy</button></div>
+</li><li class="en-item">
+<div class="en-h"><b>Hongseong Seongyeonsa Temple</b><span class="en-ko">석련사(홍성</span>
+<span class="en-tag">Attraction</span><span class="en-km">approx. 3.8 km</span></div>
+<p class="en-ov">Seongnyeonsa Temple is located on the side of Baegwolsan Mountain, and is a branch temple of Sudeoksa Temple. The path to the temple is paved, making it easy to enjoy…</p>
+<div class="xcopy"><div><span class="lb">Korean address for map apps</span><span class="vl">충청남도 홍성군 구항면 구성북로160번길 76</span></div>
+<button data-v="충청남도 홍성군 구항면 구성북로160번길 76" data-done="Copied">Copy</button></div>
+</li><li class="en-item">
+<div class="en-h"><b>Hongseong Gujeoram Hermitage</b><span class="en-ko">구절암(홍성</span>
+<span class="en-tag">Attraction</span><span class="en-km">approx. 4.7 km</span></div>
+<p class="en-ov">Gujeoram Hermitage is located within a bamboo forest on a small mountain. The pathway is winding, without any signs marking the way, but this adds to the charm.</p>
+<div class="xcopy"><div><span class="lb">Korean address for map apps</span><span class="vl">충청남도 홍성군 구항면 거북로218번길 163</span></div>
+<button data-v="충청남도 홍성군 구항면 거북로218번길 163" data-done="Copied">Copy</button></div>
+</li><li class="en-item">
+<div class="en-h"><b>Historic Site Related to Seong Sam-mun</b><span class="en-ko">성삼문선생유허지</span>
+<span class="en-tag">Attraction</span><span class="en-km">approx. 8.0 km</span></div>
+<p class="en-ov">This historic site related to Seong Sam-mun is believed to be the birthplace of Seong Sam-mun, and was founded by his maternal ancester, Park Dam. A shrine was built…</p>
+<div class="xcopy"><div><span class="lb">Korean address for map apps</span><span class="vl">충청남도 홍성군 홍북읍 매죽헌길 403-12</span></div>
+<button data-v="충청남도 홍성군 홍북읍 매죽헌길 403-12" data-done="Copied">Copy</button></div>
+</li><li class="en-item">
+<div class="en-h"><b>Imjonseong Fortress</b><span class="en-ko">예산 임존성</span>
+<span class="en-tag">Attraction</span><span class="en-km">approx. 10.2 km</span></div>
+<p class="en-ov">Imjonseong Fortress (also known as Daeheungsanseong Fortress) is located at the top of Bongsusan Mountain between Yesan-gun and Hongseong-gun in Chungcheongnam-do. This…</p>
+<div class="xcopy"><div><span class="lb">Korean address for map apps</span><span class="vl">충청남도 예산군 광시면 마사리 산28</span></div>
+<button data-v="충청남도 예산군 광시면 마사리 산28" data-done="Copied">Copy</button></div>
+</li></ul>
+<p class="en-src">Google Maps cannot provide driving or transit directions inside South Korea. Paste the Korean addresses above into <b>NAVER Map</b> or <b>KakaoMap</b> — both work with these addresses and are what people here actually use.</p></div>
 <div class="nmap-wrap">
 <div class="nmap" style="height:300px" data-x="126.6609319005" data-y="36.600246495" data-t="Hongseong Global BBQ Festival"><span class="nmap-ph">Loading map…</span></div>
 <a class="nmap-open" href="https://map.naver.com/p/search/Hongseong%20Global%20BBQ%20Festival" target="_blank" rel="noopener">🗺️ Open in Naver Map</a>
@@ -632,7 +698,7 @@ document.addEventListener('click',function(e){
 <p>Schedules may change; please check the official website before visiting.</p>
 <p><a href="/about/">About</a> · <a href="/editorial/">Editorial Policy</a> · <a href="/contact/">Contact</a> · <a href="/privacy/">Privacy</a></p>
 <p>Data: Korea Tourism Organization (TourAPI) · Contact: goohw593@gmail.com</p>
-<p class="srcnote">Festival data source: Korea Tourism Organization TourAPI and other open public data. Last updated 2026-09-02.</p>
+<p class="srcnote">Festival data source: Korea Tourism Organization TourAPI and other open public data. Last updated 2026-09-03.</p>
 <p>© 2026 Chukjemoa</p>
 </div></footer>
 
