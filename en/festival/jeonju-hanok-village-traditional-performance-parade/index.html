@@ -605,14 +605,41 @@ document.addEventListener('click',function(e){
     s.onerror=function(){els.forEach(function(el){el.innerHTML='<span class="nmap-ph">Map could not be loaded</span>';});};
     document.head.appendChild(s);
   }
-  if(!('IntersectionObserver' in window)){ els.forEach(function(el){queue.push(el);}); load(); return; }
-  var io=new IntersectionObserver(function(ent){
-    ent.forEach(function(e){
-      if(!e.isIntersecting) return;
-      io.unobserve(e.target); queue.push(e.target); load();
+  // ⚠️ IntersectionObserver 하나에만 기대면, 그게 안 먹는 환경에서 «불러오는 중…»이 영원히 남는다.
+  //    (2026-09-02 실측: 어떤 브라우저 창에서는 IO 가 아예 발화하지 않았다.)
+  //    그래서 세 갈래로 건다 — ①IO ②스크롤할 때 위치 직접 계산 ③사용자가 눌렀을 때.
+  //    전부 «보일 때만» 부르므로 지연 로딩의 이점(비용·속도)은 그대로다.
+  function near(el){
+    var r=el.getBoundingClientRect();
+    return r.bottom>-200 && r.top<(window.innerHeight||document.documentElement.clientHeight)+200;
+  }
+  function sweep(){
+    var left=false;
+    els.forEach(function(el){
+      if(el.dataset.q||el.dataset.done) return;
+      if(near(el)){ el.dataset.q='1'; queue.push(el); load(); } else left=true;
     });
-  },{rootMargin:'200px'});
-  els.forEach(function(el){io.observe(el);});
+    if(!left){ window.removeEventListener('scroll',onScroll); window.removeEventListener('resize',onScroll); }
+  }
+  var tick=null;
+  function onScroll(){ if(tick) return; tick=setTimeout(function(){tick=null;sweep();},150); }
+  window.addEventListener('scroll',onScroll,{passive:true});
+  window.addEventListener('resize',onScroll,{passive:true});
+  els.forEach(function(el){
+    el.style.cursor='pointer';
+    el.addEventListener('click',function(){ if(!el.dataset.done){ el.dataset.q='1'; queue.push(el); load(); } });
+  });
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(ent){
+      ent.forEach(function(e){
+        if(!e.isIntersecting||e.target.dataset.q) return;
+        io.unobserve(e.target); e.target.dataset.q='1'; queue.push(e.target); load();
+      });
+    },{rootMargin:'200px'});
+    els.forEach(function(el){io.observe(el);});
+  }
+  sweep();                       // 첫 화면에 이미 보이는 지도 처리
+  setTimeout(sweep,1500);        // IO 가 조용한 환경 대비 — 한 번 더 확인한다
 })();
 </script>
 </div></main>
