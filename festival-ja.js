@@ -21,6 +21,7 @@ const textLen = h => String(h).replace(/<script[\s\S]*?<\/script>|<style[\s\S]*?
   .replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim().length;
 const { indexPage } = require('./intl-fest-index.js');
 const { mapBlock, mapScript } = require('./nmap.js');   // 좌표 기반 지도(외국인에게 가장 정확한 안내)
+const JN = require('./ja-nearby.js');                  // 근처 볼거리 — 역지오코딩한 한글주소를 여기서 쓴다
 const { romanizeMixed } = require('./placename.js');
 const MIN_OV = 200;
 
@@ -103,7 +104,8 @@ function build(ctx) {
   //       가리켜 끊긴 링크가 된다.
   const thin = new Set();
   rows.forEach(f => {
-    const blocks = Object.values(extras(f, 'ja', rows).stats).filter(Boolean).length;
+    // 2026-09-02: 「近くの見どころ」(일본어 설명 + 한글주소)도 읽을 내용이다 — 사전 게이트에 함께 센다.
+    const blocks = Object.values(extras(f, 'ja', rows).stats).filter(Boolean).length + (JN.nearby(f, 5).count ? 1 : 0);
     if (String(f.ov || '').length < 300 && blocks < 3) thin.add(f._slug);
   });
   const kept = rows.filter(f => !thin.has(f._slug));
@@ -135,6 +137,7 @@ function build(ctx) {
     // ⚠️ 지도 블록의 안내 문구("地図を読み込み中…" 등)가 «얇은 페이지» 판정을 밀어올린다.
     //    지도가 붙었다고 읽을 내용이 늘어난 건 아니므로 길이 측정에서 뺀다(게이트를 스스로 속이지 않는다).
     const mapHtml = mapBlock({ x: f.x, y: f.y, title: f.title, lang: 'ja', query: (f._ko && f._ko.title) || f.title });
+    const near = JN.nearby(f, 5);   // 일본어 설명 + 붙여넣을 수 있는 한글주소
 
     const content = `<main><div class="wrap">
 ${CSS}
@@ -156,6 +159,7 @@ ${hpUrl ? `<a class="fl-hp" href="${esc(hpUrl)}" target="_blank" rel="noopener">
 </div>
 ${ex.html}
 ${mapHtml}
+${near.html ? JN.CSS + near.html : ''}
 ${rel.length ? `<div class="frel"><h2>${esc(f.region)}のほかの祭り</h2><div class="row">${
   rel.map(r => `<a href="/ja/festival/${esc(r._slug)}/">${esc(r.title)}</a>`).join('')}</div></div>` : ''}
 <p style="margin-top:10px"><a href="/ja/search/" style="color:#0c7d72;font-weight:700">← 韓国の祭りをすべて見る</a></p>
