@@ -571,8 +571,52 @@ document.addEventListener('click',function(e){
 <div class="mt">38.6 km away · 01/01 – 12/31</div></a><a class="xitem" style="display:block;text-decoration:none" href="/en/festival/ssokssokdeul-i-festival/">
 <div class="nm" style="color:#0c7d72">Ssokssokdeul-i Festival</div>
 <div class="mt">51.1 km away · 03/14 – 12/26</div></a></div></div>
+<div class="nmap-wrap">
+<div class="nmap" style="height:300px" data-x="126.6806875965" data-y="37.3241007968" data-t="WSL Siheung Korea Open Qualifying Series"><span class="nmap-ph">Loading map…</span></div>
+<a class="nmap-open" href="https://map.naver.com/p/search/WSL%20Siheung%20Korea%20Open%20Qualifying%20Series" target="_blank" rel="noopener">🗺️ Open in Naver Map</a>
+</div>
 <div class="frel"><h2>Other festivals in Gyeonggi</h2><div class="row"><a href="/en/festival/bucheon-international-comics-festival/">Bucheon International Comics Festival</a><a href="/en/festival/siheung-gaetgol-festival/">Siheung Gaetgol Festival</a><a href="/en/festival/anseong-namsadang-baudeogi-festival/">Anseong Namsadang Baudeogi Festival</a><a href="/en/festival/suwon-hwaseong-media-art/">Suwon Hwaseong Media Art</a><a href="/en/festival/ghost-festival/">GHOST Festival</a><a href="/en/festival/suwon-hwaseong-festival/">Suwon Hwaseong Festival</a></div></div>
 <p style="margin-top:10px"><a href="/en/search/?region=Gyeonggi" style="color:#0c7d72;font-weight:700">← Browse all festivals in Gyeonggi</a></p>
+<style>
+.nmap-wrap{margin:14px 0}
+.nmap{width:100%;border-radius:12px;overflow:hidden;background:#eef1f4;display:flex;align-items:center;justify-content:center}
+.nmap-ph{color:#98a2ad;font-size:.85rem}
+.nmap-open{display:inline-block;margin-top:8px;font-size:.88rem;color:#0c7d72;text-decoration:none;font-weight:700}
+.nmap-open:hover{text-decoration:underline}
+</style>
+<script>
+(function(){
+  var els=[].slice.call(document.querySelectorAll('.nmap'));
+  if(!els.length) return;
+  var loading=false, loaded=false, queue=[];
+  function draw(el){
+    if(el.dataset.done) return; el.dataset.done='1';
+    try{
+      var pos=new naver.maps.LatLng(+el.dataset.y, +el.dataset.x);
+      var map=new naver.maps.Map(el,{center:pos,zoom:15,
+        scaleControl:false,mapDataControl:false,logoControlOptions:{position:naver.maps.Position.BOTTOM_LEFT}});
+      new naver.maps.Marker({position:pos,map:map,title:el.dataset.t});
+    }catch(e){ el.innerHTML='<span class="nmap-ph">Map could not be loaded</span>'; }
+  }
+  function load(){
+    if(loaded){queue.splice(0).forEach(draw);return;}
+    if(loading) return; loading=true;
+    var s=document.createElement('script');
+    s.src='https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=j1lf150u8d';
+    s.onload=function(){loaded=true;queue.splice(0).forEach(draw);};
+    s.onerror=function(){els.forEach(function(el){el.innerHTML='<span class="nmap-ph">Map could not be loaded</span>';});};
+    document.head.appendChild(s);
+  }
+  if(!('IntersectionObserver' in window)){ els.forEach(function(el){queue.push(el);}); load(); return; }
+  var io=new IntersectionObserver(function(ent){
+    ent.forEach(function(e){
+      if(!e.isIntersecting) return;
+      io.unobserve(e.target); queue.push(e.target); load();
+    });
+  },{rootMargin:'200px'});
+  els.forEach(function(el){io.observe(el);});
+})();
+</script>
 </div></main>
 <footer><div class="wrap">
 <p>Chukjemoa — Korea Festivals &amp; Traditional Markets</p>

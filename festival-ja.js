@@ -20,6 +20,7 @@ const MIN_BODY = 2000;
 const textLen = h => String(h).replace(/<script[\s\S]*?<\/script>|<style[\s\S]*?<\/style>/g, ' ')
   .replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim().length;
 const { indexPage } = require('./intl-fest-index.js');
+const { mapBlock, mapScript } = require('./nmap.js');   // 좌표 기반 지도(외국인에게 가장 정확한 안내)
 const { romanizeMixed } = require('./placename.js');
 const MIN_OV = 200;
 
@@ -131,6 +132,9 @@ function build(ctx) {
     const hpUrl = f.hp ? (String(f.hp).indexOf('http') === 0 ? f.hp : 'http://' + f.hp) : '';
     const ex = extras(f, 'ja', rows);
     Object.keys(tally).forEach(k => { if (ex.stats[k]) tally[k]++; });
+    // ⚠️ 지도 블록의 안내 문구("地図を読み込み中…" 등)가 «얇은 페이지» 판정을 밀어올린다.
+    //    지도가 붙었다고 읽을 내용이 늘어난 건 아니므로 길이 측정에서 뺀다(게이트를 스스로 속이지 않는다).
+    const mapHtml = mapBlock({ x: f.x, y: f.y, title: f.title, lang: 'ja', query: (f._ko && f._ko.title) || f.title });
 
     const content = `<main><div class="wrap">
 ${CSS}
@@ -151,9 +155,11 @@ ${hpUrl ? `<a class="fl-hp" href="${esc(hpUrl)}" target="_blank" rel="noopener">
 <a class="fl-map" href="${esc(mapUrl)}" target="_blank" rel="noopener">🗺️ NAVERマップで開く</a>
 </div>
 ${ex.html}
+${mapHtml}
 ${rel.length ? `<div class="frel"><h2>${esc(f.region)}のほかの祭り</h2><div class="row">${
   rel.map(r => `<a href="/ja/festival/${esc(r._slug)}/">${esc(r.title)}</a>`).join('')}</div></div>` : ''}
 <p style="margin-top:10px"><a href="/ja/search/" style="color:#0c7d72;font-weight:700">← 韓国の祭りをすべて見る</a></p>
+${mapScript('ja')}
 </div></main>`;
 
     const ld = `<script type="application/ld+json">${JSON.stringify({
@@ -170,7 +176,7 @@ ${rel.length ? `<div class="frel"><h2>${esc(f.region)}のほかの祭り</h2><di
     //    (통과한 90개가 실제로는 1,000~1,500자). **렌더된 본문을 직접 재서** 다시 판정한다.
     //    얇으면 «지우지 않고» noindex + 사이트맵 제외 — 끝난 축제(2026-08-18)와 같은 방식이라
     //    허브·근처축제 링크가 끊기지 않는다. 나중에 데이터가 차면 저절로 되살아난다.
-    const tooThin = textLen(content) < MIN_BODY;
+    const tooThin = textLen(content) - textLen(mapHtml) < MIN_BODY;
     writePage('ja/festival/' + f._slug, layout(
       `${f.title} — 日程・場所・アクセス | 축제모아`,
       String(f.ov || '').slice(0, 110),

@@ -27,6 +27,7 @@ const R = require('./course/render.js');
 const { romanizeMixed } = require('./placename.js');
 const { inKorea } = require('./geo.js');
 const { prose, proseLead } = require('./prose.js');
+const { mapBlock, mapScript } = require('./nmap.js');   // 좌표 기반 지도 — 주소보다 좌표가 정확하다
 
 const MIN_OV = 300, MIN_NEAR = 3, FROM_YEAR = '2026';
 
@@ -376,6 +377,8 @@ ${festBuyBox ? festBuyBox(f.title) : (buyBox ? buyBox('festival') : '')}
 <h2 class="sec">자주 묻는 것</h2>
 ${faq.map(([q, a]) => `<p><b>${esc(q)}</b><br>${esc(a)}</p>`).join('')}
 
+${mapBlock({ x: f.x, y: f.y, title: f.title, lang: 'ko' })}
+
 <h2 class="sec">같이 보면 좋은 축제</h2>
 <div class="frel">
 ${cand.filter(o => o !== f && o.sido === f.sido).slice(0, 4).map(o => `<a href="/festival/${o._slug}/">${esc(o.title)}</a>`).join('')}
@@ -383,6 +386,7 @@ ${cand.filter(o => o !== f && o.sido !== f.sido && String(o.start).slice(4, 6) =
 </div>
 
 <p class="note" style="margin-top:18px">데이터 출처: 한국관광공사 TourAPI(축제·관광지·음식점·카페·숙박·무장애) · 전국길관광정보 표준데이터(걷기길) · 한국관광공사 「한국관광 데이터랩」(시·군·구 방문자 수) · 국가유산청. 일정·영업시간은 변경될 수 있으니 방문 전 확인하세요.</p>
+${mapScript('ko')}
 </div></main>`;
 
     const evLd = {

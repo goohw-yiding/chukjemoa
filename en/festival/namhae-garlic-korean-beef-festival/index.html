@@ -545,8 +545,52 @@ document.addEventListener('click',function(e){
 <div class="mt">6.9 km away · opens on days ending in 4, 9 · 17 stalls</div>
 <div style="margin-top:5px"><span class="lb" style="font-size:.74rem;font-weight:800;color:#9a5b00">Open on</span> <span class="xtag d">Jun 14</span></div>
 </div></div></div>
+<div class="nmap-wrap">
+<div class="nmap" style="height:300px" data-x="127.899135712" data-y="34.8319301305" data-t="Namhae Garlic &amp; Korean Beef Festival"><span class="nmap-ph">Loading map…</span></div>
+<a class="nmap-open" href="https://map.naver.com/p/search/Namhae%20Garlic%20%26%20Korean%20Beef%20Festival" target="_blank" rel="noopener">🗺️ Open in Naver Map</a>
+</div>
 <div class="frel"><h2>Other festivals in Gyeongnam</h2><div class="row"><a href="/en/festival/miryang-performing-arts-festival/">Miryang Performing Arts Festival</a><a href="/en/festival/saturday-permanent-stage-propose-and-sacheon-rock-festival/">Saturday Permanent Stage Propose and Sacheon Rock Festival</a><a href="/en/festival/tongyeong-hansan-battle-festival/">Tongyeong Hansan Battle Festival</a><a href="/en/festival/gaya-theme-park-light-festival/">Gaya Theme Park Light Festival</a><a href="/en/festival/sancheong-medicinal-herb-festival/">Sancheong Medicinal Herb Festival</a><a href="/en/festival/jinju-namgang-yudeung-festival/">Jinju Namgang Yudeung Festival</a></div></div>
 <p style="margin-top:10px"><a href="/en/search/?region=Gyeongnam" style="color:#0c7d72;font-weight:700">← Browse all festivals in Gyeongnam</a></p>
+<style>
+.nmap-wrap{margin:14px 0}
+.nmap{width:100%;border-radius:12px;overflow:hidden;background:#eef1f4;display:flex;align-items:center;justify-content:center}
+.nmap-ph{color:#98a2ad;font-size:.85rem}
+.nmap-open{display:inline-block;margin-top:8px;font-size:.88rem;color:#0c7d72;text-decoration:none;font-weight:700}
+.nmap-open:hover{text-decoration:underline}
+</style>
+<script>
+(function(){
+  var els=[].slice.call(document.querySelectorAll('.nmap'));
+  if(!els.length) return;
+  var loading=false, loaded=false, queue=[];
+  function draw(el){
+    if(el.dataset.done) return; el.dataset.done='1';
+    try{
+      var pos=new naver.maps.LatLng(+el.dataset.y, +el.dataset.x);
+      var map=new naver.maps.Map(el,{center:pos,zoom:15,
+        scaleControl:false,mapDataControl:false,logoControlOptions:{position:naver.maps.Position.BOTTOM_LEFT}});
+      new naver.maps.Marker({position:pos,map:map,title:el.dataset.t});
+    }catch(e){ el.innerHTML='<span class="nmap-ph">Map could not be loaded</span>'; }
+  }
+  function load(){
+    if(loaded){queue.splice(0).forEach(draw);return;}
+    if(loading) return; loading=true;
+    var s=document.createElement('script');
+    s.src='https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=j1lf150u8d';
+    s.onload=function(){loaded=true;queue.splice(0).forEach(draw);};
+    s.onerror=function(){els.forEach(function(el){el.innerHTML='<span class="nmap-ph">Map could not be loaded</span>';});};
+    document.head.appendChild(s);
+  }
+  if(!('IntersectionObserver' in window)){ els.forEach(function(el){queue.push(el);}); load(); return; }
+  var io=new IntersectionObserver(function(ent){
+    ent.forEach(function(e){
+      if(!e.isIntersecting) return;
+      io.unobserve(e.target); queue.push(e.target); load();
+    });
+  },{rootMargin:'200px'});
+  els.forEach(function(el){io.observe(el);});
+})();
+</script>
 </div></main>
 <footer><div class="wrap">
 <p>Chukjemoa — Korea Festivals &amp; Traditional Markets</p>

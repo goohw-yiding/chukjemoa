@@ -556,8 +556,52 @@ document.addEventListener('click',function(e){
 <div class="xbox"><h2>🎪 Other festivals nearby at the same time</h2><p class="lead">Overlapping dates, within 60 km.</p><div class="xlist"><a class="xitem" style="display:block;text-decoration:none" href="/en/festival/suseong-light-art-festival/">
 <div class="nm" style="color:#0c7d72">Suseong Light Art Festival</div>
 <div class="mt">5.8 km away · 12/24 – 01/04</div></a></div></div>
+<div class="nmap-wrap">
+<div class="nmap" style="height:300px" data-x="128.5648324581" data-y="35.8548822436" data-t="E-World Illumination"><span class="nmap-ph">Loading map…</span></div>
+<a class="nmap-open" href="https://map.naver.com/p/search/E-World%20Illumination" target="_blank" rel="noopener">🗺️ Open in Naver Map</a>
+</div>
 <div class="frel"><h2>Other festivals in Daegu</h2><div class="row"><a href="/en/festival/international-ki-sports-festival-daegu/">International Ki Sports Festival Daegu</a><a href="/en/festival/daegu-chimac-festival/">Daegu Chimac Festival</a><a href="/en/festival/daegu-yangnyeongsi-herbal-medicine-festival/">Daegu Yangnyeongsi Herbal Medicine Festival</a><a href="/en/festival/suseong-light-art-festival/">Suseong Light Art Festival</a></div></div>
 <p style="margin-top:10px"><a href="/en/search/?region=Daegu" style="color:#0c7d72;font-weight:700">← Browse all festivals in Daegu</a></p>
+<style>
+.nmap-wrap{margin:14px 0}
+.nmap{width:100%;border-radius:12px;overflow:hidden;background:#eef1f4;display:flex;align-items:center;justify-content:center}
+.nmap-ph{color:#98a2ad;font-size:.85rem}
+.nmap-open{display:inline-block;margin-top:8px;font-size:.88rem;color:#0c7d72;text-decoration:none;font-weight:700}
+.nmap-open:hover{text-decoration:underline}
+</style>
+<script>
+(function(){
+  var els=[].slice.call(document.querySelectorAll('.nmap'));
+  if(!els.length) return;
+  var loading=false, loaded=false, queue=[];
+  function draw(el){
+    if(el.dataset.done) return; el.dataset.done='1';
+    try{
+      var pos=new naver.maps.LatLng(+el.dataset.y, +el.dataset.x);
+      var map=new naver.maps.Map(el,{center:pos,zoom:15,
+        scaleControl:false,mapDataControl:false,logoControlOptions:{position:naver.maps.Position.BOTTOM_LEFT}});
+      new naver.maps.Marker({position:pos,map:map,title:el.dataset.t});
+    }catch(e){ el.innerHTML='<span class="nmap-ph">Map could not be loaded</span>'; }
+  }
+  function load(){
+    if(loaded){queue.splice(0).forEach(draw);return;}
+    if(loading) return; loading=true;
+    var s=document.createElement('script');
+    s.src='https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=j1lf150u8d';
+    s.onload=function(){loaded=true;queue.splice(0).forEach(draw);};
+    s.onerror=function(){els.forEach(function(el){el.innerHTML='<span class="nmap-ph">Map could not be loaded</span>';});};
+    document.head.appendChild(s);
+  }
+  if(!('IntersectionObserver' in window)){ els.forEach(function(el){queue.push(el);}); load(); return; }
+  var io=new IntersectionObserver(function(ent){
+    ent.forEach(function(e){
+      if(!e.isIntersecting) return;
+      io.unobserve(e.target); queue.push(e.target); load();
+    });
+  },{rootMargin:'200px'});
+  els.forEach(function(el){io.observe(el);});
+})();
+</script>
 </div></main>
 <footer><div class="wrap">
 <p>Chukjemoa — Korea Festivals &amp; Traditional Markets</p>

@@ -22,6 +22,7 @@ const MIN_BODY = 2000;
 const textLen = h => String(h).replace(/<script[\s\S]*?<\/script>|<style[\s\S]*?<\/style>/g, ' ')
   .replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim().length;
 const { indexPage } = require('./intl-fest-index.js');
+const { mapBlock, mapScript } = require('./nmap.js');   // 좌표 기반 지도(외국인에게 가장 정확한 안내)
 const MIN_OV = 200;
 
 function load(f) { try { return JSON.parse(fs.readFileSync(path.join(__dirname, 'data', f), 'utf8')); } catch (e) { return []; } }
@@ -113,6 +114,8 @@ function build(ctx) {
     // 우리만 가진 정보 — 종료된 축제에는 「기간 중 장날」이 의미 없으므로 진행/예정만 전부 붙이고,
     // 종료된 축제에는 한글 원제·붐빔처럼 «시기와 무관한 것»만 남는다(extras 안에서 자연히 걸러진다).
     const ex = extras(f, 'en', rows);
+    // ⚠️ 지도 안내 문구가 «얇은 페이지» 판정을 밀어올린다 — 길이 측정에서 뺀다(게이트를 속이지 않는다).
+    const mapHtml = mapBlock({ x: f.x, y: f.y, title: f.title, lang: 'en', query: (f._ko && f._ko.title) || f.title });
     Object.keys(tally).forEach(k => { if (ex.stats[k]) tally[k]++; });
     if (!ex.html) tally.none++;
 
@@ -136,8 +139,10 @@ ${mapUrl ? `<a class="fl-map" href="${esc(mapUrl)}" target="_blank" rel="noopene
 <a class="fl-map" href="${esc(googleUrl)}" target="_blank" rel="noopener">🔎 Search on Google</a>
 </div>
 ${ex.html}
+${mapHtml}
 ${related.length ? `<div class="frel"><h2>Other festivals in ${esc(f.region)}</h2><div class="row">${related.map(r => `<a href="/en/festival/${esc(r.slug)}/">${esc(r.title)}</a>`).join('')}</div></div>` : ''}
 <p style="margin-top:10px"><a href="/en/search/?region=${encodeURIComponent(f.region || '')}" style="color:#0c7d72;font-weight:700">← Browse all festivals in ${esc(f.region)}</a></p>
+${mapScript('en')}
 </div></main>`;
 
     const ld = `<script type="application/ld+json">${JSON.stringify({
@@ -153,7 +158,7 @@ ${related.length ? `<div class="frel"><h2>Other festivals in ${esc(f.region)}</h
     const urlPath = `/en/festival/${f.slug}/`;
     // ⚠️ 개요 길이(MIN_OV)만으로는 얇은 게 새어 나온다 — 2026-09-01 감사에서 8개가 2,000자 미만.
     //    렌더된 본문을 직접 재서 얇으면 noindex + 사이트맵 제외(페이지는 남겨 링크를 안 끊는다).
-    const tooThin = textLen(content) < MIN_BODY;
+    const tooThin = textLen(content) - textLen(mapHtml) < MIN_BODY;
     writePage('en/festival/' + f.slug, layout(
       `${f.title} — Dates, Location & Info | Chukjemoa`,
       (f.ov || '').slice(0, 155) + (ended ? ' Official info from the Korea Tourism Organization.' : ''),

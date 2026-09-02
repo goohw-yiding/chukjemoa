@@ -566,8 +566,52 @@ document.addEventListener('click',function(e){
 <div class="mt">15.2km · 09/27 – 09/27</div></a><a class="xitem" style="display:block;text-decoration:none" href="/ja/festival/segyekkot-munhwagwangwangchukje-hosuya-nolja/">
 <div class="nm" style="color:#0c7d72">高陽湖水芸術祭り</div>
 <div class="mt">22.7km · 09/26 – 09/28</div></a></div></div>
+<div class="nmap-wrap">
+<div class="nmap" style="height:300px" data-x="127.0259451148" data-y="37.6417657974" data-t="百年市場百年ナイト"><span class="nmap-ph">地図を読み込み中…</span></div>
+<a class="nmap-open" href="https://map.naver.com/p/search/%EB%B0%B1%EB%85%84%EB%82%98%EC%9D%B4%ED%8A%B8%20%EC%95%BC%EC%8B%9C%EC%9E%A5%20(%EB%A9%94%EA%B8%B0%EC%9D%98%20%EA%B7%80%ED%99%98)" target="_blank" rel="noopener">🗺️ NAVERマップで開く</a>
+</div>
 <div class="frel"><h2>ソウルのほかの祭り</h2><div class="row"><a href="/ja/festival/gwanakganggamchanchukje/">冠岳姜邯贊祭り</a><a href="/ja/festival/2025-daehanminguk-gwangwangginyeompum-bangnamhoe/">大韓民国観光記念品博覧会</a><a href="/ja/festival/gwanakbyeolbitsanchaek/">冠岳ピョルピッ散策</a><a href="/ja/festival/yeongdeungpo-yeouido-bomkkotchukje/">永登浦汝矣島春の花祭り</a><a href="/ja/festival/kukireon-kingdeom-ateu-kollabo-peurojekteu-teukbyeoljeon-wid/">クッキーラン:キングダム アートコラボプロジェクト特別展 - 偉大な王国の遺産</a><a href="/ja/festival/changdeokgung-dalbitgihaeng/">昌徳宮月明かり紀行</a></div></div>
 <p style="margin-top:10px"><a href="/ja/search/" style="color:#0c7d72;font-weight:700">← 韓国の祭りをすべて見る</a></p>
+<style>
+.nmap-wrap{margin:14px 0}
+.nmap{width:100%;border-radius:12px;overflow:hidden;background:#eef1f4;display:flex;align-items:center;justify-content:center}
+.nmap-ph{color:#98a2ad;font-size:.85rem}
+.nmap-open{display:inline-block;margin-top:8px;font-size:.88rem;color:#0c7d72;text-decoration:none;font-weight:700}
+.nmap-open:hover{text-decoration:underline}
+</style>
+<script>
+(function(){
+  var els=[].slice.call(document.querySelectorAll('.nmap'));
+  if(!els.length) return;
+  var loading=false, loaded=false, queue=[];
+  function draw(el){
+    if(el.dataset.done) return; el.dataset.done='1';
+    try{
+      var pos=new naver.maps.LatLng(+el.dataset.y, +el.dataset.x);
+      var map=new naver.maps.Map(el,{center:pos,zoom:15,
+        scaleControl:false,mapDataControl:false,logoControlOptions:{position:naver.maps.Position.BOTTOM_LEFT}});
+      new naver.maps.Marker({position:pos,map:map,title:el.dataset.t});
+    }catch(e){ el.innerHTML='<span class="nmap-ph">地図を読み込めませんでした</span>'; }
+  }
+  function load(){
+    if(loaded){queue.splice(0).forEach(draw);return;}
+    if(loading) return; loading=true;
+    var s=document.createElement('script');
+    s.src='https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=j1lf150u8d';
+    s.onload=function(){loaded=true;queue.splice(0).forEach(draw);};
+    s.onerror=function(){els.forEach(function(el){el.innerHTML='<span class="nmap-ph">地図を読み込めませんでした</span>';});};
+    document.head.appendChild(s);
+  }
+  if(!('IntersectionObserver' in window)){ els.forEach(function(el){queue.push(el);}); load(); return; }
+  var io=new IntersectionObserver(function(ent){
+    ent.forEach(function(e){
+      if(!e.isIntersecting) return;
+      io.unobserve(e.target); queue.push(e.target); load();
+    });
+  },{rootMargin:'200px'});
+  els.forEach(function(el){io.observe(el);});
+})();
+</script>
 </div></main>
 <footer><div class="wrap">
 <p>Chukjemoa — 韓国のお祭り・伝統市場ガイド</p>

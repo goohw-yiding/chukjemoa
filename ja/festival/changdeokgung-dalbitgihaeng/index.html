@@ -575,8 +575,52 @@ document.addEventListener('click',function(e){
 <div class="mt">21.3km · 04/24 – 05/10</div></a><a class="xitem" style="display:block;text-decoration:none" href="/ja/festival/icheondojagichukje/">
 <div class="nm" style="color:#0c7d72">利川陶磁器祭り</div>
 <div class="mt">47.1km · 04/24 – 05/05</div></a></div></div>
+<div class="nmap-wrap">
+<div class="nmap" style="height:300px" data-x="126.99023063100555" data-y="37.57765074254216" data-t="昌徳宮月明かり紀行"><span class="nmap-ph">地図を読み込み中…</span></div>
+<a class="nmap-open" href="https://map.naver.com/p/search/%EC%B0%BD%EB%8D%95%EA%B6%81%20%EB%8B%AC%EB%B9%9B%EA%B8%B0%ED%96%89" target="_blank" rel="noopener">🗺️ NAVERマップで開く</a>
+</div>
 <div class="frel"><h2>ソウルのほかの祭り</h2><div class="row"><a href="/ja/festival/jeongjodaewang-neunghaengcha-gongdongjaehyeon/">正祖大王陵行次共同再現</a><a href="/ja/festival/gangdongseonsamunhwachukje/">江東先史文化祭り</a><a href="/ja/festival/gugakgongyeon-jinyeon/">国楽公演進宴</a><a href="/ja/festival/gangbuk-baengmaekchukje/">江北百麦祭り</a><a href="/ja/festival/jungangasia-bommajichukje/">K-POPカバーダンスフェスティバルワールドファイナル</a><a href="/ja/festival/yongsancheongnyeonchukje/">龍山青年祭り</a></div></div>
 <p style="margin-top:10px"><a href="/ja/search/" style="color:#0c7d72;font-weight:700">← 韓国の祭りをすべて見る</a></p>
+<style>
+.nmap-wrap{margin:14px 0}
+.nmap{width:100%;border-radius:12px;overflow:hidden;background:#eef1f4;display:flex;align-items:center;justify-content:center}
+.nmap-ph{color:#98a2ad;font-size:.85rem}
+.nmap-open{display:inline-block;margin-top:8px;font-size:.88rem;color:#0c7d72;text-decoration:none;font-weight:700}
+.nmap-open:hover{text-decoration:underline}
+</style>
+<script>
+(function(){
+  var els=[].slice.call(document.querySelectorAll('.nmap'));
+  if(!els.length) return;
+  var loading=false, loaded=false, queue=[];
+  function draw(el){
+    if(el.dataset.done) return; el.dataset.done='1';
+    try{
+      var pos=new naver.maps.LatLng(+el.dataset.y, +el.dataset.x);
+      var map=new naver.maps.Map(el,{center:pos,zoom:15,
+        scaleControl:false,mapDataControl:false,logoControlOptions:{position:naver.maps.Position.BOTTOM_LEFT}});
+      new naver.maps.Marker({position:pos,map:map,title:el.dataset.t});
+    }catch(e){ el.innerHTML='<span class="nmap-ph">地図を読み込めませんでした</span>'; }
+  }
+  function load(){
+    if(loaded){queue.splice(0).forEach(draw);return;}
+    if(loading) return; loading=true;
+    var s=document.createElement('script');
+    s.src='https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=j1lf150u8d';
+    s.onload=function(){loaded=true;queue.splice(0).forEach(draw);};
+    s.onerror=function(){els.forEach(function(el){el.innerHTML='<span class="nmap-ph">地図を読み込めませんでした</span>';});};
+    document.head.appendChild(s);
+  }
+  if(!('IntersectionObserver' in window)){ els.forEach(function(el){queue.push(el);}); load(); return; }
+  var io=new IntersectionObserver(function(ent){
+    ent.forEach(function(e){
+      if(!e.isIntersecting) return;
+      io.unobserve(e.target); queue.push(e.target); load();
+    });
+  },{rootMargin:'200px'});
+  els.forEach(function(el){io.observe(el);});
+})();
+</script>
 </div></main>
 <footer><div class="wrap">
 <p>Chukjemoa — 韓国のお祭り・伝統市場ガイド</p>

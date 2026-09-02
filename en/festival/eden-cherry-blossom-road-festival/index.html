@@ -570,8 +570,52 @@ document.addEventListener('click',function(e){
 <div class="mt">49.4 km away · 01/23 – 05/17</div></a><a class="xitem" style="display:block;text-decoration:none" href="/en/festival/yeoju-heungcheon-namhangang-river-cherry-blossom-festival/">
 <div class="nm" style="color:#0c7d72">Yeoju Heungcheon Namhangang River Cherry Blossom Festival</div>
 <div class="mt">50.2 km away · 04/10 – 04/12</div></a></div></div>
+<div class="nmap-wrap">
+<div class="nmap" style="height:300px" data-x="127.47703477605673" data-y="37.78554498365221" data-t="Eden Cherry Blossom Road Festival"><span class="nmap-ph">Loading map…</span></div>
+<a class="nmap-open" href="https://map.naver.com/p/search/Eden%20Cherry%20Blossom%20Road%20Festival" target="_blank" rel="noopener">🗺️ Open in Naver Map</a>
+</div>
 <div class="frel"><h2>Other festivals in Gyeonggi</h2><div class="row"><a href="/en/festival/icheon-ceramics-festival/">Icheon Ceramics Festival</a><a href="/en/festival/yeoncheon-paleolithic-festival/">Yeoncheon Paleolithic Festival</a><a href="/en/festival/international-horticulture-goyang-korea/">International Horticulture Goyang Korea</a><a href="/en/festival/hwaseong-boating-festival/">Hwaseong Boating Festival</a><a href="/en/festival/pyeonghwa-ondam/">Pyeonghwa Ondam</a><a href="/en/festival/wsl-siheung-korea-open-qualifying-series/">WSL Siheung Korea Open Qualifying Series</a></div></div>
 <p style="margin-top:10px"><a href="/en/search/?region=Gyeonggi" style="color:#0c7d72;font-weight:700">← Browse all festivals in Gyeonggi</a></p>
+<style>
+.nmap-wrap{margin:14px 0}
+.nmap{width:100%;border-radius:12px;overflow:hidden;background:#eef1f4;display:flex;align-items:center;justify-content:center}
+.nmap-ph{color:#98a2ad;font-size:.85rem}
+.nmap-open{display:inline-block;margin-top:8px;font-size:.88rem;color:#0c7d72;text-decoration:none;font-weight:700}
+.nmap-open:hover{text-decoration:underline}
+</style>
+<script>
+(function(){
+  var els=[].slice.call(document.querySelectorAll('.nmap'));
+  if(!els.length) return;
+  var loading=false, loaded=false, queue=[];
+  function draw(el){
+    if(el.dataset.done) return; el.dataset.done='1';
+    try{
+      var pos=new naver.maps.LatLng(+el.dataset.y, +el.dataset.x);
+      var map=new naver.maps.Map(el,{center:pos,zoom:15,
+        scaleControl:false,mapDataControl:false,logoControlOptions:{position:naver.maps.Position.BOTTOM_LEFT}});
+      new naver.maps.Marker({position:pos,map:map,title:el.dataset.t});
+    }catch(e){ el.innerHTML='<span class="nmap-ph">Map could not be loaded</span>'; }
+  }
+  function load(){
+    if(loaded){queue.splice(0).forEach(draw);return;}
+    if(loading) return; loading=true;
+    var s=document.createElement('script');
+    s.src='https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=j1lf150u8d';
+    s.onload=function(){loaded=true;queue.splice(0).forEach(draw);};
+    s.onerror=function(){els.forEach(function(el){el.innerHTML='<span class="nmap-ph">Map could not be loaded</span>';});};
+    document.head.appendChild(s);
+  }
+  if(!('IntersectionObserver' in window)){ els.forEach(function(el){queue.push(el);}); load(); return; }
+  var io=new IntersectionObserver(function(ent){
+    ent.forEach(function(e){
+      if(!e.isIntersecting) return;
+      io.unobserve(e.target); queue.push(e.target); load();
+    });
+  },{rootMargin:'200px'});
+  els.forEach(function(el){io.observe(el);});
+})();
+</script>
 </div></main>
 <footer><div class="wrap">
 <p>Chukjemoa — Korea Festivals &amp; Traditional Markets</p>

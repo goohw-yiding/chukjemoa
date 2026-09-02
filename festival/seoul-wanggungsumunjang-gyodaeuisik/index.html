@@ -620,6 +620,11 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 <h2 class="sec">자주 묻는 것</h2>
 <p><b>서울 왕궁수문장 교대의식은 언제 열리나요?</b><br>2026년 1월 1일(목)부터 2026년 12월 31일(목)까지입니다. 일정은 주최 측 사정으로 바뀔 수 있으니 출발 전 02-6242-7402로 확인하시는 편이 안전합니다.</p><p><b>서울 왕궁수문장 교대의식 근처에 뭐가 있나요?</b><br>덕수궁 대한문, 더 플라자 호텔 서울, 덕수궁 돌담길 등이 가까이 있습니다. 걸어서 갈 만한 거리의 식당 6곳과 카페 4곳, 반경 20km 안 걷기길 3개도 이 페이지에 정리해 뒀습니다.</p><p><b>주차나 숙소는 어떻게 하나요?</b><br>반경 15km 안 숙소 4곳을 위치와 유형으로 정리해 뒀습니다. 가격과 빈방은 저희 데이터에 없어 표시하지 않습니다. 주차는 축제장 안내를 따르시고, 붐비는 축제는 오전에 도착하는 편이 안전합니다.</p>
 
+<div class="nmap-wrap">
+<div class="nmap" style="height:300px" data-x="126.97657463444833" data-y="37.565054919430565" data-t="서울 왕궁수문장 교대의식"><span class="nmap-ph">지도를 불러오는 중…</span></div>
+<a class="nmap-open" href="https://map.naver.com/p/search/%EC%84%9C%EC%9A%B8%20%EC%99%95%EA%B6%81%EC%88%98%EB%AC%B8%EC%9E%A5%20%EA%B5%90%EB%8C%80%EC%9D%98%EC%8B%9D" target="_blank" rel="noopener">🗺️ 네이버 지도에서 열기</a>
+</div>
+
 <h2 class="sec">같이 보면 좋은 축제</h2>
 <div class="frel">
 <a href="/festival/2026-koriageuraendeuseil/">2026 코리아그랜드세일</a><a href="/festival/namsanbongsuuisik-deung-jeontongmunhwahaengsa/">남산봉수의식 등 전통문화행사</a><a href="/festival/2026-sungnyemun-pasuuisik/">2026 숭례문 파수의식</a><a href="/festival/ddp-geonchuktueo/">DDP 건축투어</a>
@@ -627,6 +632,46 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 </div>
 
 <p class="note" style="margin-top:18px">데이터 출처: 한국관광공사 TourAPI(축제·관광지·음식점·카페·숙박·무장애) · 전국길관광정보 표준데이터(걷기길) · 한국관광공사 「한국관광 데이터랩」(시·군·구 방문자 수) · 국가유산청. 일정·영업시간은 변경될 수 있으니 방문 전 확인하세요.</p>
+<style>
+.nmap-wrap{margin:14px 0}
+.nmap{width:100%;border-radius:12px;overflow:hidden;background:#eef1f4;display:flex;align-items:center;justify-content:center}
+.nmap-ph{color:#98a2ad;font-size:.85rem}
+.nmap-open{display:inline-block;margin-top:8px;font-size:.88rem;color:#0c7d72;text-decoration:none;font-weight:700}
+.nmap-open:hover{text-decoration:underline}
+</style>
+<script>
+(function(){
+  var els=[].slice.call(document.querySelectorAll('.nmap'));
+  if(!els.length) return;
+  var loading=false, loaded=false, queue=[];
+  function draw(el){
+    if(el.dataset.done) return; el.dataset.done='1';
+    try{
+      var pos=new naver.maps.LatLng(+el.dataset.y, +el.dataset.x);
+      var map=new naver.maps.Map(el,{center:pos,zoom:15,
+        scaleControl:false,mapDataControl:false,logoControlOptions:{position:naver.maps.Position.BOTTOM_LEFT}});
+      new naver.maps.Marker({position:pos,map:map,title:el.dataset.t});
+    }catch(e){ el.innerHTML='<span class="nmap-ph">지도를 불러오지 못했습니다</span>'; }
+  }
+  function load(){
+    if(loaded){queue.splice(0).forEach(draw);return;}
+    if(loading) return; loading=true;
+    var s=document.createElement('script');
+    s.src='https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=j1lf150u8d';
+    s.onload=function(){loaded=true;queue.splice(0).forEach(draw);};
+    s.onerror=function(){els.forEach(function(el){el.innerHTML='<span class="nmap-ph">지도를 불러오지 못했습니다</span>';});};
+    document.head.appendChild(s);
+  }
+  if(!('IntersectionObserver' in window)){ els.forEach(function(el){queue.push(el);}); load(); return; }
+  var io=new IntersectionObserver(function(ent){
+    ent.forEach(function(e){
+      if(!e.isIntersecting) return;
+      io.unobserve(e.target); queue.push(e.target); load();
+    });
+  },{rootMargin:'200px'});
+  els.forEach(function(el){io.observe(el);});
+})();
+</script>
 </div></main>
 <footer><div class="wrap">
 <p>축제모아 — 전국 축제·오일장 일정 모음</p>
