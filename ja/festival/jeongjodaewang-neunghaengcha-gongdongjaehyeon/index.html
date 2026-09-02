@@ -587,11 +587,13 @@ document.addEventListener('click',function(e){
   function draw(el){
     if(el.dataset.done) return; el.dataset.done='1';
     try{
+      // ⚠️ 지도는 컨테이너에 «덧붙는다» — 안내 문구를 먼저 지우지 않으면 지도 밑에 그대로 남는다.
+      el.innerHTML=''; el.style.display='block';
       var pos=new naver.maps.LatLng(+el.dataset.y, +el.dataset.x);
       var map=new naver.maps.Map(el,{center:pos,zoom:15,
         scaleControl:false,mapDataControl:false,logoControlOptions:{position:naver.maps.Position.BOTTOM_LEFT}});
       new naver.maps.Marker({position:pos,map:map,title:el.dataset.t});
-    }catch(e){ el.innerHTML='<span class="nmap-ph">地図を読み込めませんでした</span>'; }
+    }catch(e){ el.style.display='flex'; el.innerHTML='<span class="nmap-ph">地図を読み込めませんでした</span>'; }
   }
   function load(){
     if(loaded){queue.splice(0).forEach(draw);return;}
