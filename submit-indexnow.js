@@ -37,9 +37,20 @@ function post(urlList) {
 
 async function run() {
   const args = process.argv.slice(2);
-  let urls = args.length
-    ? args.map(a => a.startsWith('http') ? a : `${SITE}/${a.replace(/^\//, '')}`)
-    : allSitemapUrls();
+  // 2026-09-03 추가: `--file 목록.txt` — 한 줄에 URL 하나. 미색인 220건 같은 «많은 목록»을
+  // 명령줄 인자로 넘기면 윈도우에서 길이 제한에 걸린다.
+  const fi = args.indexOf('--file');
+  let urls;
+  if (fi >= 0 && args[fi + 1]) {
+    urls = fs.readFileSync(args[fi + 1], 'utf8').split(/\r?\n/)
+      .map(s => s.trim()).filter(Boolean)
+      .map(a => a.startsWith('http') ? a : `${SITE}/${a.replace(/^\//, '')}`);
+  } else if (args.length) {
+    urls = args.map(a => a.startsWith('http') ? a : `${SITE}/${a.replace(/^\//, '')}`);
+  } else {
+    urls = allSitemapUrls();
+  }
+  if (!urls.length) { console.log('제출할 URL이 없습니다 — 아무것도 안 보냅니다.'); return; }
 
   console.log(`키: ${KEY} · 키 위치: ${KEY_LOCATION}`);
   console.log(`제출할 URL: ${urls.length}개`);
