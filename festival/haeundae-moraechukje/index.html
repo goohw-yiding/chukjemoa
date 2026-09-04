@@ -72,9 +72,15 @@ nav a:hover{color:#0f9d8f}
 .home-live b{font-weight:900;color:#0c7d72}
 .home-live .dot{flex:none;width:7px;height:7px;border-radius:50%;background:#4ade80;box-shadow:0 0 0 0 rgba(74,222,128,.7);animation:hpulse 2.2s infinite}
 .home-grid{display:grid;grid-template-columns:1.05fr 1fr;gap:36px;align-items:center}
-.home-left h1{font-size:clamp(1.5rem,3vw,2.15rem);line-height:1.35;letter-spacing:-.02em;margin:0 0 10px;color:#1f2937}
-.home-left h1 b{color:#0a6c63}
+/* ⭐ 2026-09-03: h1 을 브랜드명으로 바꿨다. 같은 이름을 쓰는 travel-info.co.kr 이 구글 「축제모아」
+   1위이고 우리는 2위인데, 그것도 홈이 아니라 /search 가 걸렸다 — 홈 h1 에 브랜드명이 없어서다.
+   ⚠️ h1 을 숨기거나 1px 로 만들지 않는다(클로킹). 눈에 보이는 워드마크로 두고,
+      원래 큰 문구는 바로 아래 부제로 내려 «보이는 것»은 사실상 그대로 유지한다. */
+.home-left h1{font-size:clamp(1.35rem,2.2vw,1.7rem);line-height:1.2;letter-spacing:-.03em;margin:0 0 6px;color:#0a6c63;font-weight:900}
+.home-h1sub{font-size:clamp(1.5rem,3vw,2.15rem);line-height:1.35;letter-spacing:-.02em;margin:0 0 10px;color:#1f2937;font-weight:800}
+.home-h1sub b{color:#0a6c63}
 .home-left>p{color:#6b7280;font-size:.94rem;margin:0 0 22px}
+.home-left>p.home-h1sub{color:#1f2937;margin:0 0 10px}
 .home-stats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:24px}
 .home-stats .stat{background:#fff;border:1px solid #dcefeb;border-radius:13px;padding:14px 15px;display:block;color:inherit;text-decoration:none;transition:transform .15s,border-color .15s,box-shadow .15s}
 .home-stats .stat:hover{transform:translateY(-2px);border-color:#a9e5dd;box-shadow:0 6px 16px rgba(31,41,55,.08)}
@@ -537,6 +543,7 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 .cal-btn{display:inline-flex;align-items:center;gap:6px;padding:9px 16px;border-radius:999px;font-size:.88rem;font-weight:800;color:#0a6c63;background:#f2fbfa;border:1.5px solid #cdeae5;cursor:pointer;font-family:inherit;text-decoration:none;transition:all .15s}
 .cal-btn:hover{background:#e2f5f2}
 </style>
+
 <h1 style="font-size:1.55rem;font-weight:900;margin:8px 0 6px">해운대 모래축제</h1>
 <div style="margin-bottom:8px">
 <span class="fbadge end">종료된 축제</span>
@@ -568,6 +575,8 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 <ul class="flist"><li><a href="/festival/gwangalli-m-marvelous-deuron-raiteusyo/">광안리 M(Marvelous) 드론 라이트쇼</a> — 2026년 1월 1일 · <b>진행 중</b></li><li><a href="/festival/yurari-geonmaekchukje/">유라리 건맥축제</a> — 2026년 9월 4일 · <b>진행 중</b></li><li><a href="/festival/2026-byeolbadabusan-naiteu-kaemkeunik/">2026 별바다부산 「나이트 캠크닉」</a> — 2026년 9월 4일 · <b>진행 중</b></li><li><a href="/festival/je14hoe-busangukjehangmankeonpeoreonseu/">제14회 부산국제항만컨퍼런스</a> — 2026년 9월 15일 시작</li><li><a href="/festival/daehanminguk-cheongnyeonui-nal-chukje/">대한민국 청년의 날 축제</a> — 2026년 9월 18일 시작</li><li><a href="/festival/busangukjegongyeonyesulje-b-p-a-f/">부산국제공연예술제(B.P.A.F)</a> — 2026년 9월 18일 시작</li></ul>
 <p class="fend-h"><a href="/festival/">지금 열리거나 곧 열리는 축제 전체 보기 →</a></p>
 </div>
+
+
 
 
 

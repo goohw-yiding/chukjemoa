@@ -28,6 +28,7 @@ const { romanizeMixed } = require('./placename.js');
 const { inKorea } = require('./geo.js');
 const { prose, proseLead } = require('./prose.js');
 const { mapBlock, mapScript } = require('./nmap.js');   // 좌표 기반 지도 — 주소보다 좌표가 정확하다
+const WX = require('./weather.js');                     // 축제 당일 날씨(예보 창 안에 있는 축제만)
 
 const MIN_OV = 300, MIN_NEAR = 3, FROM_YEAR = '2026';
 
@@ -188,6 +189,7 @@ function build(ctx) {
     .sort((a, b) => String(a.start).localeCompare(String(b.start)))
     .forEach(f => { (aliveBySido[f.sido] = aliveBySido[f.sido] || []).push(f); });
   const noindexUrls = [];
+  let wxCount = 0;                       // 날씨가 실제로 붙은 축제 수(감사용)
 
   cand.forEach(f => {
     const x = num(f.x), y = num(f.y), sg = f.sigungu || sgOf(f.addr);
@@ -287,7 +289,12 @@ ${alt.length ? `<p class="fend-h"><b>지금 ${esc(f.sido)}에서 갈 수 있는 
 
     const gcalUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(f.title)}&dates=${f.start}/${addDay(String(f.end))}&location=${encodeURIComponent(f.addr || '')}&details=${encodeURIComponent(SITE + '/festival/' + f._slug + '/')}`;
 
+    // 🌤 예보 창(오늘~16일) 안에 있는 축제만 붙는다. 파일이 오늘 것이 아니면 weather.js 가 통째로 비운다.
+    const wx = WX.block(f);
+    if (wx.count) wxCount++;
+
     const content = `<main><div class="wrap"><style>${CSS}</style>
+${wx.html ? WX.CSS : ''}
 <h1 style="font-size:1.55rem;font-weight:900;margin:8px 0 6px">${esc(f.title)}</h1>
 <div style="margin-bottom:8px">
 ${ended ? `<span class="fbadge end">종료된 축제</span>` : ongoing ? `<span class="fbadge d">진행 중</span>` : dday > 0 ? `<span class="fbadge d">D-${dday}</span>` : ''}
@@ -313,6 +320,8 @@ ${f.tel ? `<dt>문의</dt><dd>${esc(f.tel)}</dd>` : ''}
 </div>
 
 ${endedBox}
+
+${wx.html}
 
 ${idx ? `<div class="fnum"><h3>📊 ${ended ? '이 동네는 이맘때 얼마나 붐비나' : '지금 이 동네, 얼마나 붐비나'}</h3>${busyP}</div>` : ''}
 
@@ -528,6 +537,7 @@ ${mapScript('ko')}
   }
 
   console.log('✓ /festival/ —', urls.length, '페이지 (허브 1 + 상세', index.length, '· 개요', MIN_OV, '자↑·사진·근처', MIN_NEAR, '곳↑·', FROM_YEAR, '년~)');
+  console.log(`   🌤 날씨 블록 ${wxCount}개 (예보 창 안에 있는 축제만 — 창 밖은 표시하지 않는다)`);
   console.log('  └ 끝난 축제', noindexUrls.length, '개는 noindex + 사이트맵 제외 · 색인 대상 상세', index.length - noindexUrls.length, '개');
   // 배열에 얹어 보낸다 — 호출부(build.js)가 `...FESTIVAL_URLS` 로 펼쳐 쓰고 있어 반환 타입은 바꾸지 않는다.
   urls.noindex = noindexUrls;

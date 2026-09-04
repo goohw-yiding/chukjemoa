@@ -72,9 +72,15 @@ nav a:hover{color:#0f9d8f}
 .home-live b{font-weight:900;color:#0c7d72}
 .home-live .dot{flex:none;width:7px;height:7px;border-radius:50%;background:#4ade80;box-shadow:0 0 0 0 rgba(74,222,128,.7);animation:hpulse 2.2s infinite}
 .home-grid{display:grid;grid-template-columns:1.05fr 1fr;gap:36px;align-items:center}
-.home-left h1{font-size:clamp(1.5rem,3vw,2.15rem);line-height:1.35;letter-spacing:-.02em;margin:0 0 10px;color:#1f2937}
-.home-left h1 b{color:#0a6c63}
+/* ⭐ 2026-09-03: h1 을 브랜드명으로 바꿨다. 같은 이름을 쓰는 travel-info.co.kr 이 구글 「축제모아」
+   1위이고 우리는 2위인데, 그것도 홈이 아니라 /search 가 걸렸다 — 홈 h1 에 브랜드명이 없어서다.
+   ⚠️ h1 을 숨기거나 1px 로 만들지 않는다(클로킹). 눈에 보이는 워드마크로 두고,
+      원래 큰 문구는 바로 아래 부제로 내려 «보이는 것»은 사실상 그대로 유지한다. */
+.home-left h1{font-size:clamp(1.35rem,2.2vw,1.7rem);line-height:1.2;letter-spacing:-.03em;margin:0 0 6px;color:#0a6c63;font-weight:900}
+.home-h1sub{font-size:clamp(1.5rem,3vw,2.15rem);line-height:1.35;letter-spacing:-.02em;margin:0 0 10px;color:#1f2937;font-weight:800}
+.home-h1sub b{color:#0a6c63}
 .home-left>p{color:#6b7280;font-size:.94rem;margin:0 0 22px}
+.home-left>p.home-h1sub{color:#1f2937;margin:0 0 10px}
 .home-stats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:24px}
 .home-stats .stat{background:#fff;border:1px solid #dcefeb;border-radius:13px;padding:14px 15px;display:block;color:inherit;text-decoration:none;transition:transform .15s,border-color .15s,box-shadow .15s}
 .home-stats .stat:hover{transform:translateY(-2px);border-color:#a9e5dd;box-shadow:0 6px 16px rgba(31,41,55,.08)}
@@ -537,6 +543,7 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 .cal-btn{display:inline-flex;align-items:center;gap:6px;padding:9px 16px;border-radius:999px;font-size:.88rem;font-weight:800;color:#0a6c63;background:#f2fbfa;border:1.5px solid #cdeae5;cursor:pointer;font-family:inherit;text-decoration:none;transition:all .15s}
 .cal-btn:hover{background:#e2f5f2}
 </style>
+
 <h1 style="font-size:1.55rem;font-weight:900;margin:8px 0 6px">태백 해바라기축제</h1>
 <div style="margin-bottom:8px">
 <span class="fbadge end">종료된 축제</span>
@@ -568,6 +575,8 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 <ul class="flist"><li><a href="/festival/naorasyo/">나오라쇼</a> — 2026년 4월 25일 · <b>진행 중</b></li><li><a href="/festival/je24hoe-dongganggukjesajinje/">제24회 동강국제사진제</a> — 2026년 7월 17일 · <b>진행 중</b></li><li><a href="/festival/pyeongchanghyoseongmunhwaje/">평창효석문화제</a> — 2026년 9월 4일 · <b>진행 중</b></li><li><a href="/festival/2026-jeonguk-jangaehaksaeng-epeseutibeol/">2026 전국 장애학생 e페스티벌</a> — 2026년 9월 8일 시작</li><li><a href="/festival/je67hoe-hangungminsogyesulje/">제67회 한국민속예술제</a> — 2026년 9월 18일 시작</li><li><a href="/festival/pyeongchangnongak-sangolpudeuchukje/">평창농악·산골푸드축제</a> — 2026년 9월 18일 시작</li></ul>
 <p class="fend-h"><a href="/festival/">지금 열리거나 곧 열리는 축제 전체 보기 →</a></p>
 </div>
+
+
 
 <div class="fnum"><h3>📊 이 동네는 이맘때 얼마나 붐비나</h3><p>축제가 열리는 <b>강원 태백시</b>는 8월에 평소보다 <b>1.28배</b> 붐빕니다. 한국관광공사 「한국관광 데이터랩」의 시·군·구 방문자 수를 그 지역의 평소 하루 평균과 비교한 값입니다. 숙소는 미리 잡고, 주차장은 오전에 차는 편이라고 보시면 됩니다.</p><p class="note" style="margin-top:6px">이 숫자는 축제장 자체가 아니라 <b>태백시 전체</b>의 방문자 기준입니다. 축제장 앞 혼잡과는 다를 수 있습니다.</p></div>
 
