@@ -197,6 +197,40 @@ const RAIN = {
   es: { t: 'Si llueve — sitios bajo techo', n: `La lluvia es lo que arruina un viaje a Jeju. Aquí solo van los sitios que la Organización de Turismo de Jeju marca como <b>interiores</b> — nada supuesto. En la fuente los nombres y direcciones están solo en coreano y <b>no los traducimos</b>: un nombre mal traducido te lleva a otra puerta. Copia el coreano y pégalo en el mapa.`, ind: 'Interior', name: 'Nombre en coreano — cópialo para buscar', addr: 'Dirección en coreano — pégala en el mapa', air: 'Cerca del aeropuerto' }
 };
 
+// 🏙 2026-09-05 — 서울 문화행사를 외국어에도 싣는다.
+//   🔴 왜 이제서야: **부산 197건은 이미 싣고 있었는데 서울 1,048건은 0건이었다**
+//      (실측: 외국어 서울 페이지에 서울 행사 제목 0/200). 서울이 외국인 방문 1위(984만 > 부산 406만)인데
+//      재료가 5배 많은 쪽을 비워 두고 있었다.
+//   ⚠️ 원본이 한국어뿐이다. **번역하지 않는다** — 부산 전시·공연과 똑같은 규칙으로
+//      «복사해서 붙여넣을 한글 제목»을 준다. 대신 **분류·요금무료·날짜·자치구는 번역해도 안전한 고정값**이다.
+const SEV = {
+  en: { t: 'What is on in Seoul right now', n: `Seoul city publishes every exhibition, concert and workshop happening in the city — in Korean only. We do not translate the titles: a mistranslated venue sends you to the wrong door. <b>Copy the Korean title</b> into a ticket site or a map and it will find it. What we can translate safely is the category, the dates and whether it is free.`, title: 'Korean title — copy to search', free: 'Free', paid: 'Ticketed', where: 'Venue (Korean) — paste into a map' },
+  ja: { t: 'いまソウルで開かれているもの', n: `ソウル市は市内の展示・公演・体験をすべて公開していますが、<b>韓国語のみ</b>です。タイトルは訳しません — 会場名を訳し間違えると別の場所に行くことになります。<b>韓国語のままコピー</b>してチケットサイトや地図に貼り付けてください。分類・日付・無料かどうかは訳しても間違いようがないので訳しました。`, title: '韓国語タイトル（検索用にコピー）', free: '無料', paid: '有料', where: '会場（韓国語）— 地図に貼り付け' },
+  zh: { t: '首尔现在正在举办的活动', n: `首尔市公开了市内所有展览、演出与体验活动，但<b>只有韩文</b>。我们不翻译标题 —— 译错场馆名会让您走错地方。请<b>复制韩文标题</b>粘贴到购票网站或地图。分类、日期、是否免费不会译错，所以翻译了。`, title: '韩文标题（复制后搜索）', free: '免费', paid: '收费', where: '场馆（韩文）— 粘贴到地图' },
+  tw: { t: '首爾現在正在舉辦的活動', n: `首爾市公開了市內所有展覽、演出與體驗活動，但<b>只有韓文</b>。我們不翻譯標題 —— 譯錯場館名會讓您跑錯地方。請<b>複製韓文標題</b>貼到購票網站或地圖。分類、日期、是否免費不會譯錯，所以翻譯了。`, title: '韓文標題（複製後搜尋）', free: '免費', paid: '收費', where: '場館（韓文）— 貼到地圖' },
+  es: { t: 'Qué hay ahora mismo en Seúl', n: `El ayuntamiento de Seúl publica todas las exposiciones, conciertos y talleres de la ciudad — <b>solo en coreano</b>. No traducimos los títulos: un recinto mal traducido te lleva a otra puerta. <b>Copia el título en coreano</b> y pégalo en una web de entradas o en el mapa. La categoría, las fechas y si es gratis sí se pueden traducir sin riesgo.`, title: 'Título en coreano — cópialo para buscar', free: 'Gratis', paid: 'Con entrada', where: 'Recinto (coreano) — pégalo en el mapa' }
+};
+// 분류는 값이 17가지뿐인 «고정 목록»이라 그대로 대응시킨다. 없는 값은 «표시하지 않는다»(한글을 그냥 두면 소음이 된다).
+const SEV_CAT = {
+  '전시/미술': { en: 'Exhibition', ja: '展示', zh: '展览', tw: '展覽', es: 'Exposición' },
+  '교육/체험': { en: 'Workshop', ja: '体験・講座', zh: '体验课程', tw: '體驗課程', es: 'Taller' },
+  '콘서트': { en: 'Concert', ja: 'コンサート', zh: '演唱会', tw: '演唱會', es: 'Concierto' },
+  '클래식': { en: 'Classical', ja: 'クラシック', zh: '古典音乐', tw: '古典音樂', es: 'Clásica' },
+  '국악': { en: 'Korean traditional music', ja: '韓国伝統音楽', zh: '韩国传统音乐', tw: '韓國傳統音樂', es: 'Música tradicional coreana' },
+  '연극': { en: 'Theatre', ja: '演劇', zh: '话剧', tw: '話劇', es: 'Teatro' },
+  '무용': { en: 'Dance', ja: '舞踊', zh: '舞蹈', tw: '舞蹈', es: 'Danza' },
+  '뮤지컬/오페라': { en: 'Musical / Opera', ja: 'ミュージカル・オペラ', zh: '音乐剧·歌剧', tw: '音樂劇·歌劇', es: 'Musical / Ópera' },
+  '영화': { en: 'Film', ja: '映画', zh: '电影', tw: '電影', es: 'Cine' },
+  '독주/독창회': { en: 'Recital', ja: 'リサイタル', zh: '独奏会', tw: '獨奏會', es: 'Recital' },
+  '축제-문화/예술': { en: 'Arts festival', ja: '文化・芸術のお祭り', zh: '文化艺术庆典', tw: '文化藝術慶典', es: 'Fiesta artística' },
+  '축제-전통/역사': { en: 'Traditional festival', ja: '伝統・歴史のお祭り', zh: '传统历史庆典', tw: '傳統歷史慶典', es: 'Fiesta tradicional' },
+  '축제-자연/경관': { en: 'Nature festival', ja: '自然・景観のお祭り', zh: '自然景观庆典', tw: '自然景觀慶典', es: 'Fiesta de naturaleza' },
+  '축제-관광/체육': { en: 'Sports & tourism festival', ja: '観光・スポーツのお祭り', zh: '观光体育庆典', tw: '觀光體育慶典', es: 'Fiesta deportiva' },
+  '축제-시민화합': { en: 'Community festival', ja: '市民のお祭り', zh: '市民庆典', tw: '市民慶典', es: 'Fiesta vecinal' },
+  '축제-기타': { en: 'Festival', ja: 'お祭り', zh: '庆典', tw: '慶典', es: 'Fiesta' }
+};
+const SHOW_SEV = 40;
+
 // 소요시간은 값이 5가지뿐인 «고정 문구»라 언어별로 그대로 대응시킨다(자유 번역이 아니다).
 const HRS = {
   '1시간': { en: '1 hour', ja: '1時間', zh: '1小时', tw: '1小時', es: '1 hora' },
@@ -216,6 +250,40 @@ const JEJU_DESC = {
   tw: (n, o, r) => `濟州${n}處景點，附可貼到NAVER地圖的韓文地址。偶來小路全${o}條路線的距離、步行時間與輪椅通行情況，以及下雨天的${r}處室內去處。`,
   es: (n, o, r) => `${n} sitios de Jeju con la dirección en coreano para pegar en NAVER Map, las ${o} rutas del sendero Olle con distancia, tiempo y accesibilidad en silla de ruedas, y ${r} sitios bajo techo para cuando llueve.`
 };
+
+// 🚇 2026-09-05 — 가장 가까운 지하철역.
+//   왜: 구글맵은 한국 안에서 길찾기가 안 된다. 외국인은 「Hongik Univ.」로 아는데
+//       네이버·카카오 지도는 **홍대입구**로만 찾는다. 그 대조를 주는 곳이 거의 없다.
+//   ⭐ 실측: 서울 문화행사 96%·축제 75%·장소 64~66%가 도보권이다. 붙일 데이터가 실제로 있다.
+//   ⚠️ 역 이름은 **한글 그대로** 준다 — 그게 붙여넣을 이름이다. 영·중·일 역명은 «알아보라고» 같이 준다.
+//   ⚠️ 서울·경기·인천 전용. 부산·제주는 이 데이터에 없으니 «조용히 아무것도 안 붙는다»(그게 맞다).
+const SUB = {
+  en: { near: 'Nearest station', walk: m => `${m} min walk`, cp: 'Station name in Korean — paste into a map', elev: 'Has a lift' },
+  ja: { near: '最寄り駅', walk: m => `徒歩${m}分`, cp: '駅名（韓国語）— 地図に貼り付け', elev: 'エレベーターあり' },
+  zh: { near: '最近地铁站', walk: m => `步行${m}分钟`, cp: '站名（韩文）— 粘贴到地图', elev: '有电梯' },
+  tw: { near: '最近地鐵站', walk: m => `步行${m}分鐘`, cp: '站名（韓文）— 貼到地圖', elev: '有電梯' },
+  es: { near: 'Estación más cercana', walk: m => `${m} min a pie`, cp: 'Nombre de la estación en coreano — pégalo en el mapa', elev: 'Tiene ascensor' }
+};
+// 도보 분 = 거리 ÷ 시속 4.5km. 반올림하되 최소 1분. 1.5km 넘으면 «도보권»이라 말하지 않는다.
+const WALK_MAX_KM = 1.5;
+const walkMin = km => Math.max(1, Math.round(km / 4.5 * 60));
+function nearestFn(rows) {
+  if (!rows || !rows.length) return () => null;
+  const R = 6371, T = Math.PI / 180;
+  return (x, y) => {
+    x = +x; y = +y; if (!x || !y) return null;
+    let best = null, bd = Infinity;
+    for (const s of rows) {
+      // 먼저 사각형으로 거른다 — 646역 × 수천 건이면 삼각함수가 비싸다
+      if (Math.abs(s.y - y) > 0.02 || Math.abs(s.x - x) > 0.025) continue;
+      const dLat = (s.y - y) * T, dLon = (s.x - x) * T;
+      const a = Math.sin(dLat / 2) ** 2 + Math.cos(y * T) * Math.cos(s.y * T) * Math.sin(dLon / 2) ** 2;
+      const d = 2 * R * Math.asin(Math.sqrt(a));
+      if (d < bd) { bd = d; best = s; }
+    }
+    return (best && bd <= WALK_MAX_KM) ? { st: best, km: bd, min: walkMin(bd) } : null;
+  };
+}
 
 function load(ROOT, f) {
   try { return JSON.parse(fs.readFileSync(path.join(ROOT, 'data', f), 'utf8')); } catch (e) { return null; }
@@ -245,6 +313,29 @@ function build({ ROOT, layout, writePage, SITE, TODAY, WX }) {
   //   ⚠️ 「모름」을 실내로 밀어넣지 않는다 — indoor === true 인 것만.
   const rain = ((load(ROOT, 'visitjeju.json') || {}).rows || [])
     .filter(o => o.indoor === true && o.x && o.y && o.addr && o.title);
+
+  // 🏙 서울 문화행사 — 진행·예정만. 무료 먼저, 그다음 시작일 순.
+  const sevAll = (() => { const d = load(ROOT, 'seoul_events.json'); return Array.isArray(d) ? d : ((d || {}).rows || []); })();
+  const norm8 = v => String(v || '').replace(/-/g, '').slice(0, 8);
+  // 🔴 첫 정렬은 「무료 먼저 → 시작일 순」이었는데, 그러면 **2021년에 시작한 상설 전시가 맨 앞**에 왔다.
+  //    제목이 「지금 뭐 하나」인데 5년 전 시작한 게 먼저 나오면 말과 화면이 어긋난다.
+  //    → ①400일 넘게 하는 «상설»은 뒤로 ②그다음 **끝나는 날이 가까운 순**(놓치기 전에 볼 것) ③무료 우선.
+  const dayNo = d => { const t = String(d); return Date.UTC(+t.slice(0, 4), +t.slice(4, 6) - 1, +t.slice(6, 8)) / 86400000; };
+  const LONG = 400;
+  const isLong = o => {
+    const d1 = norm8(o.start), d2 = norm8(o.end);
+    if (!d1 || !d2 || d2 < d1) return 1;
+    return (dayNo(d2) - dayNo(d1)) > LONG ? 1 : 0;
+  };
+  const sev = sevAll.filter(o => o.title && norm8(o.end) >= T8 && +o.x && +o.y)
+    .sort((a, b) => isLong(a) - isLong(b)
+      || norm8(a.end).localeCompare(norm8(b.end))
+      || (b.free ? 1 : 0) - (a.free ? 1 : 0));
+
+  // 🚇 지하철 — 없으면 조용히 아무것도 안 붙는다(제주·부산은 데이터가 없는 게 정상).
+  const subRows = ((load(ROOT, 'subway.json') || {}).rows || []);
+  const nearest = nearestFn(subRows);
+  let subHit = 0, subMiss = 0;                 // ⚠️ 「가드가 통과했다」가 아니라 미스율을 센다
   const urls = [];
   const skipped = [];
   const LANGS = ['en', 'ja', 'zh', 'tw', 'es'];
@@ -302,6 +393,22 @@ function build({ ROOT, layout, writePage, SITE, TODAY, WX }) {
       const cp = (label, val) => val ? `<div class="xcopy"><div><span class="lb">${esc(label)}</span><span class="vl">${esc(val)}</span></div>
 <button data-v="${esc(val)}" data-done="${esc(t.copied)}">${esc(t.copy)}</button></div>` : '';
 
+      // 🚇 가장 가까운 역 한 줄 — 「내가 아는 이름(Hongik Univ.) → 지도에 넣을 한글(홍대입구)」
+      const sb = SUB[lang];
+      const stLine = (x, y) => {
+        const n = nearest(x, y);
+        if (!n) { subMiss++; return ''; }
+        subHit++;
+        const s = n.st;
+        const foreign = lang === 'ja' ? s.jp : (lang === 'zh' || lang === 'tw') ? s.cn : s.en;
+        return `<p class="ic-st">🚇 ${esc(sb.near)}: <b>${esc(foreign || s.ko)}</b>`
+          + `<span class="ic-stko">${esc(s.ko)}</span>`
+          + ` · ${esc(sb.walk(n.min))}`
+          + (s.lines && s.lines.length ? ` · ${esc(s.lines.slice(0, 3).join(' · '))}` : '')
+          + (s.elev ? ` · <span class="ic-tag">♿ ${esc(sb.elev)}</span>` : '')
+          + `</p>` + cp(sb.cp, s.ko);
+      };
+
       const fesCard = f => {
         const wx = (WX && f.x && f.y) ? WX.now(f.x, f.y) : '';
         const dates = f.start ? `${String(f.start).slice(4, 6)}/${String(f.start).slice(6, 8)} – ${String(f.end).slice(4, 6)}/${String(f.end).slice(6, 8)}` : (f.day || '');
@@ -311,6 +418,7 @@ ${f.sub ? `<p class="ic-sub">${esc(f.sub)}</p>` : ''}
 <p class="ic-meta">${dates ? `📅 ${esc(t.when)}: ${esc(dates)}` : ''}${f.place ? ` · 📍 ${esc(String(f.place).slice(0, 60))}` : ''}${f.fee ? ` · 💳 ${esc(String(f.fee).slice(0, 50))}` : ''}</p>
 ${f.desc ? `<p class="ic-ov">${esc(String(f.desc).slice(0, 260))}</p>` : ''}
 ${f.traffic ? `<p class="ic-tr">🚇 ${esc(t.how)}: ${esc(String(f.traffic).slice(0, 200))}</p>` : ''}
+${stLine(f.x, f.y)}
 ${cp(t.name, f.ko)}
 </li>`;
       };
@@ -319,6 +427,7 @@ ${cp(t.name, f.ko)}
 <div class="ic-h"><b>${esc(p.title)}</b>${p.ko ? `<span class="ic-ko">${esc(p.ko)}</span>` : ''}</div>
 <p class="ic-ov">${esc(String(p.ov).replace(/\s+/g, ' ').slice(0, 190))}…</p>
 ${cp(t.addr, p.addrKo)}
+${stLine(p.x, p.y)}
 </li>`;
 
       // ⚠️ «실제로 만든» 도시만 링크한다(madeKeys). CITIES 전체로 찍으면 404가 생긴다.
@@ -350,6 +459,27 @@ ${C.key === 'busan' && busanCult.length ? `<h2 class="sec">${esc(t.cultT)} <span
 ${cp(t.cultTitle, r.title)}
 ${r.addr ? cp(t.addr, r.addr) : ''}
 </li>`).join('')}</ul>` : ''}
+
+${C.key === 'seoul' && sev.length >= 20 ? (() => { const v = SEV[lang], shown = Math.min(sev.length, SHOW_SEV); return `<h2 class="sec">${esc(v.t)} <span class="ic-n">${shown}</span></h2>
+<p class="ic-cnote">${v.n}</p>
+<ul class="ic-list">${sev.slice(0, SHOW_SEV).map(e => {
+        const cat = SEV_CAT[e.cat] && SEV_CAT[e.cat][lang];
+        // ⚠️ 해를 넘기는 장기 행사가 있다 — MM/DD 만 찍으면 「11/17 – 11/16」처럼 거꾸로 보인다.
+        //    연도가 다르면 «연도를 같이» 찍는다. 원본이 뒤집힌 1건은 기간을 아예 안 보여준다(지어내지 않는다).
+        const d1 = norm8(e.start), d2 = norm8(e.end);
+        const md = d => `${d.slice(4, 6)}/${d.slice(6, 8)}`;
+        const dates = (!d1 || (d2 && d1 > d2)) ? ''
+          : (d2 && d2 !== d1
+            ? (d1.slice(0, 4) === d2.slice(0, 4) ? `${md(d1)} – ${md(d2)}` : `${d1.slice(0, 4)}.${md(d1)} – ${d2.slice(0, 4)}.${md(d2)}`)
+            : md(d1));
+        return `<li class="ic-item">
+<div class="ic-h"><b>${esc(e.title)}</b>${cat ? `<span class="ic-tag">${esc(cat)}</span>` : ''}<span class="ic-tag">${e.free ? esc(v.free) : esc(v.paid)}</span></div>
+<p class="ic-meta">${dates ? `📅 ${esc(dates)}` : ''}${e.time ? ` · 🕘 ${esc(String(e.time).slice(0, 30))}` : ''}${e.gu ? ` · 📍 ${esc(e.gu)}` : ''}</p>
+${cp(v.title, e.title)}
+${e.place ? cp(v.where, e.place) : ''}
+${stLine(e.x, e.y)}
+</li>`;
+      }).join('')}</ul>` })() : ''}
 
 ${C.key === 'jeju' && JEJU[lang] ? `<div class="ic-why"><h2>${esc(JEJU[lang][0])}</h2><p>${JEJU[lang][1]}</p></div>` : ''}
 
@@ -393,6 +523,12 @@ ${others ? `<h2 class="sec">${esc(t.other)}</h2>
   }   // pass 1(통과 여부 수집) → pass 2(렌더)
 
   console.log(`✓ /{lang}/{city}/ — ${urls.length}페이지`);
+  // ⚠️ 「붙었다」가 아니라 «미스율»을 센다 — 조용히 사라지는 걸 눈으로 보고서야 아는 일을 또 만들지 않는다.
+  if (subRows.length) {
+    const tot = subHit + subMiss;
+    console.log(`   🚇 가장 가까운 역 ${subHit}/${tot}건 적용(미스 ${tot ? Math.round(subMiss / tot * 100) : 0}%) · 역 ${subRows.length}개`
+      + ` — 부산·제주는 수도권 데이터에 없어 미스가 정상입니다`);
+  } else console.log('   🔴 data/subway.json 이 없습니다 — node fetch-subway.js 를 먼저 돌리세요');
   if (skipped.length) console.log(`   재료 부족으로 «만들지 않음» ${skipped.length}개: ${skipped.join(' · ')}`);
   return urls;
 }
@@ -420,6 +556,9 @@ const CSS = `<style>
 .ic-n{font-size:.85rem;font-weight:800;color:#0a6c63;background:#e7f6f3;border-radius:999px;padding:2px 10px;margin-left:6px}
 .ic-cnote{font-size:.88rem;color:#6b7280;line-height:1.75;margin:0 0 12px}
 .ic-tag{font-size:.74rem;font-weight:800;color:#0a6c63;background:#e7f6f3;border-radius:6px;padding:2px 8px}
+.ic-st{font-size:.88rem;color:#374151;background:#eef4ff;border:1px solid #dbe6ff;border-radius:9px;padding:8px 11px;margin:6px 0 0;line-height:1.6}
+.ic-st b{color:#1e3a8a;font-weight:800}
+.ic-stko{font-size:.84rem;color:#4b5563;font-weight:700;margin-left:6px}
 .xcopy{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;
   background:#f6fbfa;border:1.5px solid #dcefeb;border-radius:12px;padding:10px 12px;margin:6px 0}
 .xcopy .lb{font-size:.74rem;font-weight:800;color:#0a6c63;display:block;margin-bottom:3px}
