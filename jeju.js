@@ -335,8 +335,9 @@ ${SRC_NOTE}`);
 ⚠️ 공공 위치 데이터라 <b>이름과 위치</b>까지입니다 — 예약 방법·요금·시설은 각 캠핑장에 확인하세요.
 캠핑은 날씨가 곧 성패라 <b>주간 예보</b>를 먼저 보시길 권합니다.`,
     'camping',
-    `<div class="jj-wrapx"><table class="jj-tbl"><thead><tr><th>이름</th><th>지역</th><th>주소</th></tr></thead><tbody>
-${camping.map(o => `<tr><td><b>${esc(o.title)}</b></td><td>${esc(o.em || (String(o.addr).includes('서귀포') ? '서귀포시' : '제주시'))}</td><td>${esc(String(o.addr).slice(0, 46))}</td></tr>`).join('')}
+    // ⚠️ 「주간 예보를 보라」고 써 놓고 날씨를 안 붙이면 말과 화면이 어긋난다 — 표에도 오늘 날씨를 넣는다.
+    `<div class="jj-wrapx"><table class="jj-tbl"><thead><tr><th>이름</th><th>지역</th><th>오늘 날씨</th><th>주소</th></tr></thead><tbody>
+${camping.map(o => `<tr><td><b>${esc(o.title)}</b></td><td>${esc(o.em || (String(o.addr).includes('서귀포') ? '서귀포시' : '제주시'))}</td><td>${(WX && o.x && o.y) ? WX.now(String(o.x), String(o.y)) : '-'}</td><td>${esc(String(o.addr).slice(0, 46))}</td></tr>`).join('')}
 </tbody></table></div>${SRC_NOTE}`);
 
   // ── ⑩ 올레길·둘레길 (제주올레길 8,680 · 한라산둘레길 2,200 · 한라산등산코스 19,730)
