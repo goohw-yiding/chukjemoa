@@ -156,6 +156,11 @@ h2.sec::before{content:'';position:absolute;left:0;top:14%;width:5px;height:72%;
 .card h3{font-size:1.13rem;font-weight:800;letter-spacing:-.02em;margin:2px 0 6px}
 .card .date{font-weight:700;color:#0f9d8f;font-size:.92rem}
 .card .loc{font-size:.86rem;color:#6b7280;margin:2px 0 8px}
+/* 🌤 2026-09-04: 야외에서 노는 곳엔 날씨가 «갈지 말지»를 정한다 — 목록 카드에도 오늘 예보를 붙인다.
+   전역 CSS에 두는 이유: 계곡·단풍·봄꽃·온천·걷기길·오일장이 각자 붙이면 같은 규칙이 6번 실린다. */
+.wx-chip{display:inline-block;font-size:.76rem;font-weight:800;color:#2b6cb0;background:#eef5fd;
+  border-radius:6px;padding:2px 7px;margin-left:6px;white-space:nowrap;vertical-align:middle}
+.wx-chip.rain{color:#fff;background:#2b6cb0}
 .card .desc{font-size:.9rem;color:#4b5563;line-height:1.55;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
 .card-top{display:flex;justify-content:flex-end;align-items:center;margin-bottom:2px}
 .badge{font-size:.72rem;padding:3px 9px;border-radius:10px;font-weight:700}
@@ -542,7 +547,7 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 <p style="margin:0 0 6px;font-size:.96rem"><b>파는 것</b> — 농산물, 축산물, 수산물, 가공식품</p>
 <p style="margin:0 0 8px;color:#374151;font-size:.95rem;line-height:1.75">1930년 개설 · 점포 41곳 · 주차 가능 · 화장실 있음</p>
 <div style="color:#6b7280;font-size:.9rem;line-height:1.8">
-📅 장날 <b>1일 / 6일 / 11일 / 16일 / 21일 / 26일</b><br>
+📅 장날 <b>1일 / 6일 / 11일 / 16일 / 21일 / 26일</b> <span style="color:#9ca3af">다음 장날 9/6</span><span class="wx-chip rain" title="비">🌧 24° · 비 65%</span><br>
 🕘 점포 별로 상이함 · 휴무 점포 별로 상이함<br>
 🅿️ 주차 있음<br>
 ☎️ 054-370-6708
@@ -572,7 +577,7 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 <p style="margin:0 0 6px;font-size:.96rem"><b>파는 것</b> — 음식점</p>
 <p style="margin:0 0 8px;color:#374151;font-size:.95rem;line-height:1.75">1981년 개설 · 점포 134곳 · 주차 가능 · 화장실 있음</p>
 <div style="color:#6b7280;font-size:.9rem;line-height:1.8">
-📅 장날 <b>1일 / 6일 / 11일 / 16일 / 21일 / 26일</b><br>
+📅 장날 <b>1일 / 6일 / 11일 / 16일 / 21일 / 26일</b> <span style="color:#9ca3af">다음 장날 9/6</span><span class="wx-chip" title="가랑비">🌦 24° · 비 31%</span><br>
 🕘 점포 별로 상이함 · 휴무 점포 별로 상이함<br>
 🅿️ 주차 있음<br>
 ☎️ 054-971-7660
@@ -602,7 +607,7 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 <p style="margin:0 0 6px;font-size:.96rem"><b>파는 것</b> — 수산물 · 과일 · 채소</p>
 <p style="margin:0 0 8px;color:#374151;font-size:.95rem;line-height:1.75">포항에서 영덕 방향으로 18㎞정도 들어오면 청하소재지를 연결하는 청하 삼거리가 있고 삼거리에서 1.5㎞정도 들어오면 청하공진시장이 있다.</p>
 <div style="color:#6b7280;font-size:.9rem;line-height:1.8">
-📅 장날 <b>매월 1일 / 6일 / 11일 / 16일 / 21일 / 26일</b><br>
+📅 장날 <b>매월 1일 / 6일 / 11일 / 16일 / 21일 / 26일</b> <span style="color:#9ca3af">다음 장날 9/6</span><span class="wx-chip rain" title="비">🌧 26° · 비 65%</span><br>
 🕘 점포 별로 상이함 · 휴무 점포 별로 상이함<br>
 🅿️ 주차 가능<br>
 ☎️ 청하공진시장 번영회 054-232-4002 청진리 어촌계 054-261-6684
@@ -647,7 +652,7 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 <p style="margin:0 0 6px;font-size:.96rem"><b>파는 것</b> — 농산물, 축산물, 수산물, 가공식품</p>
 <p style="margin:0 0 8px;color:#374151;font-size:.95rem;line-height:1.75">1951년 개설 · 점포 80곳 · 주차 가능 · 화장실 있음</p>
 <div style="color:#6b7280;font-size:.9rem;line-height:1.8">
-📅 장날 <b>1일 / 6일 / 11일 / 16일 / 21일 / 26일</b><br>
+📅 장날 <b>1일 / 6일 / 11일 / 16일 / 21일 / 26일</b> <span style="color:#9ca3af">다음 장날 9/6</span><span class="wx-chip" title="가랑비">🌦 25° · 비 18%</span><br>
 🕘 점포 별로 상이함 · 휴무 점포 별로 상이함<br>
 🅿️ 주차 있음<br>
 ☎️ 상주시청 투자경제과 054-537-7407
@@ -827,7 +832,7 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 <p style="margin:0 0 6px;font-size:.96rem"><b>파는 것</b> — 음식 · 의류 · 잡화</p>
 <p style="margin:0 0 8px;color:#374151;font-size:.95rem;line-height:1.75">상주 중앙시장은 상주 시내에 있는 전통시장으로 조선시대부터 개설되었던 상주 읍내장의 명맥을 잇고 있다.</p>
 <div style="color:#6b7280;font-size:.9rem;line-height:1.8">
-📅 장날 <b>매달 2일 / 7일</b><br>
+📅 장날 <b>매달 2일 / 7일</b> <span style="color:#9ca3af">다음 장날 9/7</span><span class="wx-chip" title="가랑비">🌦 28° · 비 10%</span><br>
 🕘 09:00~19:00 (상점 별 상이) · 휴무 상점 별 상이<br>
 🅿️ 주차 가능 요금 (30분 500원)<br>
 ☎️ 054-535-7788
@@ -857,7 +862,7 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 <p style="margin:0 0 6px;font-size:.96rem"><b>파는 것</b> — 농산물 · 먹거리 · 화훼</p>
 <p style="margin:0 0 8px;color:#374151;font-size:.95rem;line-height:1.75">2일, 7일 열리는 구미 선산 오일장은 선산읍 선산봉황시장을 중심으로 선산농협부터 수문교까지 복개천 도로를 따라 약 400미터 이어지는 전통 재래시장이다.</p>
 <div style="color:#6b7280;font-size:.9rem;line-height:1.8">
-📅 장날 <b>매월 2, 7, 12, 17, 22, 27일</b><br>
+📅 장날 <b>매월 2, 7, 12, 17, 22, 27일</b> <span style="color:#9ca3af">다음 장날 9/7</span><span class="wx-chip" title="가랑비">🌦 27° · 비 16%</span><br>
 🕘 09:00~18:00 ※ 재료 소진시 마감 · 휴무 매월 첫째, 셋째 일요일<br>
 🅿️ 주차 가능<br>
 ☎️ 선산 봉황시장 054-482-0213
@@ -887,7 +892,7 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 <p style="margin:0 0 6px;font-size:.96rem"><b>파는 것</b> — 농산물, 축산물, 수산물, 가공식품</p>
 <p style="margin:0 0 8px;color:#374151;font-size:.95rem;line-height:1.75">1887년 개설 · 점포 44곳 · 주차 가능 · 화장실 있음</p>
 <div style="color:#6b7280;font-size:.9rem;line-height:1.8">
-📅 장날 <b>매월 2·7·12·17·22·27일</b><br>
+📅 장날 <b>매월 2·7·12·17·22·27일</b> <span style="color:#9ca3af">다음 장날 9/7</span><span class="wx-chip" title="비">🌧 27° · 비 18%</span><br>
 🕘 점포 별로 상이함 · 휴무 점포 별로 상이함<br>
 🅿️ 주차 있음<br>
 ☎️ 054-930-6703
@@ -917,7 +922,7 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 <p style="margin:0 0 6px;font-size:.96rem"><b>파는 것</b> — 돔배기·곰탕·한약재</p>
 <p style="margin:0 0 8px;color:#374151;font-size:.95rem;line-height:1.75">경북 3대 장으로 꼽히던 큰 장</p>
 <div style="color:#6b7280;font-size:.9rem;line-height:1.8">
-📅 장날 <b>2일 / 7일 / 12일 / 17일 / 22일 / 27일</b><br>
+📅 장날 <b>2일 / 7일 / 12일 / 17일 / 22일 / 27일</b> <span style="color:#9ca3af">다음 장날 9/7</span><span class="wx-chip" title="약한 비">🌧 26° · 비 29%</span><br>
 🕘 07:00~21:00 ※ 단, 점포 별로 상이할 수 있음 · 휴무 연중무휴 ※ 단, 점포 별로 상이할 수 있음<br>
 🅿️ 주차 있음<br>
 ☎️ 054-331-1772
@@ -992,7 +997,7 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 <p style="margin:0 0 6px;font-size:.96rem"><b>파는 것</b> — 농산물 · 수산물 · 축산물 · 과일 · 특산물</p>
 <p style="margin:0 0 8px;color:#374151;font-size:.95rem;line-height:1.75">의성전통시장은 매월 끝자리가 2일과 7일인 날에 장이 열리는 시장이다.</p>
 <div style="color:#6b7280;font-size:.9rem;line-height:1.8">
-📅 장날 <b>매월 2일 / 7일 / 12일 / 17일 / 22일 / 27일</b><br>
+📅 장날 <b>매월 2일 / 7일 / 12일 / 17일 / 22일 / 27일</b> <span style="color:#9ca3af">다음 장날 9/7</span><span class="wx-chip" title="가랑비">🌦 26° · 비 20%</span><br>
 🕘 점포 별로 상이함 · 휴무 점포 별로 상이함<br>
 🅿️ 주차 가능<br>
 ☎️ 054-834-2554
@@ -1097,7 +1102,7 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 <p style="margin:0 0 6px;font-size:.96rem"><b>파는 것</b> — 농산물, 축산물, 수산물, 가공식품</p>
 <p style="margin:0 0 8px;color:#374151;font-size:.95rem;line-height:1.75">1919년 개설 · 점포 57곳 · 주차 가능 · 화장실 있음</p>
 <div style="color:#6b7280;font-size:.9rem;line-height:1.8">
-📅 장날 <b>매월 3 / 8 / 13 / 18 / 23 / 28일</b><br>
+📅 장날 <b>매월 3 / 8 / 13 / 18 / 23 / 28일</b> <span style="color:#9ca3af">다음 장날 9/8</span><span class="wx-chip" title="구름 조금">⛅ 25° · 비 34%</span><br>
 🕘 점포 별로 상이함 · 휴무 점포 별로 상이함<br>
 🅿️ 주차 있음<br>
 ☎️ 054-730-6233
@@ -1202,7 +1207,7 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 <p style="margin:0 0 6px;font-size:.96rem"><b>파는 것</b> — 수산물 · 농산물 · 축산물 · 과일</p>
 <p style="margin:0 0 8px;color:#374151;font-size:.95rem;line-height:1.75">신바람신녕공설시장은 1958년 9월 20일 개설되었다.</p>
 <div style="color:#6b7280;font-size:.9rem;line-height:1.8">
-📅 장날 <b>3일 / 8일 / 13일 / 18일 / 23일 / 28일</b><br>
+📅 장날 <b>3일 / 8일 / 13일 / 18일 / 23일 / 28일</b> <span style="color:#9ca3af">다음 장날 9/8</span><span class="wx-chip" title="흐림">☁️ 28° · 비 6%</span><br>
 🕘 점포 별로 상이함 · 휴무 점포 별로 상이함<br>
 🅿️ 주차 가능<br>
 ☎️ 영천시청 일자리노사과 054-330-6232
@@ -1217,7 +1222,7 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 <p style="margin:0 0 6px;font-size:.96rem"><b>파는 것</b> — 곡물 · 농산물 · 참외</p>
 <p style="margin:0 0 8px;color:#374151;font-size:.95rem;line-height:1.75">약목시장은 1914년에 개설된 시장으로, 해방 이후 965년 종합 시장형 공설 시장으로 새롭게 개설되었다.</p>
 <div style="color:#6b7280;font-size:.9rem;line-height:1.8">
-📅 장날 <b>3일 / 8일 / 13일 / 18일 / 23일 / 28일</b><br>
+📅 장날 <b>3일 / 8일 / 13일 / 18일 / 23일 / 28일</b> <span style="color:#9ca3af">다음 장날 9/8</span><span class="wx-chip" title="흐림">☁️ 28° · 비 10%</span><br>
 🕘 점포별로 상이함 · 휴무 점포별로 상이함<br>
 🅿️ 주차 가능<br>
 ☎️ 054-974-6460
@@ -1277,7 +1282,7 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 <p style="margin:0 0 6px;font-size:.96rem"><b>파는 것</b> — 농산물, 수산물, 의류, 음식</p>
 <p style="margin:0 0 8px;color:#374151;font-size:.95rem;line-height:1.75">점촌 전통시장은 경상북도 문경시 흥덕동에 있다.</p>
 <div style="color:#6b7280;font-size:.9rem;line-height:1.8">
-📅 장날 <b>매월 끝자리 3, 8일</b><br>
+📅 장날 <b>매월 끝자리 3, 8일</b> <span style="color:#9ca3af">다음 장날 9/8</span><span class="wx-chip" title="대체로 맑음">🌤 27° · 비 6%</span><br>
 🕘 점포별 상이 · 휴무 점포별 상이<br>
 🅿️ 주차 있음<br>
 ☎️ 054-553-3208
@@ -1337,7 +1342,7 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 <p style="margin:0 0 6px;font-size:.96rem"><b>파는 것</b> — 인삼 · 사과 · 인견직</p>
 <p style="margin:0 0 8px;color:#374151;font-size:.95rem;line-height:1.75">풍기중앙시장은 풍기읍성 동문 밖 일대 저잣거리가 시장으로 발달하면서 조성되었다.</p>
 <div style="color:#6b7280;font-size:.9rem;line-height:1.8">
-📅 장날 <b>3일 / 8일 / 13일 / 18일 / 23일 / 28일</b><br>
+📅 장날 <b>3일 / 8일 / 13일 / 18일 / 23일 / 28일</b> <span style="color:#9ca3af">다음 장날 9/8</span><span class="wx-chip" title="구름 조금">⛅ 27° · 비 8%</span><br>
 🕘 점포 별로 상이함 · 휴무 점포 별로 상이함<br>
 🅿️ 주차 가능<br>
 ☎️ 영주시청 일자리경제과 054-639-6104
@@ -1382,7 +1387,7 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 <p style="margin:0 0 6px;font-size:.96rem"><b>파는 것</b> — 농산물, 축산물, 수산물, 가공식품</p>
 <p style="margin:0 0 8px;color:#374151;font-size:.95rem;line-height:1.75">1965년 개설 · 점포 50곳 · 주차 가능 · 화장실 있음</p>
 <div style="color:#6b7280;font-size:.9rem;line-height:1.8">
-📅 장날 <b>3일 / 8일 / 13일 / 18일 / 23일 / 28일</b><br>
+📅 장날 <b>3일 / 8일 / 13일 / 18일 / 23일 / 28일</b> <span style="color:#9ca3af">다음 장날 9/8</span><span class="wx-chip" title="대체로 맑음">🌤 26° · 비 10%</span><br>
 🕘 점포 별로 상이함 · 휴무 점포 별로 상이함<br>
 🅿️ 주차 있음<br>
 ☎️ 054-537-8912
@@ -1517,7 +1522,7 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 <p style="margin:0 0 6px;font-size:.96rem"><b>파는 것</b> — 농산물, 축산물, 수산물, 가공식품</p>
 <p style="margin:0 0 8px;color:#374151;font-size:.95rem;line-height:1.75">1971년 개설 · 점포 133곳 · 주차 가능 · 화장실 있음</p>
 <div style="color:#6b7280;font-size:.9rem;line-height:1.8">
-📅 장날 <b>매월 4, 9, 14, 19, 24, 29일</b><br>
+📅 장날 <b>매월 4, 9, 14, 19, 24, 29일</b> <span style="color:#9ca3af">다음 장날 9/4</span><span class="wx-chip" title="대체로 맑음">🌤 24° · 비 2%</span><br>
 🕘 07:00~17:00 (점포별 상이함)<br>
 🅿️ 주차 있음<br>
 ☎️ 054-674-3080
@@ -1532,7 +1537,7 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 <p style="margin:0 0 6px;font-size:.96rem"><b>파는 것</b> — 농산물 · 수산물 · 축산물 · 과일</p>
 <p style="margin:0 0 8px;color:#374151;font-size:.95rem;line-height:1.75">영덕시장은 70여 년 전 사람과 사람이 모여 물건을 주고받는 장소로 출발하여 여러 장소를 거치면서 현재의 장소에 이르렀다.</p>
 <div style="color:#6b7280;font-size:.9rem;line-height:1.8">
-📅 장날 <b>매월 4 / 9 / 14 / 19 / 24 / 29일</b><br>
+📅 장날 <b>매월 4 / 9 / 14 / 19 / 24 / 29일</b> <span style="color:#9ca3af">다음 장날 9/4</span><span class="wx-chip" title="흐림">☁️ 26° · 비 4%</span><br>
 🕘 점포 별로 상이함 · 휴무 점포 별로 상이함<br>
 🅿️ 주차 가능<br>
 ☎️ 054-734-0082
@@ -1547,7 +1552,7 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 <p style="margin:0 0 6px;font-size:.96rem"><b>파는 것</b> — 농산물, 축산물, 수산물, 가공식품</p>
 <p style="margin:0 0 8px;color:#374151;font-size:.95rem;line-height:1.75">1918년 개설 · 점포 85곳 · 주차 가능 · 화장실 있음</p>
 <div style="color:#6b7280;font-size:.9rem;line-height:1.8">
-📅 장날 <b>오일장 4, 9, 14, 19, 24, 29일 / 공설시장</b><br>
+📅 장날 <b>오일장 4, 9, 14, 19, 24, 29일 / 공설시장</b> <span style="color:#9ca3af">다음 장날 9/4</span><span class="wx-chip" title="구름 조금">⛅ 25° · 비 0%</span><br>
 🕘 점포별 상이함 · 휴무 점포별 상이함<br>
 🅿️ 주차 있음<br>
 ☎️ 054-683-1058
@@ -1592,7 +1597,7 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 <p style="margin:0 0 6px;font-size:.96rem"><b>파는 것</b> — 미역 · 우렁쉥이 · 넙치 · 산나물 · 약초 · 가축</p>
 <p style="margin:0 0 8px;color:#374151;font-size:.95rem;line-height:1.75">포항에서 남쪽으로 포항제철을 지나 청림 삼거리에서 929번 지방도를 따라 오천을 지나 감포방향으로 27㎞ 지점 장기면 소재지 장기교에서 우회전하여 산서·방산 방면으로 약 100m 올라가면 장기시장이다.</p>
 <div style="color:#6b7280;font-size:.9rem;line-height:1.8">
-📅 장날 <b>4일 / 9일 / 14일 / 19일 / 24일 / 29일</b><br>
+📅 장날 <b>4일 / 9일 / 14일 / 19일 / 24일 / 29일</b> <span style="color:#9ca3af">다음 장날 9/4</span><span class="wx-chip" title="구름 조금">⛅ 26° · 비 18%</span><br>
 🕘 점포별로 상이함 · 휴무 점포별로 상이함<br>
 🅿️ 주차 가능<br>
 ☎️ 054-280-0606
@@ -1607,7 +1612,7 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 <p style="margin:0 0 6px;font-size:.96rem"><b>파는 것</b> — 농산물, 축산물, 수산물, 가공식품</p>
 <p style="margin:0 0 8px;color:#374151;font-size:.95rem;line-height:1.75">1912년 개설 · 점포 115곳 · 주차 가능 · 화장실 있음</p>
 <div style="color:#6b7280;font-size:.9rem;line-height:1.8">
-📅 장날 <b>4일 / 9일 / 14일 / 19일 / 24일 / 29일</b><br>
+📅 장날 <b>4일 / 9일 / 14일 / 19일 / 24일 / 29일</b> <span style="color:#9ca3af">다음 장날 9/4</span><span class="wx-chip" title="구름 조금">⛅ 26° · 비 0%</span><br>
 🕘 점포 별로 상이함 · 휴무 점포 별로 상이함<br>
 🅿️ 주차 있음<br>
 ☎️ 054-371-0510
@@ -1637,7 +1642,7 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 <p style="margin:0 0 6px;font-size:.96rem"><b>파는 것</b> — 고추 · 사과 · 산채</p>
 <p style="margin:0 0 8px;color:#374151;font-size:.95rem;line-height:1.75">청송 오일장은 조선시대 청송 도호부 때부터 객사를 운영하면서 시장 형태로 이어오다 1920년대에 정기시장으로 발전하였다.</p>
 <div style="color:#6b7280;font-size:.9rem;line-height:1.8">
-📅 장날 <b>4일 / 9일 / 14일 / 19일 / 24일 / 29일</b><br>
+📅 장날 <b>4일 / 9일 / 14일 / 19일 / 24일 / 29일</b> <span style="color:#9ca3af">다음 장날 9/4</span><span class="wx-chip" title="흐림">☁️ 25° · 비 0%</span><br>
 🕘 점포별로 상이함 · 휴무 점포별로 상이함<br>
 🅿️ 주차 가능<br>
 ☎️ 054-874-3604
@@ -1817,7 +1822,7 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 <p style="margin:0 0 6px;font-size:.96rem"><b>파는 것</b> — 농산물, 의류, 가정용품, 음식점</p>
 <p style="margin:0 0 8px;color:#374151;font-size:.95rem;line-height:1.75">1959년 개설 · 점포 48곳 · 주차 가능 · 화장실 있음</p>
 <div style="color:#6b7280;font-size:.9rem;line-height:1.8">
-📅 장날 <b>매월 5일 / 10일</b><br>
+📅 장날 <b>매월 5일 / 10일</b> <span style="color:#9ca3af">다음 장날 9/5</span><span class="wx-chip" title="흐림">☁️ 26° · 비 1%</span><br>
 🕘 - 상설시장 09:00~20:00 - 오일장 06:00~14:00 ※ 점포별 상이함 · 휴무 연중무휴<br>
 🅿️ 주차 있음<br>
 ☎️ 구미시청 일자리경제과 054-480-2622

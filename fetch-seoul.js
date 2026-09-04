@@ -113,10 +113,15 @@ function coord(lat, lot) {
   }
 
   const live = uniq.filter(r => r.end >= today);
+  // ⚠️ 19,468건을 통째로 저장하니 **12MB**였다. 대부분 몇 년 전 끝난 행사라 페이지에 쓸 일이 없다.
+  //    「서울전시회8월」 같은 «지난달» 조합까지만 필요하므로 **끝난 지 60일 이내 + 앞으로 전부**만 남긴다.
+  const floor = ymd(new Date(Date.parse(KST()) - 60 * 86400000).toISOString().slice(0, 10));
+  const keep = uniq.filter(r => r.end >= floor);
   fs.writeFileSync(OUT, JSON.stringify({
     generated: KST(), source: '서울열린데이터광장 서울시 문화행사 정보',
-    total, rows: uniq
+    total, kept: keep.length, floor, rows: keep
   }), 'utf8');
+  console.log(`  보관 기준 ${floor} 이후 종료 — ${keep.length}건만 저장(전체 ${uniq.length}건 중)`);
 
   const by = {}; live.forEach(r => { by[r.cat] = (by[r.cat] || 0) + 1; });
   console.log(`✓ data/seoul_events.json — 전체 ${uniq.length}건(중복 제거 전 ${rows.length}) · 진행·예정 ${live.length}건`);

@@ -15,12 +15,25 @@
 //    렌더 쪽(weather.js)에서 오래되면 «아예 안 보여준다». 옛 예보를 오늘 것처럼 보여주는 건
 //    안 보여주는 것보다 나쁘다.
 //
+// 2026-09-04 확대: 축제만이 아니라 «야외에서 놀 곳» 전부로 넓혔다.
+//   장남 님: 「놀러가서 비 오면 할 일도 없어지니까」 — 맞는 말이다. 날씨는 갈지 말지를 정하는 정보다.
+//   대상: 축제 · 오일장(다음 장날) · 걷기길 · 계곡 · 단풍 · 봄꽃 · 온천 · 명산
+//   ⚠️ 무장애 9,676·카페 2,018·관광지 12,617 은 «다른 페이지 안의 참고 목록»이라 넣지 않는다.
+//      거기까지 넣으면 격자가 12,000개로 불어나 파일이 수 MB가 되고, 정작 결정에는 안 쓰인다.
+//   ⭐ 좌표를 0.02도(≈2km) 격자로 묶는다 — 2km 안에서 예보는 사실상 같다. 1,700→1,500지점, 호출 25회.
+//
 // 실행: node fetch-weather.js
 const fs = require('fs'), path = require('path'), https = require('https');
 const OUT = path.join(__dirname, 'data', 'weather.json');
-const DAYS = 16;                 // Open-Meteo 무료 일수
+const DAYS = 12;                 // ⚠️ 16일까지 주지만 10일 넘어가면 신뢰도가 낮다. 파일 크기도 반이 된다.
 const BATCH = 60;                // 한 요청에 담을 지점 수
-const GAP = 400;                 // ms — 사이 간격(무료 서비스에 예의)
+// ⚠️ 2026-09-04 실사고: Open-Meteo 무료는 «분당» 한도가 있고, 한 요청에 60지점을 담으면
+//    **60건으로 계산된다.** 400ms 간격으로 밀었더니 600지점에서 429가 나고 331지점이
+//    조용히 빠진 채로 파일이 저장됐다 — 그 지역들은 날씨가 통째로 사라진다.
+//    → 분당 약 540지점(9요청)만 보내도록 간격을 벌리고, 429 는 «건너뛰지 말고» 기다렸다 다시 보낸다.
+const GAP = 7000;                // ms
+const RETRY_WAIT = 65000;        // 429 를 만나면 1분 넘게 쉰다
+const STEP = 0.02;               // 격자(도) — 약 2km
 
 const KST = () => {
   const d = new Date(Date.now() + 9 * 3600 * 1000);
@@ -34,26 +47,56 @@ const get = u => new Promise((res, rej) => {
 });
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 
-// 좌표를 소수 2자리(≈1km)로 묶는다 — 같은 동네 축제가 각각 호출될 이유가 없다
-const key = (x, y) => Number(y).toFixed(2) + ',' + Number(x).toFixed(2);
+// ⭐ 격자 키 — 렌더 쪽(weather.js)도 «똑같은 식»을 써야 한다. 한쪽만 바꾸면 조용히 전부 미스가 난다.
+const key = (x, y) => Math.round(Number(y) / STEP) + ',' + Math.round(Number(x) / STEP);
+const inKR = (x, y) => x > 124 && x < 132 && y > 33 && y < 39;   // 좌표는 쓰기 전에 거른다
+
+function load(f) {
+  try {
+    const d = JSON.parse(fs.readFileSync(path.join(__dirname, 'data', f), 'utf8'));
+    return Array.isArray(d) ? d : (d.rows || Object.values(d).find(v => Array.isArray(v)) || []);
+  } catch (e) { return []; }
+}
 
 (async () => {
-  const fests = JSON.parse(fs.readFileSync(path.join(__dirname, 'data', 'festivals_api.json'), 'utf8'));
   const today = KST();
   const last = new Date(Date.parse(today) + (DAYS - 1) * 86400000).toISOString().slice(0, 10);
   const t8 = ymd(today), l8 = ymd(last);
 
-  // 예보 창(오늘~16일) 과 기간이 겹치는 축제만 — 나머지는 받아도 쓸 데가 없다
   const pts = new Map();
-  for (const f of fests) {
-    if (!f.x || !f.y) continue;
+  const add = (x, y) => {
+    x = Number(x); y = Number(y);
+    if (!inKR(x, y)) return false;
+    const k = key(x, y);
+    if (!pts.has(k)) pts.set(k, { lat: y.toFixed(3), lon: x.toFixed(3) });
+    return true;
+  };
+
+  const tally = {};
+  // ① 축제 — 예보 창과 기간이 «겹치는» 것만(끝난 축제·먼 축제는 받아도 쓸 데가 없다)
+  let n = 0;
+  for (const f of load('festivals_api.json')) {
     const s = ymd(f.start), e = ymd(f.end || f.start);
     if (!s || e < t8 || s > l8) continue;
-    const k = key(f.x, f.y);
-    if (!pts.has(k)) pts.set(k, { lat: Number(f.y).toFixed(2), lon: Number(f.x).toFixed(2) });
+    if (add(f.x, f.y)) n++;
   }
+  tally['축제(기간 겹침)'] = n;
+
+  // ②~⑧ 날짜가 없는 «놀 곳»들 — 오늘부터 며칠간의 날씨가 곧 «갈지 말지»다
+  for (const [f, label] of [
+    ['markets_api.json', '오일장'], ['trails.json', '걷기길'], ['valleys.json', '계곡'],
+    ['maple.json', '단풍'], ['flower.json', '봄꽃'], ['onsen.json', '온천'],
+    ['mountains_ko.json', '명산']
+  ]) {
+    let c = 0;
+    for (const r of load(f)) if (add(r.x, r.y)) c++;
+    tally[label] = c;
+  }
+
   const list = [...pts.entries()];
-  console.log(`예보 창 ${today} ~ ${last} · 대상 축제 좌표 ${list.length}곳 (전체 ${fests.length}건 중)`);
+  console.log(`예보 창 ${today} ~ ${last} (${DAYS}일) · 격자 ${STEP}도`);
+  console.log('  대상:', Object.entries(tally).map(([k, v]) => `${k} ${v}`).join(' · '));
+  console.log(`  → 중복 제거 후 ${list.length}지점 · 호출 ${Math.ceil(list.length / BATCH)}회`);
   if (!list.length) { console.log('대상 없음 — 파일을 건드리지 않는다'); return; }
 
   const out = {};
@@ -65,10 +108,18 @@ const key = (x, y) => Number(y).toFixed(2) + ',' + Number(x).toFixed(2);
       + '&longitude=' + chunk.map(([, v]) => v.lon).join(',')
       + '&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max'
       + '&timezone=Asia%2FSeoul&forecast_days=' + DAYS;
-    let r;
-    try { r = await get(u); } catch (e) { err++; console.log('  ⚠️ 요청 실패', e.message); await sleep(1500); continue; }
-    calls++;
-    if (r.s !== 200) { err++; console.log(`  ⚠️ HTTP ${r.s} ${r.d.slice(0, 120)}`); await sleep(1500); continue; }
+    let r = null;
+    for (let t = 0; t < 4; t++) {           // 같은 묶음을 최대 4번까지 — 429는 «기다리면» 풀린다
+      try { r = await get(u); } catch (e) { console.log('  ⚠️ 요청 실패', e.message); await sleep(3000); continue; }
+      calls++;
+      if (r.s === 200) break;
+      if (r.s === 429) {
+        console.log(`  ⏳ 분당 한도 — ${RETRY_WAIT / 1000}초 쉬고 이 묶음을 다시 보냅니다`);
+        await sleep(RETRY_WAIT); r = null; continue;
+      }
+      console.log(`  ⚠️ HTTP ${r.s} ${r.d.slice(0, 120)}`); r = null; await sleep(3000);
+    }
+    if (!r || r.s !== 200) { err++; console.log('  ⛔ 이 묶음은 끝내 못 받았습니다 — 해당 지역은 날씨가 비어 있게 됩니다'); continue; }
     let j;
     try { j = JSON.parse(r.d); } catch (e) { err++; continue; }
     const arr = Array.isArray(j) ? j : [j];      // ⚠️ 지점이 1곳이면 배열이 아니라 «객체»로 온다
@@ -92,12 +143,17 @@ const key = (x, y) => Number(y).toFixed(2) + ',' + Number(x).toFixed(2);
 
   const got = Object.keys(out).length;
   if (!got) { console.log('⛔ 받은 게 0곳 — 기존 파일을 덮어쓰지 않는다(빈 파일이 더 나쁘다)'); process.exit(1); }
+  // ⚠️ «반쯤 받은 것»을 조용히 저장하면 그 지역만 날씨가 없어진다. 얼마나 빠졌는지 반드시 말한다.
+  if (got < list.length * 0.95) {
+    console.log(`  ⚠️ ${list.length - got}지점을 못 받았습니다(${(100 - got / list.length * 100).toFixed(0)}%). 그 지역 카드엔 날씨가 안 붙습니다.`);
+  }
   fs.writeFileSync(OUT, JSON.stringify({
     generated: today,
     generatedAt: new Date(Date.now() + 9 * 3600 * 1000).toISOString().slice(0, 16).replace('T', ' '),
-    source: 'Open-Meteo',
+    source: 'Open-Meteo', step: STEP,
     days: [t8, l8],
     pts: out
   }), 'utf8');
-  console.log(`✓ data/weather.json — ${got}곳 · 호출 ${calls}회 · 오류 ${err}건`);
+  const kb = (fs.statSync(OUT).size / 1024).toFixed(0);
+  console.log(`✓ data/weather.json — ${got}지점 · ${kb}KB · 호출 ${calls}회 · 오류 ${err}건`);
 })();

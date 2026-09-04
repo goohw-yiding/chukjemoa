@@ -157,6 +157,11 @@ h2.sec::before{content:'';position:absolute;left:0;top:14%;width:5px;height:72%;
 .card h3{font-size:1.13rem;font-weight:800;letter-spacing:-.02em;margin:2px 0 6px}
 .card .date{font-weight:700;color:#0f9d8f;font-size:.92rem}
 .card .loc{font-size:.86rem;color:#6b7280;margin:2px 0 8px}
+/* 🌤 2026-09-04: 야외에서 노는 곳엔 날씨가 «갈지 말지»를 정한다 — 목록 카드에도 오늘 예보를 붙인다.
+   전역 CSS에 두는 이유: 계곡·단풍·봄꽃·온천·걷기길·오일장이 각자 붙이면 같은 규칙이 6번 실린다. */
+.wx-chip{display:inline-block;font-size:.76rem;font-weight:800;color:#2b6cb0;background:#eef5fd;
+  border-radius:6px;padding:2px 7px;margin-left:6px;white-space:nowrap;vertical-align:middle}
+.wx-chip.rain{color:#fff;background:#2b6cb0}
 .card .desc{font-size:.9rem;color:#4b5563;line-height:1.55;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
 .card-top{display:flex;justify-content:flex-end;align-items:center;margin-bottom:2px}
 .badge{font-size:.72rem;padding:3px 9px;border-radius:10px;font-weight:700}
@@ -557,6 +562,7 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 .wx-src{font-size:.78rem;color:#9aa3af;line-height:1.6;margin:10px 0 0}
 .wx-chip{display:inline-block;font-size:.76rem;font-weight:800;color:#2b6cb0;background:#eef5fd;
   border-radius:6px;padding:2px 7px;margin-left:6px;white-space:nowrap}
+.wx-chip.rain{color:#fff;background:#2b6cb0}
 </style>
 <h1 style="font-size:1.55rem;font-weight:900;margin:8px 0 6px">안다미로귀때박물관 기획전시 '명화와 티타임(Teatime) : 빛과 색채로 마시는 차 한 잔의 여유'</h1>
 <div style="margin-bottom:8px">
@@ -610,7 +616,7 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 <span class="wx-deg"><b>27°</b> / 20°</span>
 <span class="wx-pop">비 18%</span>
 </div></div>
-<p class="wx-src">야외 행사는 우천 시 일정이 바뀔 수 있습니다. 출발 전에 주최 측 공지를 확인하세요.<br>Open-Meteo 예보 · 2026-09-04 09:51 기준</p></div>
+<p class="wx-src">야외 행사는 우천 시 일정이 바뀔 수 있습니다. 출발 전에 주최 측 공지를 확인하세요.<br>Open-Meteo 예보 · 2026-09-04 10:23 기준</p></div>
 
 
 

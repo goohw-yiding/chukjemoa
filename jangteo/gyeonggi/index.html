@@ -156,6 +156,11 @@ h2.sec::before{content:'';position:absolute;left:0;top:14%;width:5px;height:72%;
 .card h3{font-size:1.13rem;font-weight:800;letter-spacing:-.02em;margin:2px 0 6px}
 .card .date{font-weight:700;color:#0f9d8f;font-size:.92rem}
 .card .loc{font-size:.86rem;color:#6b7280;margin:2px 0 8px}
+/* 🌤 2026-09-04: 야외에서 노는 곳엔 날씨가 «갈지 말지»를 정한다 — 목록 카드에도 오늘 예보를 붙인다.
+   전역 CSS에 두는 이유: 계곡·단풍·봄꽃·온천·걷기길·오일장이 각자 붙이면 같은 규칙이 6번 실린다. */
+.wx-chip{display:inline-block;font-size:.76rem;font-weight:800;color:#2b6cb0;background:#eef5fd;
+  border-radius:6px;padding:2px 7px;margin-left:6px;white-space:nowrap;vertical-align:middle}
+.wx-chip.rain{color:#fff;background:#2b6cb0}
 .card .desc{font-size:.9rem;color:#4b5563;line-height:1.55;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
 .card-top{display:flex;justify-content:flex-end;align-items:center;margin-bottom:2px}
 .badge{font-size:.72rem;padding:3px 9px;border-radius:10px;font-weight:700}
@@ -527,7 +532,7 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 <p style="margin:0 0 6px;font-size:.96rem"><b>파는 것</b> — 농산물 · 수산물 · 축산물 · 과일 · 생활용품</p>
 <p style="margin:0 0 8px;color:#374151;font-size:.95rem;line-height:1.75">금촌통일시장은 경기도 파주시에 위치한 전통시장으로 1906년 경의선 철도가 개통되었을 때 조성되어 지금까지 그 명맥이 유지되어 오고 있다.</p>
 <div style="color:#6b7280;font-size:.9rem;line-height:1.8">
-📅 장날 <b>1일 / 6일 / 11일 / 16일 / 21일 / 26일</b><br>
+📅 장날 <b>1일 / 6일 / 11일 / 16일 / 21일 / 26일</b> <span style="color:#9ca3af">다음 장날 9/6</span><span class="wx-chip" title="구름 조금">⛅ 28° · 비 2%</span><br>
 🕘 점포 별로 상이함 · 휴무 점포 별로 상이함<br>
 🅿️ 주차 가능 요금 (최초 30분 무료 / 추가 30분 500원)<br>
 ☎️ 파주시청 일자리경제과 031-940-4540
@@ -587,7 +592,7 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 <p style="margin:0 0 6px;font-size:.96rem"><b>파는 것</b> — 농산물 · 수산물 · 축산물 · 공산품</p>
 <p style="margin:0 0 8px;color:#374151;font-size:.95rem;line-height:1.75">양수리 전통시장은 경기도 양평의 3대 전통 시장 중 하나로, 금강산에서 출발한 북한강과 강원도 검룡소에서 출발한 남한강의 두 물이 합류하는 지점에 위치해 있다.</p>
 <div style="color:#6b7280;font-size:.9rem;line-height:1.8">
-📅 장날 <b>1일 / 6일</b><br>
+📅 장날 <b>1일 / 6일</b> <span style="color:#9ca3af">다음 장날 9/6</span><span class="wx-chip" title="흐림">☁️ 27° · 비 4%</span><br>
 🕘 점포별 상이 · 휴무 점포별 상이<br>
 🅿️ 주차 가능<br>
 ☎️ 031-775-3110
@@ -617,7 +622,7 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 <p style="margin:0 0 6px;font-size:.96rem"><b>파는 것</b> — 백암순대·순대국밥</p>
 <p style="margin:0 0 8px;color:#374151;font-size:.95rem;line-height:1.75">백암순대의 본고장 오일장</p>
 <div style="color:#6b7280;font-size:.9rem;line-height:1.8">
-📅 장날 <b>매월 1, 6, 11, 16 ,21, 26일 (31일 경우 1일날)</b><br>
+📅 장날 <b>매월 1, 6, 11, 16 ,21, 26일 (31일 경우 1일날)</b> <span style="color:#9ca3af">다음 장날 9/6</span><span class="wx-chip" title="구름 조금">⛅ 27° · 비 4%</span><br>
 🕘 06:00~20:00 · 휴무 매월 1, 6일 이외의 날<br>
 
 ☎️ 031-6193-2114
@@ -632,7 +637,7 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 <p style="margin:0 0 6px;font-size:.96rem"><b>파는 것</b> — 농산물 · 수산물 · 축산물 · 공산품</p>
 <p style="margin:0 0 8px;color:#374151;font-size:.95rem;line-height:1.75">양평의 대표적인 시장인 3대 시장은 양평 물맑은시장, 양평 천년 시장, 양수리 전통시장이 있다.</p>
 <div style="color:#6b7280;font-size:.9rem;line-height:1.8">
-📅 장날 <b>1일 / 6일 / 11일 / 16일 / 21일 / 26일</b><br>
+📅 장날 <b>1일 / 6일 / 11일 / 16일 / 21일 / 26일</b> <span style="color:#9ca3af">다음 장날 9/6</span><span class="wx-chip" title="흐림">☁️ 27° · 비 4%</span><br>
 🕘 매장별로 상이함 · 휴무 매장별로 상이함<br>
 🅿️ 주차 불가능<br>
 ☎️ 양평군 관광과 031-770-1067
@@ -662,7 +667,7 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 <p style="margin:0 0 6px;font-size:.96rem"><b>파는 것</b> — 식품 · 채소류 · 잡화류</p>
 <p style="margin:0 0 8px;color:#374151;font-size:.95rem;line-height:1.75">북변동 공영주차장에서 열리는 김포 최대의 전통 재래시장으로 매월 2일과 7일에 장이 선다.</p>
 <div style="color:#6b7280;font-size:.9rem;line-height:1.8">
-📅 장날 <b>매월 2, 7, 12, 17, 22, 27일</b><br>
+📅 장날 <b>매월 2, 7, 12, 17, 22, 27일</b> <span style="color:#9ca3af">다음 장날 9/7</span><span class="wx-chip" title="흐림">☁️ 29° · 비 0%</span><br>
 🕘 10:00~20:00 ※ 점포별 상이함<br>
 🅿️ 주차 가능<br>
 ☎️ 지역경제과 031-980-2564
@@ -722,7 +727,7 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 <p style="margin:0 0 6px;font-size:.96rem"><b>파는 것</b> — 농산물, 축산물, 수산물, 가공식품</p>
 <p style="margin:0 0 8px;color:#374151;font-size:.95rem;line-height:1.75">1921년 개설 · 점포 341곳 · 주차 가능 · 화장실 있음</p>
 <div style="color:#6b7280;font-size:.9rem;line-height:1.8">
-📅 장날 <b>2일 / 7일 / 12일 / 17일 / 22일 / 27일</b><br>
+📅 장날 <b>2일 / 7일 / 12일 / 17일 / 22일 / 27일</b> <span style="color:#9ca3af">다음 장날 9/7</span><span class="wx-chip" title="구름 조금">⛅ 28° · 비 2%</span><br>
 🕘 10:00~22:00 (※ 점포별 상이함) · 휴무 ※ 점포별 상이함<br>
 🅿️ 주차 있음<br>
 ☎️ 031-357-6037
@@ -752,7 +757,7 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 <p style="margin:0 0 6px;font-size:.96rem"><b>파는 것</b> — 안성유기·한우</p>
 <p style="margin:0 0 8px;color:#374151;font-size:.95rem;line-height:1.75">조선 3대 장터로 꼽힌 유서 깊은 장</p>
 <div style="color:#6b7280;font-size:.9rem;line-height:1.8">
-📅 장날 <b>매월 2, 7, 12, 17, 22, 27일</b><br>
+📅 장날 <b>매월 2, 7, 12, 17, 22, 27일</b> <span style="color:#9ca3af">다음 장날 9/7</span><span class="wx-chip" title="흐림">☁️ 27° · 비 4%</span><br>
 🕘 점포별 상이 · 휴무 점포별 상이<br>
 🅿️ 주차 가능<br>
 ☎️ 안성시 일자리경제과 031-678-2436
@@ -842,7 +847,7 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 <p style="margin:0 0 6px;font-size:.96rem"><b>파는 것</b> — 농산물 · 의류 · 잡곡 · 잡화류 · 해산물 · 음식류</p>
 <p style="margin:0 0 8px;color:#374151;font-size:.95rem;line-height:1.75">마석5일장은 남양주시 화도읍 마석우리에 위치한 재래시장으로 3일, 8일에 열리는 오일장이다.</p>
 <div style="color:#6b7280;font-size:.9rem;line-height:1.8">
-📅 장날 <b>3일, 8일 (매달 3, 8, 13, 18, 23, 28)</b><br>
+📅 장날 <b>3일, 8일 (매달 3, 8, 13, 18, 23, 28)</b> <span style="color:#9ca3af">다음 장날 9/8</span><span class="wx-chip" title="구름 조금">⛅ 27° · 비 2%</span><br>
 🕘 매점별 상이함 · 휴무 매점별 상이함<br>
 🅿️ 주차 가능<br>
 ☎️ 031-590-2114
@@ -1127,7 +1132,7 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 <p style="margin:0 0 6px;font-size:.96rem"><b>파는 것</b> — 여주쌀·고구마·땅콩</p>
 <p style="margin:0 0 8px;color:#374151;font-size:.95rem;line-height:1.75">남한강변 곡창지대의 오일장</p>
 <div style="color:#6b7280;font-size:.9rem;line-height:1.8">
-📅 장날 <b>5일 / 10일 / 15일 / 20일 / 25일 / 30일</b><br>
+📅 장날 <b>5일 / 10일 / 15일 / 20일 / 25일 / 30일</b> <span style="color:#9ca3af">다음 장날 9/5</span><span class="wx-chip" title="대체로 맑음">🌤 28° · 비 0%</span><br>
 
 🅿️ 주차 가능<br>
 ☎️ 여주시청 일자리경제과 031-887-3065
@@ -1157,7 +1162,7 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 <p style="margin:0 0 6px;font-size:.96rem"><b>파는 것</b> — 농산물, 축산물, 수산물, 가공식품</p>
 <p style="margin:0 0 8px;color:#374151;font-size:.95rem;line-height:1.75">1982년 개설 · 점포 153곳 · 주차 가능 · 화장실 있음</p>
 <div style="color:#6b7280;font-size:.9rem;line-height:1.8">
-📅 장날 <b>5일 / 10일 / 15일 / 20일 / 25일 / 30일</b><br>
+📅 장날 <b>5일 / 10일 / 15일 / 20일 / 25일 / 30일</b> <span style="color:#9ca3af">다음 장날 9/5</span><span class="wx-chip" title="대체로 맑음">🌤 28° · 비 0%</span><br>
 🕘 09:00~19:00 · 휴무 연중무휴<br>
 🅿️ 주차 있음<br>
 ☎️ 031-771-6172

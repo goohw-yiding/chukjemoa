@@ -191,6 +191,11 @@ h2.sec::before{content:'';position:absolute;left:0;top:14%;width:5px;height:72%;
 .card h3{font-size:1.13rem;font-weight:800;letter-spacing:-.02em;margin:2px 0 6px}
 .card .date{font-weight:700;color:#0f9d8f;font-size:.92rem}
 .card .loc{font-size:.86rem;color:#6b7280;margin:2px 0 8px}
+/* 🌤 2026-09-04: 야외에서 노는 곳엔 날씨가 «갈지 말지»를 정한다 — 목록 카드에도 오늘 예보를 붙인다.
+   전역 CSS에 두는 이유: 계곡·단풍·봄꽃·온천·걷기길·오일장이 각자 붙이면 같은 규칙이 6번 실린다. */
+.wx-chip{display:inline-block;font-size:.76rem;font-weight:800;color:#2b6cb0;background:#eef5fd;
+  border-radius:6px;padding:2px 7px;margin-left:6px;white-space:nowrap;vertical-align:middle}
+.wx-chip.rain{color:#fff;background:#2b6cb0}
 .card .desc{font-size:.9rem;color:#4b5563;line-height:1.55;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
 .card-top{display:flex;justify-content:flex-end;align-items:center;margin-bottom:2px}
 .badge{font-size:.72rem;padding:3px 9px;border-radius:10px;font-weight:700}

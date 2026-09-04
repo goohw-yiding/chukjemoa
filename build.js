@@ -627,7 +627,9 @@ function ssrCards(list, n, f) {
     return '<div class="card">'
       + (img ? '<div class="thumb"><img src="' + escA(img) + '" alt="' + escA(o.title) + '" loading="lazy"></div>' : '')
       + '<div class="card-body"><h3>' + esc(o.title) + '</h3>'
-      + (o.loc ? '<p class="loc">📍 ' + esc(o.loc) + '</p>' : '')
+      // 🌤 o.wx 는 이미 만들어진 HTML 조각(weather.js) — 없으면 아무것도 안 붙는다.
+      //    예보 창 밖이거나 파일이 오래되면 weather.js 가 스스로 빈 문자열을 준다.
+      + (o.loc || o.wx ? '<p class="loc">' + (o.loc ? '📍 ' + esc(o.loc) : '') + (o.wx || '') + '</p>' : '')
       // ⚠️ 120자로 자르고 있었다. .desc 에 3줄 클램프를 넣었으니 화면은 여전히 3줄인데
       //    HTML 에는 더 실려 나간다(검색엔진이 읽는 건 클램프 전의 원문이다).
       + (o.desc ? '<p class="desc">' + esc(String(o.desc).slice(0, 200)) + '</p>' : '')
@@ -1268,6 +1270,11 @@ h2.sec::before{content:'';position:absolute;left:0;top:14%;width:5px;height:72%;
 .card h3{font-size:1.13rem;font-weight:800;letter-spacing:-.02em;margin:2px 0 6px}
 .card .date{font-weight:700;color:#0f9d8f;font-size:.92rem}
 .card .loc{font-size:.86rem;color:#6b7280;margin:2px 0 8px}
+/* 🌤 2026-09-04: 야외에서 노는 곳엔 날씨가 «갈지 말지»를 정한다 — 목록 카드에도 오늘 예보를 붙인다.
+   전역 CSS에 두는 이유: 계곡·단풍·봄꽃·온천·걷기길·오일장이 각자 붙이면 같은 규칙이 6번 실린다. */
+.wx-chip{display:inline-block;font-size:.76rem;font-weight:800;color:#2b6cb0;background:#eef5fd;
+  border-radius:6px;padding:2px 7px;margin-left:6px;white-space:nowrap;vertical-align:middle}
+.wx-chip.rain{color:#fff;background:#2b6cb0}
 .card .desc{font-size:.9rem;color:#4b5563;line-height:1.55;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
 .card-top{display:flex;justify-content:flex-end;align-items:center;margin-bottom:2px}
 .badge{font-size:.72rem;padding:3px 9px;border-radius:10px;font-weight:700}
@@ -1667,6 +1674,9 @@ const TOC_LABEL = {
 };
 // 📖 긴 설명문 문단 나눔 + 핵심 강조 (prose.js) — 장남 님 지적 "글자가 쭉 나열돼 읽기 힘들다"
 const { prose, PROSE_JS, PROSE_CSS } = require('./prose.js');
+// 🌤 날씨 — 야외에서 노는 곳(계곡·단풍·봄꽃·온천·걷기길·오일장)의 목록 카드에 오늘 예보를 붙인다.
+//    ⚠️ 파일(data/weather.json)만 읽는다. build.js 는 네트워크를 타지 않는다.
+const WX = require('./weather.js');
 // 📈 GA4 전환 이벤트 — 「주요 이벤트 0」이던 원인(커스텀 이벤트가 하나도 없었다)
 const { TRACK_JS } = require('./track.js');
 // 🚌 브라우저에서 ODsay 직접 호출 (서버는 IP 때문에 막힌다 — odsay.js 머리말 참고)
@@ -2339,6 +2349,21 @@ console.log(`✓ 오일장 — 합계 ${marketsAll.length}곳 · 장날 확인 $
 const TODAY_LAST_DIGIT = (() => { const d = new Date(+TODAY.slice(0, 4), +TODAY.slice(5, 7) - 1, +TODAY.slice(8, 10)); return d.getDate() % 10; })();
 const marketsOpenToday = marketsDay.filter(m => (m.daysNum || []).some(d => (d % 10) === TODAY_LAST_DIGIT));
 
+// 🌤 «다음 장날»이 언제인지 → 그날 날씨를 붙이기 위해. 오늘 서면 오늘이다.
+//    ⚠️ daysNum 의 10 은 끝자리 0을 뜻한다(literal 10). 반드시 %10 으로 맞춰 비교한다 — 위 주석의 그 함정.
+function nextJangYmd(daysNum) {
+  const set = new Set((daysNum || []).map(d => d % 10));
+  if (!set.size) return '';
+  const base = new Date(+TODAY.slice(0, 4), +TODAY.slice(5, 7) - 1, +TODAY.slice(8, 10));
+  for (let i = 0; i < 12; i++) {            // 예보 창(12일)을 넘어가면 어차피 붙일 게 없다
+    const d = new Date(base.getTime() + i * 86400000);
+    if (set.has(d.getDate() % 10)) {
+      return `${d.getFullYear()}${String(d.getMonth() + 1).padStart(2, '0')}${String(d.getDate()).padStart(2, '0')}`;
+    }
+  }
+  return '';
+}
+
 fs.writeFileSync(path.join(ROOT, 'market-fav.json'), JSON.stringify(marketsDay.map(m => ({ n: m.name, r: m.region, c: m.city, d: m.days, dn: m.daysNum }))));
 console.log(`✓ market-fav.json 생성 — 찜하기 가능한 오일장 ${marketsDay.length}곳`);
 
@@ -2547,7 +2572,12 @@ ${m.img ? `<img src="${esc(m.img)}" alt="${esc(m.name)} 사진" loading="lazy" s
 ${m.famous ? `<p style="margin:0 0 6px;font-size:.96rem"><b>파는 것</b> — ${esc(m.famous)}</p>` : ''}
 ${m.desc ? `<p style="margin:0 0 8px;color:#374151;font-size:.95rem;line-height:1.75">${esc(m.desc)}</p>` : ''}
 <div style="color:#6b7280;font-size:.9rem;line-height:1.8">
-${m.fair ? `📅 장날 <b>${esc(m.fair)}</b><br>` : ''}
+${m.fair ? `📅 장날 <b>${esc(m.fair)}</b>${(() => {
+      // 🌤 다음 장날의 날씨 — 장은 대부분 «한데»서 선다. 비 오는 날 갔다가 허탕치는 걸 막는 정보다.
+      const nd = nextJangYmd(m.daysNum); if (!nd) return '';
+      const c = WX.dayChip(m.x, m.y, nd); if (!c) return '';
+      return ` <span style="color:#9ca3af">다음 장날 ${+nd.slice(4, 6)}/${+nd.slice(6, 8)}</span>${c}`;
+    })()}<br>` : ''}
 ${m.open ? `🕘 ${esc(m.open)}` : ''}${m.rest ? ` · 휴무 ${esc(m.rest)}` : ''}${(m.open || m.rest) ? '<br>' : ''}
 ${m.park ? `🅿️ 주차 ${esc(m.park)}<br>` : ''}
 ${m.tel ? `☎️ ${esc(m.tel)}` : ''}
@@ -3800,7 +3830,7 @@ if (apiValleys.length) {
 <button id="vReset" class="vmore" style="border-color:#e6eef2;color:#374151">초기화</button>
 </div></div>
 <div class="srch-count" id="vCount"></div>
-<div class="grid" id="vGrid">${ssrCards(apiValleys, 60, p => ({ title: p.title, img: p.img, loc: (p.sido || '') + ' ' + (p.sigungu || ''), desc: p.ov }))}</div>
+<div class="grid" id="vGrid">${ssrCards(apiValleys, 60, p => ({ title: p.title, img: p.img, loc: (p.sido || '') + ' ' + (p.sigungu || ''), desc: p.ov, wx: WX.now(p.x, p.y) }))}</div>
 <div style="text-align:center;margin:22px 0"><button id="vMore" class="vmore" style="display:none">더 보기</button></div>
 <p class="note">데이터 출처: 한국관광공사(공공데이터포털). 계곡 개방 여부·수심·주차·취사 가능 여부는 계절과 현장 사정에 따라 다르니 방문 전 꼭 확인하세요. 안전한 물놀이를 위해 기상·계곡 수량을 반드시 살피시기 바랍니다.</p>
 </div></main>
@@ -3876,7 +3906,7 @@ SPOT_THEMES.forEach(function (T) {
 <button id="sReset" class="smore" style="border-color:#e6eef2;color:#374151">초기화</button>
 </div></div>
 <div class="srch-count" id="sCount"></div>
-<div class="grid" id="sGrid">${ssrCards(T.data, 60, p => ({ title: p.title, img: p.img, loc: (p.sido || '') + ' ' + (p.sigungu || ''), desc: p.ov }))}</div>
+<div class="grid" id="sGrid">${ssrCards(T.data, 60, p => ({ title: p.title, img: p.img, loc: (p.sido || '') + ' ' + (p.sigungu || ''), desc: p.ov, wx: WX.now(p.x, p.y) }))}</div>
 <div style="text-align:center;margin:22px 0"><button id="sMore" class="smore" style="display:none">더 보기</button></div>
 <p class="note">${T.note} 카드를 누르면 상세정보와 지도·검색 링크가 표시됩니다.</p>
 </div></main>
@@ -4770,7 +4800,7 @@ ${(() => {   /* 걷기길 허브 섹션 — 표준데이터 기반 이름난 길
 <button id="tReset" class="pmore" style="border-color:#f0e6dc;color:#374151">초기화</button>
 </div></div>
 <div class="srch-count" id="tCount"></div>
-<div class="trgrid" id="tGrid">${ssrCards(apiTrails, 60, p => ({ title: p.name, loc: p.sigun || p.sido, desc: p.summary }))}</div>
+<div class="trgrid" id="tGrid">${ssrCards(apiTrails, 60, p => ({ title: p.name, loc: p.sigun || p.sido, desc: p.summary, wx: WX.now(p.x, p.y) }))}</div>
 <div style="text-align:center;margin:22px 0"><button id="tMore" class="pmore" style="display:none">더 보기</button></div>
 <p class="note">데이터 출처: 한국관광공사 두루누비 걷기여행 정보. 코스 상황·통제는 방문 전 두루누비(durunubi.kr)에서 확인하세요. 카드를 누르면 상세정보와 지도·검색 링크가 표시됩니다.</p>
 </div></main>

@@ -37,14 +37,26 @@ function db() {
 }
 
 const ymd = s => String(s || '').replace(/-/g, '');
-const key = (x, y) => Number(y).toFixed(2) + ',' + Number(x).toFixed(2);
+// ⚠️ 격자 식은 fetch-weather.js 와 «반드시» 같아야 한다. 한쪽만 바꾸면 조용히 전부 미스가 난다.
+//    그래서 파일에 저장된 step 을 읽어 쓴다(하드코딩하지 않는다).
+const key = (x, y) => {
+  const s = (db() && db().step) || 0.02;
+  return Math.round(Number(y) / s) + ',' + Math.round(Number(x) / s);
+};
 const todayY = () => ymd(new Date(Date.now() + 9 * 3600 * 1000).toISOString().slice(0, 10));
+
+/** 좌표로 예보 배열을 가져온다 — 없으면 [] */
+function at(x, y) {
+  const d = db();
+  if (!d || !x || !y) return null;
+  return d.pts[key(x, y)] || null;
+}
 
 /** 축제 기간 중 «예보가 있는 날»들을 앞에서부터 최대 n개 */
 function days(f, n = 4) {
   const d = db();
   if (!d || !f || !f.x || !f.y) return [];
-  const m = d.pts[key(f.x, f.y)];
+  const m = at(f.x, f.y);
   if (!m) return [];
   const t = todayY();
   let s = ymd(f.start), e = ymd(f.end || f.start);
@@ -100,6 +112,55 @@ ${w.pop >= 0 ? `<span class="wx-pop${w.pop >= 60 ? ' hi' : ''}">비 ${w.pop}%</s
   };
 }
 
+/**
+ * 날짜가 «없는» 곳(계곡·걷기길·명산·온천·단풍·봄꽃)용 — 오늘부터 n일.
+ * ⭐ 이런 곳은 「언제 열리나」가 아니라 「이번 주에 갈 만한가」가 질문이다.
+ * @param opts.title  블록 제목
+ * @param opts.note   맨 아래 한 줄(그 장소 성격에 맞는 주의)
+ */
+function week(x, y, n = 5, opts = {}) {
+  const m = at(x, y);
+  if (!m) return { html: '', count: 0 };
+  const d = db(), t = todayY();
+  const out = [];
+  for (const k of Object.keys(m).sort()) {
+    if (k < t) continue;
+    const [code, hi, lo, pop] = m[k];
+    const [ico, txt] = WMO[code] || ['🌤', ''];
+    out.push({ d: k, ico, txt, hi, lo, pop });
+    if (out.length >= n) break;
+  }
+  if (!out.length) return { html: '', count: 0 };
+  const rows = out.map(w => `<div class="wx-day">
+<span class="wx-d">${fmt(w.d)}(${wd(w.d)})</span>
+<span class="wx-i">${w.ico}</span>
+<span class="wx-t">${esc(w.txt)}</span>
+<span class="wx-deg"><b>${w.hi}°</b> / ${w.lo}°</span>
+${w.pop >= 0 ? `<span class="wx-pop${w.pop >= 60 ? ' hi' : ''}">비 ${w.pop}%</span>` : ''}
+</div>`).join('');
+  return {
+    count: out.length,
+    html: `<div class="wxbox"><h2>${esc(opts.title || '이번 주 날씨')}</h2>
+<div class="wx-list">${rows}</div>
+<p class="wx-src">${esc(opts.note || '야외라 비가 오면 계획을 바꾸는 편이 낫습니다.')}<br>Open-Meteo 예보 · ${esc(d.generatedAt || d.generated)} 기준 · 가장 가까운 관측 격자(약 2km) 값입니다.</p></div>`
+  };
+}
+
+/** 오늘(예보가 있으면) 한 줄 — 계곡·단풍·명산처럼 «날짜가 없는» 목록 카드에 쓴다 */
+function now(x, y) {
+  return dayChip(x, y, todayY());
+}
+
+/** 특정 «하루»만 한 줄로 — 오일장 다음 장날처럼 날짜가 정해진 목록에 쓴다 */
+function dayChip(x, y, ymd8) {
+  const m = at(x, y);
+  if (!m || !m[ymd8]) return '';
+  const [code, hi, lo, pop] = m[ymd8];
+  const [ico, txt] = WMO[code] || ['🌤', ''];
+  const rain = pop >= 0 ? ` · 비 ${pop}%` : '';
+  return `<span class="wx-chip${pop >= 60 ? ' rain' : ''}" title="${esc(txt)}">${ico} ${hi}°${rain}</span>`;
+}
+
 const CSS = `<style>
 .wxbox{margin:18px 0;background:#fff;border:1px solid #e6eaee;border-radius:14px;padding:14px 16px}
 .wxbox h2{font-size:1.05rem;font-weight:900;margin:0 0 10px;color:#111827}
@@ -115,6 +176,7 @@ const CSS = `<style>
 .wx-src{font-size:.78rem;color:#9aa3af;line-height:1.6;margin:10px 0 0}
 .wx-chip{display:inline-block;font-size:.76rem;font-weight:800;color:#2b6cb0;background:#eef5fd;
   border-radius:6px;padding:2px 7px;margin-left:6px;white-space:nowrap}
+.wx-chip.rain{color:#fff;background:#2b6cb0}
 </style>`;
 
-module.exports = { chip, block, CSS, days };
+module.exports = { chip, block, week, dayChip, now, CSS, days };

@@ -156,6 +156,11 @@ h2.sec::before{content:'';position:absolute;left:0;top:14%;width:5px;height:72%;
 .card h3{font-size:1.13rem;font-weight:800;letter-spacing:-.02em;margin:2px 0 6px}
 .card .date{font-weight:700;color:#0f9d8f;font-size:.92rem}
 .card .loc{font-size:.86rem;color:#6b7280;margin:2px 0 8px}
+/* 🌤 2026-09-04: 야외에서 노는 곳엔 날씨가 «갈지 말지»를 정한다 — 목록 카드에도 오늘 예보를 붙인다.
+   전역 CSS에 두는 이유: 계곡·단풍·봄꽃·온천·걷기길·오일장이 각자 붙이면 같은 규칙이 6번 실린다. */
+.wx-chip{display:inline-block;font-size:.76rem;font-weight:800;color:#2b6cb0;background:#eef5fd;
+  border-radius:6px;padding:2px 7px;margin-left:6px;white-space:nowrap;vertical-align:middle}
+.wx-chip.rain{color:#fff;background:#2b6cb0}
 .card .desc{font-size:.9rem;color:#4b5563;line-height:1.55;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
 .card-top{display:flex;justify-content:flex-end;align-items:center;margin-bottom:2px}
 .badge{font-size:.72rem;padding:3px 9px;border-radius:10px;font-weight:700}
@@ -572,7 +577,7 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 <p style="margin:0 0 6px;font-size:.96rem"><b>파는 것</b> — 농산물, 축산물, 수산물, 가공식품</p>
 <p style="margin:0 0 8px;color:#374151;font-size:.95rem;line-height:1.75">1964년 개설 · 점포 47곳 · 주차 가능 · 화장실 있음</p>
 <div style="color:#6b7280;font-size:.9rem;line-height:1.8">
-📅 장날 <b>1일 / 6일 / 11일 / 16일 / 21일 / 26일 / 31일</b><br>
+📅 장날 <b>1일 / 6일 / 11일 / 16일 / 21일 / 26일 / 31일</b> <span style="color:#9ca3af">다음 장날 9/6</span><span class="wx-chip" title="흐림">☁️ 26° · 비 19%</span><br>
 🕘 점포별로 상이함 · 휴무 점포별로 상이함<br>
 🅿️ 주차 있음<br>
 ☎️ 043-543-6688
@@ -647,7 +652,7 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 <p style="margin:0 0 6px;font-size:.96rem"><b>파는 것</b> — 농산물, 축산물, 수산물, 가공식품</p>
 <p style="margin:0 0 8px;color:#374151;font-size:.95rem;line-height:1.75">1950년 개설 · 점포 160곳 · 주차 가능 · 화장실 있음</p>
 <div style="color:#6b7280;font-size:.9rem;line-height:1.8">
-📅 장날 <b>2일 / 7일 / 12일 / 17일 / 22일 / 27일</b><br>
+📅 장날 <b>2일 / 7일 / 12일 / 17일 / 22일 / 27일</b> <span style="color:#9ca3af">다음 장날 9/7</span><span class="wx-chip" title="흐림">☁️ 26° · 비 4%</span><br>
 🕘 점포별로 상이함 · 휴무 점포별로 상이함<br>
 🅿️ 주차 있음<br>
 ☎️ 043-873-1256
@@ -677,7 +682,7 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 <p style="margin:0 0 6px;font-size:.96rem"><b>파는 것</b> — 먹거리 · 신선 식품 · 잡화류 · 생활용품</p>
 <p style="margin:0 0 8px;color:#374151;font-size:.95rem;line-height:1.75">광혜원장은 광혜원면 일원 도로를 중심으로 자연발생적으로 형성된 시장이다.</p>
 <div style="color:#6b7280;font-size:.9rem;line-height:1.8">
-📅 장날 <b>3일 / 8일 / 13일 / 18일 / 23일 / 28일</b><br>
+📅 장날 <b>3일 / 8일 / 13일 / 18일 / 23일 / 28일</b> <span style="color:#9ca3af">다음 장날 9/8</span><span class="wx-chip" title="대체로 맑음">🌤 26° · 비 4%</span><br>
 🕘 06:00~18:00 (점포별로 상이함) · 휴무 점포별로 상이함<br>
 🅿️ 주차 가능 (농협 하나로 마트 앞)<br>
 ☎️ 광혜원면사무소 행정복지센터 043-539-8777
@@ -692,7 +697,7 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 <p style="margin:0 0 6px;font-size:.96rem"><b>파는 것</b> — 농산물, 축산물, 수산물, 가공식품</p>
 <p style="margin:0 0 8px;color:#374151;font-size:.95rem;line-height:1.75">1970년 개설 · 점포 146곳 · 주차 가능 · 화장실 있음</p>
 <div style="color:#6b7280;font-size:.9rem;line-height:1.8">
-📅 장날 <b>3일 / 8일 / 13일 / 18일 / 23일 / 28일</b><br>
+📅 장날 <b>3일 / 8일 / 13일 / 18일 / 23일 / 28일</b> <span style="color:#9ca3af">다음 장날 9/8</span><span class="wx-chip" title="대체로 맑음">🌤 27° · 비 6%</span><br>
 🕘 07:00~19:00 ※ 점포별로 상이함 · 휴무 ※ 점포별로 상이함<br>
 🅿️ 주차 있음<br>
 ☎️ 043-832-0250
@@ -782,7 +787,7 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 <p style="margin:0 0 6px;font-size:.96rem"><b>파는 것</b> — 채소류 · 과일류 · 고물 · 농산품 · 생필품 · 잡화</p>
 <p style="margin:0 0 8px;color:#374151;font-size:.95rem;line-height:1.75">청주시 청원구 옥산면에서 열리는 장으로 매월 3일과 8일 장이 열린다.</p>
 <div style="color:#6b7280;font-size:.9rem;line-height:1.8">
-📅 장날 <b>3일 / 8일 / 13일 / 18일 / 23일 / 28일</b><br>
+📅 장날 <b>3일 / 8일 / 13일 / 18일 / 23일 / 28일</b> <span style="color:#9ca3af">다음 장날 9/8</span><span class="wx-chip" title="맑음">☀️ 27° · 비 4%</span><br>
 🕘 ※ 점포별로 상이함 · 휴무 ※ 점포별로 상이함<br>
 🅿️ 주차 가능<br>
 
@@ -812,7 +817,7 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 <p style="margin:0 0 6px;font-size:.96rem"><b>파는 것</b> — 포도 · 사과 · 쌀 · 기타곡물 · 고추 · 참깨 · 채소류</p>
 <p style="margin:0 0 8px;color:#374151;font-size:.95rem;line-height:1.75">충북 영동에는 영동장, 용산장, 황간장, 추풍령장, 상촌장, 학산장 총 6개의 장이 선다.</p>
 <div style="color:#6b7280;font-size:.9rem;line-height:1.8">
-📅 장날 <b>3일 / 8일 / 13일 / 18일 / 23일 / 28일</b><br>
+📅 장날 <b>3일 / 8일 / 13일 / 18일 / 23일 / 28일</b> <span style="color:#9ca3af">다음 장날 9/8</span><span class="wx-chip" title="대체로 맑음">🌤 26° · 비 8%</span><br>
 🕘 ※ 점포별로 상이함 · 휴무 ※ 점포별로 상이함<br>
 🅿️ 주차 가능<br>
 ☎️ 추풍령면사무소면사무소 043-742-3301
@@ -902,7 +907,7 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 <p style="margin:0 0 6px;font-size:.96rem"><b>파는 것</b> — 농산물, 축산물, 수산물, 가공식품</p>
 <p style="margin:0 0 8px;color:#374151;font-size:.95rem;line-height:1.75">1964년 개설 · 점포 200곳 · 주차 가능 · 화장실 있음</p>
 <div style="color:#6b7280;font-size:.9rem;line-height:1.8">
-📅 장날 <b>4일 / 9일 / 14일 / 19일 / 24일 / 29일</b><br>
+📅 장날 <b>4일 / 9일 / 14일 / 19일 / 24일 / 29일</b> <span style="color:#9ca3af">다음 장날 9/4</span><span class="wx-chip" title="구름 조금">⛅ 27° · 비 0%</span><br>
 🕘 07:00~24:00 ※ 점포별로 상이함 · 휴무 ※ 점포별로 상이함<br>
 🅿️ 주차 있음<br>
 ☎️ 043-742-0808
@@ -962,7 +967,7 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 <p style="margin:0 0 6px;font-size:.96rem"><b>파는 것</b> — 농산물 · 식음료 · 생활용품</p>
 <p style="margin:0 0 8px;color:#374151;font-size:.95rem;line-height:1.75">옥천장은 옥천읍 금구리 금구천 주변에서 매달 5일과 10일에 열리는 오일장이다.</p>
 <div style="color:#6b7280;font-size:.9rem;line-height:1.8">
-📅 장날 <b>5일 / 10일 / 15일 / 20일 / 25일 / 30일</b><br>
+📅 장날 <b>5일 / 10일 / 15일 / 20일 / 25일 / 30일</b> <span style="color:#9ca3af">다음 장날 9/5</span><span class="wx-chip" title="흐림">☁️ 27° · 비 3%</span><br>
 🕘 07:00~20:00<br>
 🅿️ 주차 가능<br>
 ☎️ 070-7782-9801
