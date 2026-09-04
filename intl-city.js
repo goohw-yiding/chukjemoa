@@ -38,6 +38,11 @@ const T = {
     when: 'Dates', where: 'Where', fee: 'Admission', how: 'Getting there', free: 'Free',
     more: 'More', other: 'Other cities', srcT: 'Sources',
     src: 'Places and festival descriptions: Korea Tourism Organization (official English translation). Korean addresses come from Korean public data matched by name. Opening hours and admission can change — check the official page before you go.',
+    cultT: 'Exhibitions & performances on now',
+    cultNote: 'These come from Busan’s Korean-language culture portal, so <b>titles are in Korean only</b>. We do not translate them — a mistranslated venue or date sends you to the wrong place. Copy the Korean title into a map or ticket site and it will find them.',
+    cultTitle: 'Korean title — copy to search',
+    free: 'Free',
+    paid: 'Paid',
     title: (c, m) => `${c} in ${m} — Festivals, Places & Korean Addresses`,
     desc: (c, n) => `${n} places to visit in ${c}, each with the Korean address you can paste into NAVER Map or KakaoMap. Festivals on now, weather, and what to know before you go.`
   },
@@ -54,6 +59,11 @@ const T = {
     when: '期間', where: '場所', fee: '料金', how: '行き方', free: '無料',
     more: 'もっと見る', other: 'ほかの都市', srcT: '出典',
     src: '場所とお祭りの説明は韓国観光公社の日本語案内です。韓国語の住所は韓国語の公開データと名前で突き合わせて付けました。営業時間や料金は変わることがあるので、出発前に公式ページでご確認ください。',
+    cultT: 'いま開催中の展示・公演',
+    cultNote: '釜山市の韓国語文化ポータルの情報なので、<b>タイトルは韓国語のみ</b>です。訳しません — 会場名や日付を訳し間違えると別の場所に行くことになるからです。韓国語のまま地図やチケットサイトに貼り付けると見つかります。',
+    cultTitle: '韓国語タイトル（検索用にコピー）',
+    free: '無料',
+    paid: '有料',
     title: (c, m) => `${c} ${m} — お祭り・行き先・韓国語の住所`,
     desc: (c, n) => `${c}で行ける${n}か所を、NAVERマップやカカオマップに貼り付けられる韓国語の住所付きで。開催中のお祭り、天気、行く前に知っておくことも。`
   },
@@ -69,6 +79,11 @@ const T = {
     when: '时间', where: '地点', fee: '费用', how: '交通', free: '免费',
     more: '更多', other: '其他城市', srcT: '资料来源',
     src: '地点与庆典说明来自韩国观光公社的中文介绍。韩文地址由韩文公开数据按名称匹配而来。营业时间与费用可能变动，出发前请确认官方页面。',
+    cultT: '正在举办的展览与演出',
+    cultNote: '资料来自釜山市韩文文化门户，因此<b>标题只有韩文</b>。我们不翻译 —— 场馆名或日期译错会让您去错地方。把韩文标题粘贴到地图或购票网站即可找到。',
+    cultTitle: '韩文标题（复制后搜索）',
+    free: '免费',
+    paid: '收费',
     title: (c, m) => `${c} ${m} — 庆典·景点·韩文地址`,
     desc: (c, n) => `${c}值得一去的${n}处，附可粘贴到NAVER地图或Kakao地图的韩文地址。正在举办的庆典与出发前须知。`
   },
@@ -84,6 +99,11 @@ const T = {
     when: '時間', where: '地點', fee: '費用', how: '交通', free: '免費',
     more: '更多', other: '其他城市', srcT: '資料來源',
     src: '地點與慶典說明來自韓國觀光公社的中文介紹。韓文地址由韓文公開資料按名稱比對而來。營業時間與費用可能變動，出發前請確認官方頁面。',
+    cultT: '正在舉辦的展覽與演出',
+    cultNote: '資料來自釜山市韓文文化入口網，因此<b>標題只有韓文</b>。我們不翻譯 —— 場館名或日期譯錯會讓您跑錯地方。把韓文標題貼到地圖或購票網站即可找到。',
+    cultTitle: '韓文標題（複製後搜尋）',
+    free: '免費',
+    paid: '收費',
     title: (c, m) => `${c} ${m} — 慶典·景點·韓文地址`,
     desc: (c, n) => `${c}值得一去的${n}處，附可貼到NAVER地圖或Kakao地圖的韓文地址。正在舉辦的慶典與出發前須知。`
   },
@@ -99,6 +119,11 @@ const T = {
     when: 'Fechas', where: 'Dónde', fee: 'Entrada', how: 'Cómo llegar', free: 'Gratis',
     more: 'Más', other: 'Otras ciudades', srcT: 'Fuentes',
     src: 'Lugares y descripciones: Organización de Turismo de Corea (traducción oficial). Las direcciones en coreano provienen de datos públicos coreanos emparejados por nombre. Horarios y precios pueden cambiar: confirma en la página oficial antes de ir.',
+    cultT: 'Exposiciones y espectáculos en cartel',
+    cultNote: 'Provienen del portal cultural de Busan en coreano, así que <b>los títulos están solo en coreano</b>. No los traducimos: traducir mal un recinto o una fecha te lleva al lugar equivocado. Copia el título coreano en un mapa o una web de entradas y lo encontrarás.',
+    cultTitle: 'Título en coreano — copia para buscar',
+    free: 'Gratis',
+    paid: 'De pago',
     title: (c, m) => `${c} en ${m} — fiestas, lugares y direcciones en coreano`,
     desc: (c, n) => `${n} lugares para visitar en ${c}, con la dirección en coreano lista para pegar en NAVER Map o KakaoMap. Fiestas en curso y qué saber antes de ir.`
   }
@@ -112,7 +137,8 @@ const MONTH = {
   es: ['', 'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre']
 };
 
-const MIN_PLACES = 20, MIN_FESTS = 15, SHOW_PLACES = 40, SHOW_FESTS = 12;
+// 2026-09-04 보강: 장소를 40 → 60 으로 늘렸다(서울 ja 264곳을 40만 보여주고 있었다).
+const MIN_PLACES = 20, MIN_FESTS = 15, SHOW_PLACES = 60, SHOW_FESTS = 12, SHOW_CULT = 24;
 
 function load(ROOT, f) {
   try { return JSON.parse(fs.readFileSync(path.join(ROOT, 'data', f), 'utf8')); } catch (e) { return null; }
@@ -122,6 +148,15 @@ function build({ ROOT, layout, writePage, SITE, TODAY, WX }) {
   const T8 = String(TODAY).replace(/-/g, '');
   const mn = +T8.slice(4, 6);
   const busan = load(ROOT, 'busan_festivals.json');
+  // ⭐ 2026-09-04 보강 — 부산 전시·공연 126건을 외국어에도 싣는다.
+  //   ⚠️ 원본이 한국어뿐이다. **번역하지 않는다** — 회장명·날짜를 잘못 옮기면 엉뚱한 곳으로 보낸다.
+  //     대신 «한글 제목을 복사»하게 해 준다. 지도·티켓 사이트에 그대로 붙여넣으면 찾아진다.
+  //     이건 우리 강점(붙여넣을 한글)과 정확히 맞고, 지어내지 않는다는 원칙도 지킨다.
+  //   ⚠️ busan_culture.json 은 «배열이 아니라 {generated,source,stat,rows}» 다.
+  //      이 파일의 load() 는 파싱만 하고 배열로 바꾸지 않는다 — .rows 를 꺼내야 한다(안 그러면 빌드가 죽는다).
+  const busanCult = ((load(ROOT, 'busan_culture.json') || {}).rows || [])
+    .filter(r => r.end >= String(TODAY).replace(/-/g, ''))
+    .sort((a, b) => (b.x ? 1 : 0) - (a.x ? 1 : 0) || a.start.localeCompare(b.start));
   const urls = [];
   const skipped = [];
 
@@ -195,6 +230,15 @@ ${F.length ? `<h2 class="sec">${esc(t.fesT)}</h2>
 ${P.length ? `<h2 class="sec">${esc(t.placeT(city))}</h2>
 <ul class="ic-list">${P.slice(0, SHOW_PLACES).map(plCard).join('')}</ul>` : ''}
 
+${C.key === 'busan' && busanCult.length ? `<h2 class="sec">${esc(t.cultT)} <span class="ic-n">${busanCult.length}</span></h2>
+<p class="ic-cnote">${t.cultNote}</p>
+<ul class="ic-list">${busanCult.slice(0, SHOW_CULT).map(r => `<li class="ic-item">
+<div class="ic-h"><b>${esc(r.title)}</b><span class="ic-tag">${r.pay ? esc(t.paid) : esc(t.free)}</span></div>
+<p class="ic-meta">📅 ${esc(String(r.start).slice(4, 6))}/${esc(String(r.start).slice(6, 8))} – ${esc(String(r.end).slice(4, 6))}/${esc(String(r.end).slice(6, 8))} · 📍 ${esc(r.place)}</p>
+${cp(t.cultTitle, r.title)}
+${r.addr ? cp(t.addr, r.addr) : ''}
+</li>`).join('')}</ul>` : ''}
+
 <h2 class="sec">${esc(t.other)}</h2>
 <div class="ic-nav">${others}</div>
 
@@ -234,6 +278,9 @@ const CSS = `<style>
 .ic-nav{display:flex;flex-wrap:wrap;gap:8px}
 .ic-nav a{display:inline-block;padding:9px 16px;border-radius:22px;background:#fff;border:1.5px solid #dfe6ea;color:#374151;font-weight:800;font-size:.92rem;text-decoration:none}
 .ic-src{font-size:.8rem;color:#9aa3af;line-height:1.7;margin-top:18px}
+.ic-n{font-size:.85rem;font-weight:800;color:#0a6c63;background:#e7f6f3;border-radius:999px;padding:2px 10px;margin-left:6px}
+.ic-cnote{font-size:.88rem;color:#6b7280;line-height:1.75;margin:0 0 12px}
+.ic-tag{font-size:.74rem;font-weight:800;color:#0a6c63;background:#e7f6f3;border-radius:6px;padding:2px 8px}
 .xcopy{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;
   background:#f6fbfa;border:1.5px solid #dcefeb;border-radius:12px;padding:10px 12px;margin:6px 0}
 .xcopy .lb{font-size:.74rem;font-weight:800;color:#0a6c63;display:block;margin-bottom:3px}
