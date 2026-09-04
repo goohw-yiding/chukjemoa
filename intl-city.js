@@ -172,6 +172,51 @@ The Korean place names above are written the way a map app expects them — past
 Los nombres en coreano de arriba están escritos tal como los espera una app de mapas.`]
 };
 
+// 🥾 2026-09-05 추가 — **올레길 26코스**를 외국어에도 붙인다.
+//   왜 이게 값어치가 큰가: 코스번호·거리·소요시간·«휠체어 가능 여부»는 **숫자와 참/거짓이라 번역이 필요 없다.**
+//   지어낼 여지가 없고, 휠체어 정보는 영어권에 거의 없다(제주올레 공식 데이터 26/26 중 10코스 가능).
+//   ⚠️ 코스명·출발지·도착지는 **한글 그대로** 둔다 — 그게 지도에 붙여넣을 이름이다(우리 강점).
+//      「시흥초등학교」를 "Siheung Elementary School" 로 옮기면 네이버 지도에서 안 찾아진다.
+const OLLE = {
+  en: { t: 'The Jeju Olle Trail — all 26 routes', n: `The Olle Trail rings the island in 26 numbered routes. What follows is the official route data: length, walking time, and <b>which routes are wheelchair-accessible</b> — that last one is hard to find in English anywhere else.<br>Route and trailhead names stay in Korean on purpose. Paste the start point into NAVER Map or KakaoMap and it will take you there; an English translation will not.`, wc: 'Wheelchair', km: 'km', hr: 'h', s2e: 'Start → Finish', cpS: 'Start point (Korean) — paste into a map', route: 'Route' },
+  ja: { t: '済州オルレ — 全26コース', n: `オルレは島を一周する26のコースです。以下は公式データで、距離・所要時間・<b>車いすで歩けるコースかどうか</b>まで載せました。最後のものは日本語ではほとんど見つかりません。<br>コース名と起終点は<b>あえて韓国語のまま</b>にしています。出発地をNAVERマップやカカオマップに貼り付ければそこへ案内されます — 訳した名前では出てきません。`, wc: '車いす可', km: 'km', hr: '時間', s2e: '起点 → 終点', cpS: '出発地（韓国語）— 地図に貼り付け', route: 'コース名' },
+  zh: { t: '济州偶来小路 — 全26条路线', n: `偶来小路以26条编号路线环岛。以下是官方数据：长度、步行时间，以及<b>哪几条轮椅可通行</b> — 最后这一项在中文资料里几乎找不到。<br>路线名与起终点<b>特意保留韩文</b>。把出发地粘贴到NAVER地图或Kakao地图就能导航过去，翻译过的名字搜不到。`, wc: '轮椅可通行', km: '公里', hr: '小时', s2e: '起点 → 终点', cpS: '出发地（韩文）— 粘贴到地图', route: '路线名' },
+  tw: { t: '濟州偶來小路 — 全26條路線', n: `偶來小路以26條編號路線環島。以下是官方資料：長度、步行時間，以及<b>哪幾條輪椅可通行</b> — 最後這一項在中文資料裡幾乎找不到。<br>路線名與起終點<b>特意保留韓文</b>。把出發地貼到NAVER地圖或Kakao地圖就能導航過去，翻譯過的名字搜不到。`, wc: '輪椅可通行', km: '公里', hr: '小時', s2e: '起點 → 終點', cpS: '出發地（韓文）— 貼到地圖', route: '路線名' },
+  es: { t: 'Sendero Olle de Jeju — las 26 rutas', n: `El Olle rodea la isla en 26 rutas numeradas. Abajo van los datos oficiales: distancia, tiempo a pie y <b>qué rutas son accesibles en silla de ruedas</b> — esto último casi no existe en español.<br>Los nombres de ruta y de los puntos de inicio se quedan <b>en coreano a propósito</b>. Pega el punto de inicio en NAVER Map o KakaoMap y te llevará; el nombre traducido no aparece.`, wc: 'Silla de ruedas', km: 'km', hr: 'h', s2e: 'Inicio → Final', cpS: 'Punto de inicio (coreano) — pégalo en el mapa', route: 'Ruta' }
+};
+
+// 🌧 2026-09-05 추가 — 비 올 때 갈 실내 장소.
+//   ⚠️ 관광공사가 «실내»라고 표시한 곳만 넣는다. 표시 없는 곳을 실내로 밀어넣지 않는다
+//      — 비 오는 날 헛걸음이 제일 나쁘다(한국어 /jeju/rainy/ 와 같은 규칙).
+//   ⚠️ 이름·주소는 한국어뿐이라 **번역하지 않는다** — 부산 전시·공연과 같은 방식으로 «붙여넣을 한글»을 준다.
+const RAIN = {
+  en: { t: 'If it rains — indoor places', n: `Rain is what ruins a Jeju trip. These are places the Jeju Tourism Organization has tagged <b>indoors</b> — only those, nothing guessed. Names and addresses are Korean-only in the source and we do not translate them: a mistranslated venue sends you to the wrong door. Copy the Korean and paste it into a map app.`, ind: 'Indoors', name: 'Korean name — copy to search', addr: 'Korean address — paste into a map', air: 'Near the airport' },
+  ja: { t: '雨が降ったら — 屋内の行き先', n: `済州旅行で一番つらいのが雨です。ここは済州観光公社が<b>屋内</b>と分類した場所だけを集めました — 推測は入れていません。原本の名前と住所は韓国語のみで、<b>訳しません</b>。訳し間違えると別の場所に着いてしまうからです。韓国語のままコピーして地図アプリに貼り付けてください。`, ind: '屋内', name: '韓国語名（検索用にコピー）', addr: '韓国語の住所（地図に貼り付け）', air: '空港の近く' },
+  zh: { t: '下雨的话 — 室内去处', n: `济州旅行最怕下雨。这里只收录济州观光公社标注为<b>室内</b>的地方 — 没有猜测的。原始资料的名称与地址只有韩文，我们<b>不翻译</b>：译错场馆名会让您走错地方。请复制韩文粘贴到地图应用。`, ind: '室内', name: '韩文名称（复制后搜索）', addr: '韩文地址（粘贴到地图）', air: '机场附近' },
+  tw: { t: '下雨的話 — 室內去處', n: `濟州旅行最怕下雨。這裡只收錄濟州觀光公社標註為<b>室內</b>的地方 — 沒有猜測的。原始資料的名稱與地址只有韓文，我們<b>不翻譯</b>：譯錯場館名會讓您走錯地方。請複製韓文貼到地圖應用。`, ind: '室內', name: '韓文名稱（複製後搜尋）', addr: '韓文地址（貼到地圖）', air: '機場附近' },
+  es: { t: 'Si llueve — sitios bajo techo', n: `La lluvia es lo que arruina un viaje a Jeju. Aquí solo van los sitios que la Organización de Turismo de Jeju marca como <b>interiores</b> — nada supuesto. En la fuente los nombres y direcciones están solo en coreano y <b>no los traducimos</b>: un nombre mal traducido te lleva a otra puerta. Copia el coreano y pégalo en el mapa.`, ind: 'Interior', name: 'Nombre en coreano — cópialo para buscar', addr: 'Dirección en coreano — pégala en el mapa', air: 'Cerca del aeropuerto' }
+};
+
+// 소요시간은 값이 5가지뿐인 «고정 문구»라 언어별로 그대로 대응시킨다(자유 번역이 아니다).
+const HRS = {
+  '1시간': { en: '1 hour', ja: '1時間', zh: '1小时', tw: '1小時', es: '1 hora' },
+  '1~2시간': { en: '1–2 hours', ja: '1~2時間', zh: '1~2小时', tw: '1~2小時', es: '1–2 horas' },
+  '2~3시간': { en: '2–3 hours', ja: '2~3時間', zh: '2~3小时', tw: '2~3小時', es: '2–3 horas' },
+  '3시간 이상': { en: '3+ hours', ja: '3時間以上', zh: '3小时以上', tw: '3小時以上', es: 'más de 3 h' }
+};
+// ⚠️ 화면에 48개만 싣고 배지·설명문엔 288이라고 적으면 «없는 것을 약속»하는 셈이다.
+//    한국어 /jeju/rainy/ 와 맞춰 80개를 싣고, 숫자는 «실은 개수»로 통일한다.
+const SHOW_OLLE = 26, SHOW_RAIN = 80, MIN_RAIN = 30;
+
+// 검색 결과에 뜨는 문장은 «남이 안 주는 것»을 말해야 한다 — 제주만 설명문을 갈아 끼운다.
+const JEJU_DESC = {
+  en: (n, o, r) => `${n} places in Jeju with the Korean address you can paste into NAVER Map, all ${o} Olle Trail routes with distance, walking time and wheelchair access, and ${r} indoor places for when it rains.`,
+  ja: (n, o, r) => `済州の${n}か所を地図に貼り付けられる韓国語の住所付きで。オルレ全${o}コースの距離・所要時間・車いす可否、雨の日の屋内${r}か所も。`,
+  zh: (n, o, r) => `济州${n}处景点，附可粘贴到NAVER地图的韩文地址。偶来小路全${o}条路线的距离、步行时间与轮椅通行情况，以及下雨天的${r}处室内去处。`,
+  tw: (n, o, r) => `濟州${n}處景點，附可貼到NAVER地圖的韓文地址。偶來小路全${o}條路線的距離、步行時間與輪椅通行情況，以及下雨天的${r}處室內去處。`,
+  es: (n, o, r) => `${n} sitios de Jeju con la dirección en coreano para pegar en NAVER Map, las ${o} rutas del sendero Olle con distancia, tiempo y accesibilidad en silla de ruedas, y ${r} sitios bajo techo para cuando llueve.`
+};
+
 function load(ROOT, f) {
   try { return JSON.parse(fs.readFileSync(path.join(ROOT, 'data', f), 'utf8')); } catch (e) { return null; }
 }
@@ -189,6 +234,17 @@ function build({ ROOT, layout, writePage, SITE, TODAY, WX }) {
   const busanCult = ((load(ROOT, 'busan_culture.json') || {}).rows || [])
     .filter(r => r.end >= String(TODAY).replace(/-/g, ''))
     .sort((a, b) => (b.x ? 1 : 0) - (a.x ? 1 : 0) || a.start.localeCompare(b.start));
+
+  // 🍊 제주 전용 재료 — 올레 26코스 + 비 올 때 실내.
+  //   ⚠️ 코스 번호는 「1코스·1-1코스·10코스」라 문자열 정렬하면 10이 2보다 앞에 온다 → 숫자로 쪼개 정렬한다.
+  const olle = ((load(ROOT, 'jeju_hub.json') || {}).olle || []).slice().sort((a, b) => {
+    const p = s => { const m = String(s).match(/^(\d+)(?:-(\d+))?/); return m ? [+m[1], +(m[2] || 0)] : [999, 0]; };
+    const [a1, a2] = p(a.no), [b1, b2] = p(b.no);
+    return a1 - b1 || a2 - b2;
+  });
+  //   ⚠️ 「모름」을 실내로 밀어넣지 않는다 — indoor === true 인 것만.
+  const rain = ((load(ROOT, 'visitjeju.json') || {}).rows || [])
+    .filter(o => o.indoor === true && o.x && o.y && o.addr && o.title);
   const urls = [];
   const skipped = [];
   const LANGS = ['en', 'ja', 'zh', 'tw', 'es'];
@@ -297,6 +353,26 @@ ${r.addr ? cp(t.addr, r.addr) : ''}
 
 ${C.key === 'jeju' && JEJU[lang] ? `<div class="ic-why"><h2>${esc(JEJU[lang][0])}</h2><p>${JEJU[lang][1]}</p></div>` : ''}
 
+${C.key === 'jeju' && olle.length ? (() => { const o = OLLE[lang]; return `<h2 class="sec">${esc(o.t)} <span class="ic-n">${olle.length}</span></h2>
+<p class="ic-cnote">${o.n}</p>
+<ul class="ic-list">${olle.slice(0, SHOW_OLLE).map(c => `<li class="ic-item">
+<div class="ic-h"><b>${esc(String(c.no).replace('코스', ''))}</b><span class="ic-ko">${esc(c.name)}</span>${c.wheelchair ? `<span class="ic-tag">♿ ${esc(o.wc)}</span>` : ''}</div>
+<p class="ic-meta">${c.km ? `📏 ${c.km} ${esc(o.km)}` : ''}${c.hours ? ` · ⏱ ${esc(c.hours)} ${esc(o.hr)}` : ''}${c.start ? ` · 🚩 ${esc(c.start)} → ${esc(c.end || '')}` : ''}</p>
+${cp(o.cpS, c.start)}
+</li>`).join('')}</ul>` })() : ''}
+
+${C.key === 'jeju' && rain.length >= MIN_RAIN ? (() => { const r = RAIN[lang], shown = Math.min(rain.length, SHOW_RAIN); return `<h2 class="sec">${esc(r.t)} <span class="ic-n">${shown}</span></h2>
+<p class="ic-cnote">${r.n}</p>
+<ul class="ic-list">${rain.slice(0, SHOW_RAIN).map(p => {
+        const hh = HRS[p.hours] && HRS[p.hours][lang];
+        return `<li class="ic-item">
+<div class="ic-h"><b>${esc(p.title)}</b><span class="ic-tag">🏠 ${esc(r.ind)}</span>${p.airport ? `<span class="ic-tag">✈️ ${esc(r.air)}</span>` : ''}</div>
+<p class="ic-meta">${hh ? `⏱ ${esc(hh)}` : ''}${p.region ? `${hh ? ' · ' : ''}📍 ${esc(p.region)}` : ''}</p>
+${cp(r.name, p.title)}
+${cp(r.addr, p.addr)}
+</li>`;
+      }).join('')}</ul>` })() : ''}
+
 ${others ? `<h2 class="sec">${esc(t.other)}</h2>
 <div class="ic-nav">${others}</div>` : ''}
 <div class="ic-nav" style="margin-top:10px">${langRow}</div>
@@ -304,9 +380,12 @@ ${others ? `<h2 class="sec">${esc(t.other)}</h2>
 <p class="ic-src"><b>${esc(t.srcT)}</b> — ${esc(t.src)}</p>
 </div></main>`;
 
+      const desc = (C.key === 'jeju' && olle.length && rain.length >= MIN_RAIN && JEJU_DESC[lang])
+        ? JEJU_DESC[lang](P.length, olle.length, Math.min(rain.length, SHOW_RAIN))
+        : t.desc(city, P.length);
       writePage(`${lang}/${C.key}`, layout(
         t.title(city, MONTH[lang][mn]),
-        t.desc(city, P.length),
+        desc,
         `/${lang}/${C.key}/`, content, { lang }));
       urls.push(`/${lang}/${C.key}/`);
     }

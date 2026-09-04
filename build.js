@@ -1564,6 +1564,7 @@ const KO_NAV = `<button class="navtoggle" id="navtoggle" aria-label="메뉴 열�
 <a href="/cafe/">☕ 요즘 가는 카페</a>
 <a href="/pet/">🐶 반려견 여행지</a>
 <a href="/accessible/">♿ 무장애 여행</a>
+<a href="/indoor/">🏠 실내 가볼만한 곳</a>
 <a href="/jangteo/">🏮 전국 오일장</a>
 </div></div>
 <div class="ndrop"><button class="nbtn" type="button">🧭 코스<span class="arw">▼</span></button><div class="nmenu">
@@ -4434,6 +4435,85 @@ fetch('/accessible/data.json').then(function(r){return r.json();}).then(function
 //
 // ⚠️ 얇은 페이지도, 무거운 페이지도 만들지 않는다 — **15곳 이상인 시도만**, **한 페이지 100곳까지**.
 //   경기 무장애가 1,594곳인데 다 실으면 본문 38만 자가 된다.
+// ---------- 🏠 실내 가볼만한 곳 /indoor/ ----------
+//
+// 왜 만드나 — **제주에서 제목을 잘못 걸고 있던 걸 발견해서다** (2026-09-05 네이버 검색량 실측).
+//   제주실내가볼만한곳 **7,470** · 제주실내관광지 5,530 · 제주도실내관광지 4,710
+//   vs  제주비올때갈만한곳 **105** · 제주비올때 0        → 사람들은 「비 올 때」가 아니라 «실내»로 찾는다. **70배.**
+//   그래서 전국 수요도 다시 쟀더니 —
+//     서울 12,220 · 부산 12,180 · 제주 7,470 · 대구 7,220 · 대전 6,710 · 울산 5,250 · 경기 4,870
+//     인천 4,260 · 경남 3,160 · 광주 2,460 · 전남 1,820 · 강원 1,550 · 경북 1,330 · 전북 1,250 · 충남 1,120 · 충북 480
+//
+// ⚠️ **「모름」을 실내로 밀어넣지 않는다** — 제주 페이지에서 지킨 규칙을 전국에도 그대로 쓴다.
+//   전국 데이터에는 제주(비짓제주)의 «실내» 플래그 같은 게 **없다.** 그래서 «분류»로 추론하지 않고
+//   **이름이 실내를 확정하는 것만** 넣는다(박물관·미술관·과학관·아쿠아리움·온천 …).
+//   「문화시설」 1,638곳을 통째로 넣으면 야외공연장·문화원까지 들어가 비 오는 날 헛걸음을 만든다.
+//
+// ⚠️ 재료가 수요를 다 못 받는다 — **울산(수요 5,250·재료 23곳)·대전(6,710·32곳)·광주(2,460·31곳)는 게이트에 걸린다.**
+//   억지로 채우지 않는다. 재료가 늘면 저절로 열린다.
+const apiIndoor = (() => {
+  // ⚠️ **도서관은 뺐다.** 실내인 건 맞지만 표본을 열어 보니 「고성교육도서관·동내도서관」 같은
+  //   동네 시립·교육 도서관 173곳이었다 — 「가볼만한 곳」이 아니다. 실내라고 다 갈 곳은 아니다.
+  const HARD = /(박물관|미술관|전시관|과학관|아쿠아리움|수족관|기념관|문학관|역사관|체험관|영화관|아트센터|갤러리|공연장|아트홀|천문대|온천|스파|찜질방|테마파크)/;
+  const KIND = [[/아쿠아리움|수족관/, '🐠 아쿠아리움'], [/온천|스파|찜질방/, '♨️ 온천·스파'],
+  [/박물관/, '🏛 박물관'], [/미술관|갤러리/, '🖼 미술관'], [/과학관|천문대/, '🔭 과학관'],
+  [/공연장|아트센터|아트홀|영화관/, '🎭 공연장'],
+  [/테마파크/, '🎡 테마파크'], [/체험관/, '🧪 체험관'], [/전시관|기념관|문학관|역사관/, '🗂 전시관']];
+  const seen = new Map();
+  const push = (o, tf) => {
+    const title = String(o[tf] || '').trim();
+    if (!title || !HARD.test(title)) return;
+    if (!(+o.x) || !(+o.y) || !o.sido) return;
+    const k = title.replace(/\s/g, '') + '|' + o.sido;
+    const kind = (KIND.find(([re]) => re.test(title)) || [, '🏠 실내'])[1];
+    const prev = seen.get(k);
+    const row = {
+      title, kind, sido: o.sido, sigungu: o.sigungu || '', addr: String(o.addr || ''),
+      cat: o.cat || '문화시설', img: String(o.img || '').replace(/^http:/, 'https:'),
+      ov: String(o.ov || o.intro || ''), tel: o.tel || '', acc: Array.isArray(o.acc) ? o.acc : null,
+      x: o.x, y: o.y
+    };
+    // 같은 곳이 여러 소스에 있으면 «더 많이 아는 쪽»을 남긴다(사진·설명·편의시설).
+    if (!prev) { seen.set(k, row); return; }
+    if (!prev.img && row.img) prev.img = row.img;
+    if (row.ov.length > prev.ov.length) prev.ov = row.ov;
+    if (!prev.acc && row.acc) prev.acc = row.acc;
+    if (!prev.tel && row.tel) prev.tel = row.tel;
+  };
+  apiAccessible.forEach(o => push(o, 'title'));
+  for (const [f, tf] of [['data/spots_ko.json', 'title'], ['data/trrsrt.json', 'name'], ['data/onsen.json', 'title']]) {
+    try { JSON.parse(fs.readFileSync(path.join(ROOT, f), 'utf8')).forEach(o => push(o, tf)); } catch (e) { }
+  }
+  return [...seen.values()];
+})();
+
+const INDOOR_URLS = [];
+if (apiIndoor.length) {
+  const kc = {}; apiIndoor.forEach(o => kc[o.kind] = (kc[o.kind] || 0) + 1);
+  const kinds = Object.entries(kc).sort((a, b) => b[1] - a[1]);
+  const content = `<main><div class="wrap">
+<h1 class="page-h1">🏠 실내 가볼만한 곳</h1>
+<p class="page-sub">비가 오는 날, 바람이 센 날, 한여름 한낮 — <b>밖이 어려운 날</b>에 갈 수 있는 전국 실내 관광지 ${apiIndoor.length.toLocaleString()}곳입니다.
+「문화시설」로 뭉뚱그리지 않고 <b>실내인 것이 이름으로 확실한 곳만</b> 골랐습니다. 비 오는 날 헛걸음이 제일 아깝기 때문입니다.</p>
+<p style="color:#6b7280;font-size:.95rem;line-height:1.8">${kinds.map(([k, n]) => `${esc(k)} <b>${n}</b>`).join(' · ')}</p>
+<!--SIDOLINKS-->
+<p style="margin:4px 0 14px"><a href="/jeju/rainy/" style="color:#0a6c63;font-weight:800">🍊 제주는 따로 있습니다 — 제주 실내 가볼만한 곳 288곳 →</a>
+<span style="color:#9aa3af;font-size:.9rem">(제주관광공사가 «실내»로 분류한 곳이라 이 목록보다 훨씬 넓습니다)</span></p>
+<h2 class="sec">전국에서 골라 본 곳</h2>
+<div class="grid">${ssrCards(apiIndoor.filter(p => p.img).slice(0, 60), 60, p => ({
+    title: p.title, img: p.img, loc: (p.sido || '') + ' ' + (p.sigungu || ''),
+    desc: [p.kind, p.ov].filter(Boolean).join(' · ')
+  }))}</div>
+<p class="note">데이터 출처: 한국관광공사(무장애여행·관광지·관광단지·온천). <b>「실내」는 저희가 이름으로 판정한 것</b>이고 원본에 실내 여부 항목이 있는 것은 아닙니다 — 일부만 실내인 곳도 있으니 운영 시간·휴관일과 함께 방문 전 확인하세요.
+동네 시립·교육 도서관은 실내지만 「가볼만한 곳」이 아니라 뺐습니다.</p>
+</div></main>`;
+  writePage('indoor', layout(
+    `실내 가볼만한 곳 — 전국 실내 관광지 ${apiIndoor.length.toLocaleString()}곳 | ${SITE_NAME}`,
+    `비 오는 날에도 갈 수 있는 전국 실내 가볼만한 곳 ${apiIndoor.length.toLocaleString()}곳. 박물관·미술관·과학관·아쿠아리움·온천을 지역별로 모았습니다.`,
+    '/indoor/', content));
+  INDOOR_URLS.push('/indoor/');
+}
+
 const SIDO_HUB_URLS = [];
 {
   const SLUG = { 서울: 'seoul', 부산: 'busan', 대구: 'daegu', 인천: 'incheon', 광주: 'gwangju', 대전: 'daejeon', 울산: 'ulsan', 세종: 'sejong', 경기: 'gyeonggi', 강원: 'gangwon', 충북: 'chungbuk', 충남: 'chungnam', 전북: 'jeonbuk', 전남: 'jeonnam', 경북: 'gyeongbuk', 경남: 'gyeongnam', 제주: 'jeju' };
@@ -4466,14 +4546,39 @@ const SIDO_HUB_URLS = [];
       },
       lead: (s, n, k) => `${s}에서 반려동물과 함께 갈 수 있는 곳 <b>${n.toLocaleString()}곳</b>입니다. 그중 <b>${k.toLocaleString()}곳</b>은 <b>동반 가능 견종·동반 구역·주의사항</b>이 공공데이터에 적혀 있어 함께 실었습니다.`,
       note: '데이터 출처: 한국관광공사 반려동물 동반여행 서비스(공공데이터포털). 동반 조건은 시설 사정으로 바뀔 수 있으니 방문 전 각 장소에 꼭 확인하세요.'
+    },
+    {
+      // 🏠 실내 — 제목은 «실내 가볼만한 곳». 「비 올 때」가 아니다(검색량 70배 차이, 위 주석 참고).
+      // ⚠️ 게이트를 40곳으로 올렸다. 15곳짜리 실내 페이지는 「가볼만한 곳」이라 부르기 민망하고,
+      //    애드센스 심사 중에 얇은 페이지를 늘리는 건 손해다.
+      base: 'indoor', emoji: '🏠', name: '실내 가볼만한 곳', data: apiIndoor, hub: '/indoor/', min: 40, skipSido: ['제주'],
+      keyed: a => a.filter(p => p.img).length,
+      badges: p => `<div style="margin:6px 0 2px"><span style="background:#eef2ff;color:#3730a3;font-size:.8rem;font-weight:800;border-radius:999px;padding:3px 9px;display:inline-block">${esc(p.kind)}</span>`
+        + ((Array.isArray(p.acc) && p.acc.length) ? `<span style="background:#e2f5f2;color:#0a6c63;font-size:.8rem;font-weight:800;border-radius:999px;padding:3px 9px;margin-left:5px;display:inline-block">♿ ${esc(p.acc[0])}</span>` : '') + '</div>',
+      lead: (s, n, k) => `${s}에서 <b>비가 와도 갈 수 있는 실내 관광지 ${n.toLocaleString()}곳</b>입니다. 그중 <b>${k.toLocaleString()}곳</b>은 사진이 있습니다.<br>
+「문화시설」을 통째로 넣지 않았습니다 — <b>이름으로 실내가 확실한 곳만</b> 골랐습니다(박물관·미술관·과학관·아쿠아리움·온천·전시관 등). 비 오는 날 헛걸음이 제일 아깝기 때문입니다.`,
+      title: (s, a) => `${s} 실내 가볼만한 곳 ${a.length.toLocaleString()}곳 — 비 올 때 갈 실내 관광지 | ${SITE_NAME}`,
+      desc: (s, a, tc) => `${s} 실내 가볼만한 곳 ${a.length.toLocaleString()}곳. 비 오는 날에도 갈 수 있는 박물관·미술관·과학관·아쿠아리움·온천을 모았습니다. 공공데이터 기반이며 운영 시간과 휴관일은 방문 전 확인하세요.`,
+      faq: ({ sido, all, keyed, topSg }) => [
+        [`${sido}에 비 올 때 갈 만한 실내 관광지가 몇 곳 있나요?`,
+          `이름으로 실내가 확실한 곳만 세어 ${all.length.toLocaleString()}곳입니다. 종류별로는 ${(() => { const c = {}; all.forEach(o => c[o.kind] = (c[o.kind] || 0) + 1); return Object.entries(c).sort((a, b) => b[1] - a[1]).slice(0, 4).map(([k, n]) => `${k.replace(/^\S+\s/, '')} ${n}곳`).join(' · '); })()} 입니다.`],
+        [`${sido} 어디에 몰려 있나요?`,
+          topSg.length ? `${topSg.slice(0, 5).map(([c, n]) => `${c} ${n}곳`).join(' · ')} 순입니다.` : '시·군 정보가 등록돼 있지 않습니다.'],
+        ['여기 없는 실내 장소도 있지 않나요?',
+          '있습니다. 공공데이터에는 「실내인지」를 알려주는 항목이 없어서, 저희는 이름으로 실내가 확실한 곳만 넣었습니다. 실내지만 이름으로 알 수 없는 곳은 빠져 있습니다 — 없는 것을 있다고 하는 것보다 낫다고 봤습니다.'],
+        ['비가 오면 그냥 가도 되나요?',
+          '휴관일과 운영 시간을 먼저 확인하세요. 박물관·미술관은 월요일 휴관이 많고, 온천·체험관은 예약제인 곳이 있습니다. 카드의 지도·검색 링크로 바로 확인하실 수 있습니다.']
+      ],
+      note: '데이터 출처: 한국관광공사(무장애여행·관광지·관광단지·온천 정보, 공공데이터포털). <b>「실내」는 저희가 이름으로 판정한 것</b>이고 원본에 실내 여부 항목이 있는 것은 아닙니다 — 일부만 실내인 곳도 있습니다. 동네 시립·교육 도서관은 실내지만 「가볼만한 곳」이 아니라 뺐습니다. 운영 시간·휴관일은 방문 전 확인하세요.'
     }
   ];
 
   for (const H of HUBS) {
     if (!H.data || !H.data.length) continue;
     const bySido = {};
-    H.data.forEach(p => { if (p.sido && SLUG[p.sido]) (bySido[p.sido] = bySido[p.sido] || []).push(p); });
-    const big = Object.entries(bySido).filter(([, a]) => a.length >= MIN).sort((a, b) => b[1].length - a[1].length);
+    // ⚠️ 같은 말을 노리는 페이지를 두 장 만들지 않는다 — 제주는 /jeju/rainy/ 가 288곳으로 훨씬 낫다(여기 재료는 43곳).
+    H.data.forEach(p => { if (p.sido && SLUG[p.sido] && !(H.skipSido || []).includes(p.sido)) (bySido[p.sido] = bySido[p.sido] || []).push(p); });
+    const big = Object.entries(bySido).filter(([, a]) => a.length >= (H.min || MIN)).sort((a, b) => b[1].length - a[1].length);
     const made = [];
 
     const linkRow = cur => `<div style="display:flex;flex-wrap:wrap;gap:8px;margin:14px 0">${big.filter(([s]) => s !== cur).map(([s, a]) =>
@@ -4503,7 +4608,7 @@ ${p.ov ? `<p style="margin:5px 0 8px;color:#374151;font-size:.94rem;line-height:
 <div><a href="https://map.naver.com/p/search/${encodeURIComponent(p.title)}" target="_blank" rel="noopener" style="color:#0c7d72;font-weight:700;font-size:.87rem;margin-right:10px">🗺️ 지도</a><a href="https://search.naver.com/search.naver?query=${encodeURIComponent(p.title)}" target="_blank" rel="noopener" style="color:#0c7d72;font-weight:700;font-size:.87rem">🔎 검색</a></div>
 </div>`;
 
-      const faq = H.base === 'accessible' ? [
+      const faq = H.faq ? H.faq({ sido, all, keyed, topCat, topSg }) : H.base === 'accessible' ? [
         [`${sido}에 무장애 여행지가 몇 곳 있나요?`,
           `한국관광공사 무장애여행 정보 기준 ${all.length.toLocaleString()}곳입니다. 유형별로는 ${topCat.slice(0, 4).map(([c, n]) => `${c} ${n}곳`).join(' · ')} 입니다.`],
         [`${sido}에서 휠체어로 갈 수 있는 곳은 어떻게 확인하나요?`,
@@ -4544,8 +4649,8 @@ ${faq.map(([q, a]) => `<p style="line-height:1.8"><b>${esc(q)}</b><br>${esc(a)}<
 </div></main>`;
 
       const ld = `<script type="application/ld+json">${JSON.stringify({ '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faq.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })) })}</script>`;
-      const title = `${sido} ${H.name} ${all.length.toLocaleString()}곳 — 지역별 총정리 | ${SITE_NAME}`;
-      const desc = H.base === 'accessible'
+      const title = H.title ? H.title(sido, all) : `${sido} ${H.name} ${all.length.toLocaleString()}곳 — 지역별 총정리 | ${SITE_NAME}`;
+      const desc = H.desc ? H.desc(sido, all, topCat) : H.base === 'accessible'
         ? `${sido} 무장애 여행지 ${all.length.toLocaleString()}곳. ${keyed ? `편의시설 확인 ${keyed.toLocaleString()}곳. ` : ''}${topCat.slice(0, 3).map(([c, n]) => `${c} ${n}곳`).join(' · ')}. 공공데이터(한국관광공사) 기반 목록이며, 방문 전 시설별 세부 정보를 다시 확인하세요.`
         : `${sido} 반려견 동반 여행지 ${all.length.toLocaleString()}곳. 동반 조건·주의사항 ${keyed.toLocaleString()}곳 수록. ${topCat.slice(0, 3).map(([c, n]) => `${c} ${n}곳`).join(' · ')}. 공공데이터(한국관광공사) 기반 목록이며, 방문 전 동반 조건을 다시 확인하세요.`;
       writePage(H.base + '/' + SLUG[sido], layout(title, desc, `/${H.base}/${SLUG[sido]}/`, content, { jsonld: ld }));
@@ -4573,7 +4678,7 @@ ${faq.map(([q, a]) => `<p style="line-height:1.8"><b>${esc(q)}</b><br>${esc(a)}<
       try { fs.writeFileSync(f, fs.readFileSync(f, 'utf8').replace('<!--SIDOLINKS-->', row)); }
       catch (e) { console.log('  ⚠ ' + H.base + ' 허브 지역링크 삽입 실패 — ' + e.message); }
     }
-    console.log(`✓ /${H.base}/{시도}/ — ${made.length}페이지 (${MIN}곳 이상인 시도만 · 한 페이지 최대 ${CAP}곳)` + (gone ? ` · 정리 ${gone}개` : ''));
+    console.log(`✓ /${H.base}/{시도}/ — ${made.length}페이지 (${H.min || MIN}곳 이상인 시도만 · 한 페이지 최대 ${CAP}곳)` + (gone ? ` · 정리 ${gone}개` : ''));
   }
   // 데이터가 비어 위에서 건너뛴 경우 자리표시자가 화면에 남는다 — 반드시 지운다.
   for (const H of HUBS) {
@@ -6602,7 +6707,7 @@ const TRIP_URLS = require('./trip.js').build({ ROOT, layout, writePage, SITE_NAM
 }
 
 // ---------- sitemap / robots ----------
-const urls = ['/', ...MONTHS.map(m => `/${m.key}/`), '/search/', ...(holidays.length ? ['/holiday/'] : []), '/pet/', ...(apiAccessible.length ? ['/accessible/'] : []), ...(apiTrails.length ? ['/trails/'] : []), ...(apiValleys.length ? ['/valley/'] : []), ...(apiMaple.length ? ['/maple/'] : []), ...(apiFlower.length ? ['/flower/'] : []), ...(apiOnsen.length ? ['/onsen/'] : []), '/jangteo/', '/test/', '/trip-cost/', ...CITYTOUR_URLS, ...(visitors.kor && visitors.kor.length ? ['/trend/'] : []), ...SIDO_URLS, ...THEME_URLS, ...TRAIL_URLS, ...WALK_URLS, ...TREND_LANG_URLS, '/blog/', ...posts.map(p => `/blog/${p.slug}/`), '/about/', EDITORIAL_URL, '/contact/', '/privacy/',...(apiFestsEn.length ? ['/en/', '/en/search/'] : []), ...EN_FESTIVAL_URLS, ...EN_JANGTEO_URLS, ...EN_BLOG_URLS, ...(apiFestsJa.length ? ['/ja/', '/ja/search/'] : []), ...JA_JANGTEO_URLS, ...JA_FESTIVAL_URLS, ...JA_HOLIDAY_URLS, ...(apiFestsEs.length ? ['/es/', '/es/search/'] : []), ...ES_JANGTEO_URLS, ...(apiFestsZh.length ? ['/zh/', '/zh/search/'] : []), ...ZH_JANGTEO_URLS, ...(apiFestsTw.length ? ['/tw/', '/tw/search/'] : []), ...TW_EXTRA_URLS, ...MOUNTAIN_URLS, ...CAFE_URLS, ...HOT_URLS, ...HEALING_URLS, ...COURSE_URLS, ...WINTER_URLS, ...JANGTEO_SIDO_URLS, ...SIDO_HUB_URLS, ...TRIP_URLS, ...FESTIVAL_URLS, ...MAP_URLS, ...INTL_URLS, ...CHUSEOK_URLS, ...SEOUL_URLS, ...BUSAN_URLS, ...JEJU_URLS, ...INTL_CITY_URLS];
+const urls = ['/', ...MONTHS.map(m => `/${m.key}/`), '/search/', ...(holidays.length ? ['/holiday/'] : []), '/pet/', ...(apiAccessible.length ? ['/accessible/'] : []), ...INDOOR_URLS, ...(apiTrails.length ? ['/trails/'] : []), ...(apiValleys.length ? ['/valley/'] : []), ...(apiMaple.length ? ['/maple/'] : []), ...(apiFlower.length ? ['/flower/'] : []), ...(apiOnsen.length ? ['/onsen/'] : []), '/jangteo/', '/test/', '/trip-cost/', ...CITYTOUR_URLS, ...(visitors.kor && visitors.kor.length ? ['/trend/'] : []), ...SIDO_URLS, ...THEME_URLS, ...TRAIL_URLS, ...WALK_URLS, ...TREND_LANG_URLS, '/blog/', ...posts.map(p => `/blog/${p.slug}/`), '/about/', EDITORIAL_URL, '/contact/', '/privacy/',...(apiFestsEn.length ? ['/en/', '/en/search/'] : []), ...EN_FESTIVAL_URLS, ...EN_JANGTEO_URLS, ...EN_BLOG_URLS, ...(apiFestsJa.length ? ['/ja/', '/ja/search/'] : []), ...JA_JANGTEO_URLS, ...JA_FESTIVAL_URLS, ...JA_HOLIDAY_URLS, ...(apiFestsEs.length ? ['/es/', '/es/search/'] : []), ...ES_JANGTEO_URLS, ...(apiFestsZh.length ? ['/zh/', '/zh/search/'] : []), ...ZH_JANGTEO_URLS, ...(apiFestsTw.length ? ['/tw/', '/tw/search/'] : []), ...TW_EXTRA_URLS, ...MOUNTAIN_URLS, ...CAFE_URLS, ...HOT_URLS, ...HEALING_URLS, ...COURSE_URLS, ...WINTER_URLS, ...JANGTEO_SIDO_URLS, ...SIDO_HUB_URLS, ...TRIP_URLS, ...FESTIVAL_URLS, ...MAP_URLS, ...INTL_URLS, ...CHUSEOK_URLS, ...SEOUL_URLS, ...BUSAN_URLS, ...JEJU_URLS, ...INTL_CITY_URLS];
 // noindex 페이지는 사이트맵에서 뺀다 — "색인해라(사이트맵) + 하지마라(noindex)"는 모순 신호다.
 // 🔁 2026-08-19: en/ja/zh 사이트맵 제외를 되돌린다(위 layout()의 forceNoindex 주석 참고).
 //    구글 클릭 0을 보고 뺐지만 GA4로는 구글 아닌 검색엔진에서 16세션/28일이 들어오고 있었다.

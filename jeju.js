@@ -90,7 +90,12 @@ function build({ ROOT, layout, writePage, SITE, SITE_NAME, TODAY, WX }) {
     t: trrIdx.get(norm(o.title)) || null, side: side(o), em: eupmyeon(o)
   }));
   // 사진 있는 것을 앞으로 — 카드가 훨씬 잘 읽힌다.
-  const bySort = a => a.slice().sort((x, y) => (y.img ? 1 : 0) - (x.img ? 1 : 0) || x.title.localeCompare(y.title, 'ko'));
+  // 사진 → **실측 입장객** → 가나다.
+  // ⚠️ 입장객 순서를 넣는 건 «인기순 정렬»이 아니라, 목록을 자르면 천지연폭포·성산일출봉 같은
+  //   «찾아온 사람이 실제로 찾는 곳»이 잘려 나가기 때문이다(첫 빌드에서 20곳 중 14곳만 화면에 나왔다).
+  //   집계에 없는 곳은 0으로 두고 가나다순으로 이어진다 — 뒤로 밀리는 것이지 빠지는 게 아니다.
+  const bySort = a => a.slice().sort((x, y) => (y.img ? 1 : 0) - (x.img ? 1 : 0)
+    || (y.visCnt || 0) - (x.visCnt || 0) || x.title.localeCompare(y.title, 'ko'));
 
   // ── 🆕 2026-09-04 저녁: 제주데이터허브 + 비짓제주.
   //   ⚠️ 둘 다 **설명이 없거나 너무 짧다**(허브는 아예 없고, 비짓제주는 평균 25~47자).
@@ -110,10 +115,38 @@ function build({ ROOT, layout, writePage, SITE, SITE_NAME, TODAY, WX }) {
   }
 
   // 2024년 관광지별 방문자 — 「붐빔」을 실측으로 말할 수 있는 유일한 재료다.
+  //
+  // 🔴 2026-09-05 — 이 값이 계산만 되고 **화면에 한 번도 안 나오고 있었다.** 카드에 배지로 붙인다.
+  // ⚠️ **「한산한 곳」 배지는 만들지 않는다.** 집계 대상이 36곳뿐이라, 배지가 없는 곳은
+  //    «한산한 것»이 아니라 «집계에 없는 것»이다. 없는 것을 있다고 말하는 쪽이 훨씬 나쁘다.
+  // ⚠️ 이름이 서로 조금씩 다르다(민속자연사박물관 vs 제주민속자연사박물관 · 만장굴관광지 vs 만장굴).
+  //    부분매칭은 육지를 삼킨 적이 있으니 쓰지 않는다 — 대신 **앞의 「제주」와 뒤의 「관광지」만 떼어**
+  //    후보 키를 몇 개 만들어 «완전일치»로만 맞춘다. 실측: 22 → 25/36, 오탐 0.
+  const visKeys = n => {
+    const b = norm(n); const s = new Set([b]);
+    const a = b.replace(/^제주도?/, ''); if (a && a !== b) s.add(a);
+    for (const k of [...s]) { const c = k.replace(/(관광지|유적지|도립공원|해양도립공원)$/, ''); if (c && c !== k) s.add(c); }
+    for (const k of [...s]) s.add('제주' + k);
+    return [...s].filter(x => x.length >= 2);
+  };
   const VIS = (HUB.visitors || { kor: [], frn: [] });
-  const visIdx = new Map();
-  for (const o of (VIS.kor || [])) visIdx.set(norm(o.name), o);
-  for (const o of ALL) { const v = visIdx.get(norm(o.title)); if (v) { o.visCnt = v.cnt; o.visPay = v.pay; } }
+  const visIdx = new Map(), frnIdx = new Map();
+  (VIS.kor || []).forEach((o, i) => { for (const k of visKeys(o.name)) if (!visIdx.has(k)) visIdx.set(k, { ...o, rank: i + 1 }); });
+  (VIS.frn || []).forEach((o, i) => { for (const k of visKeys(o.name)) if (!frnIdx.has(k)) frnIdx.set(k, { ...o, rank: i + 1 }); });
+  const visFind = (idx, title) => { for (const k of visKeys(title)) if (idx.has(k)) return idx.get(k); return null; };
+  const attachVis = o => {
+    const v = visFind(visIdx, o.title); if (v && v.cnt > 0) { o.visCnt = v.cnt; o.visRank = v.rank; o.visPay = v.pay; }
+    const f = visFind(frnIdx, o.title); if (f && f.cnt > 0) { o.frnCnt = f.cnt; o.frnRank = f.rank; }
+  };
+  for (const o of ALL) attachVis(o);
+  const man = n => n >= 10000 ? `${Math.round(n / 10000).toLocaleString()}만` : n.toLocaleString();
+  // 배지 — 집계에 있는 곳에만 붙는다. 「외국인이 특히 많은 곳」은 외국인 순위가 내국인 순위보다 앞설 때만.
+  const visBadge = o => {
+    if (!o.visCnt) return '';
+    const fgn = (o.frnCnt && o.frnRank && o.visRank && o.frnRank < o.visRank)
+      ? `<span class="jj-tag" style="background:#eef2ff;color:#3730a3">🌏 외국인 ${man(o.frnCnt)}명 · ${o.frnRank}위</span>` : '';
+    return `<p class="jj-meta"><span class="jj-tag" style="background:#fff1e0;color:#9a5a06">👥 ${VIS.year} 입장객 ${man(o.visCnt)}명 · 제주 ${o.visRank}위</span>${fgn}</p>`;
+  };
 
   const GO = ['관광지', '문화시설', '레포츠'];
   const spot = bySort(ALL.filter(o => GO.includes(o.cat) || o.src === 'mtn' || o.src === 'valley'));
@@ -136,6 +169,8 @@ function build({ ROOT, layout, writePage, SITE, SITE_NAME, TODAY, WX }) {
   // 「비 와도 되는 곳」 — 비짓제주 실내 태그 × 우리 날씨. ⚠️ 「모름」을 실내로 밀어넣지 않는다.
   const indoor = VJ.filter(o => o.indoor === true && o.x && o.y)
     .sort((a, b) => (b.img ? 1 : 0) - (a.img ? 1 : 0) || a.title.localeCompare(b.title, 'ko'));
+  // 허브에서 온 목록에도 붐빔 배지를 붙인다 — 계산해 놓고 안 쓰는 값을 또 만들지 않는다.
+  [oreumMore, museum, camping, indoor].forEach(arr => (arr || []).forEach(attachVis));
   const beach = bySort(ALL.filter(o => /해수욕장|해변|백사/.test(o.title)));
   const east = bySort(ALL.filter(o => o.side === 'east'));
   const west = bySort(ALL.filter(o => o.side === 'west'));
@@ -176,7 +211,7 @@ function build({ ROOT, layout, writePage, SITE, SITE_NAME, TODAY, WX }) {
   const PAGES = [
     ['', '🍊 제주 전체'], ['spot', '📍 가볼만한 곳'], ['east', '🌅 동쪽'], ['west', '🌇 서쪽'],
     ['cafe', '☕ 카페'], ['oreum', '⛰ 오름'], ['beach', '🏖 해수욕장'],
-    ['museum', '🏛 박물관·미술관'], ['camping', '⛺ 캠핑장'], ['olle', '🥾 올레길'], ['rainy', '🌧 비 올 때'],
+    ['museum', '🏛 박물관·미술관'], ['camping', '⛺ 캠핑장'], ['olle', '🥾 올레길'], ['rainy', '🏠 실내 가볼만한 곳'],
   ];
   const nav = cur => `<div class="jj-nav">${PAGES.map(([k, label]) => cur === k
     ? `<span>${label}</span>` : `<a href="/jeju/${k ? k + '/' : ''}">${label}</a>`).join('')}</div>`;
@@ -196,6 +231,7 @@ function build({ ROOT, layout, writePage, SITE, SITE_NAME, TODAY, WX }) {
 ${p.img ? `<img class="jj-img" src="${esc(p.img)}" alt="${esc(p.title)}" loading="lazy" onerror="this.remove()">` : ''}
 <div class="jj-body"><h3>${esc(p.title)}</h3>
 <p class="jj-meta">📍 ${esc(where)}${p.cat ? ` · ${esc(p.cat)}` : ''}${wx}</p>
+${visBadge(p)}
 ${t && (t.park || t.cap) ? `<p class="jj-meta">${t.park ? `🅿️ 주차 ${esc(String(t.park))}대 ` : ''}${t.cap ? `· 수용 ${esc(String(t.cap))}명` : ''}</p>` : ''}
 ${p.open ? `<p class="jj-meta">🕘 ${esc(String(p.open).slice(0, 50))}</p>` : ''}
 ${p.rest ? `<p class="jj-meta">🚫 쉬는 날 ${esc(String(p.rest).slice(0, 40))}</p>` : ''}
@@ -207,7 +243,8 @@ ${p.rest ? `<p class="jj-meta">🚫 쉬는 날 ${esc(String(p.rest).slice(0, 40)
   const SRC_NOTE = `<p class="jj-note">데이터 출처: 한국관광공사 무장애여행 정보·전국 카페/산 정보(장소·설명·사진) · 행정안전부 전국관광지정보표준데이터(주차 대수·수용 인원) · Open-Meteo(날씨).
 ⚠️ <b>♿ 표시는 「무장애여행 정보에 등록된 곳」이라는 뜻이지, 모든 시설이 완전히 무장애라는 뜻은 아닙니다.</b>
 경사·출입구·화장실 같은 실제 접근성은 방문 전 각 시설에 확인하세요.
-운영시간·쉬는 날은 등록된 값이라 현장과 다를 수 있고, <b>등록돼 있지 않은 정보는 비워 뒀습니다</b> — 추측해서 채우지 않습니다.</p>`;
+운영시간·쉬는 날은 등록된 값이라 현장과 다를 수 있고, <b>등록돼 있지 않은 정보는 비워 뒀습니다</b> — 추측해서 채우지 않습니다.<br>
+⚠️ <b>👥 입장객 배지는 제주도가 집계하는 관광지에만 붙습니다.</b> 배지가 없는 곳은 «한산한 곳»이 아니라 <b>«집계에 없는 곳»</b>입니다.</p>`;
 
   const mk = (slug, title, desc, h1, lead, cur, body) => {
     const content = `<main><div class="wrap">${CSS}
@@ -368,14 +405,20 @@ ${dulle.map(o => `<tr><td><b>${esc(o.name)}</b></td><td>${o.km ? esc(o.km) + 'km
 ⚠️ 소요 시간은 <b>보통 걸음 기준</b>이라 사람마다 다릅니다. 기상·통제 상황은 출발 전 제주올레와 한라산국립공원에 확인하세요.</p>`);
   }
 
-  // ── ⑪ 비 올 때 (제주날씨 1,629,300 — 날씨를 보러 온 사람에게 «갈 곳»을 준다)
+  // ── ⑪ 실내 (= 예전 「비 올 때」)
+  //   🔴 2026-09-05 제목 교체 — **머리말을 잘못 걸고 있었다.** 검색량 실측:
+  //        제주실내가볼만한곳 **7,470** · 제주실내관광지 5,530 · 제주도실내관광지 4,710 · 제주도실내가볼만한곳 2,910
+  //        vs  제주비올때갈만한곳 **105** · 제주비올때 0
+  //      → 사람들은 「비 올 때」가 아니라 **「실내」**로 찾는다. 같은 페이지, 같은 데이터인데 **70배**다.
+  //      ⚠️ 「비 올 때」는 버리지 않고 본문에 남긴다 — 그 말로 오는 소수도 여기가 맞는 페이지다.
   //   ⭐ 우리만 되는 조합: 비짓제주의 «실내» 태그 × 우리가 이미 붙인 날씨.
   //   ⚠️ 태그가 「모름」인 곳을 실내로 밀어넣지 않는다 — 비 오는 날 헛걸음이 제일 나쁘다.
   if (indoor.length >= 30) mk('rainy',
-    `제주 비 올 때 갈 곳 ${MN[mn]} — 실내 ${indoor.length}곳 | ${SITE_NAME}`,
-    `제주도에서 비 올 때 갈 만한 실내 장소 ${indoor.length}곳. 관광공사가 실내로 분류한 곳만 골랐고 오늘 날씨를 함께 보여 드립니다.`,
-    `🌧 제주, 비 올 때 갈 곳 ${indoor.length}곳`,
-    `제주 여행에서 제일 아쉬운 게 비입니다. 그래서 <b>실내로 등록된 곳만</b> 골라 모았습니다 — <b>${indoor.length}곳</b>.<br>
+    `제주 실내 가볼만한 곳 ${MN[mn]} — 실내 관광지 ${indoor.length}곳 | ${SITE_NAME}`,
+    `제주도 실내 가볼만한 곳 ${indoor.length}곳. 비 올 때도 갈 수 있게 관광공사가 «실내»로 분류한 곳만 골랐고, 오늘 날씨를 함께 보여 드립니다.`,
+    `🏠 제주 실내 가볼만한 곳 ${indoor.length}곳`,
+    `제주에서 <b>실내로 등록된 곳만</b> 골라 모았습니다 — <b>${indoor.length}곳</b>.
+비가 오는 날, 바람이 센 날, 한여름 한낮처럼 <b>밖이 어려운 날</b>에 그대로 쓰시면 됩니다.<br>
 ⚠️ 제주관광공사 데이터에 <b>「실내」라고 표시된 곳만</b> 넣었습니다. 표시가 없는 곳은 실내일 수도 있지만
 <b>확실하지 않아 뺐습니다</b> — 비 오는 날 헛걸음이 제일 아깝기 때문입니다.`,
     'rainy',
@@ -391,6 +434,7 @@ ${p.img ? `<img class="jj-img" src="${esc(p.img)}" alt="${esc(p.title)}" loading
 <div class="jj-body"><h3>${esc(p.title)}</h3>
 <p class="jj-meta"><span class="jj-in">🏠 실내</span>${p.hours ? `⏱ ${esc(p.hours)} ` : ''}${p.airport ? '✈️ 공항 근처' : ''}</p>
 <p class="jj-meta">📍 ${esc(p.region || '제주')}${wx}</p>
+${visBadge(p)}
 ${p.sub ? `<p class="jj-desc">${esc(p.sub)}</p>` : ''}
 ${(p.tags || []).length ? `<p class="jj-meta">${p.tags.slice(0, 5).map(t => `<span class="jj-tag">${esc(t)}</span>`).join('')}</p>` : ''}
 ${p.tel ? `<p class="jj-meta">☎️ ${esc(p.tel)}</p>` : ''}
@@ -413,7 +457,7 @@ ${busy.map((o, i) => `<tr><td>${i + 1}</td><td><b>${esc(o.name)}</b></td><td>${o
   const hub = `<div class="jj-stat">
 <div><b>${spot.length}</b>가볼만한 곳</div><div><b>${cafe.length}</b>카페</div><div><b>${oreum.length + oreumMore.length}</b>오름</div>
 <div><b>${beach.length}</b>해수욕장</div><div><b>${museum.length + musCards.length}</b>박물관·미술관</div><div><b>${camping.length}</b>캠핑장</div>
-<div><b>${olle.length}</b>올레 코스</div><div><b>${indoor.length}</b>비 올 때</div>
+<div><b>${olle.length}</b>올레 코스</div><div><b>${indoor.length}</b>실내 관광지</div>
 </div>
 <div class="jj-box">🍊 제주는 <b>동쪽과 서쪽을 나눠서</b> 다니는 섬입니다. 하루는 동쪽, 하루는 서쪽으로 묶으면 이동이 훨씬 짧아집니다.<br>
 <b>🌅 동쪽</b>(조천·구좌·성산·표선·남원) — 해 뜨는 쪽. 성산일출봉·섭지코지·월정리.<br>
@@ -431,9 +475,9 @@ ${busyBlock}
 ${olle.length ? `<h2 class="sec">올레길·둘레길</h2>
 <p class="jj-lead">올레길 <b>${olle.length}개 코스</b>의 거리·소요시간을 한 표에 모았고, <b>휠체어로 갈 수 있는 코스 ${olle.filter(o => o.wheelchair).length}개</b>를 따로 표시했습니다.</p>
 <p style="margin:10px 0"><a href="/jeju/olle/" style="color:#c2700a;font-weight:800">올레길 ${olle.length}개 코스 표로 보기 →</a></p>` : ''}
-${indoor.length >= 30 ? `<h2 class="sec">비가 온다면</h2>
+${indoor.length >= 30 ? `<h2 class="sec">밖이 어려운 날엔</h2>
 <p class="jj-lead">제주는 비가 잦습니다. <b>실내로 등록된 ${indoor.length}곳</b>만 따로 모아 뒀습니다.</p>
-<p style="margin:10px 0"><a href="/jeju/rainy/" style="color:#c2700a;font-weight:800">비 올 때 갈 곳 ${indoor.length}곳 →</a></p>` : ''}
+<p style="margin:10px 0"><a href="/jeju/rainy/" style="color:#c2700a;font-weight:800">제주 실내 가볼만한 곳 ${indoor.length}곳 →</a></p>` : ''}
 <h2 class="sec">제주에서 더 보기</h2>
 <div class="jj-nav"><a href="/jangteo/jeju/">🏮 제주 오일장</a><a href="/trails/area/jeju/">🥾 제주 올레·걷기길</a>
 <a href="/accessible/jeju/">♿ 무장애 여행</a><a href="/pet/jeju/">🐕 반려견 동반</a>
