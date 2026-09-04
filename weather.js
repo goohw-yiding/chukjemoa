@@ -45,11 +45,29 @@ const key = (x, y) => {
 };
 const todayY = () => ymd(new Date(Date.now() + 9 * 3600 * 1000).toISOString().slice(0, 10));
 
-/** 좌표로 예보 배열을 가져온다 — 없으면 [] */
+// 🔴 2026-09-04 추가 — **조용한 실패를 시끄럽게 만든다.**
+//   신선도 가드(generated===오늘)만으로는 부족했다. 예약작업이 만든 «오늘 날짜지만 격자가 다른»
+//   파일(step 없음·135지점)이 통과해 버려서, 전 사이트 날씨가 하루 종일 통째로 사라졌는데
+//   아무 경고도 없었다. 제주 페이지를 만들다 카드 90개에 날씨 아이콘이 2개인 걸 보고서야 알았다.
+//   → **조회 대비 미스율**을 세어 빌드 끝에 찍는다. 「오늘 것이 맞다」와 「실제로 붙는다」는 다른 질문이다.
+let _hit = 0, _miss = 0;
+process.on('exit', () => {
+  const n = _hit + _miss;
+  if (!n) return;
+  const rate = Math.round(_miss / n * 100);
+  if (rate >= 20) console.log(`  🔴 날씨 조회 ${n}건 중 ${_miss}건(${rate}%) 미스 — weather.json 의 격자가 어긋났을 수 있습니다.
+     ⚠️ 프로젝트폴더와 C:\\dev 의 data/weather.json 은 «감시 대상이 아니라»(매일 새로 만드는 파일) 조용히 어긋납니다.
+        예약작업은 C:\\dev 에서 만듭니다 → 프로젝트폴더에서 빌드하기 전에 그 파일을 복사하세요.`);
+  else console.log(`  🌤 날씨 ${_hit}/${n}건 적용(미스 ${rate}%)`);
+});
+
+/** 좌표로 예보 배열을 가져온다 — 없으면 null */
 function at(x, y) {
   const d = db();
   if (!d || !x || !y) return null;
-  return d.pts[key(x, y)] || null;
+  const r = d.pts[key(x, y)] || null;
+  if (r) _hit++; else _miss++;
+  return r;
 }
 
 /** 축제 기간 중 «예보가 있는 날»들을 앞에서부터 최대 n개 */

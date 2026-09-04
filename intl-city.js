@@ -140,6 +140,38 @@ const MONTH = {
 // 2026-09-04 보강: 장소를 40 → 60 으로 늘렸다(서울 ja 264곳을 40만 보여주고 있었다).
 const MIN_PLACES = 20, MIN_FESTS = 15, SHOW_PLACES = 60, SHOW_FESTS = 12, SHOW_CULT = 24;
 
+// 🍊 2026-09-04 추가 — **제주에만** 붙이는 안내.
+//   왜: 제주는 「동쪽·서쪽」으로 나눠 다니는 섬인데, 이건 한국 사람은 다 알고 외국인은 아무도 모른다.
+//       검색량 실측에서도 「제주동쪽가볼만한곳 16,320 · 제주서쪽가볼만한곳 13,290」으로 확인됐다.
+//   ⚠️ 번역해서 옮기는 게 아니라 **각 언어로 직접 썼다** — 읍·면 이름은 한글 그대로 둔다(지도에 넣을 이름이니까).
+const JEJU = {
+  en: ['Split the island east and west',
+    `Jeju is a small island, but driving across it eats your day. Locals split it in two and so should you — <b>one day east, one day west</b>.<br>
+<b>East</b> (조천읍 · 구좌읍 · 성산읍 · 표선면 · 남원읍) is the sunrise side: Seongsan Ilchulbong, Seopjikoji, Woljeongri beach.<br>
+<b>West</b> (애월읍 · 한림읍 · 한경면 · 대정읍 · 안덕면) is the sunset side: the Aewol coastal cafés, Hyeopjae beach, Sanbangsan.<br>
+The Korean place names above are written the way a map app expects them — paste them straight in.`],
+  ja: ['島を東と西に分けて回る',
+    `済州は小さな島ですが、横断すると一日が終わります。地元の人は東西に分けて回ります — <b>一日は東、一日は西</b>。<br>
+<b>東</b>(조천읍 · 구좌읍 · 성산읍 · 표선면 · 남원읍)は日の出側。城山日出峰、涉地可支、月汀里の海。<br>
+<b>西</b>(애월읍 · 한림읍 · 한경면 · 대정읍 · 안덕면)は日の入り側。涯月の海沿いカフェ、挾才海水浴場、山房山。<br>
+上の韓国語の地名は地図アプリにそのまま貼り付けられる表記です。`],
+  zh: ['把岛分成东西两边走',
+    `济州岛不大，但横穿一次就是一天。当地人分东西走 — <b>一天东边，一天西边</b>。<br>
+<b>东边</b>(조천읍 · 구좌읍 · 성산읍 · 표선면 · 남원읍)是日出的一侧：城山日出峰、涉地可支、月汀里海边。<br>
+<b>西边</b>(애월읍 · 한림읍 · 한경면 · 대정읍 · 안덕면)是日落的一侧：涯月海边咖啡馆、挾才海水浴场、山房山。<br>
+上面的韩文地名可以直接粘贴到地图应用里。`],
+  tw: ['把島分成東西兩邊走',
+    `濟州島不大，但橫穿一次就是一天。當地人分東西走 — <b>一天東邊，一天西邊</b>。<br>
+<b>東邊</b>(조천읍 · 구좌읍 · 성산읍 · 표선면 · 남원읍)是日出的一側：城山日出峰、涉地可支、月汀里海邊。<br>
+<b>西邊</b>(애월읍 · 한림읍 · 한경면 · 대정읍 · 안덕면)是日落的一側：涯月海邊咖啡館、挾才海水浴場、山房山。<br>
+上面的韓文地名可以直接貼到地圖應用裡。`],
+  es: ['Divide la isla en este y oeste',
+    `Jeju es pequeña, pero cruzarla te come el día. Los locales la dividen en dos — <b>un día el este, otro el oeste</b>.<br>
+<b>Este</b> (조천읍 · 구좌읍 · 성산읍 · 표선면 · 남원읍): el lado del amanecer. Seongsan Ilchulbong, Seopjikoji, la playa de Woljeongri.<br>
+<b>Oeste</b> (애월읍 · 한림읍 · 한경면 · 대정읍 · 안덕면): el lado del atardecer. Los cafés de la costa de Aewol, la playa de Hyeopjae, Sanbangsan.<br>
+Los nombres en coreano de arriba están escritos tal como los espera una app de mapas.`]
+};
+
 function load(ROOT, f) {
   try { return JSON.parse(fs.readFileSync(path.join(ROOT, 'data', f), 'utf8')); } catch (e) { return null; }
 }
@@ -159,14 +191,25 @@ function build({ ROOT, layout, writePage, SITE, TODAY, WX }) {
     .sort((a, b) => (b.x ? 1 : 0) - (a.x ? 1 : 0) || a.start.localeCompare(b.start));
   const urls = [];
   const skipped = [];
+  const LANGS = ['en', 'ja', 'zh', 'tw', 'es'];
+  const LANG_NAME = { en: 'English', ja: '日本語', zh: '简体中文', tw: '繁體中文', es: 'Español' };
+  // 🔴 2026-09-04 수정(2) — **모든 언어의 통과 여부를 먼저 다 계산한 뒤에 한 장도 그리지 않는다.**
+  //   그래야 「같은 도시의 다른 언어」 줄을 «실제로 만든 것만»으로 찍을 수 있다.
+  //   이 줄이 없어서 `/tw/busan/`·`/zh/busan/` 이 **홈에서 도달 불가(고아) 2건**이었다
+  //   — 그 두 장을 가리키는 링크가 사이트 어디에도 없었다.
+  const READY = {};
 
-  for (const lang of ['en', 'ja', 'zh', 'tw', 'es']) {
+  for (const pass of [1, 2]) {
+  for (const lang of LANGS) {
     const t = T[lang];
     const places = load(ROOT, `places_${lang}.json`) || [];
     const fests = load(ROOT, `festivals_${lang}.json`) || [];
 
-    for (const C of CITIES) {
-      // ── 재료 모으기
+    // 🔴 2026-09-04 수정 — **먼저 「어느 도시가 통과하나」를 다 정하고 나서 렌더한다.**
+    //   전에는 도시를 하나씩 만들면서 하단 「다른 도시」 링크를 CITIES 전체로 찍었다.
+    //   그래서 게이트로 **만들지 않은** `/tw/seoul/`·`/tw/jeju/` 로 링크가 나가 **끊긴 내부 링크 4건**이 됐다.
+    //   ⚠️ 게이트가 있는 곳엔 «게이트를 통과한 것만 링크한다»가 따라와야 한다 — 하나만 넣으면 404를 만든다.
+    const mats = C => {
       const P = places.filter(p => p.sido === C.sido && +p.x && +p.y
         && String(p.ov || '').length >= 120 && p.addrKo);
       let F = fests.filter(f => String(f.end || '') >= T8
@@ -184,12 +227,20 @@ function build({ ROOT, layout, writePage, SITE, TODAY, WX }) {
           }));
         if (bf.length) F = bf;
       }
-
+      return { C, P, F };
+    };
+    const ready = CITIES.map(mats).filter(m => {
       // ── 게이트: 재료가 없으면 «만들지 않는다»
-      if (P.length < MIN_PLACES && F.length < MIN_FESTS) {
-        skipped.push(`${lang}/${C.key}(장소 ${P.length}·축제 ${F.length})`);
-        continue;
+      if (m.P.length < MIN_PLACES && m.F.length < MIN_FESTS) {
+        if (pass === 1) skipped.push(`${lang}/${m.C.key}(장소 ${m.P.length}·축제 ${m.F.length})`);
+        return false;
       }
+      return true;
+    });
+    const madeKeys = new Set(ready.map(m => m.C.key));
+    if (pass === 1) { READY[lang] = madeKeys; continue; }   // 1회차는 «누가 통과했나»만 모은다
+
+    for (const { C, P, F } of ready) {
 
       const city = t.city[C.key];
       const cp = (label, val) => val ? `<div class="xcopy"><div><span class="lb">${esc(label)}</span><span class="vl">${esc(val)}</span></div>
@@ -214,8 +265,13 @@ ${cp(t.name, f.ko)}
 ${cp(t.addr, p.addrKo)}
 </li>`;
 
-      const others = CITIES.filter(o => o.key !== C.key)
+      // ⚠️ «실제로 만든» 도시만 링크한다(madeKeys). CITIES 전체로 찍으면 404가 생긴다.
+      const others = CITIES.filter(o => o.key !== C.key && madeKeys.has(o.key))
         .map(o => `<a href="/${lang}/${o.key}/">${esc(t.city[o.key])}</a>`).join('');
+      // 같은 도시의 «다른 언어» — 실제로 만든 것만. 이 줄이 고아 페이지를 없앤다.
+      const langRow = LANGS.filter(l => l !== lang && READY[l] && READY[l].has(C.key))
+        .map(l => `<a href="/${l}/${C.key}/">${LANG_NAME[l]}</a>`).join('')
+        + `<a href="/${C.key}/">한국어</a>`;
 
       const content = `<main><div class="wrap">${CSS}
 <p class="ic-crumb"><a href="/${lang}/">${lang === 'ja' ? 'ホーム' : lang === 'zh' ? '首页' : lang === 'tw' ? '首頁' : lang === 'es' ? 'Inicio' : 'Home'}</a> › ${esc(city)}</p>
@@ -239,8 +295,11 @@ ${cp(t.cultTitle, r.title)}
 ${r.addr ? cp(t.addr, r.addr) : ''}
 </li>`).join('')}</ul>` : ''}
 
-<h2 class="sec">${esc(t.other)}</h2>
-<div class="ic-nav">${others}</div>
+${C.key === 'jeju' && JEJU[lang] ? `<div class="ic-why"><h2>${esc(JEJU[lang][0])}</h2><p>${JEJU[lang][1]}</p></div>` : ''}
+
+${others ? `<h2 class="sec">${esc(t.other)}</h2>
+<div class="ic-nav">${others}</div>` : ''}
+<div class="ic-nav" style="margin-top:10px">${langRow}</div>
 
 <p class="ic-src"><b>${esc(t.srcT)}</b> — ${esc(t.src)}</p>
 </div></main>`;
@@ -252,6 +311,7 @@ ${r.addr ? cp(t.addr, r.addr) : ''}
       urls.push(`/${lang}/${C.key}/`);
     }
   }
+  }   // pass 1(통과 여부 수집) → pass 2(렌더)
 
   console.log(`✓ /{lang}/{city}/ — ${urls.length}페이지`);
   if (skipped.length) console.log(`   재료 부족으로 «만들지 않음» ${skipped.length}개: ${skipped.join(' · ')}`);
