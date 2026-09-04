@@ -1956,7 +1956,9 @@ function writePage(rel, html) {
 
 // ---------- 🎪 개별 축제 페이지 /festival/ ----------
 // 축제 사이트인데 개별 축제 페이지가 0개였다(2026-08-09 발견). 검색 수요의 대부분이 개별 축제명인데 받을 페이지가 없었다.
-const FESTIVAL_URLS = require('./festival.js').build({ ROOT, layout, writePage, SITE_NAME, SITE, buyBox, festBuyBox, nearAiBox, TODAY });
+// MONTH_KEYS 를 넘긴다 — festival.js 가 「N월 축제 전체」로 링크할 때 **없는 달로 보내면 404**가 된다.
+//   (2027-01 처럼 목록에 없는 달이 실제로 있다. 게이트가 있는 곳엔 «통과한 것만 링크»가 따라와야 한다.)
+const FESTIVAL_URLS = require('./festival.js').build({ ROOT, layout, writePage, SITE_NAME, SITE, buyBox, festBuyBox, nearAiBox, TODAY, MONTH_KEYS: MONTHS.map(m => m.key) });
 const EN_FESTIVAL_URLS = apiFestsEn.length ? require('./festival-en.js').build({ ROOT, layout, writePage, SITE, TODAY }) : [];
 const EN_JANGTEO_URLS = apiFestsEn.length ? require('./jangteo-en.js').build({ ROOT, layout, writePage, SITE, TODAY }) : [];
 // 2026-09-01 신설. 일본어는 페이지가 18장뿐인데 평균 7.9위(영어 212장 30.1위)로 성적이 가장 좋다.
@@ -2428,6 +2430,12 @@ tr.open-on td{background:#e5f6e8}
 .jt-links a{display:inline-block;margin-right:8px;color:#0c7d72;font-weight:700;font-size:.85rem;white-space:nowrap}
 .jt-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
 .jt-today-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:10px;margin:12px 0 22px}
+.nextup{background:#f4faf8;border:1.5px solid #dcefeb;border-radius:14px;padding:14px 16px;margin:16px 0 22px}
+.nextup-t{font-size:.86rem;font-weight:800;color:#0a6c63;margin-bottom:8px}
+.nextup-row{display:flex;flex-wrap:wrap;gap:7px}
+.nextup-row a{display:inline-block;background:#fff;border:1.5px solid #cfe9e3;color:#0a6c63;font-weight:800;font-size:.92rem;padding:9px 14px;border-radius:999px;text-decoration:none}
+.nextup-row a b{color:#0f9d8f}
+.nextup-row a.hot{background:#0f9d8f;border-color:#0f9d8f;color:#fff}
 .jt-today-card{background:#eafbef;border:1.5px solid #b9ecc4;border-radius:14px;padding:14px 15px}
 .jt-today-card b{display:block;font-size:1rem;font-weight:800;color:#15803d;margin-bottom:3px}
 .jt-today-card span{display:block;font-size:.85rem;color:#374151}
@@ -2448,6 +2456,32 @@ ${marketsOpenToday.length ? `<div class="jt-today-grid">${marketsOpenToday.map(m
 <button id="date-reset" type="button">오늘로</button>
 <span id="date-summary"></span>
 </div>
+
+${/* 🔴 2026-09-04 신설 — «답을 얻은 직후»에 다음 갈 곳을 준다.
+      실측: /jangteo/ 는 세션 1,204(전체의 30%)·체류 116초·참여율 77% 인데 **세션당 1.25장**뿐이다.
+      원인이 분명했다 — **본문 5만 자인데 내부 링크가 전부 89% 지점 뒤**에 있었다(스크롤은 23%만 한다).
+      잘 도는 /2026-09/(2.02장)·홈(2.57장)은 링크가 본문 전체에 퍼져 있다.
+      → 사람이 「오늘 장 서는 곳」이라는 답을 얻은 «바로 그 자리»에 다음 동선을 놓는다.
+      ⚠️ 새 트래픽을 만드는 게 아니라 **이미 온 사람**을 한 장 더 보게 하는 것이라 확실하다.
+      PV 는 광고 수익의 곱셈 항이다. */''}
+<div class="nextup">
+<div class="nextup-t">내 지역 오일장만 보기</div>
+<div class="nextup-row">${(() => {
+    const S = { 경기: 'gyeonggi', 강원: 'gangwon', 충북: 'chungbuk', 충남: 'chungnam', 전북: 'jeonbuk', 전남: 'jeonnam', 경북: 'gyeongbuk', 경남: 'gyeongnam', 제주: 'jeju', 대구: 'daegu', 부산: 'busan', 대전: 'daejeon', 울산: 'ulsan', 인천: 'incheon' };
+    const cnt = {}; marketsAll.forEach(m => { if (m.region) cnt[m.region] = (cnt[m.region] || 0) + 1; });
+    // 페이지가 «실제로 있는» 곳만 링크한다 — 없는 곳으로 보내면 404가 된다(게이트 규칙과 같다).
+    return Object.entries(cnt).filter(([r, n]) => S[r] && n >= 6).sort((a, b) => b[1] - a[1])
+      .map(([r, n]) => `<a href="/jangteo/${S[r]}/">${esc(r)} <b>${n}</b></a>`).join('');
+  })()}</div>
+<div class="nextup-t" style="margin-top:12px">장 보고 나서 갈 만한 곳</div>
+<div class="nextup-row">
+<a href="/${MONTHS_ROTATED[0].key}/" class="hot">🎪 이달의 축제</a>
+<a href="/${(MONTHS_ROTATED[1] || MONTHS_ROTATED[0]).key}/">다음 달 축제</a>
+<a href="/holiday/">🌕 연휴에 여는 곳</a>
+<a href="/trip-cost/">💰 여행 경비 계산</a>
+</div>
+</div>
+
 <div class="jt-scroll"><table>
 <thead><tr><th>장터</th><th>다음 장날</th><th>위치</th><th>장날</th><th>대표 품목</th><th>특징</th><th>바로가기</th></tr></thead>
 <tbody id="jt-body">${marketRows}</tbody>
@@ -2622,6 +2656,17 @@ ${(() => { const nf = nearFestOf(m); if (!nf.length) return ''; return `<details
 <div style="background:#f4faf8;border:1.5px solid #dcefeb;border-radius:14px;padding:13px 17px;margin:14px 0;color:#0a6c63;font-size:.94rem;line-height:1.75">
 오일장은 <b>날짜 끝자리</b>로 열립니다. 예를 들어 4·9일장이면 4, 9, 14, 19, 24, 29일에 섭니다.
 <a href="/jangteo/" style="color:#0a6c63;font-weight:800">전국 표에서 날짜를 넣으면</a> 그 날 열리는 장을 한 번에 볼 수 있습니다.
+</div>
+
+${/* 시도별 오일장도 세션당 1.07~1.35장이다 — 내부 이동 링크가 98% 지점의 「다른 지역」뿐이었다.
+      목록을 읽기 «전»에 다음 동선을 준다(허브와 같은 처방). */''}
+<div class="nextup">
+<div class="nextup-t">${esc(sido)} 장 보고 나서</div>
+<div class="nextup-row">
+<a href="/${MONTHS_ROTATED[0].key}/" class="hot">🎪 이달의 축제</a>
+<a href="/jangteo/">🏮 오늘 서는 오일장 전국</a>
+<a href="/holiday/">🌕 연휴에 여는 곳</a>
+</div>
 </div>
 
 <h2 class="sec">${sido}의 오일장</h2>
@@ -4437,7 +4482,7 @@ fetch('/accessible/data.json').then(function(r){return r.json();}).then(function
 //   경기 무장애가 1,594곳인데 다 실으면 본문 38만 자가 된다.
 // ---------- 🏠 실내 가볼만한 곳 /indoor/ ----------
 //
-// 왜 만드나 — **제주에서 제목을 잘못 걸고 있던 걸 발견해서다** (2026-09-05 네이버 검색량 실측).
+// 왜 만드나 — **제주에서 제목을 잘못 걸고 있던 걸 발견해서다** (2026-09-04 네이버 검색량 실측).
 //   제주실내가볼만한곳 **7,470** · 제주실내관광지 5,530 · 제주도실내관광지 4,710
 //   vs  제주비올때갈만한곳 **105** · 제주비올때 0        → 사람들은 「비 올 때」가 아니라 «실내»로 찾는다. **70배.**
 //   그래서 전국 수요도 다시 쟀더니 —

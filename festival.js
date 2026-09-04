@@ -95,6 +95,11 @@ const CSS = `
 .frel{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
 .frel a{background:#fff;border:1.5px solid #dcefeb;color:#374151;font-weight:700;font-size:.86rem;padding:8px 14px;border-radius:999px;text-decoration:none}
 .frel a:hover{background:#e2f5f2}
+.fnext{background:#f4faf8;border:1.5px solid #dcefeb;border-radius:14px;padding:13px 16px;margin:14px 0 18px}
+.fnext-t{font-size:.85rem;font-weight:800;color:#0a6c63;margin-bottom:8px}
+.fnext-row{display:flex;flex-wrap:wrap;gap:7px}
+.fnext-row a{background:#fff;border:1.5px solid #cfe9e3;color:#0a6c63;font-weight:800;font-size:.9rem;padding:8px 14px;border-radius:999px;text-decoration:none}
+.fnext-row a.hot{background:#0f9d8f;border-color:#0f9d8f;color:#fff}
 .factions{display:flex;flex-wrap:wrap;gap:9px;margin:2px 0 14px}
 .fav-standalone{position:static;display:inline-flex;align-items:center;width:auto;height:auto;padding:9px 16px;border-radius:999px;font-size:1rem;font-weight:800;color:#374151;background:#fff;border:1.5px solid #e5e7eb;box-shadow:none;cursor:pointer}
 .fav-standalone::after{content:'찜하기';margin-left:7px;font-size:.88rem;font-weight:800}
@@ -117,7 +122,10 @@ function near(list, x, y, maxKm, n) {
 }
 
 function build(ctx) {
-  const { ROOT, layout, writePage, SITE_NAME, SITE, buyBox, festBuyBox, nearAiBox, TODAY } = ctx;
+  const { ROOT, layout, writePage, SITE_NAME, SITE, buyBox, festBuyBox, nearAiBox, TODAY, MONTH_KEYS } = ctx;
+  // 축제 시작월 → 월별 페이지 키. **실제로 만드는 달일 때만** 돌려준다(없으면 링크하지 않는다).
+  const MK = new Set(MONTH_KEYS || []);
+  const monthKeyOf = f => { const d = String(f.start || ''); const k = d.slice(0, 4) + '-' + d.slice(4, 6); return MK.has(k) ? k : ''; };
 
   const fes = load('festivals_api.json');
   const nearbyRaw = (() => { try { return JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'nearby.json'), 'utf8')); } catch (e) { return {}; } })();
@@ -324,6 +332,20 @@ ${endedBox}
 ${wx.html}
 
 ${idx ? `<div class="fnum"><h3>📊 ${ended ? '이 동네는 이맘때 얼마나 붐비나' : '지금 이 동네, 얼마나 붐비나'}</h3>${busyP}</div>` : ''}
+
+${/* 🔴 2026-09-04 신설 — 축제 상세는 **세션당 1.00~1.10장**, 사실상 막다른 길이었다.
+      「같이 보면 좋은 축제」가 본문 **83% 지점**에 있어 아무도 거기까지 안 내려간다(스크롤 23%).
+      → 사람이 「이 축제가 뭔지」를 읽기 «직전», 위쪽에 같은 동선을 짧게 하나 더 놓는다.
+      ⚠️ 아래 83% 블록은 그대로 둔다 — 끝까지 읽은 사람에게도 출구가 있어야 한다. */''}
+${(() => {
+      const same = cand.filter(o => o !== f && o.sido === f.sido).slice(0, 3);
+      if (!same.length) return '';
+      return `<div class="fnext">
+<div class="fnext-t">${esc(f.sido)}에서 같이 볼 축제</div>
+<div class="fnext-row">${same.map(o => `<a href="/festival/${o._slug}/">${esc(o.title)}</a>`).join('')}
+${monthKeyOf(f) ? `<a href="/${monthKeyOf(f)}/" class="hot">🎪 ${String(f.start).slice(4, 6).replace(/^0/, '')}월 축제 전체</a>` : ''}</div>
+</div>`;
+    })()}
 
 <h2 class="sec">어떤 축제인가</h2>
 <p class="note" style="margin:-2px 0 10px">아래 소개는 한국관광공사 TourAPI에 등록된 <b>공식 설명</b>입니다. 저희가 직접 계산해 붙인 것은 붐빔 배수·근처 영업시간·걷기길 거리·하루 동선입니다.</p>

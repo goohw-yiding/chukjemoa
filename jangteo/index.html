@@ -514,6 +514,12 @@ tr.open-on td{background:#e5f6e8}
 .jt-links a{display:inline-block;margin-right:8px;color:#0c7d72;font-weight:700;font-size:.85rem;white-space:nowrap}
 .jt-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
 .jt-today-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:10px;margin:12px 0 22px}
+.nextup{background:#f4faf8;border:1.5px solid #dcefeb;border-radius:14px;padding:14px 16px;margin:16px 0 22px}
+.nextup-t{font-size:.86rem;font-weight:800;color:#0a6c63;margin-bottom:8px}
+.nextup-row{display:flex;flex-wrap:wrap;gap:7px}
+.nextup-row a{display:inline-block;background:#fff;border:1.5px solid #cfe9e3;color:#0a6c63;font-weight:800;font-size:.92rem;padding:9px 14px;border-radius:999px;text-decoration:none}
+.nextup-row a b{color:#0f9d8f}
+.nextup-row a.hot{background:#0f9d8f;border-color:#0f9d8f;color:#fff}
 .jt-today-card{background:#eafbef;border:1.5px solid #b9ecc4;border-radius:14px;padding:14px 15px}
 .jt-today-card b{display:block;font-size:1rem;font-weight:800;color:#15803d;margin-bottom:3px}
 .jt-today-card span{display:block;font-size:.85rem;color:#374151}
@@ -533,6 +539,20 @@ tr.open-on td{background:#e5f6e8}
 <button id="date-reset" type="button">오늘로</button>
 <span id="date-summary"></span>
 </div>
+
+
+<div class="nextup">
+<div class="nextup-t">내 지역 오일장만 보기</div>
+<div class="nextup-row"><a href="/jangteo/gyeongbuk/">경북 <b>90</b></a><a href="/jangteo/jeonnam/">전남 <b>77</b></a><a href="/jangteo/gyeongnam/">경남 <b>70</b></a><a href="/jangteo/gyeonggi/">경기 <b>48</b></a><a href="/jangteo/jeonbuk/">전북 <b>39</b></a><a href="/jangteo/chungbuk/">충북 <b>35</b></a><a href="/jangteo/chungnam/">충남 <b>34</b></a><a href="/jangteo/gangwon/">강원 <b>30</b></a><a href="/jangteo/ulsan/">울산 <b>12</b></a><a href="/jangteo/jeju/">제주 <b>12</b></a><a href="/jangteo/daegu/">대구 <b>9</b></a></div>
+<div class="nextup-t" style="margin-top:12px">장 보고 나서 갈 만한 곳</div>
+<div class="nextup-row">
+<a href="/2026-09/" class="hot">🎪 이달의 축제</a>
+<a href="/2026-10/">다음 달 축제</a>
+<a href="/holiday/">🌕 연휴에 여는 곳</a>
+<a href="/trip-cost/">💰 여행 경비 계산</a>
+</div>
+</div>
+
 <div class="jt-scroll"><table>
 <thead><tr><th>장터</th><th>다음 장날</th><th>위치</th><th>장날</th><th>대표 품목</th><th>특징</th><th>바로가기</th></tr></thead>
 <tbody id="jt-body"><tr data-days="2,7" data-n="간성전통시장"><td><button class="fav fav-mini" type="button" data-name="간성전통시장" aria-label="찜하기">♡</button><strong>간성전통시장</strong></td><td class="nextday"></td><td>강원 고성군</td><td>2·7일</td><td>농산물, 축산물, 수산물, 가공식품</td><td>1965년 개설 · 점포 66곳 · 주차 가능 · 화장실 있음</td><td class="jt-links"><button type="button" class="jt-go" data-k="f">🍴 맛집</button><button type="button" class="jt-go" data-k="m">🗺️ 지도</button></td></tr>

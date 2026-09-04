@@ -172,7 +172,7 @@ The Korean place names above are written the way a map app expects them — past
 Los nombres en coreano de arriba están escritos tal como los espera una app de mapas.`]
 };
 
-// 🥾 2026-09-05 추가 — **올레길 26코스**를 외국어에도 붙인다.
+// 🥾 2026-09-04 추가 — **올레길 26코스**를 외국어에도 붙인다.
 //   왜 이게 값어치가 큰가: 코스번호·거리·소요시간·«휠체어 가능 여부»는 **숫자와 참/거짓이라 번역이 필요 없다.**
 //   지어낼 여지가 없고, 휠체어 정보는 영어권에 거의 없다(제주올레 공식 데이터 26/26 중 10코스 가능).
 //   ⚠️ 코스명·출발지·도착지는 **한글 그대로** 둔다 — 그게 지도에 붙여넣을 이름이다(우리 강점).
@@ -185,7 +185,7 @@ const OLLE = {
   es: { t: 'Sendero Olle de Jeju — las 26 rutas', n: `El Olle rodea la isla en 26 rutas numeradas. Abajo van los datos oficiales: distancia, tiempo a pie y <b>qué rutas son accesibles en silla de ruedas</b> — esto último casi no existe en español.<br>Los nombres de ruta y de los puntos de inicio se quedan <b>en coreano a propósito</b>. Pega el punto de inicio en NAVER Map o KakaoMap y te llevará; el nombre traducido no aparece.`, wc: 'Silla de ruedas', km: 'km', hr: 'h', s2e: 'Inicio → Final', cpS: 'Punto de inicio (coreano) — pégalo en el mapa', route: 'Ruta' }
 };
 
-// 🌧 2026-09-05 추가 — 비 올 때 갈 실내 장소.
+// 🌧 2026-09-04 추가 — 비 올 때 갈 실내 장소.
 //   ⚠️ 관광공사가 «실내»라고 표시한 곳만 넣는다. 표시 없는 곳을 실내로 밀어넣지 않는다
 //      — 비 오는 날 헛걸음이 제일 나쁘다(한국어 /jeju/rainy/ 와 같은 규칙).
 //   ⚠️ 이름·주소는 한국어뿐이라 **번역하지 않는다** — 부산 전시·공연과 같은 방식으로 «붙여넣을 한글»을 준다.
@@ -197,7 +197,7 @@ const RAIN = {
   es: { t: 'Si llueve — sitios bajo techo', n: `La lluvia es lo que arruina un viaje a Jeju. Aquí solo van los sitios que la Organización de Turismo de Jeju marca como <b>interiores</b> — nada supuesto. En la fuente los nombres y direcciones están solo en coreano y <b>no los traducimos</b>: un nombre mal traducido te lleva a otra puerta. Copia el coreano y pégalo en el mapa.`, ind: 'Interior', name: 'Nombre en coreano — cópialo para buscar', addr: 'Dirección en coreano — pégala en el mapa', air: 'Cerca del aeropuerto' }
 };
 
-// 🏙 2026-09-05 — 서울 문화행사를 외국어에도 싣는다.
+// 🏙 2026-09-04 — 서울 문화행사를 외국어에도 싣는다.
 //   🔴 왜 이제서야: **부산 197건은 이미 싣고 있었는데 서울 1,048건은 0건이었다**
 //      (실측: 외국어 서울 페이지에 서울 행사 제목 0/200). 서울이 외국인 방문 1위(984만 > 부산 406만)인데
 //      재료가 5배 많은 쪽을 비워 두고 있었다.
@@ -251,7 +251,7 @@ const JEJU_DESC = {
   es: (n, o, r) => `${n} sitios de Jeju con la dirección en coreano para pegar en NAVER Map, las ${o} rutas del sendero Olle con distancia, tiempo y accesibilidad en silla de ruedas, y ${r} sitios bajo techo para cuando llueve.`
 };
 
-// 🚇 2026-09-05 — 가장 가까운 지하철역.
+// 🚇 2026-09-04 — 가장 가까운 지하철역.
 //   왜: 구글맵은 한국 안에서 길찾기가 안 된다. 외국인은 「Hongik Univ.」로 아는데
 //       네이버·카카오 지도는 **홍대입구**로만 찾는다. 그 대조를 주는 곳이 거의 없다.
 //   ⭐ 실측: 서울 문화행사 96%·축제 75%·장소 64~66%가 도보권이다. 붙일 데이터가 실제로 있다.
