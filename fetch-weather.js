@@ -110,6 +110,25 @@ function load(f) {
     tally[label] = c;
   }
 
+  // ⑩ 2026-09-04(2) 추가 — 제주 신규 데이터.
+  //   🔴 캠핑 페이지에 「주간 예보를 먼저 보라」고 써 놓고 정작 날씨가 3개뿐이었다.
+  //      새 좌표를 예보 «대상»에 안 넣었기 때문 — 데이터를 늘렸으면 «날씨 대상»도 같이 늘려야 한다.
+  //   ⚠️ 제주는 섬이라 5km 격자에서 지점이 크게 늘지 않는다(+100~200).
+  try {
+    const hub = JSON.parse(fs.readFileSync(path.join(__dirname, 'data', 'jeju_hub.json'), 'utf8'));
+    let c = 0;
+    for (const k of ['oreum', 'museum', 'camping'])
+      for (const r of (hub[k] || [])) if (add(r.x, r.y)) c++;
+    for (const r of (hub.olle || [])) { if (add(r.sx, r.sy)) c++; if (add(r.ex, r.ey)) c++; }
+    tally['제주(오름·박물관·캠핑·올레)'] = c;
+  } catch (e) { }
+  try {
+    const vj = JSON.parse(fs.readFileSync(path.join(__dirname, 'data', 'visitjeju.json'), 'utf8')).rows || [];
+    let c = 0;
+    for (const r of vj) if (add(r.x, r.y)) c++;   // 「비 올 때」 카드가 날씨 없이 나오면 안 된다
+    tally['비짓제주'] = c;
+  } catch (e) { }
+
   const list = [...pts.entries()];
   console.log(`예보 창 ${today} ~ ${last} (${DAYS}일) · 격자 ${STEP}도`);
   console.log('  대상:', Object.entries(tally).map(([k, v]) => `${k} ${v}`).join(' · '));
