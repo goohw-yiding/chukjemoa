@@ -1,0 +1,21 @@
+{
+ "_설명": "제주데이터허브 프로젝트 「축제모아」에 담은 데이터의 호출 정보. 2026-09-04 수집.",
+ "_호출": "https://open.jejudatahub.net/api/proxy/{proxy}/{jejuhub.key}?number=1&limit=100",
+ "_주의": "서버가 약 30% 확률로 502를 뱉는다 — 재시도 없이 쓰면 데이터가 조용히 절반만 들어온다.",
+ "_프록시ID의 정체": "사이트 내부 API /api/data/view?id={id} 의 dataKey 필드와 같다(오름 811로 대조 확인).",
+ "datasets": [
+  { "id": 811, "proxy": "1Dttb1tab8tD88Dtat11111at1t1atD8", "name": "오름 위치 정보", "src": "카카오위치서비스" },
+  { "id": 812, "proxy": "at2ta1D1aaa811bata88Dt1D22b1t1bt", "name": "박물관 및 미술관 위치 정보", "src": "카카오위치서비스" },
+  { "id": 810, "proxy": "a11801tD1bttatDttD1b0t1Dt80b011a", "name": "캠핑 가능 장소 위치 정보", "src": "카카오위치서비스" },
+  { "id": 802, "proxy": "88D0ba0a01a08D081tt8aDba21aabt28", "name": "카셰어링 업체 위치 정보(통합)", "src": "카카오위치서비스" },
+  { "id": 871, "proxy": "1Daaa177batDba8b8t711D17D18atDa7", "name": "올레길 위치 정보", "src": "제주올레" },
+  { "id": 881, "proxy": "888tDaaDaat91181b7Db79811181tDaa", "name": "한라산 둘레길 코스별 정보", "src": "제주특별자치도" },
+  { "id": 883, "proxy": "aa7t3a3tabDtbD38a87ta8ttttt388ab", "name": "제주 해수욕장 수질 조사 정보", "src": "제주특별자치도" },
+  { "id": 882, "proxy": "9D89Da8a9D9bDD98ttD2ttt2b2ab8782", "name": "제주 농어촌 체험 휴양 마을 현황", "src": "제주특별자치도" },
+  { "id": 591, "proxy": "bt11Daa5at1tat515DDtaa9D5aa99t11", "name": "관광지별 내국인 유입자 수", "src": "제주데이터허브" },
+  { "id": 592, "proxy": "12ta2a2t291tDbbabtbD9t1a219tbDbt", "name": "관광지별 외국인 유입자 수", "src": "제주데이터허브" },
+  { "id": 837, "proxy": "ttbttaD3aaa3ta8bbtDtaDD18t37aD17", "name": "관광 숙박업 정보", "src": "공공데이터포털" },
+  { "id": 880, "proxy": "t9taaabtbD0tb78a0tt080tttaa9aDt0", "name": "시도별 문화재 지정 현황", "src": "KOSIS" },
+  { "id": 762, "proxy": "atatbta27tD6t21bta7a2a6DtD172D27", "name": "제주특별자치도_도지정문화재현황", "src": "공공데이터포털" }
+ ]
+}
