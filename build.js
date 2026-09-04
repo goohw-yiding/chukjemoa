@@ -1849,7 +1849,7 @@ function layout(title, desc, urlPath, content, opts) {
   const footer = lang === 'ko'
     ? `<p>${SITE_NAME} — 전국 축제·오일장 일정 모음</p>
 <p>축제 일정은 주최 측 사정에 따라 변경될 수 있습니다. 방문 전 공식 홈페이지를 확인하세요.</p>
-<p><a href="/about/">소개</a> · <a href="/editorial/">편집 원칙</a> · <a href="/contact/">문의</a> · <a href="/privacy/">개인정보처리방침</a></p>
+<p><a href="/about/">소개</a> · <a href="/editorial/">편집 원칙</a> · <a href="/contact/">문의</a> · <a href="/advertise/">광고·제휴</a> · <a href="/privacy/">개인정보처리방침</a></p>
 <p>문의: goohw593@gmail.com</p>
 <p class="srcnote">축제 정보 출처: 한국관광공사 TourAPI 등 <a href="https://www.data.go.kr/" target="_blank" rel="noopener nofollow">공공데이터포털</a> 개방 데이터. 최종 갱신 ${TODAY}.<br>일정·요금은 주최 측 사정으로 변경될 수 있으니 방문 전 주최 측 공식 채널에서 확인하시기 바랍니다. 잘못된 정보는 <a href="/contact/">문의</a>로 알려주시면 확인 후 정정합니다.</p>
 <p>© 2026 ${SITE_NAME}</p>`
@@ -6727,6 +6727,121 @@ const TRIP_URLS = require('./trip.js').build({ ROOT, layout, writePage, SITE_NAM
     '/contact/', contactContent));
 }
 
+// ---------- 📣 매체 소개 /advertise/ ----------
+//
+// 왜 만드나 (2026-09-04) — 장남 님: 「광고 문의나 협업 문의가 들어왔으면 좋겠다」.
+//   실태를 보니 **받을 준비가 안 돼 있었다.** `/contact/` 에 「제휴·광고 문의」 한 줄이 있긴 한데
+//   여섯 가지 문의 유형 중 하나로 묻혀 있고, **광고주가 판단할 근거(트래픽·독자·게재면)가 어디에도 없다.**
+//   광고를 집행하는 쪽은 「얼마나 오나·누가 오나·어디에 실리나」를 못 보면 문의 자체를 안 한다.
+//
+// ⚠️ **숫자를 부풀리지 않는다.** 우리는 하루 249명(최근 7일)짜리 작은 매체다.
+//   작은 숫자를 정직하게 쓰고 **성장률과 «어떤 사람이 오는지»를 같이** 보여주는 쪽이 신뢰가 된다.
+//   부풀렸다가 광고주가 GA를 확인하는 순간 관계가 끝난다.
+// ⚠️ **단가를 적지 않는다.** 규모가 작아 표준 단가를 만들 단계가 아니고, 적어 두면 협의 여지가 없어진다.
+// ⚠️ 여기 숫자는 «빌드 시점의 콘텐츠 규모»만 자동이고, 트래픽은 손으로 갱신한다(GA4 실측).
+//   → 트래픽 숫자를 고칠 땐 **반드시 GA4로 다시 재고** 기준일을 같이 바꾼다.
+const ADV_TRAFFIC = {
+  asOf: '2026-09-04',
+  daily: 249,        // 최근 7일 평균 (GA4 실측)
+  users28: 3620,     // 28일 사용자
+  pv28: 5812,        // 28일 페이지뷰
+  naverPct: 64,      // 네이버 유입 비중
+  mobilePct: 75,     // 모바일 비중
+  engagePct: 71      // 참여율(모바일)
+};
+{
+  const nFest = FESTIVAL_URLS.length;
+  const MAIL = 'goohw593@gmail.com';
+  const advContent = `<main><div class="wrap"><article class="post">
+<h1 class="page-h1">📣 축제모아 매체 소개</h1>
+<p class="page-sub">광고·제휴를 검토하시는 분들이 판단하실 수 있도록 <b>실제 측정값</b>만 적었습니다. 부풀린 숫자는 없습니다.</p>
+
+<h2 class="sec">어떤 사람들이 오나</h2>
+<p>축제모아는 <b>「이번 주말에 어디 갈까」를 찾는 사람</b>이 오는 곳입니다. 광고를 보러 오는 곳이 아니라 <b>일정을 확인하러</b> 오는 곳이라, 방문자의 관심사가 뚜렷합니다 — 지역 축제, 오일장, 걷기길, 가족 나들이.</p>
+<div class="advgrid">
+<div><b>하루 ${ADV_TRAFFIC.daily}명</b><span>최근 7일 평균</span></div>
+<div><b>${ADV_TRAFFIC.users28.toLocaleString()}명</b><span>최근 28일 방문자</span></div>
+<div><b>${ADV_TRAFFIC.pv28.toLocaleString()}</b><span>최근 28일 페이지뷰</span></div>
+<div><b>${ADV_TRAFFIC.naverPct}%</b><span>네이버 검색 유입</span></div>
+<div><b>${ADV_TRAFFIC.mobilePct}%</b><span>모바일</span></div>
+<div><b>${ADV_TRAFFIC.engagePct}%</b><span>참여 세션 비율</span></div>
+</div>
+<p class="note">${ADV_TRAFFIC.asOf} Google Analytics 4 기준. <b>성장 중인 매체입니다</b> — 최근 7일 방문자가 지난 90일 전체의 46%였습니다. 검토 시점의 최신 수치가 필요하시면 문의 주시면 캡처를 드립니다.</p>
+
+<h2 class="sec">무엇을 다루나</h2>
+<ul class="advlist">
+<li><b>개별 축제 페이지 ${nFest.toLocaleString()}개</b> — 축제마다 가는 법·근처 먹을 곳·붐빔 정도·당일 날씨를 따로 계산합니다.</li>
+<li><b>오일장(5일장) ${marketsAll.length.toLocaleString()}곳</b> — 장날 규칙까지 정리했습니다. 사이트에서 가장 많이 보는 면입니다.</li>
+<li><b>월별 축제 일정</b> — 「9월 축제」처럼 달로 찾는 사람이 두 번째로 많습니다.</li>
+<li><b>걷기길·실내 여행지·무장애 여행·반려견 동반</b> 등 주제별 면.</li>
+<li><b>영어·일본어·중국어(간체·번체)·스페인어</b> — 한국을 찾는 외국인 여행자용 면이 따로 있습니다.</li>
+</ul>
+
+<h2 class="sec">이런 문의를 받습니다</h2>
+<div class="advbox">
+<h3>🏛 지자체·축제 주최 측</h3>
+<p>축제 소개를 더 자세히 싣고 싶으신 경우, 공식 사진·홈페이지·예매 링크를 반영하고 싶으신 경우, 개막 전 노출을 상의하고 싶으신 경우. <b>정보 정정과 공식 자료 반영은 무료입니다</b> — 저희도 정확한 게 낫습니다.</p>
+</div>
+<div class="advbox">
+<h3>🎒 여행·아웃도어·지역 상품 브랜드</h3>
+<p>축제·나들이 맥락에 맞는 상품이라면 게재를 상의할 수 있습니다. ⚠️ <b>맥락에 맞지 않는 광고는 받지 않습니다.</b> 방문자가 일정을 확인하러 온 곳이라, 관계없는 배너를 붙이면 매체가 먼저 망가집니다.</p>
+</div>
+<div class="advbox">
+<h3>🔗 데이터·콘텐츠 제휴</h3>
+<p>축제·오일장 일정 데이터를 쓰고 싶으신 경우, 저희 콘텐츠를 인용·전재하고 싶으신 경우, 공동 기획을 제안하고 싶으신 경우.</p>
+</div>
+
+<h2 class="sec">사람이 가장 많이 보는 면</h2>
+<p>어디에 실리는지가 중요하실 테니, <b>실제 방문 순서</b>를 그대로 적습니다(최근 28일 기준).</p>
+<div class="advtab"><table>
+<thead><tr><th>면</th><th>28일 세션</th><th>어떤 사람이 오나</th></tr></thead>
+<tbody>
+<tr><td><b>오일장 전국</b><br><span class="advu">/jangteo/</span></td><td>1,204</td><td>「오늘 장날 어디」를 찾는 사람. 40~60대 비중이 높고 지역이 넓게 퍼져 있습니다.</td></tr>
+<tr><td><b>이달의 축제</b><br><span class="advu">/2026-09/ 등</span></td><td>522</td><td>「9월 축제」로 검색해 <b>주말 계획을 세우는 사람</b>. 체류 171초로 가장 오래 봅니다.</td></tr>
+<tr><td><b>개별 축제</b><br><span class="advu">/festival/…</span></td><td>축제별 26~61</td><td>그 축제 이름을 <b>콕 집어</b> 검색한 사람. 방문 의사가 가장 뚜렷합니다.</td></tr>
+<tr><td><b>홈</b><br><span class="advu">/</span></td><td>123</td><td>재방문·브랜드 검색. 체류 760초로 압도적으로 깁니다.</td></tr>
+</tbody>
+</table></div>
+<p class="note">지역 축제·지역 상품이라면 <b>해당 축제 페이지와 그 달의 일정 페이지</b>에 함께 실리는 편이 가장 자연스럽습니다.</p>
+
+<h2 class="sec">계절을 타는 매체입니다</h2>
+<p>축제는 <b>봄(4~5월)과 가을(9~10월)</b>에 몰립니다. 방문자도 같이 움직입니다. 여름은 물놀이·머드 축제로, 겨울은 눈·빙어 축제로 성격이 바뀝니다. <b>집행 시기를 성수기에 맞추시는 편</b>이 같은 예산으로 더 많이 노출됩니다. 어느 달에 어떤 축제가 몰리는지는 <a href="/${MONTHS_ROTATED[0].key}/">월별 일정</a>에서 그대로 보실 수 있습니다.</p>
+
+<h2 class="sec">저희가 지키는 것</h2>
+<ul class="advlist">
+<li><b>광고와 정보를 섞지 않습니다.</b> 상품이 실리는 자리에는 「직접 판매하는 상품입니다」처럼 그 사실을 표시합니다.</li>
+<li><b>돈을 받고 일정·순위를 바꾸지 않습니다.</b> 축제 목록의 순서는 날짜와 데이터로만 정합니다.</li>
+<li><b>없는 정보를 지어내지 않습니다.</b> 확인 못 한 것은 「확인하지 못했습니다」로 남겨 둡니다.</li>
+</ul>
+
+<h2 class="sec">문의</h2>
+<p class="advmail"><a href="mailto:${MAIL}?subject=%5B%EC%B6%95%EC%A0%9C%EB%AA%A8%EC%95%84%5D%20%EA%B4%91%EA%B3%A0%C2%B7%EC%A0%9C%ED%9C%B4%20%EB%AC%B8%EC%9D%98">${MAIL}</a></p>
+<p class="note">보통 2~3일 이내에 답변드립니다. 어떤 축제·어떤 면인지 함께 주시면 가장 빠릅니다. 일정 오류 제보나 그 밖의 문의는 <a href="/contact/">문의하기</a>를 이용해 주세요.</p>
+</article></div></main>
+<style>
+.advgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:11px;margin:14px 0}
+.advgrid div{background:#f4faf8;border:1.5px solid #dcefeb;border-radius:13px;padding:14px 16px}
+.advgrid b{display:block;font-size:1.32rem;font-weight:900;color:#0a6c63;line-height:1.25}
+.advgrid span{font-size:.84rem;color:#6b7280}
+.advlist{margin:10px 0 0;padding-left:20px}
+.advlist li{color:#374151;font-size:.97rem;line-height:1.85;margin-bottom:6px}
+.advbox{background:#fff;border:1.5px solid #e6eaee;border-radius:14px;padding:14px 17px;margin:11px 0}
+.advbox h3{font-size:1rem;font-weight:900;color:#0a6c63;margin:0 0 6px}
+.advbox p{color:#374151;font-size:.95rem;line-height:1.8;margin:0}
+.advmail{margin:10px 0}
+.advmail a{display:inline-block;background:#0f9d8f;color:#fff;font-weight:800;font-size:1.02rem;padding:13px 26px;border-radius:12px;text-decoration:none}
+.advtab{overflow-x:auto;margin:12px 0}
+.advtab table{width:100%;border-collapse:collapse;font-size:.92rem;min-width:460px}
+.advtab th,.advtab td{border-bottom:1px solid #e6eaee;padding:10px 12px;text-align:left;vertical-align:top;color:#374151}
+.advtab th{background:#f4faf8;color:#0a6c63;font-weight:800;white-space:nowrap}
+.advu{font-size:.8rem;color:#9aa3af;font-weight:600}
+</style>`;
+  writePage('advertise', layout(
+    `광고·제휴 문의 — 매체 소개 | ${SITE_NAME}`,
+    `축제모아 매체 소개서. 방문자 규모·유입 경로·다루는 주제를 실제 측정값으로 공개합니다. 지자체·축제 주최 측, 여행 브랜드, 데이터 제휴 문의를 받습니다.`,
+    '/advertise/', advContent));
+}
+
 // ---------- 404 ----------
 // ⚠️ 2026-08-18 전체 점검: 없는 주소를 밟으면 흰 화면에 text/plain 404가 떴다.
 //    사이트 안으로 되돌릴 동선이 0이었다. Vercel 정적 호스팅은 루트 404.html을 자동으로 쓴다.
@@ -6752,7 +6867,7 @@ const TRIP_URLS = require('./trip.js').build({ ROOT, layout, writePage, SITE_NAM
 }
 
 // ---------- sitemap / robots ----------
-const urls = ['/', ...MONTHS.map(m => `/${m.key}/`), '/search/', ...(holidays.length ? ['/holiday/'] : []), '/pet/', ...(apiAccessible.length ? ['/accessible/'] : []), ...INDOOR_URLS, ...(apiTrails.length ? ['/trails/'] : []), ...(apiValleys.length ? ['/valley/'] : []), ...(apiMaple.length ? ['/maple/'] : []), ...(apiFlower.length ? ['/flower/'] : []), ...(apiOnsen.length ? ['/onsen/'] : []), '/jangteo/', '/test/', '/trip-cost/', ...CITYTOUR_URLS, ...(visitors.kor && visitors.kor.length ? ['/trend/'] : []), ...SIDO_URLS, ...THEME_URLS, ...TRAIL_URLS, ...WALK_URLS, ...TREND_LANG_URLS, '/blog/', ...posts.map(p => `/blog/${p.slug}/`), '/about/', EDITORIAL_URL, '/contact/', '/privacy/',...(apiFestsEn.length ? ['/en/', '/en/search/'] : []), ...EN_FESTIVAL_URLS, ...EN_JANGTEO_URLS, ...EN_BLOG_URLS, ...(apiFestsJa.length ? ['/ja/', '/ja/search/'] : []), ...JA_JANGTEO_URLS, ...JA_FESTIVAL_URLS, ...JA_HOLIDAY_URLS, ...(apiFestsEs.length ? ['/es/', '/es/search/'] : []), ...ES_JANGTEO_URLS, ...(apiFestsZh.length ? ['/zh/', '/zh/search/'] : []), ...ZH_JANGTEO_URLS, ...(apiFestsTw.length ? ['/tw/', '/tw/search/'] : []), ...TW_EXTRA_URLS, ...MOUNTAIN_URLS, ...CAFE_URLS, ...HOT_URLS, ...HEALING_URLS, ...COURSE_URLS, ...WINTER_URLS, ...JANGTEO_SIDO_URLS, ...SIDO_HUB_URLS, ...TRIP_URLS, ...FESTIVAL_URLS, ...MAP_URLS, ...INTL_URLS, ...CHUSEOK_URLS, ...SEOUL_URLS, ...BUSAN_URLS, ...JEJU_URLS, ...INTL_CITY_URLS];
+const urls = ['/', ...MONTHS.map(m => `/${m.key}/`), '/search/', ...(holidays.length ? ['/holiday/'] : []), '/pet/', ...(apiAccessible.length ? ['/accessible/'] : []), ...INDOOR_URLS, ...(apiTrails.length ? ['/trails/'] : []), ...(apiValleys.length ? ['/valley/'] : []), ...(apiMaple.length ? ['/maple/'] : []), ...(apiFlower.length ? ['/flower/'] : []), ...(apiOnsen.length ? ['/onsen/'] : []), '/jangteo/', '/test/', '/trip-cost/', ...CITYTOUR_URLS, ...(visitors.kor && visitors.kor.length ? ['/trend/'] : []), ...SIDO_URLS, ...THEME_URLS, ...TRAIL_URLS, ...WALK_URLS, ...TREND_LANG_URLS, '/blog/', ...posts.map(p => `/blog/${p.slug}/`), '/about/', EDITORIAL_URL, '/contact/', '/advertise/', '/privacy/',...(apiFestsEn.length ? ['/en/', '/en/search/'] : []), ...EN_FESTIVAL_URLS, ...EN_JANGTEO_URLS, ...EN_BLOG_URLS, ...(apiFestsJa.length ? ['/ja/', '/ja/search/'] : []), ...JA_JANGTEO_URLS, ...JA_FESTIVAL_URLS, ...JA_HOLIDAY_URLS, ...(apiFestsEs.length ? ['/es/', '/es/search/'] : []), ...ES_JANGTEO_URLS, ...(apiFestsZh.length ? ['/zh/', '/zh/search/'] : []), ...ZH_JANGTEO_URLS, ...(apiFestsTw.length ? ['/tw/', '/tw/search/'] : []), ...TW_EXTRA_URLS, ...MOUNTAIN_URLS, ...CAFE_URLS, ...HOT_URLS, ...HEALING_URLS, ...COURSE_URLS, ...WINTER_URLS, ...JANGTEO_SIDO_URLS, ...SIDO_HUB_URLS, ...TRIP_URLS, ...FESTIVAL_URLS, ...MAP_URLS, ...INTL_URLS, ...CHUSEOK_URLS, ...SEOUL_URLS, ...BUSAN_URLS, ...JEJU_URLS, ...INTL_CITY_URLS];
 // noindex 페이지는 사이트맵에서 뺀다 — "색인해라(사이트맵) + 하지마라(noindex)"는 모순 신호다.
 // 🔁 2026-08-19: en/ja/zh 사이트맵 제외를 되돌린다(위 layout()의 forceNoindex 주석 참고).
 //    구글 클릭 0을 보고 뺐지만 GA4로는 구글 아닌 검색엔진에서 16세션/28일이 들어오고 있었다.

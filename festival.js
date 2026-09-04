@@ -100,6 +100,11 @@ const CSS = `
 .fnext-row{display:flex;flex-wrap:wrap;gap:7px}
 .fnext-row a{background:#fff;border:1.5px solid #cfe9e3;color:#0a6c63;font-weight:800;font-size:.9rem;padding:8px 14px;border-radius:999px;text-decoration:none}
 .fnext-row a.hot{background:#0f9d8f;border-color:#0f9d8f;color:#fff}
+.forg{background:#fafaf9;border:1px dashed #d6d3d1;border-radius:12px;padding:13px 16px;margin:22px 0 6px}
+.forg b{display:block;font-size:.92rem;font-weight:800;color:#57534e;margin-bottom:5px}
+.forg p{font-size:.87rem;color:#78716c;line-height:1.75;margin:0 0 8px}
+.forg a{color:#57534e;font-weight:700}
+.forg .forg-mail{display:inline-block;font-size:.85rem;font-weight:800;color:#0a6c63;text-decoration:none;border-bottom:1.5px solid #a9e5dd}
 .factions{display:flex;flex-wrap:wrap;gap:9px;margin:2px 0 14px}
 .fav-standalone{position:static;display:inline-flex;align-items:center;width:auto;height:auto;padding:9px 16px;border-radius:999px;font-size:1rem;font-weight:800;color:#374151;background:#fff;border:1.5px solid #e5e7eb;box-shadow:none;cursor:pointer}
 .fav-standalone::after{content:'찜하기';margin-left:7px;font-size:.88rem;font-weight:800}
@@ -414,6 +419,21 @@ ${mapBlock({ x: f.x, y: f.y, title: f.title, lang: 'ko' })}
 <div class="frel">
 ${cand.filter(o => o !== f && o.sido === f.sido).slice(0, 4).map(o => `<a href="/festival/${o._slug}/">${esc(o.title)}</a>`).join('')}
 ${cand.filter(o => o !== f && o.sido !== f.sido && String(o.start).slice(4, 6) === String(f.start).slice(4, 6)).slice(0, 3).map(o => `<a href="/festival/${o._slug}/">${esc(o.title)}</a>`).join('')}
+</div>
+
+${/* 🏛 2026-09-04 신설 — «자연스러운» 인바운드 접점.
+      장남 님: 「광고·협업 문의가 들어왔으면 좋겠다」. 그런데 지금은 받을 자리가 없었다.
+      ⭐ 우리는 이미 축제 페이지를 수백 장 갖고 있다 — **그 축제 담당자가 자기 축제를 검색하면
+        우리 페이지가 나온다.** 거기에 접점을 놓는 게 가장 자연스러운 인바운드다.
+      ⚠️ 일반 방문자에게는 «소음»이 되면 안 된다 → 출처 안내 옆, 작은 글씨, 맨 아래.
+         관계자는 끝까지 읽고 일반 방문자는 그냥 지나친다. 광고가 아니라 «정정 창구»의 얼굴을 한다.
+      ⚠️ 「정보 정정·공식 자료 반영은 무료」를 먼저 말한다 — 돈 얘기부터 꺼내면 아무도 안 쓴다. */''}
+<div class="forg">
+<b>🏛 ${esc(f.title)} 관계자시라면</b>
+<p>일정·장소·요금이 실제와 다르거나, 공식 사진·홈페이지·예매 링크를 넣고 싶으시면 알려주세요.
+<b>정보 정정과 공식 자료 반영은 무료</b>입니다 — 저희도 정확한 편이 낫습니다.
+홍보 협업은 <a href="/advertise/">매체 소개</a>를 참고해 주세요.</p>
+<a class="forg-mail" href="mailto:goohw593@gmail.com?subject=${encodeURIComponent('[축제모아] ' + f.title + ' 정보 관련')}">이 축제 정보 알려주기 →</a>
 </div>
 
 <p class="note" style="margin-top:18px">데이터 출처: 한국관광공사 TourAPI(축제·관광지·음식점·카페·숙박·무장애) · 전국길관광정보 표준데이터(걷기길) · 한국관광공사 「한국관광 데이터랩」(시·군·구 방문자 수) · 국가유산청. 일정·영업시간은 변경될 수 있으니 방문 전 확인하세요.</p>
