@@ -31,3 +31,4 @@ data/thin_intl.json
 data/thin_intl_age.json
 # 날씨 예보 — 매일 fetch-weather.js 가 새로 만든다. 커밋하면 «어제 예보»가 배포에 섞인다(2026-09-04).
 data/weather.json
+_*.err 
