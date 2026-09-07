@@ -26,8 +26,33 @@ const CITIES = [
   //   (서울·제주는 en·ja 만, 부산은 +zh·tw. 경주는 en 63 · ja 61 · tw 60 · es 55 · zh 41).
   //   ⚠️ 경주는 «시·군» 이라 sido('경북')로 거르면 안동·포항까지 들어온다 → `sgg` 로 한 번 더 좁힌다.
   //   ⚠️ 외국어 데이터의 `addr` 은 영문이다. 「경주」로 세면 0건이 나온다(거짓 0) — 판정은 `addrKo` 로 한다.
-  { key: 'gyeongju', sido: '경북', sgg: '경주시', ko: '경주', match: ['경주', 'Gyeongju', '慶州', '庆州', 'キョンジュ'] }
+  { key: 'gyeongju', sido: '경북', sgg: '경주시', ko: '경주', match: ['경주', 'Gyeongju', '慶州', '庆州', 'キョンジュ'] },
+  // 🏙 2026-09-07 추가 — 도시 10곳(외국인형 5 · 한국인형 5). 한국어는 `city-core.js`+`cities.js` 가 만든다.
+  //   ⚠️ 광역시(인천·대구)는 «구»가 아니라 «시 전체»가 한 도시라 `sgg` 를 두지 않는다.
+  //      도(道)의 시·군은 `sgg` 로 좁힌다 — 없으면 「경남」에 통영·거제가 같이 들어온다.
+  { key: 'incheon', sido: '인천', ko: '인천', match: ['인천', 'Incheon', '仁川'] },
+  { key: 'yeosu', sido: '전남', sgg: '여수시', ko: '여수', match: ['여수', 'Yeosu', '麗水', '丽水'] },
+  { key: 'suwon', sido: '경기', sgg: '수원시', ko: '수원', match: ['수원', 'Suwon', '水原'] },
+  { key: 'tongyeong', sido: '경남', sgg: '통영시', ko: '통영', match: ['통영', 'Tongyeong', '統営', '统营', '統營'] },
+  { key: 'geoje', sido: '경남', sgg: '거제시', ko: '거제', match: ['거제', 'Geoje', '巨済', '巨济', '巨濟'] },
+  { key: 'gangneung', sido: '강원', sgg: '강릉시', ko: '강릉', match: ['강릉', 'Gangneung', '江陵'] },
+  { key: 'sokcho', sido: '강원', sgg: '속초시', ko: '속초', match: ['속초', 'Sokcho', '束草'] },
+  { key: 'jeonju', sido: '전북', sgg: '전주시', ko: '전주', match: ['전주', 'Jeonju', '全州'] },
+  { key: 'daegu', sido: '대구', ko: '대구', match: ['대구', 'Daegu', '大邱'] },
+  { key: 'cheongju', sido: '충북', sgg: '청주시', ko: '청주', match: ['청주', 'Cheongju', '清州', '淸州'] }
 ];
+// ⛔ 목록에서 «뺀» 도시 — 폴더를 지우기 위해 이름을 계속 들고 있어야 한다.
+//   군산: 여행 검색량 4위(275K)인데 공공데이터 관광지가 29곳으로 게이트(30)에 1 모자랐다 → 2026-09-07 청주로 교체.
+//   재고가 차면 CITIES 로 옮기고 여기서 뺀다.
+const RETIRED = ['gunsan'];
+// 도시 이름 5개어 — CITIES 와 짝이 맞아야 한다(빠지면 제목이 undefined 로 나간다).
+const CITY_NAME = {
+  en: { incheon: 'Incheon', yeosu: 'Yeosu', suwon: 'Suwon', tongyeong: 'Tongyeong', geoje: 'Geoje', gangneung: 'Gangneung', sokcho: 'Sokcho', jeonju: 'Jeonju', daegu: 'Daegu', cheongju: 'Cheongju' },
+  ja: { incheon: '仁川', yeosu: '麗水', suwon: '水原', tongyeong: '統営', geoje: '巨済', gangneung: '江陵', sokcho: '束草', jeonju: '全州', daegu: '大邱', cheongju: '清州' },
+  zh: { incheon: '仁川', yeosu: '丽水', suwon: '水原', tongyeong: '统营', geoje: '巨济', gangneung: '江陵', sokcho: '束草', jeonju: '全州', daegu: '大邱', cheongju: '清州' },
+  tw: { incheon: '仁川', yeosu: '麗水', suwon: '水原', tongyeong: '統營', geoje: '巨濟', gangneung: '江陵', sokcho: '束草', jeonju: '全州', daegu: '大邱', cheongju: '淸州' },
+  es: { incheon: 'Incheon', yeosu: 'Yeosu', suwon: 'Suwon', tongyeong: 'Tongyeong', geoje: 'Geoje', gangneung: 'Gangneung', sokcho: 'Sokcho', jeonju: 'Jeonju', daegu: 'Daegu', cheongju: 'Cheongju' }
+};
 
 const T = {
   en: {
@@ -134,6 +159,15 @@ const T = {
   }
 };
 
+// ⚠️ 새 도시 이름을 T[lang].city 에 합친다. 여기 빠지면 제목에 undefined 가 찍혀 나간다
+//    — 그래서 CITIES 와 CITY_NAME 을 한 곳에서 «짝을 맞춰» 검사한다(아래 assert).
+for (const lang of Object.keys(CITY_NAME)) Object.assign(T[lang].city, CITY_NAME[lang]);
+{
+  const missing = [];
+  for (const c of CITIES) for (const lang of Object.keys(T)) if (!T[lang].city[c.key]) missing.push(`${lang}/${c.key}`);
+  if (missing.length) throw new Error('intl-city: 도시 이름이 없습니다 — ' + missing.join(', '));
+}
+
 const MONTH = {
   en: ['', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
   ja: ['', '1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
@@ -148,7 +182,7 @@ const MIN_PLACES = 20, MIN_FESTS = 15, SHOW_PLACES = 60, SHOW_FESTS = 12, SHOW_C
 // 📷 2026-09-07 — 경주 직접 촬영 사진. ⭐사이트 콘텐츠는 거의 다 관광공사 «공식 사진»인데,
 //    이건 우리가 그 자리에 가서 찍은 1차 자료다. 외국인에게는 «공식 홍보사진이 아닌 실제 모습»이
 //    번역문보다 강한 신호다 — 그래서 외국어 페이지에도 한국어와 같은 사진·같은 순서로 싣는다.
-const { PHOTOS: GJ_PHOTOS, PHOTO_LANG } = require('./gyeongju.js');
+const { GJ_PHOTOS, PHOTO_LANG } = require('./cities.js');
 const PHOTO_T = {
   en: { t: 'Photos we took ourselves — September 2026', n: 'These are not stock or tourism-board photos. We walked these places on 5–6 September 2026 and took these ourselves: the actual sky that day, the state of the paving, what the signboards really say. Faces have been left out and location metadata stripped.' },
   ja: { t: '実際に行って撮った写真 — 2026年9月', n: '観光公社の公式写真ではありません。2026年9月5〜6日に私たちが実際に歩いて撮ったものです。その日の空、路面の様子、案内板に本当に何と書いてあるか。顔が写る写真は載せず、位置情報（EXIF）は削除しています。' },
@@ -404,7 +438,22 @@ function build({ ROOT, layout, writePage, SITE, TODAY, WX }) {
       return true;
     });
     const madeKeys = new Set(ready.map(m => m.C.key));
-    if (pass === 1) { READY[lang] = madeKeys; continue; }   // 1회차는 «누가 통과했나»만 모은다
+    if (pass === 1) {
+      READY[lang] = madeKeys;
+      // 🗑 정리 — ⚠️ **정적 생성기는 「없어진 항목의 폴더」를 안 지운다.**
+      //    도시를 빼거나(군산→청주) 게이트를 올리면 옛 `/es/gunsan/` 같은 폴더가 그대로 남아 라이브 200을 낸다.
+      //    사이트맵엔 없어서 눈에 안 띄고, 그 안의 링크가 «끊긴 내부 링크»로 잡힌다(실제로 4건 났다).
+      //    ⚠️ CITIES 에 있는 이름만 지운다 — /en/search/·/en/closed/ 같은 다른 페이지를 건드리면 안 된다.
+      // ⚠️ CITIES 만 돌면 «목록에서 아예 빠진 도시»는 영영 안 지워진다 —
+      //    군산을 청주로 바꿨더니 `/es/gunsan/` 이 살아남아 끊긴 링크 4건을 만들었다(빌드를 두 번 돌려도 그대로였다).
+      //    → 뺀 도시는 RETIRED 에 남겨서 «지워야 할 대상»으로 계속 들고 간다.
+      for (const key of CITIES.map(c => c.key).concat(RETIRED)) {
+        if (madeKeys.has(key)) continue;
+        const dir = path.join(ROOT, lang, key);
+        if (fs.existsSync(dir)) { fs.rmSync(dir, { recursive: true, force: true }); console.log(`   🗑 /${lang}/${key}/ 삭제 — 재료 게이트 미달 또는 목록에서 제외된 도시`); }
+      }
+      continue;   // 1회차는 «누가 통과했나»만 모은다
+    }
 
     for (const { C, P, F } of ready) {
 
