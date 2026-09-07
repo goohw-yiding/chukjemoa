@@ -41,6 +41,26 @@ function load(ROOT, f) {
 //    (제주에서 `본가제주밥상`(경기)을 삼킨 적이 있다).
 const isGJ = r => /경주시/.test(String(r.addr || ''));
 
+// 📷 직접 촬영 사진 11장 (2026-09-05~06). ⭐사이트 콘텐츠는 대부분 관광공사 공식사진인데,
+//    이건 «우리가 그 자리에 가서 찍은» 1차 자료다. 외국어 페이지에서도 같은 것을 쓴다.
+//    ⚠️ 얼굴이 식별되는 사진은 뺐다. EXIF(GPS 포함)는 변환할 때 지웠다(`-map_metadata -1`).
+//    ⚠️ 파일 이름은 «프레임을 열어 보고» 붙였다 — 촬영시각 추론으로 붙였다가 10개를 통째로 틀린 적이 있다.
+//    순서는 실제 다닌 순서다(첨성대 저녁 → 이튿날 아침 → 불국사 → 석굴암).
+const PHOTOS = [
+  ['gyeongju-01-cheomseongdae', '9/5 17:42', '첨성대 — 해 질 무렵', 'Cheomseongdae at dusk', '夕暮れの瞻星台', '黄昏时的瞻星台', '黃昏時的瞻星臺', 'Cheomseongdae al atardecer'],
+  ['gyeongju-02-morning-fig', '9/6 09:38', '숙소에서 맞은 아침, 무화과 한 접시', 'Morning at the guesthouse — a plate of figs', '宿の朝、いちじく一皿', '民宿的清晨，一盘无花果', '民宿的清晨，一盤無花果', 'Mañana en el alojamiento — un plato de higos'],
+  ['gyeongju-03-bamboo', '9/6 12:07', '불국사 가는 길 대나무숲', 'Bamboo grove on the way to Bulguksa', '仏国寺への道の竹林', '前往佛国寺路上的竹林', '前往佛國寺路上的竹林', 'Bosque de bambú camino a Bulguksa'],
+  ['gyeongju-04-bulguksa-gate', '9/6 12:08', '불국사 현판 佛國寺', 'The Bulguksa gate sign (佛國寺)', '仏国寺の扁額（佛國寺）', '佛国寺匾额（佛國寺）', '佛國寺匾額（佛國寺）', 'Cartel del templo Bulguksa (佛國寺)'],
+  ['gyeongju-10-okrosu', '9/6 12:17', '토함산 옥로수(玉露水)', 'Okrosu spring water, Mt. Toham', '吐含山の玉露水', '吐含山玉露水', '吐含山玉露水', 'Manantial Okrosu, monte Toham'],
+  ['gyeongju-05-dabotap', '9/6 12:20', '다보탑', 'Dabotap Pagoda', '多宝塔', '多宝塔', '多寶塔', 'Pagoda Dabotap'],
+  ['gyeongju-06-seokgatap', '9/6 12:26', '석가탑', 'Seokgatap Pagoda', '釈迦塔', '释迦塔', '釋迦塔', 'Pagoda Seokgatap'],
+  ['gyeongju-08-eaves-lantern', '9/6 12:35', '처마와 연등', 'Eaves and lotus lanterns', '軒と蓮の提灯', '屋檐与莲花灯', '屋簷與蓮花燈', 'Aleros y farolillos de loto'],
+  ['gyeongju-07-lantern-shadow', '9/6 12:35', '바닥에 진 연등 그림자', 'Lantern shadows on the ground', '地面に落ちた提灯の影', '地面上的灯影', '地面上的燈影', 'Sombras de los farolillos en el suelo'],
+  ['gyeongju-09-beomjonggak', '9/6 12:42', '범종각', 'Beomjonggak, the bell pavilion', '梵鐘閣', '梵钟阁', '梵鐘閣', 'Beomjonggak, el pabellón de la campana'],
+  ['gyeongju-11-seokguram-sign', '9/6 13:34', '석굴암 석굴도 안내판 (석굴 내부는 촬영 금지)', 'Seokguram — the grotto diagram board (photography inside is not allowed)', '石窟庵 石窟図の案内板（内部は撮影禁止）', '石窟庵 石窟图解说牌（内部禁止拍照）', '石窟庵 石窟圖解說牌（內部禁止拍照）', 'Seokguram — panel del diagrama de la gruta (no se permite fotografiar el interior)']
+];
+const PHOTO_LANG = { ko: 2, en: 3, ja: 4, zh: 5, tw: 6, es: 7 };
+
 function build({ ROOT, layout, writePage, SITE, SITE_NAME, TODAY, WX }) {
   const T8 = String(TODAY).replace(/-/g, '');
   const mn = +T8.slice(4, 6);
@@ -109,6 +129,11 @@ function build({ ROOT, layout, writePage, SITE, SITE_NAME, TODAY, WX }) {
 .gj-tag{display:inline-block;background:#f1e8d8;color:#6b5430;font-size:.78rem;font-weight:800;border-radius:6px;padding:2px 8px;margin-right:4px}
 .gj-note{color:#9aa3af;font-size:.82rem;line-height:1.7;margin-top:16px}
 .gj-line{color:#6b7280;font-size:.93rem;line-height:1.9;margin:6px 0 0}
+.gj-photos{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));margin:10px 0 4px}
+.gj-photos figure{margin:0;background:#fff;border:1px solid #ebe5db;border-radius:14px;overflow:hidden}
+.gj-photos img{width:100%;height:210px;object-fit:cover;display:block}
+.gj-photos figcaption{padding:9px 12px;font-size:.86rem;color:#374151;line-height:1.55}
+.gj-photos figcaption span{display:block;color:#9aa3af;font-size:.79rem;margin-top:2px}
 </style>`;
 
   const nav = cur => `<div class="gj-nav">${[
@@ -177,6 +202,15 @@ function build({ ROOT, layout, writePage, SITE, SITE_NAME, TODAY, WX }) {
 ⚠️ <b>가격은 싣지 않습니다.</b> 공개 데이터에 없고, 날짜마다 달라지는 값을 적어 두면 그게 틀린 정보가 됩니다.
 </div>`;
   };
+
+  // 📷 직접 찍은 사진 — 이 사이트가 다른 데서 못 가져오는 유일한 재료다.
+  const photoStrip = () => `<h2 class="sec">직접 다녀와서 찍었습니다 — 2026년 9월</h2>
+<p class="gj-lead">아래 <b>${PHOTOS.length}장</b>은 관광공사 사진이 아니라 <b>2026년 9월 5~6일에 저희가 직접 찍은 사진</b>입니다.
+보도블록 상태, 그날 하늘, 안내판에 실제로 뭐라고 적혀 있는지 — 공식 사진에는 안 나오는 것들입니다.</p>
+<div class="gj-photos">${PHOTOS.map(p => `<figure>
+<img src="/img/${p[0]}.webp" alt="${esc(p[2])}" loading="lazy" width="900" onerror="this.closest('figure').remove()">
+<figcaption><b>${esc(p[2])}</b><span>${esc(p[1])}</span></figcaption></figure>`).join('')}</div>
+<p class="gj-note">직접 촬영 · 얼굴이 나오는 사진은 싣지 않았습니다. 촬영 위치정보(EXIF)는 지웠습니다.</p>`;
 
   const spotCard = p => {
     const wx = (WX && p.x && p.y) ? WX.now(p.x, p.y) : '';
@@ -249,7 +283,7 @@ ${body}
 좌표가 있는 곳에는 <b>오늘 날씨</b>가 붙습니다. 이 목록은 한국관광공사 <b>무장애여행 정보</b>에 등록된 곳이라
 <b>휠체어·유모차로 갈 만한지</b> 참고가 됩니다.`,
       'spot',
-      `${kindLine(spot, '분류별')}<div class="gj-grid">${spot.slice(0, 80).map(spotCard).join('')}</div>${SRC_ACC}`);
+      `${photoStrip()}${kindLine(spot, '분류별')}<div class="gj-grid">${spot.slice(0, 80).map(spotCard).join('')}</div>${SRC_ACC}`);
   }
 
   // ── 페이지 ②  맛집 (⭐193,000 — 경주에서 가장 큰 검색어)
@@ -296,7 +330,9 @@ ${body}
   const hub = `<div class="gj-stat">
 <div><b>${spot.length}</b>가볼만한 곳</div><div><b>${food.length}</b>맛집</div>
 <div><b>${stay.length}</b>숙소</div><div><b>${hanok.length}</b>한옥</div>${fes.length ? `<div><b>${fes.length}</b>다가오는 축제</div>` : ''}
+<div><b>${PHOTOS.length}</b>직접 찍은 사진</div>
 </div>
+${photoStrip()}
 ${fes.length ? `<h2 class="sec">다가오는 축제</h2>
 <div class="gj-grid">${fes.map(fesCard).join('')}</div>
 <p class="gj-note">진행·예정인 축제만 실었습니다. 경주는 지금 <b>${fes.length}건</b>이라 별도 축제 페이지는 만들지 않았습니다 — 목록이 짧은데 페이지를 나누면 읽을 게 없어집니다.</p>` : ''}
@@ -329,4 +365,5 @@ ${SRC_ACC}`;
   return urls;
 }
 
-module.exports = { build };
+// ⭐ PHOTOS 는 intl-city.js 가 가져다 쓴다(외국어 페이지에도 같은 사진·같은 순서로 싣는다).
+module.exports = { build, PHOTOS, PHOTO_LANG };

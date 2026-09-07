@@ -145,6 +145,18 @@ const MONTH = {
 // 2026-09-04 보강: 장소를 40 → 60 으로 늘렸다(서울 ja 264곳을 40만 보여주고 있었다).
 const MIN_PLACES = 20, MIN_FESTS = 15, SHOW_PLACES = 60, SHOW_FESTS = 12, SHOW_CULT = 24;
 
+// 📷 2026-09-07 — 경주 직접 촬영 사진. ⭐사이트 콘텐츠는 거의 다 관광공사 «공식 사진»인데,
+//    이건 우리가 그 자리에 가서 찍은 1차 자료다. 외국인에게는 «공식 홍보사진이 아닌 실제 모습»이
+//    번역문보다 강한 신호다 — 그래서 외국어 페이지에도 한국어와 같은 사진·같은 순서로 싣는다.
+const { PHOTOS: GJ_PHOTOS, PHOTO_LANG } = require('./gyeongju.js');
+const PHOTO_T = {
+  en: { t: 'Photos we took ourselves — September 2026', n: 'These are not stock or tourism-board photos. We walked these places on 5–6 September 2026 and took these ourselves: the actual sky that day, the state of the paving, what the signboards really say. Faces have been left out and location metadata stripped.' },
+  ja: { t: '実際に行って撮った写真 — 2026年9月', n: '観光公社の公式写真ではありません。2026年9月5〜6日に私たちが実際に歩いて撮ったものです。その日の空、路面の様子、案内板に本当に何と書いてあるか。顔が写る写真は載せず、位置情報（EXIF）は削除しています。' },
+  zh: { t: '我们亲自去拍的照片 — 2026年9月', n: '这些不是官方宣传照。2026年9月5–6日我们实地走访拍摄：当天的天空、地面的状况、指示牌上真正写了什么。含人脸的照片未收录，位置信息已删除。' },
+  tw: { t: '我們親自去拍的照片 — 2026年9月', n: '這些不是官方宣傳照。2026年9月5–6日我們實地走訪拍攝：當天的天空、地面的狀況、指示牌上真正寫了什麼。含人臉的照片未收錄，位置資訊已刪除。' },
+  es: { t: 'Fotos que hicimos nosotros — septiembre de 2026', n: 'No son fotos de banco ni de la oficina de turismo. Recorrimos estos lugares el 5 y 6 de septiembre de 2026 y las tomamos nosotros: el cielo de ese día, el estado del pavimento, lo que dicen realmente los carteles. No incluimos fotos con rostros y hemos borrado los metadatos de ubicación.' }
+};
+
 // 🍊 2026-09-04 추가 — **제주에만** 붙이는 안내.
 //   왜: 제주는 「동쪽·서쪽」으로 나눠 다니는 섬인데, 이건 한국 사람은 다 알고 외국인은 아무도 모른다.
 //       검색량 실측에서도 「제주동쪽가볼만한곳 16,320 · 제주서쪽가볼만한곳 13,290」으로 확인됐다.
@@ -488,6 +500,11 @@ ${stLine(e.x, e.y)}
 </li>`;
       }).join('')}</ul>` })() : ''}
 
+${C.key === 'gyeongju' && PHOTO_T[lang] ? (() => { const v = PHOTO_T[lang], li = PHOTO_LANG[lang]; return `<h2 class="sec">${esc(v.t)} <span class="ic-n">${GJ_PHOTOS.length}</span></h2>
+<p class="ic-lead">${esc(v.n)}</p>
+<div class="ic-photos">${GJ_PHOTOS.map(p => `<figure>
+<img src="/img/${p[0]}.webp" alt="${esc(p[li])}" loading="lazy" width="900" onerror="this.closest('figure').remove()">
+<figcaption><b>${esc(p[li])}</b><span>${esc(p[1])} · ${esc(p[2])}</span></figcaption></figure>`).join('')}</div>`; })() : ''}
 ${C.key === 'jeju' && JEJU[lang] ? `<div class="ic-why"><h2>${esc(JEJU[lang][0])}</h2><p>${JEJU[lang][1]}</p></div>` : ''}
 
 ${C.key === 'jeju' && olle.length ? (() => { const o = OLLE[lang]; return `<h2 class="sec">${esc(o.t)} <span class="ic-n">${olle.length}</span></h2>
@@ -541,6 +558,11 @@ ${others ? `<h2 class="sec">${esc(t.other)}</h2>
 }
 
 const CSS = `<style>
+.ic-photos{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));margin:10px 0 16px}
+.ic-photos figure{margin:0;background:#fff;border:1px solid #e6eaee;border-radius:14px;overflow:hidden}
+.ic-photos img{width:100%;height:210px;object-fit:cover;display:block}
+.ic-photos figcaption{padding:9px 12px;font-size:.86rem;color:#374151;line-height:1.55}
+.ic-photos figcaption span{display:block;color:#9aa3af;font-size:.79rem;margin-top:2px}
 .ic-crumb{font-size:.85rem;color:#9aa3af;margin:8px 0}
 .ic-crumb a{color:#0c7d72}
 .ic-h1{font-size:1.5rem;font-weight:900;letter-spacing:-.02em;margin:6px 0 8px}
