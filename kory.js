@@ -10,8 +10,17 @@
 //   ✅ EN/KR 전환 있음 `?lang=en`  ✅ 도시별 URL `collections.html#seoul|#busan|#jeju|#korea`
 //   ✅ 도시별 상품 `product-hairroll.html?c=seoul`  ✅ 판매처 `stockists.html`
 //   ⚠️ `?lang=en` 을 붙여도 **서버 HTML 은 한국어**다(JS 전환). 사람에겐 영어로 보이지만 구글은 한국어로 색인한다.
-//   🔴 **영어 페이지에서도 그랜드오픈 팝업이 한국어로 뜬다** — 코리 쪽에서 고쳐야 한다.
-//   ⛔ `kory.kr/en` 은 404. `?lang=` 파라미터 방식만 된다.
+//
+// 🔴 2026-09-07 저녁 — 코리 쪽에서 온 소식으로 **외국어 링크를 좁혔다**
+//   ✅ 고쳐진 것: 영어 방문자에게 그랜드오픈 팝업이 더는 안 뜬다. `/en` 리다이렉트(307)도 생겼다.
+//   🔴 **그런데 더 큰 것이 있었다 — 영어가 있는 페이지는 «홈과 상품 7장»뿐이다.**
+//      `data-i18n` 이 붙은 건 `index.html` 하나이고, 상품은 `product-i18n.js` 로 커버된다.
+//      **나머지 23장(About·FAQ·Journal 9편·Collections·Stockists·Wholesale·약관)은 영어가 아예 없다.**
+//   ⚠️ 그래서 우리가 처음 깔았던 외국어 링크 4개 중 **3개(collections·products·stockists)가 한글 벽**이었다.
+//      → 외국어에서는 «홈 + 상품 페이지»만 건다. 한국어는 전부 한국어라 그대로 둔다.
+//   ⭐ 아쉬운 건 **판매처(stockists)** 다 — 여행자에게 제일 쓸모 있는데 영어가 없어 뺐다.
+//      코리 번역 우선순위에서 **Stockists 를 맨 앞으로** 올려 달라고 전할 것.
+//   ⛔ `?lang=` 파라미터를 직접 붙인다. `/en/...` 도 되지만 리다이렉트를 한 번 더 탄다.
 //
 // ⚠️ 코리는 **자사 브랜드**다 — 제휴 링크가 아니다. 그래서 파트너스 표기가 아니라 «함께 만든다»고 밝힌다.
 'use strict';
@@ -51,7 +60,8 @@ const T = {
     none: (ko) => `⚠️ <b>There is no ${ko} edition yet.</b> The city editions are Seoul, Busan and Jeju. The <b>KOREA</b> collection works for any trip.`,
     coll: (ko) => `${ko} collection`, roller: (ko) => `${ko} hair roller`,
     korea: 'KOREA collection', all: 'All products', where: '📍 Where to buy',
-    note: 'We help make kory, so this is not a paid placement — but it is a link we have an interest in. That is why it sits here at the bottom and nowhere else. The shop is in Korean and English only.'
+    slide: 'EVA slide', scarf: 'Scarf', home: 'kory home',
+    note: 'We help make kory, so this is not a paid placement — but it is a link we have an interest in. That is why it sits here at the bottom and nowhere else. <b>Product pages and the shop home are in English; a few other pages there are still Korean only.</b>'
   },
   ja: {
     hasCity: (ko) => `${ko}を持ち帰る`,
@@ -60,7 +70,8 @@ const T = {
     none: (ko) => `⚠️ <b>${ko}の商品はまだありません。</b> 都市エディションはソウル・釜山・済州の3つで、ほかは <b>KOREA</b> コレクションがあります。`,
     coll: (ko) => `${ko}コレクション`, roller: (ko) => `${ko}ヘアロール`,
     korea: 'KOREA コレクション', all: '商品一覧', where: '📍 取扱店',
-    note: 'kory は私たちが一緒に作っているブランドです。広告費をもらって載せているのではありませんが、<b>利害関係のあるリンク</b>でもあります。だからページの一番下だけに置いています。ショップは韓国語と英語のみです。'
+    slide: 'サンダル', scarf: 'スカーフ', home: 'kory ホーム',
+    note: 'kory は私たちが一緒に作っているブランドです。広告費をもらって載せているのではありませんが、<b>利害関係のあるリンク</b>でもあります。だからページの一番下だけに置いています。<b>商品ページとショップのホームは英語表示ですが、一部のページはまだ韓国語のみです。</b>'
   },
   zh: {
     hasCity: (ko) => `把${ko}带回家`,
@@ -69,7 +80,8 @@ const T = {
     none: (ko) => `⚠️ <b>还没有${ko}款。</b> 城市系列目前是首尔·釜山·济州三个，其余有 <b>KOREA</b> 系列，适合任何一趟旅行。`,
     coll: (ko) => `${ko}系列`, roller: (ko) => `${ko}卷发筒`,
     korea: 'KOREA 系列', all: '全部商品', where: '📍 哪里买得到',
-    note: 'kory 是我们参与制作的品牌。不是收广告费刊登的，但也确实是<b>与我们有利害关系的链接</b>，所以只放在页面最下方。商店只有韩文和英文。'
+    slide: '拖鞋', scarf: '丝巾', home: 'kory 首页',
+    note: 'kory 是我们参与制作的品牌。不是收广告费刊登的，但也确实是<b>与我们有利害关系的链接</b>，所以只放在页面最下方。<b>商品页和商店首页有英文，其余部分页面目前只有韩文。</b>'
   },
   tw: {
     hasCity: (ko) => `把${ko}帶回家`,
@@ -78,7 +90,8 @@ const T = {
     none: (ko) => `⚠️ <b>還沒有${ko}款。</b> 城市系列目前是首爾·釜山·濟州三個，其餘有 <b>KOREA</b> 系列，適合任何一趟旅行。`,
     coll: (ko) => `${ko}系列`, roller: (ko) => `${ko}髮捲`,
     korea: 'KOREA 系列', all: '全部商品', where: '📍 哪裡買得到',
-    note: 'kory 是我們參與製作的品牌。不是收廣告費刊登的，但也確實是<b>與我們有利害關係的連結</b>，所以只放在頁面最下方。商店只有韓文和英文。'
+    slide: '拖鞋', scarf: '絲巾', home: 'kory 首頁',
+    note: 'kory 是我們參與製作的品牌。不是收廣告費刊登的，但也確實是<b>與我們有利害關係的連結</b>，所以只放在頁面最下方。<b>商品頁與商店首頁有英文，其餘部分頁面目前只有韓文。</b>'
   },
   es: {
     hasCity: (ko) => `Llevarse ${ko} a casa`,
@@ -87,7 +100,8 @@ const T = {
     none: (ko) => `⚠️ <b>Todavía no hay edición de ${ko}.</b> Las ediciones de ciudad son Seúl, Busan y Jeju. La colección <b>KOREA</b> sirve para cualquier viaje.`,
     coll: (ko) => `Colección ${ko}`, roller: (ko) => `Rulo ${ko}`,
     korea: 'Colección KOREA', all: 'Todos los productos', where: '📍 Dónde comprar',
-    note: 'Ayudamos a fabricar kory, así que no es un espacio pagado — pero sí es un enlace en el que tenemos interés. Por eso está solo aquí, al final. La tienda está solo en coreano e inglés.'
+    slide: 'Sandalias EVA', scarf: 'Pañuelo', home: 'Inicio de kory',
+    note: 'Ayudamos a fabricar kory, así que no es un espacio pagado — pero sí es un enlace en el que tenemos interés. Por eso está solo aquí, al final. <b>Las páginas de producto y la portada de la tienda están en inglés; algunas otras páginas siguen solo en coreano.</b>'
   }
 };
 
@@ -118,18 +132,23 @@ function block(cityKey, cityName, lang) {
     `<a href="${href}" target="_blank" rel="noopener"${cls ? ` class="${cls}"` : ''}` +
     ` data-bb="kory-${item}" data-slot="city-footer" data-place="${cityKey}">${label}</a>`;
 
-  const where = a(url('stockists.html', { city: cityKey, lang }), t.where, lang === 'ko' ? '' : 'ky-1', 'stockists');
+  const c = ed || 'korea';
   const links = [];
-  if (lang !== 'ko') links.push(where);       // 외국어는 판매처 먼저
-  if (ed) {
-    links.push(a(url('collections.html', { city: cityKey, lang, hash: ed }), t.coll(cityName), lang === 'ko' ? 'ky-1' : '', 'coll-' + ed));
-    links.push(a(url('product-hairroll.html', { city: cityKey, lang, c: ed }), t.roller(cityName), '', 'roller-' + ed));
+  if (lang === 'ko') {
+    // 한국어 — 코리 사이트가 전부 한국어라 어디로 보내도 된다.
+    links.push(a(url('collections.html', { city: cityKey, lang, hash: c }), ed ? t.coll(cityName) : t.korea, 'ky-1', 'coll-' + c));
+    links.push(a(url('product-hairroll.html', { city: cityKey, lang, c }), t.roller(ed ? cityName : 'KOREA'), '', 'roller-' + c));
+    links.push(a(url('products.html', { city: cityKey, lang }), t.all, '', 'products'));
+    links.push(a(url('stockists.html', { city: cityKey, lang }), t.where, '', 'stockists'));
   } else {
-    links.push(a(url('collections.html', { city: cityKey, lang, hash: 'korea' }), t.korea, lang === 'ko' ? 'ky-1' : '', 'coll-korea'));
-    links.push(a(url('product-hairroll.html', { city: cityKey, lang, c: 'korea' }), t.roller('KOREA'), '', 'roller-korea'));
+    // ⚠️ 외국어 — **영어가 있는 페이지만** 건다(홈 + 상품 7장). 나머지 23장은 아직 한국어뿐이다.
+    //    상품 페이지 하단에 「From the same collection」으로 다른 상품이 이미 붙어 있어,
+    //    상품 한 장만 걸어도 탐색이 이어진다. 목록 페이지로 보낼 필요가 없다.
+    links.push(a(url('product-hairroll.html', { city: cityKey, lang, c }), t.roller(ed ? cityName : 'KOREA'), 'ky-1', 'roller-' + c));
+    links.push(a(url('product-slipper.html', { city: cityKey, lang }), t.slide, '', 'slipper'));
+    links.push(a(url('product-scarf.html', { city: cityKey, lang }), t.scarf, '', 'scarf'));
+    links.push(a(url('', { city: cityKey, lang }), t.home, '', 'home'));
   }
-  links.push(a(url('products.html', { city: cityKey, lang }), t.all, '', 'products'));
-  if (lang === 'ko') links.push(where);       // 한국어는 마지막
 
   return `${CSS}<div class="ky-box">
 <h2>${ed ? t.hasCity(cityName) : t.noCity}</h2>
