@@ -1,5 +1,5 @@
 {
- "generated": "2026-09-04",
+ "generated": "2026-09-07",
  "source": "서울열린데이터광장 — SearchSTNBySubwayLineInfo(역명 4개국어) · subwayStationMaster(좌표) · tbTraficElvtr(엘리베이터)",
  "note": "서울·경기·인천 전용. 물품보관함·화장실 API 는 전부 HTTP 500 이라 담지 못했다.",
  "rows": [
