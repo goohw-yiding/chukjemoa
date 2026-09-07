@@ -63,6 +63,10 @@ const CSS = `
 .frel h2{font-size:1.02rem;font-weight:900;color:#0a6c63;margin-bottom:10px}
 .frel .row{display:flex;flex-wrap:wrap;gap:8px}
 .frel a{background:#fff;border:1.5px solid #dcefeb;color:#374151;font-weight:700;font-size:.87rem;padding:8px 14px;border-radius:999px;text-decoration:none}
+.fcity{margin:14px 0 2px}
+.fcity a{display:inline-block;background:#f2fbfa;border:1.5px solid #cfe9e3;color:#0a6c63;font-weight:700;font-size:.92rem;padding:11px 16px;border-radius:12px;text-decoration:none;line-height:1.6}
+.fcity a:hover{background:#e2f5f2}
+.fcity b{font-weight:900}
 </style>`;
 
 // 좌표(소수3자리)+시작일로 한국어 원제를 찾는다 — 슬러그와 「지도에 붙여넣을 한글」 둘 다에 쓴다.
@@ -71,7 +75,16 @@ const okXY = (x, y) => num(x) > 124 && num(x) < 132 && num(y) > 33 && num(y) < 3
 const k3 = (x, y) => num(x).toFixed(3) + ',' + num(y).toFixed(3);
 
 function build(ctx) {
-  const { layout, writePage, SITE, TODAY } = ctx;
+  const { layout, writePage, SITE, TODAY, CITY } = ctx;
+  // 🏙 2026-09-07 — 「このお祭りがある都市」. 일본어는 CTR 2.99%로 전 언어 최고인데 페이지가 얇다.
+  //    축제 상세에서 도시로 흘려보내는 게 가장 싼 개선이다. ⚠️ 그 언어로 «열린» 도시만 링크한다.
+  const cityLink = f => {
+    if (!CITY) return '';
+    const k = CITY.of(f);
+    if (!k || !CITY.open.has(k)) return '';
+    const nm = CITY.label('ja', k);
+    return `<p class="fcity"><a href="/ja/${k}/">🏙 <b>${esc(nm)}</b>の旅行情報 — 行く場所・食べる所・泊まる所を、<b>地図に貼り付けられる韓国語の住所</b>つきで</a></p>`;
+  };
   const all = load('festivals_ja.json');
   const ko = load('festivals_api.json');
   const KOI = {}, KOI2 = {};
@@ -162,6 +175,7 @@ ${mapHtml}
 ${near.html ? JN.CSS + near.html : ''}
 ${rel.length ? `<div class="frel"><h2>${esc(f.region)}のほかの祭り</h2><div class="row">${
   rel.map(r => `<a href="/ja/festival/${esc(r._slug)}/">${esc(r.title)}</a>`).join('')}</div></div>` : ''}
+${cityLink(f)}
 <p style="margin-top:10px"><a href="/ja/search/" style="color:#0c7d72;font-weight:700">← 韓国の祭りをすべて見る</a></p>
 ${mapScript('ja')}
 </div></main>`;

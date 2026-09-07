@@ -193,4 +193,62 @@ const CITIES = [
   }
 ];
 
-module.exports = { CITIES, GJ_PHOTOS, PHOTO_LANG };
+// ══════════════════════════════════════════════════════════════════
+// 🎪 → 🏙  「이 축제가 있는 도시」 매핑 (2026-09-07 신설)
+//   왜: 영문 축제 상세가 GSC에서 «유일하게 순위가 좋은 축»(고유명 검색 3.9~10위)인데,
+//       거기 들어온 사람이 다음으로 갈 데가 없었다. 링크 방향을 뒤집는다 — 축제 → 도시.
+//   ⚠️ 주소 «문자열»로 매칭하지 않는다. 이름 매칭이 「본가제주밥상」(경기 소재)을 제주로 삼킨 적이 있다.
+//      판정은 데이터가 들고 있는 `sido` + `sigungu` 필드로만 한다.
+//   ⚠️ 광역시(인천·대구)는 sgg 가 없다 = «시 전체»가 한 도시다(검색어도 「대구가볼만한곳」이다).
+//   ⚠️ 「수원시 팔달구」·「전주시 완산구」·「청주시 상당구」가 실제로 들어온다 → 앞부분 일치로 본다.
+const SIDO_ONLY = { '서울': 'seoul', '부산': 'busan', '제주': 'jeju' };
+
+function cityOfFestival(f) {
+  if (!f) return null;
+  const sido = String(f.sido || '');
+  if (SIDO_ONLY[sido]) return SIDO_ONLY[sido];
+  const sgg = String(f.sigungu || '');
+  for (const c of CITIES) {
+    if (c.sido !== sido) continue;
+    if (!c.sgg) return c.key;                        // 광역시 — 시 전체가 한 도시
+    if (sgg && sgg.indexOf(c.sgg) === 0) return c.key;
+  }
+  return null;
+}
+
+// ── 외국어 축제 데이터용 (2026-09-07)
+//   ⚠️ festivals_en/ja.json 에는 **sido·sigungu 가 아예 없다** — `region` 이 "Seoul"·"仁川" 같은 이름뿐이고
+//      주소도 로마자·가타카나다. 그래서 한국어와 같은 방법을 쓸 수 없다.
+//   ⭐ 그렇다고 이름으로 맞추지 않는다(이름 매칭 사고 이력). **좌표로 한국어 원본을 찾아** 그 필드로 판정한다.
+//      소수 3자리(≈100m)로 맞춘다 — 실측상 4자리와 결과가 같고 2자리는 과하게 넓다.
+//   ⚠️ 좌표가 없거나 원본에 없는 축제는 `region` 으로 **광역시·도 단위 도시만** 보조 판정한다
+//      (시·군 단위 도시를 region 으로 찍으면 엉뚱한 도시로 보낸다).
+let _koIdx = null;
+function _koIndex() {
+  if (_koIdx) return _koIdx;
+  _koIdx = {};
+  try {
+    const fs = require('fs'), path = require('path');
+    const ko = JSON.parse(fs.readFileSync(path.join(__dirname, 'data', 'festivals_api.json'), 'utf8'));
+    ko.forEach(f => { if (f.x && f.y) _koIdx[Number(f.x).toFixed(3) + ',' + Number(f.y).toFixed(3)] = f; });
+  } catch (e) { /* 데이터가 없으면 링크를 안 붙인다 — 틀린 링크보다 없는 편이 낫다 */ }
+  return _koIdx;
+}
+const REGION_CITY = {
+  'Seoul': 'seoul', 'Busan': 'busan', 'Jeju': 'jeju', 'Incheon': 'incheon', 'Daegu': 'daegu',
+  'ソウル': 'seoul', '釜山': 'busan', '済州': 'jeju', '仁川': 'incheon', '大邱': 'daegu'
+};
+function cityOfIntlFestival(f) {
+  if (!f) return null;
+  if (f.x && f.y) {
+    const m = _koIndex()[Number(f.x).toFixed(3) + ',' + Number(f.y).toFixed(3)];
+    if (m) { const k = cityOfFestival(m); if (k) return k; }
+  }
+  return REGION_CITY[String(f.region || '').trim()] || null;
+}
+
+// 도시 키 → 한국어 이름·이모지. 서울·부산·제주는 CITIES 밖(전용 파일)이라 여기서 같이 든다.
+const CITY_KO = { seoul: ['서울', '🏙'], busan: ['부산', '🌊'], jeju: ['제주', '🍊'] };
+CITIES.forEach(c => { CITY_KO[c.key] = [c.ko, c.emoji]; });
+
+module.exports = { CITIES, GJ_PHOTOS, PHOTO_LANG, cityOfFestival, cityOfIntlFestival, CITY_KO };

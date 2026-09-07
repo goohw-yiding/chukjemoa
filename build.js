@@ -2029,24 +2029,8 @@ function writePage(rel, html) {
   console.log('✓', rel + '/index.html');
 }
 
-// ---------- 🎪 개별 축제 페이지 /festival/ ----------
-// 축제 사이트인데 개별 축제 페이지가 0개였다(2026-08-09 발견). 검색 수요의 대부분이 개별 축제명인데 받을 페이지가 없었다.
-// MONTH_KEYS 를 넘긴다 — festival.js 가 「N월 축제 전체」로 링크할 때 **없는 달로 보내면 404**가 된다.
-//   (2027-01 처럼 목록에 없는 달이 실제로 있다. 게이트가 있는 곳엔 «통과한 것만 링크»가 따라와야 한다.)
-const FESTIVAL_URLS = require('./festival.js').build({ ROOT, layout, writePage, SITE_NAME, SITE, buyBox, festBuyBox, nearAiBox, TODAY, MONTH_KEYS: MONTHS.map(m => m.key) });
-const EN_FESTIVAL_URLS = apiFestsEn.length ? require('./festival-en.js').build({ ROOT, layout, writePage, SITE, TODAY }) : [];
-const EN_JANGTEO_URLS = apiFestsEn.length ? require('./jangteo-en.js').build({ ROOT, layout, writePage, SITE, TODAY }) : [];
-// 2026-09-01 신설. 일본어는 페이지가 18장뿐인데 평균 7.9위(영어 212장 30.1위)로 성적이 가장 좋다.
-// 그런데 축제 상세가 0장이었다 — 재고 181건을 그대로 놀리고 있었다. → festival-ja.js
-const JA_FESTIVAL_URLS = apiFestsJa.length ? require('./festival-ja.js').build({ ROOT, layout, writePage, SITE, TODAY }) : [];
-// 2026-09-01 신설. GSC 180일 일본 유입 검색어 «1·2위»가 「ハングルの日 お店 休み」·「韓国 定休日」였다.
-// 축제가 아니라 「가게가 언제 문을 닫나」다. 받을 페이지가 /ja/closed/ 한 장뿐이라 연휴별로 쪼갠다.
-// ⚠️ festival-ja.js 다음에 와야 한다 — data/ja_festival_slugs.json 을 읽어 축제로 링크한다.
-const JA_HOLIDAY_URLS = require('./ja-holiday.js').build({ ROOT, layout, writePage, SITE, TODAY });
-const JA_JANGTEO_URLS = apiFestsJa.length ? require('./jangteo-ja.js').build({ ROOT, layout, writePage, SITE, TODAY }) : [];
-const ES_JANGTEO_URLS = apiFestsEs.length ? require('./jangteo-es.js').build({ ROOT, layout, writePage, SITE, TODAY }) : [];
-const ZH_JANGTEO_URLS = apiFestsZh.length ? require('./jangteo-zh.js').build({ ROOT, layout, writePage, SITE, TODAY }) : [];
-const EN_BLOG_URLS = apiFestsEn.length ? require('./en-blog.js').build({ ROOT, layout, writePage, SITE, TODAY }) : [];
+// 🏙 도시 페이지를 «축제보다 먼저» 만든다 — 축제 상세가 「이 축제가 있는 도시」로 링크하려면
+//    어떤 도시가 실제로 열렸는지(게이트 통과)를 먼저 알아야 한다. 순서가 곧 의존성이다.
 // 🏙 2026-09-04 신설 — 서울 문화행사. 코리(KORY) 상품 지역이 한국·서울·부산·제주이고,
 //   외국인 방문 실측도 서울 984만 > 부산 406만 > 제주 213만이라 그 순서로 만든다.
 //   ⭐ 검색량 실측으로 각도를 잡았다: 「서울전시회 92,800」·「서울공연 17,430」·「서울축제 15,880」과
@@ -2086,6 +2070,34 @@ INTL_CITY_URLS.forEach(u => {
   const m = String(u).match(/^\/(en|ja|zh|tw|es)\/([a-z]+)\/$/);
   if (m && m[2] !== 'cities') (INTL_CITY_BY_LANG[m[1]] = INTL_CITY_BY_LANG[m[1]] || []).push(m[2]);
 });
+
+// 🎪→🏙 2026-09-07 — 축제 상세가 링크할 «실제로 열린» 도시 목록.
+//   ⚠️ 게이트가 있는 곳엔 «통과한 것만 링크»가 따라와야 한다 → 방금 만들어진 URL 에서 허브만 뽑는다.
+//      (도시 이름 목록을 손으로 적으면 도시를 접는 날 조용히 404가 생긴다.)
+const CITY_OPEN_KO = new Set(
+  CITY_URLS.concat(SEOUL_URLS, BUSAN_URLS, JEJU_URLS)
+    .map(u => (String(u).match(/^\/([a-z]+)\/$/) || [])[1]).filter(Boolean));
+//   ⚠️ 외국어 축제 데이터에는 sido·sigungu 가 없다 → 좌표로 한국어 원본을 찾는 별도 함수를 쓴다.
+const { cityOfFestival: CITY_OF, cityOfIntlFestival: CITY_OF_I, CITY_KO } = require('./cities.js');
+
+// ---------- 🎪 개별 축제 페이지 /festival/ ----------
+// 축제 사이트인데 개별 축제 페이지가 0개였다(2026-08-09 발견). 검색 수요의 대부분이 개별 축제명인데 받을 페이지가 없었다.
+// MONTH_KEYS 를 넘긴다 — festival.js 가 「N월 축제 전체」로 링크할 때 **없는 달로 보내면 404**가 된다.
+//   (2027-01 처럼 목록에 없는 달이 실제로 있다. 게이트가 있는 곳엔 «통과한 것만 링크»가 따라와야 한다.)
+const FESTIVAL_URLS = require('./festival.js').build({ ROOT, layout, writePage, SITE_NAME, SITE, buyBox, festBuyBox, nearAiBox, TODAY, MONTH_KEYS: MONTHS.map(m => m.key), CITY: { of: CITY_OF, ko: CITY_KO, open: CITY_OPEN_KO } });
+const EN_FESTIVAL_URLS = apiFestsEn.length ? require('./festival-en.js').build({ ROOT, layout, writePage, SITE, TODAY, CITY: { of: CITY_OF_I, open: new Set(INTL_CITY_BY_LANG.en || []), label: CITY_LABEL } }) : [];
+const EN_JANGTEO_URLS = apiFestsEn.length ? require('./jangteo-en.js').build({ ROOT, layout, writePage, SITE, TODAY }) : [];
+// 2026-09-01 신설. 일본어는 페이지가 18장뿐인데 평균 7.9위(영어 212장 30.1위)로 성적이 가장 좋다.
+// 그런데 축제 상세가 0장이었다 — 재고 181건을 그대로 놀리고 있었다. → festival-ja.js
+const JA_FESTIVAL_URLS = apiFestsJa.length ? require('./festival-ja.js').build({ ROOT, layout, writePage, SITE, TODAY, CITY: { of: CITY_OF_I, open: new Set(INTL_CITY_BY_LANG.ja || []), label: CITY_LABEL } }) : [];
+// 2026-09-01 신설. GSC 180일 일본 유입 검색어 «1·2위»가 「ハングルの日 お店 休み」·「韓国 定休日」였다.
+// 축제가 아니라 「가게가 언제 문을 닫나」다. 받을 페이지가 /ja/closed/ 한 장뿐이라 연휴별로 쪼갠다.
+// ⚠️ festival-ja.js 다음에 와야 한다 — data/ja_festival_slugs.json 을 읽어 축제로 링크한다.
+const JA_HOLIDAY_URLS = require('./ja-holiday.js').build({ ROOT, layout, writePage, SITE, TODAY });
+const JA_JANGTEO_URLS = apiFestsJa.length ? require('./jangteo-ja.js').build({ ROOT, layout, writePage, SITE, TODAY }) : [];
+const ES_JANGTEO_URLS = apiFestsEs.length ? require('./jangteo-es.js').build({ ROOT, layout, writePage, SITE, TODAY }) : [];
+const ZH_JANGTEO_URLS = apiFestsZh.length ? require('./jangteo-zh.js').build({ ROOT, layout, writePage, SITE, TODAY }) : [];
+const EN_BLOG_URLS = apiFestsEn.length ? require('./en-blog.js').build({ ROOT, layout, writePage, SITE, TODAY }) : [];
 // 외국어 홈의 새 섹션 문구. ⚠️ 숫자는 전부 인자로 받는다(문장에 박으면 데이터가 바뀔 때 조용히 거짓말이 된다).
 const HOME_T = {
   en: { cityH: 'Where to go — by city', cityP: (n) => `${n} cities, each with places to go, where to eat and sleep — and the <b>Korean address you can paste into a map app</b>.`, all: 'See all cities →',

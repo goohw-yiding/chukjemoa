@@ -95,6 +95,9 @@ const CSS = `
 .frel{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
 .frel a{background:#fff;border:1.5px solid #dcefeb;color:#374151;font-weight:700;font-size:.86rem;padding:8px 14px;border-radius:999px;text-decoration:none}
 .frel a:hover{background:#e2f5f2}
+.fcity{margin:12px 0 2px}
+.fcity a{display:inline-block;background:#f2fbfa;border:1.5px solid #cfe9e3;color:#0a6c63;font-weight:800;font-size:.92rem;padding:10px 16px;border-radius:12px;text-decoration:none;line-height:1.5}
+.fcity a:hover{background:#e2f5f2}
 .fnext{background:#f4faf8;border:1.5px solid #dcefeb;border-radius:14px;padding:13px 16px;margin:14px 0 18px}
 .fnext-t{font-size:.85rem;font-weight:800;color:#0a6c63;margin-bottom:8px}
 .fnext-row{display:flex;flex-wrap:wrap;gap:7px}
@@ -127,7 +130,16 @@ function near(list, x, y, maxKm, n) {
 }
 
 function build(ctx) {
-  const { ROOT, layout, writePage, SITE_NAME, SITE, buyBox, festBuyBox, nearAiBox, TODAY, MONTH_KEYS } = ctx;
+  const { ROOT, layout, writePage, SITE_NAME, SITE, buyBox, festBuyBox, nearAiBox, TODAY, MONTH_KEYS, CITY } = ctx;
+  // 🏙 「이 축제가 있는 도시」 — 도시 페이지가 «실제로 열린» 곳만 링크한다(CITY.open).
+  //    없으면 그 시·도 축제 검색으로 보낸다. 축제 564장 중 253장(45%)이 도시 14곳에 걸린다.
+  const cityLink = f => {
+    if (!CITY) return '';
+    const k = CITY.of(f);
+    if (!k || !CITY.open.has(k)) return '';
+    const [nm, em] = CITY.ko[k] || [k, '🏙'];
+    return `<p class="fcity"><a href="/${k}/">${em} <b>${esc(nm)}</b> 여행 정보 — 가볼 만한 곳·맛집·숙소를 한 장에</a></p>`;
+  };
   // 축제 시작월 → 월별 페이지 키. **실제로 만드는 달일 때만** 돌려준다(없으면 링크하지 않는다).
   const MK = new Set(MONTH_KEYS || []);
   const monthKeyOf = f => { const d = String(f.start || ''); const k = d.slice(0, 4) + '-' + d.slice(4, 6); return MK.has(k) ? k : ''; };
@@ -420,6 +432,10 @@ ${mapBlock({ x: f.x, y: f.y, title: f.title, lang: 'ko' })}
 ${cand.filter(o => o !== f && o.sido === f.sido).slice(0, 4).map(o => `<a href="/festival/${o._slug}/">${esc(o.title)}</a>`).join('')}
 ${cand.filter(o => o !== f && o.sido !== f.sido && String(o.start).slice(4, 6) === String(f.start).slice(4, 6)).slice(0, 3).map(o => `<a href="/festival/${o._slug}/">${esc(o.title)}</a>`).join('')}
 </div>
+${/* 🏙 2026-09-07 신설 — 축제 → 도시. 상품이 아니라 «정보» 링크다.
+      축제 상세는 세션당 1.0~1.1장짜리 막다른 길인데, 그중 45%는 우리가 도시 페이지를 가진 곳이다.
+      ⚠️ 한 줄만 넣는다 — 축제상세 평균 유사도가 0.156으로 사이트 최고라 같은 블록을 크게 넣으면 판박이가 된다. */''}
+${cityLink(f)}
 
 ${/* 🏛 2026-09-04 신설 — «자연스러운» 인바운드 접점.
       장남 님: 「광고·협업 문의가 들어왔으면 좋겠다」. 그런데 지금은 받을 자리가 없었다.

@@ -65,10 +65,24 @@ const CSS = `
 .frel .row{display:flex;flex-wrap:wrap;gap:8px}
 .frel a{background:#fff;border:1.5px solid #dcefeb;color:#374151;font-weight:700;font-size:.87rem;padding:8px 14px;border-radius:999px;text-decoration:none}
 .frel a:hover{background:#e2f5f2}
+.fcity{margin:14px 0 2px}
+.fcity a{display:inline-block;background:#f2fbfa;border:1.5px solid #cfe9e3;color:#0a6c63;font-weight:700;font-size:.92rem;padding:11px 16px;border-radius:12px;text-decoration:none;line-height:1.6}
+.fcity a:hover{background:#e2f5f2}
+.fcity b{font-weight:900}
 </style>`;
 
 function build(ctx) {
-  const { ROOT, layout, writePage, SITE, TODAY } = ctx;
+  const { ROOT, layout, writePage, SITE, TODAY, CITY } = ctx;
+  // 🏙 2026-09-07 — 「이 축제가 있는 도시」. GSC 실측상 **영문에서 순위가 좋은 유일한 축이 개별 축제 상세**인데
+  //    (고유명 검색 3.9~10위) 거기 들어온 사람이 갈 데가 없었다. 링크 방향을 뒤집는다 — 축제 → 도시.
+  //    ⚠️ 그 언어로 «실제로 열린» 도시만 링크한다(CITY.open). 게이트를 통과 못 한 언어엔 페이지가 없다.
+  const cityLink = f => {
+    if (!CITY) return '';
+    const k = CITY.of(f);
+    if (!k || !CITY.open.has(k)) return '';
+    const nm = CITY.label('en', k);
+    return `<p class="fcity"><a href="/en/${k}/">🏙 <b>${esc(nm)}</b> — where to go, what to eat, where to stay, each with the <b>Korean address you can paste into a map app</b></a></p>`;
+  };
   const fes = load('festivals_en.json').filter(f => (f.ov || '').length >= MIN_OV);
 
   // 슬러그 충돌 방지
@@ -145,6 +159,7 @@ ${ex.html}
 ${near.html ? EN.CSS + near.html : ''}
 ${mapHtml}
 ${related.length ? `<div class="frel"><h2>Other festivals in ${esc(f.region)}</h2><div class="row">${related.map(r => `<a href="/en/festival/${esc(r.slug)}/">${esc(r.title)}</a>`).join('')}</div></div>` : ''}
+${cityLink(f)}
 <p style="margin-top:10px"><a href="/en/search/?region=${encodeURIComponent(f.region || '')}" style="color:#0c7d72;font-weight:700">← Browse all festivals in ${esc(f.region)}</a></p>
 ${mapScript('en')}
 </div></main>`;
