@@ -41,6 +41,8 @@ function load(ROOT, f) {
 //   ⭐ 그래서 «정규화된 `sido` 필드»로 시·도를 가르고, 시·군은 주소 토큰에서 뽑는다.
 //   ⭐ 광역시는 «시 전체»가 한 도시다 — 검색어가 「대구가볼만한곳」이지 「대구중구가볼만한곳」이 아니다.
 const METRO = new Set(['서울', '부산', '대구', '인천', '광주', '대전', '울산', '세종']);
+// 🇰🇷 코리 연결 — 도시 페이지 «맨 아래»에만 붙는다. 이유는 kory.js 머리말 참고.
+const KORY = require('./kory.js');
 function makeMatcher(cfg) {
   if (METRO.has(cfg.sido)) return r => String(r.sido || '') === cfg.sido;
   const re = new RegExp(cfg.sgg.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
@@ -349,6 +351,7 @@ ${open.map(a => `<h2 class="sec">${esc(AXES[a.slug].label.replace(/^\S+\s/, ''))
 <div class="cy-grid">${D[a.slug].slice(0, a.slug === 'spot' ? 8 : 6).map(CARD[a.slug]).join('')}</div>
 <p style="margin:10px 0"><a href="${base}${a.slug}/" style="color:var(--cy);font-weight:800">${esc(KO)} ${esc(AXES[a.slug].label.replace(/^\S+\s/, ''))} ${D[a.slug].length}곳 전체 보기 →</a></p>`).join('')}
 ${cfg.skip && Object.keys(cfg.skip).length ? note('만들지 않은 것: ' + Object.entries(cfg.skip).map(([k, v]) => `${esc(k)}(${esc(v)})`).join(' · ') + ' — <b>줄 게 없으면 만들지 않습니다.</b>') : ''}
+${KORY.block(cfg.key, KO, 'ko')}
 <h2 class="sec">다른 곳도 보기</h2>
 <div class="cy-nav">${(cfg.siblings || []).map(([u, l]) => `<a href="${u}">${esc(l)}</a>`).join('')}<a href="/search/?region=${encodeURIComponent(cfg.sido)}">🔎 ${esc(cfg.sido)} 축제 검색</a>${
     intlReady.map(l => `<a href="/${l}/${cfg.key}/">🌏 ${LANG_NAME[l]}</a>`).join('')}</div>

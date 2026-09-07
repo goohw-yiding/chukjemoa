@@ -242,6 +242,7 @@ ${fes.length ? `<h2 class="sec">지금 하는 축제</h2>
 ${exh.length ? `<h2 class="sec">지금 하는 전시</h2>
 <div class="bs-grid">${exh.slice(0, 6).map(cultCard).join('')}</div>
 <p style="margin:10px 0"><a href="/busan/exhibition/" style="color:#0c7d72;font-weight:800">부산 전시회 전체 보기 →</a></p>` : ''}
+${require('./kory.js').block('busan', '부산', 'ko')}
 <h2 class="sec">다른 곳도 보기</h2>
 <div class="bs-nav"><a href="/seoul/">🏙 서울</a><a href="/search/?region=부산">🔎 부산 축제 검색</a><a href="/jangteo/">🏮 전국 오일장</a><a href="/en/busan/">🌏 English</a></div>
 ${SRC_FES}`;

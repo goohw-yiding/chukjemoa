@@ -482,6 +482,7 @@ ${indoor.length >= 30 ? `<h2 class="sec">밖이 어려운 날엔</h2>
 <div class="jj-nav"><a href="/jangteo/jeju/">🏮 제주 오일장</a><a href="/trails/area/jeju/">🥾 제주 올레·걷기길</a>
 <a href="/accessible/jeju/">♿ 무장애 여행</a><a href="/pet/jeju/">🐕 반려견 동반</a>
 <a href="/search/?region=제주">🔎 제주 축제 검색</a></div>
+${require('./kory.js').block('jeju', '제주', 'ko')}
 <h2 class="sec">다른 도시</h2>
 <div class="jj-nav"><a href="/seoul/">🏙 서울</a><a href="/busan/">🌊 부산</a><a href="/en/jeju/">🌏 English</a><a href="/ja/jeju/">🇯🇵 日本語</a></div>
 ${SRC_NOTE}`;

@@ -890,6 +890,22 @@ document.addEventListener('click',function(e){
 
 
 
+<style>
+.ky-box{background:#fafaf9;border:1.5px solid #e7e5e4;border-radius:16px;padding:18px 20px;margin:26px 0 8px}
+.ky-box h2{font-size:1.06rem;font-weight:900;margin:0 0 8px;color:#1c1917;letter-spacing:-.01em}
+.ky-box p{color:#44403c;font-size:.94rem;line-height:1.75;margin:0 0 10px}
+.ky-none{background:#fff;border:1.5px solid #e7e5e4;border-radius:10px;padding:9px 12px;font-size:.9rem;color:#57534e;line-height:1.7;margin:0 0 12px}
+.ky-links{display:flex;flex-wrap:wrap;gap:8px}
+.ky-links a{display:inline-block;padding:9px 15px;border-radius:22px;font-weight:800;font-size:.9rem;text-decoration:none;background:#fff;border:1.5px solid #d6d3d1;color:#292524}
+.ky-links a.ky-1{background:#1c1917;border-color:#1c1917;color:#fff}
+.ky-note{color:#a8a29e;font-size:.8rem;line-height:1.65;margin:11px 0 0}
+</style><div class="ky-box">
+<h2>Llevarse el viaje a casa</h2>
+<p>Hay una pequeña marca coreana, <b>kory</b>, que pone nombres de ciudades en objetos de uso diario: rulos, gomas de pelo, pinzas, pañuelos.</p>
+<div class="ky-none">⚠️ <b>Todavía no hay edición de Daegu.</b> Las ediciones de ciudad son Seúl, Busan y Jeju. La colección <b>KOREA</b> sirve para cualquier viaje.</div>
+<div class="ky-links"><a href="https://www.kory.kr/stockists.html?utm_source=chukjemoa&utm_medium=city&utm_campaign=daegu&utm_content=es&lang=en" target="_blank" rel="noopener" class="ky-1" data-bb="kory-stockists" data-slot="city-footer" data-place="daegu">📍 Dónde comprar</a><a href="https://www.kory.kr/collections.html?utm_source=chukjemoa&utm_medium=city&utm_campaign=daegu&utm_content=es&lang=en#korea" target="_blank" rel="noopener" data-bb="kory-coll-korea" data-slot="city-footer" data-place="daegu">Colección KOREA</a><a href="https://www.kory.kr/product-hairroll.html?c=korea&utm_source=chukjemoa&utm_medium=city&utm_campaign=daegu&utm_content=es&lang=en" target="_blank" rel="noopener" data-bb="kory-roller-korea" data-slot="city-footer" data-place="daegu">Rulo KOREA</a><a href="https://www.kory.kr/products.html?utm_source=chukjemoa&utm_medium=city&utm_campaign=daegu&utm_content=es&lang=en" target="_blank" rel="noopener" data-bb="kory-products" data-slot="city-footer" data-place="daegu">Todos los productos</a></div>
+<p class="ky-note">Ayudamos a fabricar kory, así que no es un espacio pagado — pero sí es un enlace en el que tenemos interés. Por eso está solo aquí, al final. La tienda está solo en coreano e inglés.</p>
+</div>
 <h2 class="sec">Otras ciudades</h2>
 <div class="ic-nav"><a href="/es/seoul/">Seúl</a><a href="/es/busan/">Busan</a><a href="/es/jeju/">Jeju</a><a href="/es/gyeongju/">Gyeongju</a><a href="/es/incheon/">Incheon</a><a href="/es/yeosu/">Yeosu</a><a href="/es/suwon/">Suwon</a><a href="/es/gangneung/">Gangneung</a><a href="/es/sokcho/">Sokcho</a><a href="/es/jeonju/">Jeonju</a></div>
 <div class="ic-nav" style="margin-top:10px"><a href="/en/daegu/">English</a><a href="/ja/daegu/">日本語</a><a href="/zh/daegu/">简体中文</a><a href="/tw/daegu/">繁體中文</a><a href="/daegu/">한국어</a></div>
@@ -1115,11 +1131,13 @@ document.addEventListener('click',function(e){
     // ── ① 상품 클릭 — 이게 이 사이트의 유일한 매출 동선이다
     var isOwn = href.indexOf('brand.naver.com/guung') >= 0 || href.indexOf('smartstore.naver.com') >= 0;
     var isAff = href.indexOf('coupang.com') >= 0;
-    if(isOwn || isAff){
+    // 🇰🇷 2026-09-07 추가 — 코리(자사 브랜드). 쿠팡·자사몰과 «같은 대시보드»에서 비교돼야 판단이 된다.
+    var isKory = href.indexOf('kory.kr') >= 0;
+    if(isOwn || isAff || isKory){
       send('shop_click', {
-        merchant: isOwn ? 'own' : 'coupang',
+        merchant: isKory ? 'kory' : (isOwn ? 'own' : 'coupang'),
         // data-bb 가 정답이다. 쿠팡 딥링크는 주소에 아무 정보가 없어 이게 없으면 전부 'coupang' 으로 뭉개진다.
-        item: a.getAttribute('data-bb') || detailOf(href) || (isAff ? 'coupang' : 'store'),
+        item: a.getAttribute('data-bb') || detailOf(href) || (isAff ? 'coupang' : (isKory ? 'kory' : 'store')),
         slot: a.getAttribute('data-slot') || (a.classList.contains('bb-up') ? 'upsell' : (a.classList.contains('buybox') ? 'main' : 'inline')),
         place: a.getAttribute('data-place') || detailOf(href) || '',
         // ⚠️ 쿠팡 «일반 검색»으로 빠지면 수수료가 0이다. 자사몰 검색은 정상이므로 세지 않는다.

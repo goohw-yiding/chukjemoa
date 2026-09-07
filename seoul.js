@@ -204,6 +204,7 @@ ${guLine(live)}
 <div class="se-grid">${soon.map(card).join('')}</div>
 <h2 class="sec">달별로 보기</h2>
 <div class="se-nav">${months.map(ym => `<a href="/seoul/${ym.slice(0, 4)}-${ym.slice(4, 6)}/">${ym.slice(0, 4)}년 ${MN[+ym.slice(4, 6)]}</a>`).join('')}</div>
+${require('./kory.js').block('seoul', '서울', 'ko')}
 <h2 class="sec">서울 말고 다른 곳도</h2>
 <div class="se-nav"><a href="/search/?region=서울">🎪 서울 축제 검색</a><a href="/">🏠 전국 축제</a><a href="/jangteo/">🏮 전국 오일장</a></div>
 ${srcNote}

@@ -598,6 +598,7 @@ ${cp(r.addr, p.addr)}
 </li>`;
       }).join('')}</ul>` })() : ''}
 
+${require('./kory.js').block(C.key, city, lang)}
 ${others ? `<h2 class="sec">${esc(t.other)}</h2>
 <div class="ic-nav">${others}</div>` : ''}
 <div class="ic-nav" style="margin-top:10px">${langRow}</div>

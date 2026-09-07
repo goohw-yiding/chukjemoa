@@ -932,6 +932,22 @@ document.addEventListener('click',function(e){
 
 
 
+<style>
+.ky-box{background:#fafaf9;border:1.5px solid #e7e5e4;border-radius:16px;padding:18px 20px;margin:26px 0 8px}
+.ky-box h2{font-size:1.06rem;font-weight:900;margin:0 0 8px;color:#1c1917;letter-spacing:-.01em}
+.ky-box p{color:#44403c;font-size:.94rem;line-height:1.75;margin:0 0 10px}
+.ky-none{background:#fff;border:1.5px solid #e7e5e4;border-radius:10px;padding:9px 12px;font-size:.9rem;color:#57534e;line-height:1.7;margin:0 0 12px}
+.ky-links{display:flex;flex-wrap:wrap;gap:8px}
+.ky-links a{display:inline-block;padding:9px 15px;border-radius:22px;font-weight:800;font-size:.9rem;text-decoration:none;background:#fff;border:1.5px solid #d6d3d1;color:#292524}
+.ky-links a.ky-1{background:#1c1917;border-color:#1c1917;color:#fff}
+.ky-note{color:#a8a29e;font-size:.8rem;line-height:1.65;margin:11px 0 0}
+</style><div class="ky-box">
+<h2>旅を持ち帰る</h2>
+<p>都市の名前を日用品に入れる韓国の小さなブランド <b>kory</b> があります — ヘアロール、ヘアゴム、バンスクリップ、スカーフなど。</p>
+<div class="ky-none">⚠️ <b>慶州の商品はまだありません。</b> 都市エディションはソウル・釜山・済州の3つで、ほかは <b>KOREA</b> コレクションがあります。</div>
+<div class="ky-links"><a href="https://www.kory.kr/stockists.html?utm_source=chukjemoa&utm_medium=city&utm_campaign=gyeongju&utm_content=ja&lang=en" target="_blank" rel="noopener" class="ky-1" data-bb="kory-stockists" data-slot="city-footer" data-place="gyeongju">📍 取扱店</a><a href="https://www.kory.kr/collections.html?utm_source=chukjemoa&utm_medium=city&utm_campaign=gyeongju&utm_content=ja&lang=en#korea" target="_blank" rel="noopener" data-bb="kory-coll-korea" data-slot="city-footer" data-place="gyeongju">KOREA コレクション</a><a href="https://www.kory.kr/product-hairroll.html?c=korea&utm_source=chukjemoa&utm_medium=city&utm_campaign=gyeongju&utm_content=ja&lang=en" target="_blank" rel="noopener" data-bb="kory-roller-korea" data-slot="city-footer" data-place="gyeongju">KOREAヘアロール</a><a href="https://www.kory.kr/products.html?utm_source=chukjemoa&utm_medium=city&utm_campaign=gyeongju&utm_content=ja&lang=en" target="_blank" rel="noopener" data-bb="kory-products" data-slot="city-footer" data-place="gyeongju">商品一覧</a></div>
+<p class="ky-note">kory は私たちが一緒に作っているブランドです。広告費をもらって載せているのではありませんが、<b>利害関係のあるリンク</b>でもあります。だからページの一番下だけに置いています。ショップは韓国語と英語のみです。</p>
+</div>
 <h2 class="sec">ほかの都市</h2>
 <div class="ic-nav"><a href="/ja/seoul/">ソウル</a><a href="/ja/busan/">釜山</a><a href="/ja/jeju/">済州</a><a href="/ja/incheon/">仁川</a><a href="/ja/yeosu/">麗水</a><a href="/ja/suwon/">水原</a><a href="/ja/tongyeong/">統営</a><a href="/ja/geoje/">巨済</a><a href="/ja/gangneung/">江陵</a><a href="/ja/sokcho/">束草</a><a href="/ja/jeonju/">全州</a><a href="/ja/daegu/">大邱</a><a href="/ja/cheongju/">清州</a></div>
 <div class="ic-nav" style="margin-top:10px"><a href="/en/gyeongju/">English</a><a href="/zh/gyeongju/">简体中文</a><a href="/tw/gyeongju/">繁體中文</a><a href="/es/gyeongju/">Español</a><a href="/gyeongju/">한국어</a></div>
@@ -1157,11 +1173,13 @@ document.addEventListener('click',function(e){
     // ── ① 상품 클릭 — 이게 이 사이트의 유일한 매출 동선이다
     var isOwn = href.indexOf('brand.naver.com/guung') >= 0 || href.indexOf('smartstore.naver.com') >= 0;
     var isAff = href.indexOf('coupang.com') >= 0;
-    if(isOwn || isAff){
+    // 🇰🇷 2026-09-07 추가 — 코리(자사 브랜드). 쿠팡·자사몰과 «같은 대시보드»에서 비교돼야 판단이 된다.
+    var isKory = href.indexOf('kory.kr') >= 0;
+    if(isOwn || isAff || isKory){
       send('shop_click', {
-        merchant: isOwn ? 'own' : 'coupang',
+        merchant: isKory ? 'kory' : (isOwn ? 'own' : 'coupang'),
         // data-bb 가 정답이다. 쿠팡 딥링크는 주소에 아무 정보가 없어 이게 없으면 전부 'coupang' 으로 뭉개진다.
-        item: a.getAttribute('data-bb') || detailOf(href) || (isAff ? 'coupang' : 'store'),
+        item: a.getAttribute('data-bb') || detailOf(href) || (isAff ? 'coupang' : (isKory ? 'kory' : 'store')),
         slot: a.getAttribute('data-slot') || (a.classList.contains('bb-up') ? 'upsell' : (a.classList.contains('buybox') ? 'main' : 'inline')),
         place: a.getAttribute('data-place') || detailOf(href) || '',
         // ⚠️ 쿠팡 «일반 검색»으로 빠지면 수수료가 0이다. 자사몰 검색은 정상이므로 세지 않는다.
