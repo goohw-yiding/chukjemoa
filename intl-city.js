@@ -21,12 +21,17 @@ const esc = s => String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g,
 const CITIES = [
   { key: 'seoul', sido: '서울', ko: '서울', match: ['서울', 'Seoul', 'ソウル', '首尔', '首爾', 'Seúl'] },
   { key: 'busan', sido: '부산', ko: '부산', match: ['부산', 'Busan', '釜山'] },
-  { key: 'jeju', sido: '제주', ko: '제주', match: ['제주', 'Jeju', '済州', '济州', '濟州'] }
+  { key: 'jeju', sido: '제주', ko: '제주', match: ['제주', 'Jeju', '済州', '济州', '濟州'] },
+  // 🏛 2026-09-07 추가 — 경주. ⭐**사이트에서 처음으로 5개어가 전부 게이트를 넘는 도시다**
+  //   (서울·제주는 en·ja 만, 부산은 +zh·tw. 경주는 en 63 · ja 61 · tw 60 · es 55 · zh 41).
+  //   ⚠️ 경주는 «시·군» 이라 sido('경북')로 거르면 안동·포항까지 들어온다 → `sgg` 로 한 번 더 좁힌다.
+  //   ⚠️ 외국어 데이터의 `addr` 은 영문이다. 「경주」로 세면 0건이 나온다(거짓 0) — 판정은 `addrKo` 로 한다.
+  { key: 'gyeongju', sido: '경북', sgg: '경주시', ko: '경주', match: ['경주', 'Gyeongju', '慶州', '庆州', 'キョンジュ'] }
 ];
 
 const T = {
   en: {
-    city: { seoul: 'Seoul', busan: 'Busan', jeju: 'Jeju' },
+    city: { seoul: 'Seoul', busan: 'Busan', jeju: 'Jeju', gyeongju: 'Gyeongju' },
     h1: c => `${c} — Festivals & Places Worth Going`,
     lead: (c, n, f) => `${n} places in ${c} described in English by the Korea Tourism Organization${f ? `, plus ${f} festivals happening now` : ''}. Every entry comes with the <b>Korean address you can paste into a map app</b>.`,
     whyT: 'Why we give you Korean addresses',
@@ -47,7 +52,7 @@ const T = {
     desc: (c, n) => `${n} places to visit in ${c}, each with the Korean address you can paste into NAVER Map or KakaoMap. Festivals on now, weather, and what to know before you go.`
   },
   ja: {
-    city: { seoul: 'ソウル', busan: '釜山', jeju: '済州' },
+    city: { seoul: 'ソウル', busan: '釜山', jeju: '済州', gyeongju: '慶州' },
     h1: c => `${c} — お祭りと行ってみる価値のある場所`,
     lead: (c, n, f) => `韓国観光公社が日本語で案内している${c}の${n}か所${f ? `と、いま開催中のお祭り${f}件` : ''}です。すべてに<b>地図アプリにそのまま貼り付けられる韓国語の住所</b>を付けました。`,
     whyT: 'なぜ韓国語の住所を載せるのか',
@@ -68,7 +73,7 @@ const T = {
     desc: (c, n) => `${c}で行ける${n}か所を、NAVERマップやカカオマップに貼り付けられる韓国語の住所付きで。開催中のお祭り、天気、行く前に知っておくことも。`
   },
   zh: {
-    city: { seoul: '首尔', busan: '釜山', jeju: '济州' },
+    city: { seoul: '首尔', busan: '釜山', jeju: '济州', gyeongju: '庆州' },
     h1: c => `${c} — 庆典与值得一去的地方`,
     lead: (c, n, f) => `韩国观光公社以中文介绍的${c}${n}处${f ? `，以及正在举办的${f}个庆典` : ''}。每一条都附上<b>可直接粘贴到地图应用的韩文地址</b>。`,
     whyT: '为什么我们提供韩文地址',
@@ -88,7 +93,7 @@ const T = {
     desc: (c, n) => `${c}值得一去的${n}处，附可粘贴到NAVER地图或Kakao地图的韩文地址。正在举办的庆典与出发前须知。`
   },
   tw: {
-    city: { seoul: '首爾', busan: '釜山', jeju: '濟州' },
+    city: { seoul: '首爾', busan: '釜山', jeju: '濟州', gyeongju: '慶州' },
     h1: c => `${c} — 慶典與值得一去的地方`,
     lead: (c, n, f) => `韓國觀光公社以中文介紹的${c}${n}處${f ? `，以及正在舉辦的${f}個慶典` : ''}。每一條都附上<b>可直接貼到地圖應用的韓文地址</b>。`,
     whyT: '為什麼我們提供韓文地址',
@@ -108,7 +113,7 @@ const T = {
     desc: (c, n) => `${c}值得一去的${n}處，附可貼到NAVER地圖或Kakao地圖的韓文地址。正在舉辦的慶典與出發前須知。`
   },
   es: {
-    city: { seoul: 'Seúl', busan: 'Busan', jeju: 'Jeju' },
+    city: { seoul: 'Seúl', busan: 'Busan', jeju: 'Jeju', gyeongju: 'Gyeongju' },
     h1: c => `${c} — Fiestas y lugares que vale la pena visitar`,
     lead: (c, n, f) => `${n} lugares de ${c} descritos en español por la Organización de Turismo de Corea${f ? `, y ${f} fiestas en curso` : ''}. Cada entrada incluye <b>la dirección en coreano que puedes pegar en una app de mapas</b>.`,
     whyT: 'Por qué damos direcciones en coreano',
@@ -357,8 +362,10 @@ function build({ ROOT, layout, writePage, SITE, TODAY, WX }) {
     //   그래서 게이트로 **만들지 않은** `/tw/seoul/`·`/tw/jeju/` 로 링크가 나가 **끊긴 내부 링크 4건**이 됐다.
     //   ⚠️ 게이트가 있는 곳엔 «게이트를 통과한 것만 링크한다»가 따라와야 한다 — 하나만 넣으면 404를 만든다.
     const mats = C => {
+      // ⚠️ 시·군 단위 도시(경주)는 sido 만으로는 이웃 시·군까지 빨아들인다 — `sgg` 가 있으면 한글주소로 한 번 더 좁힌다.
       const P = places.filter(p => p.sido === C.sido && +p.x && +p.y
-        && String(p.ov || '').length >= 120 && p.addrKo);
+        && String(p.ov || '').length >= 120 && p.addrKo
+        && (!C.sgg || String(p.addrKo).includes(C.sgg)));
       let F = fests.filter(f => String(f.end || '') >= T8
         && C.match.some(k => String(f.region || '').includes(k) || String(f.addr || '').includes(k)))
         .map(f => ({ title: f.title, start: f.start, end: f.end, place: f.addr, img: f.img, x: f.x, y: f.y, ko: '', desc: '', traffic: '', fee: '' }));
