@@ -48,6 +48,15 @@ a{color:inherit;text-decoration:none}
 header{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid #e4f2ee;padding:13px 0}
 header .wrap{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
 .logo{font-size:1.35rem;font-weight:900;color:#0f9d8f}
+/* 🌏 외국어 페이지의 로고 — 한글 「축제모아」만 있으면 외국인은 읽지 못한다. 로마자를 나란히 둔다(브랜드는 한글이 정본). */
+.logo-rom{font-size:.86rem;font-weight:800;color:#5eb8ad;letter-spacing:.02em;margin-left:2px}
+/* 🏙 외국어 홈의 숫자 타일·도시 카드 */
+.ih-stat{display:flex;flex-wrap:wrap;gap:10px;margin:16px 0 4px}
+.ih-stat div{background:#f4faf8;border:1.5px solid #dcefeb;border-radius:12px;padding:11px 17px;font-size:.85rem;color:#0a6c63;font-weight:700}
+.ih-stat b{display:block;font-size:1.3rem;color:#0a6c63}
+.ih-cities{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));margin:10px 0}
+.ih-cities a{display:block;background:#fff;border:1.5px solid #e2ecea;border-radius:12px;padding:13px 15px;text-decoration:none;font-weight:800;color:#0a6c63}
+.ih-cities a span{display:block;font-size:.8rem;color:#9aa3af;font-weight:700;margin-top:2px}
 nav a{margin-left:20px;font-weight:600;font-size:.95rem;color:#4b5563;transition:color .15s}
 nav a:hover{color:#0f9d8f}
 .hero{position:relative;overflow:hidden;background:url('/img/hero.webp') center/cover;color:#fff;text-align:center}
@@ -461,17 +470,43 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 </head>
 <body>
 <header><div class="wrap">
-<a class="logo" href="/zh/">🎪 축제모아</a>
+<a class="logo" href="/zh/">🎪 축제모아 <span class="logo-rom">Chukjemoa</span></a>
 
-<button class="navtoggle" id="navtoggle" aria-label="menu" aria-expanded="false">☰</button><nav id="mainnav"><a href="/zh/">首页</a><a href="/zh/calendar/">🗓️ 什么时候去</a><a href="/zh/closed/">🚪 哪天关门</a><a href="/zh/access/">♿ 无障碍</a><a href="/zh/search/">🔎 庆典搜索</a><a href="/zh/jangteo/">🏮 五日集市</a><a href="/zh/mountains/">⛰️ 名山</a><a href="/zh/cafe/">☕ 咖啡馆</a><a href="/zh/trend/">🔥 人气排行</a><a href="/zh/trip/">🧳 第几次来韩国</a><a href="/">🇰🇷 한국어</a></nav>
+<button class="navtoggle" id="navtoggle" aria-label="menu" aria-expanded="false">☰</button><nav id="mainnav">
+<a href="/zh/">首页</a>
+<a class="nhot" href="/zh/cities/">🏙 城市</a>
+<div class="ndrop"><button class="nbtn" type="button">🎪 庆典<span class="arw">▼</span></button><div class="nmenu">
+<a href="/zh/search/">🔎 庆典搜索</a><a href="/zh/calendar/">🗓️ 什么时候去</a><a href="/zh/trend/">🔥 人气排行</a></div></div>
+<div class="ndrop"><button class="nbtn" type="button">🧭 出发前<span class="arw">▼</span></button><div class="nmenu">
+<a href="/zh/closed/">🚪 哪天关门</a><a href="/zh/access/">♿ 无障碍</a><a href="/zh/trip/">🧳 第几次来韩国</a><a href="/zh/chuseok/">🌕 中秋（秋夕）</a></div></div>
+<div class="ndrop"><button class="nbtn" type="button">🗺️ 更多<span class="arw">▼</span></button><div class="nmenu">
+<a href="/zh/jangteo/">🏮 五日集市</a><a href="/zh/mountains/">⛰️ 名山</a><a href="/zh/cafe/">☕ 咖啡馆</a></div></div>
+<a href="/">🇰🇷 한국어</a></nav>
 </div></header>
 <main><div class="wrap">
 <div class="hero" style="background:linear-gradient(135deg,#0f9d8f,#2dd4bf);border-radius:18px;overflow:hidden;margin:14px 0">
 <div class="hero-inner" style="background:rgba(15,60,55,.18);padding:64px 20px">
 <h1>韩国庆典·传统市场</h1>
 <p>按日期和地区搜索韩国全国的庆典活动 — 韩国观光公社官方数据。</p>
-<div class="hero-cta"><a class="cta1" href="/zh/search/">浏览所有庆典 →</a></div>
+<div class="hero-cta"><a class="cta1" href="/zh/search/">浏览所有庆典 →</a><a class="cta2" href="/zh/cities/" style="background:rgba(255,255,255,.92);color:#0a6c63">🏙 按城市浏览</a></div>
 </div></div>
+<div class="ih-stat">
+<div><b>173</b>庆典</div>
+<div><b>10</b>城市</div>
+<div><b>409</b>集市日</div>
+<div><b>2,203</b>中文地点</div>
+</div><h2 class="sec">按城市浏览</h2>
+<p style="color:#4b5563;line-height:1.75;margin-bottom:10px">10个城市，每个都有可去的地方、吃饭和住宿，并附<b>可粘贴到地图的韩文地址</b>。</p>
+<div class="ih-cities"><a href="/zh/seoul/">首尔<span>seoul</span></a><a href="/zh/busan/">釜山<span>busan</span></a><a href="/zh/jeju/">济州<span>jeju</span></a><a href="/zh/gyeongju/">庆州<span>gyeongju</span></a><a href="/zh/incheon/">仁川<span>incheon</span></a><a href="/zh/yeosu/">丽水<span>yeosu</span></a><a href="/zh/suwon/">水原<span>suwon</span></a><a href="/zh/gangneung/">江陵<span>gangneung</span></a><a href="/zh/jeonju/">全州<span>jeonju</span></a><a href="/zh/daegu/">大邱<span>daegu</span></a></div>
+<p style="margin:8px 0 20px"><a href="/zh/cities/" style="color:#0c7d72;font-weight:800">查看所有城市 →</a></p><h2 class="sec">值得一去的地方</h2>
+<p style="color:#4b5563;line-height:1.75;margin-bottom:10px">韩国观光公社以中文介绍的地点。每一条都附上可直接粘贴到NAVER地图或Kakao地图的韩文地址。</p>
+<div class="grid"><div class="card"><div class="thumb"><img src="https://tong.visitkorea.or.kr/cms/resource/59/2733659_image2_1.jpg" alt="平昌白龙洞窟" loading="lazy"></div><div class="card-body"><h3>平昌白龙洞窟</h3><p class="loc">📍 강원특별자치도 평창군 미탄면 문희길 63</p><p class="desc">白龙洞窟位于江原道平昌郡美滩面马河里，总长1.8km，是一个泰然石灰岩洞窟，入口位于水平面之上约10~15m处。洞穴入口周围分布着齐岩怪石，在以前是需要搭船才可接近的石灰岩洞窟。白龙洞窟自很久之前，就已经成为附近村民所熟知的地方。入口附近留有炉灶以及地暖的痕迹，推测在很久之前韩国祖先们曾在这里居住过。1976年，这里的居民把主通路中间犹如拳头般窄小的通路拓宽之后，开始可以进行洞窟调查，也对白龙洞窟</p></div></div><div class="card"><div class="thumb"><img src="https://tong.visitkorea.or.kr/cms/resource/86/2950486_image2_1.JPG" alt="2.28纪念中央公园" loading="lazy"></div><div class="card-body"><h3>2.28纪念中央公园</h3><p class="loc">📍 대구광역시 중구 동성로2길 80 (공평동)</p><p class="desc">该公园直到1995年为止,在中央小学所在的位置上,为纪念1960年2 28学生民主义举而于2003年所建成。这里继2 28义举之后，直到3 15、4 19一直是承载着大邱历史伤痛的地方，但现在成为了市中心的一处舒适惬意的休息场所。得益于增添凉爽感的喷泉和美丽树木的树荫，这里成为了任何人都可以随意来往的公园。以中央喷水池为中心,设有散步路、小溪川、广场等用以休憩的各种便利设施，周边也有很多有名的美食</p></div></div><div class="card"><div class="thumb"><img src="https://tong.visitkorea.or.kr/cms/resource/95/2931895_image2_1.JPG" alt="3.1万岁运动路" loading="lazy"></div><div class="card-body"><h3>3.1万岁运动路</h3><p class="loc">📍 대구광역시 중구 동산동</p><p class="desc">作为1919年3月8日大邱市民为独立万岁运动而聚集的一个历史性场所，这里是大邱近代胡同旅游第二路线的中间点。经过青萝坡传教士的家和第一教会，就能看到绘有万岁运动壁画的一条路。3.1万岁运动路是从这里通往桂山天主教堂的一段坡路。因为阶梯有90个，所以也被称为九十阶梯。阶梯墙壁上设有历史现场照片资料和增强现实(AR)体验区。如果识别二维码，就可以看到生动再现万岁运动的3D影像，可以进行真实的历史体验。</p></div></div><div class="card"><div class="thumb"><img src="https://tong.visitkorea.or.kr/cms/resource/23/2740723_image2_1.jpg" alt="5.16道路林隧道" loading="lazy"></div><div class="card-body"><h3>5.16道路林隧道</h3><p class="loc">📍 제주특별자치도 서귀포시 남원읍 신례천로 267-110</p><p class="desc">5.16道路是济州岛开通的第一条国道，连接着济州市和西归浦市。从汉拿山城板岳服务区出发，沿着蜿蜒的道路向西归浦方向行驶2.6公里后就能看到常绿树和落叶树如拱形般环绕道路，约长1.2公里的林隧道。作为林隧道起始点的北入口处立着一块牌子，上面写着 慢点开，路会更美 。这里的道路很窄且弯道多，有发生事故的危险，因此要小心，为了欣赏林隧道的美景也要慢速行驶。 隧道位于济州岛汉拿山脚下，一年四季都可欣赏到不</p></div></div><div class="card"><div class="thumb"><img src="https://tong.visitkorea.or.kr/cms/resource/79/1587579_image2_1.jpg" alt="5.18民主广场" loading="lazy"></div><div class="card-body"><h3>5.18民主广场</h3><p class="loc">📍 광주광역시 동구 문화전당로 38</p><p class="desc">全南光州统合特别市道厅前宽广的马路一带上的广场是5.18民众抗争当时民众们集会并增强抗争意志的地方，也是用热血守护民主主义的5.18光州民众抗争的现场。 1980年5月当时的全南光州统合特别市道厅是抗争的本部，前面的喷泉为演讲台，在这里召开了各种集会，增强了民众抗争的意志。这里从1996年开始被称为“5.18民主广场”。</p></div></div><div class="card"><div class="thumb"><img src="https://tong.visitkorea.or.kr/cms/resource/72/2637772_image2_1.jpg" alt="5·18纪念公园" loading="lazy"></div><div class="card-body"><h3>5·18纪念公园</h3><p class="loc">📍 광주광역시 서구 상무민주로 61 (쌍촌동)</p><p class="desc">这是为了纪念1980年5月18日在光州发生的民主化运动而建造的公园。设有5 18纪念文化中心、大同广场、光州学生运动纪念塔、追悼空间和五月台（楼阁）等设施。这是一个具有深远意义的空间，让人们回顾韩国民主主义历史、追悼在民主化运动过程中殉国的烈士们的奉献精神。 今日的5 18纪念公园对于光州市民来说不仅仅是对民主化运动纪念及追忆的空间，同时由于其绿地面积大、环境好，还是日常休闲的好去处。这里不但绿地</p></div></div></div><h2 class="sec">出发前</h2>
+<p style="color:#4b5563;line-height:1.75;margin-bottom:10px">来韩国前最常被问的三件事 —— 也是我们真正有数据的三件事。</p>
+<div class="ih-cities">
+<a href="/zh/closed/">🚪 哪天关门</a>
+<a href="/zh/access/">♿ 无障碍</a>
+<a href="/zh/trip/">🧳 第几次来韩国</a>
+</div>
 <h2 class="sec">围绕韩国庆典规划你的旅程</h2>
 <p style="color:#4b5563;line-height:1.75;margin-bottom:14px">韩国每年举办数百场庆典 — 夏季的泥浆节和水上庆典，秋季的烟花和红叶活动，冬季的冰雪和灯光节。通过Chukjemoa，你可以按日期和地区搜索173多个庆典，阅读官方简介，并直接访问每个庆典的官方网站。所有日程和介绍均来自韩国观光公社（TourAPI）。</p>
 <h2 class="sec">Upcoming festivals</h2>

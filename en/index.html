@@ -48,6 +48,15 @@ a{color:inherit;text-decoration:none}
 header{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid #e4f2ee;padding:13px 0}
 header .wrap{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
 .logo{font-size:1.35rem;font-weight:900;color:#0f9d8f}
+/* 🌏 외국어 페이지의 로고 — 한글 「축제모아」만 있으면 외국인은 읽지 못한다. 로마자를 나란히 둔다(브랜드는 한글이 정본). */
+.logo-rom{font-size:.86rem;font-weight:800;color:#5eb8ad;letter-spacing:.02em;margin-left:2px}
+/* 🏙 외국어 홈의 숫자 타일·도시 카드 */
+.ih-stat{display:flex;flex-wrap:wrap;gap:10px;margin:16px 0 4px}
+.ih-stat div{background:#f4faf8;border:1.5px solid #dcefeb;border-radius:12px;padding:11px 17px;font-size:.85rem;color:#0a6c63;font-weight:700}
+.ih-stat b{display:block;font-size:1.3rem;color:#0a6c63}
+.ih-cities{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));margin:10px 0}
+.ih-cities a{display:block;background:#fff;border:1.5px solid #e2ecea;border-radius:12px;padding:13px 15px;text-decoration:none;font-weight:800;color:#0a6c63}
+.ih-cities a span{display:block;font-size:.8rem;color:#9aa3af;font-weight:700;margin-top:2px}
 nav a{margin-left:20px;font-weight:600;font-size:.95rem;color:#4b5563;transition:color .15s}
 nav a:hover{color:#0f9d8f}
 .hero{position:relative;overflow:hidden;background:url('/img/hero.webp') center/cover;color:#fff;text-align:center}
@@ -461,17 +470,43 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 </head>
 <body>
 <header><div class="wrap">
-<a class="logo" href="/en/">🎪 축제모아</a>
+<a class="logo" href="/en/">🎪 축제모아 <span class="logo-rom">Chukjemoa</span></a>
 
-<button class="navtoggle" id="navtoggle" aria-label="menu" aria-expanded="false">☰</button><nav id="mainnav"><a href="/en/">Home</a><a href="/en/calendar/">🗓️ When to go</a><a href="/en/closed/">🚪 What closes</a><a href="/en/access/">♿ Barrier-free</a><a href="/en/festival/">🎪 All festivals</a><a href="/en/search/">🔎 Search</a><a href="/en/mountains/">⛰️ Mountains</a><a href="/en/jangteo/">🏮 Markets</a><a href="/en/blog/">📝 Blog</a><a href="/en/cafe/">☕ Cafés</a><a href="/en/trend/">🔥 Rankings</a><a href="/en/trip/">🧳 1st/2nd/3rd visit</a><a href="/">🇰🇷 한국어</a></nav>
+<button class="navtoggle" id="navtoggle" aria-label="menu" aria-expanded="false">☰</button><nav id="mainnav">
+<a href="/en/">Home</a>
+<a class="nhot" href="/en/cities/">🏙 Cities</a>
+<div class="ndrop"><button class="nbtn" type="button">🎪 Festivals<span class="arw">▼</span></button><div class="nmenu">
+<a href="/en/search/">🔎 Search festivals</a><a href="/en/festival/">📄 All festivals</a><a href="/en/calendar/">🗓️ When to go</a><a href="/en/trend/">🔥 Rankings</a><a href="/en/blog/">📝 Blog</a></div></div>
+<div class="ndrop"><button class="nbtn" type="button">🧭 Before you go<span class="arw">▼</span></button><div class="nmenu">
+<a href="/en/closed/">🚪 What closes when</a><a href="/en/access/">♿ Barrier-free</a><a href="/en/trip/">🧳 1st / 2nd / 3rd visit</a><a href="/en/chuseok/">🌕 Chuseok (Korean Thanksgiving)</a></div></div>
+<div class="ndrop"><button class="nbtn" type="button">🗺️ More<span class="arw">▼</span></button><div class="nmenu">
+<a href="/en/jangteo/">🏮 Traditional markets</a><a href="/en/mountains/">⛰️ Mountains</a><a href="/en/cafe/">☕ Cafés</a></div></div>
+<a href="/">🇰🇷 한국어</a></nav>
 </div></header>
 <main><div class="wrap">
 <div class="hero" style="background:linear-gradient(135deg,#0f9d8f,#2dd4bf);border-radius:18px;overflow:hidden;margin:14px 0">
 <div class="hero-inner" style="background:rgba(15,60,55,.18);padding:64px 20px">
 <h1>Korea Festivals &amp; Traditional Markets</h1>
 <p>Search festivals across South Korea by date and region — official data from the Korea Tourism Organization.</p>
-<div class="hero-cta"><a class="cta1" href="/en/search/">Browse all festivals →</a></div>
+<div class="hero-cta"><a class="cta1" href="/en/search/">Browse all festivals →</a><a class="cta2" href="/en/cities/" style="background:rgba(255,255,255,.92);color:#0a6c63">🏙 Browse by city →</a></div>
 </div></div>
+<div class="ih-stat">
+<div><b>233</b>festivals</div>
+<div><b>14</b>cities</div>
+<div><b>409</b>market days</div>
+<div><b>3,277</b>places in English</div>
+</div><h2 class="sec">Where to go — by city</h2>
+<p style="color:#4b5563;line-height:1.75;margin-bottom:10px">14 cities, each with places to go, where to eat and sleep — and the <b>Korean address you can paste into a map app</b>.</p>
+<div class="ih-cities"><a href="/en/seoul/">Seoul<span>seoul</span></a><a href="/en/busan/">Busan<span>busan</span></a><a href="/en/jeju/">Jeju<span>jeju</span></a><a href="/en/gyeongju/">Gyeongju<span>gyeongju</span></a><a href="/en/incheon/">Incheon<span>incheon</span></a><a href="/en/yeosu/">Yeosu<span>yeosu</span></a><a href="/en/suwon/">Suwon<span>suwon</span></a><a href="/en/tongyeong/">Tongyeong<span>tongyeong</span></a><a href="/en/geoje/">Geoje<span>geoje</span></a><a href="/en/gangneung/">Gangneung<span>gangneung</span></a><a href="/en/sokcho/">Sokcho<span>sokcho</span></a><a href="/en/jeonju/">Jeonju<span>jeonju</span></a><a href="/en/daegu/">Daegu<span>daegu</span></a><a href="/en/cheongju/">Cheongju<span>cheongju</span></a></div>
+<p style="margin:8px 0 20px"><a href="/en/cities/" style="color:#0c7d72;font-weight:800">See all cities →</a></p><h2 class="sec">Places worth going</h2>
+<p style="color:#4b5563;line-height:1.75;margin-bottom:10px">Described in English by the Korea Tourism Organization — and each one comes with the Korean address you can paste into NAVER Map or KakaoMap.</p>
+<div class="grid"><div class="card"><div class="thumb"><img src="https://tong.visitkorea.or.kr/cms/resource/42/2662742_image2_1.jpg" alt="1004 (Cheonsa) Bridge" loading="lazy"></div><div class="card-body"><h3>1004 (Cheonsa) Bridge</h3><p class="loc">📍 전라남도 신안군 암태면 신석리</p><p class="desc">1004 Bridge, opened on April 4, 2019, connects Songgong-ri to Sinseok-ri in Sinan-gun, Jeonnam-Gwangju Special Metropolitan City. It is named 1004, pronounced "cheonsa," for the 1004 islands that surr</p></div></div><div class="card"><div class="thumb"><img src="https://tong.visitkorea.or.kr/cms/resource/48/3007148_image2_1.jpg" alt="1004 Islands Museum Park" loading="lazy"></div><div class="card-body"><h3>1004 Islands Museum Park</h3><p class="loc">📍 전라남도 신안군 자은서부2길 508-65</p><p class="desc">1004 Islands Museum Park is a marine complex cultural district located on Yangsan Beach in Jaeundo Island. It comprises the World Shell Museum, 1004 Islands Stone Art Museum, Stone Garden, and Yangsan</p></div></div><div class="card"><div class="thumb"><img src="https://tong.visitkorea.or.kr/cms/resource/34/2366034_image2_1.jpg" alt="168 Stairs" loading="lazy"></div><div class="card-body"><h3>168 Stairs</h3><p class="loc">📍 부산광역시 동구 영초길197번길 9</p><p class="desc">This is the fastest way to go downhill from Sanbok road to Busan port. The stairs are known to be as tall as a 6-story building and have exactly 168 steps. In the past, there used to be 3 wells locate</p></div></div><div class="card"><div class="thumb"><img src="https://tong.visitkorea.or.kr/cms/resource/77/2364277_image2_1.jpg" alt="40-step Culture &amp; Tourism Theme Street" loading="lazy"></div><div class="card-body"><h3>40-step Culture &amp; Tourism Theme Street</h3><p class="loc">📍 부산광역시 중구 중앙대로 73 (중앙동4가)</p><p class="desc">The 40-step Culture Tourism Theme Street is a 450-meter street leading up to the 40-step stairway of the '40-step Cultural Center' and continues to the Palseong Tour. The time-honored 40-step stairway</p></div></div><div class="card"><div class="thumb"><img src="https://tong.visitkorea.or.kr/cms/resource/23/2740723_image2_1.jpg" alt="5.16 Tree Tunnel (Road 5.16 Forest Tunnel)" loading="lazy"></div><div class="card-body"><h3>5.16 Tree Tunnel (Road 5.16 Forest Tunnel)</h3><p class="loc">📍 제주특별자치도 서귀포시 남원읍 신례천로 267-110</p><p class="desc">The 5.16 Road is the first national highway of Jeju and connects the cities of Jeju and Seogwipo. Drive the winding road toward Seogwipo to the points about 2.6 to 1.2 kilometers at a distance from Ha</p></div></div><div class="card"><div class="thumb"><img src="https://tong.visitkorea.or.kr/cms/resource/82/3523282_image2_1.jpg" alt="ARTEASPOON" loading="lazy"></div><div class="card-body"><h3>ARTEASPOON</h3><p class="loc">📍 서울특별시 용산구 신흥로36가길 1-1</p><p class="desc">ARTEASPOON operates cultural arts programs centered on paintings, music, and books. It also has a program related to exploring one's feelings and mind, and offers a special program for foreigners for </p></div></div></div><h2 class="sec">Before you go</h2>
+<p style="color:#4b5563;line-height:1.75;margin-bottom:10px">The three things visitors ask first — and the three we actually have data on.</p>
+<div class="ih-cities">
+<a href="/en/closed/">🚪 What closes when</a>
+<a href="/en/access/">♿ Barrier-free travel</a>
+<a href="/en/trip/">🧳 1st / 2nd / 3rd visit</a>
+</div>
 <h2 class="sec">Plan your trip around Korea's festivals</h2>
 <p style="color:#4b5563;line-height:1.75;margin-bottom:14px">South Korea hosts hundreds of festivals every year — summer mud and water festivals, autumn fireworks and fall-foliage events, and winter ice and light festivals. Chukjemoa lets you search 233+ festivals by date and region, read an official overview, and jump straight to each festival's official website. All schedules and descriptions come from the Korea Tourism Organization (TourAPI).</p>
 <h2 class="sec">Upcoming festivals</h2>

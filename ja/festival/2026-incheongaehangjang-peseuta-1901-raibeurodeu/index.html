@@ -45,6 +45,15 @@ a{color:inherit;text-decoration:none}
 header{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid #e4f2ee;padding:13px 0}
 header .wrap{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
 .logo{font-size:1.35rem;font-weight:900;color:#0f9d8f}
+/* 🌏 외국어 페이지의 로고 — 한글 「축제모아」만 있으면 외국인은 읽지 못한다. 로마자를 나란히 둔다(브랜드는 한글이 정본). */
+.logo-rom{font-size:.86rem;font-weight:800;color:#5eb8ad;letter-spacing:.02em;margin-left:2px}
+/* 🏙 외국어 홈의 숫자 타일·도시 카드 */
+.ih-stat{display:flex;flex-wrap:wrap;gap:10px;margin:16px 0 4px}
+.ih-stat div{background:#f4faf8;border:1.5px solid #dcefeb;border-radius:12px;padding:11px 17px;font-size:.85rem;color:#0a6c63;font-weight:700}
+.ih-stat b{display:block;font-size:1.3rem;color:#0a6c63}
+.ih-cities{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));margin:10px 0}
+.ih-cities a{display:block;background:#fff;border:1.5px solid #e2ecea;border-radius:12px;padding:13px 15px;text-decoration:none;font-weight:800;color:#0a6c63}
+.ih-cities a span{display:block;font-size:.8rem;color:#9aa3af;font-weight:700;margin-top:2px}
 nav a{margin-left:20px;font-weight:600;font-size:.95rem;color:#4b5563;transition:color .15s}
 nav a:hover{color:#0f9d8f}
 .hero{position:relative;overflow:hidden;background:url('/img/hero.webp') center/cover;color:#fff;text-align:center}
@@ -458,9 +467,18 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 </head>
 <body>
 <header><div class="wrap">
-<a class="logo" href="/ja/">🎪 축제모아</a>
+<a class="logo" href="/ja/">🎪 축제모아 <span class="logo-rom">Chukjemoa</span></a>
 
-<button class="navtoggle" id="navtoggle" aria-label="menu" aria-expanded="false">☰</button><nav id="mainnav"><a href="/ja/">ホーム</a><a href="/ja/calendar/">🗓️ いつ行くか</a><a href="/ja/closed/">🚪 休む日</a><a href="/ja/access/">♿ バリアフリー</a><a href="/ja/festival/">🎪 祭り一覧</a><a href="/ja/search/">🔎 検索</a><a href="/ja/jangteo/">🏮 五日市</a><a href="/ja/mountains/">⛰️ 名山</a><a href="/ja/cafe/">☕ カフェ</a><a href="/ja/trend/">🔥 人気ランキング</a><a href="/ja/trip/">🧳 何回目の訪韓</a><a href="/">🇰🇷 한국어</a></nav>
+<button class="navtoggle" id="navtoggle" aria-label="menu" aria-expanded="false">☰</button><nav id="mainnav">
+<a href="/ja/">ホーム</a>
+<a class="nhot" href="/ja/cities/">🏙 都市別</a>
+<div class="ndrop"><button class="nbtn" type="button">🎪 お祭り<span class="arw">▼</span></button><div class="nmenu">
+<a href="/ja/search/">🔎 検索</a><a href="/ja/festival/">📄 祭り一覧</a><a href="/ja/calendar/">🗓️ いつ行くか</a><a href="/ja/trend/">🔥 人気ランキング</a></div></div>
+<div class="ndrop"><button class="nbtn" type="button">🧭 行く前に<span class="arw">▼</span></button><div class="nmenu">
+<a href="/ja/closed/">🚪 休む日</a><a href="/ja/access/">♿ バリアフリー</a><a href="/ja/trip/">🧳 何回目の訪韓</a><a href="/ja/chuseok/">🌕 秋夕（チュソク）</a></div></div>
+<div class="ndrop"><button class="nbtn" type="button">🗺️ その他<span class="arw">▼</span></button><div class="nmenu">
+<a href="/ja/jangteo/">🏮 五日市</a><a href="/ja/mountains/">⛰️ 名山</a><a href="/ja/cafe/">☕ カフェ</a></div></div>
+<a href="/">🇰🇷 한국어</a></nav>
 </div></header>
 <main><div class="wrap">
 

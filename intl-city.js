@@ -45,6 +45,28 @@ const CITIES = [
 //   군산: 여행 검색량 4위(275K)인데 공공데이터 관광지가 29곳으로 게이트(30)에 1 모자랐다 → 2026-09-07 청주로 교체.
 //   재고가 차면 CITIES 로 옮기고 여기서 뺀다.
 const RETIRED = ['gunsan'];
+
+// 🏙 2026-09-07 — 언어별 «도시 목록» 페이지 `/{lang}/cities/`.
+//   왜: 도시 페이지 15장이 홈에도 내비에도 안 걸려 **사실상 고아**였다(/en/ 홈 본문 링크는 1개뿐이었다).
+//   ⚠️ 헤더 내비에 도시를 «직접» 나열하면 언어마다 없는 도시가 생겨 끊긴 링크가 난다
+//      (실제로 `/tw/seoul/` 로 4건 낸 적이 있다). 그래서 **목록 페이지 한 장을 두고 내비는 거기로만 보낸다.**
+const CITIES_T = {
+  en: { t: 'Korean cities, one page each', h: 'Where to go in Korea — by city',
+    l: (n) => `${n} cities, each with the places worth going, where to eat and sleep, and — for every entry — <b>the Korean address you can paste into a map app</b>. Google Maps cannot route inside Korea; NAVER Map and KakaoMap can.`,
+    p: 'places', more: 'Open', pv: 'A few of them, in detail' },
+  ja: { t: '都市別ガイド', h: '韓国の都市別 — どこへ行くか',
+    l: (n) => `${n}都市。行ってみる場所、食べる所、泊まる所を都市ごとにまとめました。すべてに<b>地図アプリへ貼り付けられる韓国語の住所</b>を付けています。Googleマップは韓国国内の経路検索ができません — NAVERマップ・カカオマップをお使いください。`,
+    p: 'か所', more: '開く', pv: 'そのうちのいくつかを詳しく' },
+  zh: { t: '按城市浏览', h: '韩国城市指南 — 去哪里',
+    l: (n) => `共${n}个城市。每个城市都整理了值得一去的地方、吃饭和住宿，并且每一条都附<b>可粘贴到地图应用的韩文地址</b>。谷歌地图在韩国境内无法导航 —— 请用NAVER地图或Kakao地图。`,
+    p: '处', more: '查看', pv: '其中几处的详细介绍' },
+  tw: { t: '按城市瀏覽', h: '韓國城市指南 — 去哪裡',
+    l: (n) => `共${n}個城市。每個城市都整理了值得一去的地方、吃飯和住宿，並且每一條都附<b>可貼到地圖應用的韓文地址</b>。Google地圖在韓國境內無法導航 —— 請用NAVER地圖或Kakao地圖。`,
+    p: '處', more: '查看', pv: '其中幾處的詳細介紹' },
+  es: { t: 'Ciudades de Corea', h: 'A dónde ir en Corea — por ciudad',
+    l: (n) => `${n} ciudades. En cada una: los lugares que vale la pena visitar, dónde comer y dormir, y en cada entrada <b>la dirección en coreano que puedes pegar en una app de mapas</b>. Google Maps no da rutas dentro de Corea; NAVER Map y KakaoMap sí.`,
+    p: 'lugares', more: 'Abrir', pv: 'Algunos de ellos, en detalle' }
+};
 // 도시 이름 5개어 — CITIES 와 짝이 맞아야 한다(빠지면 제목이 undefined 로 나간다).
 const CITY_NAME = {
   en: { incheon: 'Incheon', yeosu: 'Yeosu', suwon: 'Suwon', tongyeong: 'Tongyeong', geoje: 'Geoje', gangneung: 'Gangneung', sokcho: 'Sokcho', jeonju: 'Jeonju', daegu: 'Daegu', cheongju: 'Cheongju' },
@@ -592,6 +614,45 @@ ${others ? `<h2 class="sec">${esc(t.other)}</h2>
         `/${lang}/${C.key}/`, content, { lang }));
       urls.push(`/${lang}/${C.key}/`);
     }
+
+    // 🏙 도시 목록 페이지 — «만들어진 도시만» 싣는다. 내비는 여기 한 곳으로만 보낸다.
+    if (ready.length && CITIES_T[lang]) {
+      const ct = CITIES_T[lang];
+      // ⚠️ `cp`(복사 박스)는 도시 루프 안에서만 정의돼 있다 — 여기선 같은 모양으로 새로 만든다.
+      const cpx = (label, val) => val ? `<div class="xcopy"><div><span class="lb">${esc(label)}</span><span class="vl">${esc(val)}</span></div>
+<button data-v="${esc(val)}" data-done="${esc(t.copied)}">${esc(t.copy)}</button></div>` : '';
+      // ⚠️ 처음엔 «도시 이름 + 링크» 한 줄씩만 뒀더니 audit 기준 435~1,207자로 **얇은 페이지**가 됐다.
+      //    목록 페이지도 «읽을 게» 있어야 한다 → 도시마다 실제 장소 이름 3개를 같이 보여준다(지어내는 게 아니라 우리 데이터다).
+      const cards = ready.map(({ C, P }) => {
+        const sample = P.slice(0, 3).map(p => esc(p.title)).join(' · ');
+        return `<li class="ic-item">
+<div class="ic-h"><b><a href="/${lang}/${C.key}/" style="color:#111827">${esc(t.city[C.key])}</a></b><span class="ic-ko">${esc(C.ko)}</span><span class="ic-tag">${P.length} ${esc(ct.p)}</span></div>
+${sample ? `<p class="ic-meta">${sample}${P.length > 3 ? ' …' : ''}</p>` : ''}
+<p class="ic-meta"><a href="/${lang}/${C.key}/" style="color:#0c7d72;font-weight:800">${esc(ct.more)} →</a></p>
+</li>`;
+      }).join('');
+      // 도시별 첫 장소를 모아 «설명이 붙은» 미리보기 6장 — 목록만 있는 페이지가 되지 않게.
+      const picks = ready.map(m => m.P.find(p => String(p.ov || '').length >= 160 && p.img)).filter(Boolean).slice(0, 6);
+      const preview = picks.length >= 4 ? `<h2 class="sec">${esc(ct.pv)}</h2>
+<ul class="ic-list">${picks.map(p => `<li class="ic-item">
+<div class="ic-h"><b>${esc(p.title)}</b>${p.ko ? `<span class="ic-ko">${esc(p.ko)}</span>` : ''}</div>
+<p class="ic-meta">${esc(String(p.ov).slice(0, 180))}…</p>
+${cpx(t.addr, p.addrKo)}
+</li>`).join('')}</ul>` : '';
+      const body = `<main><div class="wrap">${CSS}
+<p class="ic-crumb"><a href="/${lang}/">${lang === 'ja' ? 'ホーム' : lang === 'zh' ? '首页' : lang === 'tw' ? '首頁' : lang === 'es' ? 'Inicio' : 'Home'}</a> › ${esc(ct.t)}</p>
+<h1 class="ic-h1">${esc(ct.h)}</h1>
+<p class="ic-lead">${ct.l(ready.length)}</p>
+<div class="ic-why"><h2>${esc(t.whyT)}</h2><p>${t.why}</p></div>
+<ul class="ic-list">${cards}</ul>
+${preview}
+<p class="ic-src"><b>${esc(t.srcT)}</b> — ${esc(t.src)}</p>
+</div></main>`;
+      writePage(`${lang}/cities`, layout(
+        `${ct.h} | Chukjemoa`, ct.l(ready.length).replace(/<[^>]+>/g, ''),
+        `/${lang}/cities/`, body, { lang }));
+      urls.push(`/${lang}/cities/`);
+    }
   }
   }   // pass 1(통과 여부 수집) → pass 2(렌더)
 
@@ -656,4 +717,7 @@ document.addEventListener('click',function(e){
 });}
 </script>`;
 
-module.exports = { build };
+// ⚠️ 도시 표기는 여기가 유일한 출처다 — build.js 가 홈 카드를 그릴 때도 이걸 쓴다.
+//    같은 이름을 두 곳에 적어 두면 한쪽만 고쳐져 조용히 어긋난다.
+const cityLabel = (lang, key) => (T[lang] && T[lang].city[key]) || key;
+module.exports = { build, cityLabel };

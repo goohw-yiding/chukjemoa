@@ -48,6 +48,15 @@ a{color:inherit;text-decoration:none}
 header{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid #e4f2ee;padding:13px 0}
 header .wrap{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
 .logo{font-size:1.35rem;font-weight:900;color:#0f9d8f}
+/* 🌏 외국어 페이지의 로고 — 한글 「축제모아」만 있으면 외국인은 읽지 못한다. 로마자를 나란히 둔다(브랜드는 한글이 정본). */
+.logo-rom{font-size:.86rem;font-weight:800;color:#5eb8ad;letter-spacing:.02em;margin-left:2px}
+/* 🏙 외국어 홈의 숫자 타일·도시 카드 */
+.ih-stat{display:flex;flex-wrap:wrap;gap:10px;margin:16px 0 4px}
+.ih-stat div{background:#f4faf8;border:1.5px solid #dcefeb;border-radius:12px;padding:11px 17px;font-size:.85rem;color:#0a6c63;font-weight:700}
+.ih-stat b{display:block;font-size:1.3rem;color:#0a6c63}
+.ih-cities{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));margin:10px 0}
+.ih-cities a{display:block;background:#fff;border:1.5px solid #e2ecea;border-radius:12px;padding:13px 15px;text-decoration:none;font-weight:800;color:#0a6c63}
+.ih-cities a span{display:block;font-size:.8rem;color:#9aa3af;font-weight:700;margin-top:2px}
 nav a{margin-left:20px;font-weight:600;font-size:.95rem;color:#4b5563;transition:color .15s}
 nav a:hover{color:#0f9d8f}
 .hero{position:relative;overflow:hidden;background:url('/img/hero.webp') center/cover;color:#fff;text-align:center}
@@ -461,17 +470,43 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 </head>
 <body>
 <header><div class="wrap">
-<a class="logo" href="/es/">🎪 축제모아</a>
+<a class="logo" href="/es/">🎪 축제모아 <span class="logo-rom">Chukjemoa</span></a>
 
-<button class="navtoggle" id="navtoggle" aria-label="menu" aria-expanded="false">☰</button><nav id="mainnav"><a href="/es/">Inicio</a><a href="/es/calendar/">🗓️ Cuándo ir</a><a href="/es/closed/">🚪 Qué cierra</a><a href="/es/access/">♿ Accesibilidad</a><a href="/es/search/">🔎 Buscar festivales</a><a href="/es/jangteo/">🏮 Mercados</a><a href="/es/trend/">🔥 Rankings</a><a href="/es/trip/">🧳 Según tu visita</a><a href="/">🇰🇷 한국어</a></nav>
+<button class="navtoggle" id="navtoggle" aria-label="menu" aria-expanded="false">☰</button><nav id="mainnav">
+<a href="/es/">Inicio</a>
+<a class="nhot" href="/es/cities/">🏙 Ciudades</a>
+<div class="ndrop"><button class="nbtn" type="button">🎪 Festivales<span class="arw">▼</span></button><div class="nmenu">
+<a href="/es/search/">🔎 Buscar festivales</a><a href="/es/calendar/">🗓️ Cuándo ir</a><a href="/es/trend/">🔥 Rankings</a></div></div>
+<div class="ndrop"><button class="nbtn" type="button">🧭 Antes de ir<span class="arw">▼</span></button><div class="nmenu">
+<a href="/es/closed/">🚪 Qué cierra</a><a href="/es/access/">♿ Accesibilidad</a><a href="/es/trip/">🧳 Según tu visita</a><a href="/es/chuseok/">🌕 Chuseok</a></div></div>
+<div class="ndrop"><button class="nbtn" type="button">🗺️ Más<span class="arw">▼</span></button><div class="nmenu">
+<a href="/es/jangteo/">🏮 Mercados tradicionales</a></div></div>
+<a href="/">🇰🇷 한국어</a></nav>
 </div></header>
 <main><div class="wrap">
 <div class="hero" style="background:linear-gradient(135deg,#0f9d8f,#2dd4bf);border-radius:18px;overflow:hidden;margin:14px 0">
 <div class="hero-inner" style="background:rgba(15,60,55,.18);padding:64px 20px">
 <h1>Festivales y Mercados Tradicionales de Corea</h1>
 <p>Busca festivales por toda Corea del Sur por fecha y región — datos oficiales de la Organización de Turismo de Corea.</p>
-<div class="hero-cta"><a class="cta1" href="/es/search/">Ver todos los festivales →</a></div>
+<div class="hero-cta"><a class="cta1" href="/es/search/">Ver todos los festivales →</a><a class="cta2" href="/es/cities/" style="background:rgba(255,255,255,.92);color:#0a6c63">🏙 A dónde ir — por ciudad</a></div>
 </div></div>
+<div class="ih-stat">
+<div><b>259</b>festivales</div>
+<div><b>11</b>ciudades</div>
+<div><b>409</b>días de mercado</div>
+<div><b>2,093</b>lugares en español</div>
+</div><h2 class="sec">A dónde ir — por ciudad</h2>
+<p style="color:#4b5563;line-height:1.75;margin-bottom:10px">11 ciudades, cada una con lugares que visitar, dónde comer y dormir — y <b>la dirección en coreano para pegar en el mapa</b>.</p>
+<div class="ih-cities"><a href="/es/seoul/">Seúl<span>seoul</span></a><a href="/es/busan/">Busan<span>busan</span></a><a href="/es/jeju/">Jeju<span>jeju</span></a><a href="/es/gyeongju/">Gyeongju<span>gyeongju</span></a><a href="/es/incheon/">Incheon<span>incheon</span></a><a href="/es/yeosu/">Yeosu<span>yeosu</span></a><a href="/es/suwon/">Suwon<span>suwon</span></a><a href="/es/gangneung/">Gangneung<span>gangneung</span></a><a href="/es/sokcho/">Sokcho<span>sokcho</span></a><a href="/es/jeonju/">Jeonju<span>jeonju</span></a><a href="/es/daegu/">Daegu<span>daegu</span></a></div>
+<p style="margin:8px 0 20px"><a href="/es/cities/" style="color:#0c7d72;font-weight:800">Ver todas las ciudades →</a></p><h2 class="sec">Lugares que vale la pena visitar</h2>
+<p style="color:#4b5563;line-height:1.75;margin-bottom:10px">Descritos en español por la Organización de Turismo de Corea — y cada uno con la dirección en coreano lista para pegar en NAVER Map o KakaoMap.</p>
+<div class="grid"><div class="card"><div class="thumb"><img src="https://tong.visitkorea.or.kr/cms/resource/86/2526386_image2_1.jpg" alt="63 Square" loading="lazy"></div><div class="card-body"><h3>63 Square</h3><p class="loc">📍 서울특별시 영등포구 63로 50</p><p class="desc">El edificio 63 Square, el rascacielos m s alto de los alrededores del r o Hangang, es un complejo tur stico con una torre de observaci n y una gran variedad de instalaciones. Se encuentra junto a la r</p></div></div><div class="card"><div class="thumb"><img src="https://tong.visitkorea.or.kr/cms/resource/73/1599773_image2_1.jpg" alt="Academia Neoconfuciana Hapho Seowon" loading="lazy"></div><div class="card-body"><h3>Academia Neoconfuciana Hapho Seowon</h3><p class="loc">📍 세종특별자치시 원합강1길 262-6</p><p class="desc">Hapho Seowon es el lugar en el que las tablas de Munseonggong An Hyang, el precursor del confucianismo Sung, de la era Goryeo, están consagradas. El lugar fue construido en 1716 como el santuario Anja</p></div></div><div class="card"><div class="thumb"><img src="https://tong.visitkorea.or.kr/cms/resource/36/201136_image2_1.jpg" alt="Academia Neoconfuciana Mukgye Seowon y Residencia Mukgye del Clan Kim de Andong" loading="lazy"></div><div class="card-body"><h3>Academia Neoconfuciana Mukgye Seowon y Residencia Mukgye del Clan Kim de Andong</h3><p class="loc">📍 경상북도 안동시 길안면 충효로 1736-5</p><p class="desc">La Academia Neoconfuciana Mukgye Seowon fue fundada en 1687 en honor a Kim Gye-haeng y Ok Go, dos funcionarios del per odo Joseon. Despu s de la abolici n del r gimen de academias neocofuncianas por e</p></div></div><div class="card"><div class="thumb"><img src="https://tong.visitkorea.or.kr/cms/resource/57/3048057_image2_1.jpg" alt="Academia Neoconfuciana Simgok Seowon" loading="lazy"></div><div class="card-body"><h3>Academia Neoconfuciana Simgok Seowon</h3><p class="loc">📍 경기도 용인시 수지구 심곡로 16-9 (상현동)</p><p class="desc">La Academia Neoconfuciana Simgok Seowon, dedicada a Jeongam Jo Gwangjo (1482-1519), l der de la facci n Sirim durante el reinado del rey Jungjong de la dinast a Joseon, presenta la estructura t pica d</p></div></div><div class="card"><div class="thumb"><img src="https://tong.visitkorea.or.kr/cms/resource/89/2675689_image2_1.jpg" alt="Academia Neoconfuciana Wolbong Seowon" loading="lazy"></div><div class="card-body"><h3>Academia Neoconfuciana Wolbong Seowon</h3><p class="loc">📍 광주광역시 광산구 광곡길 133</p><p class="desc">La Academia Neoconfuciana Wolbong Seowon, ubicada en Gwangsan-gu, de la ciudad de Jeonnam-Gwangju, fue construida en honor a las virtudes y las enseñanzas de Gobong Gi Daeseung, un erudito confuciano </p></div></div><div class="card"><div class="thumb"><img src="https://tong.visitkorea.or.kr/cms/resource/00/3100000_image2_1.jpg" alt="Acantilado Morundae en Jeongseon" loading="lazy"></div><div class="card-body"><h3>Acantilado Morundae en Jeongseon</h3><p class="loc">📍 강원특별자치도 정선군 화암면 약수길 1330</p><p class="desc">El nombre Morundae significa literalmente "acantilado donde desaparecen las nubes". La punta del acantilado est adornada con tres ejemplares de pinos de 500 a os de edad. La leyenda cuenta que los dio</p></div></div></div><h2 class="sec">Antes de ir</h2>
+<p style="color:#4b5563;line-height:1.75;margin-bottom:10px">Las tres cosas que más preguntan — y las tres sobre las que tenemos datos.</p>
+<div class="ih-cities">
+<a href="/es/closed/">🚪 Qué cierra</a>
+<a href="/es/access/">♿ Accesibilidad</a>
+<a href="/es/trip/">🧳 Según tu visita</a>
+</div>
 <h2 class="sec">Planifica tu viaje en torno a los festivales de Corea</h2>
 <p style="color:#4b5563;line-height:1.75;margin-bottom:14px">Corea del Sur celebra cientos de festivales cada año — festivales de barro y agua en verano, fuegos artificiales y follaje en otoño, y festivales de hielo y luces en invierno. Chukjemoa te permite buscar más de 259 festivales por fecha y región, leer un resumen oficial y acceder directamente al sitio oficial de cada festival. Todos los horarios y descripciones provienen de la Organización de Turismo de Corea (TourAPI).</p>
 <h2 class="sec">Upcoming festivals</h2>

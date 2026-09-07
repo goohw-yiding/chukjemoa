@@ -1156,6 +1156,15 @@ a{color:inherit;text-decoration:none}
 header{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid #e4f2ee;padding:13px 0}
 header .wrap{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
 .logo{font-size:1.35rem;font-weight:900;color:#0f9d8f}
+/* 🌏 외국어 페이지의 로고 — 한글 「축제모아」만 있으면 외국인은 읽지 못한다. 로마자를 나란히 둔다(브랜드는 한글이 정본). */
+.logo-rom{font-size:.86rem;font-weight:800;color:#5eb8ad;letter-spacing:.02em;margin-left:2px}
+/* 🏙 외국어 홈의 숫자 타일·도시 카드 */
+.ih-stat{display:flex;flex-wrap:wrap;gap:10px;margin:16px 0 4px}
+.ih-stat div{background:#f4faf8;border:1.5px solid #dcefeb;border-radius:12px;padding:11px 17px;font-size:.85rem;color:#0a6c63;font-weight:700}
+.ih-stat b{display:block;font-size:1.3rem;color:#0a6c63}
+.ih-cities{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));margin:10px 0}
+.ih-cities a{display:block;background:#fff;border:1.5px solid #e2ecea;border-radius:12px;padding:13px 15px;text-decoration:none;font-weight:800;color:#0a6c63}
+.ih-cities a span{display:block;font-size:.8rem;color:#9aa3af;font-weight:700;margin-top:2px}
 nav a{margin-left:20px;font-weight:600;font-size:.95rem;color:#4b5563;transition:color .15s}
 nav a:hover{color:#0f9d8f}
 .hero{position:relative;overflow:hidden;background:url('/img/hero.webp') center/cover;color:#fff;text-align:center}
@@ -1573,6 +1582,22 @@ const KO_NAV = `<button class="navtoggle" id="navtoggle" aria-label="메뉴 열�
 <a href="/course/#c-form">🛠️ 내 조건으로 짜기</a>
 <a href="/trip-cost/">🧮 여행비용 계산기</a>
 </div></div>
+<div class="ndrop"><button class="nbtn" type="button">🏙 도시<span class="arw">▼</span></button><div class="nmenu">
+<a href="/seoul/">🏙 서울</a>
+<a href="/busan/">🌊 부산</a>
+<a href="/jeju/">🍊 제주</a>
+<a href="/incheon/">⚓ 인천</a>
+<a href="/daegu/">🌆 대구</a>
+<a href="/gyeongju/">🏛 경주</a>
+<a href="/gangneung/">🌅 강릉</a>
+<a href="/sokcho/">🏔 속초</a>
+<a href="/jeonju/">🏘 전주</a>
+<a href="/cheongju/">🏞 청주</a>
+<a href="/suwon/">🏯 수원</a>
+<a href="/yeosu/">🌊 여수</a>
+<a href="/tongyeong/">🐚 통영</a>
+<a href="/geoje/">⛵ 거제</a>
+</div></div>
 <a class="nhot" href="/hot/">🔥 요즘 어디 가지</a>
 <div class="ndrop"><button class="nbtn" type="button">🌐<span class="arw">▼</span></button><div class="nmenu">
 <a href="/en/">English</a>
@@ -1794,13 +1819,54 @@ function layout(title, desc, urlPath, content, opts) {
   const forceNoindex = false;
   const alts = (opts.alternates || []).map(a => `<link rel="alternate" hreflang="${a.hreflang}" href="${SITE}${a.href}">`).join('\n');
   const logoHref = lang === 'ko' ? '/' : '/' + lang + '/';
+  // 🌏 2026-09-07 재구성 — 외국어 내비를 «드롭다운 4개»로 묶었다.
+  //   왜: 항목이 11~12개라 1280px 에서도 **두 줄로 깨져** 있었다(한국어는 드롭다운 4개로 한 줄).
+  //   ⭐ 그리고 더 큰 문제 — **도시 페이지 15장이 홈에도 내비에도 없었다.**
+  //      /en/ 홈 본문에서 나가는 링크가 `/en/search/` **단 1개**였다(한국어 홈은 69개).
+  //      오늘 만든 `/en/gyeongju/`(18,611자) 같은 «가장 두꺼운 외국어 콘텐츠»가 사실상 고아였다.
+  //   ⚠️ 도시를 내비에 «직접» 나열하면 언어마다 없는 도시가 생겨 끊긴 링크가 난다(`/tw/seoul/` 로 4건 낸 적 있다).
+  //      → `/{lang}/cities/` 목록 페이지 한 장을 두고 내비는 거기로만 보낸다. 링크가 절대 안 깨진다.
   const NAVS = {
-    // ⚠️ 2026-08-10: 외국어 내비에 실전 3종(언제 가나·문 닫는 날·무장애)을 **앞쪽에** 넣었다.
-    //    외국인이 오기 전에 제일 먼저 찾는 게 그것인데, 축제 검색보다 뒤에 두면 안 눌린다.
-    en: `<nav><a href="/en/">Home</a><a href="/en/calendar/">🗓️ When to go</a><a href="/en/closed/">🚪 What closes</a><a href="/en/access/">♿ Barrier-free</a><a href="/en/festival/">🎪 All festivals</a><a href="/en/search/">🔎 Search</a><a href="/en/mountains/">⛰️ Mountains</a><a href="/en/jangteo/">🏮 Markets</a><a href="/en/blog/">📝 Blog</a><a href="/en/cafe/">☕ Cafés</a><a href="/en/trend/">🔥 Rankings</a><a href="/en/trip/">🧳 1st/2nd/3rd visit</a><a href="/">🇰🇷 한국어</a></nav>`,
-    ja: `<nav><a href="/ja/">ホーム</a><a href="/ja/calendar/">🗓️ いつ行くか</a><a href="/ja/closed/">🚪 休む日</a><a href="/ja/access/">♿ バリアフリー</a><a href="/ja/festival/">🎪 祭り一覧</a><a href="/ja/search/">🔎 検索</a><a href="/ja/jangteo/">🏮 五日市</a><a href="/ja/mountains/">⛰️ 名山</a><a href="/ja/cafe/">☕ カフェ</a><a href="/ja/trend/">🔥 人気ランキング</a><a href="/ja/trip/">🧳 何回目の訪韓</a><a href="/">🇰🇷 한국어</a></nav>`,
-    es: `<nav><a href="/es/">Inicio</a><a href="/es/calendar/">🗓️ Cuándo ir</a><a href="/es/closed/">🚪 Qué cierra</a><a href="/es/access/">♿ Accesibilidad</a><a href="/es/search/">🔎 Buscar festivales</a><a href="/es/jangteo/">🏮 Mercados</a><a href="/es/trend/">🔥 Rankings</a><a href="/es/trip/">🧳 Según tu visita</a><a href="/">🇰🇷 한국어</a></nav>`,
-    zh: `<nav><a href="/zh/">首页</a><a href="/zh/calendar/">🗓️ 什么时候去</a><a href="/zh/closed/">🚪 哪天关门</a><a href="/zh/access/">♿ 无障碍</a><a href="/zh/search/">🔎 庆典搜索</a><a href="/zh/jangteo/">🏮 五日集市</a><a href="/zh/mountains/">⛰️ 名山</a><a href="/zh/cafe/">☕ 咖啡馆</a><a href="/zh/trend/">🔥 人气排行</a><a href="/zh/trip/">🧳 第几次来韩国</a><a href="/">🇰🇷 한국어</a></nav>`,
+    en: `<nav>
+<a href="/en/">Home</a>
+<a class="nhot" href="/en/cities/">🏙 Cities</a>
+<div class="ndrop"><button class="nbtn" type="button">🎪 Festivals<span class="arw">▼</span></button><div class="nmenu">
+<a href="/en/search/">🔎 Search festivals</a><a href="/en/festival/">📄 All festivals</a><a href="/en/calendar/">🗓️ When to go</a><a href="/en/trend/">🔥 Rankings</a><a href="/en/blog/">📝 Blog</a></div></div>
+<div class="ndrop"><button class="nbtn" type="button">🧭 Before you go<span class="arw">▼</span></button><div class="nmenu">
+<a href="/en/closed/">🚪 What closes when</a><a href="/en/access/">♿ Barrier-free</a><a href="/en/trip/">🧳 1st / 2nd / 3rd visit</a><a href="/en/chuseok/">🌕 Chuseok (Korean Thanksgiving)</a></div></div>
+<div class="ndrop"><button class="nbtn" type="button">🗺️ More<span class="arw">▼</span></button><div class="nmenu">
+<a href="/en/jangteo/">🏮 Traditional markets</a><a href="/en/mountains/">⛰️ Mountains</a><a href="/en/cafe/">☕ Cafés</a></div></div>
+<a href="/">🇰🇷 한국어</a></nav>`,
+    ja: `<nav>
+<a href="/ja/">ホーム</a>
+<a class="nhot" href="/ja/cities/">🏙 都市別</a>
+<div class="ndrop"><button class="nbtn" type="button">🎪 お祭り<span class="arw">▼</span></button><div class="nmenu">
+<a href="/ja/search/">🔎 検索</a><a href="/ja/festival/">📄 祭り一覧</a><a href="/ja/calendar/">🗓️ いつ行くか</a><a href="/ja/trend/">🔥 人気ランキング</a></div></div>
+<div class="ndrop"><button class="nbtn" type="button">🧭 行く前に<span class="arw">▼</span></button><div class="nmenu">
+<a href="/ja/closed/">🚪 休む日</a><a href="/ja/access/">♿ バリアフリー</a><a href="/ja/trip/">🧳 何回目の訪韓</a><a href="/ja/chuseok/">🌕 秋夕（チュソク）</a></div></div>
+<div class="ndrop"><button class="nbtn" type="button">🗺️ その他<span class="arw">▼</span></button><div class="nmenu">
+<a href="/ja/jangteo/">🏮 五日市</a><a href="/ja/mountains/">⛰️ 名山</a><a href="/ja/cafe/">☕ カフェ</a></div></div>
+<a href="/">🇰🇷 한국어</a></nav>`,
+    es: `<nav>
+<a href="/es/">Inicio</a>
+<a class="nhot" href="/es/cities/">🏙 Ciudades</a>
+<div class="ndrop"><button class="nbtn" type="button">🎪 Festivales<span class="arw">▼</span></button><div class="nmenu">
+<a href="/es/search/">🔎 Buscar festivales</a><a href="/es/calendar/">🗓️ Cuándo ir</a><a href="/es/trend/">🔥 Rankings</a></div></div>
+<div class="ndrop"><button class="nbtn" type="button">🧭 Antes de ir<span class="arw">▼</span></button><div class="nmenu">
+<a href="/es/closed/">🚪 Qué cierra</a><a href="/es/access/">♿ Accesibilidad</a><a href="/es/trip/">🧳 Según tu visita</a><a href="/es/chuseok/">🌕 Chuseok</a></div></div>
+<div class="ndrop"><button class="nbtn" type="button">🗺️ Más<span class="arw">▼</span></button><div class="nmenu">
+<a href="/es/jangteo/">🏮 Mercados tradicionales</a></div></div>
+<a href="/">🇰🇷 한국어</a></nav>`,
+    zh: `<nav>
+<a href="/zh/">首页</a>
+<a class="nhot" href="/zh/cities/">🏙 城市</a>
+<div class="ndrop"><button class="nbtn" type="button">🎪 庆典<span class="arw">▼</span></button><div class="nmenu">
+<a href="/zh/search/">🔎 庆典搜索</a><a href="/zh/calendar/">🗓️ 什么时候去</a><a href="/zh/trend/">🔥 人气排行</a></div></div>
+<div class="ndrop"><button class="nbtn" type="button">🧭 出发前<span class="arw">▼</span></button><div class="nmenu">
+<a href="/zh/closed/">🚪 哪天关门</a><a href="/zh/access/">♿ 无障碍</a><a href="/zh/trip/">🧳 第几次来韩国</a><a href="/zh/chuseok/">🌕 中秋（秋夕）</a></div></div>
+<div class="ndrop"><button class="nbtn" type="button">🗺️ 更多<span class="arw">▼</span></button><div class="nmenu">
+<a href="/zh/jangteo/">🏮 五日集市</a><a href="/zh/mountains/">⛰️ 名山</a><a href="/zh/cafe/">☕ 咖啡馆</a></div></div>
+<a href="/">🇰🇷 한국어</a></nav>`,
     // ⚠️ 2026-09-01 정정 — 예전 주석은 「번체만 오일장, 간체엔 없음(언어별 무기가 다르다)」였다.
     //    그런데 **페이지 생성과 사이트맵 등재는 5개 언어 다 하고 있었다.** 결과적으로
     //    /es/ /ja/ /zh/ 오일장이 「사이트맵엔 제출, 사이트 안에선 도달 불가」한 고아 페이지였다
@@ -1809,7 +1875,16 @@ function layout(title, desc, urlPath, content, opts) {
     //    90일 실측: 5개 언어 오일장 전부 클릭 0(노출 tw 30·en 15·ja 8·zh 6·es 0).
     //    어느 쪽이든 단기 효과는 없지만, **링크 한 줄 비용이 0이고 페이지는 이미 있다.**
     //    외국어 전략이 「공유로 온 사람이 둘러보는 것」이라면 내비가 유일한 발견 경로다. → 5개 언어 모두 올린다.
-    tw: `<nav><a href="/tw/">首頁</a><a href="/tw/calendar/">🗓️ 什麼時候去</a><a href="/tw/closed/">🚪 哪天休息</a><a href="/tw/access/">♿ 無障礙</a><a href="/tw/search/">🔎 慶典搜尋</a><a href="/tw/jangteo/">🏮 五日市集</a><a href="/tw/mountains/">⛰️ 名山</a><a href="/tw/cafe/">☕ 咖啡廳</a><a href="/tw/trend/">🔥 人氣排行</a><a href="/tw/trip/">🧳 第幾次來韓國</a><a href="/">🇰🇷 한국어</a></nav>`
+    tw: `<nav>
+<a href="/tw/">首頁</a>
+<a class="nhot" href="/tw/cities/">🏙 城市</a>
+<div class="ndrop"><button class="nbtn" type="button">🎪 慶典<span class="arw">▼</span></button><div class="nmenu">
+<a href="/tw/search/">🔎 慶典搜尋</a><a href="/tw/calendar/">🗓️ 什麼時候去</a><a href="/tw/trend/">🔥 人氣排行</a></div></div>
+<div class="ndrop"><button class="nbtn" type="button">🧭 出發前<span class="arw">▼</span></button><div class="nmenu">
+<a href="/tw/closed/">🚪 哪天休息</a><a href="/tw/access/">♿ 無障礙</a><a href="/tw/trip/">🧳 第幾次來韓國</a><a href="/tw/chuseok/">🌕 中秋（秋夕）</a></div></div>
+<div class="ndrop"><button class="nbtn" type="button">🗺️ 更多<span class="arw">▼</span></button><div class="nmenu">
+<a href="/tw/jangteo/">🏮 五日市集</a><a href="/tw/mountains/">⛰️ 名山</a><a href="/tw/cafe/">☕ 咖啡廳</a></div></div>
+<a href="/">🇰🇷 한국어</a></nav>`
   };
   const nav = lang === 'ko'
     ? KO_NAV
@@ -1900,7 +1975,7 @@ ${opts.jsonld || ''}
 </head>
 <body>
 <header><div class="wrap">
-<a class="logo" href="${logoHref}">🎪 ${SITE_NAME}</a>
+<a class="logo" href="${logoHref}">🎪 ${SITE_NAME}${lang === 'ko' ? '' : ` <span class="logo-rom">Chukjemoa</span>`}</a>
 ${lang === 'ko' ? `<div class="hsrch" id="hsrch"><input type="search" id="hsrch-in" placeholder="축제·코스·걷기길 검색" autocomplete="off" aria-label="사이트 검색"><div class="hres" id="hsrch-res"></div></div>` : ''}
 ${nav}
 </div></header>
@@ -2003,6 +2078,93 @@ for (const cfg of CITY_CFGS) {
   console.log(r.log);
 }
 const INTL_CITY_URLS = require('./intl-city.js').build({ ROOT, layout, writePage, SITE, TODAY, WX });
+// 🏙 2026-09-07 — 외국어 홈에 붙일 «실제로 만들어진» 도시 목록.
+//   ⚠️ 추측하지 않는다 — 방금 만들어진 URL 에서 뽑는다. 게이트를 다시 계산하면 조용히 어긋난다.
+const CITY_LABEL = require('./intl-city.js').cityLabel;
+const INTL_CITY_BY_LANG = {};
+INTL_CITY_URLS.forEach(u => {
+  const m = String(u).match(/^\/(en|ja|zh|tw|es)\/([a-z]+)\/$/);
+  if (m && m[2] !== 'cities') (INTL_CITY_BY_LANG[m[1]] = INTL_CITY_BY_LANG[m[1]] || []).push(m[2]);
+});
+// 외국어 홈의 새 섹션 문구. ⚠️ 숫자는 전부 인자로 받는다(문장에 박으면 데이터가 바뀔 때 조용히 거짓말이 된다).
+const HOME_T = {
+  en: { cityH: 'Where to go — by city', cityP: (n) => `${n} cities, each with places to go, where to eat and sleep — and the <b>Korean address you can paste into a map app</b>.`, all: 'See all cities →',
+    s1: 'festivals', s2: 'cities', s3: 'market days', s4: 'places in English', practH: 'Before you go', practP: 'The three things visitors ask first — and the three we actually have data on.',
+    pc: 'What closes when', pa: 'Barrier-free travel', pt: '1st / 2nd / 3rd visit',
+    placeH: 'Places worth going', placeP: 'Described in English by the Korea Tourism Organization — and each one comes with the Korean address you can paste into NAVER Map or KakaoMap.' },
+  ja: { cityH: '都市別に見る', cityP: (n) => `${n}都市。行く場所・食べる所・泊まる所を都市ごとに、すべてに<b>地図に貼り付けられる韓国語の住所</b>付きで。`, all: '都市一覧を見る →',
+    s1: 'お祭り', s2: '都市', s3: '五日市の開催日', s4: '日本語の場所', practH: '行く前に', practP: '来る前にいちばん聞かれる三つ — そして私たちがデータを持っている三つです。',
+    pc: '休む日', pa: 'バリアフリー', pt: '何回目の訪韓か',
+    placeH: '行ってみる価値のある場所', placeP: '韓国観光公社が日本語で案内している場所です。すべてに、NAVERマップやカカオマップにそのまま貼り付けられる韓国語の住所を付けました。' },
+  zh: { cityH: '按城市浏览', cityP: (n) => `${n}个城市，每个都有可去的地方、吃饭和住宿，并附<b>可粘贴到地图的韩文地址</b>。`, all: '查看所有城市 →',
+    s1: '庆典', s2: '城市', s3: '集市日', s4: '中文地点', practH: '出发前', practP: '来韩国前最常被问的三件事 —— 也是我们真正有数据的三件事。',
+    pc: '哪天关门', pa: '无障碍', pt: '第几次来韩国',
+    placeH: '值得一去的地方', placeP: '韩国观光公社以中文介绍的地点。每一条都附上可直接粘贴到NAVER地图或Kakao地图的韩文地址。' },
+  tw: { cityH: '按城市瀏覽', cityP: (n) => `${n}個城市，每個都有可去的地方、吃飯和住宿，並附<b>可貼到地圖的韓文地址</b>。`, all: '查看所有城市 →',
+    s1: '慶典', s2: '城市', s3: '市集日', s4: '中文地點', practH: '出發前', practP: '來韓國前最常被問的三件事 —— 也是我們真正有資料的三件事。',
+    pc: '哪天休息', pa: '無障礙', pt: '第幾次來韓國',
+    placeH: '值得一去的地方', placeP: '韓國觀光公社以中文介紹的地點。每一條都附上可直接貼到NAVER地圖或Kakao地圖的韓文地址。（慶典的詳細介紹在繁體中文的官方資料中沒有提供，因此我們不會自行編寫。）' },
+  es: { cityH: 'A dónde ir — por ciudad', cityP: (n) => `${n} ciudades, cada una con lugares que visitar, dónde comer y dormir — y <b>la dirección en coreano para pegar en el mapa</b>.`, all: 'Ver todas las ciudades →',
+    s1: 'festivales', s2: 'ciudades', s3: 'días de mercado', s4: 'lugares en español', practH: 'Antes de ir', practP: 'Las tres cosas que más preguntan — y las tres sobre las que tenemos datos.',
+    pc: 'Qué cierra', pa: 'Accesibilidad', pt: 'Según tu visita',
+    placeH: 'Lugares que vale la pena visitar', placeP: 'Descritos en español por la Organización de Turismo de Corea — y cada uno con la dirección en coreano lista para pegar en NAVER Map o KakaoMap.' }
+};
+// 그 언어로 «개요가 실제로 채워진» 장소 수. ⚠️ 전체 건수가 아니라 «보여줄 수 있는 것»만 센다.
+function intlPlaceCount(lang) {
+  try {
+    const d = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', `places_${lang}.json`), 'utf8'));
+    const a = Array.isArray(d) ? d : (d.rows || []);
+    return a.filter(r => String(r.ov || '').length >= 120 && r.addrKo).length;
+  } catch (e) { return 0; }
+}
+// 🏙 홈에 넣을 «도시 + 숫자 + 실전정보» 블록. 5개 언어가 같은 함수를 쓴다.
+function intlHomeBlocks(lang, festN, placeN) {
+  const H = HOME_T[lang]; if (!H) return '';
+  const keys = INTL_CITY_BY_LANG[lang] || [];
+  // ⚠️ 오일장 파일 이름이 회차마다 달라진 적이 있다 — 있는 것 하나를 찾아 쓰고, 없으면 «타일 자체를 안 만든다».
+  const jangteoN = (() => {
+    for (const f of ['markets_std.json', 'markets.json', 'jangteo.json']) {
+      try { const d = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', f), 'utf8')); const a = Array.isArray(d) ? d : (d.rows || []); if (a.length > 50) return a.length; } catch (e) { }
+    }
+    return 0;
+  })();
+  const stat = `<div class="ih-stat">
+<div><b>${festN.toLocaleString()}</b>${esc(H.s1)}</div>
+${keys.length ? `<div><b>${keys.length}</b>${esc(H.s2)}</div>` : ''}
+${jangteoN ? `<div><b>${jangteoN.toLocaleString()}</b>${esc(H.s3)}</div>` : ''}
+${placeN ? `<div><b>${placeN.toLocaleString()}</b>${esc(H.s4)}</div>` : ''}
+</div>`;
+  const cities = keys.length ? `<h2 class="sec">${esc(H.cityH)}</h2>
+<p style="color:#4b5563;line-height:1.75;margin-bottom:10px">${H.cityP(keys.length)}</p>
+<div class="ih-cities">${keys.map(k => `<a href="/${lang}/${k}/">${esc(CITY_LABEL(lang, k))}<span>${esc(k)}</span></a>`).join('')}</div>
+<p style="margin:8px 0 20px"><a href="/${lang}/cities/" style="color:#0c7d72;font-weight:800">${esc(H.all)}</a></p>` : '';
+  // 📍 「가 볼 곳」 미리보기 — 우리 외국어 콘텐츠에서 가장 좋은 재료(공식 번역 개요 + 붙여넣을 한글주소)다.
+  // ⭐ 이게 필요한 실제 이유: **번체(ChtService2)는 축제 «개요»를 아예 주지 않는다**(실측 0건).
+  //    그래서 /tw/ 홈은 카드 24장이 제목만 있는 895자짜리 얇은 페이지였다.
+  //    소스에 없는 걸 지어내는 대신, **있는 재료(장소 2,147곳)로 홈을 채운다.**
+  const places = (() => {
+    let a = [];
+    try {
+      const d = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', `places_${lang}.json`), 'utf8'));
+      a = (Array.isArray(d) ? d : (d.rows || []))
+        .filter(r => String(r.ov || '').length >= 160 && r.addrKo && r.img)
+        .sort(() => 0).slice(0, 6);
+    } catch (e) { return ''; }
+    if (a.length < 4) return '';
+    // ⚠️ 카드는 반드시 ssrCards 로 만든다 — 클래스명을 손으로 적으면 사이트 CSS와 어긋나 «모양만 다른 카드»가 생긴다.
+    return `<h2 class="sec">${esc(H.placeH)}</h2>
+<p style="color:#4b5563;line-height:1.75;margin-bottom:10px">${esc(H.placeP)}</p>
+<div class="grid">${ssrCards(a, 6, p => ({ title: p.title, img: p.img, loc: p.addrKo, desc: p.ov }))}</div>`;
+  })();
+  const pract = `<h2 class="sec">${esc(H.practH)}</h2>
+<p style="color:#4b5563;line-height:1.75;margin-bottom:10px">${esc(H.practP)}</p>
+<div class="ih-cities">
+<a href="/${lang}/closed/">🚪 ${esc(H.pc)}</a>
+<a href="/${lang}/access/">♿ ${esc(H.pa)}</a>
+<a href="/${lang}/trip/">🧳 ${esc(H.pt)}</a>
+</div>`;
+  return { stat, cities, places, pract };
+}
 const MAP_URLS = require('./map.js').build({ ROOT, layout, writePage, SITE_NAME, buyBox, TODAY });
 
 // ---------- 🌐 외국어 실전 정보 (/{lang}/closed·access·calendar) ----------
@@ -4099,8 +4261,9 @@ document.getElementById('fCount').textContent='Loading...';
 <div class="hero-inner" style="background:rgba(15,60,55,.18);padding:64px 20px">
 <h1>Korea Festivals &amp; Traditional Markets</h1>
 <p>Search festivals across South Korea by date and region — official data from the Korea Tourism Organization.</p>
-<div class="hero-cta"><a class="cta1" href="/en/search/">Browse all festivals →</a></div>
+<div class="hero-cta"><a class="cta1" href="/en/search/">Browse all festivals →</a><a class="cta2" href="/en/cities/" style="background:rgba(255,255,255,.92);color:#0a6c63">🏙 Browse by city →</a></div>
 </div></div>
+${(() => { const B = intlHomeBlocks('en', apiFestsEn.length, intlPlaceCount('en')); return B ? B.stat + B.cities + B.places + B.pract : ''; })()}
 <h2 class="sec">Plan your trip around Korea's festivals</h2>
 <p style="color:#4b5563;line-height:1.75;margin-bottom:14px">South Korea hosts hundreds of festivals every year — summer mud and water festivals, autumn fireworks and fall-foliage events, and winter ice and light festivals. Chukjemoa lets you search ${apiFestsEn.length}+ festivals by date and region, read an official overview, and jump straight to each festival's official website. All schedules and descriptions come from the Korea Tourism Organization (TourAPI).</p>
 <h2 class="sec">Upcoming festivals</h2>
@@ -4197,8 +4360,9 @@ document.getElementById('fCount').textContent=LBL.loading;
 <div class="hero-inner" style="background:rgba(15,60,55,.18);padding:64px 20px">
 <h1>${L.heroH1}</h1>
 <p>${L.heroP}</p>
-<div class="hero-cta"><a class="cta1" href="/${lang}/search/">${L.heroCta}</a></div>
+<div class="hero-cta"><a class="cta1" href="/${lang}/search/">${L.heroCta}</a>${(INTL_CITY_BY_LANG[lang] || []).length ? `<a class="cta2" href="/${lang}/cities/" style="background:rgba(255,255,255,.92);color:#0a6c63">🏙 ${esc((HOME_T[lang] || {}).cityH || 'Cities')}</a>` : ''}</div>
 </div></div>
+${(() => { const B = intlHomeBlocks(lang, data.length, intlPlaceCount(lang)); return B ? B.stat + B.cities + B.places + B.pract : ''; })()}
 <h2 class="sec">${L.sec}</h2>
 <p style="color:#4b5563;line-height:1.75;margin-bottom:14px">${L.lead}</p>
 <h2 class="sec">${L.upcoming || "Upcoming festivals"}</h2>

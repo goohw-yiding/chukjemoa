@@ -42,6 +42,15 @@ a{color:inherit;text-decoration:none}
 header{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid #e4f2ee;padding:13px 0}
 header .wrap{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
 .logo{font-size:1.35rem;font-weight:900;color:#0f9d8f}
+/* 🌏 외국어 페이지의 로고 — 한글 「축제모아」만 있으면 외국인은 읽지 못한다. 로마자를 나란히 둔다(브랜드는 한글이 정본). */
+.logo-rom{font-size:.86rem;font-weight:800;color:#5eb8ad;letter-spacing:.02em;margin-left:2px}
+/* 🏙 외국어 홈의 숫자 타일·도시 카드 */
+.ih-stat{display:flex;flex-wrap:wrap;gap:10px;margin:16px 0 4px}
+.ih-stat div{background:#f4faf8;border:1.5px solid #dcefeb;border-radius:12px;padding:11px 17px;font-size:.85rem;color:#0a6c63;font-weight:700}
+.ih-stat b{display:block;font-size:1.3rem;color:#0a6c63}
+.ih-cities{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));margin:10px 0}
+.ih-cities a{display:block;background:#fff;border:1.5px solid #e2ecea;border-radius:12px;padding:13px 15px;text-decoration:none;font-weight:800;color:#0a6c63}
+.ih-cities a span{display:block;font-size:.8rem;color:#9aa3af;font-weight:700;margin-top:2px}
 nav a{margin-left:20px;font-weight:600;font-size:.95rem;color:#4b5563;transition:color .15s}
 nav a:hover{color:#0f9d8f}
 .hero{position:relative;overflow:hidden;background:url('/img/hero.webp') center/cover;color:#fff;text-align:center}
@@ -455,9 +464,18 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 </head>
 <body>
 <header><div class="wrap">
-<a class="logo" href="/tw/">🎪 축제모아</a>
+<a class="logo" href="/tw/">🎪 축제모아 <span class="logo-rom">Chukjemoa</span></a>
 
-<button class="navtoggle" id="navtoggle" aria-label="menu" aria-expanded="false">☰</button><nav id="mainnav"><a href="/tw/">首頁</a><a href="/tw/calendar/">🗓️ 什麼時候去</a><a href="/tw/closed/">🚪 哪天休息</a><a href="/tw/access/">♿ 無障礙</a><a href="/tw/search/">🔎 慶典搜尋</a><a href="/tw/jangteo/">🏮 五日市集</a><a href="/tw/mountains/">⛰️ 名山</a><a href="/tw/cafe/">☕ 咖啡廳</a><a href="/tw/trend/">🔥 人氣排行</a><a href="/tw/trip/">🧳 第幾次來韓國</a><a href="/">🇰🇷 한국어</a></nav>
+<button class="navtoggle" id="navtoggle" aria-label="menu" aria-expanded="false">☰</button><nav id="mainnav">
+<a href="/tw/">首頁</a>
+<a class="nhot" href="/tw/cities/">🏙 城市</a>
+<div class="ndrop"><button class="nbtn" type="button">🎪 慶典<span class="arw">▼</span></button><div class="nmenu">
+<a href="/tw/search/">🔎 慶典搜尋</a><a href="/tw/calendar/">🗓️ 什麼時候去</a><a href="/tw/trend/">🔥 人氣排行</a></div></div>
+<div class="ndrop"><button class="nbtn" type="button">🧭 出發前<span class="arw">▼</span></button><div class="nmenu">
+<a href="/tw/closed/">🚪 哪天休息</a><a href="/tw/access/">♿ 無障礙</a><a href="/tw/trip/">🧳 第幾次來韓國</a><a href="/tw/chuseok/">🌕 中秋（秋夕）</a></div></div>
+<div class="ndrop"><button class="nbtn" type="button">🗺️ 更多<span class="arw">▼</span></button><div class="nmenu">
+<a href="/tw/jangteo/">🏮 五日市集</a><a href="/tw/mountains/">⛰️ 名山</a><a href="/tw/cafe/">☕ 咖啡廳</a></div></div>
+<a href="/">🇰🇷 한국어</a></nav>
 </div></header>
 <main><div class="wrap"><style>
 .ic-photos{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));margin:10px 0 16px}
@@ -510,12 +528,21 @@ document.addEventListener('click',function(e){
 </script>
 <p class="ic-crumb"><a href="/tw/">首頁</a> › 首爾</p>
 <h1 class="ic-h1">首爾 — 慶典與值得一去的地方</h1>
-<p class="ic-lead">韓國觀光公社以中文介紹的首爾293處，以及正在舉辦的4個慶典。每一條都附上<b>可直接貼到地圖應用的韓文地址</b>。</p>
+<p class="ic-lead">韓國觀光公社以中文介紹的首爾293處，以及正在舉辦的6個慶典。每一條都附上<b>可直接貼到地圖應用的韓文地址</b>。</p>
 
 <div class="ic-why"><h2>為什麼我們提供韓文地址</h2><p>Google地圖在韓國境內無法提供路線導航（地圖資料出境限制）。請把韓文地址（或韓文名稱）貼到<b>NAVER地圖</b>或<b>Kakao地圖</b>，本頁的寫法可以直接搜尋。</p></div>
 
 <h2 class="sec">正在舉辦的慶典</h2>
 <ul class="ic-list"><li class="ic-item">
+<div class="ic-h"><b>首爾街頭藝術節</b></div>
+
+<p class="ic-meta">📅 時間: 09/19 – 09/20 · 📍 首爾特別市廣津區陵洞路10(紫陽洞)</p>
+
+
+<p class="ic-st">🚇 最近地鐵站: <b>建国大学</b><span class="ic-stko">건대입구</span> · 步行13分鐘 · 2호선 · 7호선 · <span class="ic-tag">♿ 有電梯</span></p><div class="xcopy"><div><span class="lb">站名（韓文）— 貼到地圖</span><span class="vl">건대입구</span></div>
+<button data-v="건대입구" data-done="已複製">複製</button></div>
+
+</li><li class="ic-item">
 <div class="ic-h"><b>正祖大王陵行次共同重現</b></div>
 
 <p class="ic-meta">📅 時間: 10/04 – 10/04 · 📍 首爾特別市鐘路區社稷路161(世宗路)</p>
@@ -532,6 +559,15 @@ document.addEventListener('click',function(e){
 
 <p class="ic-st">🚇 最近地鐵站: <b>光化门</b><span class="ic-stko">광화문(세종문화회관)</span> · 步行5分鐘 · 5호선</p><div class="xcopy"><div><span class="lb">站名（韓文）— 貼到地圖</span><span class="vl">광화문(세종문화회관)</span></div>
 <button data-v="광화문(세종문화회관)" data-done="已複製">複製</button></div>
+
+</li><li class="ic-item">
+<div class="ic-h"><b>昌德宮月光之旅</b></div>
+
+<p class="ic-meta">📅 時間: 09/20 – 10/11 · 📍 首爾特別市鐘路區栗谷路99</p>
+
+
+<p class="ic-st">🚇 最近地鐵站: <b>安国</b><span class="ic-stko">안국</span> · 步行6分鐘 · 3호선 · <span class="ic-tag">♿ 有電梯</span></p><div class="xcopy"><div><span class="lb">站名（韓文）— 貼到地圖</span><span class="vl">안국</span></div>
+<button data-v="안국" data-done="已複製">複製</button></div>
 
 </li><li class="ic-item">
 <div class="ic-h"><b>江東史前文化節</b></div>
