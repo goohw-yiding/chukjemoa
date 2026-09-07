@@ -38,6 +38,13 @@ function fmtDate(s) {
   const MN = ['','Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
   return `${MN[+String(s).slice(4, 6)]} ${+String(s).slice(6, 8)}, ${String(s).slice(0, 4)}`;
 }
+// 제목·description 용 짧은 날짜 — 「Sep 4」. 연도는 따로 붙이므로 여기엔 넣지 않는다.
+function fmtShort(s) {
+  if (!/^\d{8}$/.test(String(s || ''))) return '';
+  const MN = ['','Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  return `${MN[+String(s).slice(4, 6)]} ${+String(s).slice(6, 8)}`;
+}
+function yearOf(s) { return /^\d{8}$/.test(String(s || '')) ? String(s).slice(0, 4) : ''; }
 function iso(s) {
   if (!/^\d{8}$/.test(String(s || ''))) return '';
   return `${String(s).slice(0,4)}-${String(s).slice(4,6)}-${String(s).slice(6,8)}`;
@@ -83,6 +90,42 @@ function build(ctx) {
     const nm = CITY.label('en', k);
     return `<p class="fcity"><a href="/en/${k}/">🏙 <b>${esc(nm)}</b> — where to go, what to eat, where to stay, each with the <b>Korean address you can paste into a map app</b></a></p>`;
   };
+  // 🏷 2026-09-08 — 제목·h1·description 에 «연도 + 날짜 + 도시». **진행/예정 축제에만** 붙인다.
+  //   왜 끝난 축제엔 안 붙이나: 192건 중 125건(65%)이 이미 끝났고 시작연도가 2025인 게 40건이다.
+  //   거기 「2025」를 박으면 검색 결과에서 «낡은 페이지»로 보여 CTR이 오히려 내려간다.
+  //   왜 연도인가: 한국어 실측 근거는 CTR 이 아니라 «순위» 였다 —
+  //     「2026년 9월 축제」 2.9위 vs 「9월축제」 11.5위. 제목에 연도가 있으면 연도 붙은 검색어에서 오른다.
+  //     영문 GSC 90일에도 같은 모양이 있다(…festival 2026 류가 6~8위인데 클릭 0).
+  //   ⚠️ 길이 예산 65자 — 구글이 그 근처에서 자른다. 잘리면 날짜·도시를 붙인 의미가 없다.
+  //     예산은 «의미 있는 부분»(제목+연도+날짜+도시)에만 매긴다. 브랜드 접미사는 그 뒤에 무조건 붙인다 —
+  //     브랜드가 잘리는 건 손해가 없고, 브랜드를 예산에 넣으면 날짜가 대신 떨어져 나간다(실제로 그랬다).
+  //     우선순위 = 제목 > 연도 > 날짜 > 도시. 예산을 넘기면 «뒤에서부터» 안 붙인다.
+  //   ⚠️ 도시는 CITY.open 게이트를 쓰지 않는다 — 제목에 도시 «이름»을 쓰는 데 그 도시 페이지가
+  //     있어야 할 이유가 없다(링크가 아니다). 대신 제목에 이미 도시명이 있으면 안 붙인다(78건 중 40건이 그렇다).
+  const TITLE_BUDGET = 65;
+  const BRAND = ' | Chukjemoa';
+  const cityName = f => {
+    if (!CITY) return '';
+    const k = CITY.of(f);
+    if (!k) return '';
+    const nm = CITY.label('en', k);
+    if (!nm) return '';
+    return String(f.title || '').toLowerCase().includes(String(nm).toLowerCase()) ? '' : nm;
+  };
+  const dateSpan = f => {
+    const d1 = fmtShort(f.start), d2 = fmtShort(f.end);
+    if (!d1) return '';
+    return (!d2 || d1 === d2) ? d1 : `${d1}–${d2}`;
+  };
+  // 예산 안에서 뒤엣것부터 떨어뜨린다. 제목+연도는 항상 남고, 브랜드는 예산 밖에서 붙는다.
+  const fitTitle = (head, parts) => {
+    for (let drop = 0; drop <= parts.length; drop++) {
+      const t = head + parts.slice(0, parts.length - drop).join('');
+      if (t.length <= TITLE_BUDGET || drop === parts.length) return t + BRAND;
+    }
+    return head + BRAND;
+  };
+
   const fes = load('festivals_en.json').filter(f => (f.ov || '').length >= MIN_OV);
 
   // 슬러그 충돌 방지
@@ -128,6 +171,12 @@ function build(ctx) {
 
     // 우리만 가진 정보 — 종료된 축제에는 「기간 중 장날」이 의미 없으므로 진행/예정만 전부 붙이고,
     // 종료된 축제에는 한글 원제·붐빔처럼 «시기와 무관한 것»만 남는다(extras 안에서 자연히 걸러진다).
+    // 🏷 진행/예정만 「연도+날짜+도시」. 제목에 이미 4자리 연도가 있으면 또 붙이지 않는다.
+    const yr = ended ? '' : yearOf(f.start);
+    const useYr = (yr && !/\b20\d\d\b/.test(String(f.title || ''))) ? yr : '';
+    const span = ended ? '' : dateSpan(f);
+    const cnm = ended ? '' : cityName(f);
+
     const ex = extras(f, 'en', rows);
     // ⚠️ 지도 안내 문구가 «얇은 페이지» 판정을 밀어올린다 — 길이 측정에서 뺀다(게이트를 속이지 않는다).
     const mapHtml = mapBlock({ x: f.x, y: f.y, title: f.title, lang: 'en', query: (f._ko && f._ko.title) || f.title });
@@ -139,7 +188,7 @@ function build(ctx) {
     const content = `<main><div class="wrap">
 ${CSS}
 <p style="font-size:.85rem;color:#9aa3af;margin:8px 0"><a href="/en/" style="color:#0c7d72">Home</a> › <a href="/en/search/" style="color:#0c7d72">Festivals</a> › ${esc(f.title)}</p>
-<h1 style="font-size:1.5rem;font-weight:900;letter-spacing:-.02em;margin:6px 0">${esc(f.title)}</h1>
+<h1 style="font-size:1.5rem;font-weight:900;letter-spacing:-.02em;margin:6px 0">${esc(f.title + (useYr ? ' ' + useYr : ''))}</h1>
 <div class="fhero"><img loading="lazy" src="${esc(f.img || '/img/cat2-culture-a.webp')}" alt="${esc(f.title)}" onerror="this.src='/img/cat2-culture-a.webp'">
 <dl class="finfo">
 <dt>📅 Dates</dt><dd>${fmtDate(f.start)} – ${fmtDate(f.end)}</dd>
@@ -178,9 +227,22 @@ ${mapScript('en')}
     // ⚠️ 개요 길이(MIN_OV)만으로는 얇은 게 새어 나온다 — 2026-09-01 감사에서 8개가 2,000자 미만.
     //    렌더된 본문을 직접 재서 얇으면 noindex + 사이트맵 제외(페이지는 남겨 링크를 안 끊는다).
     const tooThin = textLen(content) - textLen(mapHtml) < MIN_BODY;
+    // 제목 — 끝난 축제는 종전 그대로. 진행/예정만 예산 60자 안에서 연도→날짜→도시→브랜드 순으로 붙인다.
+    const pageTitle = ended
+      ? `${f.title} — Dates, Location & Info | Chukjemoa`
+      : fitTitle(`${f.title}${useYr ? ' ' + useYr : ''}`,
+          [span ? ` — ${span}` : '', cnm ? `, ${cnm}` : ''].filter(Boolean));
+    // description — 진행/예정은 앞머리에 «날짜·연도·도시»를 세운다(사람이 스니펫에서 먼저 찾는 것).
+    const lead = ended ? '' :
+      [span && useYr ? `${span}, ${useYr}` : (span || useYr), cnm].filter(Boolean).join(' · ');
+    // ⚠️ description 예산도 155자 하나로 관리한다 — 종전엔 끝난 축제에서 ov 155자 «뒤에» 출처 문장(50자)을
+    //    더 붙여 205자가 나갔다(구글이 160자쯤에서 자르므로 출처 문장은 아무도 못 봤다). 앞뒤를 합쳐 재운다.
+    const DESC_BUDGET = 155;
+    const tail = ended ? ' Official info from the Korea Tourism Organization.' : '';
+    const head = lead ? lead + '. ' : '';
+    const pageDesc = head + (f.ov || '').slice(0, Math.max(40, DESC_BUDGET - head.length - tail.length)) + tail;
     writePage('en/festival/' + f.slug, layout(
-      `${f.title} — Dates, Location & Info | Chukjemoa`,
-      (f.ov || '').slice(0, 155) + (ended ? ' Official info from the Korea Tourism Organization.' : ''),
+      pageTitle, pageDesc,
       urlPath, content, { lang: 'en', jsonld: ld, noindex: tooThin }));
     if (tooThin) thinOut.push(urlPath); else urls.push(urlPath);
   });
