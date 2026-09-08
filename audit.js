@@ -208,6 +208,12 @@ R.push('\n## 5-B. Override 재확인 후보 (개요 보강분 신선도)');
   const ov = readJ('festival_ov_override.json') || {};
   const fes = readJ('festivals_api.json') || [];
   const byId = new Map(fes.map(f => [String(f.id), f]));
+  // ⚠️ 「페이지가 실제로 만들어진 축제」만 재확인 대상이다.
+  //    API 목록에서 빠진 축제의 override 는 어떤 상세 페이지도 렌더하지 않으므로, 재검색해도 고칠 대상이 없다.
+  //    2026-09-08 실측: 4건(141268·1018971·1086249·2759788)이 전부 페이지 0개인데 D-3 긴급 🔴로 떠서
+  //    「없는 걸 경고하면 진짜 경고가 그 밑에 묻힌다」에 정확히 걸렸다. 제목도 못 찾아 id 가 그대로 찍혔다.
+  const livePageIds = new Set((readJ('festival_pages.json') || []).map(p => String(p.id)));
+  let ovOrphan = 0;
   const dOf = s => { const t = dnorm(s); return new Date(+t.slice(0, 4), +t.slice(5, 7) - 1, +t.slice(8, 10)); };
   const dToday = dOf(TODAY);
   const daysBetween = (a, b) => Math.round((b - a) / 86400e3);
@@ -217,6 +223,7 @@ R.push('\n## 5-B. Override 재확인 후보 (개요 보강분 신선도)');
 
   for (const id of Object.keys(ov)) {
     const o = ov[id];
+    if (!livePageIds.has(String(id))) { ovOrphan++; continue; }
     const f = byId.get(String(id));
     const start = (o.snapshot && o.snapshot.start) || (f && f.start);
     const end = (o.snapshot && o.snapshot.end) || (f && f.end);
@@ -236,6 +243,7 @@ R.push('\n## 5-B. Override 재확인 후보 (개요 보강분 신선도)');
 
   R.push('개요를 사람이 직접 써 넣은(override) ' + Object.keys(ov).length + '건 중, 아직 안 열렸고 개막이 임박한 것과 '
     + '끝난 지 얼마 안 된 것을 뽑았습니다. 전자는 취소·연기·변경 위험, 후자는 「정말 열렸는지」 확인이 목적입니다.');
+  if (ovOrphan) R.push('\n(override ' + ovOrphan + '건은 상세 페이지가 없어 제외했습니다 — API 목록에서 빠진 축제라 렌더되는 곳이 없습니다.)');
 
   R.push('\n**① 임박 재확인 후보 (D-14 이내, 아직 미개최) — ' + upcoming.length + '건**');
   if (!upcoming.length) R.push('없음');
