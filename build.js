@@ -2906,6 +2906,12 @@ ${faq.map(([q, a]) => `<p style="line-height:1.8"><b>${esc(q)}</b><br>${esc(a)}<
 //   시티투어는 그 답에 가장 가깝고(탑승 장소·운행 요일·요금·소요시간이 다 있다),
 //   277개라 **페이지 하나**로 끝난다. 메뉴를 늘리지 않고 축제·오일장 쪽에서 링크로만 연결한다.
 // ⚠️ 요금·시간은 지자체가 바꾼다. 우리는 «기준일»을 밝히고 전화번호를 같이 준다.
+// 조사 「이/가」 — 앞 글자 받침을 보고 고른다. 시·도 이름을 문장에 넣을 때 「대전가」가 나왔었다.
+const josaIGa = w => {
+  const c = String(w || '').trim().slice(-1).charCodeAt(0);
+  if (!(c >= 0xAC00 && c <= 0xD7A3)) return '가';          // 한글이 아니면 기본값
+  return (c - 0xAC00) % 28 ? '이' : '가';                    // 종성 있으면 이
+};
 const CITYTOUR_URLS = [];
 {
   let ct = [];
@@ -2915,22 +2921,38 @@ const CITYTOUR_URLS = [];
     const by = {};
     ct.forEach(r => { (by[r.sido] = by[r.sido] || []).push(r); });
     const sidos = order.filter(s => by[s]);
-    const refDate = (ct.map(r => r.ref).filter(Boolean).sort().pop() || '').slice(0, 10);
+    // 🔴 2026-09-09 — 「기준일」을 페이지 전체에 «가장 최신값 하나»로 찍고 있었다.
+    //   실제로는 코스마다 다르고, **대전 24건 전부가 2020-12-17**(코로나 때 「언택트세이프」 코스가 그대로 남아 있다).
+    //   최신값 하나를 찍으면 6년 전 정보를 «2026년 기준»으로 읽히게 만든다 — 없느니만 못하다.
+    //   → 기준일은 «코스마다» 적고, 2년 넘은 건 눈에 띄게 경고한다. 지어내지 않고 있는 사실만 밝힌다.
+    //   ⚠️ 이건 우리 수집 문제가 아니다. 표준데이터(data.go.kr)에 지자체가 그 날짜로 올려 둔 것이라
+    //      `fetch-citytour.js` 를 다시 돌려도 안 바뀐다(2026-09-01 수집분이 이미 2020-12-17).
+    const STALE_BEFORE = new Date(Date.now() - 730 * 864e5).toISOString().slice(0, 10);
+    const isStale = r => String(r.ref || '') && String(r.ref).slice(0, 10) < STALE_BEFORE;
+    const refDates = [...new Set(ct.map(r => String(r.ref || '').slice(0, 10)).filter(Boolean))].sort();
+    const refOldest = refDates[0] || '', refNewest = refDates[refDates.length - 1] || '';
+    const staleN = ct.filter(isStale).length;
+    // 표준데이터에 그대로 들어 있는 오타 — 데이터를 고치면 수집기가 되돌린다. «렌더 시점»에 바로잡는다.
+    const fixFee = f => String(f).replace(/(\d)\s*월$/, '$1원');
+    const fixCourse = c => String(c).replace(/\?+$/, '').trim();
 
-    const card = r => `<details class="ctd"><summary><b>${esc(r.course)}</b> <span class="ctc">${esc(r.city)}</span>${r.days ? `<span class="ctd-day">${esc(r.days)}</span>` : ''}</summary>
+    const card = r => `<details class="ctd${isStale(r) ? ' ctd-old' : ''}"><summary><b>${esc(fixCourse(r.course))}</b> <span class="ctc">${esc(r.city)}</span>${r.days ? `<span class="ctd-day">${esc(r.days)}</span>` : ''}${isStale(r) ? `<span class="ctd-old-b">⚠️ ${esc(String(r.ref).slice(0, 4))}년 자료</span>` : ''}</summary>
 <div class="ctbody">
+${isStale(r) ? `<p class="ctwarn">⚠️ <b>이 코스 정보는 ${esc(String(r.ref).slice(0, 10))} 기준입니다.</b> 지자체가 그 뒤로 공공데이터를 갱신하지 않아, <b>지금은 운행하지 않거나 코스·요금이 바뀌었을 수 있습니다.</b> 가시기 전에 아래 문의처나 공식 안내로 꼭 확인하세요.</p>` : ''}
 ${r.spots.length ? `<p><b>코스</b> ${r.spots.map(esc).join(' → ')}</p>` : ''}
 ${r.board.length ? `<p><b>타는 곳</b> ${r.board.map(esc).join(' · ')}</p>` : ''}
 ${(r.open || r.mins) ? `<p><b>운행</b> ${esc(r.open)}${r.close ? '~' + esc(r.close) : ''}${r.mins ? ` · 약 ${r.mins}분 소요` : ''}${r.mode ? ` · ${esc(r.mode)}` : ''}</p>` : ''}
-${r.fee.length ? `<p><b>요금</b> ${r.fee.map(esc).join(' · ')}${r.feeNote ? ` <span class="note">(${esc(r.feeNote)})</span>` : ''}</p>` : ''}
+${r.fee.length ? `<p><b>요금</b> ${r.fee.map(f => esc(fixFee(f))).join(' · ')}${r.feeNote ? ` <span class="note">(${esc(r.feeNote)})</span>` : ''}</p>` : ''}
 ${r.tel ? `<p><b>문의</b> ${esc(r.tel)}</p>` : ''}
 ${r.note.length ? `<p class="note">${r.note.map(esc).join(' · ')}</p>` : ''}
 ${r.hp ? `<p><a href="${esc(/^https?:/.test(r.hp) ? r.hp : 'http://' + r.hp)}" target="_blank" rel="noopener">공식 안내 →</a></p>` : ''}
+<p class="note">자료 기준일 ${esc(String(r.ref || '').slice(0, 10) || '표기 없음')} · 행정안전부 표준데이터</p>
 </div></details>`;
 
     const ctFaq = [
       ['시티투어 버스는 아무나 탈 수 있나요?', '대부분 예약 없이 탈 수 있지만, 좌석이 정해진 코스는 미리 신청을 받습니다. 코스마다 다르니 위 목록의 문의 전화로 확인하시는 편이 안전합니다.'],
-      ['요금은 얼마인가요?', `코스마다 다릅니다. 어린이·경로·장애인 할인이 있는 곳이 많고, 무료로 운행하는 지역도 있습니다. 이 페이지에는 지자체가 공개한 요금을 그대로 옮겨 두었습니다(기준일 ${refDate || '공공데이터 최신'}).`],
+      ['요금은 얼마인가요?', `코스마다 다릅니다. 어린이·경로·장애인 할인이 있는 곳이 많고, 무료로 운행하는 지역도 있습니다. 이 페이지에는 지자체가 공개한 요금을 그대로 옮겨 두었습니다. 기준일은 코스마다 달라 각 코스 안에 적어 두었습니다(${refOldest} ~ ${refNewest}).`],
+      ['정보가 오래된 코스도 있나요?', `있습니다. 시티투어 정보는 지자체가 공공데이터포털에 올린 것을 그대로 옮기는데, 지자체마다 갱신 주기가 달라 ${staleN}개 코스는 2년이 넘은 자료입니다. 그런 코스에는 ⚠️ 표시와 기준일을 붙여 두었으니, 운행 여부를 문의처에 먼저 확인하세요.`],
       ['축제 가는 날에도 운행하나요?', '운행 요일이 정해져 있어 축제 날짜와 안 맞을 수 있습니다. 위에서 그 지역 코스의 운행 요일을 먼저 보시고, 축제 일정과 겹치는지 확인하세요.']
     ];
     const content = `<main><div class="wrap">
@@ -2938,8 +2960,17 @@ ${r.hp ? `<p><a href="${esc(/^https?:/.test(r.hp) ? r.hp : 'http://' + r.hp)}" t
 <p class="note">지자체가 운영하는 시티투어 코스를 시·도별로 정리했습니다. 코스 경유지·타는 곳·운행 요일·요금·문의처를 한곳에 모았습니다.</p>
 <p style="margin:6px 0 14px;color:#4b5563;font-size:.95rem">축제나 오일장에 <b>차 없이</b> 가려면 시티투어가 가장 현실적인 방법일 때가 많습니다. 역·터미널에서 출발하는 코스가 많고, 요금도 대개 3,000~5,000원 선입니다.</p>
 <div class="ctnav">${sidos.map(s => `<a href="#ct-${esc(s)}">${esc(s)} ${by[s].length}</a>`).join('')}</div>
-${sidos.map(s => `<h2 class="sec" id="ct-${esc(s)}">${esc(s)} — ${by[s].length}개 코스</h2>
-${by[s].sort((a, b) => (a.city + a.course).localeCompare(b.city + b.course)).map(card).join('')}`).join('')}
+${sidos.map(s => {
+  const st = by[s].filter(isStale);
+  // 그 시·도가 «전부» 오래됐으면 코스를 펴 보기 전에 알려 준다 — 대전이 그렇다(24/24).
+  const banner = st.length === by[s].length
+    // ⚠️ 조사를 붙일 땐 받침을 본다 — 「대전가」가 나왔었다(대전=받침 있음 → 이).
+    ? `<p class="ctwarn">⚠️ <b>${esc(s)} 코스는 전부 ${esc(String(st[0].ref).slice(0, 10))} 기준 자료입니다.</b> ${esc(s)}${josaIGa(s)} 공공데이터를 그 뒤로 갱신하지 않았습니다 — 지금 운행하는 코스와 다를 수 있으니 <b>공식 안내를 먼저 보세요.</b>${st[0].hp ? ` <a href="${esc(/^https?:/.test(st[0].hp) ? st[0].hp : 'http://' + st[0].hp)}" target="_blank" rel="noopener">${esc(st[0].hp)} →</a>` : ''}</p>`
+    : (st.length ? `<p class="ctwarn">⚠️ 이 지역 ${by[s].length}개 중 <b>${st.length}개</b>가 2년이 넘은 자료입니다. 카드마다 기준일을 적어 두었습니다.</p>` : '');
+  return `<h2 class="sec" id="ct-${esc(s)}">${esc(s)} — ${by[s].length}개 코스</h2>
+${banner}
+${by[s].sort((a, b) => (a.city + a.course).localeCompare(b.city + b.course)).map(card).join('')}`;
+}).join('')}
 
 <h2 class="sec">같이 보면 좋은 것</h2>
 <div class="frel2">
@@ -2953,7 +2984,7 @@ ${by[s].sort((a, b) => (a.city + a.course).localeCompare(b.city + b.course)).map
 
 <h2 class="sec">자주 묻는 것</h2>
 ${ctFaq.map(q => `<p><b>${esc(q[0])}</b><br>${esc(q[1])}</p>`).join('')}
-<p class="note" style="margin-top:16px">데이터 출처: 행정안전부 「전국시티투어정보표준데이터」(공공데이터포털)${refDate ? ` · 기준일 ${refDate}` : ''}. 운행 요일·요금·코스는 지자체 사정으로 바뀔 수 있으니 방문 전 문의 전화로 확인하세요.</p>
+<p class="note" style="margin-top:16px">데이터 출처: 행정안전부 「전국시티투어정보표준데이터」(공공데이터포털). <b>기준일은 코스마다 다릅니다</b>(${refOldest} ~ ${refNewest}) — 지자체가 각자 갱신하기 때문입니다. 2년이 넘은 ${staleN}개 코스에는 ⚠️ 표시를 붙였습니다. 운행 요일·요금·코스는 바뀔 수 있으니 방문 전 문의 전화로 확인하세요.</p>
 <style>
 .ctnav{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0 18px}
 .ctnav a{background:#f4faf8;border:1.5px solid #dcefeb;border-radius:999px;padding:6px 13px;font-size:.86rem;font-weight:700;color:#0a6c63;text-decoration:none}
@@ -2962,6 +2993,11 @@ ${ctFaq.map(q => `<p><b>${esc(q[0])}</b><br>${esc(q[1])}</p>`).join('')}
 .ctd summary b{color:#0f766e}
 .ctc{color:#6b7280;font-weight:600;font-size:.86rem;margin-left:6px}
 .ctd-day{display:inline-block;background:#eef7f5;color:#0a6c63;border-radius:6px;padding:1px 7px;font-size:.78rem;font-weight:700;margin-left:6px}
+.ctd-old{border-color:#fed7aa;background:#fffdf9}
+.ctd-old-b{display:inline-block;background:#fff7ed;color:#9a3412;border:1px solid #fed7aa;border-radius:6px;padding:1px 7px;font-size:.78rem;font-weight:800;margin-left:6px}
+.ctwarn{background:#fff7ed;border:1.5px solid #fed7aa;border-radius:10px;padding:11px 13px;margin:8px 0 12px;color:#7c2d12;font-size:.9rem;line-height:1.65}
+.ctwarn b{color:#9a3412}
+.ctwarn a{color:#9a3412;font-weight:800}
 .ctbody{padding:2px 0 12px;font-size:.9rem;line-height:1.7;color:#4b5563}
 .ctbody p{margin:4px 0}
 .ctbody b{color:#374151}
@@ -2976,7 +3012,7 @@ ${ctFaq.map(q => `<p><b>${esc(q[0])}</b><br>${esc(q[1])}</p>`).join('')}
       `지자체가 운영하는 시티투어 ${ct.length}개 코스를 시·도별로. 코스 경유지와 타는 곳, 운행 요일, 요금, 문의처까지 한 페이지에. 차 없이 축제·오일장 가는 가장 현실적인 방법입니다.`,
       '/citytour/', content, { jsonld: ctLd }));
     CITYTOUR_URLS.push('/citytour/');
-    console.log(`✓ 시티투어 — ${ct.length}개 코스 · 시·도 ${sidos.length}곳`);
+    console.log(`✓ 시티투어 — ${ct.length}개 코스 · 시·도 ${sidos.length}곳 · 기준일 ${refOldest}~${refNewest} · ⚠️2년 초과 ${staleN}개`);
   }
 }
 
