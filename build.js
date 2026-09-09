@@ -2916,6 +2916,21 @@ const CITYTOUR_URLS = [];
 {
   let ct = [];
   try { ct = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/citytour.json'), 'utf8')); } catch (e) { }
+  // 🔧 2026-09-09 — 손으로 확인한 내용으로 «시·도 통째 교체». 표준데이터를 안 고치는 이유는
+  //   `fetch-citytour.js` 가 다음 회차에 되돌리기 때문이다(오타 정규화를 렌더 시점에 한 것과 같은 이유).
+  //   대전이 첫 사례: 표준데이터 기준일이 2020-12-17이라 폐지된 「언택트세이프」 코스를 안내하고 있었다.
+  let ctOv = null;
+  try { ctOv = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/citytour_override.json'), 'utf8')); } catch (e) { }
+  const ctOvSido = {};
+  if (ctOv && ctOv.replace) {
+    for (const [sido, o] of Object.entries(ctOv.replace)) {
+      if (!Array.isArray(o.rows) || !o.rows.length) continue;   // 빈 교체는 «지우기»가 되니 막는다
+      const before = ct.filter(r => r.sido === sido).length;
+      ct = ct.filter(r => r.sido !== sido).concat(o.rows);
+      ctOvSido[sido] = o;
+      console.log(`  ↻ 시티투어 ${sido} — 표준데이터 ${before}건 → 직접 확인 ${o.rows.length}건 (확인일 ${o.checked})`);
+    }
+  }
   if (ct.length) {
     const order = ['서울', '경기', '인천', '강원', '충북', '충남', '대전', '세종', '전북', '전남', '광주', '경북', '경남', '대구', '울산', '부산', '제주'];
     const by = {};
@@ -2932,6 +2947,7 @@ const CITYTOUR_URLS = [];
     const refDates = [...new Set(ct.map(r => String(r.ref || '').slice(0, 10)).filter(Boolean))].sort();
     const refOldest = refDates[0] || '', refNewest = refDates[refDates.length - 1] || '';
     const staleN = ct.filter(isStale).length;
+    const ovNames = Object.keys(ctOvSido).join('·');
     // 표준데이터에 그대로 들어 있는 오타 — 데이터를 고치면 수집기가 되돌린다. «렌더 시점»에 바로잡는다.
     const fixFee = f => String(f).replace(/(\d)\s*월$/, '$1원');
     const fixCourse = c => String(c).replace(/\?+$/, '').trim();
@@ -2946,13 +2962,15 @@ ${r.fee.length ? `<p><b>요금</b> ${r.fee.map(f => esc(fixFee(f))).join(' · ')
 ${r.tel ? `<p><b>문의</b> ${esc(r.tel)}</p>` : ''}
 ${r.note.length ? `<p class="note">${r.note.map(esc).join(' · ')}</p>` : ''}
 ${r.hp ? `<p><a href="${esc(/^https?:/.test(r.hp) ? r.hp : 'http://' + r.hp)}" target="_blank" rel="noopener">공식 안내 →</a></p>` : ''}
-<p class="note">자료 기준일 ${esc(String(r.ref || '').slice(0, 10) || '표기 없음')} · 행정안전부 표준데이터</p>
+<p class="note">${r.src
+  ? `${esc(String(r.ref || '').slice(0, 10))} 공식 홈페이지에서 직접 확인 · <a href="${esc(r.src)}" target="_blank" rel="noopener">출처</a>`
+  : `자료 기준일 ${esc(String(r.ref || '').slice(0, 10) || '표기 없음')} · 행정안전부 표준데이터`}</p>
 </div></details>`;
 
     const ctFaq = [
       ['시티투어 버스는 아무나 탈 수 있나요?', '대부분 예약 없이 탈 수 있지만, 좌석이 정해진 코스는 미리 신청을 받습니다. 코스마다 다르니 위 목록의 문의 전화로 확인하시는 편이 안전합니다.'],
       ['요금은 얼마인가요?', `코스마다 다릅니다. 어린이·경로·장애인 할인이 있는 곳이 많고, 무료로 운행하는 지역도 있습니다. 이 페이지에는 지자체가 공개한 요금을 그대로 옮겨 두었습니다. 기준일은 코스마다 달라 각 코스 안에 적어 두었습니다(${refOldest} ~ ${refNewest}).`],
-      ['정보가 오래된 코스도 있나요?', `있습니다. 시티투어 정보는 지자체가 공공데이터포털에 올린 것을 그대로 옮기는데, 지자체마다 갱신 주기가 달라 ${staleN}개 코스는 2년이 넘은 자료입니다. 그런 코스에는 ⚠️ 표시와 기준일을 붙여 두었으니, 운행 여부를 문의처에 먼저 확인하세요.`],
+      ['정보가 오래된 코스도 있나요?', `시티투어 정보는 지자체가 공공데이터포털에 올린 것을 옮기는데, 갱신 주기가 지자체마다 다릅니다. ${ovNames ? `${ovNames}은 공공데이터가 너무 오래돼 저희가 공식 홈페이지에서 직접 확인해 옮겼습니다. ` : ''}나머지 중 ${staleN}개 코스는 2년이 넘은 자료라 ⚠️ 표시와 기준일을 붙여 두었으니, 운행 여부를 문의처에 먼저 확인하세요.`],
       ['축제 가는 날에도 운행하나요?', '운행 요일이 정해져 있어 축제 날짜와 안 맞을 수 있습니다. 위에서 그 지역 코스의 운행 요일을 먼저 보시고, 축제 일정과 겹치는지 확인하세요.']
     ];
     const content = `<main><div class="wrap">
@@ -2961,12 +2979,17 @@ ${r.hp ? `<p><a href="${esc(/^https?:/.test(r.hp) ? r.hp : 'http://' + r.hp)}" t
 <p style="margin:6px 0 14px;color:#4b5563;font-size:.95rem">축제나 오일장에 <b>차 없이</b> 가려면 시티투어가 가장 현실적인 방법일 때가 많습니다. 역·터미널에서 출발하는 코스가 많고, 요금도 대개 3,000~5,000원 선입니다.</p>
 <div class="ctnav">${sidos.map(s => `<a href="#ct-${esc(s)}">${esc(s)} ${by[s].length}</a>`).join('')}</div>
 ${sidos.map(s => {
+  const ov = ctOvSido[s];
   const st = by[s].filter(isStale);
-  // 그 시·도가 «전부» 오래됐으면 코스를 펴 보기 전에 알려 준다 — 대전이 그렇다(24/24).
-  const banner = st.length === by[s].length
+  // 직접 확인한 시·도는 «그렇게 말한다». 경고가 아니라 근거다.
+  const ex = ov && ov.extra ? Object.entries(ov.extra) : [];
+  const banner = ov
+    ? `<p class="ctok">✅ <b>${esc(s)}${josaIGa(s)} ${esc(ov.checked)}에 공식 홈페이지에서 직접 확인한 내용입니다.</b> 공공데이터에는 아직 옛 코스가 올라와 있어 저희가 따로 확인해 옮겼습니다.${ov.src ? ` <a href="${esc(ov.src)}" target="_blank" rel="noopener">공식 코스안내 →</a>` : ''}</p>
+${ex.length ? `<div class="ctex">${ex.map(([k, v]) => `<p><b>${esc(k)}</b> ${esc(v)}</p>`).join('')}</div>` : ''}`
     // ⚠️ 조사를 붙일 땐 받침을 본다 — 「대전가」가 나왔었다(대전=받침 있음 → 이).
-    ? `<p class="ctwarn">⚠️ <b>${esc(s)} 코스는 전부 ${esc(String(st[0].ref).slice(0, 10))} 기준 자료입니다.</b> ${esc(s)}${josaIGa(s)} 공공데이터를 그 뒤로 갱신하지 않았습니다 — 지금 운행하는 코스와 다를 수 있으니 <b>공식 안내를 먼저 보세요.</b>${st[0].hp ? ` <a href="${esc(/^https?:/.test(st[0].hp) ? st[0].hp : 'http://' + st[0].hp)}" target="_blank" rel="noopener">${esc(st[0].hp)} →</a>` : ''}</p>`
-    : (st.length ? `<p class="ctwarn">⚠️ 이 지역 ${by[s].length}개 중 <b>${st.length}개</b>가 2년이 넘은 자료입니다. 카드마다 기준일을 적어 두었습니다.</p>` : '');
+    : st.length === by[s].length
+      ? `<p class="ctwarn">⚠️ <b>${esc(s)} 코스는 전부 ${esc(String(st[0].ref).slice(0, 10))} 기준 자료입니다.</b> ${esc(s)}${josaIGa(s)} 공공데이터를 그 뒤로 갱신하지 않았습니다 — 지금 운행하는 코스와 다를 수 있으니 <b>공식 안내를 먼저 보세요.</b>${st[0].hp ? ` <a href="${esc(/^https?:/.test(st[0].hp) ? st[0].hp : 'http://' + st[0].hp)}" target="_blank" rel="noopener">${esc(st[0].hp)} →</a>` : ''}</p>`
+      : (st.length ? `<p class="ctwarn">⚠️ 이 지역 ${by[s].length}개 중 <b>${st.length}개</b>가 2년이 넘은 자료입니다. 카드마다 기준일을 적어 두었습니다.</p>` : '');
   return `<h2 class="sec" id="ct-${esc(s)}">${esc(s)} — ${by[s].length}개 코스</h2>
 ${banner}
 ${by[s].sort((a, b) => (a.city + a.course).localeCompare(b.city + b.course)).map(card).join('')}`;
@@ -2998,6 +3021,12 @@ ${ctFaq.map(q => `<p><b>${esc(q[0])}</b><br>${esc(q[1])}</p>`).join('')}
 .ctwarn{background:#fff7ed;border:1.5px solid #fed7aa;border-radius:10px;padding:11px 13px;margin:8px 0 12px;color:#7c2d12;font-size:.9rem;line-height:1.65}
 .ctwarn b{color:#9a3412}
 .ctwarn a{color:#9a3412;font-weight:800}
+.ctok{background:#f2fbfa;border:1.5px solid #cfe9e3;border-radius:10px;padding:11px 13px;margin:8px 0 10px;color:#0a6c63;font-size:.9rem;line-height:1.65}
+.ctok b{color:#0a5d55}
+.ctok a{color:#0a6c63;font-weight:800}
+.ctex{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:10px 14px;margin:0 0 12px;font-size:.88rem;line-height:1.7;color:#4b5563}
+.ctex p{margin:3px 0}
+.ctex b{display:inline-block;min-width:52px;color:#0f766e}
 .ctbody{padding:2px 0 12px;font-size:.9rem;line-height:1.7;color:#4b5563}
 .ctbody p{margin:4px 0}
 .ctbody b{color:#374151}
