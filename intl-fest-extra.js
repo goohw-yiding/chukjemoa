@@ -106,6 +106,11 @@ const TEXT = {
     park: n => `${n.toLocaleString('en-US')} parking spaces`,
     cap: n => `capacity ${n.toLocaleString('en-US')}`,
     km: d => `${d.toFixed(1)} km away`,
+    // ⚠️ ③④는 «영문명이 아예 없는» 한국 공공데이터다(행안부·소상공인시장진흥공단).
+    //    번역하면 지도에서 못 찾으므로 한글 그대로 두고, «왜 한글인지»와 «복사 버튼»을 반드시 같이 준다.
+    //    (2026-09-09: 이 설명·버튼이 빠져 있어 289장 중 281장이 그냥 깨진 화면으로 보였다.)
+    koAddr: 'Korean address for map apps',
+    koWhy: 'Names and addresses here stay in Korean on purpose. Google Maps cannot give directions inside South Korea, and NAVER Map / KakaoMap find these places only under their Korean names — copy an address above and paste it straight in.',
     mktT: '🏮 Traditional market days during the festival',
     mktL: 'Korean country markets open only on days ending in fixed digits — every 5 days. These are the actual dates they open while the festival runs, so you can add one to the same trip.',
     mktEvery: d => `opens on days ending in ${d}`,
@@ -132,6 +137,8 @@ const TEXT = {
     park: n => `駐車 ${n.toLocaleString('ja-JP')}台`,
     cap: n => `収容 ${n.toLocaleString('ja-JP')}人`,
     km: d => `${d.toFixed(1)}km`,
+    koAddr: '地図アプリ用の住所（ハングル）',
+    koWhy: 'ここの名前と住所はハングルのままにしています。Googleマップは韓国国内の経路案内が出ず、NAVERマップ・カカオマップはハングル表記でないと見つけられないためです。上の住所をコピーして、そのまま貼り付けてください。',
     mktT: '🏮 祭りの期間中に立つ「五日市」',
     mktL: '韓国の田舎の市場は日付の末尾で決まった日だけ開きます（5日ごと）。祭りの期間中に実際に開く日を計算しました。同じ旅程に一つ入れられます。',
     mktEvery: d => `末尾が ${d} の日に開催`,
@@ -243,10 +250,12 @@ ${bm[fm] != null ? `<p class="lead" style="margin:8px 0 0"><b>${esc(T.mo(fm))} �
       stats.trr = nt.length;
       out.push(`<div class="xbox"><h2>${T.trrT}</h2><p class="lead">${esc(T.trrL)}</p><div class="xlist">${
         nt.map(({ t, d }) => `<div class="xitem"><div class="nm">${esc(t.name)}</div>
-<div class="mt">${esc(T.km(d))}${t.addr ? ' · ' + esc(t.addr) : ''}</div>
+<div class="mt">${esc(T.km(d))}</div>
 ${t.park ? `<span class="xtag">${esc(T.park(t.park))}</span>` : ''}
 ${t.cap ? `<span class="xtag">${esc(T.cap(t.cap))}</span>` : ''}
-</div>`).join('')}</div></div>`);
+${t.addr ? `<div class="xcopy" style="margin:9px 0 0"><div><span class="lb">${esc(T.koAddr)}</span><span class="vl">${esc(t.addr)}</span></div>
+<button data-v="${esc(t.addr)}" data-done="${esc(T.copied)}">${esc(T.copy)}</button></div>` : ''}
+</div>`).join('')}</div><p class="xnote">${esc(T.koWhy)}</p></div>`);
     }
   }
 
@@ -264,7 +273,9 @@ ${t.cap ? `<span class="xtag">${esc(T.cap(t.cap))}</span>` : ''}
   m.stores ? ' · ' + esc(T.stores(m.stores)) : ''}</div>
 <div style="margin-top:5px"><span class="lb" style="font-size:.74rem;font-weight:800;color:#9a5b00">${esc(T.mktOpen)}</span> ${
   dates.slice(0, 6).map(x => `<span class="xtag d">${lang === 'ja' ? x.m + '/' + x.d : MN_EN[x.m] + ' ' + x.d}</span>`).join('')}</div>
-</div>`).join('')}</div></div>`);
+${m.addr ? `<div class="xcopy" style="margin:9px 0 0"><div><span class="lb">${esc(T.koAddr)}</span><span class="vl">${esc(m.addr)}</span></div>
+<button data-v="${esc(m.addr)}" data-done="${esc(T.copied)}">${esc(T.copy)}</button></div>` : ''}
+</div>`).join('')}</div><p class="xnote">${esc(T.koWhy)}</p></div>`);
     }
   }
 
