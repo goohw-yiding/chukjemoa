@@ -130,7 +130,9 @@ ${m.ov ? `<p class="jsg-desc">${esc(String(m.ov).replace(/\s+/g, ' ').trim())}</
 <div class="jsg-meta">
 ${m.fair ? `📅 장날 <b>${esc(m.fair)}</b><br>` : ''}
 ${m.open ? `🕘 ${esc(m.open)}` : ''}${m.rest ? ` · 휴무 ${esc(m.rest)}` : ''}${(m.open || m.rest) ? '<br>' : ''}
-${m.park ? `🅿️ 주차 ${esc(m.park)}<br>` : ''}
+${/* ⚠️ 표준데이터 출신은 desc 가 「1961년 개설 · 점포 70곳 · 주차 가능 · 화장실 있음」 형태라
+      그 아래 park 를 또 찍으면 «주차»가 한 카드에 두 번 나온다(라이브에서 잡음). */''}
+${m.park && !/주차/.test(String(m.ov || m.desc || '')) ? `🅿️ 주차 ${esc(m.park)}<br>` : ''}
 ${m.tel ? `☎️ ${esc(m.tel)}` : ''}
 </div>
 <div class="jsg-links"><a href="https://map.naver.com/p/search/${encodeURIComponent(m.name)}" target="_blank" rel="noopener">🗺️ 지도</a>
@@ -194,7 +196,9 @@ ${soon ? `<div class="jsg-next">
 <div class="jsg-next-m">${esc(soon.m.name)}${soonChip}</div>
 </div>` : ''}
 
-<h2 class="sec">${M}월 · ${nextM}월 장날 달력</h2>
+${/* ⚠️ 제목과 내용이 «같은 말»이어야 한다 — 두 달치로 만들었다가 석 달치로 늘리고
+      제목을 안 고쳐서 「9월·10월」이라 써 놓고 11월까지 싣고 있었다(2026-09-09 라이브에서 잡음). */''}
+<h2 class="sec">${M}월 · ${nextM}월 · ${m3M}월 장날 달력</h2>
 <p class="jsg-p">끝자리 규칙으로 계산한 <b>실제 날짜</b>입니다. ${M}월은 오늘(${M}월 ${TD}일) 이후만 적었습니다.</p>
 <ul class="jsg-list">${withDay.map(calRow).join('')}</ul>
 
