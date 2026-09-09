@@ -2801,6 +2801,7 @@ writePage('jangteo', layout(
 //    기준을 4로 두고 지어 보니 대구(4곳)가 본문 2,463자로 사이트 하한(걷기길 최소 2,999자)에 못 미쳤다.
 //    6으로 올리니 가장 얇은 페이지가 경남 3,076자가 된다. 부산3·대전2·울산2·인천1·대구4는 허브에만 싣는다.
 const JANGTEO_SIDO_URLS = [];
+let JANGTEO_SIGUNGU_URLS = [];   // 🏮 시·군 「○○장날」 — 아래 블록에서 채운다(사이트맵도 이걸 쓴다)
 {
   const SLUG = { 서울: 'seoul', 부산: 'busan', 대구: 'daegu', 인천: 'incheon', 광주: 'gwangju', 대전: 'daejeon', 울산: 'ulsan', 세종: 'sejong', 경기: 'gyeonggi', 강원: 'gangwon', 충북: 'chungbuk', 충남: 'chungnam', 전북: 'jeonbuk', 전남: 'jeonnam', 경북: 'gyeongbuk', 경남: 'gyeongnam', 제주: 'jeju' };
   const bySido = {};
@@ -2809,6 +2810,27 @@ const JANGTEO_SIDO_URLS = [];
     .sort((a, b) => b[1].length - a[1].length);
   const linkRow = cur => `<div class="cpresets" style="display:flex;flex-wrap:wrap;gap:8px;margin:14px 0">${big.filter(([s]) => s !== cur).map(([s, a]) =>
     `<a href="/jangteo/${SLUG[s]}/" style="background:#fff;border:1.5px solid #dcefeb;color:#374151;font-weight:700;font-size:.9rem;padding:8px 14px;border-radius:999px">${s} ${a.length}</a>`).join('')}</div>`;
+
+  // 🏮 2026-09-09 신설 — 시·군 「○○장날」 페이지를 «시·도 페이지보다 먼저» 만든다.
+  //    이유: 시·도 페이지 안에 그 시·도의 시·군 링크를 넣어야 하는데, 무엇이 만들어졌는지를
+  //    알아야 «없는 곳으로 보내지 않는다». 순서를 바꾸면 링크가 통째로 빈다.
+  //    네이버가 유입의 73%이고 그중 46%가 오일장인데 하위가 시·도 11장뿐이었다.
+  //    사람들은 「경북 오일장」이 아니라 「의성장날」로 찾는다(검색량 실측 월 174,150).
+  JANGTEO_SIGUNGU_URLS = require('./jangteo-sigungu.js').build({
+    ROOT, layout, writePage, SITE, SITE_NAME, TODAY, esc,
+    marketsAll, apiFests, FEST_PAGES, WX, buyBox, jangteoModalBB, JT_LINK_JS
+  });
+  const SIGUNGU_BY_SIDO = {};
+  (JANGTEO_SIGUNGU_URLS.meta || []).forEach(r => (SIGUNGU_BY_SIDO[r.sido] = SIGUNGU_BY_SIDO[r.sido] || []).push(r));
+  Object.values(SIGUNGU_BY_SIDO).forEach(a => a.sort((x, y) => y.vol - x.vol));
+  const sigunguRow = sido => {
+    const a = SIGUNGU_BY_SIDO[sido] || [];
+    if (!a.length) return '';
+    return `<h2 class="sec">${sido} 시·군별 장날</h2>
+<p style="color:#6b7280;font-size:.95rem;line-height:1.8">사람들은 「${sido} 오일장」보다 <b>「의성장날」처럼 시·군 이름</b>으로 찾습니다. ${sido}에서 장날 안내를 따로 만든 ${a.length}곳입니다 — 다음 장날이 언제인지, 석 달치 날짜와 파는 것까지 있습니다.</p>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin:12px 0 18px">${
+      a.map(r => `<a href="/jangteo/${r.slug}/" style="display:block;background:#f6fbfa;border:1.5px solid #dcefeb;border-radius:12px;padding:10px 13px;text-decoration:none"><b style="color:#111827;font-weight:800;font-size:.97rem">${esc(r.city)} 장날</b><span style="display:block;color:#6b7280;font-size:.84rem;font-weight:600;margin-top:2px">오일장 ${r.markets}곳</span></a>`).join('')}</div>`;
+  };
 
   // ⭐ 2026-08-29: 오일장 카드에 "이 근처 축제" — 시도 전체가 아니라 실제 좌표 거리로.
   //    가평 오일장을 보는데 경기도 전체 축제가 나오는 문제(사용자 리포트)를 해결하기 위해
@@ -2889,6 +2911,8 @@ ${/* 시도별 오일장도 세션당 1.07~1.35장이다 — 내부 이동 링�
 </div>
 </div>
 
+${sigunguRow(sido)}
+
 <h2 class="sec">${sido}의 오일장</h2>
 ${withDay.map(cardOf).join('')}
 
@@ -2921,7 +2945,8 @@ ${faq.map(([q, a]) => `<p style="line-height:1.8"><b>${esc(q)}</b><br>${esc(a)}<
   // ⚠️ 빌드는 페이지를 «쓰기»만 하고 지우지 않는다. 기준을 4→6으로 올렸을 때 대구 폴더가 그대로 남아
   //    사이트맵엔 없는데 파일은 살아 있는 «유령 페이지»가 됐다(축제 상세에서 겪은 것과 같은 사고).
   //    이번 빌드가 만들지 않은 하위 폴더는 지운다.
-  const keep = new Set(JANGTEO_SIDO_URLS.map(u => u.split('/')[2]));
+  // 🔴 시·군 페이지를 keep 에 넣지 않으면 다음 빌드가 120장을 통째로 지운다.
+  const keep = new Set([...JANGTEO_SIDO_URLS, ...JANGTEO_SIGUNGU_URLS].map(u => u.split('/')[2]));
   let gone = 0;
   for (const e of fs.readdirSync(path.join(ROOT, 'jangteo'), { withFileTypes: true })) {
     if (!e.isDirectory() || keep.has(e.name)) continue;
@@ -7313,7 +7338,7 @@ const ADV_TRAFFIC = {
 }
 
 // ---------- sitemap / robots ----------
-const urls = ['/', ...MONTHS.map(m => `/${m.key}/`), '/search/', ...(holidays.length ? ['/holiday/'] : []), '/pet/', ...(apiAccessible.length ? ['/accessible/'] : []), ...INDOOR_URLS, ...(apiTrails.length ? ['/trails/'] : []), ...(apiValleys.length ? ['/valley/'] : []), ...(apiMaple.length ? ['/maple/'] : []), ...(apiFlower.length ? ['/flower/'] : []), ...(apiOnsen.length ? ['/onsen/'] : []), '/jangteo/', '/test/', '/trip-cost/', ...CITYTOUR_URLS, ...(visitors.kor && visitors.kor.length ? ['/trend/'] : []), ...SIDO_URLS, ...THEME_URLS, ...TRAIL_URLS, ...WALK_URLS, ...TREND_LANG_URLS, '/blog/', ...posts.map(p => `/blog/${p.slug}/`), '/about/', EDITORIAL_URL, '/contact/', '/advertise/', '/privacy/',...(apiFestsEn.length ? ['/en/', '/en/search/'] : []), ...EN_FESTIVAL_URLS, ...EN_JANGTEO_URLS, ...EN_BLOG_URLS, ...(apiFestsJa.length ? ['/ja/', '/ja/search/'] : []), ...JA_JANGTEO_URLS, ...JA_FESTIVAL_URLS, ...JA_HOLIDAY_URLS, ...JA_PLACES_URLS, ...(apiFestsEs.length ? ['/es/', '/es/search/'] : []), ...ES_JANGTEO_URLS, ...(apiFestsZh.length ? ['/zh/', '/zh/search/'] : []), ...ZH_JANGTEO_URLS, ...(apiFestsTw.length ? ['/tw/', '/tw/search/'] : []), ...TW_EXTRA_URLS, ...MOUNTAIN_URLS, ...CAFE_URLS, ...HOT_URLS, ...HEALING_URLS, ...COURSE_URLS, ...WINTER_URLS, ...JANGTEO_SIDO_URLS, ...SIDO_HUB_URLS, ...TRIP_URLS, ...FESTIVAL_URLS, ...MAP_URLS, ...INTL_URLS, ...CHUSEOK_URLS, ...SEOUL_URLS, ...BUSAN_URLS, ...JEJU_URLS, ...CITY_URLS, ...INTL_CITY_URLS];
+const urls = ['/', ...MONTHS.map(m => `/${m.key}/`), '/search/', ...(holidays.length ? ['/holiday/'] : []), '/pet/', ...(apiAccessible.length ? ['/accessible/'] : []), ...INDOOR_URLS, ...(apiTrails.length ? ['/trails/'] : []), ...(apiValleys.length ? ['/valley/'] : []), ...(apiMaple.length ? ['/maple/'] : []), ...(apiFlower.length ? ['/flower/'] : []), ...(apiOnsen.length ? ['/onsen/'] : []), '/jangteo/', '/test/', '/trip-cost/', ...CITYTOUR_URLS, ...(visitors.kor && visitors.kor.length ? ['/trend/'] : []), ...SIDO_URLS, ...THEME_URLS, ...TRAIL_URLS, ...WALK_URLS, ...TREND_LANG_URLS, '/blog/', ...posts.map(p => `/blog/${p.slug}/`), '/about/', EDITORIAL_URL, '/contact/', '/advertise/', '/privacy/',...(apiFestsEn.length ? ['/en/', '/en/search/'] : []), ...EN_FESTIVAL_URLS, ...EN_JANGTEO_URLS, ...EN_BLOG_URLS, ...(apiFestsJa.length ? ['/ja/', '/ja/search/'] : []), ...JA_JANGTEO_URLS, ...JA_FESTIVAL_URLS, ...JA_HOLIDAY_URLS, ...JA_PLACES_URLS, ...(apiFestsEs.length ? ['/es/', '/es/search/'] : []), ...ES_JANGTEO_URLS, ...(apiFestsZh.length ? ['/zh/', '/zh/search/'] : []), ...ZH_JANGTEO_URLS, ...(apiFestsTw.length ? ['/tw/', '/tw/search/'] : []), ...TW_EXTRA_URLS, ...MOUNTAIN_URLS, ...CAFE_URLS, ...HOT_URLS, ...HEALING_URLS, ...COURSE_URLS, ...WINTER_URLS, ...JANGTEO_SIDO_URLS, ...JANGTEO_SIGUNGU_URLS, ...SIDO_HUB_URLS, ...TRIP_URLS, ...FESTIVAL_URLS, ...MAP_URLS, ...INTL_URLS, ...CHUSEOK_URLS, ...SEOUL_URLS, ...BUSAN_URLS, ...JEJU_URLS, ...CITY_URLS, ...INTL_CITY_URLS];
 // noindex 페이지는 사이트맵에서 뺀다 — "색인해라(사이트맵) + 하지마라(noindex)"는 모순 신호다.
 // 🔁 2026-08-19: en/ja/zh 사이트맵 제외를 되돌린다(위 layout()의 forceNoindex 주석 참고).
 //    구글 클릭 0을 보고 뺐지만 GA4로는 구글 아닌 검색엔진에서 16세션/28일이 들어오고 있었다.
