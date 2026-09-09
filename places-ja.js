@@ -37,6 +37,15 @@ const SIDO = [
 // /ja/{city}/ 가 이미 있는 곳 — 시·도 페이지에서 그쪽으로 보낸다(중복이 아니라 동선)
 const CITY_PAGE = { seoul: 'seoul', busan: 'busan', jeju: 'jeju', daegu: 'daegu', incheon: 'incheon' };
 
+// 🔴 places_ja 에는 `sigungu` 필드가 없다 — `signguCd`(코드)만 있다.
+//    첫 배포에서 서울 369곳이 「その他」 한 덩어리로 나온 원인이 이것이었다.
+//    한글 도로명주소의 둘째 토큰이 시·군·구다: 「서울특별시 종로구 …」 → 종로구.
+//    ⚠️ 「경기도 용인시 기흥구」처럼 시 아래 일반구가 오는 곳은 «시»까지만 묶는다(보낼 곳이 안 틀린다).
+const sgOf = p => {
+  const t = String(p.addrKo || '').trim().split(/\s+/);
+  const k = t[1] || '';
+  return /[시군구]$/.test(k) ? k : '';
+};
 const kana = s => (String(s).match(/[ぁ-んァ-ヶ]/g) || []).length / Math.max(1, String(s).length);
 const usable = p => String(p.ov || '').length >= OV_MIN
   && kana(p.ov) >= KANA_MIN
@@ -138,9 +147,12 @@ function build({ ROOT, layout, writePage }) {
     .map(m => `<a href="/ja/places/${m.slug}/">${esc(m.ja)} (${m.n})</a>`).join('');
 
   for (const m of made) {
-    // 시·군·구로 묶어 읽기 쉽게 — 서울 400곳을 한 덩어리로 두면 못 읽는다
+    // 시·군·구로 묶어 읽기 쉽게 — 서울 369곳을 한 덩어리로 두면 못 읽는다
+    // 🔴 첫 배포에서 서울이 「その他 369か所」 한 덩어리로 나왔다. places_ja 에는 `sigungu` 필드가
+    //    «아예 없다»(코드 signguCd 만 있다). 라이브를 열어 보지 않았으면 못 잡았을 것이다.
+    //    → 오늘 채운 addrKo 의 둘째 토큰에서 시·군·구를 뽑는다(「서울특별시 종로구 …」 → 종로구).
     const bySg = {};
-    m.list.forEach(p => { const k = String(p.sigungu || '').trim() || 'その他'; (bySg[k] = bySg[k] || []).push(p); });
+    m.list.forEach(p => { const k = sgOf(p) || 'その他'; (bySg[k] = bySg[k] || []).push(p); });
     const groups = Object.entries(bySg).sort((a, b) => b[1].length - a[1].length);
     const body = groups.map(([sg, arr]) =>
       `<h2 class="jp-sec">${esc(sg)} <span style="font-weight:600;color:#9aa3af;font-size:.9rem">${arr.length}か所</span></h2>
@@ -174,7 +186,7 @@ ${body}
   //    → 카드에 «그 지역에 무엇이 있는지»를 데이터로 붙인다. 문장을 지어내지 않고 이름을 보여 준다.
   const sorted = made.slice().sort((a, b) => b.n - a.n);
   const cards = sorted.map(m => {
-    const sg = new Set(m.list.map(p => String(p.sigungu || '').trim()).filter(Boolean));
+    const sg = new Set(m.list.map(sgOf).filter(Boolean));
     const top = m.list.filter(p => String(p.ov || '').length >= 250).slice(0, 3).map(p => p.title);
     const names = (top.length ? top : m.list.slice(0, 3).map(p => p.title)).join(' · ');
     return `<li><a href="/ja/places/${m.slug}/">${esc(m.ja)}<span>${m.n}か所 / ${sg.size}の市・郡・区</span>
