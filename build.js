@@ -221,7 +221,8 @@ function evDesc(f) {
 }
 
 // schema.org Event JSON-LD 배열 문자열 생성
-function eventsJsonLd(list) {
+// urlOf(f) — 그 축제의 «고유 URL»을 돌려주는 함수(선택). 안 주면 예전처럼 /search/ 로 떨어진다.
+function eventsJsonLd(list, urlOf) {
   const items = list.map(f => {
     const o = {
       '@context': 'https://schema.org',
@@ -244,7 +245,10 @@ function eventsJsonLd(list) {
       },
       image: [absImgOf(f)],
       description: evDesc(f),
-      url: SITE + '/search/'
+      // ⚠️ 2026-09-09까지 여기가 «전부» /search/ 였다. 홈에 Event 9개가 실려 나가는데
+      //    9개가 모두 같은 URL을 가리키면 구글이 개별 이벤트로 안 본다.
+      //    개별 축제 페이지가 있으면 그쪽을, 없으면 그 달 페이지를 가리킨다.
+      url: (typeof urlOf === 'function' && urlOf(f)) || (SITE + '/search/')
     };
     return o;
   });
@@ -2304,7 +2308,14 @@ const monthNavHtml = `<div class="monthnav-wrap">`
 const guidePostByTitle = new Map();
 posts.forEach(p => (p.tags || []).forEach(t => { if (!guidePostByTitle.has(t)) guidePostByTitle.set(t, p); }));
 
+// ⏳ 지난 달 페이지 — 2026-09-09 장남 님 지적: 9월인데 네이버 브랜드 카드 하위링크에 8월이 떴다.
+//    ⚠️ 「지난 달이니 색인에서 빼자」로 가면 안 된다. GA4 28일 실측: /2026-08 착지 **284세션**
+//       (네이버 모바일 198 = 70%) · 이탈률 21.5% · 체류 109초로 «잘 쓰이는 페이지»다.
+//       2026-08-19에 GSC만 보고 45p를 noindex 했다가 하루 만에 되돌린 것과 같은 함정.
+//    → 버리지 말고 «이번 달로 넘겨주는 페이지»로 만든다. 날짜 비교라 매달 저절로 넘어간다.
+const CUR_M = MONTHS.find(m => m.key === CUR_MONTH_KEY) || MONTHS[0];
 MONTHS.forEach(mm => {
+  const isPast = mm.key < CUR_MONTH_KEY;
   const list = monthFests
     .filter(f => f.month.some(m => mm.months.includes(m)))
     .sort((a, b) => a.start.localeCompare(b.start));
@@ -2312,8 +2323,14 @@ MONTHS.forEach(mm => {
   //    「9월축제」12,690 · 「9월축제일정」2,310 인데 제목이 "2026년 9월 축제…"로 시작해
   //    헤드가 앞머리에 없었고, 네이버 SERP 사이트 카드에 우리가 못 붙고 있었다.
   //    → "9월 축제 일정"을 맨 앞으로 옮긴다. (연도는 뒤로)
-  const title = `${mm.short} 축제 일정 · 축제하는곳 — ${mm.label} 전국 축제 ${list.length}개 총정리 | ${SITE_NAME}`;
-  const desc = `${mm.short}에 축제하는곳이 궁금하다면 여기서 확인하세요 — ${mm.label} 전국 축제 ${list.length}개의 날짜·장소·볼거리를 지역별로 정리했습니다. ${list.slice(0, 3).map(f => f.name).join(', ')} 등.`;
+  // 지난 달은 «헤드 키워드는 그대로 두고»(그게 284세션을 벌어 온다) 뒤에 지난 달임을 붙인다.
+  //   설명문은 첫 문장을 «지금 어디로 가면 되는지»로 바꾼다 — 네이버 스니펫이 이 문장을 쓴다.
+  const title = isPast
+    ? `${mm.short} 축제 일정 · 축제하는곳 — ${mm.label} 전국 축제 ${list.length}개 (지난 달) | ${SITE_NAME}`
+    : `${mm.short} 축제 일정 · 축제하는곳 — ${mm.label} 전국 축제 ${list.length}개 총정리 | ${SITE_NAME}`;
+  const desc = isPast
+    ? `${mm.label}은 지났습니다 — 지금 열리는 축제는 이번 달(${CUR_M.label}) 축제 ${monthCnt(CUR_M)}개에서 확인하세요. 아래는 ${mm.label}에 열렸던 전국 축제 ${list.length}개 기록입니다.`
+    : `${mm.short}에 축제하는곳이 궁금하다면 여기서 확인하세요 — ${mm.label} 전국 축제 ${list.length}개의 날짜·장소·볼거리를 지역별로 정리했습니다. ${list.slice(0, 3).map(f => f.name).join(', ')} 등.`;
   // 이 달의 숫자 — 지역 분포와 붐빔 상위는 우리만 낼 수 있는 문장이다
   const M = mm.months[0];
   const bySido = {}; list.forEach(f => { const r = (f.region || '').split(' ')[0]; if (r) bySido[r] = (bySido[r] || 0) + 1; });
@@ -2395,9 +2412,15 @@ MONTHS.forEach(mm => {
   ];
 
   const content = `<main><div class="wrap">
+${isPast ? `<style>
+.pastmon{background:#fff7ed;border:1.5px solid #fdd8ae;border-radius:12px;padding:13px 16px;margin:0 0 14px;color:#7c4a12;font-size:.97rem;line-height:1.6}
+.pastmon a{color:#c2410c;font-weight:800;text-decoration:none;white-space:nowrap}
+.pastmon a:hover{text-decoration:underline}
+</style>` : ''}
 <h1 style="font-size:1.5rem;margin-bottom:6px">${mm.short} 축제 일정 — ${mm.label} 전국 축제 ${list.length}개</h1>
+${isPast ? `<p class="pastmon">⏳ <b>${mm.label}은 이미 지났습니다.</b> <a href="/${CUR_M.key}/">이번 달 — ${CUR_M.label} 축제 ${monthCnt(CUR_M)}개 보기 →</a></p>` : ''}
 <p class="note">총 ${list.length}개 · 지역 버튼을 눌러 필터링하세요. 일정은 변동될 수 있으니 방문 전 공식 홈페이지를 확인하세요.</p>
-<p style="margin:4px 0 10px;color:#4b5563;font-size:.95rem">${mm.label}에 <b>축제하는 곳</b>은 전국에 총 <b>${list.length}곳</b>입니다. 아래 목록에서 지역별로 바로 확인할 수 있습니다.</p>
+<p style="margin:4px 0 10px;color:#4b5563;font-size:.95rem">${mm.label}에 <b>축제하는 곳</b>은 전국에 총 <b>${list.length}곳</b>${isPast ? '이었습니다. 지금 열리는 축제는 <a href="/' + CUR_M.key + '/">이번 달 축제</a>에서 보세요.' : '입니다. 아래 목록에서 지역별로 바로 확인할 수 있습니다.'}</p>
 <p style="margin:4px 0 12px"><button id="nearby-btn" class="nearby-btn">📍 내 주변 축제 보기</button></p>
 ${mm.key === '2026-09' ? `<p style="background:#fff7ed;border:1.5px solid #fdd8ae;border-radius:12px;padding:12px 16px;margin:0 0 14px"><a href="/blog/chuseok-2026-holiday-guide/" style="color:#9a5b1f;font-weight:800;text-decoration:none">🌕 2026년 추석 연휴(9/24~27) 가이드 보기 →</a> <span style="color:#7c6650;font-size:.9rem">연휴 축제·오일장 장날을 한 번에 정리했어요.</span></p>` : ''}
 ${regionFilter(list)}
@@ -3765,10 +3788,47 @@ const HOME_DEPTH = (() => {
 </div>`;
 })();
 
+// ---------- 🏷 브랜드 실체(Organization + WebSite) — 2026-09-09 신설 ----------
+// 왜: 구글에서 「축제모아」로 검색하면 «우리가 1페이지에 아예 없고»(실측 0건),
+//     travel-info.co.kr 이 1위다. 그 사이트는 title 도 h1 도 「축제모아」로 우리 이름을 쓴다.
+//     홈의 JSON-LD 를 세어 보니 Event 9 + FAQPage 1 뿐 — **Organization 도 WebSite 도 없었다.**
+//     구글에 「축제모아라는 이름의 사이트는 여기다」라고 말해 주는 조각이 하나도 없었던 셈이다.
+// ⚠️ 기대치는 낮게 잡을 것: 네이버 실측 「축제모아」 검색량은 월 40, GSC 90일 노출 13이다.
+//     이걸 고쳐도 트래픽은 거의 안 는다. 값어치는 «AI 개요·지식패널에서 남의 사이트가
+//     우리 이름으로 굳는 것»을 막는 데 있다.
+const BRAND_LD = [
+  { '@context': 'https://schema.org', '@type': 'Organization',
+    name: SITE_NAME, alternateName: ['축제모아', 'Chukjemoa', 'chukjemoa.co.kr'],
+    url: SITE + '/', logo: SITE + '/apple-touch-icon.png',
+    email: 'goohw593@gmail.com',
+    description: '전국 축제·오일장(5일장) 일정을 공공데이터로 모아 월별·지역별로 정리하는 한국 축제 정보 사이트.' },
+  { '@context': 'https://schema.org', '@type': 'WebSite',
+    name: SITE_NAME, alternateName: 'Chukjemoa', url: SITE + '/', inLanguage: 'ko-KR',
+    publisher: { '@type': 'Organization', name: SITE_NAME, url: SITE + '/' },
+    potentialAction: { '@type': 'SearchAction',
+      target: { '@type': 'EntryPoint', urlTemplate: SITE + '/search/?q={search_term_string}' },
+      'query-input': 'required name=search_term_string' } }
+].map(o => `<script type="application/ld+json">${JSON.stringify(o)}</script>`).join('\n');
+
+// 홈 Event 9개가 전부 /search/ 를 가리키고 있었다 → 개별 축제 페이지가 있으면 그쪽으로.
+const _festSlugByName = new Map();
+FEST_PAGES.forEach(f => { const k = String(f.title || '').replace(/\s/g, ''); if (k) _festSlugByName.set(k, f.slug); });
+function festUrlOf(f) {
+  const s = _festSlugByName.get(String(f.name || f.title || '').replace(/\s/g, ''));
+  if (s) return SITE + '/festival/' + s + '/';
+  // ⚠️ 여러 달에 걸치는 축제(「금남로 차 없는 거리」처럼 7~11월)는 MONTHS 순서대로 찾으면
+  //    «지난 달» 페이지를 가리킨다 — 첫 렌더에서 실제로 /2026-07/ 이 나왔다.
+  //    이번 달 이후 중 가장 이른 달을 고르고, 그런 게 없으면 마지막 달을 쓴다.
+  const hit = MONTHS.filter(mm => (f.month || []).some(m => mm.months.includes(m)));
+  const mk = hit.find(mm => mm.key >= CUR_MONTH_KEY) || hit[hit.length - 1] || null;
+  return mk ? SITE + '/' + mk.key + '/' : '';
+}
+
 writePage('.', layout(
   `${SITE_NAME} — 전국 축제·오일장 일정 총정리 (2026)`,
   `2026 전국 축제 일정과 오일장(5일장) 날짜를 한눈에. 월별·지역별 축제 정보, 보령머드축제부터 화천산천어축제까지.`,
-  '/', indexContent + HOME_DEPTH + FAQ_HOME_HTML + HERO_JS, { jsonld: eventsJsonLd(upcoming) + FAQ_HOME_LD, alternates: homeAlts() }));
+  '/', indexContent + HOME_DEPTH + FAQ_HOME_HTML + HERO_JS,
+  { jsonld: BRAND_LD + eventsJsonLd(upcoming, festUrlOf) + FAQ_HOME_LD, alternates: homeAlts() }));
 
 // ---------- 개인정보처리방침 ----------
 const privacyContent = `<main><div class="wrap"><article>
@@ -4296,11 +4356,18 @@ const SPOT_THEMES = [
     metaDesc: '봄 꽃구경·정원 나들이 좋은 전국 수목원·꽃 명소를 지역별로 모았습니다. 공공데이터(한국관광공사) 기반 명소 정보와 지도, 지역별 검색까지 한 페이지에서 확인하세요.',
     h1: '🌸 전국 봄꽃·정원 명소', catLabel: '🌸 봄꽃·정원', accent: '#db2777', bd: '#f4c6dc', bg: '#fdf2f8', ph: '수목원·명소명·주소 검색',
     sub: '공공데이터(한국관광공사) 기반 전국 수목원·정원 __N__곳 — 봄 꽃구경·나들이 좋은 곳을 지역별로 찾아보세요. 카드를 누르면 상세정보와 지도·검색 링크가 열립니다.',
+    fallback: '/img/flower-fallback.webp',
+    imgCredit: '대체 이미지: 위키미디어 공용 「원주 동화마을 수목원 벚꽃」 © 슐라, CC BY-SA 4.0.',
     note: '데이터 출처: 한국관광공사(공공데이터포털). 꽃 개화 시기는 해마다 날씨에 따라 크게 달라지니 방문 전 개화 상황을 확인하세요.' },
   { data: apiOnsen, slug: 'onsen', title: '전국 온천·스파 명소 — 겨울 온천 여행지 총정리 | ' + SITE_NAME,
     metaDesc: '겨울 온천 여행·찜질하기 좋은 전국 온천·스파를 지역별로 모았습니다. 공공데이터(한국관광공사) 기반 명소 정보와 지도, 지역별 검색까지 한 페이지에서 확인하세요.',
     h1: '♨️ 전국 온천·스파 명소', catLabel: '♨️ 온천·스파', accent: '#0369a1', bd: '#bcdcec', bg: '#eff8fc', ph: '온천·명소명·주소 검색',
     sub: '공공데이터(한국관광공사) 기반 전국 온천·스파 __N__곳 — 겨울에 몸 녹이기 좋은 온천을 지역별로 찾아보세요. 카드를 누르면 상세정보와 지도·검색 링크가 열립니다.',
+    // ⚠️ 온천만 «사진»이 아니라 자체 일러스트다. 무료 출처에 쓸 만한 진짜 온천 사진이 없었다 —
+    //    유일한 후보(유성온천 족욕체험장)는 행인 얼굴이 그대로 찍힌 영상 캡처라 쓸 수 없다.
+    //    사이트가 이미 쓰는 cat2-*.webp 와 같은 플랫 일러스트 계열로 맞췄다.
+    fallback: '/img/onsen-fallback.webp',
+    imgCredit: '대체 이미지는 축제모아가 직접 만든 일러스트입니다(특정 온천을 그린 것이 아닙니다).',
     note: '데이터 출처: 한국관광공사(공공데이터포털). 운영시간·요금·휴관일은 계절과 시설 사정에 따라 다르니 방문 전 꼭 확인하세요.' },
 ];
 // 🖼 사진 없는 곳의 대체 이미지(FB)는 «테마가 정한 것»을 쓴다. 예전엔 셋 다 hero.webp 로 떨어져
