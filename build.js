@@ -4178,12 +4178,95 @@ fetch('/valley/data.json').then(function(r){return r.json();}).then(function(dat
 //    ※ 무장애 편의시설 정보는 공공데이터에 1,390곳만 있다 — 우리 수집 누락이 아니라 원본 한계다.
 //    ※ 이 메모를 처음엔 «템플릿 안 HTML 주석»으로 넣었다가 audit.js 가 「개발용 주석 유출 2건」으로 잡아냈다.
 //       같은 함정을 하루에 두 번 밟았다. 메모는 반드시 템플릿 바깥의 // 주석으로.
+
+// ---------- 🍁 2026 단풍 예상시기 (2026-09-09 신설) ----------
+// 왜 넣나 — nv_volume 네이버 실측: 「2026단풍시기」20,310 ·「단풍축제」18,730 ·「단풍시기」16,760인데
+//   「단풍명소」는 1,440뿐이다. 그런데 /maple/ 제목이 겨냥하던 유일한 말이 그 1,440짜리 하나였고,
+//   페이지 안에 '시기'는 4번·'절정'은 1번뿐이었다 → 구글 노출 7건·17~28위(GSC 28일 실측).
+//   326곳짜리 실한 페이지가 제일 작은 말 하나만 붙들고 있었다.
+// ⚠️ 날짜는 지어내지 않는다. 아래는 웨더아이 공지의 「주요산 단풍 예상시기」 표를 그대로 옮긴 것.
+//   ⚠️ 같은 공지의 «요약 문장»은 내장산 절정을 11/1로 적었는데 «표»는 11/11이다 → 상세인 표를 따랐다.
+//   ⚠️ 원문 표엔 금강산(첫단풍 10/1·절정 10/23)도 있으나 북한이라 뺐다.
+//   🔁 해마다 9월 초에 새로 발표된다. 내년 9월엔 MAPLE_SRC·MAPLE_FORECAST 를 통째로 갈아끼울 것.
+const MAPLE_SRC = { name: '웨더아이', date: '2026-09-04',
+  url: 'https://www.weatheri.co.kr/board/board03_read.php?id=325' };
+const MAPLE_FORECAST = [
+  { m: '설악산', alt: 1708, first: '10월 3일',  peak: '10월 25일' },
+  { m: '오대산', alt: 1565, first: '10월 7일',  peak: '10월 16일' },
+  { m: '치악산', alt: 1282, first: '10월 10일', peak: '10월 31일' },
+  { m: '가야산', alt: 1432, first: '10월 22일', peak: '11월 5일'  },
+  { m: '북한산', alt: 835,  first: '10월 23일', peak: '11월 4일'  },
+  { m: '계룡산', alt: 846,  first: '10월 24일', peak: '11월 4일'  },
+  { m: '월악산', alt: 1095, first: '10월 25일', peak: '11월 5일'  },
+  { m: '팔공산', alt: 1192, first: '10월 26일', peak: '11월 12일' },
+  { m: '속리산', alt: 1058, first: '10월 27일', peak: '11월 4일'  },
+  { m: '무등산', alt: 1186, first: '10월 27일', peak: '11월 6일'  },
+  { m: '지리산', alt: 1915, first: '10월 28일', peak: '11월 5일'  },
+  { m: '두륜산', alt: 700,  first: '10월 29일', peak: '11월 11일' },
+  { m: '한라산', alt: 1947, first: '10월 31일', peak: '11월 13일' },
+  { m: '내장산', alt: 763,  first: '11월 5일',  peak: '11월 11일' },
+];
+// 단풍철 가을 축제 — 월별 페이지와 «같은 재고»(monthFests)에서 뽑는다. 별도 목록을 두면 갈라진다.
+// ⚠️ 소스가 셋이라 «같은 축제가 이름만 다르게» 들어온다. 258개짜리 월별 목록에선 안 보이던 게
+//    14개짜리 목록에선 대놓고 보인다 — 첫 렌더에서 실제로 2쌍이 겹쳤다.
+//      「장성 황룡강 가을꽃축제」 vs 「황룡강 가을꽃축제」
+//      「팔공산 단풍축제」 vs 「2026년 제25회 팔공산 단풍축제」
+//    → 연도·회차·공백을 지운 «핵심 이름»으로 «포함관계»까지 본다. 완전일치만 보면 위 두 쌍을 못 잡는다.
+//    긴 이름을 남긴다(「장성」 같은 지역 정보가 붙어 있어 사람에게 더 쓸모 있다).
+const mapleKey = s => String(s || '').replace(/제\s*\d+\s*회|\d{4}\s*년?|[\s·\-—]/g, '');
+const MAPLE_FESTS = (() => {
+  const cand = monthFests
+    .filter(f => /단풍|억새|국화|코스모스|은행나무|가을꽃|핑크뮬리/.test(f.name || ''))
+    .filter(f => String(f.end || f.start) >= TODAY)
+    .sort((a, b) => (b.name || '').length - (a.name || '').length);   // 긴 이름 우선
+  const kept = [];
+  for (const f of cand) {
+    const k = mapleKey(f.name);
+    if (!k) continue;
+    if (kept.some(g => { const gk = mapleKey(g.name); return gk.includes(k) || k.includes(gk); })) continue;
+    kept.push(f);
+  }
+  return kept.sort((a, b) => String(a.start).localeCompare(String(b.start)));
+})();
+const mdMD = s => String(s || '').slice(5).replace('-', '.');
+const mapleIntro = `<style>
+.mp-box{background:#fff;border:1.5px solid #f0c9a6;border-radius:16px;padding:18px 20px;margin:16px 0}
+.mp-h2{font-size:1.12rem;font-weight:900;color:#c2410c;margin:0 0 8px;letter-spacing:-.02em}
+.mp-lead{font-size:.96rem;line-height:1.68;color:#374151;margin:0 0 12px}
+.mp-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.mp-tb{border-collapse:collapse;width:100%;min-width:340px;font-size:.93rem}
+.mp-tb th{background:#fdf5ee;color:#9a3412;font-weight:800;padding:9px 10px;border-bottom:2px solid #f0c9a6;text-align:left;white-space:nowrap}
+.mp-tb td{padding:8px 10px;border-bottom:1px solid #f4ece4;color:#374151;white-space:nowrap}
+.mp-tb tr:last-child td{border-bottom:0}
+.mp-src{font-size:.84rem;color:#6b7280;line-height:1.6;margin:10px 0 0}
+.mp-src a{color:#c2410c}
+.mp-fl{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:8px}
+.mp-fl li{background:#fdf5ee;border-radius:10px;padding:9px 12px;font-size:.92rem;color:#374151}
+.mp-fl li span{display:block;font-size:.83rem;color:#6b7280;margin-top:2px}
+</style>
+<div class="mp-box">
+<h2 class="mp-h2">2026년 단풍 절정 시기 — 언제 가야 하나</h2>
+<p class="mp-lead">올해 첫 단풍은 <b>10월 3일 설악산</b>에서 시작합니다. 절정은 설악산 <b>10월 25일</b>, 중부지방 <b>10월 31일~11월 5일</b>, 지리산과 남부지방 <b>11월 5~13일</b>로 예상됩니다. 9월 후반과 10월 기온이 평년보다 높아 <b>평년보다 첫단풍은 9일, 절정은 8일가량 늦습니다.</b></p>
+<div class="mp-scroll"><table class="mp-tb">
+<thead><tr><th>산</th><th>해발</th><th>첫단풍</th><th>절정</th></tr></thead>
+<tbody>${MAPLE_FORECAST.map(r => `<tr><td><b>${r.m}</b></td><td>${r.alt.toLocaleString()}m</td><td>${r.first}</td><td><b>${r.peak}</b></td></tr>`).join('')}</tbody>
+</table></div>
+<p class="mp-src">첫단풍은 산 전체의 20%가 물들었을 때, 절정은 약 80%가 물들었을 때를 말합니다. 단풍은 하루 20~25km씩 남쪽으로 내려와 설악산과 두륜산이 한 달가량 차이 납니다. 예보 출처: <a href="${MAPLE_SRC.url}" target="_blank" rel="noopener nofollow">${MAPLE_SRC.name} ${MAPLE_SRC.date} 발표</a> — 예보이므로 방문 전 현지 상황을 함께 확인하세요.</p>
+</div>${MAPLE_FESTS.length ? `
+<div class="mp-box">
+<h2 class="mp-h2">단풍철 가을 축제 ${MAPLE_FESTS.length}곳 — 단풍·억새·국화</h2>
+<ul class="mp-fl">${MAPLE_FESTS.map(f => `<li><b>${esc(f.name)}</b><span>${mdMD(f.start)}~${mdMD(f.end || f.start)} · ${esc([f.region, f.city].filter(Boolean).join(' '))}</span></li>`).join('')}</ul>
+<p class="mp-src">가을 축제를 달마다 모아 보려면 <a href="/2026-10/">10월 축제 전체</a> · <a href="/2026-11/">11월 축제 전체</a></p>
+</div>` : ''}`;
+
 const SPOT_THEMES = [
-  { data: apiMaple, slug: 'maple', title: '전국 단풍 명소 — 가을 산·단풍 여행 명소 총정리 | ' + SITE_NAME,
-    metaDesc: '가을 단풍 구경 좋은 전국 산·단풍 명소를 지역별로 모았습니다. 공공데이터(한국관광공사) 기반 명소 정보와 지도, 지역별 검색까지 한 페이지에서 확인하세요.',
-    h1: '🍁 전국 단풍 명소', catLabel: '🍁 단풍', accent: '#c2410c', bd: '#f0c9a6', bg: '#fdf5ee', ph: '산·명소명·주소 검색',
-    sub: '공공데이터(한국관광공사) 기반 전국 산·단풍 명소 __N__곳 — 가을 단풍 구경 좋은 곳을 지역별로 찾아보세요. 카드를 누르면 상세정보와 지도·검색 링크가 열립니다.',
-    note: '데이터 출처: 한국관광공사(공공데이터포털). 단풍 절정 시기는 해마다·고도에 따라 다르니 방문 전 단풍 예상 시기를 확인하세요.' },
+  { data: apiMaple, slug: 'maple',
+    title: '2026 단풍시기 · 단풍축제 — 전국 단풍 명소 ' + apiMaple.length + '곳과 절정 예상 시기 | ' + SITE_NAME,
+    metaDesc: '2026년 첫단풍은 10월 3일 설악산, 절정은 설악산 10월 25일·중부 10월 말·남부 11월 초로 예상됩니다(웨더아이 9/4 발표). 산별 절정 시기와 전국 단풍 명소 ' + apiMaple.length + '곳, 단풍·억새·국화 축제를 지역별로 정리했습니다.',
+    h1: '🍁 2026 단풍시기 — 전국 단풍 명소 ' + apiMaple.length + '곳', catLabel: '🍁 단풍', accent: '#c2410c', bd: '#f0c9a6', bg: '#fdf5ee', ph: '산·명소명·주소 검색',
+    sub: '2026년 산별 단풍 절정 예상 시기와 전국 산·단풍 명소 __N__곳을 한 페이지에 모았습니다. 단풍철 가을 축제까지 함께 확인하세요.',
+    intro: mapleIntro,
+    note: '데이터 출처: 명소는 한국관광공사(공공데이터포털), 단풍 예상 시기는 웨더아이 ' + MAPLE_SRC.date + ' 발표. 절정은 고도와 그해 기온에 따라 달라집니다.' },
   { data: apiFlower, slug: 'flower', title: '전국 봄꽃·정원 명소 — 벚꽃·수목원·꽃구경 명소 총정리 | ' + SITE_NAME,
     metaDesc: '봄 꽃구경·정원 나들이 좋은 전국 수목원·꽃 명소를 지역별로 모았습니다. 공공데이터(한국관광공사) 기반 명소 정보와 지도, 지역별 검색까지 한 페이지에서 확인하세요.',
     h1: '🌸 전국 봄꽃·정원 명소', catLabel: '🌸 봄꽃·정원', accent: '#db2777', bd: '#f4c6dc', bg: '#fdf2f8', ph: '수목원·명소명·주소 검색',
@@ -4215,6 +4298,7 @@ SPOT_THEMES.forEach(function (T) {
 </style>
 <h1 class="page-h1">${T.h1}</h1>
 <p class="page-sub">${sub}</p>
+${T.intro || ''}
 <div class="srchbar"><div class="row">
 <select id="sSido"><option value="">전체 지역</option>${sidoOpts}</select>
 <select id="sSigungu"><option value="">전체 시·군·구</option></select>
