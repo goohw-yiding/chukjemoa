@@ -494,6 +494,9 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 .ic-item{border:1px solid #e6eaee;border-radius:12px;padding:13px 15px;background:#fff}
 .ic-h{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:5px}
 .ic-h b{font-size:1rem;font-weight:800;color:#111827}
+/* 🔗 개별 축제 상세로 가는 제목 — «눌러도 되는 것»으로 보여야 한다(밑줄+색). */
+.ic-h .ic-a{font-size:1rem;font-weight:800;color:#0a6c63;text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:1.5px}
+.ic-h .ic-a:hover{color:#08544d}
 .ic-ko{font-size:.84rem;color:#6b7280;font-weight:700}
 .ic-sub{font-size:.9rem;color:#0a6c63;font-weight:700;margin:0 0 5px}
 .ic-meta{font-size:.85rem;color:#6b7280;margin:0 0 6px;line-height:1.6}
@@ -528,22 +531,13 @@ document.addEventListener('click',function(e){
 </script>
 <p class="ic-crumb"><a href="/zh/">首页</a> › 首尔</p>
 <h1 class="ic-h1">首尔 — 庆典与值得一去的地方</h1>
-<p class="ic-lead">韩国观光公社以中文介绍的首尔446处，以及正在举办的6个庆典。每一条都附上<b>可直接粘贴到地图应用的韩文地址</b>。</p>
+<p class="ic-lead">韩国观光公社以中文介绍的首尔446处，以及正在举办和即将举办的6个庆典。每一条都附上<b>可直接粘贴到地图应用的韩文地址</b>。</p>
 
 <div class="ic-why"><h2>为什么我们提供韩文地址</h2><p>谷歌地图在韩国境内无法提供路线导航（地图数据出境限制）。请把韩文地址（或韩文名称）粘贴到<b>NAVER地图</b>或<b>Kakao地图</b>，本页的写法可以直接搜索。</p></div>
 
 <h2 class="sec">正在举办的庆典</h2>
 <ul class="ic-list"><li class="ic-item">
-<div class="ic-h"><b>首尔街头艺术节</b><span class="wx-chip" title="구름 조금">⛅ 25° · 비 0%</span></div>
-
-<p class="ic-meta">📅 时间: 09/19 – 09/20 · 📍 首尔特别市广津区陵洞路10（紫阳洞）</p>
-
-
-<p class="ic-st">🚇 最近地铁站: <b>市厅</b><span class="ic-stko">시청</span> · 步行2分钟 · 1호선 · 2호선 · <span class="ic-tag">♿ 有电梯</span></p><div class="xcopy"><div><span class="lb">站名（韩文）— 粘贴到地图</span><span class="vl">시청</span></div>
-<button data-v="시청" data-done="已复制">复制</button></div>
-
-</li><li class="ic-item">
-<div class="ic-h"><b>COSMOS BIGBANG 20TH ANNIVERSARY MEDIA EXHIBITION</b><span class="wx-chip" title="구름 조금">⛅ 25° · 비 0%</span></div>
+<div class="ic-h"><b>COSMOS BIGBANG 20TH ANNIVERSARY MEDIA EXHIBITION</b><span class="wx-chip">⛅ 25° · 降水 0%</span></div>
 
 <p class="ic-meta">📅 时间: 08/24 – 09/27 · 📍 首尔特别市中区西小门路地下127号（西小门洞）</p>
 
@@ -551,17 +545,41 @@ document.addEventListener('click',function(e){
 <p class="ic-st">🚇 最近地铁站: <b>市厅</b><span class="ic-stko">시청</span> · 步行4分钟 · 1호선 · 2호선 · <span class="ic-tag">♿ 有电梯</span></p><div class="xcopy"><div><span class="lb">站名（韩文）— 粘贴到地图</span><span class="vl">시청</span></div>
 <button data-v="시청" data-done="已复制">复制</button></div>
 
-</li><li class="ic-item">
-<div class="ic-h"><b>凤山假面舞都聚起来吧！</b><span class="wx-chip" title="구름 조금">⛅ 25° · 비 0%</span></div>
 
-<p class="ic-meta">📅 时间: 10/02 – 10/04 · 📍 서울특별시 종로구 종로1길 45 (세종로)</p>
+</li><li class="ic-item">
+<div class="ic-h"><b>国乐表演《进宴》</b><span class="wx-chip">⛅ 25° · 降水 0%</span></div>
+
+<p class="ic-meta">📅 时间: 01/01 – 12/31 · 📍 首尔特别市钟路区仁寺洞5街10（仁寺洞）</p>
+
+
+<p class="ic-st">🚇 最近地铁站: <b>钟阁</b><span class="ic-stko">종각</span> · 步行5分钟 · 1호선 · <span class="ic-tag">♿ 有电梯</span></p><div class="xcopy"><div><span class="lb">站名（韩文）— 粘贴到地图</span><span class="vl">종각</span></div>
+<button data-v="종각" data-done="已复制">复制</button></div>
+
+
+</li></ul><h2 class="sec">即将举办的庆典</h2>
+<ul class="ic-list"><li class="ic-item">
+<div class="ic-h"><b>首尔街头艺术节</b><span class="wx-chip">⛅ 25° · 降水 0%</span></div>
+
+<p class="ic-meta">📅 时间: 09/19 – 09/20 · 📍 首尔特别市广津区陵洞路10（紫阳洞）</p>
+
+
+<p class="ic-st">🚇 最近地铁站: <b>市厅</b><span class="ic-stko">시청</span> · 步行2分钟 · 1호선 · 2호선 · <span class="ic-tag">♿ 有电梯</span></p><div class="xcopy"><div><span class="lb">站名（韩文）— 粘贴到地图</span><span class="vl">시청</span></div>
+<button data-v="시청" data-done="已复制">复制</button></div>
+
+
+</li><li class="ic-item">
+<div class="ic-h"><b>凤山假面舞都聚起来吧！</b><span class="wx-chip">⛅ 25° · 降水 0%</span></div>
+
+<p class="ic-meta">📅 时间: 10/02 – 10/04</p>
 
 
 <p class="ic-st">🚇 最近地铁站: <b>光化门</b><span class="ic-stko">광화문(세종문화회관)</span> · 步行5分钟 · 5호선</p><div class="xcopy"><div><span class="lb">站名（韩文）— 粘贴到地图</span><span class="vl">광화문(세종문화회관)</span></div>
 <button data-v="광화문(세종문화회관)" data-done="已复制">复制</button></div>
 
+<div class="xcopy"><div><span class="lb">粘贴到地图的地址（韩文）</span><span class="vl">서울특별시 종로구 종로1길 45 (세종로)</span></div>
+<button data-v="서울특별시 종로구 종로1길 45 (세종로)" data-done="已复制">复制</button></div>
 </li><li class="ic-item">
-<div class="ic-h"><b>正祖大王陵行次共同再现</b><span class="wx-chip" title="구름 조금">⛅ 25° · 비 0%</span></div>
+<div class="ic-h"><b>正祖大王陵行次共同再现</b><span class="wx-chip">⛅ 25° · 降水 0%</span></div>
 
 <p class="ic-meta">📅 时间: 10/04 – 10/04 · 📍 首尔特别市钟路区社稷路161 (世宗路)</p>
 
@@ -569,8 +587,9 @@ document.addEventListener('click',function(e){
 <p class="ic-st">🚇 最近地铁站: <b>景福宫(政府首尔厅舍)</b><span class="ic-stko">경복궁(정부서울청사)</span> · 步行4分钟 · 3호선 · <span class="ic-tag">♿ 有电梯</span></p><div class="xcopy"><div><span class="lb">站名（韩文）— 粘贴到地图</span><span class="vl">경복궁(정부서울청사)</span></div>
 <button data-v="경복궁(정부서울청사)" data-done="已复制">复制</button></div>
 
+
 </li><li class="ic-item">
-<div class="ic-h"><b>江东先史文化庆典</b><span class="wx-chip" title="구름 조금">⛅ 24° · 비 0%</span></div>
+<div class="ic-h"><b>江东先史文化庆典</b><span class="wx-chip">⛅ 24° · 降水 0%</span></div>
 
 <p class="ic-meta">📅 时间: 10/16 – 10/18 · 📍 首尔特别市江东区奥林匹克路875（岩寺洞）</p>
 
@@ -578,14 +597,6 @@ document.addEventListener('click',function(e){
 <p class="ic-st">🚇 最近地铁站: <b>岩寺历史公园</b><span class="ic-stko">암사역사공원</span> · 步行8分钟 · 8호선</p><div class="xcopy"><div><span class="lb">站名（韩文）— 粘贴到地图</span><span class="vl">암사역사공원</span></div>
 <button data-v="암사역사공원" data-done="已复制">复制</button></div>
 
-</li><li class="ic-item">
-<div class="ic-h"><b>国乐表演《进宴》</b><span class="wx-chip" title="구름 조금">⛅ 25° · 비 0%</span></div>
-
-<p class="ic-meta">📅 时间: 01/01 – 12/31 · 📍 首尔特别市钟路区仁寺洞5街10（仁寺洞）</p>
-
-
-<p class="ic-st">🚇 最近地铁站: <b>钟阁</b><span class="ic-stko">종각</span> · 步行5分钟 · 1호선 · <span class="ic-tag">♿ 有电梯</span></p><div class="xcopy"><div><span class="lb">站名（韩文）— 粘贴到地图</span><span class="vl">종각</span></div>
-<button data-v="종각" data-done="已复制">复制</button></div>
 
 </li></ul>
 

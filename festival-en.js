@@ -254,6 +254,14 @@ ${mapScript('en')}
   writePage('en/festival', layout(ix.title, ix.desc, ix.url, ix.html, { lang: 'en' }));
   urls.push(ix.url);
 
+  // 슬러그 표를 파일로 남긴다 — intl-city.js 가 도시 페이지 카드 제목에 링크를 걸 때 쓴다.
+  // ⚠️ 같은 규칙을 두 곳에 다시 구현하면 반드시 어긋난다(중복 시 붙는 -2 접미사까지 맞춰야 한다).
+  //    끊긴 링크를 만드느니 «실제로 만든 슬러그»를 그대로 넘긴다. (festival-ja.js 와 같은 방식)
+  // ⚠️ 얇아서 noindex 된 것도 «페이지는 존재»하므로 표에 넣는다 — 링크가 404가 되지 않는다.
+  const slugMap = {};
+  rows.forEach(f => { if (f.id != null) slugMap[String(f.id)] = f.slug; });
+  fs.writeFileSync(path.join(ROOT, 'data', 'en_festival_slugs.json'), JSON.stringify(slugMap), 'utf8');
+
   // ⚠️ 빌드는 «쓰기»만 하고 지우지 않는다 — 데이터에서 빠진 축제의 폴더가 남으면
   //    사이트맵에는 없는데 URL로는 열리는 유령 페이지가 된다(/jangteo/·/trend/ 에서 이미 겪었다).
   const keep = new Set(rows.map(f => f.slug));

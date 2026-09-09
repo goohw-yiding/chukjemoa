@@ -494,6 +494,9 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 .ic-item{border:1px solid #e6eaee;border-radius:12px;padding:13px 15px;background:#fff}
 .ic-h{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:5px}
 .ic-h b{font-size:1rem;font-weight:800;color:#111827}
+/* 🔗 개별 축제 상세로 가는 제목 — «눌러도 되는 것»으로 보여야 한다(밑줄+색). */
+.ic-h .ic-a{font-size:1rem;font-weight:800;color:#0a6c63;text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:1.5px}
+.ic-h .ic-a:hover{color:#08544d}
 .ic-ko{font-size:.84rem;color:#6b7280;font-weight:700}
 .ic-sub{font-size:.9rem;color:#0a6c63;font-weight:700;margin:0 0 5px}
 .ic-meta{font-size:.85rem;color:#6b7280;margin:0 0 6px;line-height:1.6}
@@ -528,13 +531,24 @@ document.addEventListener('click',function(e){
 </script>
 <p class="ic-crumb"><a href="/tw/">首頁</a> › 首爾</p>
 <h1 class="ic-h1">首爾 — 慶典與值得一去的地方</h1>
-<p class="ic-lead">韓國觀光公社以中文介紹的首爾293處，以及正在舉辦的6個慶典。每一條都附上<b>可直接貼到地圖應用的韓文地址</b>。</p>
+<p class="ic-lead">韓國觀光公社以中文介紹的首爾293處，以及正在舉辦和即將舉辦的6個慶典。每一條都附上<b>可直接貼到地圖應用的韓文地址</b>。</p>
 
 <div class="ic-why"><h2>為什麼我們提供韓文地址</h2><p>Google地圖在韓國境內無法提供路線導航（地圖資料出境限制）。請把韓文地址（或韓文名稱）貼到<b>NAVER地圖</b>或<b>Kakao地圖</b>，本頁的寫法可以直接搜尋。</p></div>
 
 <h2 class="sec">正在舉辦的慶典</h2>
 <ul class="ic-list"><li class="ic-item">
-<div class="ic-h"><b>首爾街頭藝術節</b><span class="wx-chip" title="구름 조금">⛅ 25° · 비 0%</span></div>
+<div class="ic-h"><b>國樂表演《進宴》</b><span class="wx-chip">⛅ 25° · 降水 0%</span></div>
+
+<p class="ic-meta">📅 時間: 01/01 – 12/31 · 📍 首爾特別市鐘路區仁寺洞5街10(仁寺洞)</p>
+
+
+<p class="ic-st">🚇 最近地鐵站: <b>钟阁</b><span class="ic-stko">종각</span> · 步行5分鐘 · 1호선 · <span class="ic-tag">♿ 有電梯</span></p><div class="xcopy"><div><span class="lb">站名（韓文）— 貼到地圖</span><span class="vl">종각</span></div>
+<button data-v="종각" data-done="已複製">複製</button></div>
+
+
+</li></ul><h2 class="sec">即將舉辦的慶典</h2>
+<ul class="ic-list"><li class="ic-item">
+<div class="ic-h"><b>首爾街頭藝術節</b><span class="wx-chip">⛅ 25° · 降水 0%</span></div>
 
 <p class="ic-meta">📅 時間: 09/19 – 09/20 · 📍 首爾特別市廣津區陵洞路10(紫陽洞)</p>
 
@@ -542,26 +556,9 @@ document.addEventListener('click',function(e){
 <p class="ic-st">🚇 最近地鐵站: <b>建国大学</b><span class="ic-stko">건대입구</span> · 步行13分鐘 · 2호선 · 7호선 · <span class="ic-tag">♿ 有電梯</span></p><div class="xcopy"><div><span class="lb">站名（韓文）— 貼到地圖</span><span class="vl">건대입구</span></div>
 <button data-v="건대입구" data-done="已複製">複製</button></div>
 
-</li><li class="ic-item">
-<div class="ic-h"><b>正祖大王陵行次共同重現</b><span class="wx-chip" title="구름 조금">⛅ 25° · 비 0%</span></div>
-
-<p class="ic-meta">📅 時間: 10/04 – 10/04 · 📍 首爾特別市鐘路區社稷路161(世宗路)</p>
-
-
-<p class="ic-st">🚇 最近地鐵站: <b>景福宫(政府首尔厅舍)</b><span class="ic-stko">경복궁(정부서울청사)</span> · 步行4分鐘 · 3호선 · <span class="ic-tag">♿ 有電梯</span></p><div class="xcopy"><div><span class="lb">站名（韓文）— 貼到地圖</span><span class="vl">경복궁(정부서울청사)</span></div>
-<button data-v="경복궁(정부서울청사)" data-done="已複製">複製</button></div>
 
 </li><li class="ic-item">
-<div class="ic-h"><b>鳳山面具舞大集合！</b><span class="wx-chip" title="구름 조금">⛅ 25° · 비 0%</span></div>
-
-<p class="ic-meta">📅 時間: 10/02 – 10/04 · 📍 서울특별시 종로구 종로1길 45 (세종로)</p>
-
-
-<p class="ic-st">🚇 最近地鐵站: <b>光化门</b><span class="ic-stko">광화문(세종문화회관)</span> · 步行5分鐘 · 5호선</p><div class="xcopy"><div><span class="lb">站名（韓文）— 貼到地圖</span><span class="vl">광화문(세종문화회관)</span></div>
-<button data-v="광화문(세종문화회관)" data-done="已複製">複製</button></div>
-
-</li><li class="ic-item">
-<div class="ic-h"><b>昌德宮月光之旅</b><span class="wx-chip" title="구름 조금">⛅ 25° · 비 0%</span></div>
+<div class="ic-h"><b>昌德宮月光之旅</b><span class="wx-chip">⛅ 25° · 降水 0%</span></div>
 
 <p class="ic-meta">📅 時間: 09/20 – 10/11 · 📍 首爾特別市鐘路區栗谷路99</p>
 
@@ -569,8 +566,30 @@ document.addEventListener('click',function(e){
 <p class="ic-st">🚇 最近地鐵站: <b>安国</b><span class="ic-stko">안국</span> · 步行6分鐘 · 3호선 · <span class="ic-tag">♿ 有電梯</span></p><div class="xcopy"><div><span class="lb">站名（韓文）— 貼到地圖</span><span class="vl">안국</span></div>
 <button data-v="안국" data-done="已複製">複製</button></div>
 
+
 </li><li class="ic-item">
-<div class="ic-h"><b>江東史前文化節</b><span class="wx-chip" title="구름 조금">⛅ 24° · 비 0%</span></div>
+<div class="ic-h"><b>鳳山面具舞大集合！</b><span class="wx-chip">⛅ 25° · 降水 0%</span></div>
+
+<p class="ic-meta">📅 時間: 10/02 – 10/04</p>
+
+
+<p class="ic-st">🚇 最近地鐵站: <b>光化门</b><span class="ic-stko">광화문(세종문화회관)</span> · 步行5分鐘 · 5호선</p><div class="xcopy"><div><span class="lb">站名（韓文）— 貼到地圖</span><span class="vl">광화문(세종문화회관)</span></div>
+<button data-v="광화문(세종문화회관)" data-done="已複製">複製</button></div>
+
+<div class="xcopy"><div><span class="lb">貼到地圖的地址（韓文）</span><span class="vl">서울특별시 종로구 종로1길 45 (세종로)</span></div>
+<button data-v="서울특별시 종로구 종로1길 45 (세종로)" data-done="已複製">複製</button></div>
+</li><li class="ic-item">
+<div class="ic-h"><b>正祖大王陵行次共同重現</b><span class="wx-chip">⛅ 25° · 降水 0%</span></div>
+
+<p class="ic-meta">📅 時間: 10/04 – 10/04 · 📍 首爾特別市鐘路區社稷路161(世宗路)</p>
+
+
+<p class="ic-st">🚇 最近地鐵站: <b>景福宫(政府首尔厅舍)</b><span class="ic-stko">경복궁(정부서울청사)</span> · 步行4分鐘 · 3호선 · <span class="ic-tag">♿ 有電梯</span></p><div class="xcopy"><div><span class="lb">站名（韓文）— 貼到地圖</span><span class="vl">경복궁(정부서울청사)</span></div>
+<button data-v="경복궁(정부서울청사)" data-done="已複製">複製</button></div>
+
+
+</li><li class="ic-item">
+<div class="ic-h"><b>江東史前文化節</b><span class="wx-chip">⛅ 24° · 降水 0%</span></div>
 
 <p class="ic-meta">📅 時間: 10/16 – 10/18 · 📍 首爾特別市江東區奧林匹克路875(岩寺洞)</p>
 
@@ -578,14 +597,6 @@ document.addEventListener('click',function(e){
 <p class="ic-st">🚇 最近地鐵站: <b>岩寺历史公园</b><span class="ic-stko">암사역사공원</span> · 步行8分鐘 · 8호선</p><div class="xcopy"><div><span class="lb">站名（韓文）— 貼到地圖</span><span class="vl">암사역사공원</span></div>
 <button data-v="암사역사공원" data-done="已複製">複製</button></div>
 
-</li><li class="ic-item">
-<div class="ic-h"><b>國樂表演《進宴》</b><span class="wx-chip" title="구름 조금">⛅ 25° · 비 0%</span></div>
-
-<p class="ic-meta">📅 時間: 01/01 – 12/31 · 📍 首爾特別市鐘路區仁寺洞5街10(仁寺洞)</p>
-
-
-<p class="ic-st">🚇 最近地鐵站: <b>钟阁</b><span class="ic-stko">종각</span> · 步行5分鐘 · 1호선 · <span class="ic-tag">♿ 有電梯</span></p><div class="xcopy"><div><span class="lb">站名（韓文）— 貼到地圖</span><span class="vl">종각</span></div>
-<button data-v="종각" data-done="已複製">複製</button></div>
 
 </li></ul>
 

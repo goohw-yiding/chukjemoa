@@ -494,6 +494,9 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 .ic-item{border:1px solid #e6eaee;border-radius:12px;padding:13px 15px;background:#fff}
 .ic-h{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:5px}
 .ic-h b{font-size:1rem;font-weight:800;color:#111827}
+/* 🔗 개별 축제 상세로 가는 제목 — «눌러도 되는 것»으로 보여야 한다(밑줄+색). */
+.ic-h .ic-a{font-size:1rem;font-weight:800;color:#0a6c63;text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:1.5px}
+.ic-h .ic-a:hover{color:#08544d}
 .ic-ko{font-size:.84rem;color:#6b7280;font-weight:700}
 .ic-sub{font-size:.9rem;color:#0a6c63;font-weight:700;margin:0 0 5px}
 .ic-meta{font-size:.85rem;color:#6b7280;margin:0 0 6px;line-height:1.6}
@@ -528,13 +531,13 @@ document.addEventListener('click',function(e){
 </script>
 <p class="ic-crumb"><a href="/es/">Inicio</a> › Incheon</p>
 <h1 class="ic-h1">Incheon — Fiestas y lugares que vale la pena visitar</h1>
-<p class="ic-lead">101 lugares de Incheon descritos en español por la Organización de Turismo de Corea, y 3 fiestas en curso. Cada entrada incluye <b>la dirección en coreano que puedes pegar en una app de mapas</b>.</p>
+<p class="ic-lead">101 lugares de Incheon descritos en español por la Organización de Turismo de Corea, y 3 fiestas en curso o próximas. Cada entrada incluye <b>la dirección en coreano que puedes pegar en una app de mapas</b>.</p>
 
 <div class="ic-why"><h2>Por qué damos direcciones en coreano</h2><p>Google Maps no ofrece indicaciones dentro de Corea del Sur (los datos de mapas no pueden exportarse). Pega la dirección en coreano (o el nombre coreano) en <b>NAVER Map</b> o <b>KakaoMap</b>: funcionan con lo que ves en esta página.</p></div>
 
-<h2 class="sec">Fiestas en curso</h2>
+<h2 class="sec">Próximas fiestas</h2>
 <ul class="ic-list"><li class="ic-item">
-<div class="ic-h"><b>Festival Pungmul de Bupyeong</b><span class="wx-chip" title="구름 조금">⛅ 25° · 비 0%</span></div>
+<div class="ic-h"><b>Festival Pungmul de Bupyeong</b><span class="wx-chip">⛅ 25° · Lluvia 0%</span></div>
 
 <p class="ic-meta">📅 Fechas: 10/02 – 10/04 · 📍 Bupyeong-daero 34-1, Bupyeong-gu, Incheon</p>
 
@@ -542,8 +545,9 @@ document.addEventListener('click',function(e){
 <p class="ic-st">🚇 Estación más cercana: <b>Bupyeong Market</b><span class="ic-stko">부평시장</span> · 6 min a pie · 인천1호선</p><div class="xcopy"><div><span class="lb">Nombre de la estación en coreano — pégalo en el mapa</span><span class="vl">부평시장</span></div>
 <button data-v="부평시장" data-done="Copiado">Copiar</button></div>
 
+
 </li><li class="ic-item">
-<div class="ic-h"><b>Festival del Puerto de Sorae</b><span class="wx-chip" title="구름 조금">⛅ 25° · 비 0%</span></div>
+<div class="ic-h"><b>Festival del Puerto de Sorae</b><span class="wx-chip">⛅ 25° · Lluvia 0%</span></div>
 
 <p class="ic-meta">📅 Fechas: 10/02 – 10/04 · 📍 Jangdo-ro 86-17, Namdong-gu, Incheon</p>
 
@@ -551,14 +555,16 @@ document.addEventListener('click',function(e){
 <p class="ic-st">🚇 Estación más cercana: <b>Soraepogu</b><span class="ic-stko">소래포구</span> · 8 min a pie · 수인선</p><div class="xcopy"><div><span class="lb">Nombre de la estación en coreano — pégalo en el mapa</span><span class="vl">소래포구</span></div>
 <button data-v="소래포구" data-done="Copiado">Copiar</button></div>
 
+
 </li><li class="ic-item">
-<div class="ic-h"><b>Paseo Nocturno de Patrimonios Nacionales el Puerto Abierto de Incheon</b><span class="wx-chip" title="구름 조금">⛅ 25° · 비 0%</span></div>
+<div class="ic-h"><b>Paseo Nocturno de Patrimonios Nacionales el Puerto Abierto de Incheon</b><span class="wx-chip">⛅ 25° · Lluvia 0%</span></div>
 
 <p class="ic-meta">📅 Fechas: 10/09 – 10/11 · 📍 Sinpo-ro 27-beongil 80, Jemulpo-gu, Incheon</p>
 
 
 <p class="ic-st">🚇 Estación más cercana: <b>Incheon</b><span class="ic-stko">인천</span> · 7 min a pie · 경인선 · 수인선</p><div class="xcopy"><div><span class="lb">Nombre de la estación en coreano — pégalo en el mapa</span><span class="vl">인천</span></div>
 <button data-v="인천" data-done="Copiado">Copiar</button></div>
+
 
 </li></ul>
 

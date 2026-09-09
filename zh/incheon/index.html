@@ -494,6 +494,9 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 .ic-item{border:1px solid #e6eaee;border-radius:12px;padding:13px 15px;background:#fff}
 .ic-h{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:5px}
 .ic-h b{font-size:1rem;font-weight:800;color:#111827}
+/* 🔗 개별 축제 상세로 가는 제목 — «눌러도 되는 것»으로 보여야 한다(밑줄+색). */
+.ic-h .ic-a{font-size:1rem;font-weight:800;color:#0a6c63;text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:1.5px}
+.ic-h .ic-a:hover{color:#08544d}
 .ic-ko{font-size:.84rem;color:#6b7280;font-weight:700}
 .ic-sub{font-size:.9rem;color:#0a6c63;font-weight:700;margin:0 0 5px}
 .ic-meta{font-size:.85rem;color:#6b7280;margin:0 0 6px;line-height:1.6}
@@ -528,13 +531,13 @@ document.addEventListener('click',function(e){
 </script>
 <p class="ic-crumb"><a href="/zh/">首页</a> › 仁川</p>
 <h1 class="ic-h1">仁川 — 庆典与值得一去的地方</h1>
-<p class="ic-lead">韩国观光公社以中文介绍的仁川103处，以及正在举办的2个庆典。每一条都附上<b>可直接粘贴到地图应用的韩文地址</b>。</p>
+<p class="ic-lead">韩国观光公社以中文介绍的仁川103处，以及正在举办和即将举办的2个庆典。每一条都附上<b>可直接粘贴到地图应用的韩文地址</b>。</p>
 
 <div class="ic-why"><h2>为什么我们提供韩文地址</h2><p>谷歌地图在韩国境内无法提供路线导航（地图数据出境限制）。请把韩文地址（或韩文名称）粘贴到<b>NAVER地图</b>或<b>Kakao地图</b>，本页的写法可以直接搜索。</p></div>
 
-<h2 class="sec">正在举办的庆典</h2>
+<h2 class="sec">即将举办的庆典</h2>
 <ul class="ic-list"><li class="ic-item">
-<div class="ic-h"><b>富平风物节</b><span class="wx-chip" title="구름 조금">⛅ 25° · 비 0%</span></div>
+<div class="ic-h"><b>富平风物节</b><span class="wx-chip">⛅ 25° · 降水 0%</span></div>
 
 <p class="ic-meta">📅 时间: 10/02 – 10/04 · 📍 仁川广域市富平区富平大路34-1（富平洞）</p>
 
@@ -542,14 +545,16 @@ document.addEventListener('click',function(e){
 <p class="ic-st">🚇 最近地铁站: <b>富平市場</b><span class="ic-stko">부평시장</span> · 步行6分钟 · 인천1호선</p><div class="xcopy"><div><span class="lb">站名（韩文）— 粘贴到地图</span><span class="vl">부평시장</span></div>
 <button data-v="부평시장" data-done="已复制">复制</button></div>
 
+
 </li><li class="ic-item">
-<div class="ic-h"><b>苏莱浦口庆典</b><span class="wx-chip" title="구름 조금">⛅ 25° · 비 0%</span></div>
+<div class="ic-h"><b>苏莱浦口庆典</b><span class="wx-chip">⛅ 25° · 降水 0%</span></div>
 
 <p class="ic-meta">📅 时间: 10/02 – 10/04 · 📍 仁川广域市南洞区獐岛路86-17</p>
 
 
 <p class="ic-st">🚇 最近地铁站: <b>苏莱浦口</b><span class="ic-stko">소래포구</span> · 步行6分钟 · 수인선</p><div class="xcopy"><div><span class="lb">站名（韩文）— 粘贴到地图</span><span class="vl">소래포구</span></div>
 <button data-v="소래포구" data-done="已复制">复制</button></div>
+
 
 </li></ul>
 

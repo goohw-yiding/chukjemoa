@@ -165,18 +165,25 @@ ${w.pop >= 0 ? `<span class="wx-pop${w.pop >= 60 ? ' hi' : ''}">비 ${w.pop}%</s
 }
 
 /** 오늘(예보가 있으면) 한 줄 — 계곡·단풍·명산처럼 «날짜가 없는» 목록 카드에 쓴다 */
-function now(x, y) {
-  return dayChip(x, y, todayY());
+function now(x, y, lang) {
+  return dayChip(x, y, todayY(), lang);
 }
 
+// 🌐 2026-09-09 — 외국어 페이지에 「비 0%」와 한국어 툴팁(구름 조금)이 그대로 나가고 있었다(15장·96개).
+//   ⚠️ 날씨 «상태» 문구(WMO[code][1])는 한국어뿐이라 번역본이 없다 —
+//      지어내지 않고, 번역이 없는 언어에서는 title 속성을 아예 붙이지 않는다(아이콘은 그대로 읽힌다).
+const RAIN_L = { ko: '비', en: 'Rain', ja: '降水', zh: '降水', tw: '降水', es: 'Lluvia' };
+
 /** 특정 «하루»만 한 줄로 — 오일장 다음 장날처럼 날짜가 정해진 목록에 쓴다 */
-function dayChip(x, y, ymd8) {
+function dayChip(x, y, ymd8, lang) {
   const m = at(x, y);
   if (!m || !m[ymd8]) return '';
   const [code, hi, lo, pop] = m[ymd8];
   const [ico, txt] = WMO[code] || ['🌤', ''];
-  const rain = pop >= 0 ? ` · 비 ${pop}%` : '';
-  return `<span class="wx-chip${pop >= 60 ? ' rain' : ''}" title="${esc(txt)}">${ico} ${hi}°${rain}</span>`;
+  const L = lang || 'ko';
+  const rain = pop >= 0 ? ` · ${RAIN_L[L] || RAIN_L.en} ${pop}%` : '';
+  const tip = L === 'ko' && txt ? ` title="${esc(txt)}"` : '';
+  return `<span class="wx-chip${pop >= 60 ? ' rain' : ''}"${tip}>${ico} ${hi}°${rain}</span>`;
 }
 
 const CSS = `<style>

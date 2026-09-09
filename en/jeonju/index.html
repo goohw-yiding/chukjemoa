@@ -494,6 +494,9 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 .ic-item{border:1px solid #e6eaee;border-radius:12px;padding:13px 15px;background:#fff}
 .ic-h{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:5px}
 .ic-h b{font-size:1rem;font-weight:800;color:#111827}
+/* 🔗 개별 축제 상세로 가는 제목 — «눌러도 되는 것»으로 보여야 한다(밑줄+색). */
+.ic-h .ic-a{font-size:1rem;font-weight:800;color:#0a6c63;text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:1.5px}
+.ic-h .ic-a:hover{color:#08544d}
 .ic-ko{font-size:.84rem;color:#6b7280;font-weight:700}
 .ic-sub{font-size:.9rem;color:#0a6c63;font-weight:700;margin:0 0 5px}
 .ic-meta{font-size:.85rem;color:#6b7280;margin:0 0 6px;line-height:1.6}
@@ -528,15 +531,16 @@ document.addEventListener('click',function(e){
 </script>
 <p class="ic-crumb"><a href="/en/">Home</a> › Jeonju</p>
 <h1 class="ic-h1">Jeonju — Festivals &amp; Places Worth Going</h1>
-<p class="ic-lead">34 places in Jeonju described in English by the Korea Tourism Organization, plus 1 festivals happening now. Every entry comes with the <b>Korean address you can paste into a map app</b>.</p>
+<p class="ic-lead">34 places in Jeonju described in English by the Korea Tourism Organization, plus 1 festivals on now or coming up. Every entry comes with the <b>Korean address you can paste into a map app</b>.</p>
 
 <div class="ic-why"><h2>Why we give you Korean addresses</h2><p>Google Maps cannot give driving or transit directions inside South Korea — map data cannot be exported. Paste the Korean address (or the Korean name) into <b>NAVER Map</b> or <b>KakaoMap</b> instead. Both work with what is on this page, and they are what people here actually use.</p></div>
 
 <h2 class="sec">Festivals on now</h2>
 <ul class="ic-list"><li class="ic-item">
-<div class="ic-h"><b>Jeonju Hanok Village Traditional Performance Parade</b><span class="wx-chip" title="대체로 맑음">🌤 27° · 비 0%</span></div>
+<div class="ic-h"><a class="ic-a" href="/en/festival/jeonju-hanok-village-traditional-performance-parade/">Jeonju Hanok Village Traditional Performance Parade</a><span class="wx-chip">🌤 27° · Rain 0%</span></div>
 
 <p class="ic-meta">📅 Dates: 04/18 – 10/31 · 📍 44 Taejo-ro, Wansan-gu, Jeonju-si, Jeonbuk-do</p>
+
 
 
 

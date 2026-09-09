@@ -494,6 +494,9 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 .ic-item{border:1px solid #e6eaee;border-radius:12px;padding:13px 15px;background:#fff}
 .ic-h{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:5px}
 .ic-h b{font-size:1rem;font-weight:800;color:#111827}
+/* 🔗 개별 축제 상세로 가는 제목 — «눌러도 되는 것»으로 보여야 한다(밑줄+색). */
+.ic-h .ic-a{font-size:1rem;font-weight:800;color:#0a6c63;text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:1.5px}
+.ic-h .ic-a:hover{color:#08544d}
 .ic-ko{font-size:.84rem;color:#6b7280;font-weight:700}
 .ic-sub{font-size:.9rem;color:#0a6c63;font-weight:700;margin:0 0 5px}
 .ic-meta{font-size:.85rem;color:#6b7280;margin:0 0 6px;line-height:1.6}
@@ -528,40 +531,13 @@ document.addEventListener('click',function(e){
 </script>
 <p class="ic-crumb"><a href="/es/">Inicio</a> › Seúl</p>
 <h1 class="ic-h1">Seúl — Fiestas y lugares que vale la pena visitar</h1>
-<p class="ic-lead">284 lugares de Seúl descritos en español por la Organización de Turismo de Corea, y 6 fiestas en curso. Cada entrada incluye <b>la dirección en coreano que puedes pegar en una app de mapas</b>.</p>
+<p class="ic-lead">284 lugares de Seúl descritos en español por la Organización de Turismo de Corea, y 6 fiestas en curso o próximas. Cada entrada incluye <b>la dirección en coreano que puedes pegar en una app de mapas</b>.</p>
 
 <div class="ic-why"><h2>Por qué damos direcciones en coreano</h2><p>Google Maps no ofrece indicaciones dentro de Corea del Sur (los datos de mapas no pueden exportarse). Pega la dirección en coreano (o el nombre coreano) en <b>NAVER Map</b> o <b>KakaoMap</b>: funcionan con lo que ves en esta página.</p></div>
 
 <h2 class="sec">Fiestas en curso</h2>
 <ul class="ic-list"><li class="ic-item">
-<div class="ic-h"><b>Festival Mundial de la Juventud en Sinchon</b><span class="wx-chip" title="구름 조금">⛅ 25° · 비 0%</span></div>
-
-<p class="ic-meta">📅 Fechas: 09/11 – 09/13 · 📍 Changcheon-dong, Seodaemun-gu, Seúl</p>
-
-
-<p class="ic-st">🚇 Estación más cercana: <b>Sinchon</b><span class="ic-stko">신촌</span> · 2 min a pie · 2호선 · 경의중앙선 · <span class="ic-tag">♿ Tiene ascensor</span></p><div class="xcopy"><div><span class="lb">Nombre de la estación en coreano — pégalo en el mapa</span><span class="vl">신촌</span></div>
-<button data-v="신촌" data-done="Copiado">Copiar</button></div>
-
-</li><li class="ic-item">
-<div class="ic-h"><b>Festival de Arte Callejero de Seúl</b><span class="wx-chip" title="구름 조금">⛅ 25° · 비 0%</span></div>
-
-<p class="ic-meta">📅 Fechas: 09/19 – 09/20 · 📍 Neungdong-ro 10, Gwangjin-gu, Seúl.</p>
-
-
-<p class="ic-st">🚇 Estación más cercana: <b>Konkuk Univ.</b><span class="ic-stko">건대입구</span> · 13 min a pie · 2호선 · 7호선 · <span class="ic-tag">♿ Tiene ascensor</span></p><div class="xcopy"><div><span class="lb">Nombre de la estación en coreano — pégalo en el mapa</span><span class="vl">건대입구</span></div>
-<button data-v="건대입구" data-done="Copiado">Copiar</button></div>
-
-</li><li class="ic-item">
-<div class="ic-h"><b>Recreación del Desfile Real del Rey Jeongjo</b><span class="wx-chip" title="구름 조금">⛅ 25° · 비 0%</span></div>
-
-<p class="ic-meta">📅 Fechas: 10/04 – 10/04 · 📍 Sajik-ro 161, Jongno-gu, Seúl</p>
-
-
-<p class="ic-st">🚇 Estación más cercana: <b>Gyeongbokgung</b><span class="ic-stko">경복궁(정부서울청사)</span> · 4 min a pie · 3호선 · <span class="ic-tag">♿ Tiene ascensor</span></p><div class="xcopy"><div><span class="lb">Nombre de la estación en coreano — pégalo en el mapa</span><span class="vl">경복궁(정부서울청사)</span></div>
-<button data-v="경복궁(정부서울청사)" data-done="Copiado">Copiar</button></div>
-
-</li><li class="ic-item">
-<div class="ic-h"><b>Tour bajo las Estrellas del Palacio Gyeongbokgung</b><span class="wx-chip" title="구름 조금">⛅ 25° · 비 0%</span></div>
+<div class="ic-h"><b>Tour bajo las Estrellas del Palacio Gyeongbokgung</b><span class="wx-chip">⛅ 25° · Lluvia 0%</span></div>
 
 <p class="ic-meta">📅 Fechas: 09/02 – 10/24 · 📍 Sajik-ro 161, Jongno-gu, Seúl</p>
 
@@ -569,8 +545,9 @@ document.addEventListener('click',function(e){
 <p class="ic-st">🚇 Estación más cercana: <b>Gyeongbokgung</b><span class="ic-stko">경복궁(정부서울청사)</span> · 4 min a pie · 3호선 · <span class="ic-tag">♿ Tiene ascensor</span></p><div class="xcopy"><div><span class="lb">Nombre de la estación en coreano — pégalo en el mapa</span><span class="vl">경복궁(정부서울청사)</span></div>
 <button data-v="경복궁(정부서울청사)" data-done="Copiado">Copiar</button></div>
 
+
 </li><li class="ic-item">
-<div class="ic-h"><b>Cambio de Guardia Real de Seúl</b><span class="wx-chip" title="구름 조금">⛅ 25° · 비 0%</span></div>
+<div class="ic-h"><b>Cambio de Guardia Real de Seúl</b><span class="wx-chip">⛅ 25° · Lluvia 0%</span></div>
 
 <p class="ic-meta">📅 Fechas: 01/01 – 12/31 · 📍 Sejong-daero 99, Jung-gu, Seúl.</p>
 
@@ -578,14 +555,47 @@ document.addEventListener('click',function(e){
 <p class="ic-st">🚇 Estación más cercana: <b>City Hall</b><span class="ic-stko">시청</span> · 1 min a pie · 1호선 · 2호선 · <span class="ic-tag">♿ Tiene ascensor</span></p><div class="xcopy"><div><span class="lb">Nombre de la estación en coreano — pégalo en el mapa</span><span class="vl">시청</span></div>
 <button data-v="시청" data-done="Copiado">Copiar</button></div>
 
+
 </li><li class="ic-item">
-<div class="ic-h"><b>Espectáculo de música tradicional Jinyeon</b><span class="wx-chip" title="구름 조금">⛅ 25° · 비 0%</span></div>
+<div class="ic-h"><b>Espectáculo de música tradicional Jinyeon</b><span class="wx-chip">⛅ 25° · Lluvia 0%</span></div>
 
 <p class="ic-meta">📅 Fechas: 01/01 – 12/31 · 📍 Insadong 5-gil 10, Jongno-gu, Seúl</p>
 
 
 <p class="ic-st">🚇 Estación más cercana: <b>Jonggak</b><span class="ic-stko">종각</span> · 5 min a pie · 1호선 · <span class="ic-tag">♿ Tiene ascensor</span></p><div class="xcopy"><div><span class="lb">Nombre de la estación en coreano — pégalo en el mapa</span><span class="vl">종각</span></div>
 <button data-v="종각" data-done="Copiado">Copiar</button></div>
+
+
+</li></ul><h2 class="sec">Próximas fiestas</h2>
+<ul class="ic-list"><li class="ic-item">
+<div class="ic-h"><b>Festival Mundial de la Juventud en Sinchon</b><span class="wx-chip">⛅ 25° · Lluvia 0%</span></div>
+
+<p class="ic-meta">📅 Fechas: 09/11 – 09/13 · 📍 Changcheon-dong, Seodaemun-gu, Seúl</p>
+
+
+<p class="ic-st">🚇 Estación más cercana: <b>Sinchon</b><span class="ic-stko">신촌</span> · 2 min a pie · 2호선 · 경의중앙선 · <span class="ic-tag">♿ Tiene ascensor</span></p><div class="xcopy"><div><span class="lb">Nombre de la estación en coreano — pégalo en el mapa</span><span class="vl">신촌</span></div>
+<button data-v="신촌" data-done="Copiado">Copiar</button></div>
+
+
+</li><li class="ic-item">
+<div class="ic-h"><b>Festival de Arte Callejero de Seúl</b><span class="wx-chip">⛅ 25° · Lluvia 0%</span></div>
+
+<p class="ic-meta">📅 Fechas: 09/19 – 09/20 · 📍 Neungdong-ro 10, Gwangjin-gu, Seúl.</p>
+
+
+<p class="ic-st">🚇 Estación más cercana: <b>Konkuk Univ.</b><span class="ic-stko">건대입구</span> · 13 min a pie · 2호선 · 7호선 · <span class="ic-tag">♿ Tiene ascensor</span></p><div class="xcopy"><div><span class="lb">Nombre de la estación en coreano — pégalo en el mapa</span><span class="vl">건대입구</span></div>
+<button data-v="건대입구" data-done="Copiado">Copiar</button></div>
+
+
+</li><li class="ic-item">
+<div class="ic-h"><b>Recreación del Desfile Real del Rey Jeongjo</b><span class="wx-chip">⛅ 25° · Lluvia 0%</span></div>
+
+<p class="ic-meta">📅 Fechas: 10/04 – 10/04 · 📍 Sajik-ro 161, Jongno-gu, Seúl</p>
+
+
+<p class="ic-st">🚇 Estación más cercana: <b>Gyeongbokgung</b><span class="ic-stko">경복궁(정부서울청사)</span> · 4 min a pie · 3호선 · <span class="ic-tag">♿ Tiene ascensor</span></p><div class="xcopy"><div><span class="lb">Nombre de la estación en coreano — pégalo en el mapa</span><span class="vl">경복궁(정부서울청사)</span></div>
+<button data-v="경복궁(정부서울청사)" data-done="Copiado">Copiar</button></div>
+
 
 </li></ul>
 

@@ -2065,15 +2065,18 @@ for (const cfg of CITY_CFGS) {
   CITY_URLS.push(...r.urls);
   console.log(r.log);
 }
-const INTL_CITY_URLS = require('./intl-city.js').build({ ROOT, layout, writePage, SITE, TODAY, WX });
-// 🏙 2026-09-07 — 외국어 홈에 붙일 «실제로 만들어진» 도시 목록.
-//   ⚠️ 추측하지 않는다 — 방금 만들어진 URL 에서 뽑는다. 게이트를 다시 계산하면 조용히 어긋난다.
-const CITY_LABEL = require('./intl-city.js').cityLabel;
+// 🔗 2026-09-09 — 순환 의존을 끊는다.
+//   · 축제 상세(festival-en/ja)는 «실제로 열린 도시»를 알아야 도시로 링크할 수 있다.
+//   · 도시 페이지(intl-city)는 «실제로 만들어진 축제 슬러그»를 알아야 카드 제목에 링크할 수 있다.
+//   전에는 도시 → 축제 순서라 도시 카드 제목이 전부 <b> 였다(눌러도 아무 일이 없었다).
+//   → gate() 로 «어느 도시가 통과하나»만 먼저 계산하고(한 장도 안 그린다),
+//      축제 상세를 만든 뒤, 맨 마지막에 도시 페이지를 그린다.
+//   ⚠️ 게이트를 손으로 다시 계산하지 않는다 — gate() 는 build() 의 1회차 그 코드다.
+const INTL_CITY = require('./intl-city.js');
+const CITY_LABEL = INTL_CITY.cityLabel;
+const INTL_CITY_READY = INTL_CITY.gate({ ROOT, TODAY });
 const INTL_CITY_BY_LANG = {};
-INTL_CITY_URLS.forEach(u => {
-  const m = String(u).match(/^\/(en|ja|zh|tw|es)\/([a-z]+)\/$/);
-  if (m && m[2] !== 'cities') (INTL_CITY_BY_LANG[m[1]] = INTL_CITY_BY_LANG[m[1]] || []).push(m[2]);
-});
+Object.keys(INTL_CITY_READY).forEach(l => { INTL_CITY_BY_LANG[l] = [...INTL_CITY_READY[l]]; });
 
 // 🎪→🏙 2026-09-07 — 축제 상세가 링크할 «실제로 열린» 도시 목록.
 //   ⚠️ 게이트가 있는 곳엔 «통과한 것만 링크»가 따라와야 한다 → 방금 만들어진 URL 에서 허브만 뽑는다.
@@ -2102,6 +2105,10 @@ const JA_JANGTEO_URLS = apiFestsJa.length ? require('./jangteo-ja.js').build({ R
 // 🗾 2026-09-09 신설 — 일문 장소 시·도 허브. 3,371건 중 2,179건(65%)이 어디에도 안 나오고 있었다.
 //    /ja/{city}/ 는 14곳뿐이고 도시당 60곳 상한이라 도시 페이지가 없는 시·도가 통째로 빠졌다.
 const JA_PLACES_URLS = require('./places-ja.js').build({ ROOT, layout, writePage, SITE, TODAY });
+// 🏙 외국어 도시 페이지는 «축제 상세 다음»에 그린다 — 방금 만들어진 슬러그 표
+//    (data/{en,ja}_festival_slugs.json)를 읽어 카드 제목에 링크를 건다. 위 gate() 주석 참고.
+//    ⚠️ 게이트는 이미 gate() 가 계산했다 — 다시 계산하지 않고 그대로 넘긴다(두 번 계산하면 어긋난다).
+const INTL_CITY_URLS = INTL_CITY.build({ ROOT, layout, writePage, SITE, TODAY, WX, phase: 2, ready: INTL_CITY_READY });
 const ES_JANGTEO_URLS = apiFestsEs.length ? require('./jangteo-es.js').build({ ROOT, layout, writePage, SITE, TODAY }) : [];
 const ZH_JANGTEO_URLS = apiFestsZh.length ? require('./jangteo-zh.js').build({ ROOT, layout, writePage, SITE, TODAY }) : [];
 const EN_BLOG_URLS = apiFestsEn.length ? require('./en-blog.js').build({ ROOT, layout, writePage, SITE, TODAY }) : [];

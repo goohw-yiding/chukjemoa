@@ -80,10 +80,13 @@ const T = {
   en: {
     city: { seoul: 'Seoul', busan: 'Busan', jeju: 'Jeju', gyeongju: 'Gyeongju' },
     h1: c => `${c} — Festivals & Places Worth Going`,
-    lead: (c, n, f) => `${n} places in ${c} described in English by the Korea Tourism Organization${f ? `, plus ${f} festivals happening now` : ''}. Every entry comes with the <b>Korean address you can paste into a map app</b>.`,
+    lead: (c, n, f) => `${n} places in ${c} described in English by the Korea Tourism Organization${f ? `, plus ${f} festivals on now or coming up` : ''}. Every entry comes with the <b>Korean address you can paste into a map app</b>.`,
     whyT: 'Why we give you Korean addresses',
     why: 'Google Maps cannot give driving or transit directions inside South Korea — map data cannot be exported. Paste the Korean address (or the Korean name) into <b>NAVER Map</b> or <b>KakaoMap</b> instead. Both work with what is on this page, and they are what people here actually use.',
     fesT: 'Festivals on now',
+    fesU: 'Festivals coming up',
+    fesA: 'Busan festivals through the year',
+    fesANote: 'Busan publishes these in English itself, with directions and admission. <b>They run on their own schedule each year and the city does not publish this year’s dates in this feed</b>, so we do not print a date we cannot verify — check the official page for the dates before you plan around one.',
     placeT: c => `Places to go in ${c}`,
     addr: 'Korean address for map apps', name: 'Korean name for map search',
     copy: 'Copy', copied: 'Copied',
@@ -101,10 +104,13 @@ const T = {
   ja: {
     city: { seoul: 'ソウル', busan: '釜山', jeju: '済州', gyeongju: '慶州' },
     h1: c => `${c} — お祭りと行ってみる価値のある場所`,
-    lead: (c, n, f) => `韓国観光公社が日本語で案内している${c}の${n}か所${f ? `と、いま開催中のお祭り${f}件` : ''}です。すべてに<b>地図アプリにそのまま貼り付けられる韓国語の住所</b>を付けました。`,
+    lead: (c, n, f) => `韓国観光公社が日本語で案内している${c}の${n}か所${f ? `と、開催中・これから始まるお祭り${f}件` : ''}です。すべてに<b>地図アプリにそのまま貼り付けられる韓国語の住所</b>を付けました。`,
     whyT: 'なぜ韓国語の住所を載せるのか',
     why: 'Googleマップは韓国国内の経路検索ができません（地図データの国外持ち出し規制）。代わりに韓国語の住所（または韓国語の名前）を<b>NAVERマップ</b>・<b>カカオマップ</b>に貼り付けてください。このページの表記でそのまま検索できます。',
     fesT: '開催中のお祭り',
+    fesU: 'これから始まるお祭り',
+    fesA: '釜山の一年のお祭り',
+    fesANote: '釜山市が日本語で案内しているお祭りです（行き方・料金つき）。<b>毎年開かれますが、この案内には今年の日程が載っていません</b>。確かめられない日付は書きません — 日程は公式ページでご確認ください。',
     placeT: c => `${c}で行ってみる場所`,
     addr: '地図に貼り付ける住所（韓国語）', name: '地図検索用の韓国語名',
     copy: 'コピー', copied: 'コピーしました',
@@ -122,10 +128,13 @@ const T = {
   zh: {
     city: { seoul: '首尔', busan: '釜山', jeju: '济州', gyeongju: '庆州' },
     h1: c => `${c} — 庆典与值得一去的地方`,
-    lead: (c, n, f) => `韩国观光公社以中文介绍的${c}${n}处${f ? `，以及正在举办的${f}个庆典` : ''}。每一条都附上<b>可直接粘贴到地图应用的韩文地址</b>。`,
+    lead: (c, n, f) => `韩国观光公社以中文介绍的${c}${n}处${f ? `，以及正在举办和即将举办的${f}个庆典` : ''}。每一条都附上<b>可直接粘贴到地图应用的韩文地址</b>。`,
     whyT: '为什么我们提供韩文地址',
     why: '谷歌地图在韩国境内无法提供路线导航（地图数据出境限制）。请把韩文地址（或韩文名称）粘贴到<b>NAVER地图</b>或<b>Kakao地图</b>，本页的写法可以直接搜索。',
-    fesT: '正在举办的庆典', placeT: c => `${c}可以去的地方`,
+    fesT: '正在举办的庆典', fesU: '即将举办的庆典',
+    fesA: '釜山全年的庆典',
+    fesANote: '这些由釜山市以中文发布，附交通与费用。<b>每年举办，但该资料未提供今年的具体日期</b>。我们不写无法确认的日期 —— 出发前请到官方页面确认档期。',
+    placeT: c => `${c}可以去的地方`,
     addr: '粘贴到地图的地址（韩文）', name: '地图搜索用韩文名称',
     copy: '复制', copied: '已复制',
     when: '时间', where: '地点', fee: '费用', how: '交通', free: '免费',
@@ -142,10 +151,13 @@ const T = {
   tw: {
     city: { seoul: '首爾', busan: '釜山', jeju: '濟州', gyeongju: '慶州' },
     h1: c => `${c} — 慶典與值得一去的地方`,
-    lead: (c, n, f) => `韓國觀光公社以中文介紹的${c}${n}處${f ? `，以及正在舉辦的${f}個慶典` : ''}。每一條都附上<b>可直接貼到地圖應用的韓文地址</b>。`,
+    lead: (c, n, f) => `韓國觀光公社以中文介紹的${c}${n}處${f ? `，以及正在舉辦和即將舉辦的${f}個慶典` : ''}。每一條都附上<b>可直接貼到地圖應用的韓文地址</b>。`,
     whyT: '為什麼我們提供韓文地址',
     why: 'Google地圖在韓國境內無法提供路線導航（地圖資料出境限制）。請把韓文地址（或韓文名稱）貼到<b>NAVER地圖</b>或<b>Kakao地圖</b>，本頁的寫法可以直接搜尋。',
-    fesT: '正在舉辦的慶典', placeT: c => `${c}可以去的地方`,
+    fesT: '正在舉辦的慶典', fesU: '即將舉辦的慶典',
+    fesA: '釜山全年的慶典',
+    fesANote: '這些由釜山市以中文發布，附交通與費用。<b>每年舉辦，但該資料未提供今年的確切日期</b>。我們不寫無法確認的日期 —— 出發前請到官方頁面確認檔期。',
+    placeT: c => `${c}可以去的地方`,
     addr: '貼到地圖的地址（韓文）', name: '地圖搜尋用韓文名稱',
     copy: '複製', copied: '已複製',
     when: '時間', where: '地點', fee: '費用', how: '交通', free: '免費',
@@ -162,10 +174,13 @@ const T = {
   es: {
     city: { seoul: 'Seúl', busan: 'Busan', jeju: 'Jeju', gyeongju: 'Gyeongju' },
     h1: c => `${c} — Fiestas y lugares que vale la pena visitar`,
-    lead: (c, n, f) => `${n} lugares de ${c} descritos en español por la Organización de Turismo de Corea${f ? `, y ${f} fiestas en curso` : ''}. Cada entrada incluye <b>la dirección en coreano que puedes pegar en una app de mapas</b>.`,
+    lead: (c, n, f) => `${n} lugares de ${c} descritos en español por la Organización de Turismo de Corea${f ? `, y ${f} fiestas en curso o próximas` : ''}. Cada entrada incluye <b>la dirección en coreano que puedes pegar en una app de mapas</b>.`,
     whyT: 'Por qué damos direcciones en coreano',
     why: 'Google Maps no ofrece indicaciones dentro de Corea del Sur (los datos de mapas no pueden exportarse). Pega la dirección en coreano (o el nombre coreano) en <b>NAVER Map</b> o <b>KakaoMap</b>: funcionan con lo que ves en esta página.',
-    fesT: 'Fiestas en curso', placeT: c => `Lugares para ir en ${c}`,
+    fesT: 'Fiestas en curso', fesU: 'Próximas fiestas',
+    fesA: 'Fiestas de Busan a lo largo del año',
+    fesANote: 'Busan las publica en español, con cómo llegar y precios. <b>Se celebran cada año, pero esta fuente no incluye las fechas de este año</b>, así que no ponemos una fecha que no podemos verificar: consulta la página oficial antes de organizar el viaje.',
+    placeT: c => `Lugares para ir en ${c}`,
     addr: 'Dirección en coreano para mapas', name: 'Nombre coreano para buscar',
     copy: 'Copiar', copied: 'Copiado',
     when: 'Fechas', where: 'Dónde', fee: 'Entrada', how: 'Cómo llegar', free: 'Gratis',
@@ -362,7 +377,20 @@ function load(ROOT, f) {
   try { return JSON.parse(fs.readFileSync(path.join(ROOT, 'data', f), 'utf8')); } catch (e) { return null; }
 }
 
-function build({ ROOT, layout, writePage, SITE, TODAY, WX }) {
+// 🔗 2026-09-09 — 카드 제목에 «개별 축제 상세» 링크를 건다.
+//   ⚠️ 슬러그 규칙을 여기서 다시 구현하지 않는다 — festival-{lang}.js 가 «실제로 만든» 표를
+//      data/{lang}_festival_slugs.json 에 남기고, 우리는 그걸 읽기만 한다(중복 시 붙는 -2 접미사까지 맞아야 한다).
+//   ⚠️ 그런데 build.js 순서상 도시 페이지가 축제 상세보다 «먼저» 만들어졌었다 →
+//      순환 의존이라 gate()(그리지 않고 통과 여부만 계산)를 따로 뒀다. build.js 2068줄 주석 참고.
+function festLinks(ROOT, lang) {
+  const m = load(ROOT, `${lang}_festival_slugs.json`);
+  return m && typeof m === 'object' ? m : null;
+}
+
+// 게이트만 돌린다 — 한 장도 그리지 않고 «어느 도시가 통과하나»만 돌려준다.
+function gate(ctx) { return build({ ...ctx, phase: 1 }); }
+
+function build({ ROOT, layout, writePage, SITE, TODAY, WX, phase, ready: readyIn }) {
   const T8 = String(TODAY).replace(/-/g, '');
   const mn = +T8.slice(4, 6);
   const busan = load(ROOT, 'busan_festivals.json');
@@ -417,13 +445,15 @@ function build({ ROOT, layout, writePage, SITE, TODAY, WX }) {
   //   그래야 「같은 도시의 다른 언어」 줄을 «실제로 만든 것만»으로 찍을 수 있다.
   //   이 줄이 없어서 `/tw/busan/`·`/zh/busan/` 이 **홈에서 도달 불가(고아) 2건**이었다
   //   — 그 두 장을 가리키는 링크가 사이트 어디에도 없었다.
-  const READY = {};
+  const READY = readyIn || {};
 
-  for (const pass of [1, 2]) {
+  for (const pass of (phase === 1 ? [1] : phase === 2 ? [2] : [1, 2])) {
   for (const lang of LANGS) {
     const t = T[lang];
     const places = load(ROOT, `places_${lang}.json`) || [];
     const fests = load(ROOT, `festivals_${lang}.json`) || [];
+    // 개별 축제 상세가 있는 언어만 표가 생긴다(2026-09-09 현재 en·ja). 없으면 링크를 안 건다.
+    const FLINK = festLinks(ROOT, lang);
 
     // 🔴 2026-09-04 수정 — **먼저 「어느 도시가 통과하나」를 다 정하고 나서 렌더한다.**
     //   전에는 도시를 하나씩 만들면서 하단 「다른 도시」 링크를 CITIES 전체로 찍었다.
@@ -436,12 +466,17 @@ function build({ ROOT, layout, writePage, SITE, TODAY, WX }) {
         && (!C.sgg || String(p.addrKo).includes(C.sgg)));
       let F = fests.filter(f => String(f.end || '') >= T8
         && C.match.some(k => String(f.region || '').includes(k) || String(f.addr || '').includes(k)))
-        .map(f => ({ title: f.title, start: f.start, end: f.end, place: f.addr, img: f.img, x: f.x, y: f.y, ko: '', desc: '', traffic: '', fee: '' }));
+        .map(f => ({ id: f.id, title: f.title, start: f.start, end: f.end, place: f.addr, img: f.img, x: f.x, y: f.y, ko: '', desc: '', traffic: '', fee: '' }));
 
       // ⭐ 부산만 «공식 5개어 번역»이 따로 있다 — 우선 쓴다(교통안내·요금·한글원제까지 붙는다).
+      // 🔴 2026-09-09 실측 — 이 자료엔 **start/end 가 아예 없다**(41건 중 35건이 날짜 0).
+      //    남아 있는 day 문자열엔 「Oct. 2, 2024 – Jan. 10, 2025」처럼 **지난 해 날짜**까지 섞여 있다.
+      //    그런데 「지금 열리는 축제」 제목 아래 실려 있었다 — 사실이 아니다.
+      //    → 해마다 열리는 «연간 축제»로 따로 묶고, 날짜는 지어내지 않는다(annual 표시).
       if (C.key === 'busan' && busan && busan.rows) {
         const bf = busan.rows.filter(r => r.langs && r.langs[lang] && r.langs[lang].title)
           .map(r => ({
+            annual: true,
             title: r.langs[lang].title, sub: r.langs[lang].sub, ko: r.ko,
             place: r.langs[lang].place, day: r.langs[lang].day, time: r.langs[lang].time,
             fee: r.langs[lang].fee, traffic: r.langs[lang].traffic,
@@ -500,16 +535,36 @@ function build({ ROOT, layout, writePage, SITE, TODAY, WX }) {
       };
 
       const fesCard = f => {
-        const wx = (WX && f.x && f.y) ? WX.now(f.x, f.y) : '';
-        const dates = f.start ? `${String(f.start).slice(4, 6)}/${String(f.start).slice(6, 8)} – ${String(f.end).slice(4, 6)}/${String(f.end).slice(6, 8)}` : (f.day || '');
+        const wx = (WX && f.x && f.y) ? WX.now(f.x, f.y, lang) : '';
+        // 🔴 day 문자열엔 「Oct. 2, 2024 – Jan. 10, 2025」처럼 지난 해 것이 섞여 있다.
+        //    지난 해 날짜를 그대로 보여 주느니 «날짜를 안 보여 준다» — 지어내지도, 낡은 걸 내밀지도 않는다.
+        const yrs = String(f.day || '').match(/\b(20\d{2})\b/g);
+        const dayOk = !yrs || yrs.some(y => +y >= +T8.slice(0, 4));
+        const dates = f.start ? `${String(f.start).slice(4, 6)}/${String(f.start).slice(6, 8)} – ${String(f.end).slice(4, 6)}/${String(f.end).slice(6, 8)}` : (dayOk ? (f.day || '') : '');
+        // 🔗 제목을 «개별 축제 상세»로 보낸다 — 표에 있는 것만(없으면 그냥 굵은 글씨).
+        //    2026-09-09 이전엔 전부 <b> 라 「눌러도 아무 일이 없다」는 지적을 받았다.
+        const slug = (f.id != null && FLINK) ? FLINK[String(f.id)] : '';
+        const name = slug
+          ? `<a class="ic-a" href="/${lang}/festival/${slug}/">${esc(f.title)}</a>`
+          : `<b>${esc(f.title)}</b>`;
+        // 📍 원문 주소가 한글로 남은 건이 있다(영문 서비스에 로마자 주소가 없는 곳).
+        //    외국어 본문에 한글을 그냥 흘리지 말고 «붙여넣기 상자»로 내려 실제로 쓸모 있게 만든다.
+        const koAddr = /[가-힣]/.test(String(f.place || '')) ? String(f.place) : '';
+        const place = koAddr ? '' : f.place;
         return `<li class="ic-item">
-<div class="ic-h"><b>${esc(f.title)}</b>${f.ko ? `<span class="ic-ko">${esc(f.ko)}</span>` : ''}${wx}</div>
+<div class="ic-h">${name}${f.ko ? `<span class="ic-ko">${esc(f.ko)}</span>` : ''}${wx}</div>
 ${f.sub ? `<p class="ic-sub">${esc(f.sub)}</p>` : ''}
-<p class="ic-meta">${dates ? `📅 ${esc(t.when)}: ${esc(dates)}` : ''}${f.place ? ` · 📍 ${esc(String(f.place).slice(0, 60))}` : ''}${f.fee ? ` · 💳 ${esc(String(f.fee).slice(0, 50))}` : ''}</p>
+<p class="ic-meta">${[
+          dates ? `📅 ${esc(t.when)}: ${esc(dates)}` : '',
+          place ? `📍 ${esc(String(place).slice(0, 60))}` : '',
+          // ⚠️ 원본에 요금이 「-」로 들어 있는 건이 있다 — 그건 「정보 없음」이지 요금이 아니다.
+          (f.fee && !/^[-–—\s]*$/.test(String(f.fee))) ? `💳 ${esc(String(f.fee).slice(0, 50))}` : ''
+        ].filter(Boolean).join(' · ')}</p>
 ${f.desc ? `<p class="ic-ov">${esc(String(f.desc).slice(0, 260))}</p>` : ''}
 ${f.traffic ? `<p class="ic-tr">🚇 ${esc(t.how)}: ${esc(String(f.traffic).slice(0, 200))}</p>` : ''}
 ${stLine(f.x, f.y)}
 ${cp(t.name, f.ko)}
+${cp(t.addr, koAddr)}
 </li>`;
       };
 
@@ -531,12 +586,27 @@ ${stLine(p.x, p.y)}
       const content = `<main><div class="wrap">${CSS}
 <p class="ic-crumb"><a href="/${lang}/">${lang === 'ja' ? 'ホーム' : lang === 'zh' ? '首页' : lang === 'tw' ? '首頁' : lang === 'es' ? 'Inicio' : 'Home'}</a> › ${esc(city)}</p>
 <h1 class="ic-h1">${esc(t.h1(city))}</h1>
-<p class="ic-lead">${t.lead(esc(city), P.length, F.length)}</p>
+<p class="ic-lead">${t.lead(esc(city), P.length, (F.length && F[0].annual) ? 0 : F.length)}</p>
 
 <div class="ic-why"><h2>${esc(t.whyT)}</h2><p>${t.why}</p></div>
 
-${F.length ? `<h2 class="sec">${esc(t.fesT)}</h2>
-<ul class="ic-list">${F.slice(0, SHOW_FESTS).map(fesCard).join('')}</ul>` : ''}
+${(() => {
+        // 🗓 2026-09-09 수정 — 제목은 「지금 열리는 축제」인데 «아직 시작 안 한» 것이 더 많았다
+        //    (2026-09-09 실측: 날짜가 찍힌 48건 중 진행중 13 · 예정 35). 사실과 맞게 두 묶음으로 쪼갠다.
+        // 부산 공식 번역분은 «올해 날짜»가 아예 없다 — 「지금 열린다」고 말하지 않고 연간 축제로 묶는다.
+        if (F.length && F[0].annual) {
+          return `<h2 class="sec">${esc(t.fesA)} <span class="ic-n">${F.length}</span></h2>
+<p class="ic-cnote">${t.fesANote}</p>
+<ul class="ic-list">${F.slice(0, SHOW_FESTS).map(fesCard).join('')}</ul>`;
+        }
+        const onNow = F.filter(f => !f.start || String(f.start) <= T8);
+        const soon = F.filter(f => f.start && String(f.start) > T8)
+          .sort((a, b) => String(a.start).localeCompare(String(b.start)));
+        return (onNow.length ? `<h2 class="sec">${esc(t.fesT)}</h2>
+<ul class="ic-list">${onNow.slice(0, SHOW_FESTS).map(fesCard).join('')}</ul>` : '')
+          + (soon.length ? `<h2 class="sec">${esc(t.fesU)}</h2>
+<ul class="ic-list">${soon.slice(0, SHOW_FESTS).map(fesCard).join('')}</ul>` : '');
+      })()}
 
 ${P.length ? `<h2 class="sec">${esc(t.placeT(city))}</h2>
 <ul class="ic-list">${P.slice(0, SHOW_PLACES).map(plCard).join('')}</ul>` : ''}
@@ -657,6 +727,9 @@ ${preview}
   }
   }   // pass 1(통과 여부 수집) → pass 2(렌더)
 
+  // 게이트만 돌린 경우 — 아무것도 안 그렸으니 통과표만 돌려준다.
+  if (phase === 1) return READY;
+
   console.log(`✓ /{lang}/{city}/ — ${urls.length}페이지`);
   // ⚠️ 「붙었다」가 아니라 «미스율»을 센다 — 조용히 사라지는 걸 눈으로 보고서야 아는 일을 또 만들지 않는다.
   if (subRows.length) {
@@ -685,6 +758,9 @@ const CSS = `<style>
 .ic-item{border:1px solid #e6eaee;border-radius:12px;padding:13px 15px;background:#fff}
 .ic-h{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:5px}
 .ic-h b{font-size:1rem;font-weight:800;color:#111827}
+/* 🔗 개별 축제 상세로 가는 제목 — «눌러도 되는 것»으로 보여야 한다(밑줄+색). */
+.ic-h .ic-a{font-size:1rem;font-weight:800;color:#0a6c63;text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:1.5px}
+.ic-h .ic-a:hover{color:#08544d}
 .ic-ko{font-size:.84rem;color:#6b7280;font-weight:700}
 .ic-sub{font-size:.9rem;color:#0a6c63;font-weight:700;margin:0 0 5px}
 .ic-meta{font-size:.85rem;color:#6b7280;margin:0 0 6px;line-height:1.6}
@@ -721,4 +797,4 @@ document.addEventListener('click',function(e){
 // ⚠️ 도시 표기는 여기가 유일한 출처다 — build.js 가 홈 카드를 그릴 때도 이걸 쓴다.
 //    같은 이름을 두 곳에 적어 두면 한쪽만 고쳐져 조용히 어긋난다.
 const cityLabel = (lang, key) => (T[lang] && T[lang].city[key]) || key;
-module.exports = { build, cityLabel };
+module.exports = { build, gate, cityLabel };
