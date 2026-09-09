@@ -377,6 +377,27 @@ function load(ROOT, f) {
   try { return JSON.parse(fs.readFileSync(path.join(ROOT, 'data', f), 'utf8')); } catch (e) { return null; }
 }
 
+// 🗓 2026-09-09 — 공식 원문 «본문»에 지난 해 공지가 그대로 남아 있다.
+//   실측: 부산 공식 번역 175건 중 4건이 「** 2024 Busan Hydrangea … has been canceled.」 —
+//   ja·zh·tw 판에도 영어 그대로 들어 있다. 카드 미리보기는 260자라 이 한 문장이 맨 앞을 차지해
+//   **올해 취소된 것처럼 읽힌다.** 원문을 고쳐 쓰지는 않되, 「올해 이야기가 아닌」 지난 해 공지 문장은
+//   미리보기에서 뺀다 — 사실이 아닌 인상을 주지 않는 쪽이 정확하다.
+//   ⚠️ 올해(또는 이후) 연도가 하나라도 섞여 있으면 «살아 있는 정보»이므로 절대 건드리지 않는다.
+//   ⚠️ 연도가 없는 문장도 건드리지 않는다 — 언제 이야기인지 모르면 지우는 게 아니라 남긴다.
+//   ⚠️ 문장 나누기 — 일본어·중국어는 「。」 뒤에 «공백이 없다». 공백을 요구하는 정규식으로 쪼개면
+//      두 문장이 한 덩어리로 남아, 지난 해 공지를 지울 때 «멀쩡한 안내문까지» 통째로 사라진다
+//      (리허설에서 「2025年は中止…。毎年6月に開催されます。」가 통째로 비었다).
+const STALE_NOTE = /(cancel|postpon|suspend|취소|연기|무산|中止|取消|延期|推迟|順延|順延|cancelad|aplazad|suspendid)/i;
+function dropStaleNotes(text, year) {
+  return String(text || '')
+    .split(/(?<=[.!?])\s+|(?<=[。！？])|\n+/)
+    .filter(s => {
+      const yrs = (s.match(/\b20\d{2}\b/g) || []).map(Number);
+      return !(yrs.length && yrs.every(y => y < year) && STALE_NOTE.test(s));
+    })
+    .join(' ').replace(/\s+/g, ' ').trim();
+}
+
 // 🔗 2026-09-09 — 카드 제목에 «개별 축제 상세» 링크를 건다.
 //   ⚠️ 슬러그 규칙을 여기서 다시 구현하지 않는다 — festival-{lang}.js 가 «실제로 만든» 표를
 //      data/{lang}_festival_slugs.json 에 남기고, 우리는 그걸 읽기만 한다(중복 시 붙는 -2 접미사까지 맞아야 한다).
@@ -560,7 +581,7 @@ ${f.sub ? `<p class="ic-sub">${esc(f.sub)}</p>` : ''}
           // ⚠️ 원본에 요금이 「-」로 들어 있는 건이 있다 — 그건 「정보 없음」이지 요금이 아니다.
           (f.fee && !/^[-–—\s]*$/.test(String(f.fee))) ? `💳 ${esc(String(f.fee).slice(0, 50))}` : ''
         ].filter(Boolean).join(' · ')}</p>
-${f.desc ? `<p class="ic-ov">${esc(String(f.desc).slice(0, 260))}</p>` : ''}
+${(() => { const d = dropStaleNotes(f.desc, +T8.slice(0, 4)); return d ? `<p class="ic-ov">${esc(d.slice(0, 260))}</p>` : ''; })()}
 ${f.traffic ? `<p class="ic-tr">🚇 ${esc(t.how)}: ${esc(String(f.traffic).slice(0, 200))}</p>` : ''}
 ${stLine(f.x, f.y)}
 ${cp(t.name, f.ko)}
