@@ -4229,7 +4229,14 @@ const MAPLE_FESTS = (() => {
   return kept.sort((a, b) => String(a.start).localeCompare(String(b.start)));
 })();
 const mdMD = s => String(s || '').slice(5).replace('-', '.');
-const mapleIntro = `<style>
+// ⚠️ 낡은 예보가 「올해 것」으로 읽히는 사고를 막는 자동 만료 — 시티투어에서 6년 전 코스가
+//    「2026년 기준」으로 찍혀 있던 것과 같은 종류의 사고다. 단풍철이 끝나면 표를 통째로 내린다.
+//    (그래야 내년 3월에 아무도 안 고쳐도 2026년 날짜가 그대로 서 있지 않는다.)
+//    🧪 만료 리허설 완료(2026-09-09): 이 값을 2020-01-01 로 두고 빌드했더니 표·축제·제목·설명이
+//       모두 예전 문구로 «실제로» 되돌아갔다. 가드가 통과한 게 아니라 «작동하는 것»을 확인했다.
+const MAPLE_EXPIRE = '2026-11-30';
+const mapleLive = TODAY <= MAPLE_EXPIRE;
+const mapleIntro = !mapleLive ? '' : `<style>
 .mp-box{background:#fff;border:1.5px solid #f0c9a6;border-radius:16px;padding:18px 20px;margin:16px 0}
 .mp-h2{font-size:1.12rem;font-weight:900;color:#c2410c;margin:0 0 8px;letter-spacing:-.02em}
 .mp-lead{font-size:.96rem;line-height:1.68;color:#374151;margin:0 0 12px}
@@ -4260,13 +4267,24 @@ const mapleIntro = `<style>
 </div>` : ''}`;
 
 const SPOT_THEMES = [
+  // ⚠️ 제목·설명도 예보와 «함께» 만료시킨다. 표만 내리고 제목에 「2026 단풍시기」가 남으면
+  //    내용 없는 약속이 되고, 그게 CTR 을 갉아먹는다.
   { data: apiMaple, slug: 'maple',
-    title: '2026 단풍시기 · 단풍축제 — 전국 단풍 명소 ' + apiMaple.length + '곳과 절정 예상 시기 | ' + SITE_NAME,
-    metaDesc: '2026년 첫단풍은 10월 3일 설악산, 절정은 설악산 10월 25일·중부 10월 말·남부 11월 초로 예상됩니다(웨더아이 9/4 발표). 산별 절정 시기와 전국 단풍 명소 ' + apiMaple.length + '곳, 단풍·억새·국화 축제를 지역별로 정리했습니다.',
-    h1: '🍁 2026 단풍시기 — 전국 단풍 명소 ' + apiMaple.length + '곳', catLabel: '🍁 단풍', accent: '#c2410c', bd: '#f0c9a6', bg: '#fdf5ee', ph: '산·명소명·주소 검색',
-    sub: '2026년 산별 단풍 절정 예상 시기와 전국 산·단풍 명소 __N__곳을 한 페이지에 모았습니다. 단풍철 가을 축제까지 함께 확인하세요.',
+    title: mapleLive
+      ? '2026 단풍시기 · 단풍축제 — 전국 단풍 명소 ' + apiMaple.length + '곳과 절정 예상 시기 | ' + SITE_NAME
+      : '전국 단풍 명소 — 가을 산·단풍 여행 명소 총정리 | ' + SITE_NAME,
+    metaDesc: mapleLive
+      ? '2026년 첫단풍은 10월 3일 설악산, 절정은 설악산 10월 25일·중부 10월 말·남부 11월 초로 예상됩니다(웨더아이 9/4 발표). 산별 절정 시기와 전국 단풍 명소 ' + apiMaple.length + '곳, 단풍·억새·국화 축제를 지역별로 정리했습니다.'
+      : '가을 단풍 구경 좋은 전국 산·단풍 명소를 지역별로 모았습니다. 공공데이터(한국관광공사) 기반 명소 정보와 지도, 지역별 검색까지 한 페이지에서 확인하세요.',
+    h1: mapleLive ? '🍁 2026 단풍시기 — 전국 단풍 명소 ' + apiMaple.length + '곳' : '🍁 전국 단풍 명소',
+    catLabel: '🍁 단풍', accent: '#c2410c', bd: '#f0c9a6', bg: '#fdf5ee', ph: '산·명소명·주소 검색',
+    sub: mapleLive
+      ? '2026년 산별 단풍 절정 예상 시기와 전국 산·단풍 명소 __N__곳을 한 페이지에 모았습니다. 단풍철 가을 축제까지 함께 확인하세요.'
+      : '공공데이터(한국관광공사) 기반 전국 산·단풍 명소 __N__곳 — 가을 단풍 구경 좋은 곳을 지역별로 찾아보세요.',
     intro: mapleIntro,
-    note: '데이터 출처: 명소는 한국관광공사(공공데이터포털), 단풍 예상 시기는 웨더아이 ' + MAPLE_SRC.date + ' 발표. 절정은 고도와 그해 기온에 따라 달라집니다.' },
+    note: (mapleLive
+      ? '데이터 출처: 명소는 한국관광공사(공공데이터포털), 단풍 예상 시기는 웨더아이 ' + MAPLE_SRC.date + ' 발표. 절정은 고도와 그해 기온에 따라 달라집니다.'
+      : '데이터 출처: 한국관광공사(공공데이터포털). 단풍 절정 시기는 해마다·고도에 따라 다르니 방문 전 단풍 예상 시기를 확인하세요.') },
   { data: apiFlower, slug: 'flower', title: '전국 봄꽃·정원 명소 — 벚꽃·수목원·꽃구경 명소 총정리 | ' + SITE_NAME,
     metaDesc: '봄 꽃구경·정원 나들이 좋은 전국 수목원·꽃 명소를 지역별로 모았습니다. 공공데이터(한국관광공사) 기반 명소 정보와 지도, 지역별 검색까지 한 페이지에서 확인하세요.',
     h1: '🌸 전국 봄꽃·정원 명소', catLabel: '🌸 봄꽃·정원', accent: '#db2777', bd: '#f4c6dc', bg: '#fdf2f8', ph: '수목원·명소명·주소 검색',
