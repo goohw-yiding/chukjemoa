@@ -4282,6 +4282,13 @@ const SPOT_THEMES = [
       ? '2026년 산별 단풍 절정 예상 시기와 전국 산·단풍 명소 __N__곳을 한 페이지에 모았습니다. 단풍철 가을 축제까지 함께 확인하세요.'
       : '공공데이터(한국관광공사) 기반 전국 산·단풍 명소 __N__곳 — 가을 단풍 구경 좋은 곳을 지역별로 찾아보세요.',
     intro: mapleIntro,
+    // 🍁 사진 없는 곳의 대체 이미지. 기본값(/img/hero.webp)은 «축제 등불 야경»이라
+    //    단풍 보러 온 사람에게 엉뚱한 그림을 보여 주고 있었다(2026-09-09 장남 님 지적).
+    //    관광공사에 사진이 아예 없는 곳이 48곳 남아 어쩔 수 없이 대체 이미지가 필요하다
+    //    (detailImage2·searchKeyword2 둘 다 돌려서 더는 안 나온다는 걸 확인했다).
+    //    ⚠️ 대둔산 구름다리 같은 «랜드마크가 보이는» 컷은 안 쓴다 — 다른 산 카드에 깔리면 속인다.
+    fallback: '/img/maple-fallback.webp',
+    imgCredit: '대체 이미지: 위키미디어 공용 「Autumn in Chiak Mountain」 © Sohyeon Bak, CC BY-SA 3.0.',
     note: (mapleLive
       ? '데이터 출처: 명소는 한국관광공사(공공데이터포털), 단풍 예상 시기는 웨더아이 ' + MAPLE_SRC.date + ' 발표. 절정은 고도와 그해 기온에 따라 달라집니다.'
       : '데이터 출처: 한국관광공사(공공데이터포털). 단풍 절정 시기는 해마다·고도에 따라 다르니 방문 전 단풍 예상 시기를 확인하세요.') },
@@ -4296,6 +4303,11 @@ const SPOT_THEMES = [
     sub: '공공데이터(한국관광공사) 기반 전국 온천·스파 __N__곳 — 겨울에 몸 녹이기 좋은 온천을 지역별로 찾아보세요. 카드를 누르면 상세정보와 지도·검색 링크가 열립니다.',
     note: '데이터 출처: 한국관광공사(공공데이터포털). 운영시간·요금·휴관일은 계절과 시설 사정에 따라 다르니 방문 전 꼭 확인하세요.' },
 ];
+// 🖼 사진 없는 곳의 대체 이미지(FB)는 «테마가 정한 것»을 쓴다. 예전엔 셋 다 hero.webp 로 떨어져
+//    단풍 카드에 축제 등불 야경이 깔렸다. 서버가 그리는 첫 HTML(ssrCards)도 같은 값을 쓴다 —
+//    한쪽만 고치면 처음 화면과 스크롤 뒤 화면이 다른 그림이 된다.
+// ⚠️ 이 메모를 아래 템플릿 «안»에 넣었다가 브라우저로 새어 나갔다(2026-09-09, 같은 함정 두 번째).
+//    템플릿 안 주석은 그대로 배포된다 — 메모는 반드시 여기, 템플릿 바깥에.
 SPOT_THEMES.forEach(function (T) {
   if (!T.data.length) return;
   const sidos = SIDO_ORDER.filter(s => T.data.some(p => p.sido === s));
@@ -4324,17 +4336,18 @@ ${T.intro || ''}
 <button id="sReset" class="smore" style="border-color:#e6eef2;color:#374151">초기화</button>
 </div></div>
 <div class="srch-count" id="sCount"></div>
-<div class="grid" id="sGrid">${ssrCards(T.data, 60, p => ({ title: p.title, img: p.img, loc: (p.sido || '') + ' ' + (p.sigungu || ''), desc: p.ov, wx: WX.now(p.x, p.y) }))}</div>
+<div class="grid" id="sGrid">${ssrCards(T.data, 60, p => ({ title: p.title, img: p.img || T.fallback, loc: (p.sido || '') + ' ' + (p.sigungu || ''), desc: p.ov, wx: WX.now(p.x, p.y) }))}</div>
 <div style="text-align:center;margin:22px 0"><button id="sMore" class="smore" style="display:none">더 보기</button></div>
-<p class="note">${T.note} 카드를 누르면 상세정보와 지도·검색 링크가 표시됩니다.</p>
+<p class="note">${T.note} 카드를 누르면 상세정보와 지도·검색 링크가 표시됩니다.${T.imgCredit ? ' ' + T.imgCredit : ''}</p>
 </div></main>
 <script>
 (function(){
 var P=[];var byId={};var st={sido:'',sigungu:'',kw:''};var shown=60;
 var CATLABEL=${JSON.stringify(T.catLabel)};var DURL='/'+${JSON.stringify(T.slug)}+'/data.json';
+var FB=${JSON.stringify(T.fallback || '/img/hero.webp')};
 function esc(s){return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
-function card(p){var loc=(p.sido||'')+(p.sigungu?' '+p.sigungu:'');var q=encodeURIComponent(p.title);var img=p.img||'/img/hero.webp';return '<a class="card" data-id="'+esc(p.id)+'" style="cursor:pointer" href="https://search.naver.com/search.naver?query='+q+'"><div class="thumb"><img loading="lazy" src="'+esc(img)+'" alt="'+esc(p.title)+'" onerror="this.src=&#39;/img/hero.webp&#39;"><span class="cat">'+CATLABEL+'</span></div><div class="card-body"><h3>'+esc(p.title)+'</h3><div class="loc">'+esc(loc)+'</div>'+(p.ov?'<div class="sov">'+esc(p.ov)+'</div>':'')+'</div></a>';}
-function openSpot(p){if(!window.openPlaceModal){window.open('https://search.naver.com/search.naver?query='+encodeURIComponent(p.title),'_blank','noopener');return;}var loc=(p.sido||'')+(p.sigungu?' '+p.sigungu:'');var body=p.ov?(window.cjmProse?window.cjmProse(p.ov):'<div>'+esc(p.ov)+'</div>'):'<div style="color:#6b7280;font-size:.9rem">운영·요금·시기 정보는 방문 전 확인하세요.</div>';var rows=[['🕒 영업시간',p.open],['🚫 휴무',p.rest],['🅿️ 주차',p.park],['☎ 문의',p.tel]].filter(function(r){return r[1];});if(rows.length)body+='<div style="margin-top:12px;border-top:1px solid #eef2f5;padding-top:10px;font-size:.9rem;color:#374151">'+rows.map(function(r){return '<div style="margin:3px 0"><b>'+r[0]+'</b> '+esc(r[1])+'</div>';}).join('')+'</div>';if(p.hp)body+='<div style="margin-top:8px;font-size:.88rem"><a href="'+esc(p.hp)+'" target="_blank" rel="noopener nofollow">공식 홈페이지 →</a></div>';window.openPlaceModal({img:p.img,title:p.title,meta:[CATLABEL,loc,p.tel].filter(Boolean).join('  ·  '),body:body,naver:'https://search.naver.com/search.naver?query='+encodeURIComponent(p.title),map:'https://map.naver.com/p/search/'+encodeURIComponent(p.title)});}
+function card(p){var loc=(p.sido||'')+(p.sigungu?' '+p.sigungu:'');var q=encodeURIComponent(p.title);var img=p.img||FB;return '<a class="card" data-id="'+esc(p.id)+'" style="cursor:pointer" href="https://search.naver.com/search.naver?query='+q+'"><div class="thumb"><img loading="lazy" src="'+esc(img)+'" alt="'+esc(p.title)+'" onerror="this.src=&#39;'+FB+'&#39;"><span class="cat">'+CATLABEL+'</span></div><div class="card-body"><h3>'+esc(p.title)+'</h3><div class="loc">'+esc(loc)+'</div>'+(p.ov?'<div class="sov">'+esc(p.ov)+'</div>':'')+'</div></a>';}
+function openSpot(p){if(!window.openPlaceModal){window.open('https://search.naver.com/search.naver?query='+encodeURIComponent(p.title),'_blank','noopener');return;}var loc=(p.sido||'')+(p.sigungu?' '+p.sigungu:'');var body=p.ov?(window.cjmProse?window.cjmProse(p.ov):'<div>'+esc(p.ov)+'</div>'):'<div style="color:#6b7280;font-size:.9rem">운영·요금·시기 정보는 방문 전 확인하세요.</div>';var rows=[['🕒 영업시간',p.open],['🚫 휴무',p.rest],['🅿️ 주차',p.park],['☎ 문의',p.tel]].filter(function(r){return r[1];});if(rows.length)body+='<div style="margin-top:12px;border-top:1px solid #eef2f5;padding-top:10px;font-size:.9rem;color:#374151">'+rows.map(function(r){return '<div style="margin:3px 0"><b>'+r[0]+'</b> '+esc(r[1])+'</div>';}).join('')+'</div>';if(p.hp)body+='<div style="margin-top:8px;font-size:.88rem"><a href="'+esc(p.hp)+'" target="_blank" rel="noopener nofollow">공식 홈페이지 →</a></div>';window.openPlaceModal({img:p.img||FB,title:p.title,meta:[CATLABEL,loc,p.tel].filter(Boolean).join('  ·  '),body:body,naver:'https://search.naver.com/search.naver?query='+encodeURIComponent(p.title),map:'https://map.naver.com/p/search/'+encodeURIComponent(p.title)});}
 function filtered(){return P.filter(function(p){if(st.sido&&p.sido!==st.sido)return false;if(st.sigungu&&p.sigungu!==st.sigungu)return false;if(st.kw){var k=st.kw.toLowerCase();if((p.title||'').toLowerCase().indexOf(k)<0&&(p.addr||'').indexOf(st.kw)<0)return false;}return true;});}
 function render(){var list=filtered();document.getElementById('sCount').textContent='총 '+list.length+'곳';var g=document.getElementById('sGrid');g.innerHTML=list.length?list.slice(0,shown).map(card).join(''):'<p style="grid-column:1/-1;color:#6b7280;padding:24px 0">조건에 맞는 곳이 없어요. 지역을 바꿔보세요.</p>';document.getElementById('sMore').style.display=list.length>shown?'inline-block':'none';}
 function fillSg(){var set={};P.forEach(function(p){if((!st.sido||p.sido===st.sido)&&p.sigungu)set[p.sigungu]=1;});var arr=Object.keys(set).sort();document.getElementById('sSigungu').innerHTML='<option value="">전체 시·군·구</option>'+arr.map(function(s){return '<option value="'+s+'">'+s+'</option>';}).join('');}

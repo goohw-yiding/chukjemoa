@@ -1,11 +1,27 @@
-/maple/ 단풍 예보에 자동 만료 추가 — 낡은 날짜가 「올해 것」으로 남지 않게
+단풍 카드에 축제 등불 야경이 깔리던 것 수정 — 실제 사진 우선, 대체는 진짜 단풍 사진으로
 
-시티투어에서 6년 전 코스가 「2026년 기준」으로 찍혀 있던 것과 같은 종류의 사고를 막는다.
-MAPLE_EXPIRE(2026-11-30)를 넘기면 표·축제 목록뿐 아니라 title·h1·description·note 까지
-예전 문구로 되돌아간다. 표만 내리고 제목에 「2026 단풍시기」가 남으면 내용 없는 약속이 된다.
+장남 님 지적: /maple/ 카드(앵자봉·왕방산 등)에 등불 야경이 깔려 있었다.
+원인은 사진 없는 곳의 대체 이미지가 사이트 공통 /img/hero.webp(축제 등불)였던 것.
+326곳 중 50곳(15%)이 목록 API 의 firstimage 가 비어 있었다.
 
-만료 리허설: 값을 2020-01-01 로 두고 실제로 빌드 → 표 0행·축제 0건·제목 35자 원복 확인.
-되돌린 뒤 재빌드 → 표 14행·축제 12건·제목 49자 정상. 가드가 「통과」한 게 아니라 작동을 봤다.
+「실제 사진을 끝까지」 — 세 경로를 다 돌리고 숫자로 남긴다
+- fetch-spot-img.js  (detailImage2)   → 2곳 확보, 48곳은 관광공사에 사진 자체가 없음
+- fetch-spot-img2.js (searchKeyword2) → 0곳. 이름만 같은 «다른 산» 7건은 좌표 3km 가드로 버림
+                                         (감악산 274km·대금산 338km·태화산 106km …)
+- 내부 데이터셋 대조                  → 1곳(산양큰엉곶 0.2km). 나머지 3건도 동명이산이라 버림
+→ 279/326 실제 사진(86%). 남은 47곳은 어느 무료 출처에도 «맞는» 사진이 없다.
+
+- 대체 이미지 신설 /img/maple-fallback.webp (960px·201KB)
+  위키미디어 공용 「Autumn in Chiak Mountain」 © Sohyeon Bak, CC BY-SA 3.0 — 페이지에 출처 표기.
+  ⚠️ 대둔산 구름다리처럼 «랜드마크가 보이는» 컷은 안 썼다. 다른 산 카드에 깔리면 사람을 속인다.
+- SPOT_THEMES 에 fallback/imgCredit 추가. 서버 첫 HTML(ssrCards)과 클라이언트 카드·onerror·모달까지
+  같은 값을 쓴다 — 한쪽만 고치면 첫 화면과 스크롤 뒤 화면의 그림이 달라진다.
+- fetch-spots.js CARRY 에 img·imgTried·imgTried2·imgSrc 추가.
+  안 넣으면 다음 주 수집이 firstimage='' 로 덮어 방금 채운 사진이 사라진다(2026-08-18 카페 사고와 같은 형태).
+- _sync.js 에 보강기 2종 + data/maple.json 추가(수집기와 «그 산출물»을 같이).
+
+⚠️ 밟은 것: FB 설명 주석을 템플릿 «안»에 넣어 브라우저로 새어 나갔다(같은 함정 두 번째). 바깥으로 옮김.
+검증: SSR 카드 60장 = TourAPI 실사진 46 + 단풍 대체 14 · 등불 0 · flower/onsen 오염 0 · audit 0건 · _sync 차이 0
 
 Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
 Claude-Session: https://claude.ai/code/session_01T1Q5u3iQj8yz2GzSyEhrZb

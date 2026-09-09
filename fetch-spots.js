@@ -67,7 +67,10 @@ async function fetchTheme(key){
   // 이미 받아 둔 값은 다시 받지 않는다(재실행이 싸야 매주 돌릴 수 있다).
   // ⚠️ 물려받을 필드를 «하나라도 빠뜨리면 재수집이 곧 삭제»다 — 2026-08-18에 카페에서 그렇게
   //    영업시간·대표메뉴 2,018곳을 날렸다. 새 필드를 추가하면 이 목록에도 반드시 넣을 것.
-  const CARRY = ['ov','tel','hp','open','rest','park'];
+  // 2026-09-09 추가 — 'img' 와 조회이력. fetch-spot-img.js / fetch-spot-img2.js 가 채운 사진은
+  //   목록 API 의 firstimage 가 비어 있어서 채운 것이라, 여기 안 넣으면 **다음 수집이 곧 삭제**다.
+  //   imgTried·imgTried2 는 「관광공사에 사진이 없더라」는 기록 — 이게 없으면 매주 같은 48곳을 다시 묻는다.
+  const CARRY = ['ov','tel','hp','open','rest','park','img','imgTried','imgTried2','imgSrc'];
   const cache = {};
   try { JSON.parse(fs.readFileSync(outPath,'utf8')).forEach(p=>{ const k={}; let any=false; CARRY.forEach(f=>{ if(p[f]){k[f]=p[f];any=true;} }); if(any) cache[p.id]=k; }); } catch(e){}
   out.forEach(p=>{ const c=cache[p.id]; if(!c) return; CARRY.forEach(f=>{ if(c[f] && !p[f]) p[f]=c[f]; }); });
