@@ -32,6 +32,19 @@ const WX = require('./weather.js');                     // 축제 당일 날씨(
 
 const MIN_OV = 300, MIN_NEAR = 3, FROM_YEAR = '2026';
 
+// 🎪 2026-09-10 신설 — «그 축제만의 것». TourAPI detailIntro2(contentTypeId=15)에서
+//    이용요금·운영시간·행사장·관람연령·주최/주관·행사프로그램을 받아 둔 것.
+//    왜: 애드센스 3차 반려(「가치가 별로 없는 콘텐츠」) 뒤 재 보니, 축제 상세 564장이 전부
+//    같은 10~12개 h2 로 되어 있고 «그 축제 자체»에 대한 내용은 개요 한 문단뿐이었다.
+//    나머지는 전부 주변 정보(맛집·카페·숙소·걷기길·주차)라 어느 축제를 열어도 같아 보였다.
+//    🔴 festivals_api.json 에 넣지 않는다 — 그건 수집기가 «만드는» 파일이라 다음 회차가 되돌린다.
+//    수집: node fetch-fest-intro.js [초]   (시간 예산을 주면 나눠 받는다)
+const INTRO = (() => {
+  try { return JSON.parse(fs.readFileSync(path.join(__dirname, 'data', 'fest_intro.json'), 'utf8')); }
+  catch (e) { return {}; }
+})();
+const introOf = f => INTRO[String(f && f.id)] || {};
+
 function load(f) { try { return JSON.parse(fs.readFileSync(path.join(__dirname, 'data', f), 'utf8')); } catch (e) { return []; } }
 const num = v => { const n = Number(v); return isFinite(n) ? n : 0; };
 function sgOf(addr, given) {
@@ -61,6 +74,9 @@ const CSS = `
 .finfo{display:grid;grid-template-columns:88px 1fr;gap:8px 12px;padding:16px 18px;font-size:.94rem}
 .finfo dt{font-weight:800;color:#0a6c63}
 .finfo dd{color:#374151}
+.fprog{list-style:none;padding:0;margin:0 0 16px;display:grid;gap:8px}
+.fprog li{background:#fff;border:1.5px solid #eef2f1;border-left:4px solid #0f9d8f;border-radius:10px;
+  padding:10px 14px;line-height:1.75;color:#374151;font-size:.96rem}
 .fbadge{display:inline-block;font-size:.78rem;font-weight:800;border-radius:999px;padding:4px 11px;margin:0 6px 6px 0}
 .fbadge.hot{background:#fff1e8;color:#c2410c}
 .fbadge.qt{background:#f2fbfa;color:#0a6c63}
@@ -339,6 +355,18 @@ ${!ended ? `<a class="cal-btn" href="${esc(gcalUrl)}" target="_blank" rel="noope
 <dl class="finfo">
 <dt>기간</dt><dd>${fmtDate(String(f.start))}(${dayName(String(f.start))}) ~ ${fmtDate(String(f.end))}(${dayName(String(f.end))})</dd>
 <dt>장소</dt><dd>${esc(f.addr || '')}</dd>
+${(() => {
+      // 🎪 그 축제만의 사실 — 공공데이터에 «있는 것만» 싣는다. 없는 줄은 아예 안 만든다.
+      const q = introOf(f);
+      const rows = [];
+      if (q.fee) rows.push(`<dt>이용요금</dt><dd>${esc(q.fee)}</dd>`);
+      if (q.playtime) rows.push(`<dt>운영시간</dt><dd>${esc(q.playtime)}</dd>`);
+      // 행사장이 주소에 이미 들어 있으면 같은 말을 두 번 쓰지 않는다
+      if (q.place && !String(f.addr || '').includes(q.place)) rows.push(`<dt>행사장</dt><dd>${esc(q.place)}</dd>`);
+      if (q.age) rows.push(`<dt>관람연령</dt><dd>${esc(q.age)}</dd>`);
+      if (q.host) rows.push(`<dt>주최</dt><dd>${esc(q.host)}${q.org && q.org !== q.host ? ` <span style="color:#9ca3af">· 주관 ${esc(q.org)}</span>` : ''}</dd>`);
+      return rows.join('\n');
+    })()}
 ${f.tel ? `<dt>문의</dt><dd>${esc(f.tel)}</dd>` : ''}
 <dt>지도</dt><dd><a class="fmap" target="_blank" rel="noopener" href="https://map.kakao.com/link/to/${encodeURIComponent(f.title)},${y},${x}">카카오맵으로 길찾기 →</a></dd>
 </dl>
@@ -367,6 +395,18 @@ ${monthKeyOf(f) ? `<a href="/${monthKeyOf(f)}/" class="hot">🎪 ${String(f.star
 <h2 class="sec">어떤 축제인가</h2>
 <p class="note" style="margin:-2px 0 10px">아래 소개는 한국관광공사 TourAPI에 등록된 <b>공식 설명</b>입니다. 저희가 직접 계산해 붙인 것은 붐빔 배수·근처 영업시간·걷기길 거리·하루 동선입니다.</p>
 ${prose(f.ov)}
+
+${(() => {
+      // 🎪 그 축제에서 «실제로 하는 것». 이게 붙는 페이지는 다른 축제와 더 이상 같아 보이지 않는다.
+      // ⚠️ TourAPI 의 program 은 줄바꿈 없이 이어 붙어 오므로 수집기가 번호·하이픈 앞에서 끊어 저장한다.
+      const q = introOf(f);
+      if (!q.program) return '';
+      const lines = String(q.program).split('\n').map(s => s.replace(/^[-·•]\s*/, '').trim()).filter(s => s.length > 1);
+      if (!lines.length) return '';
+      return `<h2 class="sec">${esc(f.title)}에서 하는 것</h2>
+<p class="note" style="margin:-2px 0 10px">한국관광공사 TourAPI에 등록된 <b>공식 행사 프로그램</b>입니다. ${ended ? '지난 회차 기준이며, ' : ''}주최 측 사정으로 바뀔 수 있으니 방문 전 확인하세요.</p>
+<ul class="fprog">${lines.slice(0, 24).map(l => `<li>${esc(l)}</li>`).join('')}</ul>`;
+    })()}
 
 ${nbList.length ? `<h2 class="sec">축제장 근처 가볼 곳</h2>
 <p style="color:#6b7280;font-size:.92rem">한국관광공사가 이 축제 기준으로 알려 준 근처 목록입니다. <b>상호에 다른 지역 이름이 들어간 가게가 있어</b>, 실제로 어느 시·군·구인지 같이 적었습니다.</p>
