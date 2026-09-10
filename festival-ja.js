@@ -29,6 +29,14 @@ function load(f) { try { return JSON.parse(fs.readFileSync(path.join(__dirname, 
 const esc = s => String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;')
   .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 
+// 🎪 2026-09-10 — この祭りだけの情報(料金·開催時間·所要時間·主催·プログラム)。
+//    수집: node fetch-fest-intro-intl.js ja
+//    🔴 외국어 서비스에서 축제의 contentTypeId 는 **85**다(15 는 «정상 응답인데 0건»으로 온다).
+const INTRO = (() => {
+  try { return JSON.parse(fs.readFileSync(path.join(__dirname, 'data', 'fest_intro_ja.json'), 'utf8')); }
+  catch (e) { return {}; }
+})();
+
 // 일본어 제목은 한자·가나라 그대로 슬러그를 못 만든다.
 // → 좌표로 이어진 한국어 원제를 로마자로 옮겨 슬러그를 만든다(영문판과 같은 규칙이라 URL이 일관된다).
 function slugify(t) {
@@ -54,6 +62,10 @@ const CSS = `
 .fend p{color:#7c2d12;font-size:.94rem;line-height:1.7;margin:0}
 .fov{background:#fff;border-radius:16px;padding:18px 20px;margin:14px 0;box-shadow:0 2px 10px rgba(31,41,55,.06)}
 .fov h2{font-size:1.05rem;font-weight:900;color:#0a6c63;margin-bottom:8px}
+.fprog{list-style:none;padding:0;margin:0;display:grid;gap:8px}
+.fprog li{background:#f9fbfb;border:1.5px solid #eef2f1;border-left:4px solid #0f9d8f;border-radius:10px;
+  padding:10px 14px;line-height:1.8;color:#374151;font-size:.95rem}
+.fprog li.sub{margin-left:20px;border-left-color:#cfe9e4;background:#fcfefe;color:#4b5563;font-size:.91rem;padding:8px 13px}
 .fov p{color:#374151;font-size:.96rem;line-height:1.85}
 .flinks{display:flex;gap:10px;flex-wrap:wrap;margin:16px 0}
 .flinks a{flex:1;min-width:150px;text-align:center;padding:12px;border-radius:12px;font-weight:800;font-size:.93rem;text-decoration:none}
@@ -160,12 +172,37 @@ ${CSS}
 <dl class="finfo">
 <dt>📅 開催期間</dt><dd>${fmtDate(f.start)} 〜 ${fmtDate(f.end)}</dd>
 <dt>📍 場所</dt><dd>${esc(f.addr || f.region || '')}</dd>
+${(() => {
+      // 🎪 この祭りだけの事実 — 公共データに «あるものだけ» 載せる。無い行は作らない。
+      const q = INTRO[String(f.id)] || {};
+      const rows = [];
+      if (q.fee) rows.push(`<dt>🎫 料金</dt><dd>${esc(q.fee)}</dd>`);
+      if (q.playtime) rows.push(`<dt>🕘 開催時間</dt><dd>${esc(q.playtime)}</dd>`);
+      if (q.spend) rows.push(`<dt>⏱️ 所要時間</dt><dd>${esc(q.spend)}</dd>`);
+      if (q.place && !String(f.addr || '').includes(q.place)) rows.push(`<dt>🎪 会場</dt><dd>${esc(q.place)}</dd>`);
+      if (q.age) rows.push(`<dt>👥 対象年齢</dt><dd>${esc(q.age)}</dd>`);
+      if (q.host) rows.push(`<dt>🏛️ 主催</dt><dd>${esc(q.host)}${q.org && q.org !== q.host ? ` <span style="color:#9ca3af">· ${esc(q.org)}</span>` : ''}</dd>`);
+      return rows.join('\n');
+    })()}
 ${f.tel ? `<dt>☎️ 問い合わせ</dt><dd>${esc(f.tel)}</dd>` : ''}
 </dl></div>
 ${ended ? `<div class="fend"><h2>⚠️ 上の日程はすでに終了しています</h2>
 <p>掲載されているのは公式に確認できた直近の日程です。韓国の祭りは毎年ほぼ同じ時期に開かれる年中行事が多いのですが、次回の日程はまだ公表されていません。旅行を決める前に公式サイトでご確認ください。</p></div>` : ''}
 <div class="fov"><h2>この祭りについて</h2><p>${esc(f.ov)}</p>
 <p style="color:#9aa3af;font-size:.82rem;margin-top:10px">出典：韓国観光公社（公式日本語訳・TourAPI）</p></div>
+${(() => {
+      // 🎪 何をする祭りなのか — これが付くとページが他の祭りと同じに見えなくなる。
+      const q = INTRO[String(f.id)] || {};
+      const raw = [q.program, q.subevent].filter(Boolean).join('\n');
+      if (!raw) return '';
+      const lines = raw.split('\n').map(s => s.trim()).filter(s => s.length > 1)
+        .map(s => ({ sub: /^[-•·]\s*/.test(s), t: s.replace(/^[-•·]\s*/, '').trim() }))
+        .filter(o => o.t.length > 1);
+      if (!lines.length) return '';
+      return `<div class="fov"><h2>${esc(f.title)}で行われること</h2>
+<ul class="fprog">${lines.slice(0, 24).map(o => `<li${o.sub ? ' class="sub"' : ''}>${esc(o.t)}</li>`).join('')}</ul>
+<p style="color:#9aa3af;font-size:.82rem;margin-top:8px">韓国観光公社に登録された公式プログラム${ended ? '（直近の回）' : ''}です。主催者の都合で変わることがあるため、訪問前にご確認ください。</p></div>`;
+    })()}
 <div class="flinks">
 ${hpUrl ? `<a class="fl-hp" href="${esc(hpUrl)}" target="_blank" rel="noopener">🏛️ 公式サイト</a>` : ''}
 <a class="fl-map" href="${esc(mapUrl)}" target="_blank" rel="noopener">🗺️ NAVERマップで開く</a>

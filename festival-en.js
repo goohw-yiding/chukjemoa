@@ -28,6 +28,14 @@ const MIN_OV = 200;
 
 function load(f) { try { return JSON.parse(fs.readFileSync(path.join(__dirname, 'data', f), 'utf8')); } catch (e) { return []; } }
 function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+// 🎪 2026-09-10 — 이 축제만의 것(입장료·운영시간·소요시간·주최·프로그램).
+//    수집: node fetch-fest-intro-intl.js en
+//    🔴 외국어 서비스에서 축제의 contentTypeId 는 **85**다(15 는 «정상 응답인데 0건»으로 온다).
+const INTRO = (() => {
+  try { return JSON.parse(require('fs').readFileSync(require('path').join(__dirname, 'data', 'fest_intro_en.json'), 'utf8')); }
+  catch (e) { return {}; }
+})();
+
 function slugify(t) {
   return String(t || '').toLowerCase()
     .normalize('NFKD').replace(/[̀-ͯ]/g, '')
@@ -62,6 +70,10 @@ const CSS = `
 .fend p{color:#7c2d12;font-size:.95rem;line-height:1.62;margin:0 0 7px}
 .fov{background:#fff;border-radius:16px;padding:18px 20px;margin:14px 0;box-shadow:0 2px 10px rgba(31,41,55,.06)}
 .fov h2{font-size:1.05rem;font-weight:900;color:#0a6c63;margin-bottom:8px}
+.fprog{list-style:none;padding:0;margin:0;display:grid;gap:8px}
+.fprog li{background:#f9fbfb;border:1.5px solid #eef2f1;border-left:4px solid #0f9d8f;border-radius:10px;
+  padding:10px 14px;line-height:1.7;color:#374151;font-size:.95rem}
+.fprog li.sub{margin-left:20px;border-left-color:#cfe9e4;background:#fcfefe;color:#4b5563;font-size:.91rem;padding:8px 13px}
 .fov p{color:#374151;font-size:.96rem;line-height:1.75}
 .flinks{display:flex;gap:10px;flex-wrap:wrap;margin:16px 0}
 .flinks a{flex:1;min-width:150px;text-align:center;padding:12px;border-radius:12px;font-weight:800;font-size:.94rem;text-decoration:none}
@@ -193,12 +205,37 @@ ${CSS}
 <dl class="finfo">
 <dt>📅 Dates</dt><dd>${fmtDate(f.start)} – ${fmtDate(f.end)}</dd>
 <dt>📍 Location</dt><dd>${esc(f.addr || f.region || '')}</dd>
+${(() => {
+      // 🎪 이 축제만의 사실 — 공공데이터에 «있는 것만». 없는 줄은 아예 만들지 않는다.
+      const q = INTRO[String(f.id)] || {};
+      const rows = [];
+      if (q.fee) rows.push(`<dt>🎫 Admission</dt><dd>${esc(q.fee)}</dd>`);
+      if (q.playtime) rows.push(`<dt>🕘 Hours</dt><dd>${esc(q.playtime)}</dd>`);
+      if (q.spend) rows.push(`<dt>⏱️ Time needed</dt><dd>${esc(q.spend)}</dd>`);
+      if (q.place && !String(f.addr || '').includes(q.place)) rows.push(`<dt>🎪 Venue</dt><dd>${esc(q.place)}</dd>`);
+      if (q.age) rows.push(`<dt>👥 Age</dt><dd>${esc(q.age)}</dd>`);
+      if (q.host) rows.push(`<dt>🏛️ Organizer</dt><dd>${esc(q.host)}${q.org && q.org !== q.host ? ` <span style="color:#9ca3af">· ${esc(q.org)}</span>` : ''}</dd>`);
+      return rows.join('\n');
+    })()}
 ${f.tel ? `<dt>☎️ Contact</dt><dd>${esc(f.tel)}</dd>` : ''}
 </dl></div>
 ${ended ? `<div class="fend"><h2>⚠️ This festival's listed dates have passed</h2>
 <p>The dates above are from the most recent official schedule. Many Korean festivals are annual events held around the same time each year, but the next date has not been officially confirmed yet — please check the official website or a Google search below before planning a trip.</p></div>` : ''}
 <div class="fov"><h2>Overview</h2><p>${esc(f.ov)}</p>
 <p class="note" style="color:#9aa3af;font-size:.82rem;margin-top:10px">Source: Korea Tourism Organization (official English translation, TourAPI).</p></div>
+${(() => {
+      // 🎪 무엇을 하는 축제인지 — 이게 붙으면 페이지가 더 이상 다른 축제와 같아 보이지 않는다.
+      const q = INTRO[String(f.id)] || {};
+      const raw = [q.program, q.subevent].filter(Boolean).join('\n');
+      if (!raw) return '';
+      const lines = raw.split('\n').map(s => s.trim()).filter(s => s.length > 1)
+        .map(s => ({ sub: /^[-•·]\s*/.test(s), t: s.replace(/^[-•·]\s*/, '').trim() }))
+        .filter(o => o.t.length > 1);
+      if (!lines.length) return '';
+      return `<div class="fov"><h2>What happens at ${esc(f.title)}</h2>
+<ul class="fprog">${lines.slice(0, 24).map(o => `<li${o.sub ? ' class="sub"' : ''}>${esc(o.t)}</li>`).join('')}</ul>
+<p class="note" style="color:#9aa3af;font-size:.82rem;margin-top:8px">Official programme as registered with the Korea Tourism Organization${ended ? ' for the most recent edition' : ''}. Details can change — check with the organizer before you go.</p></div>`;
+    })()}
 <div class="flinks">
 ${hpUrl ? `<a class="fl-hp" href="${esc(hpUrl)}" target="_blank" rel="noopener">🏛️ Official website</a>` : ''}
 ${mapUrl ? `<a class="fl-map" href="${esc(mapUrl)}" target="_blank" rel="noopener">🗺️ View on map</a>` : ''}
