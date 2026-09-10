@@ -2087,11 +2087,64 @@ const CITY_OPEN_KO = new Set(
 //   ⚠️ 외국어 축제 데이터에는 sido·sigungu 가 없다 → 좌표로 한국어 원본을 찾는 별도 함수를 쓴다.
 const { cityOfFestival: CITY_OF, cityOfIntlFestival: CITY_OF_I, CITY_KO } = require('./cities.js');
 
+// 🔍 축제 이름 검색량 — data/fest_volume.json (_fest_volume.py 가 네이버 검색광고 API로 받음)
+//    왜: 홈 카드가 «시작일 순»이라 217일짜리 상설 프로그램이 1위로 떴다.
+//    실측 2026-09-10 — 「금남로 차 없는 거리 걷자잉」 월 50 vs 「무주반딧불축제」 월 214,200.
+//    사람이 무엇을 찾는지는 시작일이 아니라 검색량이다.
+// ⚠️ 월별 페이지(MONTHS.forEach)가 이걸 쓰므로 그보다 «앞»에 있어야 한다.
+// ⚠️ 파일이 없어도 빌드는 돌아야 한다 → 없으면 전부 0이 되고 예전처럼 시작일 순이 된다.
+const FVOL = (() => {
+  try { return JSON.parse(fs.readFileSync(path.join(ROOT, 'data/fest_volume.json'), 'utf8')); }
+  catch (e) { console.log('  ⚠️ fest_volume.json 없음 — 홈 카드는 시작일 순으로 둡니다'); return {}; }
+})();
+// ⚠️ 이름이 원천마다 다르다 — 월별 카드는 「제30회 무주반딧불축제」인데 검색량 키는
+//    「무주반딧불축제」다. 그대로 맞추면 64%밖에 안 붙는다(2026-09-10 실측).
+//    수집기(_fest_volume.py)가 쓴 것과 «같은 규칙»으로 다듬어서 찾는다.
+const volKw = n => String(n || '')
+  .replace(/[\(\[（【][^\)\]）】]*[\)\]）】]/g, ' ')
+  .replace(/20\d\d\s*년?/g, ' ')
+  .replace(/제\s*\d+\s*회/g, ' ')
+  .replace(/[^0-9A-Za-z가-힣]/g, '');
+const FVOL_KW = (() => {
+  const m = {};
+  for (const k in FVOL) { const d = FVOL[k]; if (d && d.kw) m[d.kw] = Math.max(m[d.kw] || 0, +d.vol || 0); }
+  return m;
+})();
+const volOf = n => {
+  const d = FVOL[String(n || '').trim()];
+  if (d) return +d.vol || 0;
+  const k = volKw(n);
+  return k.length >= 2 ? (FVOL_KW[k] || 0) : 0;
+};
+
+// 📈 「지금 뜨는 정도」 — data/fest_trend.json (_fest_trend.py 가 네이버 데이터랩으로 받음)
+//    왜: 월 검색량은 «연평균»이라 계절을 못 탄다. 무주반딧불축제가 3월에도 214,200이라
+//        1년 내내 1등이 된다. 장남 님 지적 — 「최근 1주일로 바꿔야 사람들이 보고 오지,
+//        매일 순위가 조정돼야 한다」.
+//    t = 최근7일 평균 ÷ 60일 평균. 같은 계열을 자기끼리 나눈 값이라 데이터랩의
+//    호출별 정규화가 상쇄된다(앵커 키워드가 필요 없다).
+// ⚠️ 파일이 없거나 그 축제 자료가 없으면 t=1 — 예전처럼 월 검색량 순이 된다.
+const FTREND = (() => {
+  try {
+    const j = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/fest_trend.json'), 'utf8'));
+    console.log('  📈 축제 추세 ' + Object.keys(j.kw || {}).length + '개 (' + j.date + ' 기준)');
+    return j.kw || {};
+  } catch (e) { console.log('  ⚠️ fest_trend.json 없음 — 월 검색량 순으로 둡니다'); return {}; }
+})();
+const trendOf = n => {
+  const k = volKw(n);
+  const d = k.length >= 2 ? FTREND[k] : null;
+  const t = d && d.t != null ? +d.t : 1;
+  return t < 0.25 ? 0.25 : (t > 8 ? 8 : t);   // 한쪽으로 쏠리지 않게 자른다
+};
+// 최종 점수 = 절대 크기(월 검색량) × 지금 뜨는 정도(최근 7일)
+const hotOf = n => volOf(n) * trendOf(n);
+
 // ---------- 🎪 개별 축제 페이지 /festival/ ----------
 // 축제 사이트인데 개별 축제 페이지가 0개였다(2026-08-09 발견). 검색 수요의 대부분이 개별 축제명인데 받을 페이지가 없었다.
 // MONTH_KEYS 를 넘긴다 — festival.js 가 「N월 축제 전체」로 링크할 때 **없는 달로 보내면 404**가 된다.
 //   (2027-01 처럼 목록에 없는 달이 실제로 있다. 게이트가 있는 곳엔 «통과한 것만 링크»가 따라와야 한다.)
-const FESTIVAL_URLS = require('./festival.js').build({ ROOT, layout, writePage, SITE_NAME, SITE, buyBox, festBuyBox, nearAiBox, TODAY, MONTH_KEYS: MONTHS.map(m => m.key), CITY: { of: CITY_OF, ko: CITY_KO, open: CITY_OPEN_KO } });
+const FESTIVAL_URLS = require('./festival.js').build({ ROOT, layout, writePage, SITE_NAME, SITE, buyBox, festBuyBox, nearAiBox, TODAY, MONTH_KEYS: MONTHS.map(m => m.key), CITY: { of: CITY_OF, ko: CITY_KO, open: CITY_OPEN_KO }, hotOf});
 const EN_FESTIVAL_URLS = apiFestsEn.length ? require('./festival-en.js').build({ ROOT, layout, writePage, SITE, TODAY, CITY: { of: CITY_OF_I, open: new Set(INTL_CITY_BY_LANG.en || []), label: CITY_LABEL } }) : [];
 const EN_JANGTEO_URLS = apiFestsEn.length ? require('./jangteo-en.js').build({ ROOT, layout, writePage, SITE, TODAY }) : [];
 // 2026-09-01 신설. 일본어는 페이지가 18장뿐인데 평균 7.9위(영어 212장 30.1위)로 성적이 가장 좋다.
@@ -2334,35 +2387,6 @@ posts.forEach(p => (p.tags || []).forEach(t => { if (!guidePostByTitle.has(t)) g
 //       2026-08-19에 GSC만 보고 45p를 noindex 했다가 하루 만에 되돌린 것과 같은 함정.
 //    → 버리지 말고 «이번 달로 넘겨주는 페이지»로 만든다. 날짜 비교라 매달 저절로 넘어간다.
 const CUR_M = MONTHS.find(m => m.key === CUR_MONTH_KEY) || MONTHS[0];
-// 🔍 축제 이름 검색량 — data/fest_volume.json (_fest_volume.py 가 네이버 검색광고 API로 받음)
-//    왜: 홈 카드가 «시작일 순»이라 217일짜리 상설 프로그램이 1위로 떴다.
-//    실측 2026-09-10 — 「금남로 차 없는 거리 걷자잉」 월 50 vs 「무주반딧불축제」 월 214,200.
-//    사람이 무엇을 찾는지는 시작일이 아니라 검색량이다.
-// ⚠️ 월별 페이지(MONTHS.forEach)가 이걸 쓰므로 그보다 «앞»에 있어야 한다.
-// ⚠️ 파일이 없어도 빌드는 돌아야 한다 → 없으면 전부 0이 되고 예전처럼 시작일 순이 된다.
-const FVOL = (() => {
-  try { return JSON.parse(fs.readFileSync(path.join(ROOT, 'data/fest_volume.json'), 'utf8')); }
-  catch (e) { console.log('  ⚠️ fest_volume.json 없음 — 홈 카드는 시작일 순으로 둡니다'); return {}; }
-})();
-// ⚠️ 이름이 원천마다 다르다 — 월별 카드는 「제30회 무주반딧불축제」인데 검색량 키는
-//    「무주반딧불축제」다. 그대로 맞추면 64%밖에 안 붙는다(2026-09-10 실측).
-//    수집기(_fest_volume.py)가 쓴 것과 «같은 규칙»으로 다듬어서 찾는다.
-const volKw = n => String(n || '')
-  .replace(/[\(\[（【][^\)\]）】]*[\)\]）】]/g, ' ')
-  .replace(/20\d\d\s*년?/g, ' ')
-  .replace(/제\s*\d+\s*회/g, ' ')
-  .replace(/[^0-9A-Za-z가-힣]/g, '');
-const FVOL_KW = (() => {
-  const m = {};
-  for (const k in FVOL) { const d = FVOL[k]; if (d && d.kw) m[d.kw] = Math.max(m[d.kw] || 0, +d.vol || 0); }
-  return m;
-})();
-const volOf = n => {
-  const d = FVOL[String(n || '').trim()];
-  if (d) return +d.vol || 0;
-  const k = volKw(n);
-  return k.length >= 2 ? (FVOL_KW[k] || 0) : 0;
-};
 
 MONTHS.forEach(mm => {
   const isPast = mm.key < CUR_MONTH_KEY;
@@ -2372,7 +2396,7 @@ MONTHS.forEach(mm => {
   //    카드마다 날짜가 적혀 있어 시간 순서를 잃지 않는다.
   const list = monthFests
     .filter(f => f.month.some(m => mm.months.includes(m)))
-    .sort((a, b) => volOf(b.name) - volOf(a.name) || a.start.localeCompare(b.start));
+    .sort((a, b) => hotOf(b.name) - hotOf(a.name) || a.start.localeCompare(b.start));
   // ⚠️ 제목 앞머리는 «헤드 키워드» 그대로여야 한다. 2026-08-20 실측:
   //    「9월축제」12,690 · 「9월축제일정」2,310 인데 제목이 "2026년 9월 축제…"로 시작해
   //    헤드가 앞머리에 없었고, 네이버 SERP 사이트 카드에 우리가 못 붙고 있었다.
@@ -3360,14 +3384,14 @@ writePage('editorial', layout(
 
 const upcoming = festivals
   .filter(f => f.end >= TODAY)
-  .sort((a, b) => volOf(b.name) - volOf(a.name) || a.start.localeCompare(b.start))
+  .sort((a, b) => hotOf(b.name) - hotOf(a.name) || a.start.localeCompare(b.start))
   .slice(0, 9);
 
 const slim = festivals.map(f => {
   const co = coordOf(f);
   const mm2 = apiMatch(f);
   return {
-    n: f.name, v: volOf(f.name), s: f.start, e: f.end, r: f.region, c: f.city, g: f.category, la: co[0], lo: co[1],
+    n: f.name, v: Math.round(hotOf(f.name)), s: f.start, e: f.end, r: f.region, c: f.city, g: f.category, la: co[0], lo: co[1],
     k: (MONTHS.find(mm => f.month.some(m => mm.months.includes(m))) || MONTHS[0]).key,
     p: f.place, d: f.desc, img: thumbOf(f),
     ov: (mm2 && mm2.ov) || '', hp: (mm2 && mm2.hp) || '',
@@ -3436,7 +3460,7 @@ const FEST_LIVE = (() => {
       const loc = fixLoc(a);
       const ov = String(a.ov || '');
       return {
-        n: a.title, v: volOf(a.title), s: D(a.start), e: D(a.end), r: loc.r, c: loc.c,
+        n: a.title, v: Math.round(hotOf(a.title)), s: D(a.start), e: D(a.end), r: loc.r, c: loc.c,
         g: '기타',                       // 공공데이터에 카테고리가 없다 — 지어내지 않고 기본 🎪 로 둔다
         la: +a.y, lo: +a.x,
         k: (MONTHS.find(mm => mm.months.includes(+D(a.start).slice(5, 7))) || MONTHS[0]).key,

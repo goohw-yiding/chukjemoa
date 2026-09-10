@@ -147,7 +147,9 @@ function near(list, x, y, maxKm, n) {
 }
 
 function build(ctx) {
-  const { ROOT, layout, writePage, SITE_NAME, SITE, buyBox, festBuyBox, nearAiBox, TODAY, MONTH_KEYS, CITY } = ctx;
+  const { ROOT, layout, writePage, SITE_NAME, SITE, buyBox, festBuyBox, nearAiBox, TODAY, MONTH_KEYS, CITY, hotOf } = ctx;
+  // 🔥 hotOf = 월 검색량 × 최근 7일 추세. 안 넘어오면 0을 주어 «예전 순서»가 그대로 유지되게 한다.
+  const HOT = typeof hotOf === 'function' ? hotOf : (() => 0);
   // 🏙 「이 축제가 있는 도시」 — 도시 페이지가 «실제로 열린» 곳만 링크한다(CITY.open).
   //    없으면 그 시·도 축제 검색으로 보낸다. 축제 564장 중 253장(45%)이 도시 14곳에 걸린다.
   const cityLink = f => {
@@ -581,8 +583,12 @@ ${mapScript('ko')}
       const b = new Date(+TODAY.slice(0, 4), +TODAY.slice(5, 7) - 1, +TODAY.slice(8, 10));
       return Object.assign({}, r, { ended, on, dday: Math.round((a - b) / 86400e3) });
     });
-    const live = withState.filter(r => r.on);
-    const soon = withState.filter(r => !r.on && !r.ended).sort((a, b) => a.dday - b.dday);
+    // 🔥 2026-09-10 — 전에는 진행중이 «원본 순서» 그대로라 「2026 코리아그랜드세일」이 1등이었다.
+    //    사람이 실제로 찾는 순서(월 검색량 × 최근 7일 추세)로 세운다.
+    const live = withState.filter(r => r.on)
+      .sort((a, b) => HOT(b.title) - HOT(a.title) || String(a.end).localeCompare(String(b.end)));
+    const soon = withState.filter(r => !r.on && !r.ended)
+      .sort((a, b) => HOT(b.title) - HOT(a.title) || a.dday - b.dday);
     const feat = live.concat(soon).slice(0, 24);
 
     const card = r => `<a class="card" href="/festival/${r.slug}/">
@@ -596,7 +602,8 @@ ${mapScript('ko')}
     withState.forEach(r => (bySido[r.sido] = bySido[r.sido] || []).push(r));
     const sidoOrder = Object.keys(bySido).sort((a, b) => bySido[b].length - bySido[a].length);
     const sidoBlock = sidoOrder.map(s => `<details><summary><b>${esc(s)}</b> <span>${bySido[s].length}곳</span></summary>
-<ul class="flist">${bySido[s].sort((a, b) => String(a.start).localeCompare(String(b.start)))
+<ul class="flist">${bySido[s].sort((a, b) => (a.ended ? 1 : 0) - (b.ended ? 1 : 0)
+      || HOT(b.title) - HOT(a.title) || String(a.start).localeCompare(String(b.start)))
       .map(r => `<li><a href="/festival/${r.slug}/">${esc(r.title)}</a> <span class="note">${esc(r.sigungu || '')} · ${fmtDate(String(r.start)).slice(5)}${r.ended ? ' (종료)' : ''}</span></li>`).join('')}</ul></details>`).join('');
 
     const mon = {};
