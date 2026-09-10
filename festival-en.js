@@ -228,7 +228,12 @@ ${(() => {
       const q = INTRO[String(f.id)] || {};
       const raw = [q.program, q.subevent].filter(Boolean).join('\n');
       if (!raw) return '';
-      const lines = raw.split('\n').map(s => s.trim()).filter(s => s.length > 1)
+      let src = raw.split('\n').map(s => s.trim()).filter(s => s.length > 1);
+      // TourAPI 영·일문은 줄바꿈 대신 쉼표로 나열 — 뭉친 줄은 쉼표로 나눈다
+      src = src.reduce((a, s) => a.concat(
+        (s.length > 55 && (s.match(/,/g) || []).length >= 2)
+          ? s.split(/\s*,\s*/).map(x => x.trim()).filter(x => x.length > 1) : [s]), []);
+      const lines = src
         .map(s => ({ sub: /^[-•·]\s*/.test(s), t: s.replace(/^[-•·]\s*/, '').trim() }))
         .filter(o => o.t.length > 1);
       if (!lines.length) return '';
