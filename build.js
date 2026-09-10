@@ -2717,6 +2717,7 @@ ${/* 🔴 2026-09-04 신설 — «답을 얻은 직후»에 다음 갈 곳을 �
       : `<span style="background:#f4faf8;border:1.5px solid #dcefeb;color:#6b7280;font-weight:700;font-size:.92rem;padding:9px 15px;border-radius:999px">${esc(r)} ${n}곳</span>`).join('');
   })()}</div>
 
+<!--SIGUNGU_HUB-->
 <h2 class="sec">끝자리별로 모아 보기</h2>
 <p style="color:#6b7280;font-size:.94rem">오늘이 며칠인지만 알면 갈 수 있는 장이 정해집니다. 끝자리가 같은 날에 열리는 장끼리 묶었습니다.</p>
 ${[[1, 6], [2, 7], [3, 8], [4, 9], [5, 10]].map(([a, b]) => {
@@ -2788,10 +2789,33 @@ const jangteoModalBB = '<script>window.CJM_BUYBOX=' + JSON.stringify(buyBox('jan
 //    · 「오일장 뜻」139 · 「5일장 뜻」103 = **242노출에 클릭 2**. 정의를 찾는 사람이다 →
 //      설명 첫 문장에 «5일마다 서는 장»이라는 답을 먼저 준다(제목은 의도가 섞이므로 건드리지 않는다).
 //    ❌ 「9월 오늘 장날」처럼 월을 붙이는 안은 채택하지 않았다 — GSC에 월이 붙은 장날 검색어가 0건이다.
+// 🏮 2026-09-10 — 시·군 페이지를 «허브보다 먼저» 만든다.
+//    실측: 허브 /jangteo/ 가 오일장 검색 2,123노출을 «혼자» 받는 가장 강한 페이지인데
+//    88장 시·군 페이지 중 «0개»를 링크하고 있었다. 링크가 시·도 페이지에만 있어
+//    구글이 시·군을 아직 발견도 못 했다(URL 검사: 「Google에 알려지지 않은 URL」).
+//    구글 「장날」 관련검색어가 근처 장날·오늘 장날 인 곳·경기도 장날 표 — 사람도 «자기 동네»를 찾는다.
+//    ⚠️ 이 호출은 jangteoModalBB(2780) 뒤에 있어야 한다 — 인자로 넘긴다.
+const JANGTEO_SIGUNGU_URLS = require('./jangteo-sigungu.js').build({
+  ROOT, layout, writePage, SITE, SITE_NAME, TODAY, esc,
+  marketsAll, apiFests, FEST_PAGES, WX, buyBox, jangteoModalBB, JT_LINK_JS
+});
+const SIGUNGU_BY_SIDO = {};
+(JANGTEO_SIGUNGU_URLS.meta || []).forEach(r => (SIGUNGU_BY_SIDO[r.sido] = SIGUNGU_BY_SIDO[r.sido] || []).push(r));
+Object.values(SIGUNGU_BY_SIDO).forEach(a => a.sort((x, y) => y.vol - x.vol));
+const SIGUNGU_HUB = (() => {
+  const order = Object.keys(SIGUNGU_BY_SIDO).sort((a, b) => SIGUNGU_BY_SIDO[b].length - SIGUNGU_BY_SIDO[a].length);
+  const n = order.reduce((t, k) => t + SIGUNGU_BY_SIDO[k].length, 0);
+  if (!n) return '';
+  return `<h2 class="sec">시·군별 장날 — 내 동네부터</h2>
+<p style="color:#6b7280;font-size:.94rem;line-height:1.8">사람들은 「전국 오일장」보다 <b>「의성장날」처럼 자기 동네 이름</b>으로 찾습니다. 아래 <b>${n}곳</b>은 <b>다음 장날이 며칠 남았는지·석 달치 날짜·파는 것·영업시간</b>까지 따로 정리해 둔 곳입니다.</p>
+${order.map(sd => `<h3 style="margin:16px 0 6px;font-size:1.02rem;font-weight:800">${esc(sd)} <span style="color:#9ca3af;font-weight:600">${SIGUNGU_BY_SIDO[sd].length}곳</span></h3>
+<div style="display:flex;flex-wrap:wrap;gap:7px">${SIGUNGU_BY_SIDO[sd].map(r =>
+    `<a href="/jangteo/${r.slug}/" style="background:#f6fbfa;border:1.5px solid #dcefeb;color:#0a6c63;font-weight:700;font-size:.9rem;padding:7px 13px;border-radius:999px;text-decoration:none">${esc(r.city)} 장날</a>`).join('')}</div>`).join('')}`;
+})();
 writePage('jangteo', layout(
   `오늘 장날 어디? 전국 오일장(5일장) ${marketsDay.length}곳 — 끝자리별 일정 | ${SITE_NAME}`,
   `오일장은 5일마다 서는 장입니다. 전국 ${marketsDay.length}곳의 장날을 끝자리(2·7일, 3·8일, 4·9일, 5·10일)와 시·도별로 정리했습니다. 날짜를 넣으면 그날 열리는 장이 초록색으로 표시되고 가까운 장날 순으로 정렬됩니다. 모란장(4·9일)·정선아리랑시장(2·7일)·봉평장(2·7일).`,
-  '/jangteo/', jangteoContent + buyBox('jangteo') + jangteoModalBB + JT_LINK_JS, { jsonld: JANGTEO_FAQ_LD }));
+  '/jangteo/', jangteoContent.replace('<!--SIGUNGU_HUB-->', SIGUNGU_HUB) + buyBox('jangteo') + jangteoModalBB + JT_LINK_JS, { jsonld: JANGTEO_FAQ_LD }));
 
 // ---------- 🏮 시·도별 오일장 /jangteo/{시도}/ ----------
 // 왜 나누나: 시장마다 «판매 품목·영업시간·휴무·주차·문의»가 다 있는데(공공데이터 detailIntro2)
@@ -2801,7 +2825,6 @@ writePage('jangteo', layout(
 //    기준을 4로 두고 지어 보니 대구(4곳)가 본문 2,463자로 사이트 하한(걷기길 최소 2,999자)에 못 미쳤다.
 //    6으로 올리니 가장 얇은 페이지가 경남 3,076자가 된다. 부산3·대전2·울산2·인천1·대구4는 허브에만 싣는다.
 const JANGTEO_SIDO_URLS = [];
-let JANGTEO_SIGUNGU_URLS = [];   // 🏮 시·군 「○○장날」 — 아래 블록에서 채운다(사이트맵도 이걸 쓴다)
 {
   const SLUG = { 서울: 'seoul', 부산: 'busan', 대구: 'daegu', 인천: 'incheon', 광주: 'gwangju', 대전: 'daejeon', 울산: 'ulsan', 세종: 'sejong', 경기: 'gyeonggi', 강원: 'gangwon', 충북: 'chungbuk', 충남: 'chungnam', 전북: 'jeonbuk', 전남: 'jeonnam', 경북: 'gyeongbuk', 경남: 'gyeongnam', 제주: 'jeju' };
   const bySido = {};
@@ -2816,13 +2839,8 @@ let JANGTEO_SIGUNGU_URLS = [];   // 🏮 시·군 「○○장날」 — 아래 
   //    알아야 «없는 곳으로 보내지 않는다». 순서를 바꾸면 링크가 통째로 빈다.
   //    네이버가 유입의 73%이고 그중 46%가 오일장인데 하위가 시·도 11장뿐이었다.
   //    사람들은 「경북 오일장」이 아니라 「의성장날」로 찾는다(검색량 실측 월 174,150).
-  JANGTEO_SIGUNGU_URLS = require('./jangteo-sigungu.js').build({
-    ROOT, layout, writePage, SITE, SITE_NAME, TODAY, esc,
-    marketsAll, apiFests, FEST_PAGES, WX, buyBox, jangteoModalBB, JT_LINK_JS
-  });
-  const SIGUNGU_BY_SIDO = {};
-  (JANGTEO_SIGUNGU_URLS.meta || []).forEach(r => (SIGUNGU_BY_SIDO[r.sido] = SIGUNGU_BY_SIDO[r.sido] || []).push(r));
-  Object.values(SIGUNGU_BY_SIDO).forEach(a => a.sort((x, y) => y.vol - x.vol));
+  // ⬆️ 시·군 생성과 SIGUNGU_BY_SIDO 는 허브(/jangteo/)보다 «앞»으로 옮겼다 — 위 2790행 근처 참고.
+  //    허브가 시·군을 링크해야 해서 순서를 바꿨다. 여기서는 그 결과만 읽어 쓴다.
   const sigunguRow = sido => {
     const a = SIGUNGU_BY_SIDO[sido] || [];
     if (!a.length) return '';
