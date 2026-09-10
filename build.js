@@ -2253,8 +2253,18 @@ const performAll = (() => {
   catch (e) { return []; }
 })();
 
+// 🔑 축제 이름 정규화 — 회차·연도·괄호·공백을 떼고 비교한다.
+//    ⚠️ 공백만 떼는 옛 규칙으로는 「제30회 무주반딧불축제」가 「무주반딧불축제」와 다른 것이 되어
+//       9·10·11월에만 35장이 «같은 축제 두 번»으로 실리고 있었다(2026-09-10 실측).
+//       검색량 순으로 정렬하니 둘이 나란히 붙어 눈에 띄면서 발견했다.
+const festKey = n => String(n || '')
+  .replace(/[\(\[（【][^\)\]）】]*[\)\]）】]/g, ' ')
+  .replace(/20\d\d\s*년?/g, ' ')
+  .replace(/제\s*\d+\s*회/g, ' ')
+  .replace(/[^0-9A-Za-z가-힣]/g, '');
+
 const MONTH_API_ADD = (() => {
-  const taken = new Set(festivals.map(f => String(f.name || '').replace(/\s/g, '')));
+  const taken = new Set(festivals.map(f => festKey(f.name)));
   const out = [];
   const push = (title, sido, sigungu, addr, s, e, ov, src) => {
     const months = [];
@@ -2267,7 +2277,7 @@ const MONTH_API_ADD = (() => {
       start: s, end: e, month: months, category: monthCatOf(title),
       desc: String(ov).replace(/\s+/g, ' ').slice(0, 90).trim(), confirmed: true, _api: src
     });
-    taken.add(String(title).replace(/\s/g, ''));
+    taken.add(festKey(title));
   };
 
   for (const r of apiFests) {
@@ -2275,14 +2285,14 @@ const MONTH_API_ADD = (() => {
     if (!s || !e || e < TODAY) continue;                       // 이미 끝난 것은 월별 목록에 안 올린다
     if (dayGap(r.start, r.end || r.start) > 45) continue;      // 연중 상설 프로그램
     if (!r.ov || String(r.ov).length < 60) continue;           // 설명 없는 것
-    if (taken.has(String(r.title || '').replace(/\s/g, ''))) continue;  // 큐레이션 우선
+    if (taken.has(festKey(r.title))) continue;                  // 큐레이션 우선(회차·연도 떼고 비교)
     push(r.title, r.sido, r.sigungu, r.addr, s, e, r.ov, 'tour');
   }
   for (const r of clturFests) {
     const s = ymdDash(r.start), e = ymdDash(r.end) || s;
     if (!s || !e || e < TODAY) continue;
     if (dayGap(r.start, r.end || r.start) > 45) continue;
-    if (taken.has(String(r.title || '').replace(/\s/g, ''))) continue;   // TourAPI·큐레이션 우선
+    if (taken.has(festKey(r.title))) continue;                  // TourAPI·큐레이션 우선(회차·연도 떼고 비교)
     // ⚠️ 2026-09-01 정정 — 전에는 「설명 25자 미만은 버린다」였는데, 그렇게 버린 157건이
     //    「당진면천읍성축제」처럼 **이름·날짜·장소가 멀쩡한 진짜 축제**였다. 재고가 얇은
     //    11~12월엔 그냥 손실이다. 설명이 없으면 **있는 사실로 한 줄을 만든다**(오일장과 같은 방식).
@@ -2324,11 +2334,45 @@ posts.forEach(p => (p.tags || []).forEach(t => { if (!guidePostByTitle.has(t)) g
 //       2026-08-19에 GSC만 보고 45p를 noindex 했다가 하루 만에 되돌린 것과 같은 함정.
 //    → 버리지 말고 «이번 달로 넘겨주는 페이지»로 만든다. 날짜 비교라 매달 저절로 넘어간다.
 const CUR_M = MONTHS.find(m => m.key === CUR_MONTH_KEY) || MONTHS[0];
+// 🔍 축제 이름 검색량 — data/fest_volume.json (_fest_volume.py 가 네이버 검색광고 API로 받음)
+//    왜: 홈 카드가 «시작일 순»이라 217일짜리 상설 프로그램이 1위로 떴다.
+//    실측 2026-09-10 — 「금남로 차 없는 거리 걷자잉」 월 50 vs 「무주반딧불축제」 월 214,200.
+//    사람이 무엇을 찾는지는 시작일이 아니라 검색량이다.
+// ⚠️ 월별 페이지(MONTHS.forEach)가 이걸 쓰므로 그보다 «앞»에 있어야 한다.
+// ⚠️ 파일이 없어도 빌드는 돌아야 한다 → 없으면 전부 0이 되고 예전처럼 시작일 순이 된다.
+const FVOL = (() => {
+  try { return JSON.parse(fs.readFileSync(path.join(ROOT, 'data/fest_volume.json'), 'utf8')); }
+  catch (e) { console.log('  ⚠️ fest_volume.json 없음 — 홈 카드는 시작일 순으로 둡니다'); return {}; }
+})();
+// ⚠️ 이름이 원천마다 다르다 — 월별 카드는 「제30회 무주반딧불축제」인데 검색량 키는
+//    「무주반딧불축제」다. 그대로 맞추면 64%밖에 안 붙는다(2026-09-10 실측).
+//    수집기(_fest_volume.py)가 쓴 것과 «같은 규칙»으로 다듬어서 찾는다.
+const volKw = n => String(n || '')
+  .replace(/[\(\[（【][^\)\]）】]*[\)\]）】]/g, ' ')
+  .replace(/20\d\d\s*년?/g, ' ')
+  .replace(/제\s*\d+\s*회/g, ' ')
+  .replace(/[^0-9A-Za-z가-힣]/g, '');
+const FVOL_KW = (() => {
+  const m = {};
+  for (const k in FVOL) { const d = FVOL[k]; if (d && d.kw) m[d.kw] = Math.max(m[d.kw] || 0, +d.vol || 0); }
+  return m;
+})();
+const volOf = n => {
+  const d = FVOL[String(n || '').trim()];
+  if (d) return +d.vol || 0;
+  const k = volKw(n);
+  return k.length >= 2 ? (FVOL_KW[k] || 0) : 0;
+};
+
 MONTHS.forEach(mm => {
   const isPast = mm.key < CUR_MONTH_KEY;
+  // 🔍 검색량 내림차순 — 시작일 순이면 「금남로 차 없는 거리 걷자잉」(월 50) 같은
+  //    217일짜리 상설 프로그램이 「무주반딧불축제」(월 214,200) 앞에 선다.
+  //    이 페이지 h2 는 「자세히 볼 축제」다 — 일정표가 아니라 «고르는» 목록이라 인지도 순이 맞다.
+  //    카드마다 날짜가 적혀 있어 시간 순서를 잃지 않는다.
   const list = monthFests
     .filter(f => f.month.some(m => mm.months.includes(m)))
-    .sort((a, b) => a.start.localeCompare(b.start));
+    .sort((a, b) => volOf(b.name) - volOf(a.name) || a.start.localeCompare(b.start));
   // ⚠️ 제목 앞머리는 «헤드 키워드» 그대로여야 한다. 2026-08-20 실측:
   //    「9월축제」12,690 · 「9월축제일정」2,310 인데 제목이 "2026년 9월 축제…"로 시작해
   //    헤드가 앞머리에 없었고, 네이버 SERP 사이트 카드에 우리가 못 붙고 있었다.
@@ -3313,16 +3357,17 @@ writePage('editorial', layout(
   EDITORIAL_URL, editorialContent, { jsonld: editorialLd }));
 
 // ---------- 메인 페이지 ----------
+
 const upcoming = festivals
   .filter(f => f.end >= TODAY)
-  .sort((a, b) => a.start.localeCompare(b.start))
+  .sort((a, b) => volOf(b.name) - volOf(a.name) || a.start.localeCompare(b.start))
   .slice(0, 9);
 
 const slim = festivals.map(f => {
   const co = coordOf(f);
   const mm2 = apiMatch(f);
   return {
-    n: f.name, s: f.start, e: f.end, r: f.region, c: f.city, g: f.category, la: co[0], lo: co[1],
+    n: f.name, v: volOf(f.name), s: f.start, e: f.end, r: f.region, c: f.city, g: f.category, la: co[0], lo: co[1],
     k: (MONTHS.find(mm => f.month.some(m => mm.months.includes(m))) || MONTHS[0]).key,
     p: f.place, d: f.desc, img: thumbOf(f),
     ov: (mm2 && mm2.ov) || '', hp: (mm2 && mm2.hp) || '',
@@ -3391,7 +3436,7 @@ const FEST_LIVE = (() => {
       const loc = fixLoc(a);
       const ov = String(a.ov || '');
       return {
-        n: a.title, s: D(a.start), e: D(a.end), r: loc.r, c: loc.c,
+        n: a.title, v: volOf(a.title), s: D(a.start), e: D(a.end), r: loc.r, c: loc.c,
         g: '기타',                       // 공공데이터에 카테고리가 없다 — 지어내지 않고 기본 🎪 로 둔다
         la: +a.y, lo: +a.x,
         k: (MONTHS.find(mm => mm.months.includes(+D(a.start).slice(5, 7))) || MONTHS[0]).key,
@@ -3424,7 +3469,8 @@ const WEEKEND_JS = `<script>
   const sun = new Date(sat); sun.setDate(sat.getDate() + 1);
   const iso = d => d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
   const list = F.filter(f => f.s <= iso(sun) && f.e >= iso(sat))
-    .sort(function(a,b){ return a.s.localeCompare(b.s) || a.n.localeCompare(b.n); }).slice(0, 12);
+    // 🔍 검색량 내림차순. 시작일 순이면 217일짜리 상설 프로그램이 늘 1위였다.
+    .sort(function(a,b){ return (b.v||0)-(a.v||0) || a.s.localeCompare(b.s) || a.n.localeCompare(b.n); }).slice(0, 12);
   const box = document.getElementById('weekend');
   if (box) {
     if (!list.length) { box.innerHTML = '<p class="note">이번 주말 예정된 축제 정보가 없어요.</p>'; }
