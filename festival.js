@@ -77,6 +77,7 @@ const CSS = `
 .fprog{list-style:none;padding:0;margin:0 0 16px;display:grid;gap:8px}
 .fprog li{background:#fff;border:1.5px solid #eef2f1;border-left:4px solid #0f9d8f;border-radius:10px;
   padding:10px 14px;line-height:1.75;color:#374151;font-size:.96rem}
+.fprog li.sub{margin-left:20px;border-left-color:#cfe9e4;background:#fafdfd;color:#4b5563;font-size:.92rem;padding:8px 13px}
 .fbadge{display:inline-block;font-size:.78rem;font-weight:800;border-radius:999px;padding:4px 11px;margin:0 6px 6px 0}
 .fbadge.hot{background:#fff1e8;color:#c2410c}
 .fbadge.qt{background:#f2fbfa;color:#0a6c63}
@@ -401,11 +402,16 @@ ${(() => {
       // ⚠️ TourAPI 의 program 은 줄바꿈 없이 이어 붙어 오므로 수집기가 번호·하이픈 앞에서 끊어 저장한다.
       const q = introOf(f);
       if (!q.program) return '';
-      const lines = String(q.program).split('\n').map(s => s.replace(/^[-·•]\s*/, '').trim()).filter(s => s.length > 1);
+      // ⚠️ 「1. 큰 항목」 아래 「- 하위 항목」이 오는 구조다. 하이픈을 그냥 떼면 계층이 사라져
+      //    하위 항목이 큰 항목과 같은 크기로 나온다(2026-09-10 라이브에서 보고 잡음).
+      //    떼기 «전»에 판별해서 들여쓴다.
+      const lines = String(q.program).split('\n').map(s => s.trim()).filter(s => s.length > 1)
+        .map(s => ({ sub: /^[-·•]\s*/.test(s), t: s.replace(/^[-·•]\s*/, '').trim() }))
+        .filter(o => o.t.length > 1);
       if (!lines.length) return '';
       return `<h2 class="sec">${esc(f.title)}에서 하는 것</h2>
 <p class="note" style="margin:-2px 0 10px">한국관광공사 TourAPI에 등록된 <b>공식 행사 프로그램</b>입니다. ${ended ? '지난 회차 기준이며, ' : ''}주최 측 사정으로 바뀔 수 있으니 방문 전 확인하세요.</p>
-<ul class="fprog">${lines.slice(0, 24).map(l => `<li>${esc(l)}</li>`).join('')}</ul>`;
+<ul class="fprog">${lines.slice(0, 24).map(o => `<li${o.sub ? ' class="sub"' : ''}>${esc(o.t)}</li>`).join('')}</ul>`;
     })()}
 
 ${nbList.length ? `<h2 class="sec">축제장 근처 가볼 곳</h2>
