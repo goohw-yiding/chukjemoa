@@ -3,6 +3,10 @@
 # Run: powershell -NoProfile -ExecutionPolicy Bypass -File C:\dev\chukjemoa\_daily.ps1
 # NOTE: keep this file ASCII-only. Windows PowerShell 5.1 mis-parses non-BOM UTF-8 Korean.
 $ErrorActionPreference = 'Continue'
+# Child processes (python/node) print Korean as UTF-8. Without this, PowerShell decodes
+# their output with the OEM codepage and the log fills with mojibake.
+[Console]::OutputEncoding = [System.Text.Encoding]::UTF8
+$OutputEncoding = [System.Text.Encoding]::UTF8
 $log = 'C:\dev\_daily_chukjemoa.txt'
 # NOTE: Tee-Object writes UTF-16LE on PS 5.1 and mangles Korean in the log. Use UTF8 explicitly.
 function W($m) {
