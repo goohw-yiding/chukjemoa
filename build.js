@@ -2702,6 +2702,7 @@ ${/* 🔴 2026-09-04 신설 — «답을 얻은 직후»에 다음 갈 곳을 �
 </div>
 </div>
 
+<!--SIGUNGU_HUB-->
 <div class="jt-scroll"><table>
 <thead><tr><th>장터</th><th>다음 장날</th><th>위치</th><th>장날</th><th>대표 품목</th><th>특징</th><th>바로가기</th></tr></thead>
 <tbody id="jt-body">${marketRows}</tbody>
@@ -2717,7 +2718,6 @@ ${/* 🔴 2026-09-04 신설 — «답을 얻은 직후»에 다음 갈 곳을 �
       : `<span style="background:#f4faf8;border:1.5px solid #dcefeb;color:#6b7280;font-weight:700;font-size:.92rem;padding:9px 15px;border-radius:999px">${esc(r)} ${n}곳</span>`).join('');
   })()}</div>
 
-<!--SIGUNGU_HUB-->
 <h2 class="sec">끝자리별로 모아 보기</h2>
 <p style="color:#6b7280;font-size:.94rem">오늘이 며칠인지만 알면 갈 수 있는 장이 정해집니다. 끝자리가 같은 날에 열리는 장끼리 묶었습니다.</p>
 ${[[1, 6], [2, 7], [3, 8], [4, 9], [5, 10]].map(([a, b]) => {
