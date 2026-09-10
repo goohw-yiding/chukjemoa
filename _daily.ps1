@@ -4,7 +4,12 @@
 # NOTE: keep this file ASCII-only. Windows PowerShell 5.1 mis-parses non-BOM UTF-8 Korean.
 $ErrorActionPreference = 'Continue'
 $log = 'C:\dev\_daily_chukjemoa.txt'
-function W($m) { "$([DateTime]::Now.ToString('MM-dd HH:mm:ss'))  $m" | Tee-Object -FilePath $log -Append }
+# NOTE: Tee-Object writes UTF-16LE on PS 5.1 and mangles Korean in the log. Use UTF8 explicitly.
+function W($m) {
+  $line = "$([DateTime]::Now.ToString('MM-dd HH:mm:ss'))  $m"
+  Write-Host $line
+  [System.IO.File]::AppendAllText($log, $line + [Environment]::NewLine, [System.Text.Encoding]::UTF8)
+}
 
 Set-Location C:\dev\chukjemoa
 W "===== START ====="
@@ -30,7 +35,7 @@ if ($LASTEXITCODE -ne 0) {
 ($out | Select-Object -Last 2) | ForEach-Object { W "   $_" }
 
 W "4) mirror + drift check"
-& node _d2p.js build.js festival.js data/fest_trend.json data/fest_volume.json 2>&1 | Select-Object -Last 1 | ForEach-Object { W "   $_" }
+& node _d2p.js build.js festival.js _fest_trend.py _fest_volume.py data/fest_trend.json data/fest_volume.json 2>&1 | Select-Object -Last 1 | ForEach-Object { W "   $_" }
 $sync = (& node _sync.js 2>&1 | Select-Object -Last 1)
 W "   $sync"
 
