@@ -126,37 +126,58 @@ const CSS = `<style>
  * ⚠️ `data-bb`·`data-slot`·`data-place` 를 붙인다 — track.js 가 이 값으로 shop_click 을 분류한다.
  */
 function block(cityKey, cityName, lang) {
+  return render({ lang, place: cityKey, cityKey, cityName });
+}
+
+/**
+ * 도시가 «없는» 페이지(축제 상세·캘린더·정기휴일·블로그…)용 블록. 2026-09-11 신설.
+ *
+ * ⚠️ `cityKey` 가 null 이면 KOREA 컬렉션으로 보내고 「도시 에디션이 없다」 안내는 «띄우지 않는다».
+ *    (block() 은 «도시 페이지인데 그 도시 상품이 없을 때» 그 사실을 적는 자리라 안내가 필요하지만,
+ *     축제 상세에서 「경주 에디션은 없습니다」를 띄우면 묻지도 않은 말이 된다.)
+ * @param o.lang     'en' | 'ja' | 'zh' | 'tw' | 'es' | 'ko'
+ * @param o.place    data-place 값 — GA4에서 «어느 면에서 눌렸나»를 가른다(예: 'en-festival')
+ * @param o.cityKey  도시를 알아냈으면 그 슬러그, 아니면 null
+ * @param o.cityName 그 언어로 표기한 도시 이름
+ */
+function pageBlock(o) {
+  return render({ lang: o.lang, place: o.place, cityKey: o.cityKey || null, cityName: o.cityName || '' });
+}
+
+function render({ lang, place, cityKey, cityName }) {
   const t = T[lang] || T.ko;
-  const ed = CITY_EDITION[cityKey];          // 이 도시 에디션이 실제로 있나
+  const ed = cityKey ? CITY_EDITION[cityKey] : null;   // 이 도시 에디션이 실제로 있나
+  const pl = place || cityKey || 'korea';
+  const utmCity = cityKey || pl;                        // UTM 은 «어디서 왔나»를 잃지 않게 면 이름이라도 남긴다
   const a = (href, label, cls, item) =>
     `<a href="${href}" target="_blank" rel="noopener"${cls ? ` class="${cls}"` : ''}` +
-    ` data-bb="kory-${item}" data-slot="city-footer" data-place="${cityKey}">${label}</a>`;
+    ` data-bb="kory-${item}" data-slot="city-footer" data-place="${pl}">${label}</a>`;
 
   const c = ed || 'korea';
   const links = [];
   if (lang === 'ko') {
     // 한국어 — 코리 사이트가 전부 한국어라 어디로 보내도 된다.
-    links.push(a(url('collections.html', { city: cityKey, lang, hash: c }), ed ? t.coll(cityName) : t.korea, 'ky-1', 'coll-' + c));
-    links.push(a(url('product-hairroll.html', { city: cityKey, lang, c }), t.roller(ed ? cityName : 'KOREA'), '', 'roller-' + c));
-    links.push(a(url('products.html', { city: cityKey, lang }), t.all, '', 'products'));
-    links.push(a(url('stockists.html', { city: cityKey, lang }), t.where, '', 'stockists'));
+    links.push(a(url('collections.html', { city: utmCity, lang, hash: c }), ed ? t.coll(cityName) : t.korea, 'ky-1', 'coll-' + c));
+    links.push(a(url('product-hairroll.html', { city: utmCity, lang, c }), t.roller(ed ? cityName : 'KOREA'), '', 'roller-' + c));
+    links.push(a(url('products.html', { city: utmCity, lang }), t.all, '', 'products'));
+    links.push(a(url('stockists.html', { city: utmCity, lang }), t.where, '', 'stockists'));
   } else {
     // ⚠️ 외국어 — **영어가 있는 페이지만** 건다(홈 + 상품 7장). 나머지 23장은 아직 한국어뿐이다.
     //    상품 페이지 하단에 「From the same collection」으로 다른 상품이 이미 붙어 있어,
     //    상품 한 장만 걸어도 탐색이 이어진다. 목록 페이지로 보낼 필요가 없다.
-    links.push(a(url('product-hairroll.html', { city: cityKey, lang, c }), t.roller(ed ? cityName : 'KOREA'), 'ky-1', 'roller-' + c));
-    links.push(a(url('product-slipper.html', { city: cityKey, lang }), t.slide, '', 'slipper'));
-    links.push(a(url('product-scarf.html', { city: cityKey, lang }), t.scarf, '', 'scarf'));
-    links.push(a(url('', { city: cityKey, lang }), t.home, '', 'home'));
+    links.push(a(url('product-hairroll.html', { city: utmCity, lang, c }), t.roller(ed ? cityName : 'KOREA'), 'ky-1', 'roller-' + c));
+    links.push(a(url('product-slipper.html', { city: utmCity, lang }), t.slide, '', 'slipper'));
+    links.push(a(url('product-scarf.html', { city: utmCity, lang }), t.scarf, '', 'scarf'));
+    links.push(a(url('', { city: utmCity, lang }), t.home, '', 'home'));
   }
 
   return `${CSS}<div class="ky-box">
 <h2>${ed ? t.hasCity(cityName) : t.noCity}</h2>
 <p>${t.intro}</p>
-${ed ? '' : `<div class="ky-none">${t.none(cityName)}</div>`}
+${cityKey && !ed ? `<div class="ky-none">${t.none(cityName)}</div>` : ''}
 <div class="ky-links">${links.join('')}</div>
 <p class="ky-note">${t.note}</p>
 </div>`;
 }
 
-module.exports = { block, CITY_EDITION };
+module.exports = { block, pageBlock, CITY_EDITION };

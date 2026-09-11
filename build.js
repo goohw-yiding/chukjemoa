@@ -490,14 +490,46 @@ function monthBuyBox(m) {
         : ['flower', 'gakline'];
   return `<div class="wrap">${renderBuyBox(keys[0], keys.slice(1), 'month-' + m)}</div>`;
 }
+// 🏛 2026-09-11 신설 — «실내 행사엔 상품을 붙이지 않는다».
+//
+// 왜: 폴백(규칙 미매칭) 199장을 세션으로 재 보니 실제로 보는 건 79장·522세션이었고,
+//   그 79장을 성격으로 가르니 스툴이 «정말» 안 맞는 건 실내 전시·박람회·영화제·e스포츠 계열
+//   ≈150세션뿐이었다. 야외 종합축제(150) · 야시장(108) · 에어쇼·엑스포(75)엔 앉을 자리가 실제로 맞다.
+//   → 「폴백 35%가 전부 오배치」는 과장이었다. 고칠 건 축제상세 2,090세션 중 150세션(7%)이다.
+//
+// 왜 «다른 상품»이 아니라 «접기»인가: 박람회 관람객에게 맞는 자사 상품이 카탈로그에 없다.
+//   150세션을 위해 소싱하는 건 과투자고, 안 맞는 걸 붙여 두면 판박이 유사도만 올라간다.
+//   「안 눌리면 자리를 옮겨도 안 팔린다」와 같은 이야기다 — 없는 게 나은 자리가 있다.
+//
+// ⚠️ `엑스포` 를 넣지 않았다 — 「경남고성공룡세계엑스포」는 야외다(19세션). 실내인 건 `산업박람회` 쪽이다.
+//    ⚠️ `미디어아트`·`프린지`도 뺐다 — 야외 투사·거리공연이라 위 FEST_KIND 의 빛/공연 줄이 맞다.
+//    ⚠️ 홑글자 금지 원칙은 여기서도 같다. `책`(책방·책마을) 대신 `책모꼬지|북페스티벌|북 페스티벌`.
+const FEST_INDOOR = /박람회|컨퍼런스|콘퍼런스|학술대회|북페스티벌|북 페스티벌|책모꼬지|북페어|도서관|문학주간|작가축제|영화제|영상제|사진제|일러스트레이션페어|아트페어|기획전시|전시회|박물관|미술관|건축투어|홀로그램|e스포츠|이스포츠|e페스티벌|게임쇼|보드게임|크리에이터 미디어|MEDIA EXHIBITION|EXHIBITION/i;
+
+// ⚠️ 실내 판정의 «예외» — 1차 실측에서 오판 4건이 나왔다(43장 중 4장).
+//    「경기정원문화박람회」·「진주 정원박람회」·「부산도시농업박람회」·「부산 봄꽃 전시회」는
+//    이름에 박람회·전시회가 들어가도 **야외**다. 정원·꽃·농업은 밖에서 걷고 보는 행사다.
+//    (원래 flower·gakline 이 붙어 있었는데 실내로 잘못 걸려 상품이 사라졌다.)
+//    ⭐ 이 줄이 곧 «실내 판정은 이름만으로 하는 추정»이라는 증거다 — 오판이 보이면 여기에 추가한다.
+const FEST_INDOOR_EXC = /정원박람회|정원문화박람회|농업박람회|도시농업|봄꽃|꽃 전시|꽃전시|원예|수목원|야외전시/;
+
 // 위 어디에도 안 걸리면(문화·전통·기타) 계절 로테이션 기본값을 쓴다.
 function festBuyBox(title) {
   const t = String(title || '');
+  // 실내 행사면 «아무것도» 내보내지 않는다. 호출부가 빈 문자열을 그대로 받는다.
+  if (FEST_INDOOR.test(t) && !FEST_INDOOR_EXC.test(t)) { INDOOR_SKIPPED.push(t); return ''; }
   for (const [re, keys] of FEST_KIND) {
     if (re.test(t)) return renderBuyBox(keys[0], keys.slice(1), 'festival-page');
   }
   return buyBox('festival');
 }
+const INDOOR_SKIPPED = [];
+process.on('exit', () => {
+  if (!INDOOR_SKIPPED.length) return;
+  console.log(`🏛 실내 행사로 판정해 상품을 뺀 축제 ${INDOOR_SKIPPED.length}건`);
+  console.log('   ' + INDOOR_SKIPPED.slice(0, 40).join(' · ')
+    + (INDOOR_SKIPPED.length > 40 ? ` … 외 ${INDOOR_SKIPPED.length - 40}` : ''));
+});
 // 페이지 키 → 이번 달에 실제로 노출할 상품 키 (bySeason 이 없으면 그대로)
 function seasonKey(pageKey) {
   const it = COUPANG.items[pageKey];
@@ -2020,6 +2052,62 @@ const PAGE_BUYBOX = {
   'course/jeonnam-quiet-1n2d': 'tripcost', 'course/gyeongbuk-quiet-1n2d': 'tripcost',
   'course/gyeongbuk-accessible-1d': 'tripcost'
 };
+// 🇰🇷 2026-09-11 — 외국어 «전 페이지»에 코리 블록. 장남 님 결정(410장 전부).
+//   왜 writePage 인가: 외국어를 만드는 생성기가 intl.js·intl-city.js·intl-text.js·festival-en/ja.js·
+//   jangteo-en/ja/es/zh.js·places-ja.js·twmarkets.js 등 «열다섯 곳»이다. 템플릿마다 고치면
+//   새 생성기가 생기는 날 조용히 빠진다. 파일로 나가는 순간 한 곳에서 넣는다(http→https 정규화와 같은 사고).
+//
+//   실측 근거(2026-09-11): 외국어 471장 중 코리가 붙은 건 도시 61장뿐이고 410장이 비어 있었다.
+//   그 410장의 28일 세션은 226(en 축제상세 86 · ja 정기휴일 23 · 홈 25 · 캘린더 22…).
+//   판박이 걱정은 재 보니 기우였다 — 외국어 섹션 평균 유사도 0.048(경고선 0.35).
+//
+//   ⚠️ 단 «얇은 페이지»는 뺀다. 945자짜리 페이지에 상업 블록을 얹으면 본문 대비 상품 비중이 커져
+//      애드센스가 싫어하는 모양이 된다(2026-09-09 또 반려된 상태다). 감사도구와 같은 기준을 쓴다.
+const KORY = require('./kory.js');
+const KORY_LANGS = new Set(['en', 'ja', 'zh', 'tw', 'es']);
+const KORY_MIN_BODY = 2000;
+const KORY_STAT = { put: 0, city: 0, korea: 0, already: 0, thin: [], noAnchor: [] };
+function koryInject(rel, html) {
+  const seg = rel.split('/').filter(Boolean);
+  const lang = seg[0];
+  if (!KORY_LANGS.has(lang)) return html;
+  if (html.indexOf('data-bb="kory-') >= 0) { KORY_STAT.already++; return html; }  // 도시 61장은 이미 있다
+
+  // 본문 두께 — audit-pages.js 의 bodyOf 와 같은 방식(<main> 안 텍스트)
+  const a0 = html.indexOf('<main'), a1 = html.lastIndexOf('</main>');
+  const body = a0 < 0 || a1 < 0 ? '' : html.slice(a0, a1)
+    .replace(/<script[\s\S]*?<\/script>/g, ' ').replace(/<style[\s\S]*?<\/style>/g, ' ')
+    .replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+  if (body.length < KORY_MIN_BODY) { KORY_STAT.thin.push(`/${rel}/ ${body.length}자`); return html; }
+
+  // 도시는 «페이지에 이미 있는 것»에서 읽는다 — 2026-09-07에 깐 「이 축제가 있는 도시」 링크.
+  //   ⚠️ 이름 매칭을 하지 않는다(좌표로 판정한 그 결과를 그대로 재사용한다).
+  let cityKey = null, cityName = '';
+  const m = html.match(/class="fcity"><a href="\/[a-z]{2}\/([a-z0-9-]+)\/"[^>]*>[\s\S]{0,24}?<b>([^<]+)<\/b>/);
+  if (m) { cityKey = m[1]; cityName = m[2]; }
+
+  // 앵커 = 마지막 `</div></main>`. 블록이 본문 래퍼 «안»에 들어가야 폭이 맞는다(밖에 두면 전폭으로 터진다).
+  const re = /<\/div>\s*<\/main>/g;
+  let at = -1, r;
+  while ((r = re.exec(html))) at = r.index;
+  if (at < 0) { KORY_STAT.noAnchor.push('/' + rel + '/'); return html; }
+
+  const blk = KORY.pageBlock({
+    lang, place: lang + '-' + (seg[1] || 'home'), cityKey, cityName
+  });
+  KORY_STAT.put++;
+  cityKey ? KORY_STAT.city++ : KORY_STAT.korea++;
+  return html.slice(0, at) + blk + html.slice(at);
+}
+process.on('exit', () => {
+  if (!KORY_STAT.put && !KORY_STAT.thin.length) return;
+  console.log(`🇰🇷 코리 블록 — 새로 넣음 ${KORY_STAT.put}장 (도시판 ${KORY_STAT.city} · KOREA ${KORY_STAT.korea})`
+    + ` · 이미 있음 ${KORY_STAT.already}장 · 얇아서 제외 ${KORY_STAT.thin.length}장`
+    + (KORY_STAT.noAnchor.length ? ` · ⚠️앵커 없음 ${KORY_STAT.noAnchor.length}장` : ''));
+  if (KORY_STAT.thin.length) console.log('   제외: ' + KORY_STAT.thin.join(' · '));
+  if (KORY_STAT.noAnchor.length) console.log('   ⚠️앵커 없음: ' + KORY_STAT.noAnchor.join(' · '));
+});
+
 function writePage(rel, html) {
   const key = PAGE_BUYBOX[rel];
   if (key && !/class="buybox"[\s\S]*?<\/main>/.test(html.slice(html.indexOf('<main')))) {
@@ -2027,6 +2115,7 @@ function writePage(rel, html) {
     const i = html.lastIndexOf('</main>');
     if (i > 0) html = html.slice(0, i) + bb + html.slice(i);
   }
+  html = koryInject(rel, html);
   const dir = path.join(ROOT, rel);
   fs.mkdirSync(dir, { recursive: true });
   fs.writeFileSync(path.join(dir, 'index.html'), html);

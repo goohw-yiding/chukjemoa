@@ -14,14 +14,22 @@ for (const d of fs.readdirSync(R, { withFileTypes: true })) {
   if (!d.isDirectory()) continue;
   const p = path.join(R, d.name, 'index.html');
   if (!fs.existsSync(p)) continue;
-  const h = fs.readFileSync(p, 'utf8');
+  const full = fs.readFileSync(p, 'utf8');
   total++;
+  // 🔴 2026-09-11 수정 — 이 도구가 «거짓 숫자»를 주고 있었다.
+  //   축제 상세에는 「축제 모달」(id="festmodal")이 같이 들어 있고 그 안에도 buybox 가 있다.
+  //   모달 것은 data-place="festival" 이라 **본문에 상품이 아예 없어도 「폴백」으로 집계됐다.**
+  //   그래서 「폴백 199개(35%)」에는 «본문에 기본값이 붙은 것»과 «본문에 아무것도 없는 것»이 섞여 있었다.
+  //   → 경계를 모달 시작 앞으로 자른다. 본문만 센다.
+  const cut = full.indexOf('<div id="festmodal"');
+  const a0 = full.indexOf('<main');
+  const h = full.slice(a0 < 0 ? 0 : a0, cut < 0 ? full.length : cut);
   const m = h.match(rx);
   if (m) { cnt[m[1]] = (cnt[m[1]] || 0) + 1; continue; }
   const m2 = h.match(fb);
   const key = '폴백:' + (m2 ? m2[1] : '없음');
   cnt[key] = (cnt[key] || 0) + 1;
-  const t = h.match(/<title>(.*?)\s*—/);
+  const t = full.match(/<title>(.*?)\s*—/);   // ⚠️ h 는 <main> 부터라 title 이 없다
   if (t && fallbackTitles.length < 40) fallbackTitles.push(t[1]);
 }
 

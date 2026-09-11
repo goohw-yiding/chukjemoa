@@ -32,3 +32,7 @@ data/thin_intl_age.json
 # 날씨 예보 — 매일 fetch-weather.js 가 새로 만든다. 커밋하면 «어제 예보»가 배포에 섞인다(2026-09-04).
 data/weather.json
 _*.err 
+# 진단 «산출물» — 도구(_*.js)는 이미 막고 있었는데 결과 파일만 뚫려 있었다(2026-09-11).
+#   _prod_map.md · _bb_real.md · _fallback_slugs.tsv 가 커밋에 딸려 들어갈 뻔했다.
+_*.md
+_*.tsv

@@ -93,6 +93,32 @@ function dayStat(list) {
   return { n: list.length, day, always, hol, brk };
 }
 
+// ── 정기휴무·영업시간의 «표기 실물» 빈도 (2026-09-11 신설)
+//
+// 왜: /ja/closed/ 하위 7장이 945~1,600자로 얇아 코리 블록 반입에서도 제외됐고,
+//   무엇보다 **일본 유입 1·2위 검색어(「ハングルの日 お店 休み」「韓国 定休日」)의 착지점인데
+//   「그래서 문 앞에 뭐라고 적혀 있나」를 안 알려 주고 있었다.**
+//   공휴일 표는 어디에나 있다. 우리만 줄 수 있는 건 **8,638곳의 영업시간 데이터에서 센 표기 실물**이다.
+//
+// ⚠️ 이 섹션은 «의도적으로 한국어를 남긴다» — 현지 가게 문에 붙어 있는 글자를 읽는 법이기 때문이다.
+//   (외국어 페이지의 한국어 누출 금지 원칙의 예외: 「지도·현지에서 찾아야 하는 글자는 한글이 정답」)
+//   실측 표기 상위: 연중무휴 4,519 · 매주 일요일 922 · 매주 월요일 563 · 설·추석 연휴 138 · 설·추석 당일 107
+function exprStat(list) {
+  const c = { n: list.length, always: 0, weekly: 0, biweek: 0, namDay: 0, namHol: 0, lastOrder: 0, breakTime: 0, blank: 0 };
+  list.forEach(x => {
+    const r = String(x.rest || ''), o = String(x.open || ''), b = r + ' ' + o;
+    if (!r.trim()) { c.blank++; return; }
+    if (/연중무휴/.test(r)) c.always++;
+    if (/매주/.test(r)) c.weekly++;
+    if (/첫째|둘째|셋째|넷째|격주/.test(r)) c.biweek++;
+    if (/설·추석\s*당일|명절\s*당일/.test(r)) c.namDay++;
+    if (/설·추석\s*연휴|명절\s*연휴/.test(r)) c.namHol++;
+    if (/마지막\s*주문|라스트\s*오더|라스트오더/.test(b)) c.lastOrder++;
+    if (/준비\s*시간|준비시간|브레이크/.test(b)) c.breakTime++;
+  });
+  return c;
+}
+
 const CSS = `
 <style>
 .hjw{background:#fff7ed;border:1.5px solid #fed7aa;border-radius:15px;padding:16px 18px;margin:14px 0}
@@ -119,6 +145,9 @@ const CSS = `
 .hjnav{display:flex;flex-wrap:wrap;gap:8px;margin:20px 0}
 .hjnav a{background:#fff;border:1.5px solid #dcefeb;color:#374151;font-weight:700;font-size:.88rem;padding:9px 14px;border-radius:999px;text-decoration:none}
 .hjnote{color:#9aa3af;font-size:.81rem;line-height:1.65;margin-top:9px}
+.hjk{font-weight:800;color:#1c1917;font-size:1rem;white-space:nowrap}
+.hjol{margin:6px 0 0;padding-left:22px}
+.hjol li{color:#374151;font-size:.95rem;line-height:1.85;margin-bottom:6px}
 </style>`;
 
 function md(d) { return `${d.getMonth() + 1}月${d.getDate()}日（${WD[d.getDay()]}）`; }
@@ -131,6 +160,7 @@ function build(ctx) {
 
   const R = dayStat(load('restaurants_ko.json'));
   const C = dayStat(load('cafes_ko.json'));
+  const EX = exprStat(load('restaurants_ko.json').concat(load('cafes_ko.json')));
   const jaFes = load('festivals_ja.json');
   const slugs = (() => { try { return load('ja_festival_slugs.json'); } catch (e) { return {}; } })();
   const MKT = load('markets_std.json').filter(m =>
@@ -163,6 +193,22 @@ function build(ctx) {
 <span class="b"><i style="width:${Math.round(cnt(d) / mx * 100)}%"></i></span><span class="v">${WD[d.getDay()]} ${nf(cnt(d))}店</span></div>`;
     }).join('');
     const holDays = b.span.filter(d => holSet.has(d.toISOString().slice(0, 10)));
+
+    // 🔤 문 앞 표기 사전 — «이 연휴에 걸리는 요일»만 골라 넣는다(연휴마다 표가 달라진다).
+    //   ⚠️ 왼쪽 칸은 한국어를 그대로 둔다. 현지에서 눈으로 맞춰 봐야 하는 글자다.
+    const gloss = [];
+    gloss.push(['연중무휴', '年中無休。この連休も開いています', EX.always]);
+    wsort.forEach(w => {
+      const n = R.day[w] + C.day[w];
+      if (!n) return;
+      gloss.push([`매주 ${DN[w]}요일`, `毎週${WD[w]}曜が定休 — この連休は${
+        b.span.filter(d => d.getDay() === w).map(d => `${d.getMonth() + 1}/${d.getDate()}`).join('・')}が${WD[w]}曜です`, n, true]);
+    });
+    if (EX.namHol) gloss.push(['설·추석 연휴', 'ソルラル・チュソクは連休まるごと休み', EX.namHol, b.big]);
+    if (EX.namDay) gloss.push(['설·추석 당일', 'ソルラル・チュソクは当日だけ休み（前後は営業）', EX.namDay, b.big]);
+    if (EX.biweek) gloss.push(['격주 / 첫째·셋째', '隔週・第1第3のように月内の週で決まる定休', EX.biweek]);
+    const glossRows = gloss.map(([ko, ja, n, on]) =>
+      `<tr class="${on ? 'off' : ''}"><td class="hjk">${esc(ko)}</td><td>${ja}</td><td class="n">${nf(n)}</td></tr>`).join('');
 
     // 이 연휴에 열리는 축제(일본어판)
     // ⚠️ 그냥 「기간이 겹치는 것」으로 뽑았더니 «연중 상설 공연»(01/01〜12/31, 土曜常設公演)이 목록을
@@ -209,6 +255,34 @@ ${bars}
 <p>${holDays.map(d => `<b>${md(d)}</b>は${WD[d.getDay()]}曜日で、この曜日を定休日にしている店が<b>${nf(cnt(d))}店</b>あります。`).join('')}
 この連休で最も休みが多いのは<b>${md(b.span.reduce((a, d) => cnt(d) > cnt(a) ? d : a, b.span[0]))}</b>です。行きたい店が決まっているなら、その日は営業しているか先に確認してください。</p>
 <p class="hjnote">飲食店${nf(R.n)}店・カフェ${nf(C.n)}店のうち、営業時間欄に定休日を書いている店を数えたものです。書いていない店（無休とは限りません）は含みません。年中無休と明記している店は飲食店${nf(R.always)}店・カフェ${nf(C.always)}店あります。</p></div>
+
+<div class="hjc"><h2>🔤 店先の韓国語を読む — 定休日はこう書かれています</h2>
+<p>韓国の店は、定休日を入口のドアや看板に<b>韓国語のまま</b>書きます。ここでは韓国語を訳して消していません — 現地で実際に目で照らし合わせる文字だからです。${
+      nf(EX.n)}店の営業時間データに出てくる表記を、この連休に関係するものだけ選んで並べました。オレンジの行が<b>この連休に当たる</b>ものです。</p>
+<table class="hjt"><thead><tr><th>お店の表記</th><th>意味</th><th class="n">店数</th></tr></thead><tbody>${glossRows}</tbody></table>
+<p>いちばん多いのは<b>연중무휴</b>（年中無休）で${nf(EX.always)}店。つまり${
+      Math.round(100 * EX.always / EX.n)}%の店は連休でも開いています。一方で曜日を指定して休む店は${
+      nf(EX.weekly)}店あり、そのほとんどが「매주（毎週）＋曜日」の形で書かれています。<b>요일</b>が曜日、<b>휴무</b>が休業です。</p>
+<p class="hjnote">「정기휴일」「휴무일」という言い方もありますが、データ上はごく少数です。書き方が店ごとに違うので、上の3語（연중무휴・매주・휴무）を覚えておけばほぼ読めます。</p></div>
+
+<div class="hjc"><h2>⏱ 「준비시간」と書いてあったら中休みです</h2>
+<p>連休で狙って行ったのに閉まっている、という失敗のもう一つの原因が<b>中休み</b>です。昼の営業と夜の営業のあいだに店を閉める習慣があり、営業時間欄に中休み（<b>준비시간</b>＝準備時間 / <b>브레이크타임</b>＝ブレイクタイム）を書いている店が<b>${
+      nf(EX.breakTime)}店</b>あります。</p>
+<p>さらに、閉店時刻とは別に<b>마지막 주문</b>（ラストオーダー）や<b>라스트오더</b>を書いている店が<b>${
+      nf(EX.lastOrder)}店</b>。これは「その時刻を過ぎると注文できない」という意味で、閉店時刻ではありません。表示が<b>21:00</b>でもラストオーダーが<b>20:30</b>なら、入れるのは20:30までです。</p>
+<p class="hjnote">飲食店・カフェ合わせて${nf(EX.n)}店のうち、営業時間または休業欄にその語が入っている店を数えました。</p></div>
+
+<div class="hjc"><h2>✅ 出かける前に確認すること</h2>
+<ol class="hjol">
+<li>行きたい店の定休日が<b>この連休の曜日に当たっていないか</b> — 上のグラフで、${
+      md(b.span.reduce((a, d) => cnt(d) > cnt(a) ? d : a, b.span[0]))}がこの連休でいちばん休みが多い日です。</li>
+<li>店の情報に<b>연중무휴</b>があれば、この連休は気にしなくて大丈夫です。</li>
+<li>${b.big
+      ? `名節なので<b>설·추석 연휴</b>（連休まるごと休み）と<b>설·추석 당일</b>（当日だけ休み）のどちらが書かれているかを見てください。前者なら連休中は行けません。`
+      : `この連休は名節ではないので、一斉休業の心配はありません。むしろ曜日の定休日だけ確認すれば十分です。`}</li>
+<li><b>준비시간</b>や<b>마지막 주문</b>の時刻を先に見て、その時間を避けて動いてください。</li>
+<li>営業時間欄が空欄の店が${nf(EX.blank)}店あります。<b>空欄は「無休」ではありません</b> — 情報がないという意味なので、電話かSNSで確認してください。</li>
+</ol></div>
 
 ${mdays.length ? `<div class="hjc"><h2>🏮 この連休に立つ五日市</h2>
 <p>韓国の田舎の市場は日付の末尾で決まった日だけ、5日ごとに開きます。連休中に開く市場の数を日ごとに出しました。</p>
