@@ -2150,6 +2150,16 @@ const BUSAN_URLS = require('./busan.js').build({ ROOT, layout, writePage, SITE, 
 //     동/서는 **경도가 아니라 읍·면 이름**으로 나눈다(경도로 자르면 제주 사람들이 쓰는 구분과 어긋난다).
 //   ❌제주축제는 검색량 3,050(서울·부산의 1/8)에 재고도 5건 → 축제 페이지는 만들지 않는다.
 const JEJU_URLS = require('./jeju.js').build({ ROOT, layout, writePage, SITE, SITE_NAME, TODAY, WX });
+// 🏛 2026-09-11 신설 — 서울·부산 박물관·미술관 /{city}/museum/.
+//   제주는 jeju.js가 «제주 전용 API»로 따로 짓고 있다 — 건드리지 않는다.
+//   ⭐ 정렬은 «검색량 순»이다(_museum_volume.py로 136곳 실측). 국립중앙박물관 433,200 ·
+//     국립현대미술관 서울 86,400 · 리움 62,100 · 부산박물관 49,960. 사람들이 실제로 가는 곳이 위에 와야
+//     "이 사이트 물건 좀 아네" 소리를 듣는다. 가나다순·API순은 그 반대다.
+//   ♿ 무장애 배지는 **등록된 것만** 단다(없는 걸 없다고 쓰지 않는다 — 관광공사 무장애 정보 원본 그대로).
+let MUSEUM_URLS = [];
+try {
+  MUSEUM_URLS = require('./museum.js').build({ ROOT, layout, writePage, SITE_NAME, TODAY, esc, buyBox });
+} catch (e) { console.log('  ⚠️ /museum/ 실패:', String(e && e.message).slice(0, 140)); }
 // 🏙 2026-09-07 신설 — 도시 페이지 «공통 뼈대» + 도시 설정 11개(경주 + 외국인형 5 + 한국인형 5).
 //   왜 뼈대를 뽑았나: 도시 4개에 코드가 149KB 였다. 10개를 더 만들기로 한 이상 여기가 가장 싼 시점이다.
 //   ⚠️ 서울·부산·제주는 여기 얹지 않는다 — 그 셋은 «전용 데이터»가 있어 구조가 다르다.
@@ -7535,7 +7545,7 @@ const ADV_TRAFFIC = {
 }
 
 // ---------- sitemap / robots ----------
-const urls = ['/', ...MONTHS.map(m => `/${m.key}/`), '/search/', ...(holidays.length ? ['/holiday/'] : []), '/pet/', ...(apiAccessible.length ? ['/accessible/'] : []), ...INDOOR_URLS, ...(apiTrails.length ? ['/trails/'] : []), ...(apiValleys.length ? ['/valley/'] : []), ...(apiMaple.length ? ['/maple/'] : []), ...(apiFlower.length ? ['/flower/'] : []), ...(apiOnsen.length ? ['/onsen/'] : []), '/jangteo/', '/test/', '/trip-cost/', ...CITYTOUR_URLS, ...(visitors.kor && visitors.kor.length ? ['/trend/'] : []), ...SIDO_URLS, ...THEME_URLS, ...TRAIL_URLS, ...WALK_URLS, ...TREND_LANG_URLS, '/blog/', ...posts.map(p => `/blog/${p.slug}/`), '/about/', EDITORIAL_URL, '/contact/', '/advertise/', '/privacy/',...(apiFestsEn.length ? ['/en/', '/en/search/'] : []), ...EN_FESTIVAL_URLS, ...EN_JANGTEO_URLS, ...EN_BLOG_URLS, ...(apiFestsJa.length ? ['/ja/', '/ja/search/'] : []), ...JA_JANGTEO_URLS, ...JA_FESTIVAL_URLS, ...JA_HOLIDAY_URLS, ...JA_PLACES_URLS, ...(apiFestsEs.length ? ['/es/', '/es/search/'] : []), ...ES_JANGTEO_URLS, ...(apiFestsZh.length ? ['/zh/', '/zh/search/'] : []), ...ZH_JANGTEO_URLS, ...(apiFestsTw.length ? ['/tw/', '/tw/search/'] : []), ...TW_EXTRA_URLS, ...MOUNTAIN_URLS, ...CAFE_URLS, ...HOT_URLS, ...HEALING_URLS, ...COURSE_URLS, ...WINTER_URLS, ...JANGTEO_SIDO_URLS, ...JANGTEO_SIGUNGU_URLS, ...SIDO_HUB_URLS, ...TRIP_URLS, ...FESTIVAL_URLS, ...MAP_URLS, ...INTL_URLS, ...CHUSEOK_URLS, ...SEOUL_URLS, ...BUSAN_URLS, ...JEJU_URLS, ...CITY_URLS, ...INTL_CITY_URLS];
+const urls = ['/', ...MONTHS.map(m => `/${m.key}/`), '/search/', ...(holidays.length ? ['/holiday/'] : []), '/pet/', ...(apiAccessible.length ? ['/accessible/'] : []), ...INDOOR_URLS, ...(apiTrails.length ? ['/trails/'] : []), ...(apiValleys.length ? ['/valley/'] : []), ...(apiMaple.length ? ['/maple/'] : []), ...(apiFlower.length ? ['/flower/'] : []), ...(apiOnsen.length ? ['/onsen/'] : []), '/jangteo/', '/test/', '/trip-cost/', ...CITYTOUR_URLS, ...(visitors.kor && visitors.kor.length ? ['/trend/'] : []), ...SIDO_URLS, ...THEME_URLS, ...TRAIL_URLS, ...WALK_URLS, ...TREND_LANG_URLS, '/blog/', ...posts.map(p => `/blog/${p.slug}/`), '/about/', EDITORIAL_URL, '/contact/', '/advertise/', '/privacy/',...(apiFestsEn.length ? ['/en/', '/en/search/'] : []), ...EN_FESTIVAL_URLS, ...EN_JANGTEO_URLS, ...EN_BLOG_URLS, ...(apiFestsJa.length ? ['/ja/', '/ja/search/'] : []), ...JA_JANGTEO_URLS, ...JA_FESTIVAL_URLS, ...JA_HOLIDAY_URLS, ...JA_PLACES_URLS, ...(apiFestsEs.length ? ['/es/', '/es/search/'] : []), ...ES_JANGTEO_URLS, ...(apiFestsZh.length ? ['/zh/', '/zh/search/'] : []), ...ZH_JANGTEO_URLS, ...(apiFestsTw.length ? ['/tw/', '/tw/search/'] : []), ...TW_EXTRA_URLS, ...MOUNTAIN_URLS, ...CAFE_URLS, ...HOT_URLS, ...HEALING_URLS, ...COURSE_URLS, ...WINTER_URLS, ...JANGTEO_SIDO_URLS, ...JANGTEO_SIGUNGU_URLS, ...SIDO_HUB_URLS, ...TRIP_URLS, ...FESTIVAL_URLS, ...MAP_URLS, ...INTL_URLS, ...CHUSEOK_URLS, ...SEOUL_URLS, ...BUSAN_URLS, ...JEJU_URLS, ...MUSEUM_URLS, ...CITY_URLS, ...INTL_CITY_URLS];
 // noindex 페이지는 사이트맵에서 뺀다 — "색인해라(사이트맵) + 하지마라(noindex)"는 모순 신호다.
 // 🔁 2026-08-19: en/ja/zh 사이트맵 제외를 되돌린다(위 layout()의 forceNoindex 주석 참고).
 //    구글 클릭 0을 보고 뺐지만 GA4로는 구글 아닌 검색엔진에서 16세션/28일이 들어오고 있었다.
