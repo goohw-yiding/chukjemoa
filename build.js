@@ -990,6 +990,61 @@ const IOS_PWA_JS = `<script>
 })();
 </script>`;
 
+// 🔔 2026-09-11 — 홈 상단 알림 신청 버튼.
+//   왜: 구독 배너는 «첫 페이지뷰 10초 뒤에 저절로» 뜨는 방식뿐이라(OneSignal Push Slide Prompt),
+//   그 10초 전에 나간 사람은 신청할 길이 아예 없었고, 이미 신청한 사람도 자기가 구독 중인지 알 수 없었다.
+//   실측 근거(2026-09-11): 트래픽은 모바일 76%인데 구독자는 Win32 34 · 안드로이드 20 · iOS 0.
+//   ⚠️ 기본이 hidden 이다. 웹푸시를 못 쓰는 브라우저(홈 화면 추가 전의 아이폰 사파리 등)에서는
+//      끝까지 안 보인다 — 눌러도 아무 일 없는 죽은 버튼을 내보내지 않기 위해서다.
+//   ⚠️ 정규식을 쓰지 않는다 — 템플릿 리터럴 안이라 \\/ 가 / 로 풀려 깨진다.
+//   ⚠️ 브라우저가 «거부»로 기억한 경우엔 버튼으로 되돌릴 수 없다. 그때는 주소창 자물쇠에서
+//      직접 바꿔야 한다고 «말해 준다» — 눌러도 안 되는 버튼을 남겨 두면 사람은 사이트를 탓한다.
+const NOTI_JS = `<script>
+(function(){
+  var box=document.getElementById('home-noti');
+  var btn=document.getElementById('noti-btn');
+  var msg=document.getElementById('noti-state');
+  if(!box||!btn||!msg) return;
+  window.OneSignalDeferred=window.OneSignalDeferred||[];
+  window.OneSignalDeferred.push(function(OneSignal){
+    try{
+      if(!OneSignal.Notifications||!OneSignal.Notifications.isPushSupported()) return;
+      box.hidden=false;
+      function paint(){
+        var denied=(typeof Notification!=='undefined'&&Notification.permission==='denied');
+        var on=!!(OneSignal.User&&OneSignal.User.PushSubscription&&OneSignal.User.PushSubscription.optedIn);
+        if(denied){
+          btn.textContent='🔕 알림이 차단되어 있어요';
+          btn.disabled=true;btn.className='noti-btn off';
+          msg.textContent='주소창 왼쪽 자물쇠 → 알림 → 허용으로 바꾸면 받을 수 있어요.';
+          return;
+        }
+        btn.disabled=false;
+        if(on){
+          btn.textContent='🔔 알림 받는 중 — 끄기';
+          btn.className='noti-btn on';
+          msg.textContent='새 축제와 오늘 서는 장날을 알려드려요.';
+        }else{
+          btn.textContent='🔔 새 축제·장날 알림 받기';
+          btn.className='noti-btn';
+          msg.textContent='주말 근처 축제·행사 소식을 받아보세요. 언제든 끌 수 있어요.';
+        }
+      }
+      paint();
+      if(OneSignal.User&&OneSignal.User.PushSubscription&&OneSignal.User.PushSubscription.addEventListener)
+        OneSignal.User.PushSubscription.addEventListener('change',paint);
+      btn.addEventListener('click',function(){
+        var on=!!(OneSignal.User&&OneSignal.User.PushSubscription&&OneSignal.User.PushSubscription.optedIn);
+        if(window.gtag)gtag('event',on?'noti_off':'noti_on');
+        var p=on?OneSignal.User.PushSubscription.optOut():OneSignal.User.PushSubscription.optIn();
+        if(p&&p.then)p.then(function(){setTimeout(paint,400);}).catch(function(){setTimeout(paint,400);});
+        else setTimeout(paint,800);
+      });
+    }catch(e){}
+  });
+})();
+</script>`;
+
 // 킥④ 찜하기 (모든 카드 페이지 공통, localStorage)
 const FAV_JS = `<script>
 (function(){
@@ -1298,6 +1353,15 @@ nav a:hover{color:#0f9d8f}
 .home-cta1:hover{transform:translateY(-2px)}
 .home-cta2{background:#fff;color:#0c7d72;font-weight:700;font-size:.94rem;padding:13px 22px;border-radius:11px;border:1.5px solid #a9e5dd;transition:transform .15s}
 .home-cta2:hover{transform:translateY(-2px)}
+/* 🔔 홈 알림 신청 — CTA 두 개보다 «한 단 낮은» 무게로 둔다. 여기가 주인공이 아니다. */
+.home-noti{margin-top:14px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.noti-btn{background:#fff;color:#0c7d72;font-weight:800;font-size:.9rem;padding:10px 18px;border-radius:999px;border:1.5px solid #a9e5dd;cursor:pointer;transition:transform .15s}
+.noti-btn:hover{transform:translateY(-2px)}
+.noti-btn.on{background:#0f9d8f;border-color:#0f9d8f;color:#fff}
+.noti-btn.off{background:#f3f4f6;border-color:#e5e7eb;color:#9ca3af;cursor:default}
+.noti-btn.off:hover{transform:none}
+.noti-state{font-size:.82rem;color:#5b6b68;line-height:1.5}
+@media(max-width:640px){.home-noti{gap:7px}.noti-state{font-size:.79rem}}
 .home-right{position:relative}
 .home-map{position:relative;background:#fff;border:1px solid #dcefeb;border-radius:16px;height:300px;overflow:hidden}
 .home-map-cap{position:absolute;top:13px;left:15px;font-size:.7rem;color:#6b7280;font-weight:700;z-index:3}
@@ -2110,7 +2174,7 @@ ${DDAY_JS}
 ${FAV_JS}
 ${NEARBY_JS}
 ${lang === 'ko' ? FEST_BB_JS + MODAL_CALC_JS + FEST_MODAL_JS + PLACE_MODAL_JS : ''}
-${urlPath === '/' ? FIREWORKS_JS : ''}
+${urlPath === '/' ? FIREWORKS_JS + NOTI_JS : ''}
 ${lang === 'ko' ? HSEARCH_JS : ''}
 ${lang === 'ko' ? IOS_PWA_JS : ''}
 ${String(content).indexOf('id="nai"') >= 0 ? NEAR_AI_JS : ''}
@@ -2865,6 +2929,23 @@ console.log(`✓ 오일장 — 합계 ${marketsAll.length}곳 · 장날 확인 $
 const TODAY_LAST_DIGIT = (() => { const d = new Date(+TODAY.slice(0, 4), +TODAY.slice(5, 7) - 1, +TODAY.slice(8, 10)); return d.getDate() % 10; })();
 const marketsOpenToday = marketsDay.filter(m => (m.daysNum || []).some(d => (d % 10) === TODAY_LAST_DIGIT));
 
+// 🎨 오늘 서는 오일장 카드의 «권역 색». 시·도 17개를 각각 칠하지 않는 이유는 CSS 쪽 주석에 있다.
+//   ⚠️ m.region 은 '강원'처럼 두 글자로 들어오지만 '강원도'가 섞여 들어와도 깨지지 않게 앞 두 글자로 본다.
+//   ⚠️ 모르는 값은 전라(기본 초록)로 떨어진다 — 색이 없는 카드가 생기지 않게 하기 위해서다.
+const JT_ZONES = [
+  ['cap', '수도권', ['서울', '인천', '경기'], '#eef4ff', '#c7dafe'],
+  ['gw', '강원', ['강원'], '#e9f8f6', '#b5e5de'],
+  ['cc', '충청', ['대전', '세종', '충북', '충남'], '#f3f0ff', '#d6cdfa'],
+  ['jl', '전라', ['광주', '전북', '전남'], '#eafbef', '#b9ecc4'],
+  ['gs', '경상', ['부산', '대구', '울산', '경북', '경남'], '#fff4e8', '#fbd9ae'],
+  ['jj', '제주', ['제주'], '#fdeef4', '#f8cadd']
+];
+const JT_ZONE_OF = (() => { const o = {}; JT_ZONES.forEach(([k, , sidos]) => sidos.forEach(s => { o[s] = k; })); return o; })();
+const jtZone = r => JT_ZONE_OF[String(r || '').slice(0, 2)] || 'jl';
+const JT_ZONE_LEGEND = JT_ZONES
+  .map(([k, label, , bg, line]) => `<span><i style="background:${bg};border:1.5px solid ${line}"></i>${label}</span>`)
+  .join('');
+
 // 🌤 «다음 장날»이 언제인지 → 그날 날씨를 붙이기 위해. 오늘 서면 오늘이다.
 //    ⚠️ daysNum 의 10 은 끝자리 0을 뜻한다(literal 10). 반드시 %10 으로 맞춰 비교한다 — 위 주석의 그 함정.
 function nextJangYmd(daysNum) {
@@ -2931,12 +3012,28 @@ tr.open-on td{background:#e5f6e8}
 .nextup-row a{display:inline-block;background:#fff;border:1.5px solid #cfe9e3;color:#0a6c63;font-weight:800;font-size:.92rem;padding:9px 14px;border-radius:999px;text-decoration:none}
 .nextup-row a b{color:#0f9d8f}
 .nextup-row a.hot{background:#0f9d8f;border-color:#0f9d8f;color:#fff}
-.jt-today-card{background:#eafbef;border:1.5px solid #b9ecc4;border-radius:14px;padding:14px 15px}
-.jt-today-card b{display:block;font-size:1rem;font-weight:800;color:#15803d;margin-bottom:3px}
+/* 🎨 2026-09-11 — 78장이 전부 같은 초록이라 어디가 어디인지 안 보인다는 지적(장남 님).
+   ⚠️ 시·도 17개를 «각각» 다른 색으로 칠하지 않는다 — 17색은 사람이 구별하지 못한다.
+      목록이 이미 시·도순으로 정렬돼 있으므로, 6개 권역으로 묶으면 색이 «덩어리»로 보여
+      스크롤만 해도 「여기부터 경상」이 잡힌다.
+   ⚠️ 배경은 옅게, 글자는 진하게 — 여섯 조합 모두 대비 4.5:1 이상으로 골랐다.
+      색을 바꿀 때 배경만 진하게 하면 시장 이름이 안 읽힌다. */
+.jt-today-card{background:var(--jtb,#eafbef);border:1.5px solid var(--jtl,#b9ecc4);border-radius:14px;padding:14px 15px}
+.jt-today-card b{display:block;font-size:1rem;font-weight:800;color:var(--jta,#15803d);margin-bottom:3px}
 .jt-today-card span{display:block;font-size:.85rem;color:#374151}
+.jt-today-card .jt-rg{font-style:normal;font-weight:800;color:var(--jta,#15803d)}
 .jt-today-card .fam{color:#6b7280;font-size:.8rem;margin-top:2px}
 .jt-today-card .jt-links{margin-top:8px}
 .jt-today-card .jt-links a{display:inline-block;font-size:.8rem;margin-right:10px;color:#0c7d72;font-weight:700}
+.z-cap{--jtb:#eef4ff;--jtl:#c7dafe;--jta:#1d4ed8}
+.z-gw {--jtb:#e9f8f6;--jtl:#b5e5de;--jta:#0f766e}
+.z-cc {--jtb:#f3f0ff;--jtl:#d6cdfa;--jta:#6d28d9}
+.z-jl {--jtb:#eafbef;--jtl:#b9ecc4;--jta:#15803d}
+.z-gs {--jtb:#fff4e8;--jtl:#fbd9ae;--jta:#b45309}
+.z-jj {--jtb:#fdeef4;--jtl:#f8cadd;--jta:#be185d}
+.jt-zone{display:flex;flex-wrap:wrap;gap:7px;margin:10px 0 0}
+.jt-zone span{display:inline-flex;align-items:center;gap:5px;font-size:.82rem;font-weight:700;color:#4b5563}
+.jt-zone i{width:11px;height:11px;border-radius:3px;display:inline-block}
 </style>
 <p class="note">오일장은 날짜 끝자리 기준으로 열립니다. 예: 4·9일장 → 4, 9, 14, 19, 24, 29일. <strong>가까운 장날 순으로 자동 정렬</strong>되고, 그 날 열리는 장은 초록색으로 표시됩니다.</p>
 <h2 class="sec">오일장이란? (오일장 뜻)</h2>
@@ -2944,7 +3041,8 @@ tr.open-on td{background:#e5f6e8}
 <p style="color:#374151;font-size:.95rem;line-height:1.8">왜 5일 간격일까요? 조선시대부터 이어진 방식으로, 상인들이 하루는 이 고을, 다음날은 옆 고을을 도는 식으로 5개 안팎의 장을 돌아가며 장사할 수 있게 정해진 주기입니다. 지금도 <b>모란민속5일장(성남)·정선아리랑시장(2·7일)·봉평장(2·7일)</b> 같은 전국 유명 5일장들이 이 방식대로 열립니다.</p>
 <p style="color:#374151;font-size:.95rem;line-height:1.8">날짜만 알면 되니, 아래 표에 <b>가려는 날짜</b>를 넣어보세요 — 그 날 열리는 장이 자동으로 초록색으로 표시됩니다.</p>
 <h2 class="sec" id="jt-today">🏮 오늘(${TODAY.slice(5, 7).replace(/^0/, '')}월 ${TODAY.slice(8, 10).replace(/^0/, '')}일) 서는 오일장 <span style="color:#9ca3af;font-weight:600">${marketsOpenToday.length}곳</span></h2>
-${marketsOpenToday.length ? `<div class="jt-today-grid">${marketsOpenToday.map(m => `<div class="jt-today-card"><b>${esc(m.name)}</b><span>${esc(m.region)} ${esc(m.city)}</span>${m.famous ? `<span class="fam">${esc(m.famous)}</span>` : ''}<div class="jt-links"><a href="https://search.naver.com/search.naver?query=${encodeURIComponent(m.name + ' 맛집')}" target="_blank" rel="noopener">🍴 맛집</a><a href="https://map.naver.com/p/search/${encodeURIComponent(m.name)}" target="_blank" rel="noopener">🗺️ 지도</a></div></div>`).join('')}</div>`
+${marketsOpenToday.length ? `<div class="jt-zone">${JT_ZONE_LEGEND}</div>
+<div class="jt-today-grid">${marketsOpenToday.map(m => `<div class="jt-today-card z-${jtZone(m.region)}"><b>${esc(m.name)}</b><span><i class="jt-rg">${esc(m.region)}</i> ${esc(m.city)}</span>${m.famous ? `<span class="fam">${esc(m.famous)}</span>` : ''}<div class="jt-links"><a href="https://search.naver.com/search.naver?query=${encodeURIComponent(m.name + ' 맛집')}" target="_blank" rel="noopener">🍴 맛집</a><a href="https://map.naver.com/p/search/${encodeURIComponent(m.name)}" target="_blank" rel="noopener">🗺️ 지도</a></div></div>`).join('')}</div>`
     : `<p class="note">오늘은 장날인 곳이 없어요. 아래에서 날짜를 넣어 다른 날을 확인해보세요.</p>`}
 <div class="datepick">
 <label>📅 가려는 날짜: <input type="date" id="visit-date"></label>
@@ -3999,6 +4097,7 @@ const indexContent = `<div class="home-hero">
 <div class="hsrch hsrch-hero" id="hsrch-hero"><input type="search" placeholder="축제·지역·계곡 검색" autocomplete="off" aria-label="사이트 검색"><div class="hres"></div></div>
 <div class="home-stats hero-stats">${HERO_LIVE.stats.map(([e, n, l], i) => `<a class="stat" href="${STAT_LINKS[i] || '#'}"><b class="cnt" data-to="${n}">0</b><div class="stat-label">${e} ${l}</div></a>`).join('')}</div>
 <div class="home-cta"><a class="home-cta1" href="#weekend-title">이번 주말 축제 보기</a><a class="home-cta2" href="/course/">🧭 내 조건으로 코스 짜기</a></div>
+<div class="home-noti" id="home-noti" hidden><button type="button" id="noti-btn" class="noti-btn">🔔 새 축제·장날 알림 받기</button><span class="noti-state" id="noti-state"></span></div>
 </div>
 <div class="home-right">
 <div class="home-map">

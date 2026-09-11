@@ -116,6 +116,15 @@ nav a:hover{color:#0f9d8f}
 .home-cta1:hover{transform:translateY(-2px)}
 .home-cta2{background:#fff;color:#0c7d72;font-weight:700;font-size:.94rem;padding:13px 22px;border-radius:11px;border:1.5px solid #a9e5dd;transition:transform .15s}
 .home-cta2:hover{transform:translateY(-2px)}
+/* 🔔 홈 알림 신청 — CTA 두 개보다 «한 단 낮은» 무게로 둔다. 여기가 주인공이 아니다. */
+.home-noti{margin-top:14px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.noti-btn{background:#fff;color:#0c7d72;font-weight:800;font-size:.9rem;padding:10px 18px;border-radius:999px;border:1.5px solid #a9e5dd;cursor:pointer;transition:transform .15s}
+.noti-btn:hover{transform:translateY(-2px)}
+.noti-btn.on{background:#0f9d8f;border-color:#0f9d8f;color:#fff}
+.noti-btn.off{background:#f3f4f6;border-color:#e5e7eb;color:#9ca3af;cursor:default}
+.noti-btn.off:hover{transform:none}
+.noti-state{font-size:.82rem;color:#5b6b68;line-height:1.5}
+@media(max-width:640px){.home-noti{gap:7px}.noti-state{font-size:.79rem}}
 .home-right{position:relative}
 .home-map{position:relative;background:#fff;border:1px solid #dcefeb;border-radius:16px;height:300px;overflow:hidden}
 .home-map-cap{position:absolute;top:13px;left:15px;font-size:.7rem;color:#6b7280;font-weight:700;z-index:3}
@@ -585,6 +594,7 @@ window.OneSignalDeferred=window.OneSignalDeferred||[];window.OneSignalDeferred.p
 <div class="hsrch hsrch-hero" id="hsrch-hero"><input type="search" placeholder="축제·지역·계곡 검색" autocomplete="off" aria-label="사이트 검색"><div class="hres"></div></div>
 <div class="home-stats hero-stats"><a class="stat" href="#nearby-grid"><b class="cnt" data-to="31">0</b><div class="stat-label">🎪 지금 열리는 축제</div></a><a class="stat" href="#weekend-title"><b class="cnt" data-to="44">0</b><div class="stat-label">📅 이번 주말</div></a><a class="stat" href="/jangteo/#jt-today"><b class="cnt" data-to="78">0</b><div class="stat-label">🏮 오늘 서는 오일장</div></a><a class="stat" href="/trails/"><b class="cnt" data-to="1587">0</b><div class="stat-label">🥾 걷기길 코스</div></a></div>
 <div class="home-cta"><a class="home-cta1" href="#weekend-title">이번 주말 축제 보기</a><a class="home-cta2" href="/course/">🧭 내 조건으로 코스 짜기</a></div>
+<div class="home-noti" id="home-noti" hidden><button type="button" id="noti-btn" class="noti-btn">🔔 새 축제·장날 알림 받기</button><span class="noti-state" id="noti-state"></span></div>
 </div>
 <div class="home-right">
 <div class="home-map">
@@ -1306,6 +1316,50 @@ window.cjmFestBB=function(elId,name,place){
     if (!done || parts.length) requestAnimationFrame(loop);
     else cv.remove();
   })();
+})();
+</script><script>
+(function(){
+  var box=document.getElementById('home-noti');
+  var btn=document.getElementById('noti-btn');
+  var msg=document.getElementById('noti-state');
+  if(!box||!btn||!msg) return;
+  window.OneSignalDeferred=window.OneSignalDeferred||[];
+  window.OneSignalDeferred.push(function(OneSignal){
+    try{
+      if(!OneSignal.Notifications||!OneSignal.Notifications.isPushSupported()) return;
+      box.hidden=false;
+      function paint(){
+        var denied=(typeof Notification!=='undefined'&&Notification.permission==='denied');
+        var on=!!(OneSignal.User&&OneSignal.User.PushSubscription&&OneSignal.User.PushSubscription.optedIn);
+        if(denied){
+          btn.textContent='🔕 알림이 차단되어 있어요';
+          btn.disabled=true;btn.className='noti-btn off';
+          msg.textContent='주소창 왼쪽 자물쇠 → 알림 → 허용으로 바꾸면 받을 수 있어요.';
+          return;
+        }
+        btn.disabled=false;
+        if(on){
+          btn.textContent='🔔 알림 받는 중 — 끄기';
+          btn.className='noti-btn on';
+          msg.textContent='새 축제와 오늘 서는 장날을 알려드려요.';
+        }else{
+          btn.textContent='🔔 새 축제·장날 알림 받기';
+          btn.className='noti-btn';
+          msg.textContent='주말 근처 축제·행사 소식을 받아보세요. 언제든 끌 수 있어요.';
+        }
+      }
+      paint();
+      if(OneSignal.User&&OneSignal.User.PushSubscription&&OneSignal.User.PushSubscription.addEventListener)
+        OneSignal.User.PushSubscription.addEventListener('change',paint);
+      btn.addEventListener('click',function(){
+        var on=!!(OneSignal.User&&OneSignal.User.PushSubscription&&OneSignal.User.PushSubscription.optedIn);
+        if(window.gtag)gtag('event',on?'noti_off':'noti_on');
+        var p=on?OneSignal.User.PushSubscription.optOut():OneSignal.User.PushSubscription.optIn();
+        if(p&&p.then)p.then(function(){setTimeout(paint,400);}).catch(function(){setTimeout(paint,400);});
+        else setTimeout(paint,800);
+      });
+    }catch(e){}
+  });
 })();
 </script>
 <script>
