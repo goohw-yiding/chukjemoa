@@ -4,7 +4,7 @@ def get(u):
     return urllib.request.urlopen("https://chukjemoa.co.kr" + u, timeout=25).read().decode("utf-8", "replace")
 for i in range(24):
     try:
-        if 'id="home-noti"' in get("/") and "jt-today-card z-gs" in get("/jangteo/"):
+        if "z-gyeongbuk" in get("/jangteo/"):
             print("배포 반영됨 (%d번째, %d초)" % (i + 1, i * 15)); break
         print("  아직 옛 버전 — %d" % (i + 1))
     except Exception as e:

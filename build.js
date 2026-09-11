@@ -2981,6 +2981,21 @@ const JT_COLORS = JT_SIDO.map((name, i) => {
 });
 const JT_COLOR_OF = (() => { const o = {}; JT_COLORS.forEach(c => { o[c.name] = c; }); return o; })();
 const jtZone = r => (JT_COLOR_OF[String(r || '').slice(0, 2)] || {}).slug || 'etc';
+
+// ⚠️ 2026-09-11 — 「오늘 서는 오일장」 목록을 시·도로 «다시» 묶는다.
+//    색을 입히고 라이브를 열어 보고서야 드러났다(`node _jt_order.js`): 78장 중 앞 66장은
+//    시·도 가나다순인데 **뒤 12장이 따로 붙어 있었다** — 시·도가 바뀌는 지점이 11번이어야
+//    정상인데 19번이었다. 표준데이터와 손수집이 이어붙은 자리다.
+//    읽는 사람에겐 「경기가 왜 또 나와?」로 보이고, 색으로도 같은 색 덩어리가 두 군데 생긴다.
+//    ⚠️ 시·도 «안»의 순서는 건드리지 않는다(안정 정렬) — 기존 배열 의도를 깨지 않기 위해서다.
+//    ⚠️ 원본 marketsOpenToday 를 «제자리에서 정렬하지 않는다». 홈 히어로가 같은 배열에서
+//       `.slice(0, 6)` 으로 지도 점을 고르고 시장 칩을 만든다 — 제자리 정렬하면 홈 지도에
+//       강원·경기만 몰려 찍힌다. 그래서 복사본을 만들어 이 그리드에서만 쓴다.
+const marketsTodayBySido = marketsOpenToday.slice().sort((a, b) => {
+  const ia = JT_SIDO.indexOf(String(a.region || '').slice(0, 2));
+  const ib = JT_SIDO.indexOf(String(b.region || '').slice(0, 2));
+  return (ia < 0 ? 99 : ia) - (ib < 0 ? 99 : ib);
+});
 const JT_SIDO_CSS = JT_COLORS
   .map(c => `.z-${c.slug}{--jtb:${c.bg};--jtl:${c.line};--jta:${c.fg}}`).join('\n')
   + '\n.z-etc{--jtb:#f3f4f6;--jtl:#e5e7eb;--jta:#374151}';
@@ -3084,7 +3099,7 @@ ${JT_SIDO_CSS}
 <p style="color:#374151;font-size:.95rem;line-height:1.8">날짜만 알면 되니, 아래 표에 <b>가려는 날짜</b>를 넣어보세요 — 그 날 열리는 장이 자동으로 초록색으로 표시됩니다.</p>
 <h2 class="sec" id="jt-today">🏮 오늘(${TODAY.slice(5, 7).replace(/^0/, '')}월 ${TODAY.slice(8, 10).replace(/^0/, '')}일) 서는 오일장 <span style="color:#9ca3af;font-weight:600">${marketsOpenToday.length}곳</span></h2>
 ${marketsOpenToday.length ? `<div class="jt-zone">${JT_SIDO_LEGEND}</div>
-<div class="jt-today-grid">${marketsOpenToday.map(m => `<div class="jt-today-card z-${jtZone(m.region)}"><b>${esc(m.name)}</b><span><i class="jt-rg">${esc(m.region)}</i> ${esc(m.city)}</span>${m.famous ? `<span class="fam">${esc(m.famous)}</span>` : ''}<div class="jt-links"><a href="https://search.naver.com/search.naver?query=${encodeURIComponent(m.name + ' 맛집')}" target="_blank" rel="noopener">🍴 맛집</a><a href="https://map.naver.com/p/search/${encodeURIComponent(m.name)}" target="_blank" rel="noopener">🗺️ 지도</a></div></div>`).join('')}</div>`
+<div class="jt-today-grid">${marketsTodayBySido.map(m => `<div class="jt-today-card z-${jtZone(m.region)}"><b>${esc(m.name)}</b><span><i class="jt-rg">${esc(m.region)}</i> ${esc(m.city)}</span>${m.famous ? `<span class="fam">${esc(m.famous)}</span>` : ''}<div class="jt-links"><a href="https://search.naver.com/search.naver?query=${encodeURIComponent(m.name + ' 맛집')}" target="_blank" rel="noopener">🍴 맛집</a><a href="https://map.naver.com/p/search/${encodeURIComponent(m.name)}" target="_blank" rel="noopener">🗺️ 지도</a></div></div>`).join('')}</div>`
     : `<p class="note">오늘은 장날인 곳이 없어요. 아래에서 날짜를 넣어 다른 날을 확인해보세요.</p>`}
 <div class="datepick">
 <label>📅 가려는 날짜: <input type="date" id="visit-date"></label>
