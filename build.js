@@ -2160,10 +2160,12 @@ let MUSEUM_URLS = [];
 try {
   MUSEUM_URLS = require('./museum.js').build({ ROOT, layout, writePage, SITE_NAME, TODAY, esc, buyBox });
 } catch (e) { console.log('  ⚠️ /museum/ 실패:', String(e && e.message).slice(0, 140)); }
-// 🔔 2026-09-11 — 브라우저 알림 지원 측정 페이지(noindex, 사이트맵 제외).
-//   웨일이 방문자의 50.4%인데 웨일 모바일의 웹 푸시 지원을 문서로 확인하지 못했다 → 실물로 잰다.
-try { require('./push.js').build({ ROOT, layout, writePage, SITE_NAME }); }
-catch (e) { console.log('  ⚠️ /pushtest/ 실패:', String(e && e.message).slice(0, 140)); }
+// 🔴 2026-09-11 되돌림 — /pushtest/ 를 짓다가 «이미 OneSignal 이 깔려 있다»는 걸 뒤늦게 알았다.
+//   위 2010행에 OneSignal SDK 가 전 페이지에 들어가 있고 루트에 OneSignalSDKWorker.js 도 있다.
+//   내 서비스워커를 scope '/' 로 또 등록하면 그쪽 구독이 깨질 수 있어 통째로 뺀다.
+//   ⚠️ 교훈: 새로 만들기 전에 «루트 파일 목록과 .vercelignore»를 먼저 읽을 것.
+//      build.js 를 「구독·이메일·카카오」로만 찾아보고 "발송 시스템 없음"이라고 단정했는데,
+//      정작 깔려 있던 건 그 단어가 하나도 안 들어가는 OneSignal 이었다.
 // 🏙 2026-09-07 신설 — 도시 페이지 «공통 뼈대» + 도시 설정 11개(경주 + 외국인형 5 + 한국인형 5).
 //   왜 뼈대를 뽑았나: 도시 4개에 코드가 149KB 였다. 10개를 더 만들기로 한 이상 여기가 가장 싼 시점이다.
 //   ⚠️ 서울·부산·제주는 여기 얹지 않는다 — 그 셋은 «전용 데이터»가 있어 구조가 다르다.
