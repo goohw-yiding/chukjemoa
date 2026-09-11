@@ -153,7 +153,8 @@ ${ven.length ? `<h2 class="sec">🖼 전시가 «자주» 열리는 공간 ${ven
 <p style="color:#374151;font-size:.95rem;line-height:1.8">
 <a href="/${c.key}/exhibition/"><b>${c.ko} 전시회</b></a> — 지금 열리고 있는 전시 ·
 <a href="/${c.key}/festival/"><b>${c.ko} 축제</b></a> — 이달 축제 ·
-<a href="/${c.key}/"><b>${c.ko} 전체</b></a></p>
+<a href="/${c.key}/"><b>${c.ko} 전체</b></a>${CITY.filter(x => x.key !== c.key).map(o => ` ·
+<a href="/${o.key}/museum/"><b>${o.ko} 박물관·미술관</b></a> — 다른 도시`).join('')}</p>
 </div></main>`;
 
     const title = `${c.ko} 박물관·미술관 ${all.length}곳 — 많이 찾는 순${withAcc ? '·무장애 정보' : ''} | ${SITE_NAME}`;
