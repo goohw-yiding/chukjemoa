@@ -184,6 +184,7 @@ function build(ctx) {
   const rests = load('restaurants_ko.json');
   const cafes = load('cafes_ko.json');
   const access = load('accessible.json');
+  const markets = load('markets_std.json');   // 2026-09-11 — 월별 페이지의 「그 달에 서는 오일장」용
   const visitors = (() => { try { return JSON.parse(fs.readFileSync(path.join(__dirname, 'data', 'visitors.json'), 'utf8')); } catch (e) { return {}; } })();
   const koFes = load('festivals_api.json');
 
@@ -383,6 +384,47 @@ ${readCard}
     const sidoMax = accBySido[sidoTop[0]];
     const sidoBars = sidoTop.map(k => bar(sido(k, lang), accBySido[k], sidoMax, false)).join('');
 
+    // ♿ 2026-09-11 — 「등록 9,663건」을 정직하게 읽는 카드.
+    //   ⚠️ 태그는 `acc` «배열»이다(문자열 필드가 아니다). 처음 문자열로 세서 전부 0이 나왔다.
+    //   ⭐ 핵심 숫자는 «태그가 하나도 없는 8,247건(85%)» 이다. 총계만 쓰면 있는 것처럼 읽힌다.
+    const H3 = (x, t) => Array.isArray(x.acc) && x.acc.includes(t);
+    const accNone = access.filter(x => !Array.isArray(x.acc) || !x.acc.length).length;
+    const cbRows = [
+      ['w_t_p', access.filter(x => H3(x, '휠체어') && H3(x, '장애인화장실') && H3(x, '장애인주차')).length],
+      ['w_p', access.filter(x => H3(x, '휠체어') && H3(x, '장애인주차')).length],
+      ['w_t', access.filter(x => H3(x, '휠체어') && H3(x, '장애인화장실')).length],
+      ['four', access.filter(x => Array.isArray(x.acc) && x.acc.length >= 4).length],
+      ['one', access.filter(x => Array.isArray(x.acc) && x.acc.length === 1).length]
+    ].filter(([, n]) => n)
+      .map(([k, n], i) => `<tr><td>${(S.ac.cbLbl || {})[k] || k}</td><td class="n">${i === 0 ? '<b>' + nf(n) + '</b>' : nf(n)}</td></tr>`).join('');
+
+    // 시·군·구별 3종 완비 — ⚠️ 상위가 강원 일색이다. 「접근성이 좋다」가 아니라 «기록이 좋다»는 뜻이라고 적는다.
+    const sggAll3 = {};
+    access.forEach(x => {
+      if (!x.sigungu) return;
+      const k = (x.sido || '') + '\t' + x.sigungu;
+      sggAll3[k] = sggAll3[k] || { n: 0, a3: 0 };
+      sggAll3[k].n++;
+      if (H3(x, '휠체어') && H3(x, '장애인화장실') && H3(x, '장애인주차')) sggAll3[k].a3++;
+    });
+    const sggTop = Object.entries(sggAll3).filter(([, v]) => v.a3).sort((a, b) => b[1].a3 - a[1].a3).slice(0, 10);
+    const sggRows = sggTop.map(([k, v]) => {
+      const [sd, sg] = k.split('\t');
+      return `<tr><td>${esc(romanizeMixed(sg))} <span class="ic-kr">${esc(sg)}</span><br><span class="ic-note">${esc(sido(sd, lang))}</span></td><td class="n">${nf(v.a3)}</td><td class="n">${nf(v.n)}</td></tr>`;
+    }).join('');
+    const sggTopName = sggTop.length ? sido(sggTop[0][0].split('\t')[0], lang) : '';
+
+    // 카테고리 × 3종완비 — 「어느 종류가 기록이 좋은가」. 관광지와 음식점의 차이가 크게 난다.
+    const catAcc = {};
+    access.forEach(x => {
+      const k = x.cat || '?';
+      catAcc[k] = catAcc[k] || { n: 0, a3: 0 };
+      catAcc[k].n++;
+      if (H3(x, '휠체어') && H3(x, '장애인화장실') && H3(x, '장애인주차')) catAcc[k].a3++;
+    });
+    const catAccRows = Object.entries(catAcc).sort((a, b) => b[1].a3 - a[1].a3).slice(0, 8)
+      .map(([k, v]) => `<tr><td>${esc((CAT[k] && CAT[k][lang]) || k)}</td><td class="n">${nf(v.a3)}</td><td class="n">${nf(v.n)}</td><td class="n">${Math.round(100 * v.a3 / v.n)}%</td></tr>`).join('');
+
     const accContent = `<main><div class="wrap"><style>${CSS}</style>
 <h1 class="ic-h1">${S.ac.h1}</h1>
 <p class="ic-lead">${S.ac.lead(nf(access.length))}</p>
@@ -404,6 +446,19 @@ ${sidoBars}</div>
 ${Object.keys(accTag).sort((a, b) => accTag[b] - accTag[a]).map(k => `<tr><td>${esc(S.ac.tag[k] || k)}</td><td class="n">${nf(accTag[k])}</td></tr>`).join('')}
 </tbody></table></div>
 
+${S.ac.h2combo ? `<div class="ic-card"><h2>${S.ac.h2combo}</h2>
+<p>${S.ac.pCombo(nf(access.length), nf(accNone), Math.round(100 * accNone / access.length))}</p>
+<table class="ic-tbl"><thead><tr><th>${S.ac.thCombo}</th><th class="n">${S.ac.thN}</th></tr></thead><tbody>${cbRows}</tbody></table>
+<p class="ic-note">${S.ac.comboNote}</p></div>` : ''}
+
+${catAccRows && S.ac.h2catacc ? `<div class="ic-card"><h2>${S.ac.h2catacc}</h2>
+<p>${S.ac.pCatAcc}</p>
+<table class="ic-tbl"><thead><tr><th>${S.ac.thCat}</th><th class="n">${S.ac.thAll3}</th><th class="n">${S.ac.thTotal}</th><th class="n">%</th></tr></thead><tbody>${catAccRows}</tbody></table></div>` : ''}
+
+${sggRows && S.ac.h2sgg ? `<div class="ic-card"><h2>${S.ac.h2sgg}</h2>
+<p>${S.ac.pSgg(esc(sggTopName))}</p>
+<table class="ic-tbl"><thead><tr><th>${S.ac.thSgg}</th><th class="n">${S.ac.thAll3}</th><th class="n">${S.ac.thTotal}</th></tr></thead><tbody>${sggRows}</tbody></table></div>` : ''}
+
 <div class="ic-card"><h2>${S.ac.h2how}</h2>
 <p>${S.ac.pHow}</p>
 <p class="ic-note">${S.ac.src(nf(access.length), TODAY)}</p></div>
@@ -415,6 +470,14 @@ ${Object.keys(accTag).sort((a, b) => accTag[b] - accTag[a]).map(k => `<tr><td>${
     urls.push(`/${lang}/access/`);
 
     // ══════════ 3) /{lang}/calendar/ 허브 ══════════
+    // 🌏 2026-09-11 — `visitors.fgn`(외국인 방문 상위 시·군·구). 지금까지 어느 페이지도 안 쓰던 데이터다.
+    //   ⭐ 「추천」이 아니라 «실측»이라고 적는다 — 1위가 인천 중구(공항)인 이유가 그거다.
+    //   ⚠️ 시·군·구 250개의 번역본은 없다. 로마자 + 한글 병기로 간다(지도에 붙여 넣을 문자열은 한글이 정답).
+    const FGN = (visitors.fgn || []).slice(0, 10);
+    const fgnRows = FGN.map(r =>
+      `<tr><td>${esc(romanizeMixed(r.name))} <span class="ic-kr">${esc(r.name)}</span>${
+        r.sido ? `<br><span class="ic-note">${esc(sido(r.sido, lang))}</span>` : ''}</td><td class="n">${nf(r.num)}</td></tr>`).join('');
+
     const themeM = (visitors.seasonByMonth && visitors.seasonByMonth.themeMonths) || {};
     const monthRows = monthKeys.map(k => {
       const list = byMonth[k], m = +k.slice(5, 7);
@@ -472,6 +535,11 @@ ${running.length ? `<div class="ic-card"><h2>${S.cal.h2now}</h2>
 ${regBars}
 <p class="ic-note">${S.cal.regNote}</p></div>
 
+${fgnRows && S.cal.h2fgn ? `<div class="ic-card"><h2>${S.cal.h2fgn}</h2>
+<p>${S.cal.pFgn(esc(romanizeMixed(FGN[0].name)), nf(FGN[0].num))}</p>
+<table class="ic-tbl"><thead><tr><th>${S.cal.thPlace}</th><th class="n">${S.cal.thVisitors}</th></tr></thead><tbody>${fgnRows}</tbody></table>
+<p class="ic-note">${S.cal.fgnNote(esc(visitors.updated || visitors.period || ''))}</p></div>` : ''}
+
 <div class="ic-card"><h2>${S.cal.h2names}</h2>
 <p>${S.cal.pNames}</p></div>
 
@@ -506,6 +574,19 @@ ${regBars}
 <div class="ic-note" style="margin:-2px 0 6px 112px">${esc(romanizeMixed(r.name))} <span class="ic-kr">${esc(r.name)}</span></div>`;
       }).join('');
 
+      // 🏮 2026-09-11 — 그 달에 서는 오일장(날짜별).
+      //   왜 이걸 넣나: 2026-11 은 축제가 12건뿐이라 얇았다. «데이터가 없는 것»이라 축제로는 못 메운다.
+      //   오일장은 날짜 말일로 결정되니 어느 달이든 계산된다 — 달마다 값이 달라지는 진짜 재료다.
+      const MKT5 = markets.filter(mm => Array.isArray(mm.daysNum) && mm.daysNum.length === 2
+        && Math.abs(mm.daysNum[0] - mm.daysNum[1]) === 5);
+      const lastDay = new Date(+ym.slice(0, 4), m, 0).getDate();
+      const mktDays = [];
+      for (let d = 1; d <= lastDay; d++) {
+        const n = MKT5.filter(mm => mm.daysNum.some(x => (x % 10) === (d % 10))).length;
+        if (n) mktDays.push({ d, n });
+      }
+      const mktRows = mktDays.map(x => `<tr><td>${dateLabel(`${ym}-${String(x.d).padStart(2, '0')}`, lang)}</td><td class="n">${nf(x.n)}</td></tr>`).join('');
+
       const prev = bigMonths[mi - 1], next = bigMonths[mi + 1];
       const monthContent = `<main><div class="wrap"><style>${CSS}</style>
 <h1 class="ic-h1">${S.cal.mTitle(monthLabel(ym, lang))}</h1>
@@ -521,6 +602,11 @@ ${busy.length ? `<div class="ic-card"><h2>${S.cal.mBusyH}</h2>
 <p>${measured === m ? S.cal.mBusyP(MONN.en[m]) : S.cal.mBusyAlt(MONN.en[m], MONN.en[measured])}</p>
 ${busyBars}
 <p class="ic-note">${S.cal.mBusyNote}</p></div>` : ''}
+
+${mktRows && S.cal.mMktH ? `<div class="ic-card"><h2>${S.cal.mMktH}</h2>
+<p>${S.cal.mMktP}</p>
+<table class="ic-tbl"><thead><tr><th>${S.cal.thDate || S.cl.thDate}</th><th class="n">${S.cal.thOpen}</th></tr></thead><tbody>${mktRows}</tbody></table>
+<p class="ic-note">${S.cal.mMktNote(nf(MKT5.length))}</p></div>` : ''}
 
 <div class="ic-nav">
 ${prev ? `<a href="/${lang}/calendar/${prev}/">← ${monthLabel(prev, lang)}</a>` : ''}

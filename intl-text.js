@@ -510,4 +510,153 @@ const tw = {
   }
 };
 
+// ─────────────────────────────────────────────────────────────────────────────
+// 2026-09-11 추가분 — 얇은 외국어 페이지(2,000자 미만)를 «가진 데이터»로 채운다.
+//   ⚠️ 위의 언어 블록을 건드리지 않고 뒤에서 합친다(diff 를 작게, 기존 문구를 안 깨뜨린다).
+//
+//   왜 이 세 카드인가 — 실측해서 «있는 재료»만 골랐다:
+//     ① /access/ 1,048~1,306자 → `accessible.json` 의 `acc` 태그 배열.
+//        9,663건 중 **8,247건(85%)이 태그가 하나도 없다.** 3종(휠체어+화장실+주차) 완비는 434건.
+//        이게 「등록 9,663건」이라는 숫자를 정직하게 읽는 유일한 방법이다.
+//     ② /calendar/ 허브 1,800~1,928자 → `visitors.json` 의 `fgn`(외국인 방문 상위 시·군·구).
+//        지금까지 아무 페이지도 안 쓰던 데이터인데, 외국어 독자에겐 제일 값어치가 크다.
+//     ③ /calendar/{ym}/ 1,493~1,543자 → `markets_std.json` 409곳의 날짜별 개장.
+//        11월이 얇은 건 «축제가 12건뿐»이라서다(데이터가 없는 것) → 다른 재료로 메운다.
+// ─────────────────────────────────────────────────────────────────────────────
+Object.assign(en.ac, {
+  h2combo: 'What "registered" actually contains',
+  pCombo: (tot, none, pctNone) => `This is the number that matters more than the total. Of <b>${tot}</b> registered places, <b>${none}</b> — <b>${pctNone}%</b> — carry <b>no accessibility tag at all</b>. They are in the database, but nothing is recorded about what they offer. The counts below are what is left.`,
+  cbLbl: {
+    w_t_p: 'Wheelchair access + accessible toilet + accessible parking',
+    w_t: 'Wheelchair access + accessible toilet',
+    w_p: 'Wheelchair access + accessible parking',
+    four: 'Four or more tags recorded',
+    one: 'Only one tag recorded'
+  },
+  thCombo: 'Combination', comboNote: 'A place counts here only if the tag is present in the record. Absence of a tag means "not recorded", not "not available" — and the reverse is also true: a tag is a claim by the operator, not an inspection result.',
+  h2sgg: 'Where the well-documented places are',
+  pSgg: (top) => `Districts with the most places carrying all three core tags. <b>Read this as a map of where the data is good, not where Korea is accessible.</b> ${top} dominates this list because a single regional tourism office filled in its records thoroughly — not because the rest of the country is worse.`,
+  thSgg: 'District', thAll3: 'All three tags', thTotal: 'Registered',
+  h2catacc: 'Which kinds of places are documented properly',
+  pCatAcc: 'The same three-tag test, split by type of place. The gap is the point: a museum or a park is far more likely to have complete records than a restaurant, because public facilities are surveyed and private ones self-report. If you need certainty, plan around the types near the top of this table.'
+});
+Object.assign(en.cal, {
+  h2fgn: 'Where foreign visitors actually go',
+  pFgn: (top, n) => `Not a recommendation list — a measurement. These are the districts with the highest foreign-visitor counts in the national tourism data. <b>${top}</b> is first with <b>${n}</b>. Airport and port districts rank high for obvious reasons; the rest is where people actually spend their days.`,
+  thPlace: 'District', thVisitors: 'Foreign visitors',
+  fgnNote: (period) => `Source: Korea Tourism Data Lab, foreign-visitor counts per district, ${period}. Estimated from mobile and card data. Korean names are shown so you can paste them into a map app.`,
+  mMktH: 'Traditional markets open this month',
+  mMktP: 'Rural Korean markets open once every five days, on dates ending in fixed digits — not on fixed weekdays. If a market day falls inside your trip, go: it is the one thing on this page you cannot see in Seoul.',
+  thOpen: 'Markets open',
+  mMktNote: (tot) => `Calculated from ${tot} five-day markets in the Ministry of the Interior and Safety standard dataset. Locations are on the <a href="../../jangteo/">five-day market page</a>.`
+});
+Object.assign(ja.ac, {
+  h2combo: '「登録あり」の中身',
+  pCombo: (tot, none, pctNone) => `合計より大事なのがこの数字です。登録<b>${tot}</b>件のうち<b>${none}</b>件（<b>${pctNone}%</b>）は<b>バリアフリーのタグが一つも付いていません</b>。データベースにはあるけれど、何が備わっているかは記録されていないという意味です。以下は残りの件数です。`,
+  cbLbl: {
+    w_t_p: '車椅子 + 身障者用トイレ + 身障者用駐車場',
+    w_t: '車椅子 + 身障者用トイレ',
+    w_p: '車椅子 + 身障者用駐車場',
+    four: 'タグが4つ以上',
+    one: 'タグが1つだけ'
+  },
+  thCombo: '組み合わせ', comboNote: 'タグが記録にある場合だけ数えています。タグがないのは「無い」ではなく「記録がない」という意味です。逆に、タグがあっても事業者の申告であって検査結果ではありません。',
+  h2sgg: '記録が充実している地域',
+  pSgg: (top) => `主要3タグがすべて付いている施設が多い市・郡・区です。<b>「韓国のどこがバリアフリーか」ではなく「どこのデータが良いか」の地図として読んでください。</b>${top}が上位を占めているのは、その地域の観光担当が記録を丁寧に埋めたからで、他が劣っているという意味ではありません。`,
+  thSgg: '市・郡・区', thAll3: '3タグ完備', thTotal: '登録数',
+  h2catacc: '種類ごとに記録の質が違います',
+  pCatAcc: '同じ3タグ判定を、施設の種類で分けました。差が出ること自体が要点です。博物館や公園は記録が揃っている割合が高く、飲食店は低い — 公共施設は調査され、民間は自己申告だからです。確実さが必要なら、この表の上のほうの種類を軸に計画してください。'
+});
+Object.assign(ja.cal, {
+  h2fgn: '外国人が実際に行っている場所',
+  pFgn: (top, n) => `おすすめ一覧ではなく、実測です。国の観光データで外国人訪問者数が多い市・郡・区を並べました。1位は<b>${top}</b>で<b>${n}</b>人。空港・港のある区が上位に来るのは当然ですが、その先が「実際に時間を使っている場所」です。`,
+  thPlace: '市・郡・区', thVisitors: '外国人訪問者',
+  fgnNote: (period) => `出典：韓国観光データラボ、市郡区別の外国人訪問者数（${period}）。携帯・カードデータからの推計です。地図アプリに貼れるようハングルも併記しています。`,
+  mMktH: 'この月に立つ五日市',
+  mMktP: '韓国の田舎の市場は曜日ではなく「日付の末尾」で決まった日に、5日ごとに開きます。旅程に市の日が入っていれば行ってみてください。このページで唯一、ソウルでは見られないものです。',
+  thOpen: '開く市場',
+  mMktNote: (tot) => `行政安全部の標準データにある五日市${tot}ヶ所から計算しました。場所は<a href="../../jangteo/">五日市のページ</a>で探せます。`
+});
+Object.assign(es.ac, {
+  h2combo: 'Qué contiene realmente «registrado»',
+  pCombo: (tot, none, pctNone) => `Esta cifra importa más que el total. De <b>${tot}</b> lugares registrados, <b>${none}</b> — el <b>${pctNone}%</b> — <b>no tienen ninguna etiqueta de accesibilidad</b>. Están en la base de datos, pero no consta qué ofrecen. Los recuentos de abajo son lo que queda.`,
+  cbLbl: {
+    w_t_p: 'Acceso en silla de ruedas + baño adaptado + aparcamiento adaptado',
+    w_t: 'Acceso en silla de ruedas + baño adaptado',
+    w_p: 'Acceso en silla de ruedas + aparcamiento adaptado',
+    four: 'Cuatro etiquetas o más',
+    one: 'Solo una etiqueta'
+  },
+  thCombo: 'Combinación', comboNote: 'Solo se cuenta si la etiqueta consta en el registro. La ausencia de etiqueta significa «no consta», no «no existe». Y al contrario: una etiqueta es una declaración del titular, no el resultado de una inspección.',
+  h2sgg: 'Dónde los registros están mejor documentados',
+  pSgg: (top) => `Distritos con más lugares que tienen las tres etiquetas principales. <b>Léalo como un mapa de dónde el dato es bueno, no de dónde Corea es accesible.</b> ${top} domina esta lista porque una oficina de turismo regional rellenó sus registros con cuidado, no porque el resto del país sea peor.`,
+  thSgg: 'Distrito', thAll3: 'Las tres etiquetas', thTotal: 'Registrados',
+  h2catacc: 'Qué tipos de lugar están bien documentados',
+  pCatAcc: 'La misma prueba de tres etiquetas, separada por tipo de lugar. La diferencia es lo relevante: un museo o un parque tiene muchas más probabilidades de tener el registro completo que un restaurante, porque las instalaciones públicas se inspeccionan y las privadas se autodeclaran. Si necesita certeza, planifique alrededor de los tipos que aparecen arriba en esta tabla.'
+});
+Object.assign(es.cal, {
+  h2fgn: 'Dónde van realmente los visitantes extranjeros',
+  pFgn: (top, n) => `No es una lista de recomendaciones, es una medición. Estos son los distritos con más visitantes extranjeros según los datos nacionales de turismo. <b>${top}</b> es el primero con <b>${n}</b>. Los distritos con aeropuerto o puerto salen arriba por razones obvias; el resto es donde la gente pasa realmente el día.`,
+  thPlace: 'Distrito', thVisitors: 'Visitantes extranjeros',
+  fgnNote: (period) => `Fuente: Korea Tourism Data Lab, visitantes extranjeros por distrito, ${period}. Estimado a partir de datos de móvil y tarjeta. Los nombres en coreano se muestran para que pueda pegarlos en una app de mapas.`,
+  mMktH: 'Mercados tradicionales abiertos este mes',
+  mMktP: 'Los mercados rurales coreanos abren una vez cada cinco días, en fechas cuyo último dígito es fijo — no en días fijos de la semana. Si un día de mercado cae dentro de su viaje, vaya: es lo único de esta página que no se puede ver en Seúl.',
+  thOpen: 'Mercados abiertos',
+  mMktNote: (tot) => `Calculado sobre ${tot} mercados de cinco días del conjunto de datos estándar del Ministerio del Interior y Seguridad. Las ubicaciones están en la <a href="../../jangteo/">página de mercados</a>.`
+});
+Object.assign(zh.ac, {
+  h2combo: '「已登记」到底包含什么',
+  pCombo: (tot, none, pctNone) => `这个数字比总数更重要。已登记的 <b>${tot}</b> 处中，有 <b>${none}</b> 处（<b>${pctNone}%</b>）<b>没有任何无障碍标签</b>。它们在数据库里，但没有记录具体提供什么。下面的数字是剩下的部分。`,
+  cbLbl: {
+    w_t_p: '轮椅通行 + 无障碍卫生间 + 无障碍停车位',
+    w_t: '轮椅通行 + 无障碍卫生间',
+    w_p: '轮椅通行 + 无障碍停车位',
+    four: '标签 4 个以上',
+    one: '只有 1 个标签'
+  },
+  thCombo: '组合', comboNote: '只有记录中确实有该标签时才计入。没有标签的意思是「没有记录」，不是「没有设施」；反过来，有标签也只是经营者申报，不是检查结果。',
+  h2sgg: '记录比较完整的地区',
+  pSgg: (top) => `三项核心标签齐全的设施最多的市·郡·区。<b>请把它当成「哪里的数据好」的地图，而不是「韩国哪里无障碍」的地图。</b>${top}占据前列，是因为当地旅游部门把记录填得仔细，不是因为其他地方更差。`,
+  thSgg: '市·郡·区', thAll3: '三项齐全', thTotal: '登记数',
+  h2catacc: '哪一类场所的记录填得比较完整',
+  pCatAcc: '同样的三项标签检验，按场所类型拆开。差距本身就是重点：博物馆和公园记录齐全的比例明显高于餐厅，因为公共设施有人普查，民营场所靠自行申报。如果您需要的是确定性，请围绕这张表上方的类型来安排行程，并在出发前直接致电确认。'
+});
+Object.assign(zh.cal, {
+  h2fgn: '外国游客实际去的地方',
+  pFgn: (top, n) => `这不是推荐榜，是实测。以下是国家旅游数据中外国游客人数最多的市·郡·区。第一名是 <b>${top}</b>，<b>${n}</b> 人次。有机场和港口的区排在前面理所当然，后面那些才是人们真正花时间的地方。`,
+  thPlace: '市·郡·区', thVisitors: '外国游客',
+  fgnNote: (period) => `资料来源：韩国观光数据实验室，各市郡区外国游客人次（${period}）。基于手机与刷卡数据推算。并列标注韩文，方便粘贴到地图应用。`,
+  mMktH: '本月开市的五日集',
+  mMktP: '韩国乡下的集市不按星期，而是按「日期末位」固定的那几天，每五天开一次。如果行程里刚好有集市日，值得去一趟——这是本页唯一在首尔看不到的东西。',
+  thOpen: '开市数量',
+  mMktNote: (tot) => `根据行政安全部标准数据中的 ${tot} 处五日集计算。地点见<a href="../../jangteo/">五日集页面</a>。`
+});
+Object.assign(tw.ac, {
+  h2combo: '「已登錄」到底包含什麼',
+  pCombo: (tot, none, pctNone) => `這個數字比總數更重要。已登錄的 <b>${tot}</b> 處中，有 <b>${none}</b> 處（<b>${pctNone}%</b>）<b>沒有任何無障礙標籤</b>。它們在資料庫裡，但沒有記錄實際提供什麼。下面的數字是剩下的部分。`,
+  cbLbl: {
+    w_t_p: '輪椅通行 + 無障礙廁所 + 無障礙停車位',
+    w_t: '輪椅通行 + 無障礙廁所',
+    w_p: '輪椅通行 + 無障礙停車位',
+    four: '標籤 4 個以上',
+    one: '只有 1 個標籤'
+  },
+  thCombo: '組合', comboNote: '只有記錄中確實有該標籤時才計入。沒有標籤是「沒有記錄」，不是「沒有設施」；反過來，有標籤也只是業者申報，不是檢查結果。',
+  h2sgg: '記錄比較完整的地區',
+  pSgg: (top) => `三項核心標籤齊全的設施最多的市·郡·區。<b>請把它當成「哪裡的資料好」的地圖，而不是「韓國哪裡無障礙」的地圖。</b>${top}占據前列，是因為當地觀光部門把紀錄填得仔細，不是因為其他地方更差。`,
+  thSgg: '市·郡·區', thAll3: '三項齊全', thTotal: '登錄數',
+  h2catacc: '哪一類場所的紀錄填得比較完整',
+  pCatAcc: '同樣的三項標籤檢驗，依場所類型拆開。落差本身就是重點：博物館與公園紀錄齊全的比例明顯高於餐廳，因為公共設施有人普查，民營場所靠自行申報。如果您需要的是確定性，請圍繞這張表上方的類型安排行程，並在出發前直接打電話確認。'
+});
+Object.assign(tw.cal, {
+  h2fgn: '外國遊客實際會去的地方',
+  pFgn: (top, n) => `這不是推薦榜，是實測。以下是國家觀光資料中外國遊客人數最多的市·郡·區。第一名是 <b>${top}</b>，<b>${n}</b> 人次。有機場與港口的區排在前面理所當然，後面那些才是大家真正花時間的地方。`,
+  thPlace: '市·郡·區', thVisitors: '外國遊客',
+  fgnNote: (period) => `資料來源：韓國觀光資料實驗室，各市郡區外國遊客人次（${period}）。依手機與刷卡資料推估。並列標註韓文，方便貼到地圖 App。`,
+  mMktH: '本月開市的五日市',
+  mMktP: '韓國鄉下的市集不看星期，而是看「日期尾數」固定的那幾天，每五天開一次。如果行程剛好碰到市集日，值得去一趟——這是本頁唯一在首爾看不到的東西。',
+  thOpen: '開市數量',
+  mMktNote: (tot) => `依行政安全部標準資料中的 ${tot} 處五日市計算。地點見<a href="../../jangteo/">五日市頁面</a>。`
+});
+
 module.exports = { en, ja, es, zh, tw };

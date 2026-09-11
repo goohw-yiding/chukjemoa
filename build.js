@@ -2065,6 +2065,14 @@ const PAGE_BUYBOX = {
 //      애드센스가 싫어하는 모양이 된다(2026-09-09 또 반려된 상태다). 감사도구와 같은 기준을 쓴다.
 const KORY = require('./kory.js');
 const KORY_LANGS = new Set(['en', 'ja', 'zh', 'tw', 'es']);
+// ⚠️ 2026-09-11 2차 — 임계값을 «언어별»로 나눴다.
+//   왜: /zh/access/ 1,928자 · /tw/access/ 1,912자가 2,000 벽에서 계속 걸렸다. 그런데 en/es 의 «같은 내용»은
+//   6,000자대다 — 중국어·일본어가 같은 정보를 훨씬 적은 글자로 쓰기 때문이다(라틴 대비 대략 1.5~2배 밀도).
+//   여기서 72자를 억지로 채우면 그건 내용이 아니라 패딩이다. 고쳐야 할 건 페이지가 아니라 «자를 대는 방식»이었다.
+//   ⭐ 감사도구(audit-pages.js)의 2,000자 경고는 «그대로 둔다» — 전사 공통 기준이라 여기서 바꾸면
+//      다른 판단이 흐려진다. 이 숫자는 «코리 블록을 넣을지»만 정한다.
+//   ⛔ /tw/search/ 799자는 여전히 제외된다 — JS로 채우는 검색 페이지라 제외가 맞다.
+const KORY_MIN_BODY_BY_LANG = { ja: 1600, zh: 1600, tw: 1600, en: 2000, es: 2000 };
 const KORY_MIN_BODY = 2000;
 const KORY_STAT = { put: 0, city: 0, korea: 0, already: 0, thin: [], noAnchor: [] };
 function koryInject(rel, html) {
@@ -2078,7 +2086,8 @@ function koryInject(rel, html) {
   const body = a0 < 0 || a1 < 0 ? '' : html.slice(a0, a1)
     .replace(/<script[\s\S]*?<\/script>/g, ' ').replace(/<style[\s\S]*?<\/style>/g, ' ')
     .replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
-  if (body.length < KORY_MIN_BODY) { KORY_STAT.thin.push(`/${rel}/ ${body.length}자`); return html; }
+  const minBody = KORY_MIN_BODY_BY_LANG[lang] || KORY_MIN_BODY;
+  if (body.length < minBody) { KORY_STAT.thin.push(`/${rel}/ ${body.length}자<${minBody}`); return html; }
 
   // 도시는 «페이지에 이미 있는 것»에서 읽는다 — 2026-09-07에 깐 「이 축제가 있는 도시」 링크.
   //   ⚠️ 이름 매칭을 하지 않는다(좌표로 판정한 그 결과를 그대로 재사용한다).
