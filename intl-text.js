@@ -28,6 +28,22 @@ const en = {
     h2good: 'The good news',
     pGood: (n, pct, cafeN) => `<b>${n}</b> restaurants — <b>${pct}%</b> — register as open every day of the year, along with <b>${cafeN}</b> cafés. Convenience stores are genuinely 24-hour and are everywhere. You will not go hungry in Korea; you will just occasionally not eat the specific thing you planned.`,
     pGood2: 'Department stores, large chains and subway-adjacent food courts keep the most reliable hours. Small owner-run places keep the least reliable ones — and they are usually the ones worth going to.',
+    // 🔤 2026-09-11 신설 — 문 앞 표기 사전.
+    //   ⚠️ 왼쪽 칸은 한국어를 그대로 둔다(번역해 지우지 않는다) — 현지에서 눈으로 맞춰 보는 글자다.
+    //   ja/closed 하위 페이지와 같은 사고. 공휴일 표는 어디에나 있고, 우리만 줄 수 있는 건 «표기 실물»이다.
+    h2read: 'What the sign on the door actually says',
+    pRead: (tot) => `Korean shops write their closing day on the door, on a paper sign, or on their Instagram — <b>in Korean, always</b>. We have not translated these away, because these are the characters you will be standing in front of. Counted across <b>${tot}</b> restaurants and cafés.`,
+    thExpr: 'On the sign', thMean: 'What it means', thN: 'Places',
+    ex: {
+      always: 'Open every day of the year',
+      weekly: (d) => `Closed every ${d}`,
+      namHol: 'Closed for the whole Seollal / Chuseok holiday',
+      namDay: 'Closed on Seollal / Chuseok day only — open before and after',
+      biweek: 'Closed on the 1st / 3rd (or alternate) week of the month',
+      brk: 'Mid-afternoon break, or a last-order time earlier than closing'
+    },
+    readKey: 'Three words carry most of it: <b>휴무</b> means closed, <b>요일</b> means day of the week, and <b>매주</b> means every week. If you can spot those, you can read almost any Korean shop sign.',
+    readNote: 'Counted from the closing-day and opening-hours text each business registered with the Korea Tourism Organization. A blank field does not mean "never closed" — it means no information.',
     h2how: 'How to check a specific place yourself',
     pHow: 'Opening hours in Korea are most accurate on Naver Map and Kakao Map, not on Google Maps. Both work better if you search the Korean name, which is why every place on this site is shown with its Korean name next to the romanised one. Copy the Korean text, paste it into the search box, and read the hours line.',
     src: (rn, cn, d) => `Source: Korea Tourism Organization TourAPI — opening hours and closing days for ${rn} restaurants and ${cn} cafés · public holiday dates from the Korean government open data portal. Counted on ${d}. Hours change without notice; confirm before you travel.`
@@ -115,6 +131,20 @@ const ja = {
     h2good: '良い知らせ',
     pGood: (n, pct, cafeN) => `飲食店<b>${n}</b>軒（<b>${pct}%</b>）とカフェ<b>${cafeN}</b>軒が年中無休で登録されています。コンビニは本当に24時間で、どこにでもあります。韓国で食べ物に困ることはありません。困るのは「予定していたその一軒」に入れないときだけです。`,
     pGood2: 'デパート・大型チェーン・駅直結のフードコートが最も読みやすい営業時間です。逆に読みにくいのは個人店で、そして行く価値があるのはたいていそちらです。',
+    // 🔤 2026-09-11 신설 — 문 앞 표기 사전(한글 의도적 유지)
+    h2read: '店先に貼ってある韓国語',
+    pRead: (tot) => `韓国の店は定休日をドアや紙の掲示、インスタグラムに<b>韓国語のまま</b>書きます。ここでは訳して消していません — 現地で実際に目の前にある文字だからです。飲食店とカフェ合わせて<b>${tot}</b>軒から数えました。`,
+    thExpr: '店先の表記', thMean: '意味', thN: '軒数',
+    ex: {
+      always: '年中無休',
+      weekly: (d) => `毎週${d}が定休`,
+      namHol: 'ソルラル・チュソクは連休まるごと休み',
+      namDay: 'ソルラル・チュソクは当日だけ休み（前後は営業）',
+      biweek: '第1・第3週（隔週）が定休',
+      brk: '昼と夜のあいだの中休み、または閉店より早いラストオーダー'
+    },
+    readKey: '三語でほぼ読めます。<b>휴무</b>が休業、<b>요일</b>が曜日、<b>매주</b>が毎週です。この三つを見分けられれば、韓国の店の掲示はだいたい読めます。',
+    readNote: '各店が韓国観光公社に登録した「休業日」「営業時間」欄の記述から数えました。空欄は「無休」ではなく「情報がない」という意味です。',
     h2how: '特定の店を自分で確認する方法',
     pHow: '韓国の営業時間は Google マップより NAVER 地図・カカオマップのほうが正確です。どちらも「ハングルの店名」で検索したほうが確実に出ます。当サイトが地名や店名にハングルを併記しているのはそのためです。ハングルをコピーして検索欄に貼り、営業時間の行を読んでください。',
     src: (rn, cn, d) => `出典：韓国観光公社 TourAPI — 飲食店${rn}軒・カフェ${cn}軒の営業時間と休業日／祝日は韓国政府の公共データ。集計日 ${d}。営業時間は予告なく変わります。出発前にご確認ください。`
@@ -202,6 +232,20 @@ const es = {
     h2good: 'La buena noticia',
     pGood: (n, pct, cafeN) => `<b>${n}</b> restaurantes — el <b>${pct}%</b> — figuran como abiertos todos los días del año, junto con <b>${cafeN}</b> cafeterías. Las tiendas de conveniencia abren de verdad 24 horas y están por todas partes. En Corea no se va a quedar sin comer; simplemente algún día no comerá lo que tenía previsto.`,
     pGood2: 'Los grandes almacenes, las cadenas y los patios de comidas junto al metro son los de horario más fiable. Los locales pequeños de dueño único son los menos fiables — y suelen ser los que merecen la pena.',
+    // 🔤 2026-09-11 신설 — 문 앞 표기 사전(한글 의도적 유지)
+    h2read: 'Lo que dice el cartel de la puerta',
+    pRead: (tot) => `Los locales coreanos escriben su día de cierre en la puerta, en un cartel de papel o en Instagram — <b>siempre en coreano</b>. No lo hemos traducido para borrarlo, porque son los caracteres que vas a tener delante. Contado sobre <b>${tot}</b> restaurantes y cafeterías.`,
+    thExpr: 'En el cartel', thMean: 'Qué significa', thN: 'Locales',
+    ex: {
+      always: 'Abierto todos los días del año',
+      weekly: (d) => `Cierra todos los ${d}`,
+      namHol: 'Cerrado todo el puente de Seollal / Chuseok',
+      namDay: 'Cerrado solo el día de Seollal / Chuseok — abierto antes y después',
+      biweek: 'Cierra la 1.ª / 3.ª semana del mes (semanas alternas)',
+      brk: 'Pausa de media tarde, o última orden antes de la hora de cierre'
+    },
+    readKey: 'Con tres palabras se lee casi todo: <b>휴무</b> es cerrado, <b>요일</b> es día de la semana y <b>매주</b> es cada semana. Si reconoces esas tres, puedes leer casi cualquier cartel.',
+    readNote: 'Contado a partir del texto de cierre y horario que cada local registró en la Organización de Turismo de Corea. Un campo vacío no significa «nunca cierra»: significa que no hay información.',
     h2how: 'Cómo comprobar un sitio concreto',
     pHow: 'Los horarios en Corea son más fiables en Naver Map y Kakao Map que en Google Maps. Ambas funcionan mucho mejor si busca el nombre en coreano, y por eso en este sitio cada lugar aparece con su nombre coreano junto al romanizado. Copie el texto coreano, péguelo en el buscador y lea la línea del horario.',
     src: (rn, cn, d) => `Fuente: TourAPI de la Organización de Turismo de Corea — horarios y días de cierre de ${rn} restaurantes y ${cn} cafeterías · fechas festivas del portal de datos abiertos del Gobierno de Corea. Recuento del ${d}. Los horarios cambian sin aviso; confírmelos antes de viajar.`
@@ -289,6 +333,20 @@ const zh = {
     h2good: '好消息',
     pGood: (n, pct, cafeN) => `<b>${n}</b> 家餐厅（<b>${pct}%</b>）和 <b>${cafeN}</b> 家咖啡馆登记为全年无休。便利店是真正的 24 小时，而且遍地都是。在韩国不会饿肚子，只是偶尔吃不到原本计划的那一家。`,
     pGood2: '百货公司、大型连锁和地铁站旁的美食广场营业时间最稳定。个体小店最不稳定——而值得去的往往正是后者。',
+    // 🔤 2026-09-11 신설 — 문 앞 표기 사전(한글 의도적 유지)
+    h2read: '门口贴的韩文写了什么',
+    pRead: (tot) => `韩国的店把休息日写在门上、纸质告示或 Instagram 上，<b>一律用韩文</b>。我们没有把它翻译掉，因为你到了店门口看到的就是这些字。以下数字来自 <b>${tot}</b> 家餐厅和咖啡馆。`,
+    thExpr: '门口的写法', thMean: '意思', thN: '家数',
+    ex: {
+      always: '全年无休',
+      weekly: (d) => `每${d}固定休息`,
+      namHol: '春节・中秋整个假期都休息',
+      namDay: '只在春节・中秋当天休息，前后照常营业',
+      biweek: '每月第 1・第 3 周（隔周）休息'
+      , brk: '午后有中场休息，或最后点单时间早于关门时间'
+    },
+    readKey: '记住三个词基本就够了：<b>휴무</b>是休息，<b>요일</b>是星期，<b>매주</b>是每周。认得这三个，韩国店门口的告示大致都读得懂。',
+    readNote: '数字来自各店在韩国观光公社登记的「休息日」「营业时间」栏文字。栏位空白不等于全年无休，只表示没有信息。',
     h2how: '怎样自己确认某一家店',
     pHow: '在韩国查营业时间，NAVER 地图和 Kakao 地图比 Google 地图准确得多。两者用韩文店名搜索的命中率明显更高，这也是本站每个地名都并列标注韩文的原因。复制韩文粘贴到搜索框，看营业时间那一行即可。',
     src: (rn, cn, d) => `资料来源：韩国观光公社 TourAPI — ${rn} 家餐厅、${cn} 家咖啡馆的营业时间与休息日；公休日期来自韩国政府公共数据门户。统计日期 ${d}。营业时间可能随时变更，出发前请再确认。`
@@ -376,6 +434,20 @@ const tw = {
     h2good: '好消息',
     pGood: (n, pct, cafeN) => `<b>${n}</b> 家餐廳（<b>${pct}%</b>）與 <b>${cafeN}</b> 家咖啡廳登錄為全年無休。便利商店是真正的 24 小時，而且到處都是。在韓國不會餓到，只是偶爾吃不到原本計畫的那一家。`,
     pGood2: '百貨公司、大型連鎖與捷運站旁的美食街營業時間最穩定。個人小店最不穩定——而值得去的往往正是後者。',
+    // 🔤 2026-09-11 신설 — 문 앞 표기 사전(한글 의도적 유지)
+    h2read: '門口貼的韓文寫了什麼',
+    pRead: (tot) => `韓國的店把公休日寫在門上、紙本告示或 Instagram 上，<b>一律用韓文</b>。我們沒有把它翻譯掉，因為你走到店門口看到的就是這些字。以下數字來自 <b>${tot}</b> 家餐廳與咖啡廳。`,
+    thExpr: '門口的寫法', thMean: '意思', thN: '家數',
+    ex: {
+      always: '全年無休',
+      weekly: (d) => `每${d}固定公休`,
+      namHol: '春節・中秋整個連假都休息',
+      namDay: '只在春節・中秋當天休息，前後照常營業',
+      biweek: '每月第 1・第 3 週（隔週）公休',
+      brk: '午後有中場休息，或最後點餐時間早於關門時間'
+    },
+    readKey: '記住三個詞大致就夠了：<b>휴무</b>是休息，<b>요일</b>是星期，<b>매주</b>是每週。認得這三個，韓國店門口的告示大致都讀得懂。',
+    readNote: '數字來自各店在韓國觀光公社登錄的「公休日」「營業時間」欄文字。欄位空白不等於全年無休，只表示沒有資訊。',
     h2how: '怎麼自己確認某一家店',
     pHow: '在韓國查營業時間，NAVER 地圖與 Kakao 地圖比 Google 地圖準得多。兩者用韓文店名搜尋的命中率明顯較高，這也是本站每個地名都並列韓文的原因。複製韓文貼到搜尋框，看營業時間那一行即可。',
     src: (rn, cn, d) => `資料來源：韓國觀光公社 TourAPI — ${rn} 家餐廳、${cn} 家咖啡廳的營業時間與公休日；假日日期取自韓國政府公共資料入口網。統計日期 ${d}。營業時間可能隨時變更，出發前請再確認。`

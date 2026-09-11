@@ -191,15 +191,25 @@ function build(ctx) {
   const DN = ['일', '월', '화', '수', '목', '금', '토'];
   function closeStat(list) {
     const day = [0, 0, 0, 0, 0, 0, 0]; let always = 0, none = 0, hol = 0, brk = 0;
+    // ── 2026-09-11 추가: «문 앞 표기 사전»에 쓸 표기 빈도.
+    //   ⚠️ 위의 always/none/hol/brk 는 건드리지 않는다 — 이미 발행된 문구(pGood·pBreak)가 그 숫자를 쓴다.
+    //   ⚠️ 아래 카운트는 early-return 없이 «독립으로» 센다(연중무휴이면서 명절 표기가 같이 있는 곳도 있다).
+    let weekly = 0, biweek = 0, namHol = 0, namDay = 0;
     list.forEach(x => {
       const s = String(x.rest || '');
       if (/브레이크|준비\s*시간|준비시간|라스트오더|마지막\s*주문/.test(String(x.open || ''))) brk++;
+      if (s) {
+        if (/매주/.test(s)) weekly++;
+        if (/첫째|둘째|셋째|넷째|격주/.test(s)) biweek++;
+        if (/설·추석\s*연휴|명절\s*연휴/.test(s)) namHol++;
+        if (/설·추석\s*당일|명절\s*당일/.test(s)) namDay++;
+      }
       if (!s) { none++; return; }
       if (/연중무휴|무휴/.test(s)) { always++; return; }
       DN.forEach((d, i) => { if (new RegExp(d + '요일|매주\\s*' + d + '|' + d + '휴').test(s)) day[i]++; });
       if (/명절|설날|추석/.test(s)) hol++;
     });
-    return { n: list.length, day, always, none, hol, brk };
+    return { n: list.length, day, always, none, hol, brk, weekly, biweek, namHol, namDay };
   }
   const RS = closeStat(rests), CS = closeStat(cafes);
   const worstDay = RS.day.indexOf(Math.max(...RS.day));
@@ -296,6 +306,34 @@ function build(ctx) {
           esc(b.ja)}（${b.span.length}連休）</a>`).join('')}</div></div>`;
     })();
 
+    // 🔤 2026-09-11 — 문 앞 표기 사전.
+    //   왜 5개어 전부인가: 생성기가 한 곳이라 한 번 고치면 다섯 장이 같이 좋아진다.
+    //     그리고 `/zh/closed/`(1,600자)·`/tw/closed/`(1,578자)가 「2,000자 미만 색인 페이지」에 들어 있었다.
+    //   ⚠️ 다만 zh·tw 는 «검색 수요 근거가 ja 와 다르다» — 180일 GSC 에서 일본은 定休日 계열
+    //     검색어가 4개(62노출)인데 중화권은 휴무 의도 검색어가 0건이고 대만 1위는 「韓國高山排名」이었다.
+    //     그래서 여기까지만 하고 **연휴별 하위 페이지는 만들지 않는다**(ja 는 수요가 확인돼서 만들었다).
+    //   ⚠️ 왼쪽 칸의 한글은 «의도적»이다 — 가게 문에 붙은 글자를 눈으로 맞춰 보는 용도.
+    const readCard = (() => {
+      const E = S.cl.ex; if (!E) return '';
+      const TOT = RS.n + CS.n;
+      const rows = [];
+      const row = (ko, mean, n) => rows.push(
+        `<tr><td><b class="ic-kr" style="opacity:1;font-size:1em">${esc(ko)}</b></td><td>${mean}</td><td class="n">${nf(n)}</td></tr>`);
+      row('연중무휴', E.always, RS.always + CS.always);
+      // 정기휴무가 많은 요일 상위 3개 — 어느 언어든 그 언어의 요일 이름으로 쓴다
+      DN.map((d, i) => ({ i, n: RS.day[i] + CS.day[i] })).sort((a, b) => b.n - a.n).slice(0, 3)
+        .forEach(o => { if (o.n) row(`매주 ${DN[o.i]}요일`, E.weekly(WD[lang][o.i]), o.n); });
+      if (RS.namHol + CS.namHol) row('설·추석 연휴', E.namHol, RS.namHol + CS.namHol);
+      if (RS.namDay + CS.namDay) row('설·추석 당일', E.namDay, RS.namDay + CS.namDay);
+      if (RS.biweek + CS.biweek) row('격주 / 첫째·셋째', E.biweek, RS.biweek + CS.biweek);
+      if (RS.brk + CS.brk) row('준비시간 · 브레이크타임 · 마지막 주문', E.brk, RS.brk + CS.brk);
+      return `<div class="ic-card"><h2>${S.cl.h2read}</h2>
+<p>${S.cl.pRead(nf(TOT))}</p>
+<table class="ic-tbl"><thead><tr><th>${S.cl.thExpr}</th><th>${S.cl.thMean}</th><th class="n">${S.cl.thN}</th></tr></thead><tbody>${rows.join('')}</tbody></table>
+<p>${S.cl.readKey}</p>
+<p class="ic-note">${S.cl.readNote}</p></div>`;
+    })();
+
     const closedContent = `<main><div class="wrap"><style>${CSS}</style>
 <h1 class="ic-h1">${S.cl.h1}</h1>
 <p class="ic-lead">${S.cl.lead(nf(RS.n + CS.n), nf(RS.day[worstDay] + CS.day[worstDay]), WD[lang][worstDay])}</p>
@@ -325,6 +363,8 @@ ${cafeBars}
 <div class="ic-card"><h2>${S.cl.h2good}</h2>
 <p>${S.cl.pGood(nf(RS.always), Math.round(RS.always / RS.n * 100), nf(CS.always))}</p>
 <p>${S.cl.pGood2}</p></div>
+
+${readCard}
 
 <div class="ic-card"><h2>${S.cl.h2how}</h2>
 <p>${S.cl.pHow}</p>
