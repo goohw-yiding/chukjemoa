@@ -211,7 +211,7 @@ ${ven.length ? `<h2 class="sec">🖼 전시가 «자주» 열리는 공간 ${ven
       return `<li><span class="vn">${i + 1}</span>
 <span style="flex:1;min-width:0"><a class="vp" href="${mapLink(v.place)}" target="_blank" rel="noopener">${esc(v.place)}</a>
 <span class="vg">${esc(v.gu || '')}</span>${now ? ` <span class="vnow">🟢 지금 ${now}건</span>` : ''}
-${v.last ? `<span class="vg"> · 최근 ${esc(v.last)}</span>` : ''}</span>
+${v.last ? `<span class="vg"> · ${v.last > TODAY ? '예정 ~' : '최근 '}${esc(v.last)}</span>` : ''}</span>
 <span class="vc">${v.n}회</span></li>`;
     };
 
