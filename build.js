@@ -2600,7 +2600,14 @@ ${isPast ? `<p class="pastmon">⏳ <b>${mm.label}은 이미 지났습니다.</b>
 <p style="margin:4px 0 12px"><button id="nearby-btn" class="nearby-btn">📍 내 주변 축제 보기</button></p>
 ${mm.key === '2026-09' ? `<p style="background:#fff7ed;border:1.5px solid #fdd8ae;border-radius:12px;padding:12px 16px;margin:0 0 14px"><a href="/blog/chuseok-2026-holiday-guide/" style="color:#9a5b1f;font-weight:800;text-decoration:none">🌕 2026년 추석 연휴(9/24~27) 가이드 보기 →</a> <span style="color:#7c6650;font-size:.9rem">연휴 축제·오일장 장날을 한 번에 정리했어요.</span></p>` : ''}
 ${regionFilter(list)}
-<div class="grid">${list.map(f => festCard(f, list.length > 40)).join('\n')}</div>
+${(() => {
+  const CUT = 12;
+  const cards = list.map(f => festCard(f, list.length > 40));
+  if (cards.length <= CUT * 2) return '<div class="grid">' + cards.join('\n') + '</div>';
+  return '<div class="grid">' + cards.slice(0, CUT).join('\n') + '</div>'
+    + monthBuyBox(M)
+    + '<div class="grid">' + cards.slice(CUT).join('\n') + '</div>';
+})()}
 
 ${deep.length ? `<h2 class="sec">${mm.short}에 자세히 볼 축제 ${deep.length}곳</h2>
 <p>아래 축제는 <b>개별 페이지</b>가 있습니다. 축제 소개뿐 아니라 그 동네가 이달 얼마나 붐비는지, 근처 맛집·카페의 영업시간, 걷기 좋은 길, 숙소, 그리고 축제를 중심으로 한 하루 코스까지 한 페이지에 정리해 두었습니다.</p>
@@ -2655,7 +2662,7 @@ ${monthNavHtml}
   // ⚠️ 2026-08-10: 월별 6페이지에 구매박스가 아예 없었다. "8월에 어디 갈까"를 보러 온 사람이라
   //    준비물 구매의도가 오히려 높은 자리다. 그 달 날씨에 맞는 것을 붙인다.
   writePage(mm.key, layout(title, desc, `/${mm.key}/`,
-    content.indexOf('</main>') >= 0 ? content.replace('</main>', monthBuyBox(M) + '</main>') : content + monthBuyBox(M),
+    content,   // 상품은 위 카드 12장 뒤로 옮겼다(본문 끝 99% 지점이라 아무도 못 봤다)
     { jsonld: eventsJsonLd(list) + mFaqLd }));
 });
 
@@ -2981,7 +2988,7 @@ ${order.map(sd => `<h3 style="margin:16px 0 6px;font-size:1.02rem;font-weight:80
 writePage('jangteo', layout(
   `오늘 장날 어디? 전국 오일장(5일장) ${marketsDay.length}곳 — 끝자리별 일정 | ${SITE_NAME}`,
   `오일장은 5일마다 서는 장입니다. 전국 ${marketsDay.length}곳의 장날을 끝자리(2·7일, 3·8일, 4·9일, 5·10일)와 시·도별로 정리했습니다. 날짜를 넣으면 그날 열리는 장이 초록색으로 표시되고 가까운 장날 순으로 정렬됩니다. 모란장(4·9일)·정선아리랑시장(2·7일)·봉평장(2·7일).`,
-  '/jangteo/', jangteoContent.replace('<!--SIGUNGU_HUB-->', SIGUNGU_HUB) + buyBox('jangteo') + jangteoModalBB + JT_LINK_JS, { jsonld: JANGTEO_FAQ_LD }));
+  '/jangteo/', jangteoContent.replace('<!--SIGUNGU_HUB-->', SIGUNGU_HUB + buyBox('jangteo')) + jangteoModalBB + JT_LINK_JS, { jsonld: JANGTEO_FAQ_LD }));
 
 // ---------- 🏮 시·도별 오일장 /jangteo/{시도}/ ----------
 // 왜 나누나: 시장마다 «판매 품목·영업시간·휴무·주차·문의»가 다 있는데(공공데이터 detailIntro2)
