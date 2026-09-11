@@ -476,7 +476,39 @@ nav>a.nhot{margin:10px 0 4px;text-align:center;padding:12px}
 .prose .pnote{font-size:.87rem;color:#8a929c;line-height:1.7;padding-top:4px;border-top:1px dashed #e7ebee;margin-top:14px}
 .prose .pnote b{color:#8a929c}
 </style>
-<script>window.__onesignalAppId="8d4d29df-1dba-4f43-9efb-0c3745441e1f";(function(){var id=window.__onesignalAppId;if(!id||id.indexOf("PASTE")===0)return;if(location.protocol!=="https:")return;var s=document.createElement("script");s.src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js";s.defer=true;document.head.appendChild(s);window.OneSignalDeferred=window.OneSignalDeferred||[];window.OneSignalDeferred.push(function(OneSignal){OneSignal.init({appId:id});});})();</script>
+<script>window.__onesignalAppId="8d4d29df-1dba-4f43-9efb-0c3745441e1f";(function(){var id=window.__onesignalAppId;if(!id||id.indexOf("PASTE")===0)return;if(location.protocol!=="https:")return;var s=document.createElement("script");s.src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js";s.defer=true;document.head.appendChild(s);
+/* 🔖 2026-09-11 — 관심사 태그. 알림을 «그 사람이 보러 온 것»으로 보내기 위해서다.
+   근거(GA4 9/7~9/11, 구독자 54명이 붙은 나흘): 처음 들어온 페이지가
+     월별 축제 41.8% · 오일장 31.3% · 홈 11.3% · 블로그 6.1% 로 갈린다.
+   전체에게 같은 걸 보내면 둘 중 한쪽은 «내 얘기가 아니»라서 차단으로 간다.
+   웹푸시는 한 번 차단당하면 되돌릴 방법이 없다 — 그래서 처음부터 갈라 보낸다.
+   ⚠️ 무료 플랜 Data Tag 6개 한도 — interest·region·fest·month·lang·seen 이 정확히 6개다. 더 넣지 말 것.
+   ⚠️ 정규식을 쓰지 않는다 — 이 코드는 템플릿 리터럴 안이라 \/ 가 / 로 풀려 정규식이 깨진다. */
+var TAG=(function(){try{
+var p=location.pathname,t={},K="cjm_int";
+var SIDO=["seoul","busan","daegu","incheon","gwangju","daejeon","ulsan","sejong","gyeonggi","gangwon","chungbuk","chungnam","jeonbuk","jeonnam","gyeongbuk","gyeongnam","jeju"];
+var NAT=["trails","walk","mountain","valley","maple","flower","onsen","healing","cafe","pet","accessible","indoor","course","trip"];
+var CITY=SIDO.concat(["gyeongju","gangneung","sokcho","jeonju","cheongju","suwon","yeosu","tongyeong","geoje"]);
+var q=p.split("/"),a=q[1]||"",b=q[2]||"",cat="",reg="";
+if(a==="jangteo"){cat="jangteo";if(SIDO.indexOf(b)>=0)reg=b;}
+else if(a==="festival"){cat="festival";if(b)t.fest=b.slice(0,60);}
+else if(a.length===7&&a.charAt(4)==="-"&&a.slice(0,2)==="20"){cat="festival";t.month=a;}
+else if(a==="blog"){cat="blog";}
+else if(NAT.indexOf(a)>=0){cat="nature";}
+else if(CITY.indexOf(a)>=0){cat="city";reg=a;}
+/* 마지막 한 페이지로 사람을 규정하지 않는다 — 방문을 누적해 «가장 많이 본 것»을 관심사로 삼는다 */
+var c={};try{c=JSON.parse(localStorage.getItem(K)||"{}")||{};}catch(e){}
+if(cat)c["c_"+cat]=(c["c_"+cat]||0)+1;
+if(reg)c["r_"+reg]=(c["r_"+reg]||0)+1;
+try{localStorage.setItem(K,JSON.stringify(c));}catch(e){}
+var top=function(pre){var best="",n=0;for(var k in c){if(k.indexOf(pre)===0&&c[k]>n){n=c[k];best=k.slice(pre.length);}}return best;};
+var bi=top("c_"),br=top("r_");
+if(bi)t.interest=bi;
+if(br)t.region=br;
+t.lang=document.documentElement.lang||"ko";
+t.seen=new Date().toISOString().slice(0,10);
+return t;}catch(e){return null;}})();
+window.OneSignalDeferred=window.OneSignalDeferred||[];window.OneSignalDeferred.push(function(OneSignal){OneSignal.init({appId:id}).then(function(){if(TAG&&OneSignal.User&&OneSignal.User.addTags)OneSignal.User.addTags(TAG);}).catch(function(){});});})();</script>
 </head>
 <body>
 <header><div class="wrap">
