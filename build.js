@@ -350,9 +350,22 @@ const COUPANG = {
                 //   음식·수산물 축제는 FEST_KIND 가 'festival'을 직접 지정하므로 여기 영향을 받지 않는다.
                 bySeason: { winter: 'tripcost', spring: 'flower', autumn: 'festseat' } },
     // 가을 축제 기본 — maple 과 같은 상품이지만 「단풍 보면서」라는 말이 축제 모달엔 안 맞아 문구만 따로 둔다
+    //   2026-09-11: 업셀에 돗자리(flower)를 넣었다. 「앉을 데가 없다」는 같은 불편의 두 가지 답이
+    //   의자와 «자리»인데, 돗자리는 75장에만 붙어 있었고 스툴은 927장이었다(실측).
+    //   메인은 그대로 스툴이다 — 객단가가 높고 이미 도는 자리라 뒤집지 않는다.
     festseat: { ico: '🪑', t: '축제장엔 앉을 데가 없습니다', s: '접어서 드는 폴딩 스툴 + 메쉬백', own: true, q: '폴딩 스툴', url: 'https://brand.naver.com/guung/products/13026204364',
-                up: ['gakline', 'chairs'] },
-    flower:   { ico: '🧺', t: '봄꽃 나들이 준비물', s: '피크닉 돗자리', own: true, q: '접이식 돗자리', url: 'https://brand.naver.com/guung/products/13737049813', upT: '🧺 피크닉 돗자리 — 단풍 아래 자리 깔고 앉기' },
+                up: ['gakline', 'flower', 'chairs'] },
+    // 🧺 2026-09-11 — 문구를 계절 중립으로 바꿨다.
+    //   왜: 「봄꽃 나들이 준비물」이 9월 「별바다부산 나이트 캠크닉」·「경기정원문화박람회」에
+    //   그대로 걸려 있었다(라이브 실측). /flower/ 도 지금은 코스모스·억새·핑크뮬리를 싣는데 봄 문구였다.
+    //   이 항목은 봄 페이지 전용이 아니라 «자리를 깔고 앉는 모든 자리»에서 불린다 —
+    //   축제상세(피크닉·캠크닉·잔디밭·소풍) · /flower/ · /maple/ 업셀 · /valley/ 업셀 · 가을 축제 업셀.
+    //   ⚠️ 계절 이름을 다시 넣지 말 것. 넣으려면 bySeason 으로 «다른 키»를 만들어야 한다
+    //      (renderBuyBox 는 seasonKey 를 적용하지 않는다 — 호출부만 적용한다).
+    //   상품명: 「쿠웅 피크닉매트 대형 방수 돗자리 150x200 접이식 체크」 3색 · 7,900원
+    //   검색량(네이버 월): 돗자리 27,940 · 피크닉매트 7,240 · 피크닉돗자리 5,900 — 작은 수요가 아니다.
+    flower:   { ico: '🧺', t: '자리 깔고 앉으려면', s: '대형 방수 돗자리 150x200 · 접이식 · 3색', own: true, q: '피크닉매트', url: 'https://brand.naver.com/guung/products/13737049813',
+                upT: '🧺 방수 돗자리 150x200 — 잔디·흙바닥에 그냥 앉지 않게' },
     maple:    { ico: '🪑', t: '단풍 보면서 앉아 쉴 자리', s: '접어서 드는 폴딩 스툴 + 메쉬백', own: true, q: '캠핑의자', url: 'https://brand.naver.com/guung/products/13026204364',
                 up: ['gakline', 'chairs', 'flower'] },
     // 걷기길 39페이지 — 자사 걷기용품이 아직 없어 제휴로 채운다. 등산스틱·무릎보호대는 발주 완료라 입고되면 자사로 교체.
@@ -485,7 +498,7 @@ const FEST_KIND = [
 // 월별 축제 페이지(7~12월) — 그 달 날씨에 맞는 준비물. 여름은 더위, 가을은 앉을 자리, 겨울은 추위.
 function monthBuyBox(m) {
   const keys = m >= 6 && m <= 8 ? ['festival', 'suncap', 'chairs']
-    : m >= 9 && m <= 10 ? ['maple', 'gakline', 'chairs']
+    : m >= 9 && m <= 10 ? ['maple', 'gakline', 'flower', 'chairs']   // 2026-09-11 돗자리 추가(축제 모달과 같은 줄)
       : (m >= 11 || m <= 2) ? ['hotpack', 'chairs']
         : ['flower', 'gakline'];
   return `<div class="wrap">${renderBuyBox(keys[0], keys.slice(1), 'month-' + m)}</div>`;
