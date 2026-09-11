@@ -1,33 +1,14 @@
-웹푸시: 태그 없는 54명에게 닿는 길 + 아이폰 구독 경로(manifest)
+홈 화면 안내: 모달 아래로 내리고(z-index 90) 아이폰 하단 여백 반영
 
-실측으로 드러난 두 구멍을 막는다.
+배포된 실물을 놓고 다시 세어 보다가 두 가지를 잡았다.
 
-1) 태그 없는 구독자 54명이 «보이지 않는 다수»였다
-   태그 코드는 오늘 배포됐고, 태그는 배포 뒤 다시 들어온 사람에게만 붙는다.
-   OneSignal 실측: 구독자 55명 중 interest 태그 보유 1명.
-   _push.js 는 모든 메시지를 interest=<값> 으로 걸러, 나머지 54명에게는
-   어떤 경로로도 닿지 않았다. 예약 발송으로 대상 유무를 확인한 결과
-   interest=jangteo · interest=festival 둘 다 「All included players are not
-   subscribed」 — 내일(9/12) 08:00 첫 오일장 발송은 0명에게 나갈 예정이었다.
+· z-index 가 9998 이었다. 축제·장소 모달(.fmodal)이 100 이라, 모달을 연 상태에서
+  안내가 그 위로 떠오른다. 90 으로 내려 모달 아래에 둔다.
+· bottom:12px 만으로는 아이폰 홈 인디케이터·사파리 하단 바에 가린다.
+  calc(12px + env(safe-area-inset-bottom,0px)) 로 바꾼다.
 
-   → filters(null) = interest not_exists 를 추가하고, 축제(목)·월초에만 연결했다.
-     오일장까지 열면 미태그 인원이 주 3회를 받는다 — 빈도 초과는 웹푸시가
-     죽는 가장 흔한 이유다. 모르는 사람에게 「전국 N군데」는 어차피 약한 문구이고,
-     GA4 첫 진입도 월별축제 41.8% > 오일장 31.3% 로 축제가 맞다.
-     태그가 붙는 순간 그 사람은 이 바구니에서 빠져 자기 흐름으로 간다 — 저절로 아문다.
-
-2) 아이폰은 구독이 «불가능»했다
-   구독자 55명 중 iOS 0명. GA4 28일 기준 iOS Safari 는 세션의 9.7%.
-   원인은 웨일도 프롬프트도 아니라 manifest.json 부재(라이브 404)다 —
-   아이폰은 홈 화면에 추가된 standalone 상태에서만 웹푸시를 받는다.
-
-   → build.js 가 manifest.json 을 쓰고, 전 페이지에 rel="manifest" 를 건다.
-     한국어 페이지에 한해, 세 번째 화면부터 「홈 화면에 추가」 안내를 한 번만 띄운다
-     (닫으면 cjm_a2hs=no 로 다시 안 뜬다). GA4 a2hs_show · a2hs_close 로 센다.
-   ⚠️ 안내 코드는 템플릿 리터럴 안이라 정규식을 쓰지 않았다 — 넣지 말 것.
-
-웨일 걱정은 실측으로 풀렸다: 안드로이드 구독자 20명 중 14명이 웨일(device_os=30)이다.
-다만 트래픽 49.5% 대비 구독 25%라 전환은 절반 수준이다.
+동작은 라이브 HTML 에서 스크립트를 꺼내 그대로 돌려 확인한다(_a2hs_behave.js):
+안드로이드 안 뜸 · 누적 1·2 안 뜸 · 누적 3 뜸 · 닫은 뒤 안 뜸 · standalone 안 뜸 · 닫기 동작.
 
 Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
 Claude-Session: https://claude.ai/code/session_017Z4PD3trCXNySEWrjrVaqq
