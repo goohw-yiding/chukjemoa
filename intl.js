@@ -20,6 +20,10 @@
 'use strict';
 const fs = require('fs'), path = require('path');
 const { romanizeMixed } = require('./placename.js');
+// ⚠️ 2026-09-11 — 시·군·구 «행정구역 이름»은 `romanizeMixed`(축제명용)가 아니라 `romanizeRegion` 이다.
+//   라이브에서 「Junggu」·「Jejusi」로 나오는 걸 보고 알았다. 표준 표기는 「Jung-gu」·「Jeju-si」 —
+//   도로 표지판과 지도 앱에 그렇게 적혀 있어서, 읽는 사람이 대조할 수 있어야 한다.
+const { romanizeRegion } = require('./romanize.js');
 const { inKorea } = require('./geo.js');
 
 const LANGS = ['en', 'ja', 'es', 'zh', 'tw'];
@@ -410,7 +414,7 @@ ${readCard}
     const sggTop = Object.entries(sggAll3).filter(([, v]) => v.a3).sort((a, b) => b[1].a3 - a[1].a3).slice(0, 10);
     const sggRows = sggTop.map(([k, v]) => {
       const [sd, sg] = k.split('\t');
-      return `<tr><td>${esc(romanizeMixed(sg))} <span class="ic-kr">${esc(sg)}</span><br><span class="ic-note">${esc(sido(sd, lang))}</span></td><td class="n">${nf(v.a3)}</td><td class="n">${nf(v.n)}</td></tr>`;
+      return `<tr><td>${esc(romanizeRegion(sg))} <span class="ic-kr">${esc(sg)}</span><br><span class="ic-note">${esc(sido(sd, lang))}</span></td><td class="n">${nf(v.a3)}</td><td class="n">${nf(v.n)}</td></tr>`;
     }).join('');
     const sggTopName = sggTop.length ? sido(sggTop[0][0].split('\t')[0], lang) : '';
 
@@ -475,7 +479,7 @@ ${sggRows && S.ac.h2sgg ? `<div class="ic-card"><h2>${S.ac.h2sgg}</h2>
     //   ⚠️ 시·군·구 250개의 번역본은 없다. 로마자 + 한글 병기로 간다(지도에 붙여 넣을 문자열은 한글이 정답).
     const FGN = (visitors.fgn || []).slice(0, 10);
     const fgnRows = FGN.map(r =>
-      `<tr><td>${esc(romanizeMixed(r.name))} <span class="ic-kr">${esc(r.name)}</span>${
+      `<tr><td>${esc(romanizeRegion(r.name))} <span class="ic-kr">${esc(r.name)}</span>${
         r.sido ? `<br><span class="ic-note">${esc(sido(r.sido, lang))}</span>` : ''}</td><td class="n">${nf(r.num)}</td></tr>`).join('');
 
     const themeM = (visitors.seasonByMonth && visitors.seasonByMonth.themeMonths) || {};
@@ -571,7 +575,7 @@ ${fgnRows && S.cal.h2fgn ? `<div class="ic-card"><h2>${S.cal.h2fgn}</h2>
       const busyBars = busy.map(r => {
         const w = Math.max(4, Math.round((r.idx - 1) / busyMax * 100));
         return `<div class="ic-bar"><div class="l">${esc(sido(r.sido, lang))}</div><div class="b"><i class="hot" style="width:${w}%"></i></div><div class="v">×${r.idx}</div></div>
-<div class="ic-note" style="margin:-2px 0 6px 112px">${esc(romanizeMixed(r.name))} <span class="ic-kr">${esc(r.name)}</span></div>`;
+<div class="ic-note" style="margin:-2px 0 6px 112px">${esc(romanizeRegion(r.name))} <span class="ic-kr">${esc(r.name)}</span></div>`;
       }).join('');
 
       // 🏮 2026-09-11 — 그 달에 서는 오일장(날짜별).

@@ -3290,6 +3290,10 @@ ${ctFaq.map(q => `<p><b>${esc(q[0])}</b><br>${esc(q[1])}</p>`).join('')}
 const AUTHOR_NAME = '축제모아 편집팀';
 const EDITORIAL_URL = '/editorial/';
 const LAST_REVIEWED = '2026-07-27'; // 신뢰 블록(저자·출처·고지) 최종 검수일
+// ⚠️ LAST_REVIEWED 를 그대로 「최종 수정」으로 찍으면 «작성일보다 빠른 수정일»이 나온다.
+//    2026-09-11 실측: 블로그 42장 중 34장이 그랬다(9월에 쓴 글이 7월에 수정된 것처럼 보임).
+//    글마다 «작성일과 검수일 중 늦은 쪽»을 쓴다.
+const reviewedOf = d => (String(d || '') > LAST_REVIEWED ? String(d) : LAST_REVIEWED);
 
 // 참고 자료 — 실존이 확인된 기관 도메인 루트만 사용한다. 세부 경로는 쓰지 않는다.
 const REF_NATIONAL = [
@@ -3329,7 +3333,7 @@ function metaBlock(date) {
   return `<div class="meta">
 <span class="by">${AUTHOR_NAME}</span>
 <span>최초 작성 ${date}</span>
-<span>최종 수정 ${LAST_REVIEWED}</span>
+<span>최종 수정 ${reviewedOf(date)}</span>
 <span><a href="${EDITORIAL_URL}">편집 원칙 보기</a></span>
 </div>`;
 }
@@ -3357,7 +3361,7 @@ function articleLd(p) {
     description: p.desc,
     inLanguage: 'ko',
     datePublished: p.date,
-    dateModified: LAST_REVIEWED,
+    dateModified: reviewedOf(p.date),
     author: { '@type': 'Organization', name: AUTHOR_NAME, url: SITE + EDITORIAL_URL },
     publisher: { '@type': 'Organization', name: SITE_NAME, url: SITE + '/' },
     mainEntityOfPage: { '@type': 'WebPage', '@id': SITE + '/blog/' + p.slug + '/' }
