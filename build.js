@@ -2929,22 +2929,72 @@ console.log(`✓ 오일장 — 합계 ${marketsAll.length}곳 · 장날 확인 $
 const TODAY_LAST_DIGIT = (() => { const d = new Date(+TODAY.slice(0, 4), +TODAY.slice(5, 7) - 1, +TODAY.slice(8, 10)); return d.getDate() % 10; })();
 const marketsOpenToday = marketsDay.filter(m => (m.daysNum || []).some(d => (d % 10) === TODAY_LAST_DIGIT));
 
-// 🎨 오늘 서는 오일장 카드의 «권역 색». 시·도 17개를 각각 칠하지 않는 이유는 CSS 쪽 주석에 있다.
-//   ⚠️ m.region 은 '강원'처럼 두 글자로 들어오지만 '강원도'가 섞여 들어와도 깨지지 않게 앞 두 글자로 본다.
-//   ⚠️ 모르는 값은 전라(기본 초록)로 떨어진다 — 색이 없는 카드가 생기지 않게 하기 위해서다.
-const JT_ZONES = [
-  ['cap', '수도권', ['서울', '인천', '경기'], '#eef4ff', '#c7dafe'],
-  ['gw', '강원', ['강원'], '#e9f8f6', '#b5e5de'],
-  ['cc', '충청', ['대전', '세종', '충북', '충남'], '#f3f0ff', '#d6cdfa'],
-  ['jl', '전라', ['광주', '전북', '전남'], '#eafbef', '#b9ecc4'],
-  ['gs', '경상', ['부산', '대구', '울산', '경북', '경남'], '#fff4e8', '#fbd9ae'],
-  ['jj', '제주', ['제주'], '#fdeef4', '#f8cadd']
-];
-const JT_ZONE_OF = (() => { const o = {}; JT_ZONES.forEach(([k, , sidos]) => sidos.forEach(s => { o[s] = k; })); return o; })();
-const jtZone = r => JT_ZONE_OF[String(r || '').slice(0, 2)] || 'jl';
-const JT_ZONE_LEGEND = JT_ZONES
-  .map(([k, label, , bg, line]) => `<span><i style="background:${bg};border:1.5px solid ${line}"></i>${label}</span>`)
-  .join('');
+// 🎨 2026-09-11 (2판) — 오늘 서는 오일장 카드를 «시·도 17개 각각» 다른 색으로.
+//
+// 1판에서 6권역으로 묶었더니 장남 님이 바로 잡아냈다 — 「경북 경남이 같은 색상이네」.
+// 맞는 지적이다. 카드에 적힌 건 «권역»이 아니라 «시·도»인데 색이 시·도를 따라가지 않으면
+// 색과 글자가 서로 다른 말을 한다.
+//
+// ⚠️ 17색을 아무렇게나 돌리면 이웃한 시·도끼리 비슷해져서 1판과 같은 불평이 다시 나온다.
+//    목록은 «시·도 가나다순»으로 정렬된다 — 그래서 색도 가나다순으로 «돌리면» 안 된다
+//    (인접 색상이 21°씩만 떨어져 구별이 안 된다).
+//    대신 색상환을 (360×7/17)=148.24° 씩 건너뛰며 배정한다. 이 한 값이 두 가지를 동시에 준다:
+//      · 17개 색이 정확히 21.18° 간격으로 «고르게» 퍼진다(17개로 가능한 최대 간격)
+//      · 그런데 «목록에서 이웃한» 시·도끼리는 148.24° 로 벌어진다 — 붙어 있는 것끼리는 확 다르다
+//    실측(`node _jt_contrast.js`): 이웃 최소 148.2° · 전체 최소 21.2°(경북↔충남, 목록상 12칸 거리).
+// ⚠️ 7 대신 다른 수를 쓰려면 17과 서로소여야 한다(1,2,…,16 전부 가능). 7이 이웃 간격이 가장 넓다.
+//    ⛔ HUE_STEP 에 «17의 배수와 무관한» 임의의 각(211 같은)을 넣지 말 것 — 1판이 그랬고,
+//       그때 전체 최소 간격이 12° 까지 좁아졌다(강원 빨강 ↔ 전남 주홍).
+// ⚠️ 색을 손보려면 HUE_STEP 만 바꿀 것. 개별 색을 손으로 고치면 이웃 간 거리가 깨진다.
+// ⚠️ 배경은 옅게(L 96%), 글자는 진하게 — 17개 전부 대비 4.5:1 이상인지 빌드가 «직접 계산»해서
+//    모자라면 글자를 더 어둡게 내린다. `node _jt_contrast.js` 로 전수 확인할 수 있다.
+// ⚠️ m.region 은 '강원'처럼 두 글자로 들어오지만 '강원도'가 섞여도 깨지지 않게 앞 두 글자로 본다.
+// ⚠️ 모르는 값은 회색으로 떨어진다 — 색이 «없는» 카드가 생기지 않게.
+const JT_SIDO = ['강원', '경기', '경남', '경북', '광주', '대구', '대전', '부산', '서울',
+  '세종', '울산', '인천', '전남', '전북', '제주', '충남', '충북'];
+const JT_SLUG = {
+  강원: 'gangwon', 경기: 'gyeonggi', 경남: 'gyeongnam', 경북: 'gyeongbuk', 광주: 'gwangju',
+  대구: 'daegu', 대전: 'daejeon', 부산: 'busan', 서울: 'seoul', 세종: 'sejong', 울산: 'ulsan',
+  인천: 'incheon', 전남: 'jeonnam', 전북: 'jeonbuk', 제주: 'jeju', 충남: 'chungnam', 충북: 'chungbuk'
+};
+const HUE_STEP = 360 * 7 / 17;
+function hsl2rgb(h, s, l) {                      // h 0~360, s·l 0~1 → [r,g,b] 0~255
+  const c = (1 - Math.abs(2 * l - 1)) * s, x = c * (1 - Math.abs(((h / 60) % 2) - 1)), m = l - c / 2;
+  const t = h < 60 ? [c, x, 0] : h < 120 ? [x, c, 0] : h < 180 ? [0, c, x]
+    : h < 240 ? [0, x, c] : h < 300 ? [x, 0, c] : [c, 0, x];
+  return t.map(v => Math.round((v + m) * 255));
+}
+const hex = rgb => '#' + rgb.map(v => v.toString(16).padStart(2, '0')).join('');
+// WCAG 상대휘도 — 「대비 4.5:1」을 눈대중이 아니라 숫자로 지키기 위해 넣었다
+function lum(rgb) {
+  const a = rgb.map(v => { const c = v / 255; return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4); });
+  return 0.2126 * a[0] + 0.7152 * a[1] + 0.0722 * a[2];
+}
+const contrast = (f, b) => { const A = lum(f) + 0.05, B = lum(b) + 0.05; return A > B ? A / B : B / A; };
+const JT_COLORS = JT_SIDO.map((name, i) => {
+  const h = (i * HUE_STEP) % 360;
+  const bg = hsl2rgb(h, 0.85, 0.96);
+  const line = hsl2rgb(h, 0.62, 0.80);
+  let l = 0.32, fg = hsl2rgb(h, 0.78, l);
+  while (contrast(fg, bg) < 4.5 && l > 0.10) { l -= 0.02; fg = hsl2rgb(h, 0.78, l); }  // 모자라면 더 어둡게
+  return { name, slug: JT_SLUG[name], h, bg: hex(bg), line: hex(line), fg: hex(fg), ratio: contrast(fg, bg) };
+});
+const JT_COLOR_OF = (() => { const o = {}; JT_COLORS.forEach(c => { o[c.name] = c; }); return o; })();
+const jtZone = r => (JT_COLOR_OF[String(r || '').slice(0, 2)] || {}).slug || 'etc';
+const JT_SIDO_CSS = JT_COLORS
+  .map(c => `.z-${c.slug}{--jtb:${c.bg};--jtl:${c.line};--jta:${c.fg}}`).join('\n')
+  + '\n.z-etc{--jtb:#f3f4f6;--jtl:#e5e7eb;--jta:#374151}';
+console.log('✓ 오일장 시·도 색 17개 — 최소 대비 '
+  + JT_COLORS.reduce((m, c) => Math.min(m, c.ratio), 99).toFixed(2) + ':1');
+// 범례는 «오늘 장이 서는» 시·도만 싣는다. 17개를 늘 깔면 오늘 해당 없는 색까지 읽게 만든다.
+//   개수를 같이 적어 「경북이 제일 많구나」가 한눈에 보이게 한다.
+const JT_SIDO_LEGEND = (() => {
+  const cnt = {};
+  marketsOpenToday.forEach(m => { const k = String(m.region || '').slice(0, 2); cnt[k] = (cnt[k] || 0) + 1; });
+  return JT_COLORS.filter(c => cnt[c.name])
+    .map(c => `<span><i style="background:${c.bg};border:1.5px solid ${c.line}"></i>`
+      + `<b style="color:${c.fg}">${c.name}</b> ${cnt[c.name]}</span>`).join('');
+})();
 
 // 🌤 «다음 장날»이 언제인지 → 그날 날씨를 붙이기 위해. 오늘 서면 오늘이다.
 //    ⚠️ daysNum 의 10 은 끝자리 0을 뜻한다(literal 10). 반드시 %10 으로 맞춰 비교한다 — 위 주석의 그 함정.
@@ -3012,12 +3062,8 @@ tr.open-on td{background:#e5f6e8}
 .nextup-row a{display:inline-block;background:#fff;border:1.5px solid #cfe9e3;color:#0a6c63;font-weight:800;font-size:.92rem;padding:9px 14px;border-radius:999px;text-decoration:none}
 .nextup-row a b{color:#0f9d8f}
 .nextup-row a.hot{background:#0f9d8f;border-color:#0f9d8f;color:#fff}
-/* 🎨 2026-09-11 — 78장이 전부 같은 초록이라 어디가 어디인지 안 보인다는 지적(장남 님).
-   ⚠️ 시·도 17개를 «각각» 다른 색으로 칠하지 않는다 — 17색은 사람이 구별하지 못한다.
-      목록이 이미 시·도순으로 정렬돼 있으므로, 6개 권역으로 묶으면 색이 «덩어리»로 보여
-      스크롤만 해도 「여기부터 경상」이 잡힌다.
-   ⚠️ 배경은 옅게, 글자는 진하게 — 여섯 조합 모두 대비 4.5:1 이상으로 골랐다.
-      색을 바꿀 때 배경만 진하게 하면 시장 이름이 안 읽힌다. */
+/* 🎨 오일장 카드 색 — 시·도 17개가 각각 다르다. 색은 JT_COLORS 가 «계산»해서 넣는다
+      (build.js 의 JT_SIDO 주석 참고). 여기에 색을 손으로 적지 말 것. */
 .jt-today-card{background:var(--jtb,#eafbef);border:1.5px solid var(--jtl,#b9ecc4);border-radius:14px;padding:14px 15px}
 .jt-today-card b{display:block;font-size:1rem;font-weight:800;color:var(--jta,#15803d);margin-bottom:3px}
 .jt-today-card span{display:block;font-size:.85rem;color:#374151}
@@ -3025,15 +3071,11 @@ tr.open-on td{background:#e5f6e8}
 .jt-today-card .fam{color:#6b7280;font-size:.8rem;margin-top:2px}
 .jt-today-card .jt-links{margin-top:8px}
 .jt-today-card .jt-links a{display:inline-block;font-size:.8rem;margin-right:10px;color:#0c7d72;font-weight:700}
-.z-cap{--jtb:#eef4ff;--jtl:#c7dafe;--jta:#1d4ed8}
-.z-gw {--jtb:#e9f8f6;--jtl:#b5e5de;--jta:#0f766e}
-.z-cc {--jtb:#f3f0ff;--jtl:#d6cdfa;--jta:#6d28d9}
-.z-jl {--jtb:#eafbef;--jtl:#b9ecc4;--jta:#15803d}
-.z-gs {--jtb:#fff4e8;--jtl:#fbd9ae;--jta:#b45309}
-.z-jj {--jtb:#fdeef4;--jtl:#f8cadd;--jta:#be185d}
-.jt-zone{display:flex;flex-wrap:wrap;gap:7px;margin:10px 0 0}
-.jt-zone span{display:inline-flex;align-items:center;gap:5px;font-size:.82rem;font-weight:700;color:#4b5563}
-.jt-zone i{width:11px;height:11px;border-radius:3px;display:inline-block}
+${JT_SIDO_CSS}
+.jt-zone{display:flex;flex-wrap:wrap;gap:6px 10px;margin:10px 0 0}
+.jt-zone span{display:inline-flex;align-items:center;gap:5px;font-size:.82rem;font-weight:600;color:#6b7280}
+.jt-zone b{font-weight:800}
+.jt-zone i{width:11px;height:11px;border-radius:3px;display:inline-block;flex:none}
 </style>
 <p class="note">오일장은 날짜 끝자리 기준으로 열립니다. 예: 4·9일장 → 4, 9, 14, 19, 24, 29일. <strong>가까운 장날 순으로 자동 정렬</strong>되고, 그 날 열리는 장은 초록색으로 표시됩니다.</p>
 <h2 class="sec">오일장이란? (오일장 뜻)</h2>
@@ -3041,7 +3083,7 @@ tr.open-on td{background:#e5f6e8}
 <p style="color:#374151;font-size:.95rem;line-height:1.8">왜 5일 간격일까요? 조선시대부터 이어진 방식으로, 상인들이 하루는 이 고을, 다음날은 옆 고을을 도는 식으로 5개 안팎의 장을 돌아가며 장사할 수 있게 정해진 주기입니다. 지금도 <b>모란민속5일장(성남)·정선아리랑시장(2·7일)·봉평장(2·7일)</b> 같은 전국 유명 5일장들이 이 방식대로 열립니다.</p>
 <p style="color:#374151;font-size:.95rem;line-height:1.8">날짜만 알면 되니, 아래 표에 <b>가려는 날짜</b>를 넣어보세요 — 그 날 열리는 장이 자동으로 초록색으로 표시됩니다.</p>
 <h2 class="sec" id="jt-today">🏮 오늘(${TODAY.slice(5, 7).replace(/^0/, '')}월 ${TODAY.slice(8, 10).replace(/^0/, '')}일) 서는 오일장 <span style="color:#9ca3af;font-weight:600">${marketsOpenToday.length}곳</span></h2>
-${marketsOpenToday.length ? `<div class="jt-zone">${JT_ZONE_LEGEND}</div>
+${marketsOpenToday.length ? `<div class="jt-zone">${JT_SIDO_LEGEND}</div>
 <div class="jt-today-grid">${marketsOpenToday.map(m => `<div class="jt-today-card z-${jtZone(m.region)}"><b>${esc(m.name)}</b><span><i class="jt-rg">${esc(m.region)}</i> ${esc(m.city)}</span>${m.famous ? `<span class="fam">${esc(m.famous)}</span>` : ''}<div class="jt-links"><a href="https://search.naver.com/search.naver?query=${encodeURIComponent(m.name + ' 맛집')}" target="_blank" rel="noopener">🍴 맛집</a><a href="https://map.naver.com/p/search/${encodeURIComponent(m.name)}" target="_blank" rel="noopener">🗺️ 지도</a></div></div>`).join('')}</div>`
     : `<p class="note">오늘은 장날인 곳이 없어요. 아래에서 날짜를 넣어 다른 날을 확인해보세요.</p>`}
 <div class="datepick">
