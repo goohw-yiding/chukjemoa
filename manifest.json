@@ -1,0 +1,32 @@
+{
+ "name": "축제모아 — 전국 축제·오일장 일정",
+ "short_name": "축제모아",
+ "description": "전국 축제와 오일장(5일장) 일정을 공공데이터로 모아 월별·지역별로 정리합니다.",
+ "lang": "ko",
+ "start_url": "/?utm_source=homescreen&utm_medium=pwa",
+ "scope": "/",
+ "display": "standalone",
+ "orientation": "portrait",
+ "background_color": "#ffffff",
+ "theme_color": "#E0502F",
+ "icons": [
+  {
+   "src": "/icon-192.png",
+   "sizes": "192x192",
+   "type": "image/png",
+   "purpose": "any"
+  },
+  {
+   "src": "/icon-512.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "any"
+  },
+  {
+   "src": "/icon-512.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "maskable"
+  }
+ ]
+}

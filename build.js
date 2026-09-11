@@ -940,6 +940,40 @@ const PLACE_MODAL_JS = `<script>
 })();
 </script>`;
 
+// 🔖 2026-09-11 — 아이폰 구독 경로.
+//   아이폰은 «홈 화면에 추가»된 상태(standalone)에서만 웹푸시를 받을 수 있다.
+//   매니페스트가 없으면 구독 자체가 «불가능»하다 — 버튼도 안 뜬다.
+//   실측 근거(2026-09-11): OneSignal 구독자 55명 중 iOS 0명. 그런데 GA4 28일 기준
+//   iOS Safari 는 세션의 9.7% 다. 안 되는 게 아니라 «길이 없었던» 것이다.
+//   ⚠️ 정규식을 쓰지 않는다 — 여기는 템플릿 리터럴 안이라 \\/ 가 / 로 풀려 정규식이 깨진다.
+//   ⚠️ 첫 방문자에게는 띄우지 않는다. cjm_int(관심사 누적)의 합이 3 이상 — 세 번째 화면부터.
+//   ⚠️ 한 번 닫으면 다시 뜨지 않는다(cjm_a2hs=no). 알림 안내로 사람을 쫓아내면 안 된다.
+const IOS_PWA_JS = `<script>
+(function(){
+  try{
+    var ua=navigator.userAgent||'';
+    if(ua.indexOf('iPhone')<0&&ua.indexOf('iPad')<0&&ua.indexOf('iPod')<0) return;
+    if(navigator.standalone) return;
+    if(localStorage.getItem('cjm_a2hs')==='no') return;
+    var c={};try{c=JSON.parse(localStorage.getItem('cjm_int')||'{}')||{};}catch(e){}
+    var n=0;for(var k in c){n+=c[k]||0;}
+    if(n<3) return;
+    var d=document.createElement('div');
+    d.setAttribute('style','position:fixed;left:12px;right:12px;bottom:12px;z-index:9998;background:#fff;border:1px solid #e5e0d8;border-radius:14px;box-shadow:0 6px 24px rgba(0,0,0,.18);padding:14px;font-size:14px;line-height:1.55;color:#2b2b2b');
+    d.innerHTML='<div style="font-weight:700;margin-bottom:4px">🔔 새 축제·장날을 알림으로 받아 보세요</div>'
+      +'<div style="color:#5b5b5b">아이폰은 <b>홈 화면에 추가</b>를 해야 알림을 받을 수 있습니다.<br>화면 아래 <b>공유</b> 버튼 → <b>홈 화면에 추가</b>를 누르세요.</div>'
+      +'<div style="margin-top:10px;text-align:right"><button id="cjm-a2hs-x" style="border:0;background:#f1efea;color:#444;border-radius:9px;padding:7px 14px;font-size:13px">닫기</button></div>';
+    document.body.appendChild(d);
+    document.getElementById('cjm-a2hs-x').addEventListener('click',function(){
+      try{localStorage.setItem('cjm_a2hs','no');}catch(e){}
+      if(d.parentNode)d.parentNode.removeChild(d);
+      if(window.gtag)gtag('event','a2hs_close');
+    });
+    if(window.gtag)gtag('event','a2hs_show');
+  }catch(e){}
+})();
+</script>`;
+
 // 킥④ 찜하기 (모든 카드 페이지 공통, localStorage)
 const FAV_JS = `<script>
 (function(){
@@ -1980,6 +2014,9 @@ function layout(title, desc, urlPath, content, opts) {
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="축제모아">
 <meta name="theme-color" content="#E0502F">
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-GXJQ4SXMWY"></script>
@@ -2059,6 +2096,7 @@ ${NEARBY_JS}
 ${lang === 'ko' ? FEST_BB_JS + MODAL_CALC_JS + FEST_MODAL_JS + PLACE_MODAL_JS : ''}
 ${urlPath === '/' ? FIREWORKS_JS : ''}
 ${lang === 'ko' ? HSEARCH_JS : ''}
+${lang === 'ko' ? IOS_PWA_JS : ''}
 ${String(content).indexOf('id="nai"') >= 0 ? NEAR_AI_JS : ''}
 ${String(content).indexOf('cal-ics') >= 0 ? CAL_JS : ''}
 ${PROSE_JS}
@@ -7725,6 +7763,32 @@ Sitemap: ${SITE}/sitemap-index.xml
 Sitemap: ${SITE}/sitemap.xml
 `);
 fs.writeFileSync(path.join(ROOT, 'ads.txt'), `google.com, pub-3293445488923111, DIRECT, f08c47fec0942fa0\n`);
+
+// ---------- 웹 앱 매니페스트 (2026-09-11 신설) ----------
+// 왜 필요한가: 아이폰은 «홈 화면에 추가»된 상태에서만 웹푸시를 받는다. 매니페스트가 없으면
+//   구독 자체가 불가능하다. 2026-09-11 실측 — OneSignal 구독자 55명 중 iOS 0명,
+//   그런데 GA4 28일 기준 iOS Safari 는 세션의 9.7%.
+// ⚠️ .vercelignore 가 막는 건 /*.js·/*.md·/*.py·/*.ps1·/_* 다. 루트 .json 은 배포된다 — 확인 완료.
+// ⚠️ start_url 의 utm 은 «홈 화면에서 연 것»을 GA4 에서 세기 위한 것이다. 지우면 설치 효과를
+//    측정할 방법이 없어진다(사이트 어디에도 링크되지 않으므로 색인과는 무관하다).
+fs.writeFileSync(path.join(ROOT, 'manifest.json'), JSON.stringify({
+  name: '축제모아 — 전국 축제·오일장 일정',
+  short_name: '축제모아',
+  description: '전국 축제와 오일장(5일장) 일정을 공공데이터로 모아 월별·지역별로 정리합니다.',
+  lang: 'ko',
+  start_url: '/?utm_source=homescreen&utm_medium=pwa',
+  scope: '/',
+  display: 'standalone',
+  orientation: 'portrait',
+  background_color: '#ffffff',
+  theme_color: '#E0502F',
+  icons: [
+    { src: '/icon-192.png', sizes: '192x192', type: 'image/png', purpose: 'any' },
+    { src: '/icon-512.png', sizes: '512x512', type: 'image/png', purpose: 'any' },
+    { src: '/icon-512.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' }
+  ]
+}, null, 1));
+console.log('✓ manifest.json');
 
 // ---------- IndexNow (2026-08-20, 빙 웹마스터 추천으로 신설) ----------
 // 빙·야후·네이버(2023~ 참여)·얀덱스 등이 공유하는 IndexNow 프로토콜. 키 파일을 루트에 올려 두면
