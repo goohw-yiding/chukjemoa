@@ -101,7 +101,13 @@ async function listAll(id) {
         ov: (prev[x.contentid] || {}).ov || '',
         tel: (prev[x.contentid] || {}).tel || '',
         hp: (prev[x.contentid] || {}).hp || '',
-        ovDone: !!(prev[x.contentid] || {}).ovDone
+        ovDone: !!(prev[x.contentid] || {}).ovDone,
+        // 🩹 CARRY — addrKo 는 «나중에» match-addr-ko.js·revgeo 가 채워 넣는 값이다.
+        //    여기서 물려받지 않으면 이 수집기가 돌 때마다 통째로 날아간다.
+        //    (2026-09-11 1,254건 · 2026-09-12 또 1,254건 — 두 번 겪고 나서 막았다)
+        addrKo: (prev[x.contentid] || {}).addrKo || '',
+        addrOk: !!(prev[x.contentid] || {}).addrOk,
+        addrSrc: (prev[x.contentid] || {}).addrSrc || ''
       });
     }
     await sleep(150);
