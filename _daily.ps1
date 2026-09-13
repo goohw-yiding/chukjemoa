@@ -18,6 +18,23 @@ function W($m) {
 Set-Location C:\dev\chukjemoa
 W "===== START ====="
 
+# 2026-09-13: there was NO step that re-fetched the festival sources. Volume/trend/build only.
+# So when a winter festival got registered upstream, it never reached the site until someone
+# ran fetch-festivals.js by hand. On 09-13 the site had exactly 1 festival starting in December;
+# a single manual re-fetch moved the 30-day stock 177 -> 212 and the 90-day 236 -> 281.
+# Mon/Thu is enough: registrations trickle in, and TourAPI quota stays comfortable.
+# _weekly_fetch.js keeps a .prev backup and reverts if a source shrinks below 70% (a 4xx read as
+# "no data" has wiped a whole dataset before). Exit 1 = one source failed; keep going and build
+# with the data we already have rather than skipping the deploy.
+W "0) source refetch (Mon/Thu)"
+$dow = (Get-Date).DayOfWeek
+if ($dow -eq 'Monday' -or $dow -eq 'Thursday') {
+  & node _weekly_fetch.js 2>&1 | ForEach-Object { W "   $_" }
+  if ($LASTEXITCODE -ne 0) { W "   WARNING: a source failed and was reverted - see lines above" }
+} else {
+  W "   skip ($dow - runs Mon/Thu)"
+}
+
 # Monthly search volume. Resumes: normally only NEW festivals (seconds).
 # Every 30 days it refetches everything (~100s) so absolute sizes do not go stale.
 # A new festival with no volume scores 0 no matter how hot the trend is, so this must run.
@@ -39,7 +56,7 @@ if ($LASTEXITCODE -ne 0) {
 ($out | Select-Object -Last 2) | ForEach-Object { W "   $_" }
 
 W "4) mirror + drift check"
-& node _d2p.js build.js festival.js _fest_trend.py _fest_volume.py data/fest_trend.json data/fest_volume.json 2>&1 | Select-Object -Last 1 | ForEach-Object { W "   $_" }
+& node _d2p.js build.js festival.js _fest_trend.py _fest_volume.py _weekly_fetch.js data/fest_trend.json data/fest_volume.json data/festivals_api.json data/cltur_fstvl.json 2>&1 | Select-Object -Last 1 | ForEach-Object { W "   $_" }
 $sync = (& node _sync.js 2>&1 | Select-Object -Last 1)
 W "   $sync"
 
