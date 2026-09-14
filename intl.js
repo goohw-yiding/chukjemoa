@@ -306,7 +306,8 @@ function build(ctx) {
       if (!bs.length) return '';
       return `<div class="ic-card"><h2>🔴 その日、日本も韓国も休みですか</h2>
 <p>店が閉まるより先に効いてくるのが<b>日韓の連休の重なり</b>です。日本の祝日（内閣府）と韓国の祝日を1枚に重ねて、両国とも連休になる期間を日付で出しました。</p>
-<p style="margin-top:6px"><a href="/ja/busy/" style="display:inline-block;background:#0f9d8f;color:#fff;font-weight:800;font-size:.93rem;padding:11px 18px;border-radius:999px;text-decoration:none">📅 韓国が混む日 — 日韓の祝日カレンダー →</a></p></div>
+<p style="margin-top:6px"><a href="/ja/busy/" style="display:inline-block;background:#0f9d8f;color:#fff;font-weight:800;font-size:.93rem;padding:11px 18px;border-radius:999px;text-decoration:none">📅 韓国が混む日 — 日韓の祝日カレンダー →</a>
+<a href="/ja/daytrip/" style="display:inline-block;background:#fff;border:1.5px solid #dcefeb;color:#0c7d72;font-weight:800;font-size:.93rem;padding:10px 16px;border-radius:999px;text-decoration:none;margin-left:6px">🚄 日帰りで行ける街 →</a></p></div>
 <div class="ic-card"><h2>連休ごとに詳しく</h2>
 <p>「その日、店は開いているのか」は連休ごとに答えが違います。日付・曜日の定休日・その連休に立つ五日市まで、連休別にまとめました。</p>
 <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:10px">${bs.map(b =>

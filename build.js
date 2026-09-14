@@ -2585,7 +2585,7 @@ ${lang !== 'ja' ? '' : (() => {
   try { bs = require('./ja-holiday.js').blocks(TODAY).slice(0, 4); } catch (e) { return ''; }
   if (!bs.length) return '';
   return `<p style="color:#4b5563;line-height:1.75;margin:14px 0 8px">連休ごとに答えが違います — <b>その日、店は開いているのか</b>を連休別に数えました。<b>日本の祝日と重なる期間</b>は<a href="/ja/busy/" style="color:#0c7d72;font-weight:800">韓国が混む日</a>にまとめています。</p>
-<div class="ih-cities"><a href="/ja/busy/">📅 日韓の祝日カレンダー</a>${bs.map(b =>
+<div class="ih-cities"><a href="/ja/busy/">📅 日韓の祝日カレンダー</a><a href="/ja/daytrip/">🚄 日帰りで行ける街</a>${bs.map(b =>
     `<a href="/ja/closed/${b.slug}/">📅 ${esc(b.ja)}（${b.span.length}連休）</a>`).join('')}</div>`;
 })()}`;
   return { stat, cities, places, pract };
