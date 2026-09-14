@@ -152,6 +152,48 @@ for name, _ in GROUPS + [("그 외", None)]:
     w("| %s | %d | %d | %+d |" % (name, gc.get(name,0), gp2.get(name,0), gc.get(name,0)-gp2.get(name,0)))
 w("")
 
+# ── 1-1. 오일장 안쪽 ───────────────────────────────────────────
+# ⚠️ 오일장은 «가장 큰 묶음»인데 위 랜딩표에서는 허브 한 줄로만 보인다. 그래서 2026-09-14 에
+#    「/jangteo 793→583, -210」을 보고 «무너졌다»고 읽을 뻔했다. 계층을 나눠 보니 반대였다 —
+#    허브는 거의 그대로(-18)고 하위가 +328 이었다. «허브에서 하위로 갈아타는 중»이다.
+#    한 줄로 보면 반드시 오독한다. 계층으로 쪼개서 보여 준다.
+def jtier(p):
+    seg = [s for s in p.split("/") if s]
+    if not seg or seg[0] != "jangteo": return None
+    if len(seg) == 1: return "허브 /jangteo"
+    if len(seg) == 2 and "-" in seg[1]: return "끝자리 (1-6·2-7…)"
+    return "지역 (시·도·시·군)"
+JT_ORDER = ["허브 /jangteo", "지역 (시·도·시·군)", "끝자리 (1-6·2-7…)"]
+jc, jp = collections.Counter(), collections.Counter()
+for p, v in nl.items():
+    t = jtier(p)
+    if t: jc[t] += v
+for p, v in npv.items():
+    t = jtier(p)
+    if t: jp[t] += v
+if sum(jc.values()):
+    w("### 1-1. 오일장 안쪽 — 가장 큰 묶음이라 따로 봅니다")
+    w("")
+    w("| 계층 | 이번 | 지난 | 변화 |")
+    w("|---|---:|---:|---:|")
+    for t in JT_ORDER:
+        if not jc.get(t) and not jp.get(t): continue
+        w("| %s | %d | %d | %+d |" % (t, jc.get(t,0), jp.get(t,0), jc.get(t,0)-jp.get(t,0)))
+    w("| **합계** | **%d** | %d | %+d |" % (sum(jc.values()), sum(jp.values()),
+                                            sum(jc.values())-sum(jp.values())))
+    w("")
+    hub_d = jc.get("허브 /jangteo",0) - jp.get("허브 /jangteo",0)
+    sub_d = sum(jc.values()) - jc.get("허브 /jangteo",0) - (sum(jp.values()) - jp.get("허브 /jangteo",0))
+    if hub_d < 0 and sub_d > -hub_d:
+        w("> **허브가 줄어든 것은 나쁜 신호가 아닙니다**(허브 %+d · 하위 %+d · 합계 %+d)." % (
+            hub_d, sub_d, sum(jc.values())-sum(jp.values())))
+        w("> 하위 페이지가 허브 대신 검색을 받아내고 있다는 뜻입니다 — 허브 한 줄만 보고 판단하지 마세요.")
+        w("")
+    if not jc.get("끝자리 (1-6·2-7…)"):
+        w("> ℹ️ 끝자리 페이지는 2026-09-14 에 새로 만들었습니다(월 5,490회 수요·모바일 97%).")
+        w("> 색인에 잡히기까지 2~4주 걸리니 그때까지 0 이 정상입니다.")
+        w("")
+
 # ── 1-2. AI 유입 ──────────────────────────────────────────────
 # AEO 계측기(Perplexity·ChatGPT)는 «물었을 때 우리가 언급되나»를 잰다.
 # 여기는 «AI 가 사람을 실제로 보냈나»다. 둘은 다른 것이고, 이쪽은 공짜로 정확하다.
