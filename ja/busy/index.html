@@ -538,7 +538,25 @@ window.OneSignalDeferred=window.OneSignalDeferred||[];window.OneSignalDeferred.p
 .bzt tr.both td{background:#fff1ec}
 .bzt tr.kr td{background:#fffaf0}
 .bzt tr.we td{color:#9aa3af}
-.bzwrap{overflow-x:auto}
+.bzwrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+/* 📱 2026-09-14 — 실물을 375px 로 열어 보고 넣었다. 그냥 두면 4열 표가 한 칸 57px 이 되어
+   「ソ/ル/ラ/ル」처럼 한 글자씩 끊겨 내려간다(한 행이 262px). 일본 유입은 모바일이 대부분이다.
+   · 긴 문장이 든 표(겹치는 구간·명절)는 좁은 화면에서 «카드»로 편다 — 행이 8개뿐이라 길어지지 않는다.
+   · 행이 많은 달력 표는 카드로 펴면 47장이 된다 → 최소 너비를 줘서 «옆으로» 밀게 한다. */
+.bzt{min-width:460px}
+.bzt.stack{min-width:0}
+.bzsw{display:none;color:#9aa3af;font-size:.83rem;margin:2px 0 6px}
+@media(max-width:560px){
+.bzsw{display:block}
+.bzt.stack thead{display:none}
+.bzt.stack,.bzt.stack tbody,.bzt.stack tr,.bzt.stack td{display:block;width:auto}
+.bzt.stack tr{border-bottom:2px solid #eef2f1;padding:11px 0}
+.bzt.stack tr:last-child{border-bottom:0}
+.bzt.stack td{border:0;padding:4px 2px}
+.bzt.stack td.n{text-align:left}
+.bzt.stack td:before{content:attr(data-l);display:block;font-size:.78rem;font-weight:800;color:#0a6c63;margin-bottom:2px}
+.bzt.stack td:empty{display:none}
+}
 .bzbar{display:flex;align-items:center;gap:9px;margin:5px 0}
 .bzbar .l{width:44px;font-weight:800;color:#374151;font-size:.9rem}
 .bzbar .b{flex:1;background:#f1f5f4;border-radius:999px;height:15px;overflow:hidden}
@@ -561,15 +579,15 @@ window.OneSignalDeferred=window.OneSignalDeferred||[];window.OneSignalDeferred.p
 
 <div class="bzc"><h2>🔴 日韓の連休が重なる期間</h2>
 <p>日本の連休と韓国の連休が<b>重なる、または2日以内で続けて来る</b>期間だけを抜き出しました。この期間は、日本発の便が混むのと同時に韓国国内も動くので、航空券・ホテル・現地の移動が同時に厳しくなります。<b>韓国の名節（ソルラル・チュソク）と重なる回</b>はさらに別で、個人経営の店がまとめて休みます。</p>
-<div class="bzwrap"><table class="bzt"><thead><tr><th>期間</th><th>🇯🇵 日本</th><th>🇰🇷 韓国</th><th>何が起きるか</th></tr></thead><tbody><tr class="both"><td><b>2026年9月19日</b><br>〜9/27<br><span style="color:#6b7280;font-size:.86em">9日間</span></td>
-<td>9/19〜9/23（5連休）<br><span style="color:#6b7280;font-size:.86em">敬老の日・休日・秋分の日</span></td><td>9/24〜9/27（4連休）<br><span style="color:#6b7280;font-size:.86em"><a href="/ja/closed/chuseok/" style="color:#0c7d72;font-weight:700">チュソク（秋夕）</a></span></td><td>🔴 <b>韓国は名節</b>。個人店がまとめて休みます。航空券も日韓とも高くなります</td></tr><tr class="both"><td><b>2026年10月9日</b><br>〜10/12<br><span style="color:#6b7280;font-size:.86em">4日間</span></td>
-<td>10/10〜10/12（3連休）<br><span style="color:#6b7280;font-size:.86em">スポーツの日</span></td><td>10/9〜10/11（3連休）<br><span style="color:#6b7280;font-size:.86em"><a href="/ja/closed/hangeul-day/" style="color:#0c7d72;font-weight:700">ハングルの日</a></span></td><td>🟠 <b>連休どうしが重なります</b>。祝日は別の日ですが、休みの期間そのものが重なるので便もホテルも同時に埋まります</td></tr><tr class="both"><td><b>2027年1月1日</b><br>〜1/3<br><span style="color:#6b7280;font-size:.86em">3日間</span></td>
-<td>1/1〜1/3（3連休）<br><span style="color:#6b7280;font-size:.86em">元日</span></td><td>1/1〜1/3（3連休）<br><span style="color:#6b7280;font-size:.86em"><a href="/ja/closed/new-year/" style="color:#0c7d72;font-weight:700">元日</a></span></td><td>🟠 <b>同じ日に両国とも祝日</b>。往復とも便が混み、ソウル中心部も韓国人客で埋まります</td></tr><tr class="both"><td><b>2027年2月6日</b><br>〜2/11<br><span style="color:#6b7280;font-size:.86em">6日間</span></td>
-<td>2/11〜2/11（1連休）<br><span style="color:#6b7280;font-size:.86em">建国記念の日</span></td><td>2/6〜2/9（4連休）<br><span style="color:#6b7280;font-size:.86em"><a href="/ja/closed/seollal/" style="color:#0c7d72;font-weight:700">ソルラル（旧正月）</a>・<a href="/ja/closed/seollal/" style="color:#0c7d72;font-weight:700">ソルラル（旧正月）（振替休日）</a></span></td><td>🔴 <b>韓国は名節</b>。個人店がまとめて休みます。航空券も日韓とも高くなります</td></tr><tr class="both"><td><b>2027年4月29日</b><br>〜5/5<br><span style="color:#6b7280;font-size:.86em">7日間</span></td>
-<td>4/29〜4/29（1連休）<br><span style="color:#6b7280;font-size:.86em">昭和の日</span><br>5/1〜5/5（5連休）<br><span style="color:#6b7280;font-size:.86em">憲法記念日・みどりの日・こどもの日</span></td><td>5/1〜5/3（3連休）<br><span style="color:#6b7280;font-size:.86em">メーデー・メーデー（振替休日）</span><br>5/5〜5/5（1連休）<br><span style="color:#6b7280;font-size:.86em">こどもの日</span></td><td>🟠 <b>同じ日に両国とも祝日</b>。往復とも便が混み、ソウル中心部も韓国人客で埋まります</td></tr><tr class="both"><td><b>2027年7月17日</b><br>〜7/19<br><span style="color:#6b7280;font-size:.86em">3日間</span></td>
-<td>7/17〜7/19（3連休）<br><span style="color:#6b7280;font-size:.86em">海の日</span></td><td>7/17〜7/19（3連休）<br><span style="color:#6b7280;font-size:.86em">制憲節・制憲節（振替休日）</span></td><td>🟠 <b>同じ日に両国とも祝日</b>。往復とも便が混み、ソウル中心部も韓国人客で埋まります</td></tr><tr class="both"><td><b>2027年9月14日</b><br>〜9/20<br><span style="color:#6b7280;font-size:.86em">7日間</span></td>
-<td>9/18〜9/20（3連休）<br><span style="color:#6b7280;font-size:.86em">敬老の日</span></td><td>9/14〜9/16（3連休）<br><span style="color:#6b7280;font-size:.86em"><a href="/ja/closed/chuseok/" style="color:#0c7d72;font-weight:700">チュソク（秋夕）</a></span></td><td>🔴 <b>韓国は名節</b>。個人店がまとめて休みます。航空券も日韓とも高くなります</td></tr><tr class="both"><td><b>2027年10月9日</b><br>〜10/11<br><span style="color:#6b7280;font-size:.86em">3日間</span></td>
-<td>10/9〜10/11（3連休）<br><span style="color:#6b7280;font-size:.86em">スポーツの日</span></td><td>10/9〜10/11（3連休）<br><span style="color:#6b7280;font-size:.86em"><a href="/ja/closed/hangeul-day/" style="color:#0c7d72;font-weight:700">ハングルの日</a>・<a href="/ja/closed/hangeul-day/" style="color:#0c7d72;font-weight:700">ハングルの日（振替休日）</a></span></td><td>🟠 <b>同じ日に両国とも祝日</b>。往復とも便が混み、ソウル中心部も韓国人客で埋まります</td></tr></tbody></table></div>
+<div class="bzwrap"><table class="bzt stack"><thead><tr><th>期間</th><th>🇯🇵 日本</th><th>🇰🇷 韓国</th><th>何が起きるか</th></tr></thead><tbody><tr class="both"><td data-l="期間"><b>2026年9月19日</b> 〜9/27<span style="color:#6b7280;font-size:.86em">（9日間）</span></td>
+<td data-l="🇯🇵 日本">9/19〜9/23（5連休）<br><span style="color:#6b7280;font-size:.86em">敬老の日・休日・秋分の日</span></td><td data-l="🇰🇷 韓国">9/24〜9/27（4連休）<br><span style="color:#6b7280;font-size:.86em"><a href="/ja/closed/chuseok/" style="color:#0c7d72;font-weight:700">チュソク（秋夕）</a></span></td><td data-l="何が起きるか">🔴 <b>韓国は名節</b>。個人店がまとめて休みます。航空券も日韓とも高くなります</td></tr><tr class="both"><td data-l="期間"><b>2026年10月9日</b> 〜10/12<span style="color:#6b7280;font-size:.86em">（4日間）</span></td>
+<td data-l="🇯🇵 日本">10/10〜10/12（3連休）<br><span style="color:#6b7280;font-size:.86em">スポーツの日</span></td><td data-l="🇰🇷 韓国">10/9〜10/11（3連休）<br><span style="color:#6b7280;font-size:.86em"><a href="/ja/closed/hangeul-day/" style="color:#0c7d72;font-weight:700">ハングルの日</a></span></td><td data-l="何が起きるか">🟠 <b>連休どうしが重なります</b>。祝日は別の日ですが、休みの期間そのものが重なるので便もホテルも同時に埋まります</td></tr><tr class="both"><td data-l="期間"><b>2027年1月1日</b> 〜1/3<span style="color:#6b7280;font-size:.86em">（3日間）</span></td>
+<td data-l="🇯🇵 日本">1/1〜1/3（3連休）<br><span style="color:#6b7280;font-size:.86em">元日</span></td><td data-l="🇰🇷 韓国">1/1〜1/3（3連休）<br><span style="color:#6b7280;font-size:.86em"><a href="/ja/closed/new-year/" style="color:#0c7d72;font-weight:700">元日</a></span></td><td data-l="何が起きるか">🟠 <b>同じ日に両国とも祝日</b>。往復とも便が混み、ソウル中心部も韓国人客で埋まります</td></tr><tr class="both"><td data-l="期間"><b>2027年2月6日</b> 〜2/11<span style="color:#6b7280;font-size:.86em">（6日間）</span></td>
+<td data-l="🇯🇵 日本">2/11〜2/11（1連休）<br><span style="color:#6b7280;font-size:.86em">建国記念の日</span></td><td data-l="🇰🇷 韓国">2/6〜2/9（4連休）<br><span style="color:#6b7280;font-size:.86em"><a href="/ja/closed/seollal/" style="color:#0c7d72;font-weight:700">ソルラル（旧正月）</a>・<a href="/ja/closed/seollal/" style="color:#0c7d72;font-weight:700">ソルラル（旧正月）（振替休日）</a></span></td><td data-l="何が起きるか">🔴 <b>韓国は名節</b>。個人店がまとめて休みます。航空券も日韓とも高くなります</td></tr><tr class="both"><td data-l="期間"><b>2027年4月29日</b> 〜5/5<span style="color:#6b7280;font-size:.86em">（7日間）</span></td>
+<td data-l="🇯🇵 日本">4/29〜4/29（1連休）<br><span style="color:#6b7280;font-size:.86em">昭和の日</span><br>5/1〜5/5（5連休）<br><span style="color:#6b7280;font-size:.86em">憲法記念日・みどりの日・こどもの日</span></td><td data-l="🇰🇷 韓国">5/1〜5/3（3連休）<br><span style="color:#6b7280;font-size:.86em">メーデー・メーデー（振替休日）</span><br>5/5〜5/5（1連休）<br><span style="color:#6b7280;font-size:.86em">こどもの日</span></td><td data-l="何が起きるか">🟠 <b>同じ日に両国とも祝日</b>。往復とも便が混み、ソウル中心部も韓国人客で埋まります</td></tr><tr class="both"><td data-l="期間"><b>2027年7月17日</b> 〜7/19<span style="color:#6b7280;font-size:.86em">（3日間）</span></td>
+<td data-l="🇯🇵 日本">7/17〜7/19（3連休）<br><span style="color:#6b7280;font-size:.86em">海の日</span></td><td data-l="🇰🇷 韓国">7/17〜7/19（3連休）<br><span style="color:#6b7280;font-size:.86em">制憲節・制憲節（振替休日）</span></td><td data-l="何が起きるか">🟠 <b>同じ日に両国とも祝日</b>。往復とも便が混み、ソウル中心部も韓国人客で埋まります</td></tr><tr class="both"><td data-l="期間"><b>2027年9月14日</b> 〜9/20<span style="color:#6b7280;font-size:.86em">（7日間）</span></td>
+<td data-l="🇯🇵 日本">9/18〜9/20（3連休）<br><span style="color:#6b7280;font-size:.86em">敬老の日</span></td><td data-l="🇰🇷 韓国">9/14〜9/16（3連休）<br><span style="color:#6b7280;font-size:.86em"><a href="/ja/closed/chuseok/" style="color:#0c7d72;font-weight:700">チュソク（秋夕）</a></span></td><td data-l="何が起きるか">🔴 <b>韓国は名節</b>。個人店がまとめて休みます。航空券も日韓とも高くなります</td></tr><tr class="both"><td data-l="期間"><b>2027年10月9日</b> 〜10/11<span style="color:#6b7280;font-size:.86em">（3日間）</span></td>
+<td data-l="🇯🇵 日本">10/9〜10/11（3連休）<br><span style="color:#6b7280;font-size:.86em">スポーツの日</span></td><td data-l="🇰🇷 韓国">10/9〜10/11（3連休）<br><span style="color:#6b7280;font-size:.86em"><a href="/ja/closed/hangeul-day/" style="color:#0c7d72;font-weight:700">ハングルの日</a>・<a href="/ja/closed/hangeul-day/" style="color:#0c7d72;font-weight:700">ハングルの日（振替休日）</a></span></td><td data-l="何が起きるか">🟠 <b>同じ日に両国とも祝日</b>。往復とも便が混み、ソウル中心部も韓国人客で埋まります</td></tr></tbody></table></div>
 <p class="bznote">日本の祝日は内閣府「国民の祝日について」の公式CSV、韓国の祝日は韓国政府の公休日データによります。春分の日・秋分の日は毎年決まるため、このページは元データから自動で作り直しています。</p></div>
 
 <div class="bzc"><h2>⭐ 祝日カレンダーだけでは分からないこと — 曜日の定休日</h2>
@@ -588,169 +606,170 @@ window.OneSignalDeferred=window.OneSignalDeferred||[];window.OneSignalDeferred.p
 
 <div class="bzc"><h2>🚪 韓国だけが休む日 — ここは「混む」より「閉まる」</h2>
 <p>日本の祝日と関係なく韓国だけが休む日は、混雑よりも<b>店が開いているか</b>が問題になります。とくに韓国の二大名節（<b class="bzk">설날</b> ソルラル＝旧正月、<b class="bzk">추석</b> チュソク＝秋夕）は、路地の食堂や個人商店が数日まとめて閉まります。営業時間データに「名節休業」と明記している店だけでも<b>555店</b>あり、明記していない店も当日閉まっていることが珍しくありません。宮殿・大型デパート・コンビニ・カフェチェーンは通常どおりです。</p>
-<div class="bzwrap"><table class="bzt"><thead><tr><th>名節</th><th>期間</th><th>詳しく</th></tr></thead><tbody><tr class="kr"><td><b>チュソク（秋夕）</b></td><td>2026年9月24日〜9/27（4連休）</td><td><a href="/ja/closed/chuseok/" style="color:#0c7d72;font-weight:700">この連休に閉まる店を数えました →</a></td></tr><tr class="kr"><td><b>ソルラル（旧正月）</b></td><td>2027年2月6日〜2/9（4連休）</td><td><a href="/ja/closed/seollal/" style="color:#0c7d72;font-weight:700">この連休に閉まる店を数えました →</a></td></tr><tr class="kr"><td><b>チュソク（秋夕）</b></td><td>2027年9月14日〜9/16（3連休）</td><td><a href="/ja/closed/chuseok/" style="color:#0c7d72;font-weight:700">この連休に閉まる店を数えました →</a></td></tr></tbody></table></div>
+<div class="bzwrap"><table class="bzt stack"><thead><tr><th>名節</th><th>期間</th><th>詳しく</th></tr></thead><tbody><tr class="kr"><td data-l="名節"><b>チュソク（秋夕）</b></td><td data-l="期間">2026年9月24日〜9/27（4連休）</td><td><a href="/ja/closed/chuseok/" style="color:#0c7d72;font-weight:700">この連休に閉まる店を数えました →</a></td></tr><tr class="kr"><td data-l="名節"><b>ソルラル（旧正月）</b></td><td data-l="期間">2027年2月6日〜2/9（4連休）</td><td><a href="/ja/closed/seollal/" style="color:#0c7d72;font-weight:700">この連休に閉まる店を数えました →</a></td></tr><tr class="kr"><td data-l="名節"><b>チュソク（秋夕）</b></td><td data-l="期間">2027年9月14日〜9/16（3連休）</td><td><a href="/ja/closed/chuseok/" style="color:#0c7d72;font-weight:700">この連休に閉まる店を数えました →</a></td></tr></tbody></table></div>
 <p class="bznote">韓国は祝日が日曜と重なると振替休日になります（すべての祝日ではありません）。上の表は公式の公休日データに基づいています。</p></div>
 
 <div class="bzc"><h2>🗓️ 日韓の祝日カレンダー — 全部並べました</h2>
-<p>2026年9月14日から2027年11月23日まで、どちらかの国が祝日である日を<b>すべて</b>並べました。赤い行は両国とも休み、黄色い行は韓国だけ休み（＝店に注意）です。日本だけが休みの日は、韓国側は平常営業なので旅行にはむしろ good です。</p>
+<p>2026年9月14日から2027年11月23日まで、どちらかの国が祝日である日を<b>すべて</b>並べました。<b>🔴 両国とも</b>＝日韓どちらも休みで移動がいちばん混む日、<b>🟠 韓国だけ</b>＝こちらは平日なのに現地の店が閉まる日、<b>🔵 日本だけ</b>＝韓国は平常営業なので旅行にはむしろ good な日です。</p>
+<p class="bzsw">↔ 表は横にスクロールできます</p>
 <div class="bzwrap"><table class="bzt"><thead><tr><th>日付</th><th>🇰🇷 韓国</th><th>🇯🇵 日本</th><th>判定</th></tr></thead><tbody><tr><td colspan="4" style="background:#f6fbfa;font-weight:900;color:#0a6c63;padding:8px 10px">2026年9月</td></tr><tr class=""><td>21日（月）</td>
 <td>—</td>
 <td><b>敬老の日</b></td>
-<td>🔵 日本だけ休み — 韓国は平常</td></tr><tr class=""><td>22日（火）</td>
+<td style="white-space:nowrap">🔵 日本だけ</td></tr><tr class=""><td>22日（火）</td>
 <td>—</td>
 <td><b>休日</b></td>
-<td>🔵 日本だけ休み — 韓国は平常</td></tr><tr class=""><td>23日（水）</td>
+<td style="white-space:nowrap">🔵 日本だけ</td></tr><tr class=""><td>23日（水）</td>
 <td>—</td>
 <td><b>秋分の日</b></td>
-<td>🔵 日本だけ休み — 韓国は平常</td></tr><tr class="kr"><td>24日（木）</td>
+<td style="white-space:nowrap">🔵 日本だけ</td></tr><tr class="kr"><td>24日（木）</td>
 <td><b>チュソク（秋夕）</b></td>
 <td>—</td>
-<td>🟠 韓国だけ休み — 店に注意</td></tr><tr class="kr"><td>25日（金）</td>
+<td style="white-space:nowrap">🟠 韓国だけ</td></tr><tr class="kr"><td>25日（金）</td>
 <td><b>チュソク（秋夕）</b></td>
 <td>—</td>
-<td>🟠 韓国だけ休み — 店に注意</td></tr><tr class="kr"><td>26日（土）</td>
+<td style="white-space:nowrap">🟠 韓国だけ</td></tr><tr class="kr"><td>26日（土）</td>
 <td><b>チュソク（秋夕）</b></td>
 <td>週末</td>
-<td>🟠 韓国だけ休み — 店に注意</td></tr><tr><td colspan="4" style="background:#f6fbfa;font-weight:900;color:#0a6c63;padding:8px 10px">2026年10月</td></tr><tr class="kr"><td>3日（土）</td>
+<td style="white-space:nowrap">🟠 韓国だけ</td></tr><tr><td colspan="4" style="background:#f6fbfa;font-weight:900;color:#0a6c63;padding:8px 10px">2026年10月</td></tr><tr class="kr"><td>3日（土）</td>
 <td><b>開天節</b></td>
 <td>週末</td>
-<td>🟠 韓国だけ休み — 店に注意</td></tr><tr class="kr"><td>5日（月）</td>
+<td style="white-space:nowrap">🟠 韓国だけ</td></tr><tr class="kr"><td>5日（月）</td>
 <td><b>開天節（振替休日）</b></td>
 <td>—</td>
-<td>🟠 韓国だけ休み — 店に注意</td></tr><tr class="kr"><td>9日（金）</td>
+<td style="white-space:nowrap">🟠 韓国だけ</td></tr><tr class="kr"><td>9日（金）</td>
 <td><b>ハングルの日</b></td>
 <td>—</td>
-<td>🟠 韓国だけ休み — 店に注意</td></tr><tr class=""><td>12日（月）</td>
+<td style="white-space:nowrap">🟠 韓国だけ</td></tr><tr class=""><td>12日（月）</td>
 <td>—</td>
 <td><b>スポーツの日</b></td>
-<td>🔵 日本だけ休み — 韓国は平常</td></tr><tr><td colspan="4" style="background:#f6fbfa;font-weight:900;color:#0a6c63;padding:8px 10px">2026年11月</td></tr><tr class=""><td>3日（火）</td>
+<td style="white-space:nowrap">🔵 日本だけ</td></tr><tr><td colspan="4" style="background:#f6fbfa;font-weight:900;color:#0a6c63;padding:8px 10px">2026年11月</td></tr><tr class=""><td>3日（火）</td>
 <td>—</td>
 <td><b>文化の日</b></td>
-<td>🔵 日本だけ休み — 韓国は平常</td></tr><tr class=""><td>23日（月）</td>
+<td style="white-space:nowrap">🔵 日本だけ</td></tr><tr class=""><td>23日（月）</td>
 <td>—</td>
 <td><b>勤労感謝の日</b></td>
-<td>🔵 日本だけ休み — 韓国は平常</td></tr><tr><td colspan="4" style="background:#f6fbfa;font-weight:900;color:#0a6c63;padding:8px 10px">2026年12月</td></tr><tr class="kr"><td>25日（金）</td>
+<td style="white-space:nowrap">🔵 日本だけ</td></tr><tr><td colspan="4" style="background:#f6fbfa;font-weight:900;color:#0a6c63;padding:8px 10px">2026年12月</td></tr><tr class="kr"><td>25日（金）</td>
 <td><b>クリスマス</b></td>
 <td>—</td>
-<td>🟠 韓国だけ休み — 店に注意</td></tr><tr><td colspan="4" style="background:#f6fbfa;font-weight:900;color:#0a6c63;padding:8px 10px">2027年1月</td></tr><tr class="both"><td>1日（金）</td>
+<td style="white-space:nowrap">🟠 韓国だけ</td></tr><tr><td colspan="4" style="background:#f6fbfa;font-weight:900;color:#0a6c63;padding:8px 10px">2027年1月</td></tr><tr class="both"><td>1日（金）</td>
 <td><b>元日</b></td>
 <td><b>元日</b></td>
-<td>🔴 両国とも休み</td></tr><tr class=""><td>11日（月）</td>
+<td style="white-space:nowrap">🔴 両国とも</td></tr><tr class=""><td>11日（月）</td>
 <td>—</td>
 <td><b>成人の日</b></td>
-<td>🔵 日本だけ休み — 韓国は平常</td></tr><tr><td colspan="4" style="background:#f6fbfa;font-weight:900;color:#0a6c63;padding:8px 10px">2027年2月</td></tr><tr class="kr"><td>6日（土）</td>
+<td style="white-space:nowrap">🔵 日本だけ</td></tr><tr><td colspan="4" style="background:#f6fbfa;font-weight:900;color:#0a6c63;padding:8px 10px">2027年2月</td></tr><tr class="kr"><td>6日（土）</td>
 <td><b>ソルラル（旧正月）</b></td>
 <td>週末</td>
-<td>🟠 韓国だけ休み — 店に注意</td></tr><tr class="kr"><td>7日（日）</td>
+<td style="white-space:nowrap">🟠 韓国だけ</td></tr><tr class="kr"><td>7日（日）</td>
 <td><b>ソルラル（旧正月）</b></td>
 <td>週末</td>
-<td>🟠 韓国だけ休み — 店に注意</td></tr><tr class="kr"><td>8日（月）</td>
+<td style="white-space:nowrap">🟠 韓国だけ</td></tr><tr class="kr"><td>8日（月）</td>
 <td><b>ソルラル（旧正月）</b></td>
 <td>—</td>
-<td>🟠 韓国だけ休み — 店に注意</td></tr><tr class="kr"><td>9日（火）</td>
+<td style="white-space:nowrap">🟠 韓国だけ</td></tr><tr class="kr"><td>9日（火）</td>
 <td><b>ソルラル（旧正月）（振替休日）</b></td>
 <td>—</td>
-<td>🟠 韓国だけ休み — 店に注意</td></tr><tr class=""><td>11日（木）</td>
+<td style="white-space:nowrap">🟠 韓国だけ</td></tr><tr class=""><td>11日（木）</td>
 <td>—</td>
 <td><b>建国記念の日</b></td>
-<td>🔵 日本だけ休み — 韓国は平常</td></tr><tr class=""><td>23日（火）</td>
+<td style="white-space:nowrap">🔵 日本だけ</td></tr><tr class=""><td>23日（火）</td>
 <td>—</td>
 <td><b>天皇誕生日</b></td>
-<td>🔵 日本だけ休み — 韓国は平常</td></tr><tr><td colspan="4" style="background:#f6fbfa;font-weight:900;color:#0a6c63;padding:8px 10px">2027年3月</td></tr><tr class="kr"><td>1日（月）</td>
+<td style="white-space:nowrap">🔵 日本だけ</td></tr><tr><td colspan="4" style="background:#f6fbfa;font-weight:900;color:#0a6c63;padding:8px 10px">2027年3月</td></tr><tr class="kr"><td>1日（月）</td>
 <td><b>三一節</b></td>
 <td>—</td>
-<td>🟠 韓国だけ休み — 店に注意</td></tr><tr class=""><td>21日（日）</td>
+<td style="white-space:nowrap">🟠 韓国だけ</td></tr><tr class=""><td>21日（日）</td>
 <td>—</td>
 <td><b>春分の日</b></td>
-<td>🔵 日本だけ休み（週末と重なります）</td></tr><tr class=""><td>22日（月）</td>
+<td style="white-space:nowrap">🔵 日本だけ（週末）</td></tr><tr class=""><td>22日（月）</td>
 <td>—</td>
 <td><b>休日</b></td>
-<td>🔵 日本だけ休み — 韓国は平常</td></tr><tr><td colspan="4" style="background:#f6fbfa;font-weight:900;color:#0a6c63;padding:8px 10px">2027年4月</td></tr><tr class=""><td>29日（木）</td>
+<td style="white-space:nowrap">🔵 日本だけ</td></tr><tr><td colspan="4" style="background:#f6fbfa;font-weight:900;color:#0a6c63;padding:8px 10px">2027年4月</td></tr><tr class=""><td>29日（木）</td>
 <td>—</td>
 <td><b>昭和の日</b></td>
-<td>🔵 日本だけ休み — 韓国は平常</td></tr><tr><td colspan="4" style="background:#f6fbfa;font-weight:900;color:#0a6c63;padding:8px 10px">2027年5月</td></tr><tr class="kr"><td>1日（土）</td>
+<td style="white-space:nowrap">🔵 日本だけ</td></tr><tr><td colspan="4" style="background:#f6fbfa;font-weight:900;color:#0a6c63;padding:8px 10px">2027年5月</td></tr><tr class="kr"><td>1日（土）</td>
 <td><b>メーデー</b></td>
 <td>週末</td>
-<td>🟠 韓国だけ休み — 店に注意</td></tr><tr class="both"><td>3日（月）</td>
+<td style="white-space:nowrap">🟠 韓国だけ</td></tr><tr class="both"><td>3日（月）</td>
 <td><b>メーデー（振替休日）</b></td>
 <td><b>憲法記念日</b></td>
-<td>🔴 両国とも休み</td></tr><tr class=""><td>4日（火）</td>
+<td style="white-space:nowrap">🔴 両国とも</td></tr><tr class=""><td>4日（火）</td>
 <td>—</td>
 <td><b>みどりの日</b></td>
-<td>🔵 日本だけ休み — 韓国は平常</td></tr><tr class="both"><td>5日（水）</td>
+<td style="white-space:nowrap">🔵 日本だけ</td></tr><tr class="both"><td>5日（水）</td>
 <td><b>こどもの日</b></td>
 <td><b>こどもの日</b></td>
-<td>🔴 両国とも休み</td></tr><tr class="kr"><td>13日（木）</td>
+<td style="white-space:nowrap">🔴 両国とも</td></tr><tr class="kr"><td>13日（木）</td>
 <td><b>釈迦誕生日</b></td>
 <td>—</td>
-<td>🟠 韓国だけ休み — 店に注意</td></tr><tr><td colspan="4" style="background:#f6fbfa;font-weight:900;color:#0a6c63;padding:8px 10px">2027年6月</td></tr><tr class="kr"><td>6日（日）</td>
+<td style="white-space:nowrap">🟠 韓国だけ</td></tr><tr><td colspan="4" style="background:#f6fbfa;font-weight:900;color:#0a6c63;padding:8px 10px">2027年6月</td></tr><tr class="kr"><td>6日（日）</td>
 <td><b>顕忠日</b></td>
 <td>週末</td>
-<td>🟠 韓国だけ休み — 店に注意</td></tr><tr><td colspan="4" style="background:#f6fbfa;font-weight:900;color:#0a6c63;padding:8px 10px">2027年7月</td></tr><tr class="kr"><td>17日（土）</td>
+<td style="white-space:nowrap">🟠 韓国だけ</td></tr><tr><td colspan="4" style="background:#f6fbfa;font-weight:900;color:#0a6c63;padding:8px 10px">2027年7月</td></tr><tr class="kr"><td>17日（土）</td>
 <td><b>制憲節</b></td>
 <td>週末</td>
-<td>🟠 韓国だけ休み — 店に注意</td></tr><tr class="both"><td>19日（月）</td>
+<td style="white-space:nowrap">🟠 韓国だけ</td></tr><tr class="both"><td>19日（月）</td>
 <td><b>制憲節（振替休日）</b></td>
 <td><b>海の日</b></td>
-<td>🔴 両国とも休み</td></tr><tr><td colspan="4" style="background:#f6fbfa;font-weight:900;color:#0a6c63;padding:8px 10px">2027年8月</td></tr><tr class=""><td>11日（水）</td>
+<td style="white-space:nowrap">🔴 両国とも</td></tr><tr><td colspan="4" style="background:#f6fbfa;font-weight:900;color:#0a6c63;padding:8px 10px">2027年8月</td></tr><tr class=""><td>11日（水）</td>
 <td>—</td>
 <td><b>山の日</b></td>
-<td>🔵 日本だけ休み — 韓国は平常</td></tr><tr class="kr"><td>15日（日）</td>
+<td style="white-space:nowrap">🔵 日本だけ</td></tr><tr class="kr"><td>15日（日）</td>
 <td><b>光復節</b></td>
 <td>週末</td>
-<td>🟠 韓国だけ休み — 店に注意</td></tr><tr class="kr"><td>16日（月）</td>
+<td style="white-space:nowrap">🟠 韓国だけ</td></tr><tr class="kr"><td>16日（月）</td>
 <td><b>光復節（振替休日）</b></td>
 <td>—</td>
-<td>🟠 韓国だけ休み — 店に注意</td></tr><tr><td colspan="4" style="background:#f6fbfa;font-weight:900;color:#0a6c63;padding:8px 10px">2027年9月</td></tr><tr class="kr"><td>14日（火）</td>
+<td style="white-space:nowrap">🟠 韓国だけ</td></tr><tr><td colspan="4" style="background:#f6fbfa;font-weight:900;color:#0a6c63;padding:8px 10px">2027年9月</td></tr><tr class="kr"><td>14日（火）</td>
 <td><b>チュソク（秋夕）</b></td>
 <td>—</td>
-<td>🟠 韓国だけ休み — 店に注意</td></tr><tr class="kr"><td>15日（水）</td>
+<td style="white-space:nowrap">🟠 韓国だけ</td></tr><tr class="kr"><td>15日（水）</td>
 <td><b>チュソク（秋夕）</b></td>
 <td>—</td>
-<td>🟠 韓国だけ休み — 店に注意</td></tr><tr class="kr"><td>16日（木）</td>
+<td style="white-space:nowrap">🟠 韓国だけ</td></tr><tr class="kr"><td>16日（木）</td>
 <td><b>チュソク（秋夕）</b></td>
 <td>—</td>
-<td>🟠 韓国だけ休み — 店に注意</td></tr><tr class=""><td>20日（月）</td>
+<td style="white-space:nowrap">🟠 韓国だけ</td></tr><tr class=""><td>20日（月）</td>
 <td>—</td>
 <td><b>敬老の日</b></td>
-<td>🔵 日本だけ休み — 韓国は平常</td></tr><tr class=""><td>23日（木）</td>
+<td style="white-space:nowrap">🔵 日本だけ</td></tr><tr class=""><td>23日（木）</td>
 <td>—</td>
 <td><b>秋分の日</b></td>
-<td>🔵 日本だけ休み — 韓国は平常</td></tr><tr><td colspan="4" style="background:#f6fbfa;font-weight:900;color:#0a6c63;padding:8px 10px">2027年10月</td></tr><tr class="kr"><td>3日（日）</td>
+<td style="white-space:nowrap">🔵 日本だけ</td></tr><tr><td colspan="4" style="background:#f6fbfa;font-weight:900;color:#0a6c63;padding:8px 10px">2027年10月</td></tr><tr class="kr"><td>3日（日）</td>
 <td><b>開天節</b></td>
 <td>週末</td>
-<td>🟠 韓国だけ休み — 店に注意</td></tr><tr class="kr"><td>4日（月）</td>
+<td style="white-space:nowrap">🟠 韓国だけ</td></tr><tr class="kr"><td>4日（月）</td>
 <td><b>開天節（振替休日）</b></td>
 <td>—</td>
-<td>🟠 韓国だけ休み — 店に注意</td></tr><tr class="kr"><td>9日（土）</td>
+<td style="white-space:nowrap">🟠 韓国だけ</td></tr><tr class="kr"><td>9日（土）</td>
 <td><b>ハングルの日</b></td>
 <td>週末</td>
-<td>🟠 韓国だけ休み — 店に注意</td></tr><tr class="both"><td>11日（月）</td>
+<td style="white-space:nowrap">🟠 韓国だけ</td></tr><tr class="both"><td>11日（月）</td>
 <td><b>ハングルの日（振替休日）</b></td>
 <td><b>スポーツの日</b></td>
-<td>🔴 両国とも休み</td></tr><tr><td colspan="4" style="background:#f6fbfa;font-weight:900;color:#0a6c63;padding:8px 10px">2027年11月</td></tr><tr class=""><td>3日（水）</td>
+<td style="white-space:nowrap">🔴 両国とも</td></tr><tr><td colspan="4" style="background:#f6fbfa;font-weight:900;color:#0a6c63;padding:8px 10px">2027年11月</td></tr><tr class=""><td>3日（水）</td>
 <td>—</td>
 <td><b>文化の日</b></td>
-<td>🔵 日本だけ休み — 韓国は平常</td></tr><tr class=""><td>23日（火）</td>
+<td style="white-space:nowrap">🔵 日本だけ</td></tr><tr class=""><td>23日（火）</td>
 <td>—</td>
 <td><b>勤労感謝の日</b></td>
-<td>🔵 日本だけ休み — 韓国は平常</td></tr></tbody></table></div>
+<td style="white-space:nowrap">🔵 日本だけ</td></tr></tbody></table></div>
 <p class="bznote">日本側の「週末」は祝日ではありませんが、旅行の混み方に効くので表示しています。韓国の会社員も土日は休みです。</p></div>
 
 <div class="bzc"><h2>📊 「普段の何倍」— 韓国人の国内旅行が集中する月と場所</h2>
 <p>祝日のほかにもう一つ、韓国国内の人の動きがあります。韓国観光公社「韓国観光データラボ」の市郡区別訪問者数から、<b>その月の訪問者数 ÷ その地域の年平均</b>を出したものです。<b>×1.5</b> は「普段の1.5倍の人がそこにいる」という意味になります（2025年の実績）。</p>
-<div class="bzwrap"><table class="bzt"><thead><tr><th>月</th><th>普段より混む市郡区（上位）</th><th class="n">対象</th></tr></thead><tbody><tr><td><b>1月</b></td><td>화천군<span style="color:#9aa3af">（江原道）</span> <b>×1.38</b><br>무주군<span style="color:#9aa3af">（全羅北道）</span> <b>×1.3</b><br>평창군<span style="color:#9aa3af">（江原道）</span> <b>×1.12</b><br>청양군<span style="color:#9aa3af">（忠清南道）</span> <b>×1.07</b></td>
-<td class="n">22</td></tr><tr><td><b>4月</b></td><td>울릉군<span style="color:#9aa3af">（慶尚北道）</span> <b>×1.25</b><br>창녕군<span style="color:#9aa3af">（慶尚南道）</span> <b>×1.18</b><br>강진군<span style="color:#9aa3af">（全羅南道）</span> <b>×1.12</b><br>서산시<span style="color:#9aa3af">（忠清南道）</span> <b>×1.11</b></td>
-<td class="n">42</td></tr><tr><td><b>8月</b></td><td>울릉군<span style="color:#9aa3af">（慶尚北道）</span> <b>×1.54</b><br>고성군<span style="color:#9aa3af">（江原道）</span> <b>×1.49</b><br>인제군<span style="color:#9aa3af">（江原道）</span> <b>×1.43</b><br>양양군<span style="color:#9aa3af">（江原道）</span> <b>×1.43</b></td>
-<td class="n">188</td></tr><tr><td><b>9月</b></td><td>성북구<span style="color:#9aa3af">（ソウル）</span> <b>×1.31</b><br>경산시<span style="color:#9aa3af">（慶尚北道）</span> <b>×1.27</b><br>동작구<span style="color:#9aa3af">（ソウル）</span> <b>×1.25</b><br>서대문구<span style="color:#9aa3af">（ソウル）</span> <b>×1.23</b></td>
-<td class="n">122</td></tr><tr><td><b>10月</b></td><td>인제군<span style="color:#9aa3af">（江原道）</span> <b>×1.63</b><br>철원군<span style="color:#9aa3af">（江原道）</span> <b>×1.59</b><br>임실군<span style="color:#9aa3af">（全羅北道）</span> <b>×1.49</b><br>의령군<span style="color:#9aa3af">（慶尚南道）</span> <b>×1.48</b></td>
-<td class="n">227</td></tr></tbody></table></div>
+<div class="bzwrap"><table class="bzt stack"><thead><tr><th>月</th><th>普段より混む市郡区（上位）</th><th class="n">該当数</th></tr></thead><tbody><tr><td data-l="月"><b>1月</b></td><td data-l="普段より混む市郡区">화천군<span style="color:#9aa3af">（江原道）</span> <b>×1.38</b><br>무주군<span style="color:#9aa3af">（全羅北道）</span> <b>×1.3</b><br>평창군<span style="color:#9aa3af">（江原道）</span> <b>×1.12</b><br>청양군<span style="color:#9aa3af">（忠清南道）</span> <b>×1.07</b></td>
+<td class="n" data-l="平年より混む市郡区の数">22</td></tr><tr><td data-l="月"><b>4月</b></td><td data-l="普段より混む市郡区">울릉군<span style="color:#9aa3af">（慶尚北道）</span> <b>×1.25</b><br>창녕군<span style="color:#9aa3af">（慶尚南道）</span> <b>×1.18</b><br>강진군<span style="color:#9aa3af">（全羅南道）</span> <b>×1.12</b><br>서산시<span style="color:#9aa3af">（忠清南道）</span> <b>×1.11</b></td>
+<td class="n" data-l="平年より混む市郡区の数">42</td></tr><tr><td data-l="月"><b>8月</b></td><td data-l="普段より混む市郡区">울릉군<span style="color:#9aa3af">（慶尚北道）</span> <b>×1.54</b><br>고성군<span style="color:#9aa3af">（江原道）</span> <b>×1.49</b><br>인제군<span style="color:#9aa3af">（江原道）</span> <b>×1.43</b><br>양양군<span style="color:#9aa3af">（江原道）</span> <b>×1.43</b></td>
+<td class="n" data-l="平年より混む市郡区の数">188</td></tr><tr><td data-l="月"><b>9月</b></td><td data-l="普段より混む市郡区">성북구<span style="color:#9aa3af">（ソウル）</span> <b>×1.31</b><br>경산시<span style="color:#9aa3af">（慶尚北道）</span> <b>×1.27</b><br>동작구<span style="color:#9aa3af">（ソウル）</span> <b>×1.25</b><br>서대문구<span style="color:#9aa3af">（ソウル）</span> <b>×1.23</b></td>
+<td class="n" data-l="平年より混む市郡区の数">122</td></tr><tr><td data-l="月"><b>10月</b></td><td data-l="普段より混む市郡区">인제군<span style="color:#9aa3af">（江原道）</span> <b>×1.63</b><br>철원군<span style="color:#9aa3af">（江原道）</span> <b>×1.59</b><br>임실군<span style="color:#9aa3af">（全羅北道）</span> <b>×1.49</b><br>의령군<span style="color:#9aa3af">（慶尚南道）</span> <b>×1.48</b></td>
+<td class="n" data-l="平年より混む市郡区の数">227</td></tr></tbody></table></div>
 <p>上位に並ぶのは<b>江原道や慶尚北道の郡部</b>で、これは海（8月）と紅葉（10月）に韓国人が集中するからです。逆に言えば、<b>ソウル・釜山の都心部はこの指標では大きく動きません</b> — 年間を通して人が多い場所だからです。ソウルの数字が9月に上がるのは新学期など生活の移動も含まれるためで、観光の混雑そのものではありません。</p>
 <p class="bznote">測定されているのは1月・4月・8月・9月・10月のみです。データのない月をそれらしく埋めることはしていません。通信・カードデータに基づく推計値で、観光地単位ではなく市郡区全体の数字です。月ごとの詳しい一覧は<a href="/ja/calendar/" style="color:#0c7d72;font-weight:700">いつ行くかのページ</a>にあります。</p></div>
 
 <div class="bzc"><h2>✅ 逆に、狙い目の月</h2>
 <p>この期間のうち、<b>日韓の連休が重ならず、韓国の名節もない月</b>は <b>2026年11月</b>・<b>2026年12月</b>・<b>2027年3月</b>・<b>2027年6月</b> です。日本側の連休に合わせて動けないぶん有給が要りますが、同じ行き先でも航空券が落ち着き、店も普通に開いています。なお<b>1月・8月・10月</b>は祝日こそ重なりませんが、下の表のとおり<b>韓国人の国内旅行がいちばん集中する月</b>なので外しました。</p>
-<p>もう一つの狙い方は、<b>日本だけが休みの日</b>に合わせることです。上のカレンダーで「🔵 日本だけ休み」と出ている日は、こちらは休みなのに韓国は平日 — 店も役所も通常どおり動いていて、観光地は韓国人が少ない状態です。</p></div>
+<p>もう一つの狙い方は、<b>日本だけが休みの日</b>に合わせることです。上のカレンダーで「🔵 日本だけ」と出ている日は、こちらは休みなのに韓国は平日 — 店も役所も通常どおり動いていて、観光地は韓国人が少ない状態です。</p></div>
 
 <div class="bzc"><h2>出かける前に、この順番で確認してください</h2>
 <ol class="bzol">

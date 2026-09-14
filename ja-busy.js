@@ -75,7 +75,25 @@ const CSS = `<style>
 .bzt tr.both td{background:#fff1ec}
 .bzt tr.kr td{background:#fffaf0}
 .bzt tr.we td{color:#9aa3af}
-.bzwrap{overflow-x:auto}
+.bzwrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+/* 📱 2026-09-14 — 실물을 375px 로 열어 보고 넣었다. 그냥 두면 4열 표가 한 칸 57px 이 되어
+   「ソ/ル/ラ/ル」처럼 한 글자씩 끊겨 내려간다(한 행이 262px). 일본 유입은 모바일이 대부분이다.
+   · 긴 문장이 든 표(겹치는 구간·명절)는 좁은 화면에서 «카드»로 편다 — 행이 8개뿐이라 길어지지 않는다.
+   · 행이 많은 달력 표는 카드로 펴면 47장이 된다 → 최소 너비를 줘서 «옆으로» 밀게 한다. */
+.bzt{min-width:460px}
+.bzt.stack{min-width:0}
+.bzsw{display:none;color:#9aa3af;font-size:.83rem;margin:2px 0 6px}
+@media(max-width:560px){
+.bzsw{display:block}
+.bzt.stack thead{display:none}
+.bzt.stack,.bzt.stack tbody,.bzt.stack tr,.bzt.stack td{display:block;width:auto}
+.bzt.stack tr{border-bottom:2px solid #eef2f1;padding:11px 0}
+.bzt.stack tr:last-child{border-bottom:0}
+.bzt.stack td{border:0;padding:4px 2px}
+.bzt.stack td.n{text-align:left}
+.bzt.stack td:before{content:attr(data-l);display:block;font-size:.78rem;font-weight:800;color:#0a6c63;margin-bottom:2px}
+.bzt.stack td:empty{display:none}
+}
 .bzbar{display:flex;align-items:center;gap:9px;margin:5px 0}
 .bzbar .l{width:44px;font-weight:800;color:#374151;font-size:.9rem}
 .bzbar .b{flex:1;background:#f1f5f4;border-radius:999px;height:15px;overflow:hidden}
@@ -185,8 +203,8 @@ function build(ctx) {
       }).join('・');
       return `${mdShort(k.start)}〜${mdShort(k.end)}（${k.len}連休）<br><span style="color:#6b7280;font-size:.86em">${html}</span>`;
     }).join('<br>');
-    return `<tr class="both"><td><b>${ymd(row.start)}</b><br>〜${mdShort(row.end)}<br><span style="color:#6b7280;font-size:.86em">${days}日間</span></td>
-<td>${jTxt}</td><td>${kTxt}</td><td>${lapWhat(row)}</td></tr>`;
+    return `<tr class="both"><td data-l="期間"><b>${ymd(row.start)}</b> 〜${mdShort(row.end)}<span style="color:#6b7280;font-size:.86em">（${days}日間）</span></td>
+<td data-l="🇯🇵 日本">${jTxt}</td><td data-l="🇰🇷 韓国">${kTxt}</td><td data-l="何が起きるか">${lapWhat(row)}</td></tr>`;
   }).join('');
 
   // ── ② 두 나라 달력 겹쳐 보기
@@ -205,8 +223,8 @@ function build(ctx) {
     return head + `<tr class="${cls}"><td>${+s.slice(8, 10)}日（${WD[w]}）</td>
 <td>${k ? '<b>' + k.map(n => esc(krName(n))).join('・') + '</b>' : '—'}</td>
 <td>${j ? '<b>' + esc(j.join('・')) + '</b>' : (w === 0 || w === 6 ? '週末' : '—')}</td>
-<td>${(k && j) ? '🔴 両国とも休み' : (k ? '🟠 韓国だけ休み — 店に注意'
-      : (w === 0 || w === 6 ? '🔵 日本だけ休み（週末と重なります）' : '🔵 日本だけ休み — 韓国は平常'))}</td></tr>`;
+<td style="white-space:nowrap">${(k && j) ? '🔴 両国とも' : (k ? '🟠 韓国だけ'
+      : (w === 0 || w === 6 ? '🔵 日本だけ（週末）' : '🔵 日本だけ'))}</td></tr>`;
   }).join('');
 
   // ── ③ 요일별 정기휴무 (공휴일 달력만 보면 절대 모르는 것)
@@ -239,9 +257,9 @@ function build(ctx) {
   const measured = Object.keys(SBM).map(Number).filter(m => (SBM[m] || []).length >= 20).sort((a, b) => a - b);
   const busyTable = measured.map(m => {
     const top = (SBM[m] || []).slice(0, 4);
-    return `<tr><td><b>${m}月</b></td><td>${top.map(x =>
+    return `<tr><td data-l="月"><b>${m}月</b></td><td data-l="普段より混む市郡区">${top.map(x =>
       `${esc(x.name)}<span style="color:#9aa3af">（${esc(SIDO_JA[x.sido] || x.sido)}）</span> <b>×${x.idx}</b>`).join('<br>')}</td>
-<td class="n">${nf((SBM[m] || []).length)}</td></tr>`;
+<td class="n" data-l="平年より混む市郡区の数">${nf((SBM[m] || []).length)}</td></tr>`;
   }).join('');
 
   // ── ⑤ 逆に空いている月 — 겹침도 명절도 없는 달
@@ -290,7 +308,7 @@ ${next ? `<div class="bzw"><h2>⚠️ いちばん近い注意期間 — ${ymd(n
 
 <div class="bzc"><h2>🔴 日韓の連休が重なる期間</h2>
 <p>日本の連休と韓国の連休が<b>重なる、または2日以内で続けて来る</b>期間だけを抜き出しました。この期間は、日本発の便が混むのと同時に韓国国内も動くので、航空券・ホテル・現地の移動が同時に厳しくなります。<b>韓国の名節（ソルラル・チュソク）と重なる回</b>はさらに別で、個人経営の店がまとめて休みます。</p>
-<div class="bzwrap"><table class="bzt"><thead><tr><th>期間</th><th>🇯🇵 日本</th><th>🇰🇷 韓国</th><th>何が起きるか</th></tr></thead><tbody>${lapTable}</tbody></table></div>
+<div class="bzwrap"><table class="bzt stack"><thead><tr><th>期間</th><th>🇯🇵 日本</th><th>🇰🇷 韓国</th><th>何が起きるか</th></tr></thead><tbody>${lapTable}</tbody></table></div>
 <p class="bznote">日本の祝日は内閣府「国民の祝日について」の公式CSV、韓国の祝日は韓国政府の公休日データによります。春分の日・秋分の日は毎年決まるため、このページは元データから自動で作り直しています。</p></div>
 
 <div class="bzc"><h2>⭐ 祝日カレンダーだけでは分からないこと — 曜日の定休日</h2>
@@ -302,29 +320,30 @@ ${lapWorst ? `<h3>重なる期間のうち、いちばん閉まる日</h3><ol cl
 
 <div class="bzc"><h2>🚪 韓国だけが休む日 — ここは「混む」より「閉まる」</h2>
 <p>日本の祝日と関係なく韓国だけが休む日は、混雑よりも<b>店が開いているか</b>が問題になります。とくに韓国の二大名節（<b class="bzk">설날</b> ソルラル＝旧正月、<b class="bzk">추석</b> チュソク＝秋夕）は、路地の食堂や個人商店が数日まとめて閉まります。営業時間データに「名節休業」と明記している店だけでも<b>${nf(R.hol + C.hol)}店</b>あり、明記していない店も当日閉まっていることが珍しくありません。宮殿・大型デパート・コンビニ・カフェチェーンは通常どおりです。</p>
-${bigBlocks.length ? `<div class="bzwrap"><table class="bzt"><thead><tr><th>名節</th><th>期間</th><th>詳しく</th></tr></thead><tbody>${
+${bigBlocks.length ? `<div class="bzwrap"><table class="bzt stack"><thead><tr><th>名節</th><th>期間</th><th>詳しく</th></tr></thead><tbody>${
     bigBlocks.map(b => {
       const n = b.days.find(x => x.hol && x.hol.some(isBig)).hol.find(isBig);
       const sl = krSlug(n);
-      return `<tr class="kr"><td><b>${esc(krName(n))}</b></td><td>${ymd(b.start)}〜${mdShort(b.end)}（${b.len}連休）</td><td>${
+      return `<tr class="kr"><td data-l="名節"><b>${esc(krName(n))}</b></td><td data-l="期間">${ymd(b.start)}〜${mdShort(b.end)}（${b.len}連休）</td><td>${
         sl && madeSlugs.has(sl) ? `<a href="/ja/closed/${sl}/" style="color:#0c7d72;font-weight:700">この連休に閉まる店を数えました →</a>` : '—'}</td></tr>`;
     }).join('')}</tbody></table></div>` : ''}
 <p class="bznote">韓国は祝日が日曜と重なると振替休日になります（すべての祝日ではありません）。上の表は公式の公休日データに基づいています。</p></div>
 
 <div class="bzc"><h2>🗓️ 日韓の祝日カレンダー — 全部並べました</h2>
-<p>${ymd(TODAY)}から${ymd(END)}まで、どちらかの国が祝日である日を<b>すべて</b>並べました。赤い行は両国とも休み、黄色い行は韓国だけ休み（＝店に注意）です。日本だけが休みの日は、韓国側は平常営業なので旅行にはむしろ good です。</p>
+<p>${ymd(TODAY)}から${ymd(END)}まで、どちらかの国が祝日である日を<b>すべて</b>並べました。<b>🔴 両国とも</b>＝日韓どちらも休みで移動がいちばん混む日、<b>🟠 韓国だけ</b>＝こちらは平日なのに現地の店が閉まる日、<b>🔵 日本だけ</b>＝韓国は平常営業なので旅行にはむしろ good な日です。</p>
+<p class="bzsw">↔ 表は横にスクロールできます</p>
 <div class="bzwrap"><table class="bzt"><thead><tr><th>日付</th><th>🇰🇷 韓国</th><th>🇯🇵 日本</th><th>判定</th></tr></thead><tbody>${calTable}</tbody></table></div>
 <p class="bznote">日本側の「週末」は祝日ではありませんが、旅行の混み方に効くので表示しています。韓国の会社員も土日は休みです。</p></div>
 
 ${busyTable ? `<div class="bzc"><h2>📊 「普段の何倍」— 韓国人の国内旅行が集中する月と場所</h2>
 <p>祝日のほかにもう一つ、韓国国内の人の動きがあります。韓国観光公社「韓国観光データラボ」の市郡区別訪問者数から、<b>その月の訪問者数 ÷ その地域の年平均</b>を出したものです。<b>×1.5</b> は「普段の1.5倍の人がそこにいる」という意味になります（${SYEAR}年の実績）。</p>
-<div class="bzwrap"><table class="bzt"><thead><tr><th>月</th><th>普段より混む市郡区（上位）</th><th class="n">対象</th></tr></thead><tbody>${busyTable}</tbody></table></div>
+<div class="bzwrap"><table class="bzt stack"><thead><tr><th>月</th><th>普段より混む市郡区（上位）</th><th class="n">該当数</th></tr></thead><tbody>${busyTable}</tbody></table></div>
 <p>上位に並ぶのは<b>江原道や慶尚北道の郡部</b>で、これは海（8月）と紅葉（10月）に韓国人が集中するからです。逆に言えば、<b>ソウル・釜山の都心部はこの指標では大きく動きません</b> — 年間を通して人が多い場所だからです。ソウルの数字が9月に上がるのは新学期など生活の移動も含まれるためで、観光の混雑そのものではありません。</p>
 <p class="bznote">測定されているのは${measured.map(m => m + '月').join('・')}のみです。データのない月をそれらしく埋めることはしていません。通信・カードデータに基づく推計値で、観光地単位ではなく市郡区全体の数字です。月ごとの詳しい一覧は<a href="/ja/calendar/" style="color:#0c7d72;font-weight:700">いつ行くかのページ</a>にあります。</p></div>` : ''}
 
 ${quietTxt ? `<div class="bzc"><h2>✅ 逆に、狙い目の月</h2>
 <p>この期間のうち、<b>日韓の連休が重ならず、韓国の名節もない月</b>は ${quietTxt} です。日本側の連休に合わせて動けないぶん有給が要りますが、同じ行き先でも航空券が落ち着き、店も普通に開いています。${peakTxt}</p>
-<p>もう一つの狙い方は、<b>日本だけが休みの日</b>に合わせることです。上のカレンダーで「🔵 日本だけ休み」と出ている日は、こちらは休みなのに韓国は平日 — 店も役所も通常どおり動いていて、観光地は韓国人が少ない状態です。</p></div>` : ''}
+<p>もう一つの狙い方は、<b>日本だけが休みの日</b>に合わせることです。上のカレンダーで「🔵 日本だけ」と出ている日は、こちらは休みなのに韓国は平日 — 店も役所も通常どおり動いていて、観光地は韓国人が少ない状態です。</p></div>` : ''}
 
 <div class="bzc"><h2>出かける前に、この順番で確認してください</h2>
 <ol class="bzol">
