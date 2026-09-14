@@ -608,7 +608,22 @@ ${fgnRows && S.cal.h2fgn ? `<div class="ic-card"><h2>${S.cal.h2fgn}</h2>
 <h1 class="ic-h1">${S.cal.mTitle(monthLabel(ym, lang))}</h1>
 <p class="ic-lead">${S.cal.mLead(list.length, monthLabel(ym, lang))}</p>
 
-${holHere.length ? `<div class="ic-warn"><h2>${S.cal.mHolH}</h2><p>${holHere.map(h => `${dateLabel(h.date, lang)} — ${holName(h.name, lang)}`).join('<br>')}<br><br>${S.cal.mHolP}</p></div>` : ''}
+${holHere.length ? `<div class="ic-warn"><h2>${S.cal.mHolH}</h2><p>${holHere.map(h => `${dateLabel(h.date, lang)} — ${holName(h.name, lang)}`).join('<br>')}<br><br>${S.cal.mHolP}</p>
+${/* 🇯🇵 2026-09-14 — 연휴별 상세로 가는 두 번째 길.
+      크롤 날짜를 보면 «홈이 가장 오래됐다» — /ja/ 8/28 vs /ja/calendar/ 9/4 · /ja/closed/ 9/6
+      · /ja/access/ 9/11 · /ja/mountains/ 9/13. 홈에만 링크를 걸면 제일 느린 길을 고른 셈이다.
+      그래서 «자주 크롤되는» 달력 페이지에서도 보낸다. 문맥도 여기가 더 맞다 —
+      「いつ行くか」를 보는 사람이 곧 「その日開いてるか」를 묻는다.
+      ⚠️ 그 달에 실제로 걸리는 연휴만 링크한다. 없는 달엔 안 나온다. */''}
+${lang !== 'ja' ? '' : (() => {
+  let bs = [];
+  try { bs = require('./ja-holiday.js').blocks(TODAY); } catch (e) { return ''; }
+  const here = bs.filter(b => b.span.some(d =>
+    `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}` === ym));
+  if (!here.length) return '';
+  return `<div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:10px">${here.map(b =>
+    `<a href="/ja/closed/${b.slug}/" style="background:#fff;border:1.5px solid #fdd8ae;color:#9a5b1f;font-weight:800;font-size:.9rem;padding:9px 14px;border-radius:999px;text-decoration:none">📅 ${esc(b.ja)}に店は開いてる？</a>`).join('')}</div>`;
+})()}</div>` : ''}
 
 <div class="ic-card"><h2>${S.cal.mFesH(monthLabel(ym, lang))}</h2>
 <p>${S.cal.mFesP}</p>
