@@ -2553,7 +2553,23 @@ ${placeN ? `<div><b>${placeN.toLocaleString()}</b>${esc(H.s4)}</div>` : ''}
 <a href="/${lang}/closed/">🚪 ${esc(H.pc)}</a>
 <a href="/${lang}/access/">♿ ${esc(H.pa)}</a>
 <a href="/${lang}/trip/">🧳 ${esc(H.pt)}</a>
-</div>`;
+</div>
+${/* 🇯🇵 2026-09-14 — 연휴별 휴무 페이지 6장이 «막다른 골목»이었다.
+     실측: /ja/closed/{연휴} 6장으로 들어오는 링크가 전부 그 6장끼리 + 허브 한 장뿐이다.
+       사이트의 다른 어떤 페이지도 안 가리킨다. 1,441장을 전수 검사해 확인했다(_inlink.js).
+     그 결과 구글 URL 검사에서 6장 모두 «발견됨 — 현재 색인이 생성되지 않음 · 최종크롤 없음»이다.
+       발견은 했는데(사이트맵) 한 단계 더 내려갈 우선순위를 안 준다.
+     ⇒ 가장 많이 크롤되는 일본어 홈에서 직접 링크를 보낸다. 사람에게도 맞는 자리다 —
+       일본 유입 1위 검색어가 「ハングルの日 お店 休み」(연휴에 가게 여나)다.
+     ⚠️ 일본어만이다. 중화권·영어권은 휴무 의도 검색어가 확인되지 않아 하위 페이지 자체가 없다. */''}
+${lang !== 'ja' ? '' : (() => {
+  let bs = [];
+  try { bs = require('./ja-holiday.js').blocks(TODAY).slice(0, 4); } catch (e) { return ''; }
+  if (!bs.length) return '';
+  return `<p style="color:#4b5563;line-height:1.75;margin:14px 0 8px">連休ごとに答えが違います — <b>その日、店は開いているのか</b>を連休別に数えました。</p>
+<div class="ih-cities">${bs.map(b =>
+    `<a href="/ja/closed/${b.slug}/">📅 ${esc(b.ja)}（${b.span.length}連休）</a>`).join('')}</div>`;
+})()}`;
   return { stat, cities, places, pract };
 }
 const MAP_URLS = require('./map.js').build({ ROOT, layout, writePage, SITE_NAME, buyBox, TODAY });
