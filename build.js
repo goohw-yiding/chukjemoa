@@ -122,6 +122,18 @@ const LANG_DATA = { en: apiFestsEn, ja: apiFestsJa, es: apiFestsEs, zh: apiFests
 const HREFLANG = { zh: 'zh-Hans', tw: 'zh-Hant' };
 function homeAlts() { const a = [{ hreflang: 'ko', href: '/' }]; LANGS.forEach(l => { if (LANG_DATA[l].length) a.push({ hreflang: HREFLANG[l] || l, href: '/' + l + '/' }); }); a.push({ hreflang: 'x-default', href: '/' }); return a; }
 function searchAlts() { const a = [{ hreflang: 'ko', href: '/search/' }]; LANGS.forEach(l => { if (LANG_DATA[l].length) a.push({ hreflang: HREFLANG[l] || l, href: '/' + l + '/search/' }); }); a.push({ hreflang: 'x-default', href: '/search/' }); return a; }
+// 🌏 2026-09-14 — hreflang 이 «한쪽에만» 붙어 있었다. /en/·/ja/ 에는 7개가 다 있는데
+//    한국어 /jangteo/ 에는 아예 없었다(라이브 실측). hreflang 은 «양방향»이어야 구글이
+//    언어 클러스터로 묶는다 — 한쪽만 있으면 서로 다른 사이트로 본다.
+//    ⚠️ 없는 페이지를 가리키면 안 된다. 그래서 «그 언어판이 실제로 만들어진 경우»만 넣는다.
+//       월별 페이지(/2026-10/)는 외국어판이 «없어서» 여기 못 넣는다 — 만들기 전엔 붙이지 말 것.
+function pathAlts(koPath, langPath) {
+  const a = [{ hreflang: 'ko', href: koPath }];
+  LANGS.forEach(l => { if (LANG_DATA[l].length) a.push({ hreflang: HREFLANG[l] || l, href: langPath(l) }); });
+  a.push({ hreflang: 'x-default', href: koPath });
+  return a;
+}
+function jangteoAlts() { return pathAlts('/jangteo/', l => '/' + l + '/jangteo/'); }
 
 const MONTHS = [
   { key: '2026-07', months: [7], label: '2026년 7월', short: '7월', emoji: '💦' },
@@ -1994,6 +2006,14 @@ function layout(title, desc, urlPath, content, opts) {
   //   본문도 en 평균 8,392자로 사이트 외국어 중 가장 두껍고 2,000자 미만이 0개다.
   //   ⚠️ 교훈: 「한 검색엔진의 0」을 「모든 검색엔진의 0」으로 읽지 말 것.
   const forceNoindex = false;
+  // 🌏 2026-09-14 — og:site_name 이 «전 페이지 한글 축제모아»였다. /en/ · /ja/ 페이지도 그랬다.
+  //    검색결과·SNS 카드에 사이트명이 한글로 뜨면 외국인은 안 누른다. 언어별로 가른다.
+  //    ⚠️ 한국어는 그대로 「축제모아」다 — 국내 유입이 81%다. 여기 손대면 큰일 난다.
+  //    실측 근거(2026-09-14, 28일): 일본 모바일 CTR 3.97%·24클릭 = 진짜 사람 시장이다.
+  //      (미국 5,908노출은 봇이다 — 데스크톱 95%, 863건이 「韩国庆典」 한 검색어.)
+  const SITE_NAME_L = lang === 'ko' ? SITE_NAME
+    : lang === 'ja' ? 'チュクチェモア' : lang === 'zh' ? '韩国庆典日历'
+    : lang === 'tw' ? '韓國慶典日曆' : 'Chukjemoa';
   const alts = (opts.alternates || []).map(a => `<link rel="alternate" hreflang="${a.hreflang}" href="${SITE}${a.href}">`).join('\n');
   const logoHref = lang === 'ko' ? '/' : '/' + lang + '/';
   // 🌏 2026-09-07 재구성 — 외국어 내비를 «드롭다운 4개»로 묶었다.
@@ -2123,7 +2143,7 @@ function layout(title, desc, urlPath, content, opts) {
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="manifest" href="/manifest.json">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="축제모아">
+<meta name="apple-mobile-web-app-title" content="${SITE_NAME_L}">
 <meta name="theme-color" content="#E0502F">
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-GXJQ4SXMWY"></script>
@@ -2131,13 +2151,13 @@ function layout(title, desc, urlPath, content, opts) {
 <title>${esc(title)}</title>
 <meta name="description" content="${escA(desc)}">
 <link rel="canonical" href="${SITE}${urlPath}">
-<link rel="alternate" type="application/rss+xml" title="${SITE_NAME} 축제 가이드" href="${SITE}/rss.xml">
+<link rel="alternate" type="application/rss+xml" title="${SITE_NAME_L} Festival Guide" href="${SITE}/rss.xml">
 ${alts}
 <meta property="og:title" content="${escA(title)}">
 <meta property="og:description" content="${escA(desc)}">
 <meta property="og:url" content="${SITE}${urlPath}">
 <meta property="og:type" content="website">
-<meta property="og:site_name" content="${SITE_NAME}">
+<meta property="og:site_name" content="${SITE_NAME_L}">
 <meta property="og:locale" content="${lang === 'ko' ? 'ko_KR' : lang === 'ja' ? 'ja_JP' : lang === 'zh' ? 'zh_CN' : lang === 'es' ? 'es_ES' : 'en_US'}">
 <meta property="og:image" content="${SITE}${opts.ogImage || ogImageFor(urlPath)}">
 <meta property="og:image:width" content="1200">
@@ -2438,7 +2458,7 @@ const hotOf = n => volOf(n) * trendOf(n);
 //   (2027-01 처럼 목록에 없는 달이 실제로 있다. 게이트가 있는 곳엔 «통과한 것만 링크»가 따라와야 한다.)
 const FESTIVAL_URLS = require('./festival.js').build({ ROOT, layout, writePage, SITE_NAME, SITE, buyBox, festBuyBox, nearAiBox, TODAY, MONTH_KEYS: MONTHS.map(m => m.key), CITY: { of: CITY_OF, ko: CITY_KO, open: CITY_OPEN_KO }, hotOf});
 const EN_FESTIVAL_URLS = apiFestsEn.length ? require('./festival-en.js').build({ ROOT, layout, writePage, SITE, TODAY, CITY: { of: CITY_OF_I, open: new Set(INTL_CITY_BY_LANG.en || []), label: CITY_LABEL } }) : [];
-const EN_JANGTEO_URLS = apiFestsEn.length ? require('./jangteo-en.js').build({ ROOT, layout, writePage, SITE, TODAY }) : [];
+const EN_JANGTEO_URLS = apiFestsEn.length ? require('./jangteo-en.js').build({ ROOT, layout, writePage, SITE, TODAY, jangteoAlts }) : [];
 // 2026-09-01 신설. 일본어는 페이지가 18장뿐인데 평균 7.9위(영어 212장 30.1위)로 성적이 가장 좋다.
 // 그런데 축제 상세가 0장이었다 — 재고 181건을 그대로 놀리고 있었다. → festival-ja.js
 const JA_FESTIVAL_URLS = apiFestsJa.length ? require('./festival-ja.js').build({ ROOT, layout, writePage, SITE, TODAY, CITY: { of: CITY_OF_I, open: new Set(INTL_CITY_BY_LANG.ja || []), label: CITY_LABEL } }) : [];
@@ -2446,7 +2466,7 @@ const JA_FESTIVAL_URLS = apiFestsJa.length ? require('./festival-ja.js').build({
 // 축제가 아니라 「가게가 언제 문을 닫나」다. 받을 페이지가 /ja/closed/ 한 장뿐이라 연휴별로 쪼갠다.
 // ⚠️ festival-ja.js 다음에 와야 한다 — data/ja_festival_slugs.json 을 읽어 축제로 링크한다.
 const JA_HOLIDAY_URLS = require('./ja-holiday.js').build({ ROOT, layout, writePage, SITE, TODAY });
-const JA_JANGTEO_URLS = apiFestsJa.length ? require('./jangteo-ja.js').build({ ROOT, layout, writePage, SITE, TODAY }) : [];
+const JA_JANGTEO_URLS = apiFestsJa.length ? require('./jangteo-ja.js').build({ ROOT, layout, writePage, SITE, TODAY, jangteoAlts }) : [];
 // 🗾 2026-09-09 신설 — 일문 장소 시·도 허브. 3,371건 중 2,179건(65%)이 어디에도 안 나오고 있었다.
 //    /ja/{city}/ 는 14곳뿐이고 도시당 60곳 상한이라 도시 페이지가 없는 시·도가 통째로 빠졌다.
 const JA_PLACES_URLS = require('./places-ja.js').build({ ROOT, layout, writePage, SITE, TODAY });
@@ -2454,8 +2474,8 @@ const JA_PLACES_URLS = require('./places-ja.js').build({ ROOT, layout, writePage
 //    (data/{en,ja}_festival_slugs.json)를 읽어 카드 제목에 링크를 건다. 위 gate() 주석 참고.
 //    ⚠️ 게이트는 이미 gate() 가 계산했다 — 다시 계산하지 않고 그대로 넘긴다(두 번 계산하면 어긋난다).
 const INTL_CITY_URLS = INTL_CITY.build({ ROOT, layout, writePage, SITE, TODAY, WX, phase: 2, ready: INTL_CITY_READY });
-const ES_JANGTEO_URLS = apiFestsEs.length ? require('./jangteo-es.js').build({ ROOT, layout, writePage, SITE, TODAY }) : [];
-const ZH_JANGTEO_URLS = apiFestsZh.length ? require('./jangteo-zh.js').build({ ROOT, layout, writePage, SITE, TODAY }) : [];
+const ES_JANGTEO_URLS = apiFestsEs.length ? require('./jangteo-es.js').build({ ROOT, layout, writePage, SITE, TODAY, jangteoAlts }) : [];
+const ZH_JANGTEO_URLS = apiFestsZh.length ? require('./jangteo-zh.js').build({ ROOT, layout, writePage, SITE, TODAY, jangteoAlts }) : [];
 const EN_BLOG_URLS = apiFestsEn.length ? require('./en-blog.js').build({ ROOT, layout, writePage, SITE, TODAY }) : [];
 // 외국어 홈의 새 섹션 문구. ⚠️ 숫자는 전부 인자로 받는다(문장에 박으면 데이터가 바뀔 때 조용히 거짓말이 된다).
 const HOME_T = {
@@ -3294,7 +3314,9 @@ writePage('jangteo', layout(
   `오늘 장날 어디? 전국 오일장(5일장) ${marketsDay.length}곳 — 끝자리별 일정 | ${SITE_NAME}`,
   `오일장은 5일마다 서는 장입니다. 전국 ${marketsDay.length}곳의 장날을 끝자리(2·7일, 3·8일, 4·9일, 5·10일)와 시·도별로 정리했습니다. 날짜를 넣으면 그날 열리는 장이 초록색으로 표시되고 가까운 장날 순으로 정렬됩니다. 모란장(4·9일)·정선아리랑시장(2·7일)·봉평장(2·7일).`,
   // 🔢 끝자리 묶음을 시·군 목록 «앞»에 둔다 — 끝자리는 5개뿐이라 훑기 쉽고, 시·군 88개는 길다.
-  '/jangteo/', jangteoContent.replace('<!--SIGUNGU_HUB-->', ENDDAY_HUB + SIGUNGU_HUB + buyBox('jangteo')) + jangteoModalBB + JT_LINK_JS, { jsonld: JANGTEO_FAQ_LD }));
+  // 🌏 hreflang 양방향 — 외국어 오일장 허브 5개(en·ja·es·zh·tw)가 다 만들어져 있는데
+  //    한국어 쪽에만 없었다. 2026-09-14 추가.
+  '/jangteo/', jangteoContent.replace('<!--SIGUNGU_HUB-->', ENDDAY_HUB + SIGUNGU_HUB + buyBox('jangteo')) + jangteoModalBB + JT_LINK_JS, { jsonld: JANGTEO_FAQ_LD, alternates: jangteoAlts() }));
 
 // ---------- 🏮 시·도별 오일장 /jangteo/{시도}/ ----------
 // 왜 나누나: 시장마다 «판매 품목·영업시간·휴무·주차·문의»가 다 있는데(공공데이터 detailIntro2)

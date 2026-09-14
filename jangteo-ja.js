@@ -127,7 +127,9 @@ ${r.sale ? `<div class="jfam">🛒 ${esc(r.sale)}</div>` : ''}
   writePage('ja/jangteo', layout(
     '韓国の伝統市場・五日市場（オイルジャン）完全ガイド | Chukjemoa',
     `韓国全国${rows.length}箇所の伝統市場・五日市場を紹介 — 開催日・場所・名物を掲載。韓国観光公社の公式データを使用。`,
-    '/ja/jangteo/', content, { lang: 'ja', jsonld: ld, ogImage: '/img/jangteo.webp' }));
+    '/ja/jangteo/', content, { lang: 'ja', jsonld: ld, ogImage: '/img/jangteo.webp',
+      // 🌏 2026-09-14 — hreflang 양방향. 한국어 /jangteo/ 만 고치면 구글이 무시한다.
+      alternates: ctx.jangteoAlts ? ctx.jangteoAlts() : undefined }));
 
   console.log(`✓ /ja/jangteo/ — ${rows.length}곳`);
   return ['/ja/jangteo/'];

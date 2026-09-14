@@ -125,7 +125,9 @@ ${r.sale ? `<div class="jfam">🛒 ${esc(r.sale)}</div>` : ''}
   writePage('zh/jangteo', layout(
     '韩国传统市场・五日集市完全指南 | Chukjemoa',
     `全国${rows.length}处传统市场与五日集市 — 开市日期、位置与特产一览。数据来自韩国观光公社官方资料。`,
-    '/zh/jangteo/', content, { lang: 'zh', jsonld: ld, ogImage: '/img/jangteo.webp' }));
+    '/zh/jangteo/', content, { lang: 'zh', jsonld: ld, ogImage: '/img/jangteo.webp',
+      // 🌏 2026-09-14 — hreflang 양방향. 한국어 /jangteo/ 만 고치면 구글이 무시한다.
+      alternates: ctx.jangteoAlts ? ctx.jangteoAlts() : undefined }));
 
   console.log(`✓ /zh/jangteo/ — ${rows.length}곳`);
   return ['/zh/jangteo/'];

@@ -126,7 +126,9 @@ ${r.sale ? `<div class="jfam">🛒 ${esc(r.sale)}</div>` : ''}
   writePage('es/jangteo', layout(
     'Guía de Mercados Tradicionales y de Cinco Días de Corea | Chukjemoa',
     `${rows.length} mercados tradicionales y de cinco días por toda Corea del Sur — días de apertura, ubicación y especialidades. Datos oficiales de la Organización de Turismo de Corea.`,
-    '/es/jangteo/', content, { lang: 'es', jsonld: ld, ogImage: '/img/jangteo.webp' }));
+    '/es/jangteo/', content, { lang: 'es', jsonld: ld, ogImage: '/img/jangteo.webp',
+      // 🌏 2026-09-14 — hreflang 양방향. 한국어 /jangteo/ 만 고치면 구글이 무시한다.
+      alternates: ctx.jangteoAlts ? ctx.jangteoAlts() : undefined }));
 
   console.log(`✓ /es/jangteo/ — ${rows.length}곳`);
   return ['/es/jangteo/'];

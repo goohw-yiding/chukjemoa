@@ -138,7 +138,9 @@ ${r.sale ? `<div class="jfam">🛒 ${esc(r.sale)}</div>` : ''}
   writePage('en/jangteo', layout(
     "Korea's Traditional Markets & 5-Day Markets (Ojang) Guide | Chukjemoa",
     `${rows.length} traditional and five-day markets across South Korea — opening days, location, specialties. Official data from the Korea Tourism Organization.`,
-    '/en/jangteo/', content, { lang: 'en', jsonld: ld, ogImage: '/img/jangteo.webp' }));
+    '/en/jangteo/', content, { lang: 'en', jsonld: ld, ogImage: '/img/jangteo.webp',
+      // 🌏 2026-09-14 — hreflang 양방향. 한국어 /jangteo/ 만 고치면 구글이 무시한다.
+      alternates: ctx.jangteoAlts ? ctx.jangteoAlts() : undefined }));
 
   console.log(`✓ /en/jangteo/ — ${rows.length}곳`);
   return ['/en/jangteo/'];
