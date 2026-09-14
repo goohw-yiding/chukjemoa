@@ -378,7 +378,19 @@ ${readCard}
 <div class="ic-nav">
 <a href="/${lang}/calendar/">${S.nav.cal}</a><a href="/${lang}/access/">${S.nav.acc}</a><a href="/${lang}/trend/">${S.nav.trend}</a><a href="/${lang}/search/">${S.nav.search}</a></div>
 </div></main>`;
-    writePage(lang + '/closed', layout(S.cl.title, S.cl.desc, `/${lang}/closed/`, closedContent, { lang, alternates: alts('closed/') }));
+    // 🇯🇵 2026-09-14 — 제목·설명에 «답»을 박을 수 있게 한다.
+    //   titleF/descF 가 있는 언어만 갈아끼우고, 없는 언어는 종전 title/desc 그대로다(다른 언어 무영향).
+    //   ⛔ 숫자를 손으로 박지 말 것 — 데이터가 매일 갱신되므로 여기서 넘겨받는다.
+    //   근거: 「韓国 定休日が多い曜日」 22노출·5.9위·클릭 0. 답은 본문에 있는데 제목에 없었다.
+    const _clV = {
+      tot: nf(RS.n + CS.n),
+      day: WD[lang][worstDay],
+      dayN: nf(RS.day[worstDay] + CS.day[worstDay]),
+      pct: Math.round((RS.day[worstDay] + CS.day[worstDay]) / (RS.n + CS.n) * 100)
+    };
+    const _clTitle = typeof S.cl.titleF === 'function' ? S.cl.titleF(_clV) : S.cl.title;
+    const _clDesc = typeof S.cl.descF === 'function' ? S.cl.descF(_clV) : S.cl.desc;
+    writePage(lang + '/closed', layout(_clTitle, _clDesc, `/${lang}/closed/`, closedContent, { lang, alternates: alts('closed/') }));
     urls.push(`/${lang}/closed/`);
 
     // ══════════ 2) /{lang}/access/ ══════════
