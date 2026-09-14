@@ -157,10 +157,17 @@ function build(ctx) {
     }
     const big = krHols.some(isBig);
     const sameDay = Object.keys(krMap).some(s => s >= row.start && s <= row.end && jpMap[s]);
+    // ⚠️ 「같은 날 둘 다 공휴일」이 아니어도 두 연휴 구간이 겹칠 수 있다(2026-10: 한글날 금 + 스포츠의 날 월).
+    //    실물 페이지에서 이걸 「연달아 온다」고 써 놔서 읽다가 걸렸다 — 겹침과 연접은 다른 말이다.
+    const overlap = row.parts.some(p => !(p.k.start > p.j.end || p.k.end < p.j.start));
     if (big) return '🔴 <b>韓国は名節</b>。個人店がまとめて休みます。航空券も日韓とも高くなります';
     if (sameDay) return '🟠 <b>同じ日に両国とも祝日</b>。往復とも便が混み、ソウル中心部も韓国人客で埋まります';
+    if (overlap) return '🟠 <b>連休どうしが重なります</b>。祝日は別の日ですが、休みの期間そのものが重なるので便もホテルも同時に埋まります';
     return '🟡 連休が続けて来ます。片方が明けてももう片方が始まるので、実質ずっと混みます';
   }
+
+  // 같은 이름이 3번 나오는 걸 실물에서 봤다(「チュソク・チュソク・チュソク」). 연휴는 날짜가 여러 개라 그렇다.
+  const uniq = a => [...new Set(a)];
 
   // ── ① 겹치는 구간 표
   const lapTable = lapRows.map(row => {
@@ -168,9 +175,16 @@ function build(ctx) {
     const jparts = [...new Set(row.parts.map(p => p.j))];
     const kparts = [...new Set(row.parts.map(p => p.k))];
     const jTxt = jparts.map(j => `${mdShort(j.start)}〜${mdShort(j.end)}（${j.len}連休）<br><span style="color:#6b7280;font-size:.86em">${
-      j.days.filter(x => x.hol).map(x => esc(x.hol.join('・'))).join('・')}</span>`).join('<br>');
-    const kTxt = kparts.map(k => `${mdShort(k.start)}〜${mdShort(k.end)}（${k.len}連休）<br><span style="color:#6b7280;font-size:.86em">${
-      k.days.filter(x => x.hol).map(x => closedLink(x.hol[0])).join('・')}</span>`).join('<br>');
+      uniq(j.days.filter(x => x.hol).map(x => esc(x.hol.join('・')))).join('・')}</span>`).join('<br>');
+    const kTxt = kparts.map(k => {
+      // 같은 명절이 3일이면 이름도 3번 나온다 → 이름으로 접고, 며칠인지는 «連休» 숫자가 이미 말해 준다
+      const names = uniq(k.days.filter(x => x.hol).map(x => krName(x.hol[0])));
+      const html = names.map(n => {
+        const src = k.days.find(x => x.hol && krName(x.hol[0]) === n);
+        return closedLink(src.hol[0]);
+      }).join('・');
+      return `${mdShort(k.start)}〜${mdShort(k.end)}（${k.len}連休）<br><span style="color:#6b7280;font-size:.86em">${html}</span>`;
+    }).join('<br>');
     return `<tr class="both"><td><b>${ymd(row.start)}</b><br>〜${mdShort(row.end)}<br><span style="color:#6b7280;font-size:.86em">${days}日間</span></td>
 <td>${jTxt}</td><td>${kTxt}</td><td>${lapWhat(row)}</td></tr>`;
   }).join('');
@@ -191,7 +205,8 @@ function build(ctx) {
     return head + `<tr class="${cls}"><td>${+s.slice(8, 10)}日（${WD[w]}）</td>
 <td>${k ? '<b>' + k.map(n => esc(krName(n))).join('・') + '</b>' : '—'}</td>
 <td>${j ? '<b>' + esc(j.join('・')) + '</b>' : (w === 0 || w === 6 ? '週末' : '—')}</td>
-<td>${(k && j) ? '🔴 両国とも休み' : (k ? '🟠 韓国だけ休み — 店に注意' : (w === 0 || w === 6 ? '' : '🔵 日本だけ休み — 韓国は平常'))}</td></tr>`;
+<td>${(k && j) ? '🔴 両国とも休み' : (k ? '🟠 韓国だけ休み — 店に注意'
+      : (w === 0 || w === 6 ? '🔵 日本だけ休み（週末と重なります）' : '🔵 日本だけ休み — 韓国は平常'))}</td></tr>`;
   }).join('');
 
   // ── ③ 요일별 정기휴무 (공휴일 달력만 보면 절대 모르는 것)
@@ -243,14 +258,23 @@ function build(ctx) {
   lapRows.forEach(row => {
     for (let d = s2d(row.start); d2s(d) <= row.end; d = new Date(d.getTime() + 86400000)) lapDays.add(d2s(d));
   });
+  // ⚠️ 실물에서 걸린 것: 공휴일만 보고 고르면 «8월»이 狙い目 로 나온다. 그런데 바로 아래 표에서
+  //    8월은 ×1.54 로 한국인 국내여행이 제일 몰리는 달이다. 한 페이지 안에서 서로 반대말을 하면 안 된다.
+  //    → 측정된 달 중 배수가 높은 달은 뺀다. 무엇을 뺐는지도 적는다.
+  const PEAK = 1.35;
+  const peakMonths = Object.keys(SBM).map(Number)
+    .filter(m => (SBM[m] || []).length >= 20 && (SBM[m][0] || {}).idx >= PEAK);
   const quiet = months.filter(k => {
     if (k === TODAY.slice(0, 7)) return false;           // 이번 달은 이미 시작됐다
     const hasLap = [...lapDays].some(s => s.slice(0, 7) === k);
     const hasBig = bigBlocks.some(b => b.start.slice(0, 7) === k || b.end.slice(0, 7) === k);
-    return !hasLap && !hasBig;
+    return !hasLap && !hasBig && !peakMonths.includes(+k.slice(5, 7));
   });
   const quietTxt = quiet.length
     ? quiet.map(k => `<b>${k.slice(0, 4)}年${+k.slice(5, 7)}月</b>`).join('・')
+    : '';
+  const peakTxt = peakMonths.length
+    ? `なお<b>${peakMonths.map(m => m + '月').join('・')}</b>は祝日こそ重なりませんが、下の表のとおり<b>韓国人の国内旅行がいちばん集中する月</b>なので外しました。`
     : '';
 
   const next = lapRows[0];
@@ -299,7 +323,7 @@ ${busyTable ? `<div class="bzc"><h2>📊 「普段の何倍」— 韓国人の�
 <p class="bznote">測定されているのは${measured.map(m => m + '月').join('・')}のみです。データのない月をそれらしく埋めることはしていません。通信・カードデータに基づく推計値で、観光地単位ではなく市郡区全体の数字です。月ごとの詳しい一覧は<a href="/ja/calendar/" style="color:#0c7d72;font-weight:700">いつ行くかのページ</a>にあります。</p></div>` : ''}
 
 ${quietTxt ? `<div class="bzc"><h2>✅ 逆に、狙い目の月</h2>
-<p>この期間のうち、<b>日韓の連休が重ならず、韓国の名節もない月</b>は ${quietTxt} です。日本側の連休に合わせて動けないぶん有給が要りますが、同じ行き先でも航空券が落ち着き、店も普通に開いています。</p>
+<p>この期間のうち、<b>日韓の連休が重ならず、韓国の名節もない月</b>は ${quietTxt} です。日本側の連休に合わせて動けないぶん有給が要りますが、同じ行き先でも航空券が落ち着き、店も普通に開いています。${peakTxt}</p>
 <p>もう一つの狙い方は、<b>日本だけが休みの日</b>に合わせることです。上のカレンダーで「🔵 日本だけ休み」と出ている日は、こちらは休みなのに韓国は平日 — 店も役所も通常どおり動いていて、観光地は韓国人が少ない状態です。</p></div>` : ''}
 
 <div class="bzc"><h2>出かける前に、この順番で確認してください</h2>
