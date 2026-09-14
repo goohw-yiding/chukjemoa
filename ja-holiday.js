@@ -300,7 +300,7 @@ ${fes.length ? `<div class="hjc"><h2>🎪 この連休に開かれている祭�
 
 <div class="hjnav">
 ${bs.filter(o => o.slug !== b.slug).map(o => `<a href="/ja/closed/${o.slug}/">${esc(o.ja)}（${o.span.length}連休）</a>`).join('')}
-<a href="/ja/closed/">🚪 休む日まとめ</a><a href="/ja/calendar/">🗓️ いつ行くか</a></div>
+<a href="/ja/busy/">📅 日韓の祝日が重なる日</a><a href="/ja/closed/">🚪 休む日まとめ</a><a href="/ja/calendar/">🗓️ いつ行くか</a></div>
 </div></main>`;
 
     writePage(`ja/closed/${b.slug}`, layout(

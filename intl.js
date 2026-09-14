@@ -304,7 +304,10 @@ function build(ctx) {
     const jaHolLinks = lang !== 'ja' ? '' : (() => {
       const bs = require('./ja-holiday.js').blocks(TODAY).slice(0, 6);
       if (!bs.length) return '';
-      return `<div class="ic-card"><h2>連休ごとに詳しく</h2>
+      return `<div class="ic-card"><h2>🔴 その日、日本も韓国も休みですか</h2>
+<p>店が閉まるより先に効いてくるのが<b>日韓の連休の重なり</b>です。日本の祝日（内閣府）と韓国の祝日を1枚に重ねて、両国とも連休になる期間を日付で出しました。</p>
+<p style="margin-top:6px"><a href="/ja/busy/" style="display:inline-block;background:#0f9d8f;color:#fff;font-weight:800;font-size:.93rem;padding:11px 18px;border-radius:999px;text-decoration:none">📅 韓国が混む日 — 日韓の祝日カレンダー →</a></p></div>
+<div class="ic-card"><h2>連休ごとに詳しく</h2>
 <p>「その日、店は開いているのか」は連休ごとに答えが違います。日付・曜日の定休日・その連休に立つ五日市まで、連休別にまとめました。</p>
 <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:10px">${bs.map(b =>
         `<a href="/ja/closed/${b.slug}/" style="background:#fff;border:1.5px solid #dcefeb;color:#374151;font-weight:700;font-size:.9rem;padding:9px 14px;border-radius:999px;text-decoration:none">${
