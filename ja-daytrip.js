@@ -29,7 +29,14 @@ const nf = n => Number(n || 0).toLocaleString('ja-JP');
 // 코레일 시간표의 한자 역명에는 «중국어 간체»가 섞여 있다(东大邱·庆州).
 // 일본어 페이지에 간체를 그대로 두면 안 된다. 실제로 쓰인 글자만 바꾼다 — 넓게 추측하지 않는다.
 const HAN_FIX = { '东': '東', '庆': '慶', '广': '廣', '济': '濟', '汉': '漢', '长': '長', '宁': '寧', '丽': '麗' };
-const han = s => String(s || '').replace(/[一-鿿]/g, c => HAN_FIX[c] || c);
+// ⚠️ 한자 칸에 한글이 그대로 남은 역이 있다(「麗水엑스포」). 일본어 페이지에 한글을 두지 않는다.
+//    실물에서 보고 알았다 — 표에도 카드에도 「麗水엑스포」라고 찍혀 있었다.
+const KO_FIX = { '엑스포': 'エキスポ' };
+const han = s => {
+  let t = String(s || '').replace(/[一-鿿]/g, c => HAN_FIX[c] || c);
+  for (const k of Object.keys(KO_FIX)) t = t.split(k).join(KO_FIX[k]);
+  return t;
+};
 
 // 출발역 일본어 표기 — 여행자가 실제로 찾아가야 하는 역이라 «읽을 수 있게» 적는다
 const ORIG_JA = {
@@ -126,7 +133,8 @@ function build(ctx) {
     const sido = sidoOf(g.sido);
     if (sido === '서울' || sido === '경기') continue;
     const places = PJ.filter(p => p.x && p.y && km(g.x, g.y, +p.x, +p.y) <= RP);
-    const mkts = MK.filter(m => km(g.x, g.y, +m.x, +m.y) <= RM);
+    const mkts = MK.map(m => ({ m, d: km(g.x, g.y, +m.x, +m.y) })).filter(o => o.d <= RM)
+      .sort((a, b) => a.d - b.d).map(o => Object.assign({ _km: Math.round(o.d) }, o.m));
     // ⚠️ 오일장만으로는 싣지 않는다. 반경 15km 를 잡으면 시골 어디에나 두어 곳은 있어서
     //    「오일장 2곳」이 기준이 되면 여행지가 아닌 간이역까지 다 들어온다(첫 판에 45개가 됐다).
     //    «일본어로 보여줄 것이 실제로 있는가»를 기준으로 한다.
@@ -166,17 +174,14 @@ function build(ctx) {
   const DAY = 120;                                  // ← 편도 2시간까지를 「日帰り」로 본다
   // 표에는 전부 싣는다(자료로서 값이 있다). 카드는 «실제로 하루를 보낼 만한 곳»만 —
   // 견본이 10건인 역까지 카드로 크게 세우면 읽는 사람이 다 같은 무게로 읽게 된다.
-  const isCard = r => r.places.length >= 15 || CITY_PAGE[r.sigungu] || SIDO_PAGE[r.sido];
+  //   ⚠️ 실물에서 보고 두 조건을 더 걸었다:
+  //      · 「1日 4本」인 역(판교발 충주·문경·연풍)이 카드로 올라와 있었다 — 하루 4편으로는 일정을 못 짠다
+  //      · 볼거리 10~15건짜리 간이역이 부산(144건)과 같은 크기로 실려 있었다
+  const isCard = r => r.v.trains >= 10 && (r.places.length >= 25 || CITY_PAGE[r.sigungu] || SIDO_PAGE[r.sido]);
   const cards = list.filter(isCard);
   const dayTrip = cards.filter(r => r.v.min <= DAY);
   const overnight = cards.filter(r => r.v.min > DAY);
 
-  // 오일장 끝자리 — 「2·7일」처럼 5일마다 서는 날. 여행자에게 «내가 가는 날 장이 서나»가 실질이다
-  const mktDays = r => {
-    const s = new Set();
-    r.mkts.forEach(m => (m.daysNum || []).forEach(d => s.add(d % 10)));
-    return [...s].sort((a, b) => a - b);
-  };
   const cityLink = r => {
     const c = CITY_PAGE[r.sigungu] || SIDO_PAGE[r.sido];
     return c ? `/ja/${c}/` : (SIDO_SLUG[r.sido] ? `/ja/places/${SIDO_SLUG[r.sido]}/` : '');
@@ -185,7 +190,6 @@ function build(ctx) {
 
   function card(r, cls) {
     const v = r.v, g = r.g;
-    const days = mktDays(r);
     const link = cityLink(r);
     const oja = ORIG_JA[v.from] || (v.from + '駅');
     const nmJa = han(v.han || r.nm);
@@ -195,8 +199,13 @@ function build(ctx) {
     facts.push(`🕐 1日 <b>${v.trains}本</b>`);
     if (r.places.length) facts.push(`📍 見どころ <b>${nf(r.places.length)}件</b>`);
     const why = [];
-    if (days.length) {
-      why.push(`市場は<b>末尾が ${days.join('・')} の日</b>に立ちます（駅から15km以内に${r.mkts.length}ヶ所）。`);
+    // 🏮 오일장 — ⚠️ 처음엔 반경 안의 «끝자리를 다 모아서» 썼더니 「末尾が 0・1・2…9 の日」가 됐다.
+    //    8곳이면 끝자리가 전부 덮여서 «아무 말도 안 하는 문장»이 된다(진영·경주에서 그렇게 나왔다).
+    //    → 제일 가까운 한 곳을 이름으로 말한다. 그게 여행자가 실제로 갈 시장이다.
+    if (r.mkts.length) {
+      const m0 = r.mkts[0];
+      why.push(`いちばん近い五日市は<b>${esc(m0.name)}</b>（駅から約${m0._km}km・<b>${esc(m0.days || '')}</b>に開催）。`
+        + (r.mkts.length > 1 ? `ほかに${r.mkts.length - 1}ヶ所あります。` : ''));
     }
     if (v.byOrigin && Object.keys(v.byOrigin).length > 1) {
       const alt = Object.keys(v.byOrigin).filter(o => o !== v.from).sort((a, b) => v.byOrigin[a] - v.byOrigin[b])[0];
