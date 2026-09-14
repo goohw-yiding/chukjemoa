@@ -361,6 +361,15 @@ function esc(s) {
 //   own:true      자사(쿠웅샵) 판매 — 제휴가 아니므로 고지문구·rel이 다르고 nt_* 유입 파라미터가 붙는다.
 //   bySeason:{}   계절별로 다른 상품을 노출한다(값 = items의 다른 키). 없으면 연중 동일.
 //   up:[]         함께 파는 부속품(업셀). 메인 버튼 아래 작은 알약 링크로 붙는다. upT = 그 링크 문구.
+//
+// 🏭 2026-09-14 추가 — 소싱 판단을 위한 두 칸. 제휴(쿠팡) 항목에만 의미가 있다.
+//   pid:'12345678'  쿠팡 «상품번호». 제휴 단축링크(link.coupang.com/a/XXXX)에는 상품번호가 없어서
+//                   파트너스 실적 리포트(주문·수익)와 우리 클릭을 맞출 방법이 이것뿐이다.
+//                   상품 페이지 주소 coupang.com/vp/products/«이 숫자» 에서 그대로 베낀다.
+//                   비워 두면 「무엇이 팔렸는지」를 영영 모른다 — 링크만 받지 말고 번호도 같이 받을 것.
+//   cat:'보냉'      소싱 묶음. 한 상품의 클릭은 적어도 묶음으로 세면 신호가 빨리 온다.
+//   ⟶ `node _cpdump.js` 가 이 값들을 data/coupang_map.json 으로 뽑고,
+//      `py -3 _sourcing.py` 가 GA4 클릭 + 쿠팡 전환을 붙여 소싱 후보를 판정한다.
 
 // 빌드 시각을 KST로 고정한다. Vercel 빌드는 UTC라 그냥 getMonth()를 쓰면 월말·월초에 한 달 밀린다.
 const KST_NOW = new Date(Date.now() + 9 * 3600 * 1000);
@@ -3476,6 +3485,12 @@ ${/* 시도별 오일장도 세션당 1.07~1.35장이다 — 내부 이동 링�
 
 ${sigunguRow(sido)}
 
+${/* 🛒 2026-09-14 실측으로 옮김. 이 상품은 «</main> 바깥, 본문 16,326자 뒤(95% 지점)»에 있었다.
+      GA4 28일: /jangteo/* 조회 5,556 → 구매박스 클릭 3 = 0.05%. 홈(2.64%)의 1/53이다.
+      상품이 모자란 게 아니라 «아무도 닿지 않는 자리»에 있었다. 시·군 링크를 고른 직후,
+      시장 목록을 읽기 «전»이 장 보러 가기로 마음먹은 지점이다. */''}
+${buyBox('jangteo')}
+
 <h2 class="sec">${sido}의 오일장</h2>
 ${withDay.map(cardOf).join('')}
 
@@ -3502,7 +3517,9 @@ ${faq.map(([q, a]) => `<p style="line-height:1.8"><b>${esc(q)}</b><br>${esc(a)}<
       //    붙어 있고 하위는 비어 있었다 — GA4로 보면 전남·충북·경북 페이지에 실제 세션이 들어온다.
       //    그리고 시장 카드를 눌렀을 때 뜨는 모달(placemodal)도 CJM_BUYBOX 가 없어 빈 채로 떴다.
       `/jangteo/${SLUG[sido]}/`,
-      content + buyBox('jangteo') + jangteoModalBB + JT_LINK_JS, { jsonld: ld }));
+      // ⚠️ 여기에 buyBox 를 «더하지 말 것». content 가 </main> 로 끝나므로 붙이면 본문 밖·맨 끝이 된다.
+      //    2026-08-31에 그렇게 넣었다가 0.05% 를 기록했다. 이제 본문 안(시·군 링크 뒤)에 있다.
+      content + jangteoModalBB + JT_LINK_JS, { jsonld: ld }));
     JANGTEO_SIDO_URLS.push(`/jangteo/${SLUG[sido]}/`);
   });
 
@@ -3577,6 +3594,9 @@ ${enddayRow(slug)}
 </div>
 </div>
 
+${/* 🛒 2026-09-14 — 시·도 페이지와 같은 이유로 본문 안에 둔다(끝자리 페이지는 26,279자 뒤였다). */''}
+${buyBox('jangteo')}
+
 <h2 class="sec">${pairTxt} ${mine.length}곳</h2>
 ${mine.map(cardOf).join('')}
 
@@ -3592,7 +3612,8 @@ ${faq.map(([q, ans]) => `<p style="line-height:1.8"><b>${esc(q)}</b><br>${esc(an
       `${alias} — 끝자리 ${a === 5 || b === 10 ? '5·0' : `${a}·${b}`} 오일장 ${mine.length}곳 장날 총정리 | ${SITE_NAME}`,
       `끝자리가 ${endTxt}인 날에 서는 전국 오일장 ${mine.length}곳. 이번 달은 ${thisMonth}에 섭니다. ${sidoLine}. 파는 것·영업시간·주차·문의처까지 한곳에.`,
       `/jangteo/${slug}/`,
-      content + buyBox('jangteo') + jangteoModalBB + JT_LINK_JS, { jsonld: ld }));
+      // ⚠️ buyBox 를 여기 더하지 말 것 — 본문 밖·맨 끝이 된다. 이미 본문 안에 있다.
+      content + jangteoModalBB + JT_LINK_JS, { jsonld: ld }));
     JANGTEO_ENDDAY_URLS.push(`/jangteo/${slug}/`);
   });
   console.log('✓ /jangteo/{끝자리}/ —', JANGTEO_ENDDAY_URLS.length, '페이지');

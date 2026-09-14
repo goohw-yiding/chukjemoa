@@ -211,6 +211,11 @@ ${/* ⚠️ 제목과 내용이 «같은 말»이어야 한다 — 두 달치로
 </div>
 </div>
 
+${/* 🛒 2026-09-14 — 상품이 «</main> 바깥, 본문 맨 끝»에 있었다. GA4 28일 실측으로 /jangteo/* 는
+      조회 5,556에 구매박스 클릭 3(0.05%) — 홈(2.64%)의 1/53. 달력을 보고 «갈 날»을 정한 직후가
+      장바구니를 떠올리는 지점이라 여기에 둔다. */''}
+${buyBox('jangteo')}
+
 <h2 class="sec">${esc(city)}의 오일장</h2>
 ${withDay.map(card).join('')}
 ${noDay.length ? `<h2 class="sec">장날을 확인하지 못한 시장 ${noDay.length}곳</h2>
@@ -251,7 +256,8 @@ ${faq.map(([q, a]) => `<p class="jsg-faq"><b>${esc(q)}</b><br>${esc(a)}</p>`).jo
         `${city} 장날 — 오일장 ${withDay.length}곳 날짜·파는 것·영업시간 | ${SITE_NAME}`,
         `${city} 장날은 끝자리 ${dnAll.join(', ')}일입니다. 오일장 ${withDay.length}곳의 다음 장날과 ${M}·${nextM}월 날짜, 파는 것과 영업시간·주차·문의처를 정리했습니다.`,
         `/jangteo/${slug}/`,
-        CSS + content + buyBox('jangteo') + jangteoModalBB + JT_LINK_JS, { jsonld: ld }))
+        // ⚠️ buyBox 를 여기 더하지 말 것 — content 가 </main> 로 끝나 본문 밖·맨 끝이 된다.
+        CSS + content + jangteoModalBB + JT_LINK_JS, { jsonld: ld }))
     };
   };
 

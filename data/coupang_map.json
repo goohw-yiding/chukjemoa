@@ -1,0 +1,413 @@
+{
+ "generated": "2026-09-14",
+ "items": {
+  "festival": {
+   "key": "festival",
+   "name": "3단 폴딩 캠핑테이블 · 120x60cm",
+   "title": "축제·나들이 갈 때",
+   "q": "캠핑테이블",
+   "merchant": "own",
+   "url": "https://brand.naver.com/guung/products/4972833368",
+   "pid": "",
+   "cat": "",
+   "retired": false,
+   "up": [],
+   "bySeason": {
+    "winter": "tripcost",
+    "spring": "flower",
+    "autumn": "festseat"
+   }
+  },
+  "festseat": {
+   "key": "festseat",
+   "name": "접어서 드는 폴딩 스툴 + 메쉬백",
+   "title": "축제장엔 앉을 데가 없습니다",
+   "q": "폴딩 스툴",
+   "merchant": "own",
+   "url": "https://brand.naver.com/guung/products/13026204364",
+   "pid": "",
+   "cat": "",
+   "retired": false,
+   "up": [
+    "gakline",
+    "flower",
+    "chairs"
+   ],
+   "bySeason": null
+  },
+  "flower": {
+   "key": "flower",
+   "name": "대형 방수 돗자리 150x200 · 접이식 · 3색",
+   "title": "자리 깔고 앉으려면",
+   "q": "피크닉매트",
+   "merchant": "own",
+   "url": "https://brand.naver.com/guung/products/13737049813",
+   "pid": "",
+   "cat": "",
+   "retired": false,
+   "up": [],
+   "bySeason": null
+  },
+  "maple": {
+   "key": "maple",
+   "name": "접어서 드는 폴딩 스툴 + 메쉬백",
+   "title": "단풍 보면서 앉아 쉴 자리",
+   "q": "캠핑의자",
+   "merchant": "own",
+   "url": "https://brand.naver.com/guung/products/13026204364",
+   "pid": "",
+   "cat": "",
+   "retired": false,
+   "up": [
+    "gakline",
+    "chairs",
+    "flower"
+   ],
+   "bySeason": null
+  },
+  "trails": {
+   "key": "trails",
+   "name": "발 편한 등산화",
+   "title": "걷기 여행 준비물",
+   "q": "등산화",
+   "merchant": "coupang",
+   "url": "https://link.coupang.com/a/fXNZ2GivM4",
+   "pid": "",
+   "cat": "",
+   "retired": false,
+   "up": [
+    "pole",
+    "knee"
+   ],
+   "bySeason": null
+  },
+  "tripcost": {
+   "key": "tripcost",
+   "name": "초경량 여행 캐리어 20인치",
+   "title": "떠나기 전에, 가방부터",
+   "q": "초경량 캐리어",
+   "merchant": "own",
+   "url": "https://brand.naver.com/guung/products/13159625424",
+   "pid": "",
+   "cat": "",
+   "retired": false,
+   "up": [
+    "carriers",
+    "passport",
+    "nametag"
+   ],
+   "bySeason": null
+  },
+  "car": {
+   "key": "car",
+   "name": "차량용 휴대폰 거치대",
+   "title": "장거리 운전 전에",
+   "q": "차량용 휴대폰 거치대",
+   "merchant": "coupang",
+   "url": "https://link.coupang.com/a/fXN2IYC66m",
+   "pid": "",
+   "cat": "",
+   "retired": false,
+   "up": [],
+   "bySeason": null
+  },
+  "jangteo": {
+   "key": "jangteo",
+   "name": "바퀴달린 접이식 장보기 카트 · 5색",
+   "title": "장 보러 갈 때 손이 편하려면",
+   "q": "바퀴달린 장바구니",
+   "merchant": "own",
+   "url": "https://brand.naver.com/guung/products/12580509879",
+   "pid": "",
+   "cat": "",
+   "retired": false,
+   "up": [
+    "jangcolors"
+   ],
+   "bySeason": null
+  },
+  "valley": {
+   "key": "valley",
+   "name": "각도·높이 조절 UV차단 파라솔 · 3색",
+   "title": "계곡 자리에 그늘 하나",
+   "q": "그늘막 파라솔",
+   "merchant": "own",
+   "url": "https://brand.naver.com/guung/products/10181585601",
+   "pid": "",
+   "cat": "",
+   "retired": false,
+   "up": [
+    "psbases",
+    "aqua",
+    "pstray"
+   ],
+   "bySeason": {
+    "autumn": "maple",
+    "winter": "tripcost"
+   }
+  },
+  "onsen": {
+   "key": "onsen",
+   "name": "가볍게 마르는 여행용 타월",
+   "title": "온천 갈 때 챙기면 좋은 것",
+   "q": "여행용 타월",
+   "merchant": "coupang",
+   "url": "https://link.coupang.com/a/fXOCpczJqC",
+   "pid": "",
+   "cat": "",
+   "retired": false,
+   "up": [],
+   "bySeason": null
+  },
+  "pet": {
+   "key": "pet",
+   "name": "강아지 이동가방",
+   "title": "반려견과 떠난다면",
+   "q": "강아지 이동가방",
+   "merchant": "coupang",
+   "url": "https://link.coupang.com/a/fXOFfqmH4S",
+   "pid": "",
+   "cat": "",
+   "retired": false,
+   "up": [],
+   "bySeason": null
+  },
+  "suncap": {
+   "key": "suncap",
+   "name": "투명썬캡 · 자외선 86.3% 차단(FITI 시험 성적)",
+   "title": "물축제 가는 날, 얼굴은 지키고",
+   "q": "투명썬캡",
+   "merchant": "own",
+   "url": "https://brand.naver.com/guung/products/4545903063",
+   "pid": "",
+   "cat": "",
+   "retired": false,
+   "up": [],
+   "bySeason": null
+  },
+  "psbase": {
+   "key": "psbase",
+   "name": "물·모래 채우는 파라솔 받침대 20kg",
+   "title": "계곡 바닥엔 파라솔이 안 꽂힙니다",
+   "q": "파라솔 물통 받침대",
+   "merchant": "own",
+   "url": "https://brand.naver.com/guung/products/10227650214",
+   "pid": "",
+   "cat": "",
+   "retired": false,
+   "up": [],
+   "bySeason": null
+  },
+  "aqua": {
+   "key": "aqua",
+   "name": "미끄럼 방지 아쿠아슈즈 230~270",
+   "title": "계곡 돌바닥, 맨발은 위험합니다",
+   "q": "아쿠아슈즈",
+   "merchant": "own",
+   "url": "https://brand.naver.com/guung/products/13302370033",
+   "pid": "",
+   "cat": "",
+   "retired": false,
+   "up": [],
+   "bySeason": null
+  },
+  "pstray": {
+   "key": "pstray",
+   "name": "다용도 파라솔 트레이 · 컵홀더",
+   "title": "파라솔에 끼우는 테이블",
+   "q": "파라솔 트레이",
+   "merchant": "own",
+   "url": "https://brand.naver.com/guung/products/10258766453",
+   "pid": "",
+   "cat": "",
+   "retired": false,
+   "up": [],
+   "bySeason": null
+  },
+  "psteel": {
+   "key": "psteel",
+   "name": "스틸 사각 파라솔 받침대 · 3단 지름조절",
+   "title": "단단한 바닥이라면",
+   "q": "스틸 파라솔 받침대",
+   "merchant": "own",
+   "url": "https://brand.naver.com/guung/products/10240115222",
+   "pid": "",
+   "cat": "",
+   "retired": false,
+   "up": [],
+   "bySeason": null
+  },
+  "psbases": {
+   "key": "psbases",
+   "name": "파라솔 받침대 3종 · 물통 20kg / 스틸 고정 / 튜브 8.5kg",
+   "title": "계곡 바닥엔 파라솔이 안 꽂힙니다",
+   "q": "파라솔 받침대",
+   "merchant": "own",
+   "url": "https://brand.naver.com/guung/search?q=%ED%8C%8C%EB%9D%BC%EC%86%94%20%EB%B0%9B%EC%B9%A8%EB%8C%80",
+   "pid": "",
+   "cat": "",
+   "retired": false,
+   "up": [],
+   "bySeason": null
+  },
+  "suncap98": {
+   "key": "suncap98",
+   "name": "썬캡 워터밤 · 자외선 98.1% 차단(FITI 시험 성적)",
+   "title": "더 강하게 막고 싶다면",
+   "q": "썬캡",
+   "merchant": "own",
+   "url": "https://brand.naver.com/guung/products/4545903062",
+   "pid": "",
+   "cat": "",
+   "retired": false,
+   "up": [],
+   "bySeason": null
+  },
+  "necool": {
+   "key": "necool",
+   "name": "PCM 넥쿨러 아이스넥링 · 28도에서 다시 언다",
+   "title": "더위, 목부터 식히세요",
+   "q": "넥쿨러",
+   "merchant": "own",
+   "url": "https://brand.naver.com/guung/products/13490127630",
+   "pid": "",
+   "cat": "",
+   "retired": true,
+   "up": [],
+   "bySeason": null
+  },
+  "jangcolors": {
+   "key": "jangcolors",
+   "name": "장보기카트 5색 · 네이비/레드/블랙/블루/와인",
+   "title": "색상 고르기",
+   "q": "장보기카트",
+   "merchant": "own",
+   "url": "https://brand.naver.com/guung/search?q=%EC%9E%A5%EB%B3%B4%EA%B8%B0%EC%B9%B4%ED%8A%B8",
+   "pid": "",
+   "cat": "",
+   "retired": false,
+   "up": [],
+   "bySeason": null
+  },
+  "carriers": {
+   "key": "carriers",
+   "name": "20인치 · 24인치 · 20+24 세트",
+   "title": "사이즈 고르기",
+   "q": "여행캐리어",
+   "merchant": "own",
+   "url": "https://brand.naver.com/guung/search?q=%EC%BA%90%EB%A6%AC%EC%96%B4",
+   "pid": "",
+   "cat": "",
+   "retired": false,
+   "up": [],
+   "bySeason": null
+  },
+  "passport": {
+   "key": "passport",
+   "name": "여권지갑 케이스 · RFID 차단 자석형",
+   "title": "여권은 따로 챙기세요",
+   "q": "여권지갑",
+   "merchant": "own",
+   "url": "https://brand.naver.com/guung/products/13302183883",
+   "pid": "",
+   "cat": "",
+   "retired": false,
+   "up": [],
+   "bySeason": null
+  },
+  "nametag": {
+   "key": "nametag",
+   "name": "캐리어 네임택 러기지택",
+   "title": "수하물 찾을 때",
+   "q": "캐리어 네임택",
+   "merchant": "own",
+   "url": "https://brand.naver.com/guung/products/13302496481",
+   "pid": "",
+   "cat": "",
+   "retired": false,
+   "up": [],
+   "bySeason": null
+  },
+  "gakline": {
+   "key": "gakline",
+   "name": "[gak] 페스티벌 · 메쉬백&스툴 세트 / 스툴 단품 / 메쉬백 단품",
+   "title": "세트로 살까 단품으로 살까",
+   "q": "페스티벌 스툴",
+   "merchant": "own",
+   "url": "https://brand.naver.com/guung/search?q=%ED%8E%98%EC%8A%A4%ED%8B%B0%EB%B2%8C",
+   "pid": "",
+   "cat": "",
+   "retired": false,
+   "up": [],
+   "bySeason": null
+  },
+  "chairs": {
+   "key": "chairs",
+   "name": "접이식 테라스 폴딩 캠핑의자 · 4색",
+   "title": "오래 앉을 거라면 등받이",
+   "q": "접이식 캠핑의자",
+   "merchant": "own",
+   "url": "https://brand.naver.com/guung/products/11585759983",
+   "pid": "",
+   "cat": "",
+   "retired": false,
+   "up": [],
+   "bySeason": null
+  },
+  "mountain": {
+   "key": "mountain",
+   "name": "접어서 드는 폴딩 스툴 + 메쉬백",
+   "title": "정상에서 앉아 쉴 자리",
+   "q": "폴딩 스툴",
+   "merchant": "own",
+   "url": "https://brand.naver.com/guung/products/13026204364",
+   "pid": "",
+   "cat": "",
+   "retired": false,
+   "up": [
+    "pole",
+    "knee"
+   ],
+   "bySeason": null
+  },
+  "pole": {
+   "key": "pole",
+   "name": "경량 등산스틱 (2단·손목스트랩)",
+   "title": "오래 걸을 거라면",
+   "q": "등산스틱",
+   "merchant": "own",
+   "url": "https://brand.naver.com/guung/products/13738817178",
+   "pid": "",
+   "cat": "",
+   "retired": false,
+   "up": [],
+   "bySeason": null
+  },
+  "knee": {
+   "key": "knee",
+   "name": "무릎보호대 (압박형)",
+   "title": "내리막에서 무릎이 시큰하면",
+   "q": "무릎보호대",
+   "merchant": "coupang",
+   "url": "https://link.coupang.com/a/f55ro9jebQ",
+   "pid": "",
+   "cat": "",
+   "retired": false,
+   "up": [],
+   "bySeason": null
+  },
+  "hotpack": {
+   "key": "hotpack",
+   "name": "손난로 핫팩 (붙이는 것·쥐는 것)",
+   "title": "겨울 축제는 추위와의 싸움",
+   "q": "핫팩",
+   "merchant": "coupang",
+   "url": "https://link.coupang.com/a/f55uDRMZ9o",
+   "pid": "",
+   "cat": "",
+   "retired": false,
+   "up": [],
+   "bySeason": null
+  }
+ }
+}
