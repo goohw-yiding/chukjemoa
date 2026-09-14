@@ -96,6 +96,7 @@ def main():
         raise SystemExit(u'✗ 원본이 없다: %s\n  코레일 「열차운임/시간표」에서 «KTX 시간표» XLSX 를 받아 이 경로에 둘 것' % SRC)
     wb = openpyxl.load_workbook(SRC, read_only=True, data_only=True)
     st = {}
+    names = {}     # 역 이름 → {han, en} — 시간표가 한자·영문을 같이 싣고 있다
     for sn in wb.sheetnames:
         rows = list(wb[sn].iter_rows(values_only=True))
         hi = hj = None
@@ -108,12 +109,22 @@ def main():
         if hi is None:
             continue
         hdr = [str(c).strip() if c is not None else '' for c in rows[hi]]
+        # ⭐ 헤더 바로 아래 두 줄이 «한자»와 «영문» 역명이다. 일본어 페이지에 쓸 표기를 여기서 줍는다
+        #    — 손으로 옮겨 적지 않는다. (한자는 중국어 간체가 섞여 있어 그대로는 못 쓴다: 首尔·东大邱)
+        han = [str(c).strip() if c is not None else '' for c in rows[hi + 1]] if hi + 1 < len(rows) else []
+        eng = [str(c).strip() if c is not None else '' for c in rows[hi + 2]] if hi + 2 < len(rows) else []
         start = hj + 2
         try:
             end = hdr.index(u'비고', start)      # ← 하행 블록의 끝
         except ValueError:
             end = len(hdr)
         cols = [(k, hdr[k]) for k in range(start, end) if hdr[k]]
+        for k, nm in cols:
+            e = names.setdefault(nm, {})
+            if k < len(han) and han[k] and 'han' not in e:
+                e['han'] = han[k]
+            if k < len(eng) and eng[k] and 'en' not in e:
+                e['en'] = eng[k]
         for r in rows[hi + 3:]:
             if not r or len(r) <= hj or r[hj] is None:
                 continue
@@ -158,6 +169,11 @@ def main():
             'lines': sorted(e['lines']),
             'kinds': sorted(x for x in e['kinds'] if x),
         }
+        nz = names.get(nm, {})
+        if nz.get('han'):
+            rec['han'] = nz['han']
+        if nz.get('en'):
+            rec['en'] = nz['en']
         if fa:
             rec['fare'] = fa
             # «가장 빠른 출발역»의 운임을 대표값으로. 그 역 운임이 없으면 제일 싼 것.
