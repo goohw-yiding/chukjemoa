@@ -2480,6 +2480,10 @@ const JA_HOLIDAY_URLS = require('./ja-holiday.js').build({ ROOT, layout, writePa
 // 두 나라 공식 공휴일을 한 표에 겹쳐 놓은 페이지는 우리만 만들 수 있다(영업시간 데이터가 있어서).
 // ⚠️ ja-holiday.js 다음에 와야 한다 — 연휴 상세 페이지(/ja/closed/{slug}/)로 링크한다.
 const JA_BUSY_URLS = require('./ja-busy.js').build({ ROOT, layout, writePage, SITE, TODAY });
+// 🚄 2026-09-14 신설 — /ja/daytrip/ 「ソウルから日帰り・1泊2日」.
+// 관광공사가 꼽은 미결 과제가 「일본인 지방 방문률 20% 미만」이고, 지방은 우리 데이터가 제일 두껍다.
+// 코레일 공식 시간표·운임(data/train_time.json)에 역 좌표·일본어 장소·오일장을 겹친다.
+const JA_DAYTRIP_URLS = require('./ja-daytrip.js').build({ ROOT, layout, writePage, SITE, TODAY });
 const JA_JANGTEO_URLS = apiFestsJa.length ? require('./jangteo-ja.js').build({ ROOT, layout, writePage, SITE, TODAY, jangteoAlts }) : [];
 // 🗾 2026-09-09 신설 — 일문 장소 시·도 허브. 3,371건 중 2,179건(65%)이 어디에도 안 나오고 있었다.
 //    /ja/{city}/ 는 14곳뿐이고 도시당 60곳 상한이라 도시 페이지가 없는 시·도가 통째로 빠졌다.
@@ -8008,7 +8012,7 @@ const ADV_TRAFFIC = {
 }
 
 // ---------- sitemap / robots ----------
-const urls = ['/', ...MONTHS.map(m => `/${m.key}/`), '/search/', ...(holidays.length ? ['/holiday/'] : []), '/pet/', ...(apiAccessible.length ? ['/accessible/'] : []), ...INDOOR_URLS, ...(apiTrails.length ? ['/trails/'] : []), ...(apiValleys.length ? ['/valley/'] : []), ...(apiMaple.length ? ['/maple/'] : []), ...(apiFlower.length ? ['/flower/'] : []), ...(apiOnsen.length ? ['/onsen/'] : []), '/jangteo/', '/test/', '/trip-cost/', ...CITYTOUR_URLS, ...(visitors.kor && visitors.kor.length ? ['/trend/'] : []), ...SIDO_URLS, ...THEME_URLS, ...TRAIL_URLS, ...WALK_URLS, ...TREND_LANG_URLS, '/blog/', ...posts.map(p => `/blog/${p.slug}/`), '/about/', EDITORIAL_URL, '/contact/', '/advertise/', '/privacy/',...(apiFestsEn.length ? ['/en/', '/en/search/'] : []), ...EN_FESTIVAL_URLS, ...EN_JANGTEO_URLS, ...EN_BLOG_URLS, ...(apiFestsJa.length ? ['/ja/', '/ja/search/'] : []), ...JA_JANGTEO_URLS, ...JA_FESTIVAL_URLS, ...JA_HOLIDAY_URLS, ...JA_BUSY_URLS, ...JA_PLACES_URLS, ...(apiFestsEs.length ? ['/es/', '/es/search/'] : []), ...ES_JANGTEO_URLS, ...(apiFestsZh.length ? ['/zh/', '/zh/search/'] : []), ...ZH_JANGTEO_URLS, ...(apiFestsTw.length ? ['/tw/', '/tw/search/'] : []), ...TW_EXTRA_URLS, ...MOUNTAIN_URLS, ...CAFE_URLS, ...HOT_URLS, ...HEALING_URLS, ...COURSE_URLS, ...WINTER_URLS, ...JANGTEO_SIDO_URLS, ...JANGTEO_SIGUNGU_URLS, ...JANGTEO_ENDDAY_URLS, ...SIDO_HUB_URLS, ...TRIP_URLS, ...FESTIVAL_URLS, ...MAP_URLS, ...INTL_URLS, ...CHUSEOK_URLS, ...SEOUL_URLS, ...BUSAN_URLS, ...JEJU_URLS, ...MUSEUM_URLS, ...CITY_URLS, ...INTL_CITY_URLS];
+const urls = ['/', ...MONTHS.map(m => `/${m.key}/`), '/search/', ...(holidays.length ? ['/holiday/'] : []), '/pet/', ...(apiAccessible.length ? ['/accessible/'] : []), ...INDOOR_URLS, ...(apiTrails.length ? ['/trails/'] : []), ...(apiValleys.length ? ['/valley/'] : []), ...(apiMaple.length ? ['/maple/'] : []), ...(apiFlower.length ? ['/flower/'] : []), ...(apiOnsen.length ? ['/onsen/'] : []), '/jangteo/', '/test/', '/trip-cost/', ...CITYTOUR_URLS, ...(visitors.kor && visitors.kor.length ? ['/trend/'] : []), ...SIDO_URLS, ...THEME_URLS, ...TRAIL_URLS, ...WALK_URLS, ...TREND_LANG_URLS, '/blog/', ...posts.map(p => `/blog/${p.slug}/`), '/about/', EDITORIAL_URL, '/contact/', '/advertise/', '/privacy/',...(apiFestsEn.length ? ['/en/', '/en/search/'] : []), ...EN_FESTIVAL_URLS, ...EN_JANGTEO_URLS, ...EN_BLOG_URLS, ...(apiFestsJa.length ? ['/ja/', '/ja/search/'] : []), ...JA_JANGTEO_URLS, ...JA_FESTIVAL_URLS, ...JA_HOLIDAY_URLS, ...JA_BUSY_URLS, ...JA_DAYTRIP_URLS, ...JA_PLACES_URLS, ...(apiFestsEs.length ? ['/es/', '/es/search/'] : []), ...ES_JANGTEO_URLS, ...(apiFestsZh.length ? ['/zh/', '/zh/search/'] : []), ...ZH_JANGTEO_URLS, ...(apiFestsTw.length ? ['/tw/', '/tw/search/'] : []), ...TW_EXTRA_URLS, ...MOUNTAIN_URLS, ...CAFE_URLS, ...HOT_URLS, ...HEALING_URLS, ...COURSE_URLS, ...WINTER_URLS, ...JANGTEO_SIDO_URLS, ...JANGTEO_SIGUNGU_URLS, ...JANGTEO_ENDDAY_URLS, ...SIDO_HUB_URLS, ...TRIP_URLS, ...FESTIVAL_URLS, ...MAP_URLS, ...INTL_URLS, ...CHUSEOK_URLS, ...SEOUL_URLS, ...BUSAN_URLS, ...JEJU_URLS, ...MUSEUM_URLS, ...CITY_URLS, ...INTL_CITY_URLS];
 // noindex 페이지는 사이트맵에서 뺀다 — "색인해라(사이트맵) + 하지마라(noindex)"는 모순 신호다.
 // 🔁 2026-08-19: en/ja/zh 사이트맵 제외를 되돌린다(위 layout()의 forceNoindex 주석 참고).
 //    구글 클릭 0을 보고 뺐지만 GA4로는 구글 아닌 검색엔진에서 16세션/28일이 들어오고 있었다.
@@ -8143,11 +8147,17 @@ console.log('✓ rss.xml —', rssPosts.length, '개 글');
 // ⚠️ /api/ 는 반드시 막는다. 2026-08-09 서치콘솔에 "다른 4xx 문제로 차단됨"이 뜬 원인이
 //    /api/tripcost 였다 — 페이지 JS가 부르는 주소를 구글이 따라가 GET으로 크롤링했고 400을 받았다.
 //    API는 색인 대상이 아니므로 크롤 자체를 막는 게 맞다(그래야 4xx 오류가 아니라 '의도된 차단'이 된다).
+// 🧹 2026-09-15 — robots 에서 sitemap.xml 줄을 뺐다.
+//    실측: 섹션 6개 합집합 1,028개와 sitemap.xml 1,028개가 «차집합 0»인 완전 중복이었다.
+//    두 줄을 다 두면 크롤러가 같은 1,028개를 두 번 읽는다. 지금 이 사이트는 허브 재크롤이
+//    5~9일씩 밀리는 상태(2026-09-15: /ja/closed/ 9/6 · /jangteo/ 9/11)라 그 낭비가 아프다.
+//    인덱스 한 줄이면 섹션 6개를 다 가리키므로 잃는 것이 없다.
+// ⚠️ 그렇다고 sitemap.xml «파일»을 없애지는 말 것. /sitemap.xml 은 네이버·빙이 관습적으로
+//    찾아가는 기본 경로다. 이 사이트는 세션의 70%가 네이버에서 온다 — 파일은 계속 만든다.
 fs.writeFileSync(path.join(ROOT, 'robots.txt'), `User-agent: *
 Allow: /
 Disallow: /api/
 Sitemap: ${SITE}/sitemap-index.xml
-Sitemap: ${SITE}/sitemap.xml
 `);
 fs.writeFileSync(path.join(ROOT, 'ads.txt'), `google.com, pub-3293445488923111, DIRECT, f08c47fec0942fa0\n`);
 
