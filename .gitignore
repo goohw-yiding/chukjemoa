@@ -36,4 +36,3 @@ _*.err
 #   _prod_map.md · _bb_real.md · _fallback_slugs.tsv 가 커밋에 딸려 들어갈 뻔했다.
 _*.md
 _*.tsv
-*.prev

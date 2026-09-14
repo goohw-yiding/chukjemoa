@@ -913,7 +913,7 @@ window.OneSignalDeferred=window.OneSignalDeferred||[];window.OneSignalDeferred.p
 <div class="cthumb"><img loading="lazy" src="https://tong.visitkorea.or.kr/cms/resource/73/3039673_image2_1.jpg" alt="Starbucks Gyeongdong Market (스타벅스 경동1960)" onerror="this.src='/img/hero.webp'"></div>
 <div class="cbody"><h3>Starbucks Gyeongdong Market (스타벅스 경동1960)</h3>
 <div class="cloc">📍 Seoul · 3 Gosanja-ro 36-gil, Dongdaemun-gu, Se</div>
-<div class="cbs"><span class="cb hot">🔥 ×1.21 busier than usual this month</span><span class="cb qt">🤫 Few foreign visitors here</span></div>
+<div class="cbs"><span class="cb hot">🔥 ×1.21 busier than usual this month</span><span class="cb fgn">🌏 Popular with foreign visitors</span></div>
 <p class="cov">Restored Gyeongdong Market space and the 5th community store for a win-win relationship with local econom…</p>
 <p class="cov" style="color:#0a6c63">🕒 09:00-22:00  ·  ☕ Caffe Americano</p>
 </div></a>
@@ -1060,7 +1060,7 @@ window.OneSignalDeferred=window.OneSignalDeferred||[];window.OneSignalDeferred.p
   try{
     var raw=document.getElementById('cRest');
     if(raw&&raw.textContent.trim()){
-      var rest=JSON.parse(raw.textContent), CM={"11110":[1.15,1],"11140":[1.14,1],"11200":[1.22,1],"11215":[1.16,2],"11230":[1.21,0],"11305":[1.05,0],"11380":[1.04,0],"11410":[1.23,1],"11440":[1.14,1],"11680":[1.16,1],"12150":[0,0],"12210":[0,0],"12710":[0,0],"27110":[1.04,2],"28155":[0,1],"28710":[0,0],"30110":[1.06,0],"30140":[1.02,0],"31710":[1.04,0],"41115":[0,0],"41281":[0,0],"41285":[0,0],"41360":[0,2],"41480":[1.02,0],"41610":[0,0],"41830":[0,0],"47111":[0,0],"47113":[0,0],"47130":[0,0],"47750":[0,0],"47930":[0,0],"48220":[0,1],"48850":[0,0],"50110":[1.04,1],"51110":[1.01,0],"51230":[0,0],"51720":[0,0],"51820":[0,0],"51830":[0,0],"52180":[0,0],"52710":[0,0],"3611036110":[0,0]}, BT={"hot":"🔥 ×%v busier than usual this month","busy":"🌏 Popular with foreign visitors","kor":"🇰🇷 Popular with Koreans","quiet":"🤫 Few foreign visitors here"};
+      var rest=JSON.parse(raw.textContent), CM={"11110":[1.15,1],"11140":[1.14,1],"11200":[1.22,1],"11215":[1.16,2],"11230":[1.21,1],"11305":[1.05,0],"11380":[1.04,0],"11410":[1.23,1],"11440":[1.14,1],"11680":[1.16,1],"12150":[0,0],"12210":[0,0],"12710":[0,0],"27110":[1.04,2],"28155":[0,1],"28710":[0,0],"30110":[1.06,0],"30140":[1.02,0],"31710":[1.04,0],"41115":[0,0],"41281":[0,0],"41285":[0,0],"41360":[0,2],"41480":[1.02,0],"41610":[0,0],"41830":[0,0],"47111":[0,0],"47113":[0,0],"47130":[0,0],"47750":[0,0],"47930":[0,0],"48220":[0,1],"48850":[0,0],"50110":[1.04,1],"51110":[1.01,0],"51230":[0,0],"51720":[0,0],"51820":[0,0],"51830":[0,0],"52180":[0,0],"52710":[0,0],"3611036110":[0,0]}, BT={"hot":"🔥 ×%v busier than usual this month","busy":"🌏 Popular with foreign visitors","kor":"🇰🇷 Popular with Koreans","quiet":"🤫 Few foreign visitors here"};
       var frag=document.createDocumentFragment();
       rest.forEach(function(r){
         var b=CM[r[4]]||[0,0], bs='';
