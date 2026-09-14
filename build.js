@@ -3260,6 +3260,26 @@ const JANGTEO_SIGUNGU_URLS = require('./jangteo-sigungu.js').build({
 const SIGUNGU_BY_SIDO = {};
 (JANGTEO_SIGUNGU_URLS.meta || []).forEach(r => (SIGUNGU_BY_SIDO[r.sido] = SIGUNGU_BY_SIDO[r.sido] || []).push(r));
 Object.values(SIGUNGU_BY_SIDO).forEach(a => a.sort((x, y) => y.vol - x.vol));
+// 🔢 2026-09-14 — 끝자리 페이지가 «실제로 만들어질 쌍»을 허브보다 먼저 정해 둔다.
+//    허브가 먼저 그려지기 때문에, 여기서 정해 두지 않으면 허브가 «없는 페이지»로 링크를 건다.
+//    (시·군 페이지에서 겪은 것과 같은 순서 문제 — 그때 배운 대로 앞으로 뺐다.)
+//    판정 기준은 아래 생성부와 «똑같아야» 한다: 정확히 두 자리 + 5 차이 + 5곳 이상.
+// 🔴 공공데이터는 5·0 을 «[5,10]» 으로 적는다. [5,0] 으로 쓰면 110곳짜리 두 번째로 큰 쌍이
+//    조용히 0건이 되어 페이지가 안 만들어진다(2026-09-14 실제로 그렇게 한 번 빠뜨렸다).
+//    _enddays.js 로 실측한 조합은 딱 다섯 가지다: [2·7]125 [3·8]118 [4·9]117 [5·10]110 [1·6]95.
+//    ⛔ 여기 숫자를 «검색어 모양»(0일장날)에 맞춰 고치지 말 것 — 데이터 모양이 정본이다.
+//       사람이 치는 「0일장날」은 아래 본문·제목에서 따로 받는다.
+const ENDDAY_PAIRS_ALL = [[1, 6], [2, 7], [3, 8], [4, 9], [5, 10]];
+const enddayMarkets = ([a, b]) => marketsDay.filter(m => {
+  const d = [...m.daysNum].sort((x, y) => x - y);
+  return d.length === 2 && d[0] === Math.min(a, b) && d[1] === Math.max(a, b);
+});
+const ENDDAY_READY = ENDDAY_PAIRS_ALL.filter(p => enddayMarkets(p).length >= 5);
+const ENDDAY_HUB = ENDDAY_READY.length ? `<h2 class="sec">끝자리로 찾기 — 「3일장날」처럼</h2>
+<p style="color:#6b7280;font-size:.94rem;line-height:1.8">오일장은 <b>날짜 끝자리</b>로 섭니다. 끝자리 하나만 알면 그 날 서는 장을 한 번에 볼 수 있습니다. 끝자리가 5 차이 나는 두 숫자는 <b>같은 장</b>입니다 — 3일장과 8일장은 같은 시장입니다.</p>
+<div style="display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 18px">${ENDDAY_READY.map(([a, b]) =>
+  `<a href="/jangteo/${a}-${b}/" style="background:#f6fbfa;border:1.5px solid #dcefeb;color:#0a6c63;font-weight:800;font-size:.95rem;padding:9px 16px;border-radius:999px;text-decoration:none">${a}·${b}일장 <span style="color:#9ca3af;font-weight:600">${enddayMarkets([a, b]).length}곳</span></a>`).join('')}</div>` : '';
+
 const SIGUNGU_HUB = (() => {
   const order = Object.keys(SIGUNGU_BY_SIDO).sort((a, b) => SIGUNGU_BY_SIDO[b].length - SIGUNGU_BY_SIDO[a].length);
   const n = order.reduce((t, k) => t + SIGUNGU_BY_SIDO[k].length, 0);
@@ -3273,7 +3293,8 @@ ${order.map(sd => `<h3 style="margin:16px 0 6px;font-size:1.02rem;font-weight:80
 writePage('jangteo', layout(
   `오늘 장날 어디? 전국 오일장(5일장) ${marketsDay.length}곳 — 끝자리별 일정 | ${SITE_NAME}`,
   `오일장은 5일마다 서는 장입니다. 전국 ${marketsDay.length}곳의 장날을 끝자리(2·7일, 3·8일, 4·9일, 5·10일)와 시·도별로 정리했습니다. 날짜를 넣으면 그날 열리는 장이 초록색으로 표시되고 가까운 장날 순으로 정렬됩니다. 모란장(4·9일)·정선아리랑시장(2·7일)·봉평장(2·7일).`,
-  '/jangteo/', jangteoContent.replace('<!--SIGUNGU_HUB-->', SIGUNGU_HUB + buyBox('jangteo')) + jangteoModalBB + JT_LINK_JS, { jsonld: JANGTEO_FAQ_LD }));
+  // 🔢 끝자리 묶음을 시·군 목록 «앞»에 둔다 — 끝자리는 5개뿐이라 훑기 쉽고, 시·군 88개는 길다.
+  '/jangteo/', jangteoContent.replace('<!--SIGUNGU_HUB-->', ENDDAY_HUB + SIGUNGU_HUB + buyBox('jangteo')) + jangteoModalBB + JT_LINK_JS, { jsonld: JANGTEO_FAQ_LD }));
 
 // ---------- 🏮 시·도별 오일장 /jangteo/{시도}/ ----------
 // 왜 나누나: 시장마다 «판매 품목·영업시간·휴무·주차·문의»가 다 있는데(공공데이터 detailIntro2)
@@ -3283,6 +3304,10 @@ writePage('jangteo', layout(
 //    기준을 4로 두고 지어 보니 대구(4곳)가 본문 2,463자로 사이트 하한(걷기길 최소 2,999자)에 못 미쳤다.
 //    6으로 올리니 가장 얇은 페이지가 경남 3,076자가 된다. 부산3·대전2·울산2·인천1·대구4는 허브에만 싣는다.
 const JANGTEO_SIDO_URLS = [];
+// ⚠️ 끝자리 페이지 URL 은 «이 블록 밖»(사이트맵)에서 읽는다. 블록 «안»에 const 로 선언하면
+//    사이트맵이 못 보고, 페이지는 만들어지는데 색인 요청이 안 나가는 조용한 사고가 난다.
+//    (2026-09-14: 실제로 한 번 그렇게 선언했다가 여기로 올렸다.)
+const JANGTEO_ENDDAY_URLS = [];
 {
   const SLUG = { 서울: 'seoul', 부산: 'busan', 대구: 'daegu', 인천: 'incheon', 광주: 'gwangju', 대전: 'daejeon', 울산: 'ulsan', 세종: 'sejong', 경기: 'gyeonggi', 강원: 'gangwon', 충북: 'chungbuk', 충남: 'chungnam', 전북: 'jeonbuk', 전남: 'jeonnam', 경북: 'gyeongbuk', 경남: 'gyeongnam', 제주: 'jeju' };
   const bySido = {};
@@ -3329,13 +3354,11 @@ const JANGTEO_SIDO_URLS = [];
       .slice(0, NEAR_FEST_N);
   };
 
-  big.forEach(([sido, list]) => {
-    const withDay = list.filter(m => (m.daysNum || []).length).sort((a, b) => (a.daysNum[0] - b.daysNum[0]) || a.name.localeCompare(b.name));
-    const noDay = list.filter(m => !(m.daysNum || []).length);
-    const cityCnt = {}; list.forEach(m => { if (m.city) cityCnt[m.city] = (cityCnt[m.city] || 0) + 1; });
-    const endCnt = {}; withDay.forEach(m => { const k = m.daysNum.join('·'); endCnt[k] = (endCnt[k] || 0) + 1; });
-
-    const cardOf = m => `<div style="background:#fff;border-radius:14px;padding:16px 18px;box-shadow:0 2px 10px rgba(31,41,55,.06);margin:0 0 14px">
+  // ⬆️ 2026-09-14: cardOf 를 big.forEach «밖»으로 꺼냈다. 끝자리 페이지(/jangteo/1-6/ 등)가
+  //    같은 카드를 써야 하는데 안에 있으면 못 쓴다. sido·list·endCnt 를 안 쓰므로 꺼내도 안전하다
+  //    (꺼내기 전에 참조를 하나씩 확인했다: m · esc · nextJangYmd · WX · nearFestOf · FEST_PAGES · rangeOf8).
+  //    ⛔다시 안으로 넣지 말 것 — 넣으면 끝자리 5장이 통째로 죽는다.
+  const cardOf = m => `<div style="background:#fff;border-radius:14px;padding:16px 18px;box-shadow:0 2px 10px rgba(31,41,55,.06);margin:0 0 14px">
 ${m.img ? `<img src="${esc(m.img)}" alt="${esc(m.name)} 사진" loading="lazy" style="width:100%;height:160px;object-fit:cover;border-radius:10px;margin-bottom:10px" onerror="this.remove()">` : ''}
 <button class="fav fav-mini" type="button" data-name="${esc(m.name)}" aria-label="찜하기" style="float:right">♡</button>
 <h3 style="font-size:1.06rem;font-weight:800;margin:0 0 4px">${esc(m.name)}${m.daysNum.length ? ` <span style="background:#e2f5f2;color:#0a6c63;font-size:.82rem;font-weight:800;border-radius:999px;padding:3px 10px;margin-left:4px">${m.daysNum.join('·')}일장</span>` : ''}</h3>
@@ -3356,6 +3379,12 @@ ${m.tel ? `☎️ ${esc(m.tel)}` : ''}
 <div style="margin-top:10px"><a href="https://map.naver.com/p/search/${encodeURIComponent(m.name)}" target="_blank" rel="noopener" style="color:#0c7d72;font-weight:700;font-size:.88rem;margin-right:10px">🗺️ 지도</a><a href="https://search.naver.com/search.naver?query=${encodeURIComponent(m.name + ' 맛집')}" target="_blank" rel="noopener" style="color:#0c7d72;font-weight:700;font-size:.88rem">🍴 근처 맛집</a></div>
 ${(() => { const nf = nearFestOf(m); if (!nf.length) return ''; return `<details style="margin-top:10px;border-top:1px solid #f0ece4;padding-top:9px"><summary style="cursor:pointer;font-weight:800;color:#0a6c63;font-size:.9rem">🎪 이 근처 축제 ${nf.length}곳 (${NEAR_FEST_KM}km 이내)</summary><div style="margin-top:7px">${nf.map(({ f, km }) => { const pg = FEST_PAGES.find(p => String(p.id) === String(f.id)); const href = pg ? `/festival/${pg.slug}/` : `/search/?q=${encodeURIComponent(f.title)}`; return `<a href="${href}" style="display:block;padding:7px 0;border-bottom:1px solid #f4f1ec;color:#374151;text-decoration:none"><b style="color:#111827">${esc(f.title)}</b> <span style="color:#9ca3af;font-size:.83rem">· 약 ${Math.round(km)}km</span><br><span style="color:#6b7280;font-size:.83rem">${esc(rangeOf8(f))}</span></a>`; }).join('')}</div></details>`; })()}
 </div>`;
+
+  big.forEach(([sido, list]) => {
+    const withDay = list.filter(m => (m.daysNum || []).length).sort((a, b) => (a.daysNum[0] - b.daysNum[0]) || a.name.localeCompare(b.name));
+    const noDay = list.filter(m => !(m.daysNum || []).length);
+    const cityCnt = {}; list.forEach(m => { if (m.city) cityCnt[m.city] = (cityCnt[m.city] || 0) + 1; });
+    const endCnt = {}; withDay.forEach(m => { const k = m.daysNum.join('·'); endCnt[k] = (endCnt[k] || 0) + 1; });
 
     const faq = [
       [`${sido}에서 오늘 열리는 오일장은 어디인가요?`,
@@ -3418,11 +3447,103 @@ ${faq.map(([q, a]) => `<p style="line-height:1.8"><b>${esc(q)}</b><br>${esc(a)}<
       content + buyBox('jangteo') + jangteoModalBB + JT_LINK_JS, { jsonld: ld }));
     JANGTEO_SIDO_URLS.push(`/jangteo/${SLUG[sido]}/`);
   });
+
+  // 🔢 2026-09-14 신설 — 끝자리 페이지 5장. /jangteo/1-6/ · 2-7 · 3-8 · 4-9 · 5-0
+  //
+  //  왜 만드나 — 네이버 검색량 «실측»(_kwvol.js, 2026-09-14):
+  //    3일장날 1,150 · 6일장날 960 · 2일장날 840 · 5일장날 570 · 1일장날 450 · 9일장날 420
+  //    4일장날 330 · 7일장날 330 · 8일장날 180 · 10일장날 140 · 0일장날 120  = 월 5,490, 모바일 97%
+  //  그런데 이 수요를 받는 페이지가 «한 장도 없었다». 허브가 8.9~10.8위로 겨우 걸려 클릭 0이다
+  //  (GSC 2026-09-05~11: 2일장날 16노출 8.9위 0클릭 · 6일장날 16노출 10.8위 0클릭).
+  //  오일장은 5일 주기라 1·6 / 2·7 / 3·8 / 4·9 / 5·0 다섯 쌍이면 끝자리 전부를 덮는다.
+  //
+  //  ⚠️ 아래 keep 집합에 JANGTEO_ENDDAY_URLS 를 «반드시» 넣어야 한다.
+  //     안 넣으면 다음 빌드가 「유령 페이지」로 보고 5장을 통째로 지운다(대구 폴더에서 겪은 사고).
+  // ⚠️ 허브가 먼저 링크를 그린다. 그래서 «무엇을 만들지»는 허브 위쪽에서 이미 ENDDAY_READY 로 정해 뒀다.
+  //    여기서 다시 판정하면 둘이 어긋나 허브가 없는 페이지로 링크한다 — 그대로 가져다 쓴다.
+  const ENDDAY_PAIRS = ENDDAY_READY;
+  const enddaySlug = ([a, b]) => `${a}-${b}`;
+  const enddayRow = cur => `<div class="cpresets" style="display:flex;flex-wrap:wrap;gap:8px;margin:14px 0">${
+    ENDDAY_PAIRS.filter(p => enddaySlug(p) !== cur).map(p =>
+      `<a href="/jangteo/${enddaySlug(p)}/" style="background:#fff;border:1.5px solid #dcefeb;color:#374151;font-weight:700;font-size:.9rem;padding:8px 14px;border-radius:999px">${p[0]}·${p[1]}일장</a>`).join('')}</div>`;
+
+  ENDDAY_PAIRS.forEach(pair => {
+    const [a, b] = pair, slug = enddaySlug(pair);
+    // 판정은 enddayMarkets 한 곳에만 둔다(허브와 같은 함수) — 두 군데 두면 반드시 어긋난다.
+    const mine = enddayMarkets(pair)
+      .slice().sort((x, y) => (x.region || '').localeCompare(y.region || '') || x.name.localeCompare(y.name));
+
+    const bySido = {}; mine.forEach(m => (bySido[m.region] = bySido[m.region] || []).push(m));
+    const sidoLine = Object.entries(bySido).sort((p, q) => q[1].length - p[1].length)
+      .map(([s, l]) => `${esc(s)} ${l.length}`).join(' · ');
+    // 이번 달에 이 끝자리로 서는 «실제 날짜»를 뽑아 준다 — 사람이 달력을 세지 않아도 되게.
+    const now = new Date(), Y = now.getFullYear(), M = now.getMonth();
+    const lastDay = new Date(Y, M + 1, 0).getDate();
+    const dates = [];
+    // ⚠️ b 가 10 이면 끝자리는 «0» 이다(10·20·30일). d%10 으로 재면 자동으로 맞는다.
+    for (let d = 1; d <= lastDay; d++) { const e = d % 10; if (e === a % 10 || e === b % 10) dates.push(d); }
+    const thisMonth = `${M + 1}월 ${dates.join('·')}일`;
+    // 사람이 치는 말은 데이터 모양과 다르다 — 「5일장날」「10일장날」「0일장날」이 다 따로 검색된다
+    // (네이버 실측 월 570·140·120). 제목·본문에서 그 말을 다 받아 준다.
+    const alias = b === 10 ? '5일장날·10일장날·0일장날' : `${a}일장날·${b}일장날`;
+    const endTxt = b === 10 ? '5 또는 0(10·20·30일)' : `${a} 또는 ${b}`;
+    const pairTxt = b === 10 ? '5·10일장' : `${a}·${b}일장`;
+
+    const faq = [
+      [`${pairTxt}은 무슨 뜻인가요?`,
+        `날짜 끝자리가 ${endTxt}인 날에 서는 오일장입니다. 이번 달은 ${thisMonth}에 섭니다. 오일장은 5일에 한 번 열리므로 끝자리가 5 차이 나는 두 숫자가 한 쌍이 됩니다. ${b === 10 ? '10일·20일·30일은 끝자리가 0이라 「0일장」이라고도 부르는데 5일장과 같은 장입니다.' : `${a}일장과 ${b}일장은 같은 시장을 가리킵니다.`}`],
+      [`${pairTxt}은 전국에 몇 곳이나 있나요?`,
+        `축제모아가 장날을 확인한 곳만 ${mine.length}곳입니다. 지역별로는 ${sidoLine} 입니다. 한국관광공사 공공데이터와 직접 정리한 자료를 합친 것으로, 장날이 적혀 있지 않은 시장은 추측해서 넣지 않았습니다.`],
+      ['장날이 명절이나 비 오는 날에도 서나요?',
+        '정해진 날짜에 서지만 명절 당일이나 기상 악화 시 쉬는 곳이 있습니다. 먼 길이라면 각 시장 문의처로 확인 후 출발하시길 권합니다.']
+    ];
+
+    const content = `<main><div class="wrap">
+<h1 style="font-size:1.5rem;font-weight:900;margin:8px 0 6px">${pairTxt} — 끝자리 ${endTxt}에 서는 전국 오일장 ${mine.length}곳</h1>
+<p style="color:#374151;font-size:1rem;line-height:1.8">날짜 <b>끝자리가 ${endTxt}</b>인 날에 서는 장입니다. 이번 달은 <b>${thisMonth}</b>에 섭니다. 장날이 확인된 ${mine.length}곳을 지역순으로 정리했고, 시장마다 <b>무엇을 파는지·언제 여는지·주차가 되는지</b>까지 함께 실었습니다.</p>
+<p style="color:#6b7280;font-size:.95rem">지역 분포: ${sidoLine}</p>
+<div style="background:#f4faf8;border:1.5px solid #dcefeb;border-radius:14px;padding:13px 17px;margin:14px 0;color:#0a6c63;font-size:.94rem;line-height:1.75">
+<b>${alias}은 모두 같은 장입니다.</b> 끝자리가 5 차이 나면 한 시장이 두 날짜에 다 서기 때문입니다.${b === 10 ? ' 10일·20일·30일은 끝자리가 0이라 「0일장」이라고도 부릅니다.' : ''}
+오늘 어디가 서는지 한 번에 보려면 <a href="/jangteo/" style="color:#0a6c63;font-weight:800">전국 오일장 표</a>에서 날짜를 넣어 보세요.
+</div>
+
+<h2 class="sec">다른 끝자리</h2>
+${enddayRow(slug)}
+
+<div class="nextup">
+<div class="nextup-t">장 보고 나서</div>
+<div class="nextup-row">
+<a href="/${MONTHS_ROTATED[0].key}/" class="hot">🎪 이달의 축제</a>
+<a href="/jangteo/">🏮 오늘 서는 오일장 전국</a>
+<a href="/holiday/">🌕 연휴에 여는 곳</a>
+</div>
+</div>
+
+<h2 class="sec">${pairTxt} ${mine.length}곳</h2>
+${mine.map(cardOf).join('')}
+
+<h2 class="sec">자주 묻는 것</h2>
+${faq.map(([q, ans]) => `<p style="line-height:1.8"><b>${esc(q)}</b><br>${esc(ans)}</p>`).join('')}
+
+<p class="note" style="margin-top:18px">데이터 출처: 한국관광공사 TourAPI 전통시장 정보와 축제모아가 직접 정리한 장터 자료. 장날은 <b>끝자리 간격이 5일 때만</b> 오일장으로 인정했습니다. 명절·기상에 따라 쉬는 날이 있으니 방문 전 확인하세요.</p>
+</div></main>`;
+
+    const ld = `<script type="application/ld+json">${JSON.stringify({ '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faq.map(([q, ans]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: ans } })) })}</script>`;
+    writePage('jangteo/' + slug, layout(
+      // 제목 앞머리는 «사람이 실제로 치는 말»이다 — 「3일장날」「8일장날」이 각각 월 1,150·180 이다.
+      `${alias} — 끝자리 ${a === 5 || b === 10 ? '5·0' : `${a}·${b}`} 오일장 ${mine.length}곳 장날 총정리 | ${SITE_NAME}`,
+      `끝자리가 ${endTxt}인 날에 서는 전국 오일장 ${mine.length}곳. 이번 달은 ${thisMonth}에 섭니다. ${sidoLine}. 파는 것·영업시간·주차·문의처까지 한곳에.`,
+      `/jangteo/${slug}/`,
+      content + buyBox('jangteo') + jangteoModalBB + JT_LINK_JS, { jsonld: ld }));
+    JANGTEO_ENDDAY_URLS.push(`/jangteo/${slug}/`);
+  });
+  console.log('✓ /jangteo/{끝자리}/ —', JANGTEO_ENDDAY_URLS.length, '페이지');
   // ⚠️ 빌드는 페이지를 «쓰기»만 하고 지우지 않는다. 기준을 4→6으로 올렸을 때 대구 폴더가 그대로 남아
   //    사이트맵엔 없는데 파일은 살아 있는 «유령 페이지»가 됐다(축제 상세에서 겪은 것과 같은 사고).
   //    이번 빌드가 만들지 않은 하위 폴더는 지운다.
   // 🔴 시·군 페이지를 keep 에 넣지 않으면 다음 빌드가 120장을 통째로 지운다.
-  const keep = new Set([...JANGTEO_SIDO_URLS, ...JANGTEO_SIGUNGU_URLS].map(u => u.split('/')[2]));
+  // 🔴 2026-09-14: 끝자리 5장(JANGTEO_ENDDAY_URLS)도 같은 이유로 반드시 넣는다.
+  const keep = new Set([...JANGTEO_SIDO_URLS, ...JANGTEO_SIGUNGU_URLS, ...JANGTEO_ENDDAY_URLS].map(u => u.split('/')[2]));
   let gone = 0;
   for (const e of fs.readdirSync(path.join(ROOT, 'jangteo'), { withFileTypes: true })) {
     if (!e.isDirectory() || keep.has(e.name)) continue;
@@ -7804,7 +7925,7 @@ const ADV_TRAFFIC = {
 }
 
 // ---------- sitemap / robots ----------
-const urls = ['/', ...MONTHS.map(m => `/${m.key}/`), '/search/', ...(holidays.length ? ['/holiday/'] : []), '/pet/', ...(apiAccessible.length ? ['/accessible/'] : []), ...INDOOR_URLS, ...(apiTrails.length ? ['/trails/'] : []), ...(apiValleys.length ? ['/valley/'] : []), ...(apiMaple.length ? ['/maple/'] : []), ...(apiFlower.length ? ['/flower/'] : []), ...(apiOnsen.length ? ['/onsen/'] : []), '/jangteo/', '/test/', '/trip-cost/', ...CITYTOUR_URLS, ...(visitors.kor && visitors.kor.length ? ['/trend/'] : []), ...SIDO_URLS, ...THEME_URLS, ...TRAIL_URLS, ...WALK_URLS, ...TREND_LANG_URLS, '/blog/', ...posts.map(p => `/blog/${p.slug}/`), '/about/', EDITORIAL_URL, '/contact/', '/advertise/', '/privacy/',...(apiFestsEn.length ? ['/en/', '/en/search/'] : []), ...EN_FESTIVAL_URLS, ...EN_JANGTEO_URLS, ...EN_BLOG_URLS, ...(apiFestsJa.length ? ['/ja/', '/ja/search/'] : []), ...JA_JANGTEO_URLS, ...JA_FESTIVAL_URLS, ...JA_HOLIDAY_URLS, ...JA_PLACES_URLS, ...(apiFestsEs.length ? ['/es/', '/es/search/'] : []), ...ES_JANGTEO_URLS, ...(apiFestsZh.length ? ['/zh/', '/zh/search/'] : []), ...ZH_JANGTEO_URLS, ...(apiFestsTw.length ? ['/tw/', '/tw/search/'] : []), ...TW_EXTRA_URLS, ...MOUNTAIN_URLS, ...CAFE_URLS, ...HOT_URLS, ...HEALING_URLS, ...COURSE_URLS, ...WINTER_URLS, ...JANGTEO_SIDO_URLS, ...JANGTEO_SIGUNGU_URLS, ...SIDO_HUB_URLS, ...TRIP_URLS, ...FESTIVAL_URLS, ...MAP_URLS, ...INTL_URLS, ...CHUSEOK_URLS, ...SEOUL_URLS, ...BUSAN_URLS, ...JEJU_URLS, ...MUSEUM_URLS, ...CITY_URLS, ...INTL_CITY_URLS];
+const urls = ['/', ...MONTHS.map(m => `/${m.key}/`), '/search/', ...(holidays.length ? ['/holiday/'] : []), '/pet/', ...(apiAccessible.length ? ['/accessible/'] : []), ...INDOOR_URLS, ...(apiTrails.length ? ['/trails/'] : []), ...(apiValleys.length ? ['/valley/'] : []), ...(apiMaple.length ? ['/maple/'] : []), ...(apiFlower.length ? ['/flower/'] : []), ...(apiOnsen.length ? ['/onsen/'] : []), '/jangteo/', '/test/', '/trip-cost/', ...CITYTOUR_URLS, ...(visitors.kor && visitors.kor.length ? ['/trend/'] : []), ...SIDO_URLS, ...THEME_URLS, ...TRAIL_URLS, ...WALK_URLS, ...TREND_LANG_URLS, '/blog/', ...posts.map(p => `/blog/${p.slug}/`), '/about/', EDITORIAL_URL, '/contact/', '/advertise/', '/privacy/',...(apiFestsEn.length ? ['/en/', '/en/search/'] : []), ...EN_FESTIVAL_URLS, ...EN_JANGTEO_URLS, ...EN_BLOG_URLS, ...(apiFestsJa.length ? ['/ja/', '/ja/search/'] : []), ...JA_JANGTEO_URLS, ...JA_FESTIVAL_URLS, ...JA_HOLIDAY_URLS, ...JA_PLACES_URLS, ...(apiFestsEs.length ? ['/es/', '/es/search/'] : []), ...ES_JANGTEO_URLS, ...(apiFestsZh.length ? ['/zh/', '/zh/search/'] : []), ...ZH_JANGTEO_URLS, ...(apiFestsTw.length ? ['/tw/', '/tw/search/'] : []), ...TW_EXTRA_URLS, ...MOUNTAIN_URLS, ...CAFE_URLS, ...HOT_URLS, ...HEALING_URLS, ...COURSE_URLS, ...WINTER_URLS, ...JANGTEO_SIDO_URLS, ...JANGTEO_SIGUNGU_URLS, ...JANGTEO_ENDDAY_URLS, ...SIDO_HUB_URLS, ...TRIP_URLS, ...FESTIVAL_URLS, ...MAP_URLS, ...INTL_URLS, ...CHUSEOK_URLS, ...SEOUL_URLS, ...BUSAN_URLS, ...JEJU_URLS, ...MUSEUM_URLS, ...CITY_URLS, ...INTL_CITY_URLS];
 // noindex 페이지는 사이트맵에서 뺀다 — "색인해라(사이트맵) + 하지마라(noindex)"는 모순 신호다.
 // 🔁 2026-08-19: en/ja/zh 사이트맵 제외를 되돌린다(위 layout()의 forceNoindex 주석 참고).
 //    구글 클릭 0을 보고 뺐지만 GA4로는 구글 아닌 검색엔진에서 16세션/28일이 들어오고 있었다.
