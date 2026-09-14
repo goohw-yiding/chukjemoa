@@ -26,6 +26,33 @@ const ROOT = __dirname;
 const SITE = 'https://chukjemoa.co.kr';
 const SITE_NAME = '축제모아';
 const ADSENSE = 'ca-pub-3293445488923111';
+
+// 🏷 브랜드 신원 선언 (Organization + WebSite)
+// 왜: 구글에서 「축제모아」로 검색하면 «우리가 1페이지에 아예 없고»(실측 0건),
+//     travel-info.co.kr 이 1위다. 그 사이트는 title·h1·og:site_name·JSON-LD 전부 「축제모아」이고
+//     alternateName 에 «ChukjeMoa»(우리 도메인 철자)까지 넣어 뒀다.
+// 🚨 2026-09-14 AEO 실측이 더 나쁜 그림을 보여줬다 — Perplexity 응답에서 「축제모아」라는 이름에
+//     붙은 각주의 실제 도메인 1위가 travel-info.co.kr(17건)이고 우리는 12건이다.
+//     즉 AI가 「축제모아」라고 말할 때 절반 이상이 남의 사이트를 가리킨다.
+// ⚠️ 그래서 2026-09-14에 이 블록을 파일 «맨 앞»으로 올리고 layout() 에 넣어 **전 페이지**에 박았다.
+//     (그 전에는 홈에만 붙어 있었다 — /2026-10/ 같은 주력 페이지엔 Event + FAQPage 뿐이었다)
+//     ⛔다시 아래로 내리지 말 것: layout() 보다 뒤에 두면 월별·장터 페이지 생성 시 TDZ 에러가 난다.
+// ℹ️기대치는 낮게: 네이버 「축제모아」 검색량 월 40, GSC 90일 노출 13. 트래픽용이 아니라
+//     «AI·지식패널에서 남의 사이트가 우리 이름으로 굳는 것»을 막는 용도다.
+const BRAND_LD = [
+  { '@context': 'https://schema.org', '@type': 'Organization',
+    name: SITE_NAME, alternateName: ['Chukjemoa', 'chukjemoa.co.kr', 'Chukjemoa Festival Guide'],
+    url: SITE + '/', logo: SITE + '/apple-touch-icon.png',
+    email: 'goohw593@gmail.com',
+    description: '전국 축제·오일장(5일장) 일정을 공공데이터로 모아 월별·지역별로 정리하는 한국 축제 정보 사이트. 오일장 장날 계산과 무장애 여행 정보를 함께 제공한다.' },
+  { '@context': 'https://schema.org', '@type': 'WebSite',
+    name: SITE_NAME, alternateName: 'Chukjemoa', url: SITE + '/', inLanguage: 'ko-KR',
+    publisher: { '@type': 'Organization', name: SITE_NAME, url: SITE + '/' },
+    potentialAction: { '@type': 'SearchAction',
+      target: { '@type': 'EntryPoint', urlTemplate: SITE + '/search/?q={search_term_string}' },
+      'query-input': 'required name=search_term_string' } }
+].map(o => `<script type="application/ld+json">${JSON.stringify(o)}</script>`).join('\n');
+
 // ⚠️ toISOString()은 UTC라 KST 오전 9시 이전에 빌드하면 날짜가 하루 밀린다(지난 축제가 남고 sitemap lastmod가 어제로 찍힘).
 //    그래서 KST로 고정해서 뽑는다.
 const TODAY = new Date(Date.now() + 9 * 3600 * 1000).toISOString().slice(0, 10);
@@ -2122,6 +2149,7 @@ ${alts}
 <meta name="twitter:image" content="${SITE}${opts.ogImage || ogImageFor(urlPath)}">${(opts.noindex || forceNoindex) ? '\n<meta name="robots" content="noindex, follow">' : ''}
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE}" crossorigin="anonymous"></script>
+${BRAND_LD}
 ${opts.jsonld || ''}
 <style>${CSS}${PROSE_CSS}</style>
 <script>window.__onesignalAppId="8d4d29df-1dba-4f43-9efb-0c3745441e1f";(function(){var id=window.__onesignalAppId;if(!id||id.indexOf("PASTE")===0)return;if(location.protocol!=="https:")return;var s=document.createElement("script");s.src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js";s.defer=true;document.head.appendChild(s);
@@ -4279,26 +4307,8 @@ const HOME_DEPTH = (() => {
 })();
 
 // ---------- 🏷 브랜드 실체(Organization + WebSite) — 2026-09-09 신설 ----------
-// 왜: 구글에서 「축제모아」로 검색하면 «우리가 1페이지에 아예 없고»(실측 0건),
-//     travel-info.co.kr 이 1위다. 그 사이트는 title 도 h1 도 「축제모아」로 우리 이름을 쓴다.
-//     홈의 JSON-LD 를 세어 보니 Event 9 + FAQPage 1 뿐 — **Organization 도 WebSite 도 없었다.**
-//     구글에 「축제모아라는 이름의 사이트는 여기다」라고 말해 주는 조각이 하나도 없었던 셈이다.
-// ⚠️ 기대치는 낮게 잡을 것: 네이버 실측 「축제모아」 검색량은 월 40, GSC 90일 노출 13이다.
-//     이걸 고쳐도 트래픽은 거의 안 는다. 값어치는 «AI 개요·지식패널에서 남의 사이트가
-//     우리 이름으로 굳는 것»을 막는 데 있다.
-const BRAND_LD = [
-  { '@context': 'https://schema.org', '@type': 'Organization',
-    name: SITE_NAME, alternateName: ['축제모아', 'Chukjemoa', 'chukjemoa.co.kr'],
-    url: SITE + '/', logo: SITE + '/apple-touch-icon.png',
-    email: 'goohw593@gmail.com',
-    description: '전국 축제·오일장(5일장) 일정을 공공데이터로 모아 월별·지역별로 정리하는 한국 축제 정보 사이트.' },
-  { '@context': 'https://schema.org', '@type': 'WebSite',
-    name: SITE_NAME, alternateName: 'Chukjemoa', url: SITE + '/', inLanguage: 'ko-KR',
-    publisher: { '@type': 'Organization', name: SITE_NAME, url: SITE + '/' },
-    potentialAction: { '@type': 'SearchAction',
-      target: { '@type': 'EntryPoint', urlTemplate: SITE + '/search/?q={search_term_string}' },
-      'query-input': 'required name=search_term_string' } }
-].map(o => `<script type="application/ld+json">${JSON.stringify(o)}</script>`).join('\n');
+// ℹ️ 2026-09-14: BRAND_LD 정의는 파일 맨 앞(SITE_NAME 근처)으로 옮겼다 — layout() 이 전 페이지에
+//    이걸 넣기 때문이다. 여기 두면 월별·장터 페이지 생성 시 TDZ 에러가 난다.
 
 // 홈 Event 9개가 전부 /search/ 를 가리키고 있었다 → 개별 축제 페이지가 있으면 그쪽으로.
 const _festSlugByName = new Map();
@@ -4318,7 +4328,8 @@ writePage('.', layout(
   `${SITE_NAME} — 전국 축제·오일장 일정 총정리 (2026)`,
   `2026 전국 축제 일정과 오일장(5일장) 날짜를 한눈에. 월별·지역별 축제 정보, 보령머드축제부터 화천산천어축제까지.`,
   '/', indexContent + HOME_DEPTH + FAQ_HOME_HTML + HERO_JS,
-  { jsonld: BRAND_LD + eventsJsonLd(upcoming, festUrlOf) + FAQ_HOME_LD, alternates: homeAlts() }));
+  // 2026-09-14: BRAND_LD 는 layout() 이 전 페이지에 넣으므로 여기서 빼야 «중복»이 안 된다.
+  { jsonld: eventsJsonLd(upcoming, festUrlOf) + FAQ_HOME_LD, alternates: homeAlts() }));
 
 // ---------- 개인정보처리방침 ----------
 const privacyContent = `<main><div class="wrap"><article>
