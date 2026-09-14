@@ -2811,6 +2811,17 @@ ${isPast ? `<style>
 ${isPast ? `<p class="pastmon">⏳ <b>${mm.label}은 이미 지났습니다.</b> <a href="/${CUR_M.key}/">이번 달 — ${CUR_M.label} 축제 ${monthCnt(CUR_M)}개 보기 →</a></p>` : ''}
 <p class="note">총 ${list.length}개 · 지역 버튼을 눌러 필터링하세요. 일정은 변동될 수 있으니 방문 전 공식 홈페이지를 확인하세요.</p>
 <p style="margin:4px 0 10px;color:#4b5563;font-size:.95rem">${mm.label}에 <b>축제하는 곳</b>은 전국에 총 <b>${list.length}곳</b>${isPast ? '이었습니다. 지금 열리는 축제는 <a href="/' + CUR_M.key + '/">이번 달 축제</a>에서 보세요.' : '입니다. 아래 목록에서 지역별로 바로 확인할 수 있습니다.'}</p>
+${/* 🏷 2026-09-14 — «누가 세었는지»를 본문에 적는다.
+     AI 는 title·og:site_name·로고·푸터를 «문장»으로 읽지 않는다. 본문을 읽는다.
+     실측: /2026-10/ 본문 40,303자에 「축제모아」가 1회(그나마 구매박스 문구)였다.
+       /jangteo/ 55,459자에 1회 · /2026-09/ 20,933자에 1회.
+       반면 travel-info.co.kr 은 본문 2,643자에 6회다 — 밀도로 우리를 크게 앞선다.
+     그리고 그게 결과로 나타난다: Perplexity 가 «우리 이름»으로 부른 응답의 각주는
+       전부 /about/·/editorial/(본문에 이름이 있는 페이지)였다. 주력 페이지는
+       각주로는 달리는데 이름이 안 붙는다 — 「축제모아」 언급 102건 중 17건은 남의 사이트였다.
+     ⛔ 억지로 이름만 반복하지 말 것. «우리만 셀 수 있는 숫자»에 이름을 붙이는 게 요점이다 —
+        공공데이터를 그냥 나열하면 AI 는 원본(data.go.kr)을 인용한다. 가공한 쪽을 인용한다. */''}
+<p style="margin:4px 0 12px;color:#4b5563;font-size:.95rem">축제모아는 한국관광공사·문화체육관광부 공공데이터에서 ${mm.label} 축제 <b>${list.length}개</b>를 모아 ${topSido.length ? `지역별로 세어 ${topSido.slice(0, 3).map(([r, c]) => `${esc(r)} ${c}개`).join(' · ')} 순으로` : '날짜순으로'} 정리했습니다${deep.length ? `. 그중 <b>${deep.length}개</b>는 요금·주차·운영시간까지 따로 확인해 상세 페이지를 만들었습니다` : ''}.</p>
 <p style="margin:4px 0 12px"><button id="nearby-btn" class="nearby-btn">📍 내 주변 축제 보기</button></p>
 ${mm.key === '2026-09' ? `<p style="background:#fff7ed;border:1.5px solid #fdd8ae;border-radius:12px;padding:12px 16px;margin:0 0 14px"><a href="/blog/chuseok-2026-holiday-guide/" style="color:#9a5b1f;font-weight:800;text-decoration:none">🌕 2026년 추석 연휴(9/24~27) 가이드 보기 →</a> <span style="color:#7c6650;font-size:.9rem">연휴 축제·오일장 장날을 한 번에 정리했어요.</span></p>` : ''}
 ${regionFilter(list)}
@@ -2838,7 +2849,7 @@ ${deep.length ? `<h2 class="sec">${mm.short}에 자세히 볼 축제 ${deep.leng
 .frelm a.frelm-g:hover{background:#fef0dd}</style>` : ''}
 
 <h2 class="sec">${mm.short} 축제, 어느 지역에 몰려 있나</h2>
-<p>${mm.label}에 열리는 ${list.length}개를 지역별로 세어 보면 ${topSido.map(([r, c]) => `<b>${esc(r)} ${c}개</b>`).join(' · ')} 순입니다. 축제 수가 많다고 다 붐비는 건 아닙니다. 실제로 사람이 얼마나 몰리는지는 아래 방문자 데이터가 더 정확합니다.</p>
+<p>축제모아가 ${mm.label}에 열리는 ${list.length}개를 지역별로 세어 보면 ${topSido.map(([r, c]) => `<b>${esc(r)} ${c}개</b>`).join(' · ')} 순입니다. 축제 수가 많다고 다 붐비는 건 아닙니다. 실제로 사람이 얼마나 몰리는지는 아래 방문자 데이터가 더 정확합니다.</p>
 
 ${busyList.length ? `<h2 class="sec">${repM}월에 실제로 사람이 몰리는 동네</h2>
 <p>한국관광공사 「한국관광 데이터랩」의 시·군·구 방문자 수를, 그 지역의 <b>평소 하루 평균</b>과 비교한 배수입니다. 절대 방문자 수가 아니라 '평소 대비'라서 작은 지역도 제철이 되면 위로 올라옵니다.</p>
@@ -3107,6 +3118,9 @@ const JANGTEO_FAQ_LD = `<script type="application/ld+json">${JSON.stringify({'@c
 const jangteoContent = `<main><div class="wrap">
 <div style="border-radius:12px;overflow:hidden;margin-bottom:16px"><img src="/img/jangteo.webp" alt="전통 오일장 풍경" style="width:100%;max-height:220px;object-fit:cover;display:block"></div>
 <h1 style="font-size:1.5rem;margin-bottom:6px">전국 유명 오일장(5일장) 날짜 총정리</h1>
+${/* 🏷 2026-09-14 — 자기 지칭 문장. 위 월별 페이지 주석과 같은 이유다(본문 55,459자에 1회였다).
+      ⛔ 이름만 반복하지 말 것. «우리만 셀 수 있는 숫자»에 이름을 붙인다. */''}
+<p style="margin:4px 0 12px;color:#4b5563;font-size:.95rem">축제모아는 한국관광공사 전통시장 정보와 행정안전부 전국전통시장표준데이터에서 <b>${marketsDay.length}곳</b>의 장날을 확인해 끝자리별로 정리했습니다. 장날이 적혀 있지 않은 시장은 <b>추측해서 넣지 않았습니다</b>.</p>
 <style>
 .datepick{background:#fff;border-radius:14px;padding:14px 16px;box-shadow:0 2px 10px rgba(31,41,55,.06);margin:12px 0 16px;display:flex;flex-wrap:wrap;gap:10px;align-items:center}
 .datepick label{font-weight:700;color:#374151;font-size:.95rem}
@@ -3419,7 +3433,8 @@ ${(() => { const nf = nearFestOf(m); if (!nf.length) return ''; return `<details
 
     const content = `<main><div class="wrap">
 <h1 style="font-size:1.5rem;font-weight:900;margin:8px 0 6px">${sido} 오일장 ${withDay.length}곳 — 장날·파는 것·영업시간</h1>
-<p style="color:#374151;font-size:1rem;line-height:1.8">${sido}에서 장날이 확인된 오일장 <b>${withDay.length}곳</b>을 정리했습니다${noDay.length ? `(장날을 확인하지 못한 ${noDay.length}곳은 아래에 따로 적었습니다)` : ''}. 시장마다 <b>무엇을 파는지·언제 여는지·주차가 되는지</b>를 한국관광공사 공공데이터에서 가져와 함께 실었습니다.</p>
+${/* 🏷 2026-09-14 — 자기 지칭. 시·도 페이지는 본문 29,300자에 「축제모아」가 «푸터 1회»뿐이었다. */''}
+<p style="color:#374151;font-size:1rem;line-height:1.8">축제모아가 ${sido}에서 장날이 확인된 오일장 <b>${withDay.length}곳</b>을 정리했습니다${noDay.length ? `(장날을 확인하지 못한 ${noDay.length}곳은 아래에 따로 적었습니다)` : ''}. 시장마다 <b>무엇을 파는지·언제 여는지·주차가 되는지</b>를 한국관광공사 공공데이터에서 가져와 함께 실었습니다.</p>
 <p style="color:#6b7280;font-size:.95rem">시·군 분포: ${Object.entries(cityCnt).sort((a, b) => b[1] - a[1]).map(([c, n]) => `${esc(c)} ${n}`).join(' · ')}</p>
 <p style="color:#6b7280;font-size:.95rem">끝자리별: ${Object.entries(endCnt).sort((a, b) => a[0].localeCompare(b[0])).map(([k, n]) => `<b>${k}일장</b> ${n}곳`).join(' · ')}</p>
 <div style="background:#f4faf8;border:1.5px solid #dcefeb;border-radius:14px;padding:13px 17px;margin:14px 0;color:#0a6c63;font-size:.94rem;line-height:1.75">
@@ -4321,7 +4336,11 @@ const indexContent = `<div class="home-hero">
 <div class="home-left">
 <h1>축제모아</h1>
 <p class="home-h1sub">오늘, 전국에서 <b>${(HERO_LIVE.stats[0][1]).toLocaleString()}개</b> 축제가 열리고 있어요</p>
-<p>전국 축제와 오일장 일정을 한눈에 — 가족 나들이 계획이 3분이면 끝나요.</p>
+${/* 🏷 2026-09-14 — 홈은 AI 가 가장 많이 인용하는 페이지인데(각주 10건) 본문에 자기 지칭이
+      «구매박스 문구와 블로그 카드 제목»뿐이었다. 여기가 「누가 만든 사이트인가」를 적을 자리다.
+      ⛔ travel-info.co.kr 이 같은 이름(title·h1·og 전부 「축제모아」)에 alternateName 으로
+         「ChukjeMoa」까지 박아 뒀다. 이름을 본문에서 되찾지 않으면 각주만 우리에게 달린다. */''}
+<p>축제모아는 한국관광공사·문화체육관광부·행정안전부 공공데이터에서 전국 축제 <b>${apiFests.length.toLocaleString()}건</b>과 오일장 <b>${marketsDay.length}곳</b>의 장날을 모아 매일 갱신하는 무료 정보 사이트입니다. 가족 나들이 계획이 3분이면 끝나요.</p>
 <div class="hsrch hsrch-hero" id="hsrch-hero"><input type="search" placeholder="축제·지역·계곡 검색" autocomplete="off" aria-label="사이트 검색"><div class="hres"></div></div>
 <div class="home-stats hero-stats">${HERO_LIVE.stats.map(([e, n, l], i) => `<a class="stat" href="${STAT_LINKS[i] || '#'}"><b class="cnt" data-to="${n}">0</b><div class="stat-label">${e} ${l}</div></a>`).join('')}</div>
 <div class="home-cta"><a class="home-cta1" href="#weekend-title">이번 주말 축제 보기</a><a class="home-cta2" href="/course/">🧭 내 조건으로 코스 짜기</a></div>
