@@ -72,12 +72,28 @@ ${r.sale ? `<div class="jfam">🛒 ${esc(r.sale)}</div>` : ''}
 </ul>
 </div>
 
+${/* 🚄 2026-09-15 — 아래(본문 93% 지점)에도 같은 링크가 있지만 카드 3만 자를 지나야 나온다.
+     효과를 본 자리가 «본문 31%»였다. 목록을 보기 «전»에 한 줄 둔다. */''}
+<p style="color:#4b5563;font-size:.93rem;line-height:1.75;margin:0 0 10px;padding:10px 13px;background:#f6fbfa;border-radius:12px">🚄 五日市はほとんどが<b>地方</b>にあります。ソウルからの<a href="/ja/daytrip/">鉄道の所要時間と運賃</a>を駅ごとに出しています（駅から15km以内の五日市と開催日つき）。名節の前後は開催日がずれるので<a href="/ja/busy/">混む日</a>も先にご覧ください。</p>
+
 <div class="jfilter" id="jf"><button data-r="" class="on">すべての地域</button>${regions.map(r => `<button data-r="${esc(r)}">${esc(r)}</button>`).join('')}</div>
 <div class="jgrid" id="jg">${rows.map(card).join('\n')}</div>
 
 <div class="jabox">
 <h2>市場の日とお祭りを同じ日に</h2>
 <p>市場の開催日が近くのお祭りと重なれば、一度の旅で両方楽しめます。<a href="/ja/search/">お祭り検索</a>で旅行日程に何が開催されているか調べてみましょう。</p>
+</div>
+
+${/* 🚄 2026-09-15 — /ja/jangteo/ 는 크롤 9/04 로 홈(8/28)보다 신선하다. 그런데 본문에서
+     나가는 링크가 /ja/search/ 하나뿐이었다. 내비 링크는 구글이 안 따라간다(실측:
+     /ja/places/ 는 156장 전부가 내비로 링크하는데 crawl=none).
+     왜 daytrip 인가: 오일장은 «전부 지방에 있다». 이 페이지를 읽은 사람의 다음 질문이
+       「그 시장까지 어떻게 가나」다. daytrip 이 역별 소요시간·운임과 함께 «역 반경 15km 안의
+       오일장이 며칠에 서는지»까지 이미 싣고 있다 — 같은 데이터로 이어진다. */''}
+<div class="jabox">
+<h2>🚄 その市場まで、どう行くか</h2>
+<p>五日市はほとんどが<b>地方</b>にあります。ソウルから鉄道で行ける街の<b>所要時間・運賃・1日の本数</b>を駅ごとに出したのが<a href="/ja/daytrip/">日帰りで行ける街</a>です。そこには<b>駅から15km以内に立つ五日市と、その開催日</b>も一緒に載せてあります — 「その日に立つ市場がある街」から選べます。</p>
+<p>日程を決める前に、<a href="/ja/busy/">韓国が混む日</a>もご覧ください。<b>名節（ソルラル・チュソク）の前後は市場の開催日そのものがずれます</b>。</p>
 </div>
 <p class="note" style="margin-top:18px;color:#9aa3af;font-size:.85rem">データ：韓国観光公社（TourAPI、公式日本語コンテンツ）。市場の開催日は祝日（旧正月・秋夕）前後に変更される場合があります。事前に現地でご確認ください。</p>
 </div></main>

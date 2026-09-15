@@ -7440,6 +7440,10 @@ ${m.ov ? `<p class="mov">${esc(String(m.ov).slice(0, 110))}…</p>` : ''}
 </style>
 <h1 style="font-size:1.5rem;font-weight:900;margin:8px 0 4px">${L.h1}</h1>
 <p style="color:#6b7280;font-size:.95rem;margin-bottom:6px">${L.sub(list.length)}</p>
+${/* 🇯🇵 2026-09-15 — 아래쪽(본문 95% 지점)에도 같은 링크를 뒀지만, 카드 6만 자를 지나야 나온다.
+     연휴 페이지에서 효과를 본 자리가 «본문 31%»였다. 여기 한 줄을 더 둔다 — 산 목록을 보기 «전»에
+     「이건 다 지방이다」를 알려 주는 건 읽는 사람에게도 맞는 순서다. */''}
+${lang !== 'ja' ? '' : `<p style="color:#4b5563;font-size:.93rem;line-height:1.75;margin:0 0 10px;padding:10px 13px;background:#f6fbfa;border-radius:12px">⛰️ 名山はほとんどが<b>地方</b>にあります。ソウルからの<a href="/ja/daytrip/" style="color:#0c7d72;font-weight:800">鉄道の所要時間と運賃</a>を駅ごとに、<a href="/ja/busy/" style="color:#0c7d72;font-weight:800">混む日</a>を日韓の祝日を重ねて出しています。</p>`}
 <div class="srchbar"><div class="row">
 <select id="mSido"><option value="">${esc(L.all)}</option>${opts}</select>
 <input type="text" id="mKw" placeholder="${esc(L.kw)}">
@@ -7451,6 +7455,15 @@ ${m.ov ? `<p class="mov">${esc(String(m.ov).slice(0, 110))}…</p>` : ''}
 <h2 class="sec">${esc(L.walkH)}</h2>
 <p><a href="${lang === 'ko' ? '/trails/' : '/trails/'}" style="display:inline-block;background:#0f9d8f;color:#fff;font-weight:700;padding:11px 22px;border-radius:22px;text-decoration:none">${esc(L.walkCta)}</a></p>
 ${lang === 'ko' ? buyBox('mountain') : ''}
+${/* 🇯🇵 2026-09-15 — /ja/mountains/ 는 «구글이 제일 최근에 본» 일본어 페이지다(크롤 9/13).
+     그런데 본문에서 나가는 링크가 하나도 없었다 — 내비 링크만으로는 안 따라간다(실측:
+     /ja/places/ 는 156장 전부가 내비로 링크하는데 crawl=none).
+     왜 이 두 장인가: 명산은 «전부 지방에 있다». 산 이름을 정한 사람의 다음 질문이
+       「거기까지 어떻게 가나」와 「그 근처에 또 뭐가 있나」다. 이 페이지가 만든 질문이다.
+     ⚠️ 일본어에만 붙인다 — en·zh·tw 는 그쪽 축이 서 있지 않다. */''}
+${lang !== 'ja' ? '' : `<h2 class="sec">🚄 その山まで、どう行くか</h2>
+<p style="color:#4b5563;line-height:1.8">名山はほとんどが<b>地方</b>にあります。ソウルからの鉄道の所要時間・運賃・1日の本数を駅ごとに出したのが<a href="/ja/daytrip/" style="color:#0c7d72;font-weight:800">日帰りで行ける街</a>です。<b>どの駅から乗るかで答えが変わります</b> — 江陵は清凉里、全州は龍山が最速です。着いた街で山以外に何があるかは<a href="/ja/places/" style="color:#0c7d72;font-weight:800">行ってみる場所</a>に道・市・郡ごとにまとめてあります。</p>
+<p style="color:#4b5563;line-height:1.8">紅葉の時期は同じ山でも混み方がまったく違います。日本の祝日と韓国の祝日が重なる期間は<a href="/ja/busy/" style="color:#0c7d72;font-weight:800">韓国が混む日</a>で先に確認してください。</p>`}
 <p class="note" style="margin-top:18px">${L.note}</p>
 <p class="note">${L.hundred}</p>
 </div></main>

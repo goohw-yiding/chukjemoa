@@ -308,6 +308,14 @@ function build(ctx) {
 <p>店が閉まるより先に効いてくるのが<b>日韓の連休の重なり</b>です。日本の祝日（内閣府）と韓国の祝日を1枚に重ねて、両国とも連休になる期間を日付で出しました。</p>
 <p style="margin-top:6px"><a href="/ja/busy/" style="display:inline-block;background:#0f9d8f;color:#fff;font-weight:800;font-size:.93rem;padding:11px 18px;border-radius:999px;text-decoration:none">📅 韓国が混む日 — 日韓の祝日カレンダー →</a>
 <a href="/ja/daytrip/" style="display:inline-block;background:#fff;border:1.5px solid #dcefeb;color:#0c7d72;font-weight:800;font-size:.93rem;padding:10px 16px;border-radius:999px;text-decoration:none;margin-left:6px">🚄 日帰りで行ける街 →</a></p></div>
+${/* 🏯 2026-09-15 — /ja/palace/ 로 가는 «본문» 링크.
+     왜 여기인가: 이 페이지의 주제가 「그날 문을 여나」다. 궁의 휴관일은 그 주제 «그 자체»이고,
+       게다가 궁은 월·화로 갈려서 일반 규칙이 안 통한다 — 이 페이지에서 답해야 할 질문이다.
+     왜 본문인가: /ja/places/ 는 156장 «전부»가 내비로 링크하는데 crawl=none 이다(urlInspection 실측).
+       내비 링크는 안 먹힌다. 본문 안이라야 구글이 따라간다. */''}
+<div class="ic-card"><h2>🏯 王宮は、曜日で開いている宮が入れ替わります</h2>
+<p>お店とは別のルールで動くのが<b>王宮</b>です。<b>景福宮と宗廟は火曜休み、昌徳宮・昌慶宮・徳寿宮は月曜休み</b> — つまり月曜でも火曜でも、開いている宮はあります。<b>守門将交代式</b>も同じように曜日で入れ替わります。料金、韓服を着ると無料になる条件、そして<b>予約のいらない日本語の無料ガイドの時刻</b>まで、公式の情報だけを1枚にまとめました。</p>
+<p style="margin-top:6px"><a href="/ja/palace/" style="display:inline-block;background:#fff;border:1.5px solid #dcefeb;color:#0c7d72;font-weight:800;font-size:.93rem;padding:10px 16px;border-radius:999px;text-decoration:none">🏯 ソウルの王宮 — 休館日と料金 →</a></p></div>
 <div class="ic-card"><h2>連休ごとに詳しく</h2>
 <p>「その日、店は開いているのか」は連休ごとに答えが違います。日付・曜日の定休日・その連休に立つ五日市まで、連休別にまとめました。</p>
 <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:10px">${bs.map(b =>
@@ -483,6 +491,13 @@ ${sggRows && S.ac.h2sgg ? `<div class="ic-card"><h2>${S.ac.h2sgg}</h2>
 <p>${S.ac.pHow}</p>
 <p class="ic-note">${S.ac.src(nf(access.length), TODAY)}</p></div>
 
+${/* 🇯🇵 2026-09-15 — 일본어에만 붙이는 «본문» 링크. /ja/access/ 는 크롤이 9/11 로 신선한 축이다.
+     왜 혼잡일인가: 무장애 이동에서 제일 크게 걸리는 게 «사람이 많은 날»이다. 휠체어·유모차는
+       붐비면 승강기 대기부터 막힌다. 억지로 끌어온 이야기가 아니라 이 페이지의 다음 질문이다.
+     ⚠️ ja 외 언어는 건드리지 않는다 — zh·tw 는 휴무·혼잡 의도 검색어가 0건이다(GSC 180일). */''}
+${lang !== 'ja' ? '' : `<div class="ic-card"><h2>📅 混む日は、移動そのものが難しくなります</h2>
+<p>設備が整っていても、<b>人が多い日</b>はエレベーター待ちや段差の迂回に時間がかかります。韓国の連休と日本の連休が重なる期間は特にそうです。日本の祝日（内閣府）と韓国の祝日を1枚に重ねた<a href="/ja/busy/" style="color:#0c7d72;font-weight:800">韓国が混む日</a>で、行く日を先に決めてください。地方へ足を延ばすなら<a href="/ja/daytrip/" style="color:#0c7d72;font-weight:800">日帰りで行ける街</a>に、駅ごとの所要時間と運賃を出しています。</p></div>`}
+
 <div class="ic-nav">
 <a href="/${lang}/closed/">${S.nav.closed}</a><a href="/${lang}/calendar/">${S.nav.cal}</a><a href="/${lang}/search/">${S.nav.search}</a></div>
 </div></main>`;
@@ -562,6 +577,17 @@ ${fgnRows && S.cal.h2fgn ? `<div class="ic-card"><h2>${S.cal.h2fgn}</h2>
 
 <div class="ic-card"><h2>${S.cal.h2names}</h2>
 <p>${S.cal.pNames}</p></div>
+
+${/* 🇯🇵 2026-09-15 — 「いつ行くか」의 바로 다음 질문 세 개로 보내는 «본문» 링크.
+     이 페이지는 달(月)까지만 답한다. 날짜를 정하려면 «혼잡한가»가 필요하고,
+     날짜가 정해지면 «어디로 가나»가 온다. 이 페이지가 스스로 만든 질문이라 억지가 아니다.
+     /ja/calendar/ 는 크롤 9/04 로 홈(8/28)보다 신선하다. */''}
+${lang !== 'ja' ? '' : `<div class="ic-card"><h2>🗓️ 月が決まったら、次は「日」です</h2>
+<p>ここまでで<b>何月に行くか</b>は決められます。ただし同じ月でも、<b>日韓の連休が重なる週</b>は航空券もホテルも店の混み方もまったく別物になります。日本の祝日（内閣府）と韓国の祝日を1枚に重ねたのが<a href="/ja/busy/" style="color:#0c7d72;font-weight:800">韓国が混む日</a>です。</p>
+<p>日が決まったら、次は<b>どこへ行くか</b>。ソウルから鉄道で行ける地方の街を、<a href="/ja/daytrip/" style="color:#0c7d72;font-weight:800">日帰りで行ける街</a>に所要時間・運賃・1日の本数つきで出しました。ソウルに残る日は<a href="/ja/palace/" style="color:#0c7d72;font-weight:800">王宮</a>が定番ですが、<b>宮ごとに休む曜日が違う</b>ので曜日を先に見てください。</p>
+${/* 📍 /ja/places/ 는 81만 자인데 구글이 «한 번도» 못 봤다(crawl=none). 156장 전부가 내비로
+      링크하는데도 그렇다 — 내비로는 안 간다. 본문 링크를 여기 하나 더 놓는다. */''}
+<p>それ以外の街で何が見られるかは<a href="/ja/places/" style="color:#0c7d72;font-weight:800">行ってみる場所</a>に、道・市・郡ごとにまとめてあります。韓国観光公社の公式日本語紹介つきで、<b>地図アプリに貼るための韓国語の住所</b>も一緒に載せています。</p></div>`}
 
 <div class="ic-nav">
 <a href="/${lang}/closed/">${S.nav.closed}</a><a href="/${lang}/access/">${S.nav.acc}</a><a href="/${lang}/trend/">${S.nav.trend}</a><a href="/${lang}/trip/">${S.nav.trip}</a></div>
