@@ -46,6 +46,18 @@ W "2) trend fetch (naver datalab)"
 cmd /c "chcp 65001 >nul & set PYTHONIOENCODING=utf-8 & py -3 _fest_trend.py 600" 2>&1 |
   Select-Object -Last 2 | ForEach-Object { W "   $_" }
 
+# 2026-09-15: MEASURED - every 07:00 build shipped the site with ZERO weather chips.
+#   fetch-weather.js was never wired into this task, and weather.js refuses any weather.json
+#   that is not dated today (an old forecast is worse than none). So the build at 07:01 read
+#   yesterday's file, dropped every chip, and deployed a site with no weather until someone
+#   ran the fetcher by hand. Proof: git show <daily commit>:maple/index.html had 0 occurrences
+#   of class="wx-chip" on 09-11/13/14/15, while the manual 10:24 build on 09-15 had 60.
+#   Takes ~14 min (2,249 grid points, Open-Meteo rate limit). The task allows 1 hour.
+#   Failure here must NOT stop the deploy - the stale file is simply ignored downstream.
+W "2b) weather fetch (open-meteo, no key)"
+& node fetch-weather.js 2>&1 | Select-Object -Last 2 | ForEach-Object { W "   $_" }
+if ($LASTEXITCODE -ne 0) { W "   WARNING: weather fetch failed - today's build will show no weather" }
+
 W "3) build"
 $out = & node build.js 2>&1
 if ($LASTEXITCODE -ne 0) {
