@@ -243,9 +243,13 @@ function build(ctx) {
     if (tour.length) {
       const fee = feeOf(tour);
       const board = (tour[0].board || [])[0] || '';
-      why.push(`🚌 <b>市内観光バス</b>があります${fee ? `（<b>${nf(fee)}ウォン〜</b>`: '（'}`
-        + `${board ? `・乗り場「<span class="dtk">${esc(board)}</span>」` : ''}）。`
-        + (tour.length > 1 ? `コースは${tour.length}種類。` : ''));
+      // ⚠️ 템플릿을 3중으로 겹쳤더니 문법이 깨졌다(SyntaxError). 여기는 문자열 연결로 쓴다.
+      const bits = [];
+      if (fee) bits.push('<b>' + nf(fee) + 'ウォン〜</b>');
+      if (board) bits.push('乗り場「<span class="dtk">' + esc(board) + '</span>」');
+      why.push('🚌 <b>市内観光バス</b>があります'
+        + (bits.length ? '（' + bits.join('・') + '）' : '') + '。'
+        + (tour.length > 1 ? 'コースは' + tour.length + '種類。' : ''));
     }
     return `<div class="dtcard ${cls}">
 <div class="dthead"><span class="nm">${esc(nmJa)}</span><span class="ko dtk">${esc(r.nm)}</span>
@@ -287,7 +291,7 @@ ${link ? `<a href="${link}">📍 ${cityLabel(r)}</a>` : ''}
   const content = `<main><div class="wrap">${CSS}
 <p style="font-size:.85rem;color:#9aa3af;margin:8px 0"><a href="/ja/" style="color:#0c7d72">ホーム</a> › 日帰りで行ける街</p>
 <h1 style="font-size:1.46rem;font-weight:900;letter-spacing:-.02em;margin:6px 0 6px">ソウルから日帰り・1泊2日で行ける街 — 何分・いくらかを駅ごとに</h1>
-<p style="color:#6b7280;font-size:.94rem;line-height:1.8;margin:0 0 4px">ソウルに何度か来ると「今回は地方も」となりますが、そこで止まります。<b>何時間かかるのか、いくらなのか、着いて何があるのか</b>が一度に分からないからです。韓国鉄道公社が公式に配布している時刻表と運賃表から、<b>${list.length}の街</b>について所要時間・運賃・1日の本数を出し、そこに私たちが持っている見どころ${nf(totPlaces)}件と五日市の開催日を重ねました。</p>
+<p style="color:#6b7280;font-size:.94rem;line-height:1.8;margin:0 0 4px">ソウルに何度か来ると「今回は地方も」となりますが、そこで止まります。<b>何時間かかるのか、いくらなのか、着いて何があるのか</b>が一度に分からないからです。韓国鉄道公社が公式に配布している時刻表と運賃表から、<b>${list.length}の街</b>について所要時間・運賃・1日の本数を出し、そこに私たちが持っている見どころ${nf(totPlaces)}件と五日市の開催日、<b>着いてから乗れる市内観光バス</b>を重ねました。</p>
 
 <div class="dtc"><h2>⭐ この表の見方 — 「どの駅から乗るか」で答えが変わります</h2>
 <p>ソウルの鉄道の出口は一つではありません。<b>${esc(ORIG_JA['서울'])}・${esc(ORIG_JA['용산'])}・${esc(ORIG_JA['청량리'])}・${esc(ORIG_JA['수서'])}</b>から別々の路線が出ていて、行き先によって<b>いちばん速い駅が違います</b>。江陵は清凉里、全州は龍山、釜山は水西が最速です。宿が明洞・南大門ならソウル駅や龍山駅、江南なら水西駅が近い — だから下の表には<b>出発駅を必ず書いてあります</b>。</p>
@@ -311,7 +315,7 @@ ${tourRows ? `<div class="dtc"><h2>🚌 着いてから、どう回るか — �
 <p>ありがたいことに、<b>乗り場はたいてい駅前です</b> — 列車を降りてそのまま乗れます。料金も<b>2,000〜10,000ウォン</b>程度で、タクシーを1回使うより安く一日回れます。</p>
 <p class="dtsw">↔ 表は横にスクロールできます</p>
 <div class="dtwrap"><table class="dtt"><thead><tr><th>街</th><th class="n">料金</th><th>乗り場</th><th class="n">運行</th><th class="n">コース</th></tr></thead><tbody>${tourRows}</tbody></table></div>
-<p class="dtnote">乗り場は<b>ハングルのまま</b>です — 地図アプリに貼って探すための文字なので訳していません。料金は確認できた中でいちばん安い区分（多くは大人料金）です。<b>運行日は街ごとに違い、週末だけ走る路線もあります</b> — 行く前に各市の公式サイトで必ず確認してください。出典：行政安全部「全国シティツアー標準データ」。</p></div>
+<p class="dtnote">乗り場は<b>ハングルのまま</b>です — 地図アプリに貼って探すための文字なので訳していません。料金は確認できた中でいちばん安い区分（多くは大人料金）です。<b>運行日は街ごとに違い、週末だけ走る路線もあります</b> — 行く前に各市の公式サイトで必ず確認してください。出典：行政安全部「全国シティツアー標準データ」。</p></div>` : ''}
 
 <div class="dtc"><h2>🏮 五日市 — 「その日に立つ」かどうかで決まります</h2>
 <p>韓国の地方には<b>5日ごとに立つ市場</b>があります。日付の<b>末尾の数字</b>で決まっていて、たとえば「2・7日」の市場は2日・7日・12日・17日…に立ちます。常設ではないので、<b>行った日に立っていなければ何もありません</b>。上の${list.length}の街のうち<b>${withMkt}の街</b>に、駅から${RM}km以内の五日市があります。</p>
