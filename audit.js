@@ -1,6 +1,11 @@
 // ── 축제모아 정밀 점검 ─────────────────────────────────────────────────
 // 실행: node audit.js   결과: audit-report.md  +  콘솔 요약(🔴/🟠 건수)
-// 매주 1회 예약작업이 이걸 돌린다. 사람이 안 봐도 숫자가 남게 하는 게 목적이다.
+// 🔴 2026-09-15 정정 — 이 줄은 원래 「매주 1회 예약작업이 이걸 돌린다」였는데 **사실이 아니었다.**
+//    예약작업 전수를 확인해 보니 audit.js 를 부르는 작업이 하나도 없었다. 내가 손으로 돌릴 때만
+//    돌았고, 그래서 홈에서 못 가는 「섬」 3장이 몇 주씩 아무 경고 없이 서 있었다.
+//    지금은 _daily.ps1 의 «4b) audit» 단계가 매일 07시 빌드 직후에 부른다(경고만, 배포는 안 막는다).
+// ⚠️ RED 가 있으면 exit 1 이다. 부르는 쪽에서 exit code 로 배포를 막지 말 것 —
+//    얇은 페이지 하나가 오늘 축제 순위 배포를 멈출 이유는 없다.
 //
 // ⚠️ 여기 박아 둔 «헛경보 방지» 3가지 — 전에 실제로 속았다.
 //   ① walk 시작 경로를 '' 로 두면 페이지 키에 앞 슬래시가 빠져 「끊긴 링크 599개」가 뜬다 → '/' 로 시작
@@ -88,7 +93,22 @@ R.push('\n## 2. 데이터 갱신 상태');
   const stale = [];
   // ⚠️ 손으로 관리하는 파일은 «안 바뀌는 게 정상»이라 여기서 뺀다(안 빼면 매주 영구 🟠).
   //    markets.json = 유명 장터 손큐레이션(대표품목·서술). 자동 갱신되는 쪽은 markets_api.json 이다.
-  const HANDMADE = new Set(['markets.json', 'audit-history.json']);
+  //
+  // 🔁 2026-09-15 — 이 검사는 «처음부터 맞게 울고 있었다». 아무도 안 듣고 있었을 뿐이다
+  //    (audit.js 를 부르는 예약작업이 하나도 없었다). 이제 _daily.ps1 4b 단계가 매일 부른다.
+  //    나머지 원천은 _slow_fetch.js 가 «파일 나이»를 보고 매일 3개씩 돌려 받는다.
+  //    그래서 여기 남는 예외는 «수집기가 아예 없는 것»과 «아무도 안 읽는 것» 두 종류뿐이다.
+  const HANDMADE = new Set([
+    'markets.json',           // 유명 장터 손큐레이션
+    'audit-history.json',     // 이 점검이 스스로 남기는 이력
+    'transit_access.json',    // 만드는 수집기가 없다(전수 확인). build.js 가 읽는다 — 손으로 만든 표다
+    'posts_en.json',          // 영어 블로그 «글 목록». 사람이 쓴 글이라 안 늘면 안 바뀌는 게 맞다
+    // ↓ 만드는 수집기는 있는데 «읽는 곳이 없다»(전수 확인 2026-09-15).
+    //   지우지는 않는다 — 열차·터미널 축을 다시 할 때 출발점이 된다. 다만 늙었다고 울 이유는 없다.
+    'ktx_fare.json',          // 코레일 공식 XLSX(train_time.json)로 갈아탔다
+    'bus_terminals.json',     // 시외버스 축은 아직 페이지가 없다
+    'jeju_oreum.json', 'jangteo_volume.json', 'thin_intl.json', 'thin_intl_age.json', 'ncp.json',
+  ]);
   for (const f of fs.readdirSync(DATA)) {
     if (!f.endsWith('.json') || HANDMADE.has(f)) continue;
     const age = Math.round((Date.now() - fs.statSync(path.join(DATA, f)).mtimeMs) / 86400e3);

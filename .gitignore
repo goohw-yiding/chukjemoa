@@ -5,6 +5,13 @@ tourapi.key
 *.key
 node_modules/
 _*.js
+# ⚠️ 2026-09-15 — 위 한 줄이 «예약작업이 매일 돌리는 스크립트»까지 같이 막고 있었다.
+#   _daily.ps1 은 추적되는데 그 안에서 부르는 _weekly_fetch.js·_sync.js·_d2p.js 는 이 PC 에만
+#   있었다. 디스크가 죽으면 자동화가 통째로 사라진다. 진단용 _*.js 는 계속 막고, «도는 것»만 뺀다.
+!_weekly_fetch.js
+!_slow_fetch.js
+!_sync.js
+!_d2p.js
 .fuse_hidden*
 apikeys.json
 apikeys.local.json

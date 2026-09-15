@@ -35,6 +35,17 @@ if ($dow -eq 'Monday' -or $dow -eq 'Thursday') {
   W "   skip ($dow - runs Mon/Thu)"
 }
 
+# 2026-09-15: only 2 sources were ever refetched automatically. Everything else the site
+#   READS had quietly aged: markets 19d, foreign-language markets 19-26d, tw festivals 8d,
+#   spots/cafes/restaurants/mountains/stays (ko AND all foreign) 28-37d. No warning anywhere.
+#   _slow_fetch.js picks by ACTUAL file age, not a calendar, and does at most 3 a day -
+#   TourAPI's daily cap is per service (Kor/Eng/Jpn/Chs/Cht/Spn), and a capped response
+#   arrives looking like "no data", so batching them on one day is how datasets vanish.
+#   Self-healing: add a source, or leave the PC off for a week, and it catches up on its own.
+W "0c) slow sources (rotating, max 3/day)"
+& node _slow_fetch.js 2>&1 | ForEach-Object { W "   $_" }
+if ($LASTEXITCODE -ne 0) { W "   WARNING: a slow source failed and was reverted - see lines above" }
+
 # Monthly search volume. Resumes: normally only NEW festivals (seconds).
 # Every 30 days it refetches everything (~100s) so absolute sizes do not go stale.
 # A new festival with no volume scores 0 no matter how hot the trend is, so this must run.
@@ -68,9 +79,20 @@ if ($LASTEXITCODE -ne 0) {
 ($out | Select-Object -Last 2) | ForEach-Object { W "   $_" }
 
 W "4) mirror + drift check"
-& node _d2p.js build.js festival.js _fest_trend.py _fest_volume.py _weekly_fetch.js data/fest_trend.json data/fest_volume.json data/festivals_api.json data/cltur_fstvl.json 2>&1 | Select-Object -Last 1 | ForEach-Object { W "   $_" }
+& node _d2p.js build.js festival.js _fest_trend.py _fest_volume.py _weekly_fetch.js _slow_fetch.js data/fest_trend.json data/fest_volume.json data/festivals_api.json data/cltur_fstvl.json 2>&1 | Select-Object -Last 1 | ForEach-Object { W "   $_" }
 $sync = (& node _sync.js 2>&1 | Select-Object -Last 1)
 W "   $sync"
+
+# 2026-09-15: there was NO verification step in this chain. audit.js's own header claimed
+#   "a weekly task runs this" - it did not; no scheduled task ever called it. So the only
+#   check that ran daily was _sync.js drift. That is how a 3-page island (/seoul/museum/,
+#   /seoul/venue/, /busan/museum/) sat unreachable from home for weeks with nobody told.
+#   WARN ONLY - audit.js exits 1 when it finds RED items, and that must NOT block the deploy:
+#   a thin page is not a reason to stop shipping today's festival ranking.
+#   The report itself (audit-report.md) is tracked, so each day's run is committed below
+#   and the history is diffable.
+W "4b) audit (warn only - never blocks deploy)"
+& node audit.js 2>&1 | Select-Object -Last 14 | ForEach-Object { W "   $_" }
 
 $changed = @(& git status --porcelain).Count
 if ($changed -eq 0) { W "5) no changes - skip deploy"; W "===== END ====="; exit 0 }

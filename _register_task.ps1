@@ -6,7 +6,8 @@ $trg = New-ScheduledTaskTrigger -Daily -At 7:00am
 # If the PC was asleep/off at 07:00, run as soon as it is back.
 $set = New-ScheduledTaskSettingsSet -StartWhenAvailable `
   -DontStopIfGoingOnBatteries -AllowStartIfOnBatteries `
-  -ExecutionTimeLimit (New-TimeSpan -Hours 1)
+  -ExecutionTimeLimit (New-TimeSpan -Hours 3)   # 2026-09-15: was 1h. The chain now also does
+                                                # weather (~14 min) and up to 3 slow sources.
 Register-ScheduledTask -TaskName $name -Action $act -Trigger $trg -Settings $set `
   -Description 'chukjemoa: refetch 7-day search trend, rebuild, deploy' -Force | Out-Null
 $t = Get-ScheduledTask -TaskName $name
