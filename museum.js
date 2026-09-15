@@ -235,6 +235,10 @@ ${CSS}
 🟢 표시는 «지금 열려 있는 전시»가 있다는 뜻입니다.</p>
 <ol class="vrank">${HOT.map(vrow).join('')}</ol>
 
+${/* 🏛 2026-09-15 — 공연장·전시공간도 실내다. 박물관과 같은 이유로 장보기 카트를 뺐다.
+      자리는 «어디 갈지 고른 직후» — 아래로는 자치구별 목록이 길게 이어진다. */''}
+${buyBox('indoor_walk')}
+
 <h2 class="sec">그 밖의 ${RESTV.length}곳 — 자치구별</h2>
 <p style="color:#6b7280;font-size:.94rem">전시 기록 3~9회. 가까운 동네부터 보세요.</p>
 ${guList.map(([g, list]) => `<h3 style="margin:14px 0 4px;font-size:1rem;font-weight:800">${esc(g)} <span style="color:#9ca3af;font-weight:600">${list.length}곳</span></h3>
@@ -249,8 +253,6 @@ ${guList.map(([g, list]) => `<h3 style="margin:14px 0 4px;font-size:1rem;font-we
 <a href="/seoul/museum/"><b>서울 박물관·미술관</b></a> — 많이 찾는 순 ·
 <a href="/seoul/festival/"><b>서울 축제</b></a> ·
 <a href="/seoul/"><b>서울 전체</b></a></p>
-${/* 🏛 2026-09-15 — 공연장·전시공간도 실내다. 장보기 카트를 빼고 실내용으로 바꾼다. */''}
-${buyBox('indoor_walk')}
 </div></main>`;
 
     const vLd = `<script type="application/ld+json">${JSON.stringify({
