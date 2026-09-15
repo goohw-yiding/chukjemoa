@@ -26,15 +26,21 @@ module.exports = function (R, RED, ORANGE, red, orange) {
     .replace(/<style[\s\S]*?<\/style>/g, ' ').replace(/<[^>]+>/g, ' ').replace(/&[a-z]+;/g, ' ').replace(/\s+/g, ' ').trim();
 
   const broken = [], orphan = [], render = [], ghost = [], canon = [], jsErr = [], leak = [];
-  const linked = new Set(['/']);
+  // ⚠️ 2026-09-15 정정 — 예전엔 «모든 페이지의 링크»를 한 자루(linked)에 담고 그 안에 있으면 통과시켰다.
+  //    그러면 서로만 링크하는 «섬»이 통째로 안 잡힌다. 실제로 /seoul/museum/·/seoul/venue/·/busan/museum/
+  //    3장이 사이트맵엔 올라갔는데 홈에서 못 가는 상태였고, 이 검사는 「고아 0」이라고 답했다.
+  //    (2026-06 외국어 오일장 3장과 똑같은 사고다.) → 홈('/')에서 실제로 «타고 갈 수 있나»로 잰다.
+  const outLinks = new Map();
 
   for (const [u, h] of pages) {
+    const outs = new Set();
     for (const m of noScript(h).matchAll(/href="(\/[^"#?]*)/g)) {
       const t = m[1];
       if (/\.(xml|txt|json|webp|png|jpg|svg|ico|js|css|pdf)$/i.test(t)) continue;
-      linked.add(t);
+      outs.add(t);
       if (!exists(t)) broken.push(u + ' → ' + t);
     }
+    outLinks.set(u, outs);
     const b = bodyOf(h);
     if (/\bundefined\b|\bNaN\b|\[object Object\]|Invalid Date|�/.test(b)) render.push(u);
     if (!/rel="canonical"/.test(h)) canon.push(u);
@@ -50,13 +56,44 @@ module.exports = function (R, RED, ORANGE, red, orange) {
       try { new vm.Script(m[2]); } catch (e) { jsErr.push(u + ': ' + e.message.slice(0, 60)); }
     }
   }
-  for (const u of pages.keys()) if (!linked.has(u) && u !== '/' && u !== '/404.html') orphan.push(u);
+  // ── 고아 = 홈에서 링크를 타고 못 가는 페이지 (BFS)
+  const reach = new Set(['/']);
+  for (const q = ['/']; q.length;) {
+    const outs = outLinks.get(q.shift());
+    if (!outs) continue;
+    for (const t of outs) {
+      const k = t.endsWith('/') || /\.html$/.test(t) ? t : t + '/';
+      if (pages.has(k) && !reach.has(k)) { reach.add(k); q.push(k); }
+    }
+  }
+  // ⛔ 「끝나서 링크를 뗀 것」은 고아가 아니다 — 의도된 동작이라 여기서 뺀다.
+  //    ① 지난달 이하의 달력/월별 페이지(매달 자동으로 생긴다)  ② 이미 끝난 축제 상세
+  const THISMONTH = new Date(Date.now() + 9 * 3600e3).toISOString().slice(0, 7);
+  const TODAY8 = THISMONTH.replace('-', '') + new Date(Date.now() + 9 * 3600e3).toISOString().slice(8, 10);
+  const endedFest = new Set();
+  try {
+    for (const p of JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'festival_pages.json'), 'utf8'))) {
+      if (String(p.end || '').replace(/-/g, '') < TODAY8) endedFest.add('/festival/' + p.slug + '/');
+    }
+  } catch (e) { }
+  const benign = u => {
+    const m = u.match(/(\d{4}-\d{2})\/$/);
+    if (m && m[1] < THISMONTH) return true;
+    return endedFest.has(u);
+  };
+  let benignOrphan = 0;
+  for (const u of pages.keys()) {
+    if (reach.has(u) || u === '/' || u === '/404.html') continue;
+    if (benign(u)) { benignOrphan++; continue; }
+    orphan.push(u);
+  }
   try {
     const sm = fs.readFileSync(path.join(ROOT, 'sitemap.xml'), 'utf8');
     for (const m of sm.matchAll(/<loc>https:\/\/chukjemoa\.co\.kr([^<]*)<\/loc>/g)) if (!exists(m[1])) ghost.push(m[1]);
   } catch (e) { }
 
   R.push('\n## 6. 빌드 산출물 점검 (' + pages.size + '페이지)');
+  R.push('_고아는 홈에서 BFS로 잰다. 「끝나서 링크를 뗀」 지난달 달력·종료 축제 ' + benignOrphan + '장은 정상이라 제외했다._');
   R.push('| 항목 | 건수 |'); R.push('|---|---|');
   const checks = [['끊긴 내부 링크', broken], ['홈에서 도달 불가(고아)', orphan], ['렌더 사고', render],
   ['사이트맵 유령 URL', ghost], ['canonical 누락', canon], ['인라인 JS 문법오류', jsErr],
