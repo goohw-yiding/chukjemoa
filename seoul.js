@@ -205,8 +205,21 @@ ${guLine(live)}
 <h2 class="sec">달별로 보기</h2>
 <div class="se-nav">${months.map(ym => `<a href="/seoul/${ym.slice(0, 4)}-${ym.slice(4, 6)}/">${ym.slice(0, 4)}년 ${MN[+ym.slice(4, 6)]}</a>`).join('')}</div>
 ${require('./kory.js').block('seoul', '서울', 'ko')}
+${/* 🏝 2026-09-15 — /seoul/museum/ 과 /seoul/venue/ 가 «홈에서 도달 불가»였다.
+      실측(_island.js): 홈에서 4클릭 안에 닿는 1,450장에 이 둘이 없었다. 서로만 링크하는 섬이었다
+      (/seoul/museum/ ← busan/museum·seoul/venue · /seoul/venue/ ← seoul/museum 뿐).
+      사이트맵에는 있고 라이브도 200이지만, 링크가 없으면 구글은 «중요하지 않은 페이지»로 본다.
+      제주 허브는 /jeju/museum/ 을 이미 링크한다(10장이 가리킴) — 서울·부산 허브만 빠져 있었다.
+      2026-06 외국어 오일장 3장에서 겪은 것과 같은 사고다. */''}
+<h2 class="sec">상설로 볼 곳 — 전시가 끝나도 남아 있는 것</h2>
+<p class="se-lead">위 목록은 <b>기간이 있는 행사</b>입니다. 아래 두 곳은 «언제 가도 열려 있는» 쪽입니다.</p>
+<div class="se-nav">
+<a href="/seoul/museum/">🏛 서울 박물관·미술관 — 많이 찾는 순</a>
+<a href="/seoul/venue/">🖼 서울 전시 공간 — 전시가 자주 열리는 순</a>
+</div>
+
 <h2 class="sec">서울 말고 다른 곳도</h2>
-<div class="se-nav"><a href="/search/?region=서울">🎪 서울 축제 검색</a><a href="/">🏠 전국 축제</a><a href="/jangteo/">🏮 전국 오일장</a></div>
+<div class="se-nav"><a href="/search/?region=서울">🎪 서울 축제 검색</a><a href="/busan/museum/">🏛 부산 박물관·미술관</a><a href="/">🏠 전국 축제</a><a href="/jangteo/">🏮 전국 오일장</a></div>
 ${srcNote}
 </div></main>`;
   writePage('seoul', layout(

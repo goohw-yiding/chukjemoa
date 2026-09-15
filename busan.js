@@ -243,8 +243,15 @@ ${exh.length ? `<h2 class="sec">지금 하는 전시</h2>
 <div class="bs-grid">${exh.slice(0, 6).map(cultCard).join('')}</div>
 <p style="margin:10px 0"><a href="/busan/exhibition/" style="color:#0c7d72;font-weight:800">부산 전시회 전체 보기 →</a></p>` : ''}
 ${require('./kory.js').block('busan', '부산', 'ko')}
+${/* 🏝 2026-09-15 — /busan/museum/ 이 «홈에서 도달 불가»였다(실측 _island.js).
+      /seoul/museum/ 한 장만 이 페이지를 가리키고 있었고 그 서울 페이지도 섬이었다.
+      제주 허브는 /jeju/museum/ 을 이미 링크한다 — 부산·서울 허브만 빠져 있었다. */''}
+<h2 class="sec">상설로 볼 곳 — 전시가 끝나도 남아 있는 것</h2>
+<p style="margin:6px 0 10px;color:#374151;line-height:1.75">위 전시는 <b>기간이 있는 것</b>입니다. 박물관·미술관은 «언제 가도 열려 있는» 쪽입니다.</p>
+<div class="bs-nav"><a href="/busan/museum/">🏛 부산 박물관·미술관 — 많이 찾는 순</a></div>
+
 <h2 class="sec">다른 곳도 보기</h2>
-<div class="bs-nav"><a href="/seoul/">🏙 서울</a><a href="/search/?region=부산">🔎 부산 축제 검색</a><a href="/jangteo/">🏮 전국 오일장</a><a href="/en/busan/">🌏 English</a></div>
+<div class="bs-nav"><a href="/seoul/">🏙 서울</a><a href="/seoul/museum/">🏛 서울 박물관·미술관</a><a href="/search/?region=부산">🔎 부산 축제 검색</a><a href="/jangteo/">🏮 전국 오일장</a><a href="/en/busan/">🌏 English</a></div>
 ${SRC_FES}`;
   mk('', `부산 가볼만한 곳·축제·전시 ${MN[mn]} — 지금 갈 만한 ${spot.length + fes.length + exh.length}곳 | ${SITE_NAME}`,
     `부산 가볼만한 곳 ${spot.length}곳, 지금 하는 축제 ${fes.length}개와 전시 ${exh.length}개를 한곳에. 공공데이터 기반, 날씨와 주차 정보까지.`,

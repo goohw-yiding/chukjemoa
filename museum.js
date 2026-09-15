@@ -35,6 +35,33 @@ function build(ctx) {
   //    같은 표를 두 페이지에 통째로 넣으면 서로 중복 페이지가 된다(전에 /exhibition/ 으로 한 번 겪었다).
   const venueOf = key => (key === 'seoul' && SC && Array.isArray(SC.venue)) ? SC.venue.slice(0, 10) : [];
 
+  // 🎫 2026-09-15 신설 — 「가면 지금 뭘 볼 수 있나」.
+  //
+  //   왜: 부산 페이지가 얇았다(본문 5,938자 · 카드 22장이 전부). 서울은 114곳이라 목록만으로도
+  //   두꺼운데, 부산은 22곳뿐이라 «곳 이름»밖에 없었다. 그런데 사람이 박물관을 찾을 때 실제로
+  //   궁금한 건 «거기 지금 뭐 하나»다 — 상설 전시만 있는 곳과 기획전이 도는 곳은 다른 선택이다.
+  //
+  //   데이터는 이미 있었다. 도시 문화행사 공공데이터의 «장소명»을 박물관 이름과 맞추면 된다.
+  //   ⚠️ 매칭률을 먼저 쟀다(_musmatch.js): 부산 5/22곳 12건 · 서울은 live 417건에서 매칭.
+  //      적다고 버리지 않는다 — 5곳에 «지금 하는 전시»가 뜨는 것과 아무 데도 안 뜨는 것은 다르다.
+  //      그리고 안 걸린 곳은 「상설 전시」라는 것도 정보다.
+  //   ⚠️ 공백·괄호·가운뎃점을 뗀 뒤 비교한다. 「부산 시립미술관」과 「부산시립미술관」이 같은 곳이다.
+  const CULT = { seoul: SC, busan: J('data/busan_culture.json') };
+  const T8 = TODAY.replace(/-/g, '');
+  const normP = s => String(s || '').replace(/\s|\(.*?\)|·/g, '');
+  const nowShowOf = (key, title) => {
+    const d = CULT[key];
+    const rows = (d && (d.rows || d.live)) || [];
+    const n = normP(title);
+    if (!n || n.length < 3) return [];
+    return rows.filter(r => {
+      const p = normP(r.place);
+      if (!p || !(p === n || p.includes(n) || n.includes(p))) return false;
+      const end = String(r.end || '').replace(/-/g, '');
+      return !end || end >= T8;       // 끝난 것은 뺀다
+    }).sort((a, b) => String(a.end).localeCompare(String(b.end)));
+  };
+
   const CSS = `<style>
 .mgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px;margin:12px 0 20px}
 .mcard{background:#fff;border:1.5px solid #eef2f1;border-radius:14px;overflow:hidden;box-shadow:0 2px 10px rgba(31,41,55,.05)}
@@ -57,6 +84,13 @@ function build(ctx) {
 .vrank .vc{margin-left:auto;color:#0a6c63;font-weight:800;font-size:.9rem;white-space:nowrap}
 .vrank a.vp{color:#0c7d72;text-decoration:none}
 .vnow{background:#e8f7ef;color:#0a7a44;font-weight:800;font-size:.8rem;border-radius:6px;padding:1px 7px;white-space:nowrap}
+.mnow{background:#f0fbf5;border:1.5px solid #cdeedd;border-radius:10px;padding:8px 11px;margin:8px 0 2px;color:#0a7a44;font-size:.85rem;line-height:1.7}
+.mnow b{color:#111827;font-weight:800}
+.mnd{color:#6b7280;font-weight:700;white-space:nowrap}
+.mfree{background:#e8f7ef;color:#0a7a44;font-weight:800;font-size:.78rem;border-radius:5px;padding:0 6px}
+.mnowlist{list-style:none;padding:0;margin:10px 0 18px;display:grid;gap:9px}
+.mnowlist li{background:#fff;border:1.5px solid #eef2f1;border-left:4px solid #0f9d8f;border-radius:10px;padding:10px 14px;line-height:1.7}
+.mnowrow{color:#374151;font-size:.92rem;margin-top:3px}
 </style>`;
 
   // 무장애 배지 — 공공데이터가 «있다»고 한 것만 적는다(없으면 아무 말도 안 한다)
@@ -70,17 +104,26 @@ function build(ctx) {
     return `<div>${on.map(([t]) => `<span class="macc">♿ ${t}</span>`).join('')}</div>`;
   };
 
-  const card = (m, i) => `<div class="mcard">
+  // ⚠️ 소개글 길이는 «곳 수»에 따라 다르다. 서울 114곳에 200자씩이면 페이지가 부풀고,
+  //    부산 22곳에 115자면 페이지가 얇다. 목록이 짧을수록 한 곳을 깊게 적는다.
+  const card = (m, i, ctx2) => {
+    const ovLen = (ctx2 && ctx2.ovLen) || 115;
+    const now = (ctx2 && ctx2.now) || [];
+    const ov = String(m.ov || '').replace(/\s+/g, ' ');
+    return `<div class="mcard">
 ${m.img ? `<img src="${esc(m.img)}" alt="${esc(m.title)}" loading="lazy" onerror="this.remove()">` : ''}
 <div class="mbody">
 <h3><span class="mrank">${i + 1}</span>${esc(m.title)}</h3>
 <div class="mmeta">📍 ${esc(m.sigungu || '')}${m.addr ? ' · ' + esc(String(m.addr).slice(0, 40)) : ''}</div>
-${m.ov ? `<p class="mov">${esc(String(m.ov).replace(/\s+/g, ' ').slice(0, 115))}…</p>` : ''}
+${now.length ? `<div class="mnow">🟢 지금 전시 중 · ${now.length}건<br>${now.slice(0, 2).map(r =>
+      `<b>${esc(String(r.title).slice(0, 34))}</b>${r.end ? ` <span class="mnd">~${esc(String(r.end).replace(/(\d{4})-?(\d{2})-?(\d{2})/, '$2.$3'))}</span>` : ''}`).join('<br>')}</div>` : ''}
+${ov ? `<p class="mov">${esc(ov.slice(0, ovLen))}${ov.length > ovLen ? '…' : ''}</p>` : ''}
 ${accBadges(m)}
 <div class="mlinks">
 <a href="https://map.naver.com/p/search/${encodeURIComponent(m.title)}" target="_blank" rel="noopener">🗺️ 지도</a>
 <a href="https://search.naver.com/search.naver?query=${encodeURIComponent(m.title + ' 관람시간')}" target="_blank" rel="noopener">🕘 관람시간</a></div>
 </div></div>`;
+  };
 
   CITY.forEach(c => {
     const all = acc.filter(x => x.sido === c.ko && RE.test(x.title || ''))
@@ -95,6 +138,13 @@ ${accBadges(m)}
     const guTop = Object.entries(gu).sort((a, b) => b[1] - a[1]).slice(0, 8);
     const M = +TODAY.slice(5, 7);
     const ven = venueOf(c.key);
+    // 곳마다 «지금 하는 전시»를 한 번만 계산해 둔다(카드와 아래 절이 같은 값을 쓴다)
+    const NOW = new Map(all.map(m => [m.title, nowShowOf(c.key, m.title)]));
+    const nowPlaces = all.filter(m => (NOW.get(m.title) || []).length);
+    const nowCount = nowPlaces.reduce((s, m) => s + NOW.get(m.title).length, 0);
+    // 목록이 짧으면 한 곳을 깊게 적는다 — 부산 22곳은 220자, 서울 114곳은 115자
+    const OVLEN = all.length <= 40 ? 220 : 115;
+    const cardOf = (m, i) => card(m, i, { ovLen: OVLEN, now: NOW.get(m.title) || [] });
 
     const FAQ = [
       [`${c.ko}에서 가장 많이 찾는 박물관은 어디인가요?`,
@@ -112,7 +162,14 @@ ${accBadges(m)}
       ['관람시간과 요금은 왜 안 적혀 있나요?',
         '휴관일과 요금은 기관마다 자주 바뀌고 공공데이터가 이를 따라가지 못합니다. 틀린 시간을 적는 것보다 낫다고 보아, 각 카드에 <b>관람시간 검색 버튼</b>을 두어 최신 정보로 바로 갈 수 있게 했습니다.'],
       [`${c.ko}에서 지금 하는 전시도 볼 수 있나요?`,
-        `네. <a href="/${c.key}/exhibition/">${c.ko} 전시회</a>에서 지금 열리고 있는 전시를 날짜순으로 볼 수 있습니다.`]
+        `네. <a href="/${c.key}/exhibition/">${c.ko} 전시회</a>에서 지금 열리고 있는 전시를 날짜순으로 볼 수 있습니다.`],
+      // 🎫 2026-09-15 — 실제로 계산한 값만 쓴다. 0곳이면 이 질문 자체를 넣지 않는다.
+      ...(nowPlaces.length ? [[`지금 기획전이 열리는 곳은 몇 곳인가요?`,
+        `${all.length}곳 가운데 <b>${nowPlaces.length}곳</b>에서 ${nowCount}건이 열리고 있습니다(${esc(nowPlaces.slice(0, 3).map(m => m.title).join(', '))} 등). 나머지는 상설 전시가 중심이라 기간에 상관없이 볼 수 있습니다.`]] : []),
+      [`하루에 몇 곳까지 볼 수 있나요?`,
+        `같은 ${c.key === 'seoul' ? '자치구' : '구·군'} 안이면 두세 곳까지 묶을 만합니다. ${c.ko}에서 가장 많이 모여 있는 곳은 <b>${esc(guTop[0] ? guTop[0][0] : '')}</b>(${guTop[0] ? guTop[0][1] : 0}곳)입니다. 다만 전시 관람은 한 곳에 보통 1~2시간이 걸리고, 큰 박물관은 반나절이 그대로 갑니다. 욕심내지 않는 편이 낫습니다.`],
+      ['휴관일은 언제인가요?',
+        '국공립 박물관·미술관은 <b>월요일 휴관</b>인 곳이 많고, 설날·추석 당일에도 대부분 쉽니다. 다만 기관마다 다르고 바뀌기도 해서 저희가 단정해 적지 않습니다. 각 카드의 <b>관람시간 검색 버튼</b>으로 확인하세요.']
     ];
 
     const content = `<main><div class="wrap">
@@ -121,15 +178,41 @@ ${CSS}
 <p class="note">순서는 <b>네이버 월간 검색량</b>입니다. 사람들이 실제로 가장 많이 찾아보는 곳부터 놓았습니다.
 ${withAcc ? '공공데이터의 <b>무장애 편의시설</b> 정보도 함께 실었습니다. ' : '각 카드의 소개 글은 한국관광공사 공공데이터 원문입니다. '}${TODAY.slice(0, 4)}년 ${M}월 기준.</p>
 
-<h2 class="sec">가장 많이 찾는 ${TOP}곳</h2>
-<p style="color:#6b7280;font-size:.94rem">${c.ko}의 박물관·미술관 ${all.length}곳 중 검색량 상위 ${TOP}곳입니다. 1위는 <b>${esc(all[0].title)}</b>(월 ${volOf(all[0].title).toLocaleString()}회).</p>
-<div class="mgrid">${top.map(card).join('')}</div>
+${/* 🎫 2026-09-15 — 「가면 지금 뭘 볼 수 있나」. 안 걸린 곳이 «상설 전시»라는 것도 정보다.
+      ⚠️ 카드 목록«보다 먼저» 둔다. 짧고 결정에 바로 쓰이는 정보가 앞이다 —
+         22~114장짜리 카드 그리드 뒤에 두면 아무도 안 내려간다(구매박스에서 배운 것과 같다). */''}
+${nowPlaces.length ? `<h2 class="sec">지금 전시가 열리고 있는 곳 ${nowPlaces.length}곳</h2>
+<p style="color:#374151;font-size:.95rem;line-height:1.8">${c.ko}의 박물관·미술관 ${all.length}곳 가운데
+<b>${nowPlaces.length}곳</b>에서 지금 기획전이 열리고 있습니다(합계 <b>${nowCount}건</b>).
+나머지 ${all.length - nowPlaces.length}곳은 <b>상설 전시</b>가 중심이라 언제 가도 볼 것이 있습니다 —
+기간이 정해진 전시를 보려면 아래 목록부터 보세요.</p>
+<ul class="mnowlist">${nowPlaces.map(m => {
+      const rs = NOW.get(m.title);
+      return `<li><b>${esc(m.title)}</b> <span class="vg">${esc(m.sigungu || '')}</span>
+${rs.slice(0, 3).map(r => `<div class="mnowrow">· ${esc(String(r.title).slice(0, 52))}${r.end ? ` <span class="mnd">~${esc(String(r.end).replace(/(\d{4})-?(\d{2})-?(\d{2})/, '$2.$3'))}</span>` : ''}${r.free || r.pay === false ? ' <span class="mfree">무료</span>' : ''}</div>`).join('')}
+${rs.length > 3 ? `<div class="mnowrow" style="color:#9ca3af">· 외 ${rs.length - 3}건</div>` : ''}</li>`;
+    }).join('')}</ul>
+<p class="note">${c.key === 'busan' ? '부산광역시 문화포털' : '서울시 문화행사'} 공공데이터에서 <b>장소 이름이 일치하는 것만</b> 뽑았습니다.
+이름이 다르게 등록된 전시는 못 잡을 수 있으니, 안 보인다고 전시가 없는 것은 아닙니다.</p>` : ''}
+
+${/* 📍 자치구별 분포 — 22곳이 열 개 구에 흩어져 있으면 «하루에 몇 곳»이 실제 질문이 된다 */''}
+${guTop.length > 1 ? `<h2 class="sec">어느 동네에 몰려 있나</h2>
+<p style="color:#374151;font-size:.95rem;line-height:1.8">${c.ko} ${all.length}곳은 ${Object.keys(gu).length}개 ${c.key === 'seoul' ? '자치구' : '구·군'}에 흩어져 있습니다.
+가장 많은 곳은 <b>${esc(guTop[0][0])} ${guTop[0][1]}곳</b>입니다. 두세 곳이 같은 동네에 있으면 하루에 묶어 볼 수 있습니다.</p>
+<p class="mrest">${guTop.map(([g, n]) => {
+      const list = all.filter(m => m.sigungu === g);
+      return `<b>${esc(g)} ${n}곳</b> — ${list.slice(0, 5).map(m => esc(m.title)).join(' · ')}${list.length > 5 ? ` 외 ${list.length - 5}` : ''}`;
+    }).join('<br>')}</p>` : ''}
 
 ${/* 🏛 2026-09-15 — 여기 있던 상품이 「장 보러 갈 때 손이 편하려면 — 장보기 카트」였고
       위치도 </main> 바깥(본문 맨 끝)이었다. 박물관 관람객에게 장보기 카트는 맞지 않는다.
       실내에서 실제로 생기는 불편은 «두세 시간 서서 걷는 것»과 «배터리»다 — 그 둘로 바꾼다.
       자리는 «어디 갈지 고른 직후». 아래로는 나머지 목록과 전시공간 순위가 길게 이어진다. */''}
 ${buyBox('indoor_walk')}
+
+<h2 class="sec">가장 많이 찾는 ${TOP}곳</h2>
+<p style="color:#6b7280;font-size:.94rem">${c.ko}의 박물관·미술관 ${all.length}곳 중 검색량 상위 ${TOP}곳입니다. 1위는 <b>${esc(all[0].title)}</b>(월 ${volOf(all[0].title).toLocaleString()}회).</p>
+<div class="mgrid">${top.map(cardOf).join('')}</div>
 
 ${rest.length ? `<h2 class="sec">그 밖의 ${rest.length}곳</h2>
 <p style="color:#6b7280;font-size:.94rem">검색량은 적지만 ${c.ko}에 실제로 있는 곳입니다. 자치구별로 묶었습니다.</p>
