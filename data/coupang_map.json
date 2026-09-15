@@ -122,8 +122,35 @@
    "cat": "",
    "retired": false,
    "up": [
-    "jangcolors"
+    "jangcolors",
+    "jang_cooler"
    ],
+   "bySeason": null
+  },
+  "jang_cooler": {
+   "key": "jang_cooler",
+   "name": "보냉백 — 생선·고기·나물 담아 오는 길",
+   "title": "장에서 산 것, 상하지 않게",
+   "q": "보냉백",
+   "merchant": "coupang",
+   "url": "https://link.coupang.com/a/g2ct2IV5Vs",
+   "pid": "",
+   "cat": "보냉",
+   "retired": false,
+   "up": [],
+   "bySeason": null
+  },
+  "jang_warm": {
+   "key": "jang_warm",
+   "name": "보온·보냉 겸용 가방",
+   "title": "겨울 장에서 산 것, 식지 않게",
+   "q": "보온보냉백",
+   "merchant": "coupang",
+   "url": "https://link.coupang.com/a/g2cDvB1vXM",
+   "pid": "",
+   "cat": "보냉",
+   "retired": false,
+   "up": [],
    "bySeason": null
   },
   "valley": {

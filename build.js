@@ -425,8 +425,22 @@ const COUPANG = {
     car:      { ico: '🚗', t: '장거리 운전 전에', s: '차량용 휴대폰 거치대', q: '차량용 휴대폰 거치대', url: 'https://link.coupang.com/a/fXN2IYC66m' },
     // 5색 동일가(12,900)인데 엑셀은 레드 119개=222만으로 계산이 안 맞는다(과거 고가 시절 매출로 추정).
     //   리뷰 수(네이비70 · 블루28 · 블랙17 · 레드13 · 와인9)와 최근 판매일 모두 네이비 우위 → 메인은 네이비 유지.
+    // 🧊 2026-09-15 추가 — 오일장은 트래픽 1위(28일 34.4%·3,575세션)인데 붙은 상품이 카트 하나뿐이었다.
+    //    메인은 «자사» 카트를 지킨다(제휴 수수료 1~3% vs 자사 마진). 보냉백은 업셀 알약으로 붙인다.
+    //    겨울에는 보온보냉으로 바꾼다 — 12월 장에서 사는 건 어묵·호빵이지 생선이 아니다.
+    //    ⚠️ renderBuyBox 는 업셀에 bySeason 을 «적용하지 않는다». 그래서 여기서 계절을 직접 고른다.
     jangteo:  { ico: '🛒', t: '장 보러 갈 때 손이 편하려면', s: '바퀴달린 접이식 장보기 카트 · 5색', own: true, q: '바퀴달린 장바구니', url: 'https://brand.naver.com/guung/products/12580509879',
-                up: ['jangcolors'] },
+                up: ['jangcolors', NOW_SEASON === 'winter' ? 'jang_warm' : 'jang_cooler'] },
+    // 🔴 pid 가 비어 있다 — 쿠팡 «상품번호». 제휴 단축링크에는 번호가 없어서, 이게 없으면
+    //    파트너스 실적 리포트(주문·수익)와 우리 클릭을 맞출 수 없다 = 무엇이 팔렸는지 영영 모른다.
+    //    상품 페이지 주소 coupang.com/vp/products/«숫자» 에서 베껴 넣을 것. (2026-09-15 미확보)
+    //    문구도 용량을 확인하면 「25L」처럼 숫자를 넣어 다시 쓴다 — 지금은 확인한 것만 적었다.
+    jang_cooler: { ico: '🧊', t: '장에서 산 것, 상하지 않게', s: '보냉백 — 생선·고기·나물 담아 오는 길',
+                q: '보냉백', cat: '보냉', pid: '', url: 'https://link.coupang.com/a/g2ct2IV5Vs',
+                upT: '🧊 보냉백 — 차까지 걸어가는 동안 상하지 않게' },
+    jang_warm: { ico: '🧊', t: '겨울 장에서 산 것, 식지 않게', s: '보온·보냉 겸용 가방',
+                q: '보온보냉백', cat: '보냉', pid: '', url: 'https://link.coupang.com/a/g2cDvB1vXM',
+                upT: '🧊 보온보냉백 — 따뜻한 것도 찬 것도' },
     // 파라솔 3색 중 레드 스트라이프가 최다판매(161개·346만) — 베이지/옐로우는 스토어 검색으로 흡수
     valley:   { ico: '⛱️', t: '계곡 자리에 그늘 하나', s: '각도·높이 조절 UV차단 파라솔 · 3색', own: true, q: '그늘막 파라솔', url: 'https://brand.naver.com/guung/products/10181585601',
                 up: ['psbases', 'aqua', 'pstray'], bySeason: { autumn: 'maple', winter: 'tripcost' } },

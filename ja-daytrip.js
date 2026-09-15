@@ -119,6 +119,11 @@ function build(ctx) {
   if (!TT || !GEO) { console.log('⚠️ /ja/daytrip/ 건너뜀 — train_time.json 또는 train_station_geo.json 없음'); return []; }
   const PJ = load('places_ja.json') || [];
   const MK = (load('markets_std.json') || []).filter(m => m.x && m.y && Array.isArray(m.daysNum) && m.daysNum.length);
+  // 🚌 시티투어버스 — 이 페이지에 빠져 있던 답: 「기차로 도착했는데 그 다음은 어떻게 도나」.
+  //    일본인 訪韓客의 90% 이상이 개인여행이고 대부분 렌터카를 안 쓴다. 지방에서 차 없이 도는 길이 이것이다.
+  //    데이터가 드물게 완전하다 — 277건 전부에 요금·운행시각·승차장·코스가 채워져 있다.
+  //    ⭐ 그리고 승차장이 대개 «역 앞»이다(여주역 승강장·안동역·묵호역·대전역시티투어승강장…).
+  const CT = load('citytour.json') || [];
   const G = GEO.stations, S = TT.stations;
 
   // ── 대상 고르기
@@ -182,6 +187,25 @@ function build(ctx) {
   const dayTrip = cards.filter(r => r.v.min <= DAY);
   const overnight = cards.filter(r => r.v.min > DAY);
 
+  // ── 🚌 시티투어버스를 도시에 붙인다
+  //   ⚠️ 시·군 이름만으로 맞추면 「중구」「동구」가 여러 시·도에 있어 엉뚱한 데 붙는다(인천 중구 = 대전 동구).
+  //      시·도까지 같이 본다.
+  const bare = s => String(s || '').replace(/(특별자치)?[시군구도]$/, '');
+  const ctKey = c => sidoOf(c.sido) + '|' + bare(c.city);
+  const CT_BY = {};
+  CT.forEach(c => { (CT_BY[ctKey(c)] = CT_BY[ctKey(c)] || []).push(c); });
+  const tourOf = r => CT_BY[r.sido + '|' + bare(r.sigungu)] || [];
+  // 요금 문자열에서 «가장 싼 어른 요금»을 뽑는다. 「성인 5000원/청소년 3000원」 같은 한국어라 숫자만 본다.
+  //   ⚠️ 못 읽으면 값을 만들어 내지 않고 비워 둔다.
+  const feeOf = list => {
+    const nums = [];
+    list.forEach(c => (c.fee || []).forEach(f => {
+      const m = String(f).replace(/,/g, '').match(/(\d{3,6})\s*원/);
+      if (m) nums.push(+m[1]);
+    }));
+    return nums.length ? Math.min(...nums) : null;
+  };
+
   const cityLink = r => {
     const c = CITY_PAGE[r.sigungu] || SIDO_PAGE[r.sido];
     return c ? `/ja/${c}/` : (SIDO_SLUG[r.sido] ? `/ja/places/${SIDO_SLUG[r.sido]}/` : '');
@@ -214,6 +238,15 @@ function build(ctx) {
       const alt = Object.keys(v.byOrigin).filter(o => o !== v.from).sort((a, b) => v.byOrigin[a] - v.byOrigin[b])[0];
       if (alt) why.push(`${esc(ORIG_JA[alt] || alt + '駅')}からだと${v.byOrigin[alt]}分です。`);
     }
+    // 🚌 착지 이동 — 이 한 줄이 「기차는 알겠는데 그 다음은?」에 답한다
+    const tour = tourOf(r);
+    if (tour.length) {
+      const fee = feeOf(tour);
+      const board = (tour[0].board || [])[0] || '';
+      why.push(`🚌 <b>市内観光バス</b>があります${fee ? `（<b>${nf(fee)}ウォン〜</b>`: '（'}`
+        + `${board ? `・乗り場「<span class="dtk">${esc(board)}</span>」` : ''}）。`
+        + (tour.length > 1 ? `コースは${tour.length}種類。` : ''));
+    }
     return `<div class="dtcard ${cls}">
 <div class="dthead"><span class="nm">${esc(nmJa)}</span><span class="ko dtk">${esc(r.nm)}</span>
 <span class="rg">${esc(SIDO_JA[r.sido] || r.sido)}</span></div>
@@ -233,6 +266,18 @@ ${link ? `<a href="${link}">📍 ${cityLabel(r)}</a>` : ''}
 <td class="n">${v.min}分</td><td>${esc((ORIG_JA[v.from] || v.from).replace('駅', ''))}</td>
 <td class="n">${v.fareBest ? nf(v.fareBest) : '—'}</td><td class="n">${v.trains}</td>
 <td class="n">${r.places.length ? nf(r.places.length) : '—'}</td></tr>`;
+  }).join('');
+
+  // 🚌 시티투어 표 — daytrip 에 실린 도시 중 시티투어가 확인된 곳만
+  const tourList = list.map(r => ({ r, t: tourOf(r) })).filter(o => o.t.length);
+  const tourCities = tourList.length;
+  const tourRows = tourList.map(({ r, t }) => {
+    const fee = feeOf(t);
+    const board = (t[0].board || [])[0] || '';
+    const open = t[0].open || '', close = t[0].close || '';
+    return `<tr><td><b>${esc(han(r.v.han || r.nm))}</b> <span class="dtk" style="font-size:.85em;color:#9aa3af">${esc(r.nm)}</span></td>
+<td class="n">${fee ? nf(fee) + '〜' : '—'}</td><td class="dtk" style="font-size:.9em">${esc(board)}</td>
+<td class="n">${open && close ? esc(open) + '–' + esc(close) : '—'}</td><td class="n">${t.length}</td></tr>`;
   }).join('');
 
   const fastest = cards[0] || list[0], farthest = cards[cards.length - 1] || list[list.length - 1];
@@ -260,6 +305,13 @@ ${dayTrip.length ? `<div class="dtc"><h2>☀️ 片道${DAY}分以内 — 日帰
 ${overnight.length ? `<div class="dtc"><h2>🌙 片道${DAY}分超 — 1泊2日が向く街</h2>
 <p>日帰りもできますが、滞在時間より移動時間が長くなります。${esc(han(farthest.v.han || farthest.nm))}まで${farthest.v.min}分。</p>
 <div class="dtgrid">${overnight.map(r => card(r, '')).join('')}</div></div>` : ''}
+
+${tourRows ? `<div class="dtc"><h2>🚌 着いてから、どう回るか — 市内観光バス</h2>
+<p>地方でいちばん困るのが<b>駅から先</b>です。レンタカーを借りない旅行者にとって、バス路線が分からない街で一日を組むのは簡単ではありません。韓国の多くの自治体は<b>市内観光バス（시티투어버스）</b>を走らせていて、主要な見どころを一周します。<b>${tourCities}の街</b>で確認できました。</p>
+<p>ありがたいことに、<b>乗り場はたいてい駅前です</b> — 列車を降りてそのまま乗れます。料金も<b>2,000〜10,000ウォン</b>程度で、タクシーを1回使うより安く一日回れます。</p>
+<p class="dtsw">↔ 表は横にスクロールできます</p>
+<div class="dtwrap"><table class="dtt"><thead><tr><th>街</th><th class="n">料金</th><th>乗り場</th><th class="n">運行</th><th class="n">コース</th></tr></thead><tbody>${tourRows}</tbody></table></div>
+<p class="dtnote">乗り場は<b>ハングルのまま</b>です — 地図アプリに貼って探すための文字なので訳していません。料金は確認できた中でいちばん安い区分（多くは大人料金）です。<b>運行日は街ごとに違い、週末だけ走る路線もあります</b> — 行く前に各市の公式サイトで必ず確認してください。出典：行政安全部「全国シティツアー標準データ」。</p></div>
 
 <div class="dtc"><h2>🏮 五日市 — 「その日に立つ」かどうかで決まります</h2>
 <p>韓国の地方には<b>5日ごとに立つ市場</b>があります。日付の<b>末尾の数字</b>で決まっていて、たとえば「2・7日」の市場は2日・7日・12日・17日…に立ちます。常設ではないので、<b>行った日に立っていなければ何もありません</b>。上の${list.length}の街のうち<b>${withMkt}の街</b>に、駅から${RM}km以内の五日市があります。</p>
