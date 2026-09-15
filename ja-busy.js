@@ -357,6 +357,7 @@ ${quietTxt ? `<div class="bzc"><h2>✅ 逆に、狙い目の月</h2>
 <a href="/ja/closed/">🚪 休む日 — 店は開いているか</a>
 <a href="/ja/calendar/">🗓️ いつ行くか — 月別</a>
 <a href="/ja/daytrip/">🚄 日帰りで行ける街</a>
+<a href="/ja/palace/">🏯 ソウルの王宮</a>
 <a href="/ja/places/">📍 行ける場所を探す</a>
 <a href="/ja/festival/">🎪 韓国のお祭り</a>
 </div>

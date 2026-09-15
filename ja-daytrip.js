@@ -354,6 +354,7 @@ ${tourRows ? `<div class="dtc"><h2>🚌 着いてから、どう回るか — �
 <div class="dtnav">
 <a href="/ja/busy/">📅 韓国が混む日</a>
 <a href="/ja/closed/">🚪 休む日 — 店は開いているか</a>
+<a href="/ja/palace/">🏯 ソウルの王宮</a>
 <a href="/ja/places/">📍 行ける場所を探す</a>
 <a href="/ja/jangteo/">🏮 五日市</a>
 <a href="/ja/calendar/">🗓️ いつ行くか</a>

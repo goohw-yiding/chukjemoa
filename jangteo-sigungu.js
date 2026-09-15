@@ -44,6 +44,9 @@ function datesIn(daysNum, y, m) {
 function build(ctx) {
   const { ROOT, layout, writePage, SITE, TODAY, marketsAll, apiFests, FEST_PAGES,
     WX, buyBox, jangteoModalBB, JT_LINK_JS, esc } = ctx;
+  // 🔗 2026-09-15 — 이달·다음 달 축제 링크를 걸기 위해 받는다. build.js 가 안 넘겨 주면
+  //    링크를 «그리지 않는다»(빈 배열). 없는 주소로 보내는 것보다 안 거는 편이 낫다.
+  const MR = ctx.MONTHS_ROTATED || [];
   const SITE_NAME = ctx.SITE_NAME || '축제모아';
   const URLS = [];
   URLS.meta = [];   // 시·도 페이지가 읽어 갈 목록 (시·도별 시·군 링크)
@@ -205,6 +208,11 @@ ${/* ⚠️ 제목과 내용이 «같은 말»이어야 한다 — 두 달치로
 <div class="nextup">
 <div class="nextup-t">${esc(city)} 장 보고 나서</div>
 <div class="nextup-row">
+${/* 🔗 2026-09-15 — 시·군 120장에는 월별 축제 링크가 «하나도» 없었다.
+      내부 링크 실측: /2026-09/ 976장 vs /2026-10/ 160장(6배). 그 차이가 순위 차를 만든다.
+      이달·다음 달 둘 다 걸고, 앵커는 사람이 실제로 치는 말(「9월 축제」)로 쓴다. */''}
+${MR[0] ? `<a href="/${MR[0].key}/">🎪 ${MR[0].short} 축제</a>` : ''}
+${MR[1] ? `<a href="/${MR[1].key}/">${MR[1].short} 축제</a>` : ''}
 <a href="/jangteo/" class="hot">🏮 오늘 서는 오일장 전국</a>
 <a href="/jangteo/${({ 서울: 'seoul', 부산: 'busan', 대구: 'daegu', 인천: 'incheon', 광주: 'gwangju', 대전: 'daejeon', 울산: 'ulsan', 세종: 'sejong', 경기: 'gyeonggi', 강원: 'gangwon', 충북: 'chungbuk', 충남: 'chungnam', 전북: 'jeonbuk', 전남: 'jeonnam', 경북: 'gyeongbuk', 경남: 'gyeongnam', 제주: 'jeju' })[sido] || ''}/">${esc(sido)} 오일장 전체</a>
 <a href="/holiday/">🌕 연휴에 여는 곳</a>

@@ -1847,13 +1847,37 @@ ${NEAR_AI_CSS}
 `;
 
 // ---------- 상단 네비게이션 (카테고리 드롭다운 + 모바일 햄버거) ----------
-const CUR_MONTH_KEY = (MONTHS.find(m => m.months.includes(new Date().getMonth() + 1)) || MONTHS[0]).key;
+// 🔗 2026-09-15 — 내비의 「월별 축제」 한 줄이 사이트 976장에서 «이번 달»만 가리키고 있었다.
+//
+//   실측(_monthlink2.js): 내부 링크가 /2026-09/ 976장 vs /2026-10/ 160장 — 6배 차이.
+//   같은 시점 GSC: 「9월 축제」 7.5위 · 「10월 축제」 9.6위. 제목·본문·자기지칭 문장은
+//   두 페이지가 «똑같은 템플릿»이고 10월 본문이 오히려 2배 길다(41,608자 vs 22,118자).
+//   차이는 내부 링크뿐이었다.
+//
+//   그런데 수요는 달이 바뀌기 전에 넘어온다. 「10월 축제」 계열 주간 노출 실측:
+//     8/17~23  20  →  8/24~30  34  →  8/31~9/6  186  →  9/7~13  294
+//   9월 계열이 같은 곡선을 2~3주 먼저 탔고 지금 436이다. 즉 10월도 곧 400~500이 되는데,
+//   그때 9.6위면 그 노출을 그대로 흘린다. 달이 바뀐 뒤에 링크가 따라가면 늦는다.
+//
+// ⚠️ 앵커 문구도 같이 고친다. **「월별 축제」는 아무도 검색하지 않는 말이다.**
+//    사람이 치는 말은 「9월 축제」·「10월 축제」이고(각각 노출 244·334),
+//    사이트 976장에서 그 말이 앵커로 걸려야 순위에 작용한다.
+// ⚠️ 12월 항목은 months:[12,1] 이고 short 가 「12·1월 겨울」이라 그대로 쓰면 앵커가 길어진다 —
+//    short 를 그대로 쓰되 뒤에 「축제」만 붙인다(「12·1월 겨울 축제」도 뜻이 통한다).
+const CUR_MONTH_IDX = (() => {
+  const i = MONTHS.findIndex(m => m.months.includes(new Date().getMonth() + 1));
+  return i < 0 ? 0 : i;
+})();
+const CUR_MONTH = MONTHS[CUR_MONTH_IDX];
+const NEXT_MONTH = MONTHS[(CUR_MONTH_IDX + 1) % MONTHS.length];
+const CUR_MONTH_KEY = CUR_MONTH.key;
 const KO_NAV = `<button class="navtoggle" id="navtoggle" aria-label="메뉴 열기" aria-expanded="false">☰</button>
 <nav id="mainnav">
 <div class="ndrop"><button class="nbtn" type="button">🎪 축제<span class="arw">▼</span></button><div class="nmenu">
 <a href="/search/">🔎 축제 검색</a>
 <a href="/festival/">📄 축제 상세 페이지</a>
-<a href="/${CUR_MONTH_KEY}/">📅 월별 축제</a>
+<a href="/${CUR_MONTH.key}/">📅 ${CUR_MONTH.short} 축제</a>
+<a href="/${NEXT_MONTH.key}/">📅 ${NEXT_MONTH.short} 축제</a>
 <a href="/trend/">🔥 인기 여행지 랭킹</a>
 <a href="/holiday/">🎌 연휴 축제</a>
 <a href="/winter/">❄️ 겨울 축제</a>
@@ -2584,6 +2608,10 @@ const JA_BUSY_URLS = require('./ja-busy.js').build({ ROOT, layout, writePage, SI
 // 관광공사가 꼽은 미결 과제가 「일본인 지방 방문률 20% 미만」이고, 지방은 우리 데이터가 제일 두껍다.
 // 코레일 공식 시간표·운임(data/train_time.json)에 역 좌표·일본어 장소·오일장을 겹친다.
 const JA_DAYTRIP_URLS = require('./ja-daytrip.js').build({ ROOT, layout, writePage, SITE, TODAY });
+
+// 🏯 /ja/palace/ — 고궁 실무정보(휴관일·요금·한복 무료·일본어 해설 시각) + 전국 국가유산 야행
+//    일본 미디어가 반드시 꼽는 항목인데 일본어 실무 정보가 없던 자리. 숫자·시각이라 번역 부담이 없다.
+const JA_PALACE_URLS = require('./ja-palace.js').build({ ROOT, layout, writePage, SITE, TODAY });
 const JA_JANGTEO_URLS = apiFestsJa.length ? require('./jangteo-ja.js').build({ ROOT, layout, writePage, SITE, TODAY, jangteoAlts }) : [];
 // 🗾 2026-09-09 신설 — 일문 장소 시·도 허브. 3,371건 중 2,179건(65%)이 어디에도 안 나오고 있었다.
 //    /ja/{city}/ 는 14곳뿐이고 도시당 60곳 상한이라 도시 페이지가 없는 시·도가 통째로 빠졌다.
@@ -2685,7 +2713,7 @@ ${lang !== 'ja' ? '' : (() => {
   try { bs = require('./ja-holiday.js').blocks(TODAY).slice(0, 4); } catch (e) { return ''; }
   if (!bs.length) return '';
   return `<p style="color:#4b5563;line-height:1.75;margin:14px 0 8px">連休ごとに答えが違います — <b>その日、店は開いているのか</b>を連休別に数えました。<b>日本の祝日と重なる期間</b>は<a href="/ja/busy/" style="color:#0c7d72;font-weight:800">韓国が混む日</a>にまとめています。</p>
-<div class="ih-cities"><a href="/ja/busy/">📅 日韓の祝日カレンダー</a><a href="/ja/daytrip/">🚄 日帰りで行ける街</a>${bs.map(b =>
+<div class="ih-cities"><a href="/ja/busy/">📅 日韓の祝日カレンダー</a><a href="/ja/daytrip/">🚄 日帰りで行ける街</a><a href="/ja/palace/">🏯 ソウルの王宮</a>${bs.map(b =>
     `<a href="/ja/closed/${b.slug}/">📅 ${esc(b.ja)}（${b.span.length}連休）</a>`).join('')}</div>`;
 })()}`;
   return { stat, cities, places, pract };
@@ -3321,8 +3349,8 @@ ${/* 🔴 2026-09-04 신설 — «답을 얻은 직후»에 다음 갈 곳을 �
   })()}</div>
 <div class="nextup-t" style="margin-top:12px">장 보고 나서 갈 만한 곳</div>
 <div class="nextup-row">
-<a href="/${MONTHS_ROTATED[0].key}/" class="hot">🎪 이달의 축제</a>
-<a href="/${(MONTHS_ROTATED[1] || MONTHS_ROTATED[0]).key}/">다음 달 축제</a>
+<a href="/${MONTHS_ROTATED[0].key}/" class="hot">🎪 ${MONTHS_ROTATED[0].short} 축제</a>
+<a href="/${(MONTHS_ROTATED[1] || MONTHS_ROTATED[0]).key}/">${(MONTHS_ROTATED[1] || MONTHS_ROTATED[0]).short} 축제</a>
 <a href="/holiday/">🌕 연휴에 여는 곳</a>
 <a href="/trip-cost/">💰 여행 경비 계산</a>
 </div>
@@ -3423,7 +3451,8 @@ const jangteoModalBB = '<script>window.CJM_BUYBOX=' + JSON.stringify(buyBox('jan
 //    ⚠️ 이 호출은 jangteoModalBB(2780) 뒤에 있어야 한다 — 인자로 넘긴다.
 const JANGTEO_SIGUNGU_URLS = require('./jangteo-sigungu.js').build({
   ROOT, layout, writePage, SITE, SITE_NAME, TODAY, esc,
-  marketsAll, apiFests, FEST_PAGES, WX, buyBox, jangteoModalBB, JT_LINK_JS
+  marketsAll, apiFests, FEST_PAGES, WX, buyBox, jangteoModalBB, JT_LINK_JS,
+  MONTHS_ROTATED   // 🔗 2026-09-15 — 시·군 120장에 이달·다음 달 축제 링크를 걸기 위해
 });
 const SIGUNGU_BY_SIDO = {};
 (JANGTEO_SIGUNGU_URLS.meta || []).forEach(r => (SIGUNGU_BY_SIDO[r.sido] = SIGUNGU_BY_SIDO[r.sido] || []).push(r));
@@ -3581,7 +3610,9 @@ ${/* 시도별 오일장도 세션당 1.07~1.35장이다 — 내부 이동 링�
 <div class="nextup">
 <div class="nextup-t">${esc(sido)} 장 보고 나서</div>
 <div class="nextup-row">
-<a href="/${MONTHS_ROTATED[0].key}/" class="hot">🎪 이달의 축제</a>
+${/* 2026-09-15: 「이달」만 걸려 있었다. 검색 수요는 달이 바뀌기 2~3주 전에 다음 달로 넘어간다. */''}
+<a href="/${MONTHS_ROTATED[0].key}/" class="hot">🎪 ${MONTHS_ROTATED[0].short} 축제</a>
+<a href="/${(MONTHS_ROTATED[1] || MONTHS_ROTATED[0]).key}/">${(MONTHS_ROTATED[1] || MONTHS_ROTATED[0]).short} 축제</a>
 <a href="/jangteo/">🏮 오늘 서는 오일장 전국</a>
 <a href="/holiday/">🌕 연휴에 여는 곳</a>
 </div>
@@ -3692,7 +3723,8 @@ ${enddayRow(slug)}
 <div class="nextup">
 <div class="nextup-t">장 보고 나서</div>
 <div class="nextup-row">
-<a href="/${MONTHS_ROTATED[0].key}/" class="hot">🎪 이달의 축제</a>
+<a href="/${MONTHS_ROTATED[0].key}/" class="hot">🎪 ${MONTHS_ROTATED[0].short} 축제</a>
+<a href="/${(MONTHS_ROTATED[1] || MONTHS_ROTATED[0]).key}/">${(MONTHS_ROTATED[1] || MONTHS_ROTATED[0]).short} 축제</a>
 <a href="/jangteo/">🏮 오늘 서는 오일장 전국</a>
 <a href="/holiday/">🌕 연휴에 여는 곳</a>
 </div>
@@ -8112,7 +8144,7 @@ const ADV_TRAFFIC = {
 }
 
 // ---------- sitemap / robots ----------
-const urls = ['/', ...MONTHS.map(m => `/${m.key}/`), '/search/', ...(holidays.length ? ['/holiday/'] : []), '/pet/', ...(apiAccessible.length ? ['/accessible/'] : []), ...INDOOR_URLS, ...(apiTrails.length ? ['/trails/'] : []), ...(apiValleys.length ? ['/valley/'] : []), ...(apiMaple.length ? ['/maple/'] : []), ...(apiFlower.length ? ['/flower/'] : []), ...(apiOnsen.length ? ['/onsen/'] : []), '/jangteo/', '/test/', '/trip-cost/', ...CITYTOUR_URLS, ...(visitors.kor && visitors.kor.length ? ['/trend/'] : []), ...SIDO_URLS, ...THEME_URLS, ...TRAIL_URLS, ...WALK_URLS, ...TREND_LANG_URLS, '/blog/', ...posts.map(p => `/blog/${p.slug}/`), '/about/', EDITORIAL_URL, '/contact/', '/advertise/', '/privacy/',...(apiFestsEn.length ? ['/en/', '/en/search/'] : []), ...EN_FESTIVAL_URLS, ...EN_JANGTEO_URLS, ...EN_BLOG_URLS, ...(apiFestsJa.length ? ['/ja/', '/ja/search/'] : []), ...JA_JANGTEO_URLS, ...JA_FESTIVAL_URLS, ...JA_HOLIDAY_URLS, ...JA_BUSY_URLS, ...JA_DAYTRIP_URLS, ...JA_PLACES_URLS, ...(apiFestsEs.length ? ['/es/', '/es/search/'] : []), ...ES_JANGTEO_URLS, ...(apiFestsZh.length ? ['/zh/', '/zh/search/'] : []), ...ZH_JANGTEO_URLS, ...(apiFestsTw.length ? ['/tw/', '/tw/search/'] : []), ...TW_EXTRA_URLS, ...MOUNTAIN_URLS, ...CAFE_URLS, ...HOT_URLS, ...HEALING_URLS, ...COURSE_URLS, ...WINTER_URLS, ...JANGTEO_SIDO_URLS, ...JANGTEO_SIGUNGU_URLS, ...JANGTEO_ENDDAY_URLS, ...SIDO_HUB_URLS, ...TRIP_URLS, ...FESTIVAL_URLS, ...MAP_URLS, ...INTL_URLS, ...CHUSEOK_URLS, ...SEOUL_URLS, ...BUSAN_URLS, ...JEJU_URLS, ...MUSEUM_URLS, ...CITY_URLS, ...INTL_CITY_URLS];
+const urls = ['/', ...MONTHS.map(m => `/${m.key}/`), '/search/', ...(holidays.length ? ['/holiday/'] : []), '/pet/', ...(apiAccessible.length ? ['/accessible/'] : []), ...INDOOR_URLS, ...(apiTrails.length ? ['/trails/'] : []), ...(apiValleys.length ? ['/valley/'] : []), ...(apiMaple.length ? ['/maple/'] : []), ...(apiFlower.length ? ['/flower/'] : []), ...(apiOnsen.length ? ['/onsen/'] : []), '/jangteo/', '/test/', '/trip-cost/', ...CITYTOUR_URLS, ...(visitors.kor && visitors.kor.length ? ['/trend/'] : []), ...SIDO_URLS, ...THEME_URLS, ...TRAIL_URLS, ...WALK_URLS, ...TREND_LANG_URLS, '/blog/', ...posts.map(p => `/blog/${p.slug}/`), '/about/', EDITORIAL_URL, '/contact/', '/advertise/', '/privacy/',...(apiFestsEn.length ? ['/en/', '/en/search/'] : []), ...EN_FESTIVAL_URLS, ...EN_JANGTEO_URLS, ...EN_BLOG_URLS, ...(apiFestsJa.length ? ['/ja/', '/ja/search/'] : []), ...JA_JANGTEO_URLS, ...JA_FESTIVAL_URLS, ...JA_HOLIDAY_URLS, ...JA_BUSY_URLS, ...JA_DAYTRIP_URLS, ...JA_PALACE_URLS, ...JA_PLACES_URLS, ...(apiFestsEs.length ? ['/es/', '/es/search/'] : []), ...ES_JANGTEO_URLS, ...(apiFestsZh.length ? ['/zh/', '/zh/search/'] : []), ...ZH_JANGTEO_URLS, ...(apiFestsTw.length ? ['/tw/', '/tw/search/'] : []), ...TW_EXTRA_URLS, ...MOUNTAIN_URLS, ...CAFE_URLS, ...HOT_URLS, ...HEALING_URLS, ...COURSE_URLS, ...WINTER_URLS, ...JANGTEO_SIDO_URLS, ...JANGTEO_SIGUNGU_URLS, ...JANGTEO_ENDDAY_URLS, ...SIDO_HUB_URLS, ...TRIP_URLS, ...FESTIVAL_URLS, ...MAP_URLS, ...INTL_URLS, ...CHUSEOK_URLS, ...SEOUL_URLS, ...BUSAN_URLS, ...JEJU_URLS, ...MUSEUM_URLS, ...CITY_URLS, ...INTL_CITY_URLS];
 // noindex 페이지는 사이트맵에서 뺀다 — "색인해라(사이트맵) + 하지마라(noindex)"는 모순 신호다.
 // 🔁 2026-08-19: en/ja/zh 사이트맵 제외를 되돌린다(위 layout()의 forceNoindex 주석 참고).
 //    구글 클릭 0을 보고 뺐지만 GA4로는 구글 아닌 검색엔진에서 16세션/28일이 들어오고 있었다.
