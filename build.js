@@ -417,12 +417,14 @@ const COUPANG = {
     maple:    { ico: '🪑', t: '단풍 보면서 앉아 쉴 자리', s: '접어서 드는 폴딩 스툴 + 메쉬백', own: true, q: '캠핑의자', url: 'https://brand.naver.com/guung/products/13026204364',
                 up: ['gakline', 'chairs', 'flower'] },
     // 걷기길 39페이지 — 자사 걷기용품이 아직 없어 제휴로 채운다. 등산스틱·무릎보호대는 발주 완료라 입고되면 자사로 교체.
-    trails:   { ico: '🥾', t: '걷기 여행 준비물', s: '발 편한 등산화', q: '등산화', url: 'https://link.coupang.com/a/fXNZ2GivM4',
-                up: ['pole', 'knee'] },
+    trails:   { ico: '🥾', t: '걷기 여행 준비물', s: '발 편한 하이탑 쿠션 등산화', q: '등산화',
+                pid: '8252113487', cat: '걷기', url: 'https://link.coupang.com/a/g3nHRKMzi8',
+                up: ['pole', 'knee', 'jang_shoes'] },
     // 20인치가 24인치보다 잘 팔린다(64개·177만 vs 34개·108만). 사이즈 선택은 검색 업셀로.
     tripcost: { ico: '🧳', t: '떠나기 전에, 가방부터', s: '초경량 여행 캐리어 20인치', own: true, q: '초경량 캐리어', url: 'https://brand.naver.com/guung/products/13159625424',
                 up: ['carriers', 'passport', 'nametag'] },
-    car:      { ico: '🚗', t: '장거리 운전 전에', s: '차량용 휴대폰 거치대', q: '차량용 휴대폰 거치대', url: 'https://link.coupang.com/a/fXN2IYC66m' },
+    car:      { ico: '🚗', t: '장거리 운전 전에', s: '무선충전 거치대 15W · 송풍구형', q: '차량용 휴대폰 거치대',
+                pid: '5498366788', cat: '차량', url: 'https://link.coupang.com/a/g3n8DzK8lw' },
     // 5색 동일가(12,900)인데 엑셀은 레드 119개=222만으로 계산이 안 맞는다(과거 고가 시절 매출로 추정).
     //   리뷰 수(네이비70 · 블루28 · 블랙17 · 레드13 · 와인9)와 최근 판매일 모두 네이비 우위 → 메인은 네이비 유지.
     // 🧊 2026-09-15 추가 — 오일장은 트래픽 1위(28일 34.4%·3,575세션)인데 붙은 상품이 카트 하나뿐이었다.
@@ -430,7 +432,7 @@ const COUPANG = {
     //    겨울에는 보온보냉으로 바꾼다 — 12월 장에서 사는 건 어묵·호빵이지 생선이 아니다.
     //    ⚠️ renderBuyBox 는 업셀에 bySeason 을 «적용하지 않는다». 그래서 여기서 계절을 직접 고른다.
     jangteo:  { ico: '🛒', t: '장 보러 갈 때 손이 편하려면', s: '바퀴달린 접이식 장보기 카트 · 5색', own: true, q: '바퀴달린 장바구니', url: 'https://brand.naver.com/guung/products/12580509879',
-                up: ['jangcolors', NOW_SEASON === 'winter' ? 'jang_warm' : 'jang_cooler'] },
+                up: ['jangcolors', NOW_SEASON === 'winter' ? 'jang_warm' : 'jang_cooler', 'jang_coin'] },
     // 🔴 pid 가 비어 있다 — 쿠팡 «상품번호». 제휴 단축링크에는 번호가 없어서, 이게 없으면
     //    파트너스 실적 리포트(주문·수익)와 우리 클릭을 맞출 수 없다 = 무엇이 팔렸는지 영영 모른다.
     //    상품 페이지 주소 coupang.com/vp/products/«숫자» 에서 베껴 넣을 것. (2026-09-15 미확보)
@@ -444,8 +446,13 @@ const COUPANG = {
     // 파라솔 3색 중 레드 스트라이프가 최다판매(161개·346만) — 베이지/옐로우는 스토어 검색으로 흡수
     valley:   { ico: '⛱️', t: '계곡 자리에 그늘 하나', s: '각도·높이 조절 UV차단 파라솔 · 3색', own: true, q: '그늘막 파라솔', url: 'https://brand.naver.com/guung/products/10181585601',
                 up: ['psbases', 'aqua', 'pstray'], bySeason: { autumn: 'maple', winter: 'tripcost' } },
-    onsen:    { ico: '🧖', t: '온천 갈 때 챙기면 좋은 것', s: '가볍게 마르는 여행용 타월', q: '여행용 타월', url: 'https://link.coupang.com/a/fXOCpczJqC' },
-    pet:      { ico: '🐾', t: '반려견과 떠난다면', s: '강아지 이동가방', q: '강아지 이동가방', url: 'https://link.coupang.com/a/fXOFfqmH4S' },
+    // ⚠️ 2026-09-15 상품 성격이 바뀌었다 — 「여행용 타월」 → 「일회용 수건 10개입」. 문구도 같이 고쳤다.
+    onsen:    { ico: '🧖', t: '온천 갈 때 챙기면 좋은 것', s: '일회용 수건 중형 10개입', q: '여행용 수건',
+                pid: '8987770865', cat: '온천', url: 'https://link.coupang.com/a/g3nMCH5vCC',
+                up: ['onsen_kit'] },
+    pet:      { ico: '🐾', t: '반려견과 떠난다면', s: '반려동물 이동가방', q: '강아지 이동가방',
+                pid: '8443635891', cat: '반려', url: 'https://link.coupang.com/a/g3n3ze62xg',
+                up: ['pet_bottle'] },
     // ↓ 아래 3종은 단독 페이지가 없고 bySeason·up 을 통해서만 노출된다(쿠웅샵 자사상품)
     suncap:   { ico: '🧢', t: '물축제 가는 날, 얼굴은 지키고', s: '투명썬캡 · 자외선 86.3% 차단(FITI 시험 성적)', own: true, q: '투명썬캡', url: 'https://brand.naver.com/guung/products/4545903063' },
     psbase:   { ico: '🪣', t: '계곡 바닥엔 파라솔이 안 꽂힙니다', s: '물·모래 채우는 파라솔 받침대 20kg', own: true, q: '파라솔 물통 받침대', url: 'https://brand.naver.com/guung/products/10227650214',
@@ -502,10 +509,86 @@ const COUPANG = {
     // 🔜 등산스틱·무릎보호대는 2026-08 발주 완료(등산스틱 Seabuo · 무릎보호대 途愫). 입고되면 여기부터 교체.
     pole:     { ico: '🦯', t: '오래 걸을 거라면', s: '경량 등산스틱 (2단·손목스트랩)', own: true, q: '등산스틱', url: 'https://brand.naver.com/guung/products/13738817178',
                 upT: '🦯 등산스틱 — 내리막에서 무릎 부담을 줄입니다' },
-    knee:     { ico: '🦵', t: '내리막에서 무릎이 시큰하면', s: '무릎보호대 (압박형)', q: '무릎보호대', url: 'https://link.coupang.com/a/f55ro9jebQ',
+    knee:     { ico: '🦵', t: '내리막에서 무릎이 시큰하면', s: '무릎보호대 (밴드형)', q: '무릎보호대',
+                pid: '24406364', cat: '걷기', url: 'https://link.coupang.com/a/g3nShTsVoa',
                 upT: '🦵 무릎보호대 — 긴 코스일수록 차이가 납니다' },
-    hotpack:  { ico: '🔥', t: '겨울 축제는 추위와의 싸움', s: '손난로 핫팩 (붙이는 것·쥐는 것)', q: '핫팩', url: 'https://link.coupang.com/a/f55uDRMZ9o',
-                upT: '🔥 핫팩 — 눈축제는 서 있는 시간이 깁니다' }
+    hotpack:  { ico: '🔥', t: '겨울 축제는 추위와의 싸움', s: '붙이는 핫팩 30개입', q: '핫팩',
+                pid: '9389565227', cat: '방한', url: 'https://link.coupang.com/a/g3nXI5dRfM',
+                upT: '🔥 핫팩 — 눈축제는 서 있는 시간이 깁니다' },
+
+    // ───────────────────────────────────────────────────────────────────────
+    // 🛒 2026-09-15 — 대표님이 뽑아 주신 쿠팡 상품 19건.
+    //
+    // ⚠️ 여기 있다고 다 «노출»되는 게 아니다. 아래 up[]·FEST_KIND·monthBuyBox 에서
+    //    실제로 불러야 화면에 나온다. 지금 안 부른 것들은 «교체 후보»로 등록만 해 둔 것이다.
+    //    한 자리에 한꺼번에 다 붙이면 2~3주 뒤에 무엇이 통했는지 가릴 수 없다.
+    // ───────────────────────────────────────────────────────────────────────
+
+    // ── 오일장 ──
+    jang_ecobag: { ico: '🛍', t: '카트까지는 필요 없다면', s: '초대형 무광 타포린백 4개',
+                q: '대용량 장바구니', cat: '오일장', pid: '23999924057', url: 'https://link.coupang.com/a/g3mlKI29Aq',
+                upT: '🛍 초대형 타포린백 4개 — 한 번에 많이 담을 때' },
+    jang_coin: { ico: '👜', t: '오일장은 현금이 편합니다', s: '미니 크로스백',
+                q: '미니 크로스백', cat: '오일장', pid: '5971975329', url: 'https://link.coupang.com/a/g3mx2u890u',
+                upT: '👜 미니 크로스백 — 좌판은 현금만 받는 곳이 많습니다' },
+    jang_icepack: { ico: '🧊', t: '보냉백에 같이 넣을 것', s: '아이스팩 중형 15x20 · 54개입',
+                q: '아이스팩', cat: '보냉', pid: '8423195656', url: 'https://link.coupang.com/a/g3mDAur5oa',
+                upT: '🧊 아이스팩 54개입 — 보냉백에 같이' },
+    jang_egg: { ico: '🥚', t: '장에서 계란 사 오는 날', s: '계란가방 60알 대용량',
+                q: '계란 운반 케이스', cat: '오일장', pid: '9597572917', url: 'https://link.coupang.com/a/g3mKq0yziS',
+                upT: '🥚 계란가방 60알 — 깨지지 않게 들고 오기' },
+    jang_shoes: { ico: '👟', t: '장터는 오래 걷습니다', s: '5레이어 쿠션 깔창 · 양발 세트',
+                q: '쿠션 깔창', cat: '걷기', pid: '7225268644', url: 'https://link.coupang.com/a/g3mRHER1mC',
+                upT: '👟 쿠션 깔창 — 오래 걷는 날 발바닥이 다릅니다' },
+
+    // ── 날씨(비) ── 🔴 아직 «노출 안 함». weather.js 의 좌표·날짜별 강수와 연결해야 값어치가 난다.
+    //    계절로 대충 띄우면 「비 안 오는 날 우비」가 되어 오히려 신뢰를 깎는다. 연동은 다음 작업.
+    rain_coat: { ico: '🌧', t: '비 와도 축제는 열립니다', s: 'EVA 다회용 우비 2p',
+                q: '우비', cat: '우천', pid: '8670687147', url: 'https://link.coupang.com/a/g3m8Sfg1VQ',
+                upT: '🌧 다회용 우비 2p — 비 와도 축제는 열립니다' },
+    rain_cover: { ico: '🎒', t: '가방이 젖는 게 더 아픕니다', s: '배낭 방수커버 45L · 야광반사',
+                q: '가방 레인커버', cat: '우천', pid: '8619028563', url: 'https://link.coupang.com/a/g3m6Zb0Fmm',
+                upT: '🎒 가방 방수커버 45L — 야광반사' },
+    rain_boots: { ico: '👞', t: '잔디·흙바닥은 신발부터 젖습니다', s: '방수 신발 커버',
+                q: '방수 슈즈커버', cat: '우천', pid: '8936524245', url: 'https://link.coupang.com/a/g3ndXOousK',
+                upT: '👞 방수 신발 커버 — 잔디·흙바닥에서' },
+    fam_stroller: { ico: '☔', t: '유모차도 젖습니다', s: '유모차 레인커버',
+                q: '유모차 레인커버', cat: '우천', pid: '9305219096', url: 'https://link.coupang.com/a/g3omJXFkrc',
+                upT: '☔ 유모차 레인커버 — 비 예보가 있는 날' },
+
+    // ── 더위·추위 ──
+    power_bank: { ico: '🔋', t: '축제장에서 배터리가 죽습니다', s: '슬림 듀얼 10000mAh + C타입 케이블',
+                q: '보조배터리', cat: '전자', pid: '7869821820', url: 'https://link.coupang.com/a/g3njr1o4NU',
+                upT: '🔋 보조배터리 10000mAh — 사진 찍다 보면 금방 닳습니다' },
+    hot_fan: { ico: '🌀', t: '여름 축제는 그늘이 없습니다', s: '급속 냉각 휴대용 손선풍기 + 스트랩',
+                q: '휴대용 선풍기', cat: '냉감', pid: '8700920081', url: 'https://link.coupang.com/a/g3npidOYTI',
+                upT: '🌀 손선풍기 — 목에 걸고 다닐 수 있습니다' },
+    hot_cool: { ico: '🧊', t: '팔이 타는 걸 막으려면', s: '쿨토시 2p',
+                q: '쿨토시', cat: '냉감', pid: '6451594886', url: 'https://link.coupang.com/a/g3ntO32gyy',
+                upT: '🧊 쿨토시 2p — 팔이 타는 걸 막습니다' },
+    hot_umbrella: { ico: '☂️', t: '햇빛도 비도 하나로', s: 'UV 99.9% 차단 5단 미니 양산 · 우산 겸용',
+                q: '양산', cat: '냉감', pid: '7235236241', url: 'https://link.coupang.com/a/g3nxPJdpkG',
+                upT: '☂️ 양산 겸 우산 — 5단이라 가방에 들어갑니다' },
+    cold_blanket: { ico: '🧣', t: '겨울 축제는 서 있는 시간이 깁니다', s: '극세사 무릎담요',
+                q: '무릎담요', cat: '방한', pid: '6856161460', url: 'https://link.coupang.com/a/g3nCxD85Fk',
+                upT: '🧣 무릎담요 — 앉아서 보는 공연에' },
+
+    // ── 축제 상세 ──
+    fam_wagon: { ico: '🛒', t: '가족은 짐이 많습니다', s: '아웃도어 캠핑 폴딩 카트',
+                q: '접이식 캠핑웨건', cat: '가족', pid: '7797802166', url: 'https://link.coupang.com/a/g3odNnhdNk',
+                upT: '🛒 폴딩 카트 — 아이 짐까지 싣고 다닙니다' },
+    night_light: { ico: '💡', t: '야간 축제는 발밑이 안 보입니다', s: '넥밴드 LED 라이트',
+                q: 'LED 넥라이트', cat: '야간', pid: '6947746567', url: 'https://link.coupang.com/a/g3oh9QhsHY',
+                upT: '💡 넥밴드 LED — 손이 자유로워집니다' },
+    pet_bottle: { ico: '🐾', t: '물은 따로 챙겨야 합니다', s: '강아지 휴대 물통',
+                q: '반려동물 물통', cat: '반려', pid: '7657490941', url: 'https://link.coupang.com/a/g3oqAQoCk0',
+                upT: '🐾 휴대 물통 — 축제장엔 개 마실 물이 없습니다' },
+    valley_tube: { ico: '📱', t: '물에 빠뜨리면 끝입니다', s: 'IPX8 스마트폰 방수팩 + 넥스트랩',
+                q: '방수팩', cat: '물놀이', pid: '8685923929', url: 'https://link.coupang.com/a/g3ouNDDPIy',
+                upT: '📱 방수팩 IPX8 — 물축제엔 이게 먼저입니다' },
+    onsen_kit: { ico: '🧴', t: '온천은 빈손으로 가게 됩니다', s: '여행용 세면도구 세트',
+                q: '여행용 세면세트', cat: '온천', pid: '610908836', url: 'https://link.coupang.com/a/g3ozlLr4wK',
+                upT: '🧴 세면도구 세트 — 수건만으론 모자랍니다' }
   }
 };
 
@@ -529,15 +612,16 @@ const COUPANG = {
 const FEST_KIND = [
   // 많이 걷는 축제 — 마라톤·3종·뚜벅뚜벅도 결국 다리가 아프다
   [/걷기|둘레길|올레|트레킹|도보|순례|숲길|마라톤|워크|뚜벅|3종|트레일|산행|등반/,                    ['trails', 'pole', 'knee']],
-  [/펫스타|펫 |반려동물|반려견|댕댕|강아지|멍멍/,                                                    ['pet', 'suncap']],
+  [/펫스타|펫 |반려동물|반려견|댕댕|강아지|멍멍/,                                                    ['pet', 'pet_bottle', 'suncap']],
   // ⚠️ `물축제` 앞에 (?<!나) 가 붙은 이유 — '홍천 산나물축제'가 물축제로 잡혀서 아쿠아슈즈를 권하고 있었다.
-  [/(?<!나)물축제|물놀이|물싸움|머드|워터|해수욕|해변|바다축제|비치|계곡|서핑|모래|백사장|갯벌|갯골|조개|바지락|은어|바닷길|어방/, ['aqua', 'suncap', 'suncap98']],
+  [/(?<!나)물축제|물놀이|물싸움|머드|워터|해수욕|해변|바다축제|비치|계곡|서핑|모래|백사장|갯벌|갯골|조개|바지락|은어|바닷길|어방/, ['aqua', 'suncap', 'valley_tube']],
   // 여름 나잇페스타 계열 — 물에 안 들어가도 더위가 본체다
   // 넥쿨러 은퇴(2026-08-31) 후 여름 더위 대응은 썬캡 두 종으로 간다. 앉을 자리는 그대로 업셀.
   [/썸머|서머|여름|시원|쿨밸리|水|바캉스|납량|피서/,                                                 ['suncap', 'suncap98', 'chairs']],
-  [/눈꽃|눈축제|얼음|빙어|송어|산천어|겨울|한파|스키|썰매|빙등|해맞이|정월대보름/,                    ['hotpack', 'chairs']],
+  [/눈꽃|눈축제|얼음|빙어|송어|산천어|겨울|한파|스키|썰매|빙등|해맞이|정월대보름/,                    ['hotpack', 'cold_blanket', 'chairs']],
   [/벚꽃|유채|장미|연꽃|국화|철쭉|코스모스|튤립|수국|해바라기|꽃축제|꽃무릇|상사화|매화|진달래|군항제|봄꽃|봄빛|봄나들이|봄맞이|봄축제|가든|Garden|정원|라벤더|양귀비|맥문동|청보리|보리밭|작약|메밀꽃|꽃 |꽃별|꽃빛|꽃대림/, ['flower', 'gakline']],
-  [/불꽃|불빛|빛축제|등축제|야행|야간|미디어아트|루미나리에|별빛|달빛|드론|라이트쇼|나잇|반딧불/,     ['chairs', 'gakline']],
+  // 2026-09-15: 야간은 «발밑이 안 보인다»와 «배터리가 죽는다»가 실제 불편이다.
+  [/불꽃|불빛|빛축제|등축제|야행|야간|미디어아트|루미나리에|별빛|달빛|드론|라이트쇼|나잇|반딧불/,     ['chairs', 'night_light', 'power_bank']],
   [/음악|재즈|록페|뮤직|콘서트|가요|트로트|밴드|힙합|EDM|아리랑|버스킹|국제음악/,                     ['gakline', 'chairs']],
   // 술·커피·빵은 '앉아서 오래 마신다'가 본질이라 먹거리(테이블)와 달리 스툴을 앞에 둔다
   [/막걸리|맥주|와인|주류|가맥|꿀맥|하맥|양조|전통주|수제맥주|술페스타|커피|카페|빵 |빵지/,           ['gakline', 'chairs']],
@@ -552,16 +636,18 @@ const FEST_KIND = [
   // 궁궐 의식·성곽·대첩 재현도 결국 같은 불편이라 한 줄로 묶는다.
   [/탈춤|국악|전통|문화제|민속|역사|재현|한마당|예술제|공연|연극|마당놀이|축제한마당|궁|종묘|수문장|파수|대제|산성|읍성|성제|고분|왕실|왕가|유산|불교|서원|향교|대첩|이순신|거북선|장군|의병|동학|선비|한복|도자|공예|자기|단오|춘향|문화축제|문화축전|예술축제|거리극|마임|서커스|춤축제|마당극|풍물|한글|선사|대나무/, ['gakline', 'chairs']],
   // 어린이·가족은 짐이 많고 앉을 데가 없다. 메쉬백이 붙은 스툴 세트가 맞다.
-  [/어린이|키즈|가족|동화|유아|아동|인형극|만화|캐릭터|놀이/,                                        ['gakline', 'chairs']],
+  [/어린이|키즈|가족|동화|유아|아동|인형극|만화|캐릭터|놀이/,                                        ['gakline', 'fam_wagon', 'chairs']],
   // 2026-08-31 추가 — 폴백 목록에서 «자리를 깔고 앉는 행사»가 눈에 띄었다(평화누리 피크닉 페스티벌,
   //   별바다부산 나이트 캠크닉). 잔디에 앉는 행사는 스툴보다 돗자리가 맞다.
   [/피크닉|캠크닉|피크닠|잔디밭|들놀이|소풍/,                                                        ['flower', 'gakline', 'chairs']]
 ];
 // 월별 축제 페이지(7~12월) — 그 달 날씨에 맞는 준비물. 여름은 더위, 가을은 앉을 자리, 겨울은 추위.
 function monthBuyBox(m) {
-  const keys = m >= 6 && m <= 8 ? ['festival', 'suncap', 'chairs']
+  // 2026-09-15: 여름에 손선풍기, 겨울에 무릎담요를 더했다(넥쿨러 은퇴 후 비어 있던 자리).
+  //   9~10월은 «지금 실측 중인 세트»라 손대지 않는다 — 바꾸면 비교가 끊긴다.
+  const keys = m >= 6 && m <= 8 ? ['festival', 'suncap', 'hot_fan']
     : m >= 9 && m <= 10 ? ['maple', 'gakline', 'flower', 'chairs']   // 2026-09-11 돗자리 추가(축제 모달과 같은 줄)
-      : (m >= 11 || m <= 2) ? ['hotpack', 'chairs']
+      : (m >= 11 || m <= 2) ? ['hotpack', 'cold_blanket', 'chairs']
         : ['flower', 'gakline'];
   return `<div class="wrap">${renderBuyBox(keys[0], keys.slice(1), 'month-' + m)}</div>`;
 }
