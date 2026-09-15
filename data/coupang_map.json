@@ -507,6 +507,21 @@
    "up": [],
    "bySeason": null
   },
+  "indoor_walk": {
+   "key": "indoor_walk",
+   "name": "5레이어 쿠션 깔창 · 양발 세트",
+   "title": "전시는 두세 시간 서서 봅니다",
+   "q": "쿠션 깔창",
+   "merchant": "coupang",
+   "url": "https://link.coupang.com/a/g3mRHER1mC",
+   "pid": "7225268644",
+   "cat": "실내",
+   "retired": false,
+   "up": [
+    "power_bank"
+   ],
+   "bySeason": null
+  },
   "rain_coat": {
    "key": "rain_coat",
    "name": "EVA 다회용 우비 2p",

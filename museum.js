@@ -125,6 +125,12 @@ ${withAcc ? '공공데이터의 <b>무장애 편의시설</b> 정보도 함께 �
 <p style="color:#6b7280;font-size:.94rem">${c.ko}의 박물관·미술관 ${all.length}곳 중 검색량 상위 ${TOP}곳입니다. 1위는 <b>${esc(all[0].title)}</b>(월 ${volOf(all[0].title).toLocaleString()}회).</p>
 <div class="mgrid">${top.map(card).join('')}</div>
 
+${/* 🏛 2026-09-15 — 여기 있던 상품이 「장 보러 갈 때 손이 편하려면 — 장보기 카트」였고
+      위치도 </main> 바깥(본문 맨 끝)이었다. 박물관 관람객에게 장보기 카트는 맞지 않는다.
+      실내에서 실제로 생기는 불편은 «두세 시간 서서 걷는 것»과 «배터리»다 — 그 둘로 바꾼다.
+      자리는 «어디 갈지 고른 직후». 아래로는 나머지 목록과 전시공간 순위가 길게 이어진다. */''}
+${buyBox('indoor_walk')}
+
 ${rest.length ? `<h2 class="sec">그 밖의 ${rest.length}곳</h2>
 <p style="color:#6b7280;font-size:.94rem">검색량은 적지만 ${c.ko}에 실제로 있는 곳입니다. 자치구별로 묶었습니다.</p>
 ${guTop.map(([g]) => {
@@ -166,7 +172,8 @@ ${ven.length ? `<h2 class="sec">🖼 전시가 «자주» 열리는 공간 ${ven
       mainEntity: FAQ.map(q => ({ '@type': 'Question', name: q[0].replace(/<[^>]+>/g, ''),
         acceptedAnswer: { '@type': 'Answer', text: q[1].replace(/<[^>]+>/g, '') } }))
     })}</script>`;
-    writePage(c.key + '/museum', layout(title, desc, `/${c.key}/museum/`, content + buyBox('jangteo'), { jsonld: ld }));
+    // ⚠️ buyBox 를 여기 더하지 말 것 — content 가 </main> 로 끝나 본문 밖·맨 끝이 된다. 이미 본문 안에 있다.
+    writePage(c.key + '/museum', layout(title, desc, `/${c.key}/museum/`, content, { jsonld: ld }));
     URLS.push(`/${c.key}/museum/`);
     console.log('✓ /%s/museum/ — %d곳(1위 %s 월 %s) · 무장애 %d · 전시공간 %d',
       c.key, all.length, all[0].title, volOf(all[0].title).toLocaleString(), withAcc, ven.length);
@@ -242,6 +249,8 @@ ${guList.map(([g, list]) => `<h3 style="margin:14px 0 4px;font-size:1rem;font-we
 <a href="/seoul/museum/"><b>서울 박물관·미술관</b></a> — 많이 찾는 순 ·
 <a href="/seoul/festival/"><b>서울 축제</b></a> ·
 <a href="/seoul/"><b>서울 전체</b></a></p>
+${/* 🏛 2026-09-15 — 공연장·전시공간도 실내다. 장보기 카트를 빼고 실내용으로 바꾼다. */''}
+${buyBox('indoor_walk')}
 </div></main>`;
 
     const vLd = `<script type="application/ld+json">${JSON.stringify({
@@ -253,7 +262,8 @@ ${guList.map(([g, list]) => `<h3 style="margin:14px 0 4px;font-size:1rem;font-we
     writePage('seoul/venue', layout(
       `서울 전시 공간 ${V.length}곳 — 전시가 자주 열리는 순 | ${SITE_NAME}`,
       `서울에서 전시가 실제로 자주 열리는 공간 ${V.length}곳. 서울시 문화행사 ${SC.total.toLocaleString()}건을 공간별로 세어 순서를 매겼습니다. 1위 ${V[0].place}(${V[0].n}회). 지금 전시 중인 곳도 함께 표시합니다.`,
-      '/seoul/venue/', vContent + buyBox('jangteo'), { jsonld: vLd }));
+      // ⚠️ 박물관 페이지와 같은 이유로 여기에 더하지 않는다 — 본문 밖이 된다. vContent 안에 있다.
+      '/seoul/venue/', vContent, { jsonld: vLd }));
     URLS.push('/seoul/venue/');
     console.log('✓ /seoul/venue/ — 공간 %d곳(1위 %s %d회) · 10회이상 %d · 지금전시중 %d곳',
       V.length, V[0].place, V[0].n, HOT.length, Object.keys(nowBy).length);

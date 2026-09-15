@@ -113,7 +113,7 @@ const CSS = `<style>
 .pgc p{color:#374151;font-size:.95rem;line-height:1.85;margin:0 0 8px}
 .pgnote{color:#9aa3af;font-size:.81rem;line-height:1.65;margin-top:9px}
 .pgk{font-weight:800;color:#1c1917}
-.pgt{width:100%;border-collapse:collapse;font-size:.92rem;margin:8px 0;min-width:460px}
+.pgt{width:100%;border-collapse:collapse;font-size:.92rem;margin:8px 0;min-width:520px}
 .pgt th{background:#f6fbfa;color:#0a6c63;font-weight:800;text-align:left;padding:9px 10px;border-bottom:2px solid #dcefeb;white-space:nowrap}
 .pgt td{padding:9px 10px;border-bottom:1px solid #eef2f1;color:#374151;vertical-align:top}
 .pgt td.n{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
@@ -133,7 +133,22 @@ const CSS = `<style>
 .pgul li{color:#374151;font-size:.94rem;line-height:1.8;margin-bottom:5px}
 .pgnav{display:flex;flex-wrap:wrap;gap:8px;margin:20px 0}
 .pgnav a{background:#fff;border:1.5px solid #dcefeb;color:#374151;font-weight:700;font-size:.88rem;padding:9px 14px;border-radius:999px;text-decoration:none}
-@media(max-width:560px){.pgsw{display:block}}
+/* ⚠️ 375px 실물에서 보고 넣음(2026-09-15) — 5열 표가 295px 안에 들어가니
+   「宮」칸이 49px 이 되고 한 행이 286px 로 늘어났다(한 줄에 두 글자). /ja/busy/ 에서 이미 당한 것이다.
+   → 중요한 두 표(一覧·日本語ガイド)는 모바일에서 «카드»로 접는다. 옆으로 안 밀어도 읽힌다. */
+.pgt.stack{min-width:0}
+@media(max-width:560px){
+.pgsw{display:block}
+.pgsw.hide-s{display:none}
+.pgt.stack thead{display:none}
+.pgt.stack,.pgt.stack tbody,.pgt.stack tr,.pgt.stack td{display:block;width:auto}
+.pgt.stack tr{border:1.5px solid #eef2f1;border-radius:12px;padding:11px 13px;margin-bottom:10px}
+.pgt.stack td{border:0;padding:4px 0}
+.pgt.stack td.n{text-align:left}
+.pgt.stack td:before{content:attr(data-l);display:block;font-size:.78rem;font-weight:800;color:#0a6c63;margin-bottom:1px}
+.pgt.stack td.hd:before{display:none}
+.pgt.stack td.hd{font-size:1.06rem;margin-bottom:3px}
+}
 </style>`;
 
 // ── 「국가유산 야행」 골라내기
@@ -185,18 +200,18 @@ function build(ctx) {
     const h = p.hours.map(x => x[0] + ' ' + x[1]).join('<br>');
     const last = p.hours.map(x => x[2]).filter(x => x !== '—');
     const jp = p.jp.t.join(' / ');
-    return '<tr><td><b>' + esc(p.ja) + '</b><br><span style="font-size:.8rem;color:#9aa3af">' + esc(p.ro)
-      + '</span><br><span class="pgk" style="font-size:.82rem">' + esc(p.ko) + '</span></td>'
-      + '<td class="n"><b class="' + (p.off === '火' ? 'pgok' : 'pgng') + '">' + p.off + '曜</b></td>'
-      + '<td style="font-size:.88rem">' + h + (last.length ? '<br><span style="font-size:.78rem;color:#9aa3af">入場締切 ' + esc(last.join(' / ')) + '</span>' : '') + '</td>'
-      + '<td class="n">' + nf(p.fee) + '</td>'
-      + '<td style="font-size:.88rem"><b>' + esc(jp) + '</b><br><span style="font-size:.8rem;color:#6b7280">' + esc(p.jp.d) + '</span></td></tr>';
+    return '<tr><td class="hd"><b>' + esc(p.ja) + '</b> <span style="font-size:.8rem;color:#9aa3af">' + esc(p.ro)
+      + '</span> <span class="pgk" style="font-size:.82rem">' + esc(p.ko) + '</span></td>'
+      + '<td class="n" data-l="休み"><b class="' + (p.off === '火' ? 'pgok' : 'pgng') + '">' + p.off + '曜</b></td>'
+      + '<td data-l="開いている時間" style="font-size:.88rem">' + h + (last.length ? '<br><span style="font-size:.78rem;color:#9aa3af">入場締切 ' + esc(last.join(' / ')) + '</span>' : '') + '</td>'
+      + '<td class="n" data-l="料金(ウォン)">' + nf(p.fee) + '</td>'
+      + '<td data-l="日本語ガイド" style="font-size:.88rem"><b>' + esc(jp) + '</b> <span style="font-size:.8rem;color:#6b7280">' + esc(p.jp.d) + '</span></td></tr>';
   }).join('');
 
   const jpRows = PAL.map(p =>
-    '<tr><td><b>' + esc(p.ja) + '</b></td><td><b>' + esc(p.jp.t.join(' / ')) + '</b></td>'
-    + '<td>' + esc(p.jp.d) + '</td><td style="font-size:.88rem">' + esc(p.jp.meet) + '</td>'
-    + '<td class="n">' + esc(p.jp.min) + '</td></tr>').join('');
+    '<tr><td class="hd"><b>' + esc(p.ja) + '</b></td><td data-l="日本語の時間"><b>' + esc(p.jp.t.join(' / ')) + '</b></td>'
+    + '<td data-l="曜日">' + esc(p.jp.d) + '</td><td data-l="集合場所" style="font-size:.88rem">' + esc(p.jp.meet) + '</td>'
+    + '<td class="n" data-l="所要">' + esc(p.jp.min) + '</td></tr>').join('');
 
   const guardRows = GUARD.map(g => g.rows.map((r, i) =>
     '<tr>' + (i === 0 ? '<td rowspan="' + g.rows.length + '"><b>' + esc(g.ja) + '</b><br><span style="font-size:.8rem;color:#b45309;font-weight:700">' + esc(g.off) + '曜は休み</span></td>' : '')
@@ -251,15 +266,15 @@ function build(ctx) {
 <p class="pgnote">祝日の扱いは宮によって変わることがあります。名節（ソルラル・チュソク）の当日は無料開放になる年もあります。日付が決まったら公式サイトで最終確認してください。</p></div>
 
 <div class="pgc"><h2>🗓️ 一覧 — 休み・時間・料金・日本語ガイド</h2>
-<p class="pgsw">↔ 表は横にスクロールできます</p>
-<div class="pgwrap"><table class="pgt"><thead><tr><th>宮</th><th class="n">休み</th><th>開いている時間</th><th class="n">料金(ウォン)</th><th>日本語ガイド</th></tr></thead><tbody>${palRows}</tbody></table></div>
+<p class="pgsw hide-s">↔ 表は横にスクロールできます</p>
+<div class="pgwrap"><table class="pgt stack"><thead><tr><th>宮</th><th class="n">休み</th><th>開いている時間</th><th class="n">料金(ウォン)</th><th>日本語ガイド</th></tr></thead><tbody>${palRows}</tbody></table></div>
 <p class="pgnote">料金は大人（外国人は満19〜64歳）一人あたりの片道入場料です。<b>昌徳宮の後苑は宮の入場券とは別</b>で、時間指定・人数制限のある観覧になります。出典：${esc(SRC)}。</p></div>
 
 <div class="pgc"><h2>🎧 日本語の無料ガイドが、${jpSites}か所すべてにあります</h2>
 <p>これがいちばん知られていないことだと思います。ソウルの主要な王宮には<b>日本語の定時解説</b>があり、<b>1日あわせて${jpSlots}回</b>動いています。<b>予約は要りません</b>（10人未満の個人の場合）。<b>料金もかかりません</b> — 入場券さえ持っていれば参加できます。</p>
 <p>しかも外国語の解説は<b>外国人のための制度</b>で、韓国人は参加できません（外国人に同行する場合を除く）。つまり<b>日本語話者のために用意された枠</b>です。集合場所に、その時間に立っていればいいだけです。</p>
-<p class="pgsw">↔ 表は横にスクロールできます</p>
-<div class="pgwrap"><table class="pgt"><thead><tr><th>場所</th><th>日本語の時間</th><th>曜日</th><th>集合場所</th><th class="n">所要</th></tr></thead><tbody>${jpRows}</tbody></table></div>
+<p class="pgsw hide-s">↔ 表は横にスクロールできます</p>
+<div class="pgwrap"><table class="pgt stack"><thead><tr><th>場所</th><th>日本語の時間</th><th>曜日</th><th>集合場所</th><th class="n">所要</th></tr></thead><tbody>${jpRows}</tbody></table></div>
 <p class="pgnote">解説は<b>出発時刻を過ぎると参加できません</b>。少し早めに集合場所へ行ってください。雨でも行われます。10人以上の団体は事前予約が必要です。時間・回数は機関の事情で変わることがあるので、当日の朝に公式サイトで確認するのが確実です。出典：${esc(SRC)}。</p></div>
 
 <div class="pgc"><h2>🧧 韓服を着ていると無料 — ただし「条件」があります</h2>
