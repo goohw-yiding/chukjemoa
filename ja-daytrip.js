@@ -194,7 +194,17 @@ function build(ctx) {
   const ctKey = c => sidoOf(c.sido) + '|' + bare(c.city);
   const CT_BY = {};
   CT.forEach(c => { (CT_BY[ctKey(c)] = CT_BY[ctKey(c)] || []).push(c); });
-  const tourOf = r => CT_BY[r.sido + '|' + bare(r.sigungu)] || [];
+  //   ⚠️ 승차장이 «서울»인 코스가 섞여 있다(평창 76,000원 = 서울역 출발 패키지).
+  //      그건 「기차로 그 도시에 가서 타는 버스」가 아니라 정반대다 — 이 페이지에서는 뺀다.
+  const tourOf = r => (CT_BY[r.sido + '|' + bare(r.sigungu)] || [])
+    .filter(c => !(c.board || []).some(b => /서울/.test(String(b))));
+  const isStationBoard = c => (c.board || []).some(b => /역/.test(String(b)));
+  // 운행 시간은 «코스마다 다르다». 첫 코스만 보면 대전이 「14:00–17:30」으로 나온다(24코스 중 하나).
+  const hoursOf = list => {
+    const o = list.map(c => c.open).filter(Boolean).sort();
+    const c2 = list.map(c => c.close).filter(Boolean).sort();
+    return (o.length && c2.length) ? { from: o[0], to: c2[c2.length - 1] } : null;
+  };
   // 요금 문자열에서 «가장 싼 어른 요금»을 뽑는다. 「성인 5000원/청소년 3000원」 같은 한국어라 숫자만 본다.
   //   ⚠️ 못 읽으면 값을 만들어 내지 않고 비워 둔다.
   const feeOf = list => {
@@ -246,7 +256,9 @@ function build(ctx) {
       // ⚠️ 템플릿을 3중으로 겹쳤더니 문법이 깨졌다(SyntaxError). 여기는 문자열 연결로 쓴다.
       const bits = [];
       if (fee) bits.push('<b>' + nf(fee) + 'ウォン〜</b>');
-      if (board) bits.push('乗り場「<span class="dtk">' + esc(board) + '</span>」');
+      const stc = tour.find(isStationBoard);
+      const board2 = ((stc || tour[0]).board || [])[0] || '';
+      if (board2) bits.push((stc ? '🚉 ' : '') + '乗り場「<span class="dtk">' + esc(board2) + '</span>」');
       why.push('🚌 <b>市内観光バス</b>があります'
         + (bits.length ? '（' + bits.join('・') + '）' : '') + '。'
         + (tour.length > 1 ? 'コースは' + tour.length + '種類。' : ''));
@@ -275,13 +287,21 @@ ${link ? `<a href="${link}">📍 ${cityLabel(r)}</a>` : ''}
   // 🚌 시티투어 표 — daytrip 에 실린 도시 중 시티투어가 확인된 곳만
   const tourList = list.map(r => ({ r, t: tourOf(r) })).filter(o => o.t.length);
   const tourCities = tourList.length;
+  // 역 앞에서 타는 곳을 먼저 — 이 페이지는 «기차로 간 사람»이 읽는다
+  tourList.sort((a, b) => (b.t.some(isStationBoard) ? 1 : 0) - (a.t.some(isStationBoard) ? 1 : 0)
+    || a.r.v.min - b.r.v.min);
+  const tourStation = tourList.filter(o => o.t.some(isStationBoard)).length;
+  const tourFees = tourList.map(o => feeOf(o.t)).filter(Boolean);
+  const feeLo = tourFees.length ? Math.min(...tourFees) : 0, feeHi = tourFees.length ? Math.max(...tourFees) : 0;
   const tourRows = tourList.map(({ r, t }) => {
     const fee = feeOf(t);
-    const board = (t[0].board || [])[0] || '';
-    const open = t[0].open || '', close = t[0].close || '';
+    const st = t.find(isStationBoard);
+    const board = ((st || t[0]).board || [])[0] || '';
+    const h = hoursOf(t);
     return `<tr><td><b>${esc(han(r.v.han || r.nm))}</b> <span class="dtk" style="font-size:.85em;color:#9aa3af">${esc(r.nm)}</span></td>
-<td class="n">${fee ? nf(fee) + '〜' : '—'}</td><td class="dtk" style="font-size:.9em">${esc(board)}</td>
-<td class="n">${open && close ? esc(open) + '–' + esc(close) : '—'}</td><td class="n">${t.length}</td></tr>`;
+<td class="n">${fee ? nf(fee) + '〜' : '—'}</td>
+<td>${st ? '🚉 ' : ''}<span class="dtk" style="font-size:.9em">${esc(board)}</span></td>
+<td class="n">${h ? esc(h.from) + '–' + esc(h.to) : '—'}</td><td class="n">${t.length}</td></tr>`;
   }).join('');
 
   const fastest = cards[0] || list[0], farthest = cards[cards.length - 1] || list[list.length - 1];
@@ -312,7 +332,7 @@ ${overnight.length ? `<div class="dtc"><h2>🌙 片道${DAY}分超 — 1泊2日�
 
 ${tourRows ? `<div class="dtc"><h2>🚌 着いてから、どう回るか — 市内観光バス</h2>
 <p>地方でいちばん困るのが<b>駅から先</b>です。レンタカーを借りない旅行者にとって、バス路線が分からない街で一日を組むのは簡単ではありません。韓国の多くの自治体は<b>市内観光バス（시티투어버스）</b>を走らせていて、主要な見どころを一周します。<b>${tourCities}の街</b>で確認できました。</p>
-<p>ありがたいことに、<b>乗り場はたいてい駅前です</b> — 列車を降りてそのまま乗れます。料金も<b>2,000〜10,000ウォン</b>程度で、タクシーを1回使うより安く一日回れます。</p>
+<p>そのうち<b>${tourStation}の街は駅前から乗れます</b>（表の🚉）— 列車を降りてそのまま乗れるということです。残りは観光案内所などが起点なので、駅からそこまでの移動が先に必要です。料金は<b>${nf(feeLo)}〜${nf(feeHi)}ウォン</b>の幅があり、多くは5,000ウォン前後。タクシーを1、2回使うより安く一日回れます。</p>
 <p class="dtsw">↔ 表は横にスクロールできます</p>
 <div class="dtwrap"><table class="dtt"><thead><tr><th>街</th><th class="n">料金</th><th>乗り場</th><th class="n">運行</th><th class="n">コース</th></tr></thead><tbody>${tourRows}</tbody></table></div>
 <p class="dtnote">乗り場は<b>ハングルのまま</b>です — 地図アプリに貼って探すための文字なので訳していません。料金は確認できた中でいちばん安い区分（多くは大人料金）です。<b>運行日は街ごとに違い、週末だけ走る路線もあります</b> — 行く前に各市の公式サイトで必ず確認してください。出典：行政安全部「全国シティツアー標準データ」。</p></div>` : ''}
