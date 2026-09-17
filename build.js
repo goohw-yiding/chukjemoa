@@ -7998,6 +7998,17 @@ const TRIP_URLS = require('./trip.js').build({ ROOT, layout, writePage, SITE_NAM
 <li>붐빔 배수는 그 장소가 아니라 <b>그 시·군·구</b>의 방문자 수 기준입니다.</li>
 </ul>
 
+<h2 class="sec">매일 어떻게 확인하나요</h2>
+<p>공공데이터를 받아 그대로 풀어놓기만 하면, 틀린 것이 틀린 채 그대로 남습니다. 그래서 매일 같은 순서를 돌리며 <b>오늘 올라온 것이 어제 것과 같은지</b>를 맞춰봅니다.</p>
+<ul style="line-height:2">
+<li><b>갱신</b> — 축제·오일장·날씨 데이터를 다시 받아 반영합니다.</li>
+<li><b>자동 점검</b> — 설명이 비어 있거나, 링크가 끊겼거나, 좌표가 한국 밖이거나, 「N곳」이라 써놓고 실제로는 그보다 적게 보여주는 면이 없는지 빌드마다 기계가 먼저 걸러냅니다.</li>
+<li><b>사람 확인</b> — 그중 <b>개최가 임박한 축제</b>는 사람이 직접 취소·연기·장소 변경이 있었는지 다시 찾아봅니다. 기계가 못 잡는 건 「데이터엔 그대로 있는데 현실에선 취소된」 경우라서입니다.</li>
+<li><b>끝난 축제</b> — 지나간 축제는 검색 결과에서는 빼고, 그 이름을 아는 분이 찾을 수 있도록 사이트 안 검색에는 남깁니다. 이름을 아는 사람에게 「없다」고 답하는 건 저희 쪽 손실입니다.</li>
+<li><b>주소 정리</b> — 사라진 페이지는 빈 화면을 띄우지 않고 관련 페이지로 보냅니다.</li>
+</ul>
+<p>그래도 틀립니다. 수집·검증 기준과 우리가 하지 않는 것은 <a href="/editorial/">편집 원칙</a>에 더 자세히 적어 두었습니다.</p>
+
 <h2 class="sec">이용 안내</h2>
 <p>모든 정보는 무료이며 회원가입이 필요 없습니다. 사이트 운영은 광고와 상품 판매 수익으로 이루어집니다. 일부 상품 링크는 쿠팡 파트너스 활동의 일환으로 수수료를 제공받으며, 해당 위치에 그 사실을 표시합니다. 축제모아를 운영하는 쿠웅샵에서 직접 판매하는 상품도 같은 방식으로 구분해 표시합니다.</p>
 <p>일정 오류나 누락을 발견하시면 <a href="/contact/">문의 페이지</a>로 알려주세요. 확인 후 신속히 반영하겠습니다. 편집·검수 기준은 <a href="/editorial/">편집 원칙</a>에, 개인정보 처리에 관한 사항은 <a href="/privacy/">개인정보처리방침</a>에서 확인하실 수 있습니다.</p>
@@ -8151,7 +8162,11 @@ const ADV_TRAFFIC = {
   writePage('advertise', layout(
     `광고·제휴 문의 — 매체 소개 | ${SITE_NAME}`,
     `축제모아 매체 소개서. 방문자 규모·유입 경로·다루는 주제를 실제 측정값으로 공개합니다. 지자체·축제 주최 측, 여행 브랜드, 데이터 제휴 문의를 받습니다.`,
-    '/advertise/', advContent));
+    // 🔻 2026-09-17 noindex — 광고주용 모집면이다. GSC 90일 노출 0 · 클릭 0.
+    //   검색으로 찾아올 페이지가 아니고(푸터 링크로 들어온다), 애드센스 심사에서는
+    //   「방문자에게 쓸모있는 콘텐츠」로 치지 않는다. 페이지는 그대로 살려둔다.
+    //   ⚠️ /about/ · /contact/ · /privacy/ 는 반대로 애드센스가 요구하는 신뢰 페이지라 색인 유지.
+    '/advertise/', advContent, { noindex: true }));
 }
 
 // ---------- 404 ----------
@@ -8186,7 +8201,9 @@ const urls = ['/', ...MONTHS.map(m => `/${m.key}/`), '/search/', ...(holidays.le
 // 🔻 2026-09-17: tw·zh·es 색인 보류 — layout() 의 SUSPEND_LANGS 주석 참고.
 //    사이트맵에서도 뺀다. 「색인해라(사이트맵) + 하지마라(noindex)」는 모순이다.
 const SUSPEND_LANG_URLS = urls.filter(u => /^\/(tw|zh|es)\//.test(u));
-const NOINDEX_URLS = new Set([...SIDO_URLS, ...THEME_URLS, ...SUSPEND_LANG_URLS]);
+// 🔻 2026-09-17: /advertise/ 도 색인에서 뺀다 — 광고주 모집면(GSC 90일 노출 0).
+//    /about/ · /contact/ · /privacy/ · /editorial/ 는 신뢰 페이지라 그대로 둔다.
+const NOINDEX_URLS = new Set([...SIDO_URLS, ...THEME_URLS, ...SUSPEND_LANG_URLS, '/advertise/']);
 // 끝난 축제(2026-08-18): 색인·사이트맵에서만 뺀다. 헤더검색에는 남긴다 —
 // 축제 이름을 아는 사람이 검색했는데 "없다"고 답하면 그건 우리 쪽 손실이다.
 const ENDED_FEST_URLS = new Set(FESTIVAL_URLS.noindex || []);
@@ -8368,5 +8385,26 @@ try {
 } catch (e) { console.log('⚠️ IndexNow 키 파일 생략(indexnow.key 없음)'); }
 
 console.log('✓ sitemap.xml, robots.txt, ads.txt');
+
+// 🔴 2026-09-17 — «리디렉트가 살아 있는 페이지를 가로채는» 사고를 막는다.
+//   9/17 에 끝난 축제 6장을 지우면서 vercel.json 에 /festival/ 로 가는 301 을 걸었다.
+//   그런데 그중 진주 국가유산야행·경산 갓바위 같은 것은 «연례» 축제다. 내년에 원천에
+//   다시 뜨면 빌드가 같은 슬러그로 페이지를 만드는데, 리디렉트가 남아 있으면 그 페이지는
+//   영영 안 열린다(308 로 허브에 가로채인다). 만든 사람도 몇 달 뒤엔 잊는다.
+//   ⚠️ vercel.json 은 빌드가 아니라 «배포»가 읽으므로 빌드 로그 말고는 알 방법이 없다.
+//      그래서 여기서 매 빌드 검사해 시끄럽게 알린다(배포는 막지 않는다 — 판단은 사람이 한다).
+try {
+  const vj = JSON.parse(fs.readFileSync(path.join(ROOT, 'vercel.json'), 'utf8'));
+  const clash = (vj.redirects || []).map(r => String(r.source).replace(/\/$/, ''))
+    .filter((s, i, a) => a.indexOf(s) === i)
+    .filter(s => fs.existsSync(path.join(ROOT, s.replace(/^\//, ''), 'index.html')));
+  if (clash.length) {
+    console.log(`🔴 vercel.json 리디렉트가 «살아 있는 페이지»를 가로챈다 — ${clash.length}건`);
+    clash.forEach(s => console.log(`   ${s}/ 는 지금 만들어졌는데 리디렉트가 걸려 있다 → vercel.json 에서 그 두 줄을 지울 것`));
+  } else {
+    console.log('✓ 리디렉트 충돌 없음 — 리디렉트 건 URL 중 되살아난 페이지 없음');
+  }
+} catch (e) { console.log('⚠️ vercel.json 리디렉트 검사 실패:', String(e.message).slice(0, 80)); }
+
 require('./geo.js').audit(ROOT);
 console.log('빌드 완료:', urls.length, '페이지');
