@@ -149,7 +149,7 @@ function build(ctx) {
   };
 
   const TODAY8 = String(TODAY).replace(/-/g, '');
-  const urls = [], thinOut = [];
+  const urls = [], thinOut = [], endedOut = [];
   const tally = { map: 0, busy: 0, trr: 0, mkt: 0, rel: 0 };
 
   rows.forEach(f => {
@@ -237,13 +237,21 @@ ${mapScript('ja')}
     //    얇으면 «지우지 않고» noindex + 사이트맵 제외 — 끝난 축제(2026-08-18)와 같은 방식이라
     //    허브·근처축제 링크가 끊기지 않는다. 나중에 데이터가 차면 저절로 되살아난다.
     const tooThin = textLen(content) - textLen(mapHtml) < MIN_BODY;
+    // 🔻 2026-09-17 — 끝난 축제도 색인에서 뻐다. 한국어(festival.js 2026-08-18)와 같은 규칙을
+    //   일본어에만 안 걸어 둔 상태였다. 실측: /ja/festival/ 96장 중 61장이 「終了」 표기인데
+    //   60장이 그대로 색인돼 있었다 — 못 가는 행사를 권하는 페이지가 60장 쌀린 셋이다.
+    //   애드센스 「가치가 별로 없는 콘텐츠」의 유력 후보.
+    //   ⚠️ 지우지 않는다 — 페이지는 그대로 두고 「終了」 안내를 달아 둔 채 색인에서만 뻐다.
+    //   링크·내부 이동은 살아 있으므로 404가 생기지 않는다.
+    const skipIndex = tooThin || ended;
     writePage('ja/festival/' + f._slug, layout(
       `${f.title} — 日程・場所・アクセス | 축제모아`,
       String(f.ov || '').slice(0, 110),
-      urlPath, content, { lang: 'ja', jsonld: ld, noindex: tooThin }));
-    if (tooThin) thinOut.push(urlPath); else urls.push(urlPath);
+      urlPath, content, { lang: 'ja', jsonld: ld, noindex: skipIndex }));
+    if (skipIndex) thinOut.push(urlPath); else urls.push(urlPath);
+    if (ended && !tooThin) endedOut.push(urlPath);
   });
-  if (thinOut.length) console.log(`  /ja/festival/ 본문 ${MIN_BODY}자 미만 ${thinOut.length}개 → noindex+사이트맵 제외`);
+  if (thinOut.length) console.log(`  /ja/festival/ 색인 제외 ${thinOut.length}개 (끝난 축제 ${endedOut.length} + 본문 ${MIN_BODY}자 미만) → noindex+사이트맵 제외`);
 
   // 🗂️ 허브 — 「韓国 祭り」(9.3위)·「韓国の祭り」(23.5위)·「韓国お祭り」(32위)를 받을 페이지.
   const ix = indexPage('ja', rows, TODAY8);
