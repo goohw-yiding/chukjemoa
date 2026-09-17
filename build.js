@@ -2147,6 +2147,18 @@ function layout(title, desc, urlPath, content, opts) {
   //   본문도 en 평균 8,392자로 사이트 외국어 중 가장 두껍고 2,000자 미만이 0개다.
   //   ⚠️ 교훈: 「한 검색엔진의 0」을 「모든 검색엔진의 0」으로 읽지 말 것.
   const forceNoindex = false;
+  // 🔻 2026-09-17 — tw·zh·es 색인 보류 (애드센스 「가치가 별로 없는 콘텐츠」 3차 대응)
+  //   근거 ① GSC 90일(6/18~9/15): tw 7클릭 · zh 5클릭 · es 4클릭 = 세 언어 합쳌 16클릭.
+  //        같은 기간 ko는 1,382클릭. 사이트맵 85장(8%)을 쓰면서 클릭의 1%를 만든다.
+  //   근거 ② 2026-08-19 교훈대로 GA4로 «구글 아닌 검색엔진»을 먼저 확인했다.
+  //        90일 세션 tw 19 · zh 20 · es 27 = 66. 이 중 noindex 로 끊기는 것은
+  //        비구글 검색 유입뿐이고 zh 11 · es 5 · tw 0 = 약 16세션/90일(0.18/일)이다.
+  //        direct 는 페이지가 살아 있으므로 그대로 들어온다. → 감수한다.
+  //   ⚠️ en·ja 는 건드리지 않는다 — 비구글 유입이 ja 46(yahoo 34·bing 9·naver 2) · en 21 로 크다.
+  //   페이지는 그대로 두고 색인만 뮸다(링크 안 끊김). 되돌리려면 아래 배열을 비우면 된다.
+  const SUSPEND_LANGS = ['tw', 'zh', 'es'];
+  const suspendedLang = SUSPEND_LANGS.length > 0 &&
+    new RegExp('^/(' + SUSPEND_LANGS.join('|') + ')/').test(urlPath);
   // 🌏 2026-09-14 — og:site_name 이 «전 페이지 한글 축제모아»였다. /en/ · /ja/ 페이지도 그랬다.
   //    검색결과·SNS 카드에 사이트명이 한글로 뜨면 외국인은 안 누른다. 언어별로 가른다.
   //    ⚠️ 한국어는 그대로 「축제모아」다 — 국내 유입이 81%다. 여기 손대면 큰일 난다.
@@ -2155,7 +2167,9 @@ function layout(title, desc, urlPath, content, opts) {
   const SITE_NAME_L = lang === 'ko' ? SITE_NAME
     : lang === 'ja' ? 'チュクチェモア' : lang === 'zh' ? '韩国庆典日历'
     : lang === 'tw' ? '韓國慶典日曆' : 'Chukjemoa';
-  const alts = (opts.alternates || []).map(a => `<link rel="alternate" hreflang="${a.hreflang}" href="${SITE}${a.href}">`).join('\n');
+  const alts = (opts.alternates || [])
+    .filter(a => !(SUSPEND_LANGS.length && new RegExp('^/(' + SUSPEND_LANGS.join('|') + ')/').test(a.href)))
+    .map(a => `<link rel="alternate" hreflang="${a.hreflang}" href="${SITE}${a.href}">`).join('\n');
   const logoHref = lang === 'ko' ? '/' : '/' + lang + '/';
   // 🌏 2026-09-07 재구성 — 외국어 내비를 «드롭다운 4개»로 묶었다.
   //   왜: 항목이 11~12개라 1280px 에서도 **두 줄로 깨져** 있었다(한국어는 드롭다운 4개로 한 줄).
@@ -2307,7 +2321,7 @@ ${alts}
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="${escA(title)}">
 <meta name="twitter:description" content="${escA(desc)}">
-<meta name="twitter:image" content="${SITE}${opts.ogImage || ogImageFor(urlPath)}">${(opts.noindex || forceNoindex) ? '\n<meta name="robots" content="noindex, follow">' : ''}
+<meta name="twitter:image" content="${SITE}${opts.ogImage || ogImageFor(urlPath)}">${(opts.noindex || forceNoindex || suspendedLang) ? '\n<meta name="robots" content="noindex, follow">' : ''}
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE}" crossorigin="anonymous"></script>
 ${BRAND_LD}
@@ -8169,7 +8183,10 @@ const urls = ['/', ...MONTHS.map(m => `/${m.key}/`), '/search/', ...(holidays.le
 // noindex 페이지는 사이트맵에서 뺀다 — "색인해라(사이트맵) + 하지마라(noindex)"는 모순 신호다.
 // 🔁 2026-08-19: en/ja/zh 사이트맵 제외를 되돌린다(위 layout()의 forceNoindex 주석 참고).
 //    구글 클릭 0을 보고 뺐지만 GA4로는 구글 아닌 검색엔진에서 16세션/28일이 들어오고 있었다.
-const NOINDEX_URLS = new Set([...SIDO_URLS, ...THEME_URLS]);
+// 🔻 2026-09-17: tw·zh·es 색인 보류 — layout() 의 SUSPEND_LANGS 주석 참고.
+//    사이트맵에서도 뺀다. 「색인해라(사이트맵) + 하지마라(noindex)」는 모순이다.
+const SUSPEND_LANG_URLS = urls.filter(u => /^\/(tw|zh|es)\//.test(u));
+const NOINDEX_URLS = new Set([...SIDO_URLS, ...THEME_URLS, ...SUSPEND_LANG_URLS]);
 // 끝난 축제(2026-08-18): 색인·사이트맵에서만 뺀다. 헤더검색에는 남긴다 —
 // 축제 이름을 아는 사람이 검색했는데 "없다"고 답하면 그건 우리 쪽 손실이다.
 const ENDED_FEST_URLS = new Set(FESTIVAL_URLS.noindex || []);
