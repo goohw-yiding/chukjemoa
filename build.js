@@ -8406,5 +8406,46 @@ try {
   }
 } catch (e) { console.log('⚠️ vercel.json 리디렉트 검사 실패:', String(e.message).slice(0, 80)); }
 
+// 🛒 2026-09-18 — 상품이 «등록만 되고 아무 페이지에도 안 붙는» 것을 매 빌드 알린다.
+//   9/18 에 「보온보냉백이 어디에도 안 걸렸다」고 잘못 보고했다. 실제로는 jangteo 의 up 에
+//   NOW_SEASON==='winter' 조건으로 들어 있어 «겨울에만» 나오는 정상 상태였다.
+//   반대로 정말 부르는 곳이 «한 줄도 없는» 항목이 9개 있었는데 그건 아무도 몰랐다.
+//   ⇒ 사람이 소스를 뒤지지 않고도 알 수 있게, 노출면 수를 세어 0인 것을 이름까지 찍는다.
+//   ⚠️ 0장이 곧 사고는 아니다 — 계절(겨울 상품이 가을에 0장)·날씨 대기는 정상이다.
+//      그래서 «막지 않고 알리기만» 한다. 판단은 사람이 한다.
+// ⚠️ data/coupang_map.json 을 읽지 않는다 — 그 파일은 «손으로 돌리는» _cpdump.js 가 만들어서
+//    낡으면 점검이 거짓말을 한다. COUPANG 은 이 파일(L386) 안에 살아 있으니 그걸 직접 본다.
+// ⚠️ 자사/제휴 판정은 «주소»로 한다 — track.js 가 클릭 시 href 로 판정하므로 기준을 맞춰야
+//    빌드 로그와 GA4 숫자가 같은 말을 한다(own 플래그와 주소가 어긋나면 주소가 맞다).
+try {
+  const items = COUPANG.items || {};
+  const ks = Object.keys(items).filter(k => !items[k].retired);
+  if (ks.length) {
+    const seen = {};
+    (function walk(d) {
+      for (const e of fs.readdirSync(d, { withFileTypes: true })) {
+        if (e.isDirectory()) {
+          if (['node_modules', '.git', 'data', 'img', '.vercel', 'api', 'cardnews', 'scripts'].includes(e.name) || e.name.startsWith('.')) continue;
+          walk(path.join(d, e.name));
+        } else if (e.name.endsWith('.html')) {
+          const h = fs.readFileSync(path.join(d, e.name), 'utf8');
+          for (const k of ks) if (h.includes('data-bb="' + k + '"')) seen[k] = (seen[k] || 0) + 1;
+        }
+      }
+    })(ROOT);
+    const isCp = k => /coupang\.com/.test(String(items[k].url || ''));
+    const zero = ks.filter(k => !seen[k]);
+    const cpPages = ks.filter(isCp).reduce((s, k) => s + (seen[k] || 0), 0);
+    const ownPages = ks.filter(k => !isCp(k)).reduce((s, k) => s + (seen[k] || 0), 0);
+    console.log(`🛒 구매박스 노출면 — 자사 ${ownPages}장 · 제휴 ${cpPages}장 (제휴 비중 ${Math.round(cpPages / Math.max(1, cpPages + ownPages) * 100)}%)`);
+    if (zero.length) {
+      console.log(`   ⚠️ 어느 페이지에도 안 붙은 상품 ${zero.length}개 — 계절·날씨 대기인지 확인할 것`);
+      console.log('      ' + zero.join(' · '));
+    }
+    const noPid = ks.filter(k => isCp(k) && !items[k].pid);
+    if (noPid.length) console.log(`   🔴 제휴인데 상품번호(pid) 없음 ${noPid.length}개 — 파트너스 실적과 못 맞춘다: ${noPid.join(' · ')}`);
+  }
+} catch (e) { console.log('⚠️ 구매박스 노출 점검 생략:', String(e.message).slice(0, 80)); }
+
 require('./geo.js').audit(ROOT);
 console.log('빌드 완료:', urls.length, '페이지');
