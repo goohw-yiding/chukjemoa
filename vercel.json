@@ -12,7 +12,19 @@
     { "source": "/festival/seourilleoseuteureisyeonpeeov-21", "destination": "/festival/", "permanent": true },
     { "source": "/festival/seourilleoseuteureisyeonpeeov-21/", "destination": "/festival/", "permanent": true },
     { "source": "/blog/festival-gear-checklist", "destination": "/blog/", "permanent": true },
-    { "source": "/blog/festival-gear-checklist/", "destination": "/blog/", "permanent": true }
+    { "source": "/blog/festival-gear-checklist/", "destination": "/blog/", "permanent": true },
+    { "source": "/festival/janghang-maengmundong-kkot-chukje", "destination": "/festival/", "permanent": true },
+    { "source": "/festival/janghang-maengmundong-kkot-chukje/", "destination": "/festival/", "permanent": true },
+    { "source": "/festival/siyf", "destination": "/festival/", "permanent": true },
+    { "source": "/festival/siyf/", "destination": "/festival/", "permanent": true },
+    { "source": "/festival/wanju-geundaeyeoksa-munhwachukje-samnyeyeokjeonpocha", "destination": "/festival/", "permanent": true },
+    { "source": "/festival/wanju-geundaeyeoksa-munhwachukje-samnyeyeokjeonpocha/", "destination": "/festival/", "permanent": true },
+    { "source": "/festival/hanyeoreum-bamui-sinjeongho-byeolbitchukje", "destination": "/festival/", "permanent": true },
+    { "source": "/festival/hanyeoreum-bamui-sinjeongho-byeolbitchukje/", "destination": "/festival/", "permanent": true },
+    { "source": "/festival/jinju-gukgayusanyahaeng", "destination": "/festival/", "permanent": true },
+    { "source": "/festival/jinju-gukgayusanyahaeng/", "destination": "/festival/", "permanent": true },
+    { "source": "/festival/gyeongsan-gatbawisowonseongchwichukje", "destination": "/festival/", "permanent": true },
+    { "source": "/festival/gyeongsan-gatbawisowonseongchwichukje/", "destination": "/festival/", "permanent": true }
   ],
   "headers": [
     {
