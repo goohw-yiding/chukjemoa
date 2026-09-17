@@ -558,18 +558,58 @@ ${mapScript('ko')}
   // ⚠️ 빌드는 페이지를 «쓰기»만 하고 지우지 않아서, 축제가 TourAPI에서 빠지면 옛 HTML이 디스크에 남는다.
   //    그 페이지는 사이트맵에도 없고 어디서도 링크되지 않는데 구글에는 색인돼 있고, 영영 갱신되지 않는다.
   //    = 딱 「가치가 별로 없는 콘텐츠」로 셀 만한 고아 페이지. 매 빌드마다 정리한다.
+  // 🔴 2026-09-17 «유예» — 위 청소가 너무 매몰찼다.
+  //   실측(8/24~9/17): 지워진 축제 상세 17장 중 **11장이 지워졌다가 다시 생겼다.**
+  //   TourAPI 에서 잠깐 빠지거나 개요·사진이 잠깐 비면 cand 에서 탈락하고, 그날로 폴더가 날아간다.
+  //   구글은 그 사이 404 를 보고 색인에서 내린 뒤, 돌아오면 처음부터 다시 색인해야 한다.
+  //   축제는 거의 다 «연례»다 — URL 을 버리면 그동안 쌓은 순위·링크를 같이 버리는 것이다.
+  //   ⇒ 원천에서 사라져도 «종료일 + GRACE» 까지는 URL 을 살려 둔다.
+  //   ⚠️ 살려 둔 페이지는 «다시 만들어지지 않는다» — 마지막 빌드 내용 그대로 얼어붙는다.
+  //      그래서 STALE_MAX 일 넘게 한 번도 안 만들어졌으면 그때는 지운다(얼어붙은 채로 방치 금지).
   {
     const liveSlugs = new Set(index.map(r => r.slug));
-    let gone = 0;
+    const LEDGER = path.join(ROOT, 'data', 'festival_seen.json');
+    const GRACE = 180;        // 종료일로부터 이만큼은 URL 을 살려 둔다
+    const STALE_MAX = 30;     // 이 기간 한 번도 안 만들어졌으면 진짜 없어진 것으로 본다
+
+    let led = {};
+    try { led = JSON.parse(fs.readFileSync(LEDGER, 'utf8')); } catch (e) { }
+    index.forEach(r => { led[r.slug] = { end: String(r.end), title: r.title, last: TODAY }; });
+
+    // YYYYMMDD 또는 YYYY-MM-DD → 오늘로부터 며칠 «지났나»(음수면 아직 안 왔다)
+    const daysPast = s => {
+      const v = String(s || '').replace(/-/g, '');
+      if (!/^\d{8}$/.test(v)) return 9999;
+      const d = new Date(+v.slice(0, 4), +v.slice(4, 6) - 1, +v.slice(6, 8));
+      const t = new Date(+TODAY.slice(0, 4), +TODAY.slice(5, 7) - 1, +TODAY.slice(8, 10));
+      return Math.round((t - d) / 86400e3);
+    };
+
+    let gone = 0, kept = 0; const keptEx = [];
     try {
       fs.readdirSync(path.join(ROOT, 'festival'), { withFileTypes: true })
         .filter(d => d.isDirectory() && !liveSlugs.has(d.name))
         .forEach(d => {
+          const rec = led[d.name];
+          const keep = rec && daysPast(rec.end) <= GRACE && daysPast(rec.last) <= STALE_MAX;
+          if (keep) {
+            kept++;
+            if (keptEx.length < 8) keptEx.push(`${d.name}(종료 ${daysPast(rec.end)}일 전·마지막 생성 ${daysPast(rec.last)}일 전)`);
+            return;
+          }
           fs.rmSync(path.join(ROOT, 'festival', d.name), { recursive: true, force: true });
+          delete led[d.name];
           gone++;
         });
-    } catch (e) {}
-    if (gone) console.log('  └ 더 이상 생성되지 않는 축제 페이지', gone, '개 삭제(고아 방지)');
+    } catch (e) { }
+    try { fs.writeFileSync(LEDGER, JSON.stringify(led)); } catch (e) { }
+
+    if (kept) {
+      console.log(`  └ 🛟 원천에서 빠졌지만 «URL 은 살려 둔» 축제 ${kept}개 (종료+${GRACE}일 이내 · 마지막 생성 ${STALE_MAX}일 이내)`);
+      keptEx.forEach(s => console.log('     · ' + s));
+    }
+    if (gone) console.log(`  └ 더 이상 생성되지 않는 축제 페이지 ${gone}개 삭제 (종료 ${GRACE}일 초과 또는 ${STALE_MAX}일 넘게 미생성)`);
+    if (!kept && !gone) console.log('  └ 유령 페이지 없음');
   }
 
   // 축제명 → 슬러그 맵. 모달이 "이 축제 상세 페이지가 있나?"를 물어볼 때 쓴다.
