@@ -170,7 +170,7 @@ function build(ctx) {
   };
 
   const TODAY8 = TODAY.replace(/-/g, '');
-  const urls = [], thinOut = [];
+  const urls = [], thinOut = [], endedOut = [];
   const tally = { map: 0, busy: 0, trr: 0, mkt: 0, rel: 0, near: 0, none: 0 };
 
   rows.forEach(f => {
@@ -269,6 +269,11 @@ ${mapScript('en')}
     // ⚠️ 개요 길이(MIN_OV)만으로는 얇은 게 새어 나온다 — 2026-09-01 감사에서 8개가 2,000자 미만.
     //    렌더된 본문을 직접 재서 얇으면 noindex + 사이트맵 제외(페이지는 남겨 링크를 안 끊는다).
     const tooThin = textLen(content) - textLen(mapHtml) < MIN_BODY;
+    // 🔻 2026-09-17 — 끝난 축제도 색인에서 뻐다. 한국어(festival.js 2026-08-18)·일본어와 같은 규칙.
+    //   오늘까지 이 규칙이 한국어에만 걸려 있었다.
+    //   ⚠️ 지우지 않는다 — 페이지는 그대로 두고 'dates have passed' 안내를 달아 둔 채
+    //   색인에서만 뻐다. 링크·내부 이동은 살아 있어 404가 생기지 않는다.
+    const skipIndex = tooThin || ended;
     // 제목 — 끝난 축제는 종전 그대로. 진행/예정만 예산 60자 안에서 연도→날짜→도시→브랜드 순으로 붙인다.
     const pageTitle = ended
       ? `${f.title} — Dates, Location & Info | Chukjemoa`
@@ -285,10 +290,11 @@ ${mapScript('en')}
     const pageDesc = head + (f.ov || '').slice(0, Math.max(40, DESC_BUDGET - head.length - tail.length)) + tail;
     writePage('en/festival/' + f.slug, layout(
       pageTitle, pageDesc,
-      urlPath, content, { lang: 'en', jsonld: ld, noindex: tooThin }));
-    if (tooThin) thinOut.push(urlPath); else urls.push(urlPath);
+      urlPath, content, { lang: 'en', jsonld: ld, noindex: skipIndex }));
+    if (skipIndex) thinOut.push(urlPath); else urls.push(urlPath);
+    if (ended && !tooThin) endedOut.push(urlPath);
   });
-  if (thinOut.length) console.log(`  /en/festival/ 본문 ${MIN_BODY}자 미만 ${thinOut.length}개 → noindex+사이트맵 제외`);
+  if (thinOut.length) console.log(`  /en/festival/ 색인 제외 ${thinOut.length}개 (끝난 축제 ${endedOut.length} + 본문 ${MIN_BODY}자 미만) → noindex+사이트맵 제외`);
 
   // 🗂️ 허브 — 「korean festivals」(82위)·「festivals in korea」(85위) 같은 머리말을 받을 페이지.
   //    지금은 /en/(62.8위)과 /en/search/(61.9위)가 받고 있는데 둘 다 읽을 내용이 없는 검색 UI다.
