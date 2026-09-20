@@ -376,6 +376,61 @@ edge.sort(key=lambda x:-x["impressions"])
 for x in edge[:12]:
     w("| %s | %d | %d | %.1f |" % (key(x), x["impressions"], x["clicks"], x["position"]))
 w("")
+
+# ── 5-1. 이 사이트의 순위대별 CTR (기준선) ─────────────────────
+# ⚠️ 2026-09 에 «CTR 이 낮으니 제목을 고쳐라»는 제안이 네 번 왔고 네 번 다 틀렸다
+#    (예: 「겨울 축제 2026」 5.2위 CTR 4.9% — 이 사이트 5~7위 평균보다 높았다).
+#    «낮다»는 반드시 «같은 순위대의 이 사이트 평균»과 비교해서만 말한다. 업계 평균표를 쓰지 않는다
+#    (축제 검색은 지도·이미지·즉답이 위를 덮어서 업계표보다 훨씬 낮다).
+#    한 주는 표본이 작아 흔들리므로 기준선은 최근 28일로 잡는다. 검색어 축끼리 비교하니 익명화 영향도 같다.
+BANDS = [(1,2), (2,3), (3,4), (4,5), (5,7), (7,10)]
+def band_of(p):
+    for lo, hi in BANDS:
+        if lo <= p < hi: return (lo, hi)
+    return None
+base_rng = (cur[1] - datetime.timedelta(days=27), cur[1])
+bi, bc = collections.Counter(), collections.Counter()
+for x in q(["query"], base_rng):
+    k = key(x)
+    if k in botset or IMMEDIATE.search(k): continue
+    b_ = band_of(x["position"])
+    if b_: bi[b_] += x["impressions"]; bc[b_] += x["clicks"]
+band_ctr = {b_: bc[b_]/bi[b_] for b_ in BANDS if bi[b_] >= 200}
+w("### 이 사이트의 순위대별 CTR — «CTR 이 낮다»는 이 표와 비교해서만 판단")
+w("")
+w("최근 28일(%s~%s) · 봇·즉답형 제외. 업계 평균표가 아니라 **우리 사이트 실측**입니다." % base_rng)
+w("")
+w("| 순위대 | 노출 | 클릭 | CTR |")
+w("|---|---:|---:|---:|")
+for b_ in BANDS:
+    if not bi[b_]: continue
+    w("| %d~%d위 | %d | %d | %s |" % (b_[0], b_[1], bi[b_], bc[b_],
+      ("%.2f%%" % (100*band_ctr[b_])) if b_ in band_ctr else "(표본 부족)"))
+w("")
+w("### 순위에 비해 정말 덜 눌리는 검색어 — 제목·설명을 손볼 후보는 여기뿐")
+w("")
+w("이번 주 노출 30+ 이고, 같은 순위대 평균대로라면 받았어야 할 클릭의 **40% 미만**이며 그 차이가 3클릭 이상인 것만.")
+w("")
+under = []
+for x in real:
+    b_ = band_of(x["position"])
+    if not b_ or b_ not in band_ctr or x["impressions"] < 30: continue
+    exp = x["impressions"] * band_ctr[b_]
+    if x["clicks"] < 0.4*exp and exp - x["clicks"] >= 3:
+        under.append((key(x), x["impressions"], x["clicks"], x["position"], exp))
+under.sort(key=lambda z: -(z[4]-z[2]))
+if under:
+    w("| 검색어 | 노출 | 클릭 | 순위 | 순위대 평균이면 |")
+    w("|---|---:|---:|---:|---:|")
+    for s in under[:12]:
+        w("| %s | %d | %d | %.1f | %.1f |" % (s[0], s[1], s[2], s[3], s[4]))
+    w("")
+else:
+    w("**이번 주는 없습니다.** 순위 대비 CTR 이 비정상인 검색어가 없으니 «제목을 고치자»는 제안은 근거가 없습니다.")
+    w("")
+w("> 여기 없는 검색어에 «CTR 이 낮으니 제목을 고치자»는 제안은 받지 마세요. 그건 순위 문제(위 문턱 표)이거나")
+w("> 검색결과 위를 지도·이미지·즉답이 덮는 문제라 제목으로 안 바뀝니다.")
+w("")
 w("### 즉답형 — CTR 판정에서 제외")
 w("")
 w("구글이 검색결과에서 바로 답해 버리는 말들입니다. 클릭 0이 정상이니 여기로 성과를 재지 마세요.")
