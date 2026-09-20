@@ -3299,12 +3299,67 @@ const JANGTEO_FAQ = [
   [`장날은 어떻게 계산하나요?`, `오일장(5일장)은 날짜 끝자리가 같은 날에 서는 시장입니다. 예를 들어 2·7일장이면 2, 7, 12, 17, 22, 27일에 열립니다. 상설시장은 매일 열려 별도로 표시했습니다.`]
 ];
 const JANGTEO_FAQ_LD = `<script type="application/ld+json">${JSON.stringify({'@context':'https://schema.org','@type':'FAQPage',mainEntity:JANGTEO_FAQ.map(q=>({'@type':'Question',name:q[0],acceptedAnswer:{'@type':'Answer',text:q[1]}}))})}</script>`;
+// ---------- 🌕 추석 연휴 장날 안내 (연휴 2주 전부터 연휴 끝까지만 뜬다) ----------
+// 2026-09-20: 서치콘솔에 「26년 추석」 393노출·9.4위·0클릭, 「9월 추석」 143노출 — 이 검색은 연휴 직전 2주가 전부다.
+//   날짜는 data/holidays.json 에서 읽는다(해마다 손으로 안 고치려고). 연휴 뒤 토·일은 사람이 계속 움직이니 같이 싣는다.
+// ⚠️ 정직성 규칙 — 외국어 chuseok.js 와 똑같이 간다:
+//    「장날 규칙상 그 날이 장날」이라는 뜻일 뿐, 실제로 선다는 보장이 아니다. 명절 당일은 쉬는 장이 많다.
+//    그 문장을 숨기지 말고 블록 안에 그대로 쓴다.
+const WD_KO = ['일', '월', '화', '수', '목', '금', '토'];
+const ENDDAY_SLUG_OF = d => ({ 1: '1-6', 6: '1-6', 2: '2-7', 7: '2-7', 3: '3-8', 8: '3-8', 4: '4-9', 9: '4-9', 5: '5-10', 0: '5-10' })[d % 10];
+const chuseokBox = (pair, list) => {
+  // ⚠️ holidays.json 에는 내년 추석도 들어 있다(2026-09-24~26 과 2027-09-14~16).
+  //    이름만 걸러 쓰면 「9월 24일~16일」 같은 엉터리 범위가 나온다 — 실제로 한 번 그렇게 나왔다.
+  //    오늘 이후로 가장 가까운 «연속된 한 덩어리»만 쓴다.
+  const D = s => new Date(+s.slice(0, 4), +s.slice(5, 7) - 1, +s.slice(8, 10));
+  const future = holidays.filter(h => h.name === '추석').map(h => h.date).sort()
+    .filter(s => D(s) >= new Date(D(TODAY).getTime() - 86400000));
+  const dates = [];
+  for (const s of future) {
+    if (!dates.length || D(s) - D(dates[dates.length - 1]) <= 86400000 * 1.5) dates.push(s); else break;
+  }
+  if (!dates.length) return '';
+  const fmt = d => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+  const all = dates.slice();
+  for (let i = 0; i < 2; i++) {                      // 연휴 다음 날이 토·일이면 이어 붙인다
+    const nx = new Date(D(all[all.length - 1]).getTime() + 86400000);
+    if (nx.getDay() === 0 || nx.getDay() === 6) all.push(fmt(nx)); else break;
+  }
+  const first = D(all[0]), last = D(all[all.length - 1]), today = D(TODAY);
+  if (today < new Date(first.getTime() - 14 * 86400000) || today > last) return '';
+  const scope = list ? list.filter(m => (m.daysNum || []).length)
+    : pair ? marketsDay.filter(m => (m.daysNum || []).some(d => d % 10 === pair[0] % 10 || d % 10 === pair[1] % 10))
+    : marketsDay;
+  const rows = all.map(s => {
+    const d = D(s), digit = d.getDate() % 10;
+    const open = scope.filter(m => (m.daysNum || []).some(x => x % 10 === digit));
+    const slug = ENDDAY_SLUG_OF(digit);
+    const has = fs.existsSync(path.join(ROOT, 'jangteo', slug));
+    const names = open.slice(0, 5).map(m => esc(m.name)).join(' · ');
+    return `<tr${s === dates[1] ? ' style="background:#fff7ed"' : ''}><td style="white-space:nowrap"><b>${d.getMonth() + 1}월 ${d.getDate()}일</b> (${WD_KO[d.getDay()]})${s === dates[1] ? ' <span style="color:#b45309;font-weight:800">추석</span>' : ''}</td>`
+      + `<td style="white-space:nowrap">끝자리 ${digit === 0 ? '0' : digit} ${has ? `<a href="/jangteo/${slug}/" style="color:#0a6c63;font-weight:700">${slug.replace('-', '·')}일장</a>` : `${slug.replace('-', '·')}일장`}</td>`
+      + `<td>${open.length ? `<b>${open.length}곳</b>${names ? ` <span style="color:#6b7280">${names}${open.length > 5 ? ' 외' : ''}</span>` : ''}`
+        : `<span style="color:#9ca3af">${pair || list ? '이 날은 안 섭니다' : '없음'}</span>`}</td></tr>`;
+  }).join('');
+  const eve = D(all[0]); eve.setDate(eve.getDate() - 1);
+  return `<section id="chuseok" style="background:#fffaf2;border:1.5px solid #fde3c4;border-radius:14px;padding:15px 17px;margin:14px 0 18px">
+<h2 style="font-size:1.12rem;font-weight:900;margin:0 0 6px;color:#9a3412">🌕 추석 연휴에 서는 장 — ${first.getMonth() + 1}월 ${first.getDate()}일~${last.getDate()}일</h2>
+<p style="margin:0 0 10px;color:#7c2d12;font-size:.95rem;line-height:1.75">${dates[1] ? `추석 당일은 <b>${D(dates[1]).getMonth() + 1}월 ${D(dates[1]).getDate()}일(${WD_KO[D(dates[1]).getDay()]})</b>입니다. ` : ''}연휴 날짜별로 <b>장날 끝자리가 맞는 시장</b>을 세어 정리했습니다.${list ? ' (이 지역 장만 셌습니다.)' : pair ? ' (이 끝자리 장만 셌습니다.)' : ''}</p>
+<div class="jt-scroll"><table style="width:100%;border-collapse:collapse;font-size:.93rem">
+<thead><tr style="background:#fff3e2;color:#7c2d12"><th style="text-align:left;padding:7px 9px">날짜</th><th style="text-align:left;padding:7px 9px">장날</th><th style="text-align:left;padding:7px 9px">장 서는 곳</th></tr></thead>
+<tbody>${rows}</tbody></table></div>
+<p style="margin:10px 0 0;color:#7c2d12;font-size:.9rem;line-height:1.75"><b>대목장은 연휴 직전 장날입니다.</b> ${eve.getMonth() + 1}월 ${eve.getDate()}일(${WD_KO[eve.getDay()]})까지 서는 장이 명절 물건 때문에 평소보다 크게 섭니다.<br>
+<b>주의 —</b> 위 숫자는 <b>장날 규칙상 그 날이 장날</b>이라는 뜻입니다. 실제로 선다는 보장이 아닙니다. <b>추석 당일에는 쉬는 장이 많고</b>, 연휴 내내 건너뛰는 시장도 있습니다. 먼 길이면 시장이나 시·군청에 전화로 확인하고 출발하세요.</p>
+</section>`;
+};
+
 const jangteoContent = `<main><div class="wrap">
 <div style="border-radius:12px;overflow:hidden;margin-bottom:16px"><img src="/img/jangteo.webp" alt="전통 오일장 풍경" style="width:100%;max-height:220px;object-fit:cover;display:block"></div>
 <h1 style="font-size:1.5rem;margin-bottom:6px">전국 유명 오일장(5일장) 날짜 총정리</h1>
 ${/* 🏷 2026-09-14 — 자기 지칭 문장. 위 월별 페이지 주석과 같은 이유다(본문 55,459자에 1회였다).
       ⛔ 이름만 반복하지 말 것. «우리만 셀 수 있는 숫자»에 이름을 붙인다. */''}
 <p style="margin:4px 0 12px;color:#4b5563;font-size:.95rem">축제모아는 한국관광공사 전통시장 정보와 행정안전부 전국전통시장표준데이터에서 <b>${marketsDay.length}곳</b>의 장날을 확인해 끝자리별로 정리했습니다. 장날이 적혀 있지 않은 시장은 <b>추측해서 넣지 않았습니다</b>.</p>
+${chuseokBox()}
 <style>
 .datepick{background:#fff;border-radius:14px;padding:14px 16px;box-shadow:0 2px 10px rgba(31,41,55,.06);margin:12px 0 16px;display:flex;flex-wrap:wrap;gap:10px;align-items:center}
 .datepick label{font-weight:700;color:#374151;font-size:.95rem}
@@ -3626,6 +3681,7 @@ ${/* 🏷 2026-09-14 — 자기 지칭. 시·도 페이지는 본문 29,300자�
 오일장은 <b>날짜 끝자리</b>로 열립니다. 예를 들어 4·9일장이면 4, 9, 14, 19, 24, 29일에 섭니다.
 <a href="/jangteo/" style="color:#0a6c63;font-weight:800">전국 표에서 날짜를 넣으면</a> 그 날 열리는 장을 한 번에 볼 수 있습니다.
 </div>
+${chuseokBox(null, withDay)}
 
 ${/* 시도별 오일장도 세션당 1.07~1.35장이다 — 내부 이동 링크가 98% 지점의 「다른 지역」뿐이었다.
       목록을 읽기 «전»에 다음 동선을 준다(허브와 같은 처방). */''}
@@ -3738,6 +3794,7 @@ ${faq.map(([q, a]) => `<p style="line-height:1.8"><b>${esc(q)}</b><br>${esc(a)}<
 <b>${alias}은 모두 같은 장입니다.</b> 끝자리가 5 차이 나면 한 시장이 두 날짜에 다 서기 때문입니다.${b === 10 ? ' 10일·20일·30일은 끝자리가 0이라 「0일장」이라고도 부릅니다.' : ''}
 오늘 어디가 서는지 한 번에 보려면 <a href="/jangteo/" style="color:#0a6c63;font-weight:800">전국 오일장 표</a>에서 날짜를 넣어 보세요.
 </div>
+${chuseokBox(pair)}
 
 <h2 class="sec">다른 끝자리</h2>
 ${enddayRow(slug)}

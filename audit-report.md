@@ -92,7 +92,7 @@ _고아는 홈에서 BFS로 잰다. 「끝나서 링크를 뗀」 지난달 달�
 | 항목 | 건수 |
 |---|---|
 | 끊긴 내부 링크 | **4** |
-| 홈에서 도달 불가(고아) | **12** |
+| 홈에서 도달 불가(고아) | **16** |
 | 렌더 사고 | 0 |
 | 사이트맵 유령 URL | 0 |
 | canonical 누락 | 0 |
@@ -105,7 +105,9 @@ _고아는 홈에서 BFS로 잰다. 「끝나서 링크를 뗀」 지난달 달�
 - /festival/geumcheonsiheunghaenggungmunhwaje/ → /festival/2026-koriageuraendeuseil/
 - /festival/geumcheonsiheunghaenggungmunhwaje/ → /festival/2026-koriageuraendeuseil/
 
-🔴 홈에서 도달 불가(고아) 12건
+🔴 홈에서 도달 불가(고아) 16건
+- /festival/anadeurim-peseutibeol/
+- /festival/cheongwonsaengmyeongchukje/
 - /festival/chuncheonaenitoipeseutibeol/
 - /festival/dangjinhaenaruhwangtogogumahongbopanchokhaengsa/
 - /festival/gangnampeseutibeol/
@@ -113,9 +115,7 @@ _고아는 홈에서 BFS로 잰다. 「끝나서 링크를 뗀」 지난달 달�
 - /festival/gunsansiganyeohaengchukje/
 - /festival/gwacheoncheongnyeonchukje/
 - /festival/jeongjohyomunhwaje/
-- /festival/pohang-haetteumyeon-guksuchukje/
-- /festival/uiryeongnichirichipeseutibeol/
-- /festival/wanju-waildeu-rokeolpudeuchukje/
+- /festival/jisanggunpeseutibeol/
 
 ## 7. 색인 대상 본문 두께 · 판박이 정도
 | 섹션 | 개수 | 최소 | 중앙 | 최대 | 2,000자 미만 | 평균 유사도 |
@@ -150,7 +150,7 @@ _고아는 홈에서 BFS로 잰다. 「끝나서 링크를 뗀」 지난달 달�
 ## 요약
 - 🔴 즉시 고칠 것: **2건**
   - 끊긴 내부 링크 4건
-  - 홈에서 도달 불가(고아) 12건
+  - 홈에서 도달 불가(고아) 16건
 - 🟠 보강할 것: **7건**
   - 오일장 — 빈 시도 3개(서울,광주,세종)
   - 온천 — 빈 시도 5개(대구,인천,광주,세종,제주)
