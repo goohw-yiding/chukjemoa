@@ -14,13 +14,11 @@ const get = u => new Promise((res, rej) => {
     r.setEncoding('utf8'); let d = ''; r.on('data', c => d += c); r.on('end', () => res(d));
   }).on('error', rej);
 });
-const SIDO_SHORT = {
-  '서울특별시': '서울', '부산광역시': '부산', '대구광역시': '대구', '인천광역시': '인천',
-  '광주광역시': '광주', '대전광역시': '대전', '울산광역시': '울산', '세종특별자치시': '세종',
-  '경기도': '경기', '강원도': '강원', '강원특별자치도': '강원', '충청북도': '충북', '충청남도': '충남',
-  '전라북도': '전북', '전북특별자치도': '전북', '전라남도': '전남', '경상북도': '경북',
-  '경상남도': '경남', '제주특별자치도': '제주'
-};
+// ⚠️ 2026-09-22 — 여기 자체 파서를 두었다가 사고가 났다.
+//    원본 ctprvnNm 이 「전남광주통합특별시」로 오는데, 접미사만 떼는 규칙이라
+//    sido 가 «전남광주통합» 이 됐고, 그 14개 코스(광양·목포·여수·해남)가
+//    시·도 목록에서 통째로 빠져 있었다. region.js 의 parseAddr 만 쓴다.
+const { parseAddr } = require('./region');
 // 표준데이터는 여러 값을 «+»로 잇는다. 사람이 읽는 문장으로 되돌린다.
 const plus = s => String(s || '').split('+').map(x => x.trim()).filter(Boolean);
 const clean = s => String(s || '').replace(/\s+/g, ' ').trim();
@@ -45,8 +43,8 @@ async function page(no, rows) {
   const seen = new Set(), out = [];
   for (const r of all) {
     const sidoRaw = clean(r.ctprvnNm);
-    const sido = SIDO_SHORT[sidoRaw] || sidoRaw.replace(/(특별자치시|특별자치도|특별시|광역시|도)$/, '');
     const city = clean(r.signguNm);
+    const sido = parseAddr(sidoRaw + ' ' + city).sido;
     const course = clean(r.cityTourCourse);
     if (!sido || !course) continue;
     const k = sido + '|' + city + '|' + course;
