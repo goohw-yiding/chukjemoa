@@ -574,7 +574,15 @@ ${mapScript('ko')}
 
     let led = {};
     try { led = JSON.parse(fs.readFileSync(LEDGER, 'utf8')); } catch (e) { }
-    index.forEach(r => { led[r.slug] = { end: String(r.end), title: r.title, last: TODAY }; });
+    // ⚠️ 2026-09-22 — start·sido·sigungu·id 도 같이 남긴다.
+    //    유예로 살려 둔 페이지를 build.js 가 월별 목록에 다시 걸 때 «몇 월·어느 지역»이 필요한데
+    //    end·title 만 남겨 두고 있었다. 원천에서 빠진 뒤에는 이 기록이 유일한 단서다.
+    index.forEach(r => {
+      led[r.slug] = {
+        end: String(r.end), start: String(r.start || r.end), title: r.title,
+        sido: r.sido || '', sigungu: r.sigungu || '', id: String(r.id || ''), last: TODAY
+      };
+    });
 
     // YYYYMMDD 또는 YYYY-MM-DD → 오늘로부터 며칠 «지났나»(음수면 아직 안 왔다)
     const daysPast = s => {

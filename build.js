@@ -2756,6 +2756,34 @@ let FEST_PAGES = [];
 try { FEST_PAGES = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/festival_pages.json'), 'utf8')); } catch (e) { }
 const FEST_PAGE_BY_ID = new Map(FEST_PAGES.map(p => [String(p.id), p]));
 
+// ── 유예로 살려 둔 축제 상세 (2026-09-22)
+// ⚠️ 왜 이게 있나 — 9/17에 넣은 GRACE 유예 규칙(festival.js)은 «URL 은 살렸지만 링크는 안 살렸다».
+//    실사고: 2026-09-22 00:38 TourAPI 갱신에서 10월 축제 16개가 원천에서 통째로 빠졌다
+//    (청원생명축제·군산시간여행축제·강남페스티벌 등, 전부 10/01~10/11 개최 예정).
+//    원천에서 빠지면 festival_pages.json 에서도 빠지고 → 월별 페이지가 링크할 명단에 없고
+//    → 폴더는 유예로 남아 **사이트 안에서 도달 불가한 고아 17장**이 됐다.
+//    유예 규칙이 막으려던 「고아 페이지」가 다른 문으로 다시 생긴 셈이다.
+// ⇒ 종료일이 아직 안 지났고 파일이 실제로 있는 유예 페이지는 월별 목록에 «같이» 건다.
+//    ⚠️ 유예 페이지는 다시 만들어지지 않는다(얼어붙은 HTML) — 그래서 칩에 「자료 갱신 지연」을 붙여
+//       현재 정보와 다를 수 있음을 밝힌다. 사람을 속이지 않으면서 길은 열어 준다.
+//    ledger 옛 기록에는 sido·start 가 없다(festival.js 가 지금부터 같이 남긴다). 없으면 end 로 배치한다.
+let FEST_KEPT = [];
+try {
+  const _led = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/festival_seen.json'), 'utf8'));
+  const _live = new Set(FEST_PAGES.map(p => p.slug));
+  const _td8 = TODAY.replace(/-/g, '');
+  FEST_KEPT = Object.entries(_led)
+    .filter(([slug, r]) => r && r.title && !_live.has(slug)
+      && String(r.end) >= _td8
+      && fs.existsSync(path.join(ROOT, 'festival', slug, 'index.html')))
+    .map(([slug, r]) => ({
+      slug, id: r.id || '', title: r.title,
+      start: String(r.start || r.end), end: String(r.end),
+      sido: r.sido || '', sigungu: r.sigungu || '', _kept: true
+    }));
+  if (FEST_KEPT.length) console.log('  ↩ 유예 축제 상세', FEST_KEPT.length, '장을 월별 목록에 같이 건다');
+} catch (e) { }
+
 // ---------- 월별 페이지 ----------
 // ⚠️ 2026-08-22: MONTHS 배열 선언 순서 그대로 찍다 보니 이미 지난 7월이 맨 앞에 나오는 등
 //    날짜와 무관해 보이는 정렬이었다. 오늘이 속한 달을 맨 앞으로 돌리고(rotate), 그중
@@ -2915,7 +2943,9 @@ MONTHS.forEach(mm => {
   const quietList = (((visitors.seasonByMonth || {}).months || {})[String(repM)] || [])
     .filter(r => r.idx && r.num > 800000).sort((x, z) => x.idx - z.idx).slice(0, 5);
   // 개별 축제 페이지가 있는 것 = 이 달의 '깊게 볼 축제'
-  const deep = FEST_PAGES.filter(f => +String(f.start).slice(4, 6) === M || +String(f.end).slice(4, 6) === M);
+  const deep = FEST_PAGES.concat(FEST_KEPT)
+    .filter(f => +String(f.start).slice(4, 6) === M || +String(f.end).slice(4, 6) === M)
+    .sort((a, b) => String(a.start).localeCompare(String(b.start)));
   // ---------- 「예년 이맘때」 (2026-08-31) ----------
   // 12~4월은 TourAPI에도 자료가 없다 — 지자체가 개최 2~3개월 전에야 등록하기 때문이다.
   //   실측: 2026-11 44건 / 2026-12 19건 / 2027-01 2건 (작년 같은 달은 84·36·36건이었다)
@@ -3027,13 +3057,19 @@ ${/* ⚠️ 2026-09-22 — 여기 `deep.slice(0, 40)` 이 있었다. 바로 위 
      10월 796KB 대비 +2.5% 다. ⛔ 다시 자르지 말 것 — 자르려면 소제목 숫자도 같이 바꿔야 한다. */''}
 <div class="frelm">${deep.map(f => {
   const gp = guidePostByTitle.get(f.title);
-  return `<a href="/festival/${f.slug}/">${esc(f.title)}<span>${esc(f.sido)} ${esc(f.sigungu || '')}</span></a>`
+  // 유예 페이지(원천에서 빠진 뒤 얼어붙은 것)는 「자료 갱신 지연」을 밝힌다 — 현재 정보와 다를 수 있다.
+  const sub = f._kept
+    ? '⏳ 자료 갱신 지연 · 일정 재확인'
+    : `${esc(f.sido)} ${esc(f.sigungu || '')}`;
+  return `<a href="/festival/${f.slug}/"${f._kept ? ' class="frelm-k"' : ''}>${esc(f.title)}<span>${sub}</span></a>`
     + (gp ? `<a href="/blog/${gp.slug}/" class="frelm-g">📖 ${esc(f.title)} 완벽 가이드<span>사전 정보·연계 코스</span></a>` : '');
 }).join('')}</div>
 <style>.frelm{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:8px;margin:12px 0}
 .frelm a{background:#fff;border:1.5px solid #dcefeb;border-radius:12px;padding:10px 13px;text-decoration:none;color:#374151;font-weight:700;font-size:.9rem;line-height:1.4}
 .frelm a span{display:block;color:#9ca3af;font-weight:600;font-size:.82em;margin-top:2px}
 .frelm a:hover{background:#e2f5f2}
+.frelm a.frelm-k{background:#fafafa;border-color:#e5e7eb;color:#6b7280}
+.frelm a.frelm-k:hover{background:#f3f4f6}
 .frelm a.frelm-g{background:#fff7ed;border-color:#fdd8ae;color:#9a5b1f}
 .frelm a.frelm-g:hover{background:#fef0dd}</style>` : ''}
 
@@ -8508,6 +8544,32 @@ try {
     if (noPid.length) console.log(`   🔴 제휴인데 상품번호(pid) 없음 ${noPid.length}개 — 파트너스 실적과 못 맞춘다: ${noPid.join(' · ')}`);
   }
 } catch (e) { console.log('⚠️ 구매박스 노출 점검 생략:', String(e.message).slice(0, 80)); }
+
+// ── 유예 페이지의 죽은 축제 링크 청소 (2026-09-22)
+// ⚠️ 왜 후처리인가 — 유예로 살려 둔 상세는 «다시 만들어지지 않는다»(얼어붙은 HTML).
+//    그래서 그때 걸어 둔 「같이 보면 좋은 축제」 링크가, 그 축제가 나중에 사라지거나
+//    제목이 바뀌어 슬러그가 옮겨 가면 영구 404가 된다.
+//    실사고: 강남페스티벌·금천시흥행궁문화제(9/20 얼어붙음)가 `/festival/2026-koriageuraendeuseil/`
+//    을 각 2회 링크 — 그 축제는 TourAPI에서 제목이 「2027 코리아그랜드세일」로 바뀌며
+//    슬러그가 `2027-…`로 옮겨 갔고 옛 폴더는 청소됐다. 총 끊긴 링크 4건의 원인이었다.
+// ⇒ 렌더로는 못 고치니 «쓰고 난 뒤» 죽은 앵커만 떼어낸다. 앵커째 지워 사람을 404로 안 보낸다.
+try {
+  let fixedPages = 0, fixedLinks = 0;
+  for (const f of FEST_KEPT) {
+    const p = path.join(ROOT, 'festival', f.slug, 'index.html');
+    if (!fs.existsSync(p)) continue;
+    const before = fs.readFileSync(p, 'utf8');
+    let n = 0;
+    const after = before.replace(/<a\s+href="\/festival\/([a-z0-9\-]+)\/"[^>]*>[\s\S]*?<\/a>/g,
+      (m, slug) => {
+        if (slug === f.slug) return m;
+        if (fs.existsSync(path.join(ROOT, 'festival', slug, 'index.html'))) return m;
+        n++; return '';
+      });
+    if (n) { fs.writeFileSync(p, after); fixedPages++; fixedLinks += n; }
+  }
+  if (fixedLinks) console.log(`  🧹 유예 페이지 ${fixedPages}장에서 죽은 축제 링크 ${fixedLinks}개 제거`);
+} catch (e) { console.log('⚠️ 유예 페이지 링크 청소 생략:', String(e.message).slice(0, 80)); }
 
 require('./geo.js').audit(ROOT);
 console.log('빌드 완료:', urls.length, '페이지');
