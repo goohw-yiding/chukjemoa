@@ -3020,7 +3020,12 @@ ${(() => {
 
 ${deep.length ? `<h2 class="sec">${mm.short}에 자세히 볼 축제 ${deep.length}곳</h2>
 <p>아래 축제는 <b>개별 페이지</b>가 있습니다. 축제 소개뿐 아니라 그 동네가 이달 얼마나 붐비는지, 근처 맛집·카페의 영업시간, 걷기 좋은 길, 숙소, 그리고 축제를 중심으로 한 하루 코스까지 한 페이지에 정리해 두었습니다.</p>
-<div class="frelm">${deep.slice(0, 40).map(f => {
+${/* ⚠️ 2026-09-22 — 여기 `deep.slice(0, 40)` 이 있었다. 바로 위 소제목은 「자세히 볼 축제
+     ${deep.length}곳」이라 «말해 놓고» 링크는 40개만 걸었다 — 10월은 138곳이라 쓰고 40개만
+     걸려 98곳이 사이트 안에서 안 보였다. 11·12월처럼 40개 미만인 달은 전부 나왔으니
+     40은 의도된 기준이 아니라 그냥 남은 상한이었다. 칩 하나가 ~200바이트라 전부 걸어도
+     10월 796KB 대비 +2.5% 다. ⛔ 다시 자르지 말 것 — 자르려면 소제목 숫자도 같이 바꿔야 한다. */''}
+<div class="frelm">${deep.map(f => {
   const gp = guidePostByTitle.get(f.title);
   return `<a href="/festival/${f.slug}/">${esc(f.title)}<span>${esc(f.sido)} ${esc(f.sigungu || '')}</span></a>`
     + (gp ? `<a href="/blog/${gp.slug}/" class="frelm-g">📖 ${esc(f.title)} 완벽 가이드<span>사전 정보·연계 코스</span></a>` : '');
