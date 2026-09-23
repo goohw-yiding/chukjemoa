@@ -65,7 +65,16 @@ const CITIES = [
   // 🚡 2026-09-23 추가 — 제천. **en 하나만** 열린다(장소 20곳 — 게이트와 정확히 같은 경계값).
   //   ⚠️ 한 건만 빠져도 닫힌다. `/en/jecheon/` 이 사라지면 여기부터 확인할 것.
   //   ⛔ 같은 날 만든 **포천은 여기 없다** — 다섯 언어 전부 미달(en 14 · ja 14 · tw 14 · zh 12 · es 9).
-  { key: 'jecheon', sido: '충북', sgg: '제천시', ko: '제천', match: ['제천', 'Jecheon', '堤川', 'チェチョン'] }
+  { key: 'jecheon', sido: '충북', sgg: '제천시', ko: '제천', match: ['제천', 'Jecheon', '堤川', 'チェチョン'] },
+  // 🎭 2026-09-23 추가 — 안동. **5개어 전부 통과**(en 29 · ja 32 · zh 20 · tw 27 · es 27) — 경주 다음 두 번째.
+  { key: 'andong', sido: '경북', sgg: '안동시', ko: '안동', match: ['안동', 'Andong', '安東', '安东', 'アンドン'] },
+  // 🚣 2026-09-23 추가 — 충주. **ja 20 만** 통과(en 18 · tw 18 · zh 14 · es 14).
+  { key: 'chungju', sido: '충북', sgg: '충주시', ko: '충주', match: ['충주', 'Chungju', '忠州', 'チュンジュ'] },
+  // 🦀 2026-09-23 추가 — 삼척. en 25 · ja 20 통과.
+  { key: 'samcheok', sido: '강원', sgg: '삼척시', ko: '삼척', match: ['삼척', 'Samcheok', '三陟', 'サムチョク'] },
+  // 🏕 2026-09-23 추가 — 가평. en 22 · ja 20 통과.
+  //   ⛔ 같은 날 만든 **남해는 여기 없다** — 한 언어도 게이트를 못 넘는다(en 17 · ja 17).
+  { key: 'gapyeong', sido: '경기', sgg: '가평군', ko: '가평', match: ['가평', 'Gapyeong', '加平', 'カピョン'] }
 ];
 // ⛔ 목록에서 «뺀» 도시 — 폴더를 지우기 위해 이름을 계속 들고 있어야 한다.
 //   군산: 여행 검색량 4위(275K)인데 공공데이터 관광지가 29곳으로 게이트(30)에 1 모자랐다 → 2026-09-07 청주로 교체.
@@ -96,11 +105,11 @@ const CITIES_T = {
 };
 // 도시 이름 5개어 — CITIES 와 짝이 맞아야 한다(빠지면 제목이 undefined 로 나간다).
 const CITY_NAME = {
-  en: { incheon: 'Incheon', yeosu: 'Yeosu', suwon: 'Suwon', tongyeong: 'Tongyeong', geoje: 'Geoje', gangneung: 'Gangneung', sokcho: 'Sokcho', jeonju: 'Jeonju', daegu: 'Daegu', cheongju: 'Cheongju', gongju: 'Gongju', gunsan: 'Gunsan', daejeon: 'Daejeon', ulsan: 'Ulsan', chuncheon: 'Chuncheon', taean: 'Taean', paju: 'Paju', pohang: 'Pohang', mokpo: 'Mokpo', jecheon: 'Jecheon' },
-  ja: { incheon: '仁川', yeosu: '麗水', suwon: '水原', tongyeong: '統営', geoje: '巨済', gangneung: '江陵', sokcho: '束草', jeonju: '全州', daegu: '大邱', cheongju: '清州', gongju: '公州', gunsan: '群山', daejeon: '大田', ulsan: '蔚山', chuncheon: '春川', taean: '泰安', paju: '坡州', pohang: '浦項', mokpo: '木浦', jecheon: '堤川' },
-  zh: { incheon: '仁川', yeosu: '丽水', suwon: '水原', tongyeong: '统营', geoje: '巨济', gangneung: '江陵', sokcho: '束草', jeonju: '全州', daegu: '大邱', cheongju: '清州', gongju: '公州', gunsan: '群山', daejeon: '大田', ulsan: '蔚山', chuncheon: '春川', taean: '泰安', paju: '坡州', pohang: '浦项', mokpo: '木浦', jecheon: '堤川' },
-  tw: { incheon: '仁川', yeosu: '麗水', suwon: '水原', tongyeong: '統營', geoje: '巨濟', gangneung: '江陵', sokcho: '束草', jeonju: '全州', daegu: '大邱', cheongju: '淸州', gongju: '公州', gunsan: '群山', daejeon: '大田', ulsan: '蔚山', chuncheon: '春川', taean: '泰安', paju: '坡州', pohang: '浦項', mokpo: '木浦', jecheon: '堤川' },
-  es: { incheon: 'Incheon', yeosu: 'Yeosu', suwon: 'Suwon', tongyeong: 'Tongyeong', geoje: 'Geoje', gangneung: 'Gangneung', sokcho: 'Sokcho', jeonju: 'Jeonju', daegu: 'Daegu', cheongju: 'Cheongju', gongju: 'Gongju', gunsan: 'Gunsan', daejeon: 'Daejeon', ulsan: 'Ulsan', chuncheon: 'Chuncheon', taean: 'Taean', paju: 'Paju', pohang: 'Pohang', mokpo: 'Mokpo', jecheon: 'Jecheon' }
+  en: { incheon: 'Incheon', yeosu: 'Yeosu', suwon: 'Suwon', tongyeong: 'Tongyeong', geoje: 'Geoje', gangneung: 'Gangneung', sokcho: 'Sokcho', jeonju: 'Jeonju', daegu: 'Daegu', cheongju: 'Cheongju', gongju: 'Gongju', gunsan: 'Gunsan', daejeon: 'Daejeon', ulsan: 'Ulsan', chuncheon: 'Chuncheon', taean: 'Taean', paju: 'Paju', pohang: 'Pohang', mokpo: 'Mokpo', jecheon: 'Jecheon', andong: 'Andong', chungju: 'Chungju', samcheok: 'Samcheok', gapyeong: 'Gapyeong' },
+  ja: { incheon: '仁川', yeosu: '麗水', suwon: '水原', tongyeong: '統営', geoje: '巨済', gangneung: '江陵', sokcho: '束草', jeonju: '全州', daegu: '大邱', cheongju: '清州', gongju: '公州', gunsan: '群山', daejeon: '大田', ulsan: '蔚山', chuncheon: '春川', taean: '泰安', paju: '坡州', pohang: '浦項', mokpo: '木浦', jecheon: '堤川', andong: '安東', chungju: '忠州', samcheok: '三陟', gapyeong: '加平' },
+  zh: { incheon: '仁川', yeosu: '丽水', suwon: '水原', tongyeong: '统营', geoje: '巨济', gangneung: '江陵', sokcho: '束草', jeonju: '全州', daegu: '大邱', cheongju: '清州', gongju: '公州', gunsan: '群山', daejeon: '大田', ulsan: '蔚山', chuncheon: '春川', taean: '泰安', paju: '坡州', pohang: '浦项', mokpo: '木浦', jecheon: '堤川', andong: '安东', chungju: '忠州', samcheok: '三陟', gapyeong: '加平' },
+  tw: { incheon: '仁川', yeosu: '麗水', suwon: '水原', tongyeong: '統營', geoje: '巨濟', gangneung: '江陵', sokcho: '束草', jeonju: '全州', daegu: '大邱', cheongju: '淸州', gongju: '公州', gunsan: '群山', daejeon: '大田', ulsan: '蔚山', chuncheon: '春川', taean: '泰安', paju: '坡州', pohang: '浦項', mokpo: '木浦', jecheon: '堤川', andong: '安東', chungju: '忠州', samcheok: '三陟', gapyeong: '加平' },
+  es: { incheon: 'Incheon', yeosu: 'Yeosu', suwon: 'Suwon', tongyeong: 'Tongyeong', geoje: 'Geoje', gangneung: 'Gangneung', sokcho: 'Sokcho', jeonju: 'Jeonju', daegu: 'Daegu', cheongju: 'Cheongju', gongju: 'Gongju', gunsan: 'Gunsan', daejeon: 'Daejeon', ulsan: 'Ulsan', chuncheon: 'Chuncheon', taean: 'Taean', paju: 'Paju', pohang: 'Pohang', mokpo: 'Mokpo', jecheon: 'Jecheon', andong: 'Andong', chungju: 'Chungju', samcheok: 'Samcheok', gapyeong: 'Gapyeong' }
 };
 
 const T = {
