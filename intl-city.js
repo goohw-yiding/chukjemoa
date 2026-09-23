@@ -56,7 +56,12 @@ const CITIES = [
   // 🏖 2026-09-23 추가 — 태안. **en 23 · ja 21 만** 통과(zh 11 · tw 11 · es 15 미달) — 두 언어만 연다.
   { key: 'taean', sido: '충남', sgg: '태안군', ko: '태안', match: ['태안', 'Taean', '泰安', 'テアン'] },
   // ☕ 2026-09-23 추가 — 파주. 5개어 전부 통과.
-  { key: 'paju', sido: '경기', sgg: '파주시', ko: '파주', match: ['파주', 'Paju', '坡州', 'パジュ'] }
+  { key: 'paju', sido: '경기', sgg: '파주시', ko: '파주', match: ['파주', 'Paju', '坡州', 'パジュ'] },
+  // 🌅 2026-09-23 추가 — 포항. en 33 · ja 30 · tw 30 · zh 22 통과 / es 19 로 **1 모자라** 서어만 안 열린다.
+  { key: 'pohang', sido: '경북', sgg: '포항시', ko: '포항', match: ['포항', 'Pohang', '浦項', '浦项', 'ポハン'] },
+  // ⚓ 2026-09-23 추가 — 목포. **en 25 · ja 25 만** 통과(zh 18 · tw 19 · es 17 미달).
+  //   ⛔ 같은 날 만든 **단양은 여기 없다** — 한 언어도 게이트를 못 넘어(en 17 · ja 18) 넣어도 만들 게 없다.
+  { key: 'mokpo', sido: '전남', sgg: '목포시', ko: '목포', match: ['목포', 'Mokpo', '木浦', 'モクポ'] }
 ];
 // ⛔ 목록에서 «뺀» 도시 — 폴더를 지우기 위해 이름을 계속 들고 있어야 한다.
 //   군산: 여행 검색량 4위(275K)인데 공공데이터 관광지가 29곳으로 게이트(30)에 1 모자랐다 → 2026-09-07 청주로 교체.
@@ -87,11 +92,11 @@ const CITIES_T = {
 };
 // 도시 이름 5개어 — CITIES 와 짝이 맞아야 한다(빠지면 제목이 undefined 로 나간다).
 const CITY_NAME = {
-  en: { incheon: 'Incheon', yeosu: 'Yeosu', suwon: 'Suwon', tongyeong: 'Tongyeong', geoje: 'Geoje', gangneung: 'Gangneung', sokcho: 'Sokcho', jeonju: 'Jeonju', daegu: 'Daegu', cheongju: 'Cheongju', gongju: 'Gongju', gunsan: 'Gunsan', daejeon: 'Daejeon', ulsan: 'Ulsan', chuncheon: 'Chuncheon', taean: 'Taean', paju: 'Paju' },
-  ja: { incheon: '仁川', yeosu: '麗水', suwon: '水原', tongyeong: '統営', geoje: '巨済', gangneung: '江陵', sokcho: '束草', jeonju: '全州', daegu: '大邱', cheongju: '清州', gongju: '公州', gunsan: '群山', daejeon: '大田', ulsan: '蔚山', chuncheon: '春川', taean: '泰安', paju: '坡州' },
-  zh: { incheon: '仁川', yeosu: '丽水', suwon: '水原', tongyeong: '统营', geoje: '巨济', gangneung: '江陵', sokcho: '束草', jeonju: '全州', daegu: '大邱', cheongju: '清州', gongju: '公州', gunsan: '群山', daejeon: '大田', ulsan: '蔚山', chuncheon: '春川', taean: '泰安', paju: '坡州' },
-  tw: { incheon: '仁川', yeosu: '麗水', suwon: '水原', tongyeong: '統營', geoje: '巨濟', gangneung: '江陵', sokcho: '束草', jeonju: '全州', daegu: '大邱', cheongju: '淸州', gongju: '公州', gunsan: '群山', daejeon: '大田', ulsan: '蔚山', chuncheon: '春川', taean: '泰安', paju: '坡州' },
-  es: { incheon: 'Incheon', yeosu: 'Yeosu', suwon: 'Suwon', tongyeong: 'Tongyeong', geoje: 'Geoje', gangneung: 'Gangneung', sokcho: 'Sokcho', jeonju: 'Jeonju', daegu: 'Daegu', cheongju: 'Cheongju', gongju: 'Gongju', gunsan: 'Gunsan', daejeon: 'Daejeon', ulsan: 'Ulsan', chuncheon: 'Chuncheon', taean: 'Taean', paju: 'Paju' }
+  en: { incheon: 'Incheon', yeosu: 'Yeosu', suwon: 'Suwon', tongyeong: 'Tongyeong', geoje: 'Geoje', gangneung: 'Gangneung', sokcho: 'Sokcho', jeonju: 'Jeonju', daegu: 'Daegu', cheongju: 'Cheongju', gongju: 'Gongju', gunsan: 'Gunsan', daejeon: 'Daejeon', ulsan: 'Ulsan', chuncheon: 'Chuncheon', taean: 'Taean', paju: 'Paju', pohang: 'Pohang', mokpo: 'Mokpo' },
+  ja: { incheon: '仁川', yeosu: '麗水', suwon: '水原', tongyeong: '統営', geoje: '巨済', gangneung: '江陵', sokcho: '束草', jeonju: '全州', daegu: '大邱', cheongju: '清州', gongju: '公州', gunsan: '群山', daejeon: '大田', ulsan: '蔚山', chuncheon: '春川', taean: '泰安', paju: '坡州', pohang: '浦項', mokpo: '木浦' },
+  zh: { incheon: '仁川', yeosu: '丽水', suwon: '水原', tongyeong: '统营', geoje: '巨济', gangneung: '江陵', sokcho: '束草', jeonju: '全州', daegu: '大邱', cheongju: '清州', gongju: '公州', gunsan: '群山', daejeon: '大田', ulsan: '蔚山', chuncheon: '春川', taean: '泰安', paju: '坡州', pohang: '浦项', mokpo: '木浦' },
+  tw: { incheon: '仁川', yeosu: '麗水', suwon: '水原', tongyeong: '統營', geoje: '巨濟', gangneung: '江陵', sokcho: '束草', jeonju: '全州', daegu: '大邱', cheongju: '淸州', gongju: '公州', gunsan: '群山', daejeon: '大田', ulsan: '蔚山', chuncheon: '春川', taean: '泰安', paju: '坡州', pohang: '浦項', mokpo: '木浦' },
+  es: { incheon: 'Incheon', yeosu: 'Yeosu', suwon: 'Suwon', tongyeong: 'Tongyeong', geoje: 'Geoje', gangneung: 'Gangneung', sokcho: 'Sokcho', jeonju: 'Jeonju', daegu: 'Daegu', cheongju: 'Cheongju', gongju: 'Gongju', gunsan: 'Gunsan', daejeon: 'Daejeon', ulsan: 'Ulsan', chuncheon: 'Chuncheon', taean: 'Taean', paju: 'Paju', pohang: 'Pohang', mokpo: 'Mokpo' }
 };
 
 const T = {

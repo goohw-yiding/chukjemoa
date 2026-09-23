@@ -1928,6 +1928,7 @@ const KO_NAV = `<button class="navtoggle" id="navtoggle" aria-label="메뉴 열�
 <a href="/incheon/">⚓ 인천</a>
 <a href="/daegu/">🌆 대구</a>
 <a href="/gyeongju/">🏛 경주</a>
+<a href="/pohang/">🌅 포항</a>
 <a href="/gongju/">🏛 공주</a>
 <a href="/daejeon/">🔬 대전</a>
 <a href="/ulsan/">🐋 울산</a>
@@ -1937,10 +1938,12 @@ const KO_NAV = `<button class="navtoggle" id="navtoggle" aria-label="메뉴 열�
 <a href="/jeonju/">🏘 전주</a>
 <a href="/gunsan/">🚢 군산</a>
 <a href="/cheongju/">🏞 청주</a>
+<a href="/danyang/">⛰ 단양</a>
 <a href="/suwon/">🏯 수원</a>
 <a href="/paju/">☕ 파주</a>
 <a href="/taean/">🏖 태안</a>
 <a href="/yeosu/">🌊 여수</a>
+<a href="/mokpo/">⚓ 목포</a>
 <a href="/tongyeong/">🐚 통영</a>
 <a href="/geoje/">⛵ 거제</a>
 </div></div>
