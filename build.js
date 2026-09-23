@@ -1928,6 +1928,7 @@ const KO_NAV = `<button class="navtoggle" id="navtoggle" aria-label="메뉴 열�
 <a href="/incheon/">⚓ 인천</a>
 <a href="/daegu/">🌆 대구</a>
 <a href="/gyeongju/">🏛 경주</a>
+<a href="/gongju/">🏛 공주</a>
 <a href="/gangneung/">🌅 강릉</a>
 <a href="/sokcho/">🏔 속초</a>
 <a href="/jeonju/">🏘 전주</a>

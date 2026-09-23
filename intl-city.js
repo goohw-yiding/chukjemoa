@@ -39,7 +39,10 @@ const CITIES = [
   { key: 'sokcho', sido: '강원', sgg: '속초시', ko: '속초', match: ['속초', 'Sokcho', '束草'] },
   { key: 'jeonju', sido: '전북', sgg: '전주시', ko: '전주', match: ['전주', 'Jeonju', '全州'] },
   { key: 'daegu', sido: '대구', ko: '대구', match: ['대구', 'Daegu', '大邱'] },
-  { key: 'cheongju', sido: '충북', sgg: '청주시', ko: '청주', match: ['청주', 'Cheongju', '清州', '淸州'] }
+  { key: 'cheongju', sido: '충북', sgg: '청주시', ko: '청주', match: ['청주', 'Cheongju', '清州', '淸州'] },
+  // 🏛 2026-09-23 추가 — 공주. ⚠️ **en·ja 만** 게이트(20)를 넘는다(en 26 · ja 29 / zh 13 · tw 18 · es 15).
+  //   한국어 `/gongju/` 가 외국어 링크를 걸기 때문에 여기 없으면 404 내부 링크가 난다(2026-09-04 사고와 같은 형태).
+  { key: 'gongju', sido: '충남', sgg: '공주시', ko: '공주', match: ['공주', 'Gongju', '公州', 'コンジュ'] }
 ];
 // ⛔ 목록에서 «뺀» 도시 — 폴더를 지우기 위해 이름을 계속 들고 있어야 한다.
 //   군산: 여행 검색량 4위(275K)인데 공공데이터 관광지가 29곳으로 게이트(30)에 1 모자랐다 → 2026-09-07 청주로 교체.
@@ -69,11 +72,11 @@ const CITIES_T = {
 };
 // 도시 이름 5개어 — CITIES 와 짝이 맞아야 한다(빠지면 제목이 undefined 로 나간다).
 const CITY_NAME = {
-  en: { incheon: 'Incheon', yeosu: 'Yeosu', suwon: 'Suwon', tongyeong: 'Tongyeong', geoje: 'Geoje', gangneung: 'Gangneung', sokcho: 'Sokcho', jeonju: 'Jeonju', daegu: 'Daegu', cheongju: 'Cheongju' },
-  ja: { incheon: '仁川', yeosu: '麗水', suwon: '水原', tongyeong: '統営', geoje: '巨済', gangneung: '江陵', sokcho: '束草', jeonju: '全州', daegu: '大邱', cheongju: '清州' },
-  zh: { incheon: '仁川', yeosu: '丽水', suwon: '水原', tongyeong: '统营', geoje: '巨济', gangneung: '江陵', sokcho: '束草', jeonju: '全州', daegu: '大邱', cheongju: '清州' },
-  tw: { incheon: '仁川', yeosu: '麗水', suwon: '水原', tongyeong: '統營', geoje: '巨濟', gangneung: '江陵', sokcho: '束草', jeonju: '全州', daegu: '大邱', cheongju: '淸州' },
-  es: { incheon: 'Incheon', yeosu: 'Yeosu', suwon: 'Suwon', tongyeong: 'Tongyeong', geoje: 'Geoje', gangneung: 'Gangneung', sokcho: 'Sokcho', jeonju: 'Jeonju', daegu: 'Daegu', cheongju: 'Cheongju' }
+  en: { incheon: 'Incheon', yeosu: 'Yeosu', suwon: 'Suwon', tongyeong: 'Tongyeong', geoje: 'Geoje', gangneung: 'Gangneung', sokcho: 'Sokcho', jeonju: 'Jeonju', daegu: 'Daegu', cheongju: 'Cheongju', gongju: 'Gongju' },
+  ja: { incheon: '仁川', yeosu: '麗水', suwon: '水原', tongyeong: '統営', geoje: '巨済', gangneung: '江陵', sokcho: '束草', jeonju: '全州', daegu: '大邱', cheongju: '清州', gongju: '公州' },
+  zh: { incheon: '仁川', yeosu: '丽水', suwon: '水原', tongyeong: '统营', geoje: '巨济', gangneung: '江陵', sokcho: '束草', jeonju: '全州', daegu: '大邱', cheongju: '清州', gongju: '公州' },
+  tw: { incheon: '仁川', yeosu: '麗水', suwon: '水原', tongyeong: '統營', geoje: '巨濟', gangneung: '江陵', sokcho: '束草', jeonju: '全州', daegu: '大邱', cheongju: '淸州', gongju: '公州' },
+  es: { incheon: 'Incheon', yeosu: 'Yeosu', suwon: 'Suwon', tongyeong: 'Tongyeong', geoje: 'Geoje', gangneung: 'Gangneung', sokcho: 'Sokcho', jeonju: 'Jeonju', daegu: 'Daegu', cheongju: 'Cheongju', gongju: 'Gongju' }
 };
 
 const T = {

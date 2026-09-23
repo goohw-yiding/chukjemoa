@@ -347,6 +347,7 @@ ${cfg.intro ? `<div class="cy-key" style="padding:14px 16px;margin:14px 0"><b st
 ${fes.length ? `<h2 class="sec">다가오는 축제</h2>
 <div class="cy-grid">${fes.slice(0, 9).map(fesCard).join('')}</div>
 ${fes.length < 15 ? note(`진행·예정인 축제만 실었습니다. ${esc(KO)}은 지금 <b>${fes.length}건</b>이라 별도 축제 페이지는 만들지 않았습니다 — 목록이 짧은데 페이지를 나누면 읽을 게 없어집니다.`) : ''}` : ''}
+${cfg.extra || ''}
 ${open.map(a => `<h2 class="sec">${esc(AXES[a.slug].label.replace(/^\S+\s/, ''))}</h2>
 <div class="cy-grid">${D[a.slug].slice(0, a.slug === 'spot' ? 8 : 6).map(CARD[a.slug]).join('')}</div>
 <p style="margin:10px 0"><a href="${base}${a.slug}/" style="color:var(--cy);font-weight:800">${esc(KO)} ${esc(AXES[a.slug].label.replace(/^\S+\s/, ''))} ${D[a.slug].length}곳 전체 보기 →</a></p>`).join('')}

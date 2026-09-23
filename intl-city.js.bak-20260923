@@ -1,0 +1,821 @@
+// 🌏 외국어 도시 페이지 — /{lang}/{city}/  (서울·부산·제주 × en·ja·zh·tw·es)
+//
+// 왜 이 구성인가 — 실측이 「축제 목록」을 부정했다 (2026-09-04)
+//   장남 님: 「서울·부산·제주는 외국어 페이지도 좀 더 심도있게」. 그래서 재료를 먼저 셌더니 —
+//   ⚠️ **외국어 «축제»는 진행·예정 기준 서울 en 6·ja 4 · 부산 3 · 제주 1건뿐**이다. 축제로는 페이지가 안 선다.
+//   ⭐ 본체는 `places_{lang}` 이다 — **공식 번역 개요 + 한글 원제 + 한글 도로명주소**를 가진 곳들.
+//     서울 en 199/ja 264 · 부산 85/89 · 제주 111/111. 제주는 축제가 없어도 이걸로 만들 수 있다.
+//
+// ⭐ 그리고 이 페이지가 «남이 못 쓰는 것»인 이유:
+//   **구글맵은 한국 안에서 길찾기가 안 된다**(지도데이터 반출 규제). 그래서 외국인은 이름을 복사해
+//   네이버·카카오 지도에 붙여넣어야 하는데, 그 «붙여넣을 한글»을 주는 곳이 거의 없다. 우리는 준다.
+//
+// ⚠️ **재료 게이트** — 장소 20곳 미만이고 축제도 15건 미만이면 **만들지 않는다.**
+//    5개어를 다 켜 두되(장남 님 결정), 재료가 찬 조합만 나간다. 얇은 페이지는 애드센스 심사에 해롭다.
+//    → 중문·서어는 `fetch-places.js zh|tw|es` 로 개요가 쌓이면 «저절로» 열린다.
+const fs = require('fs'), path = require('path');
+
+const esc = s => String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;')
+  .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+
+const CITIES = [
+  { key: 'seoul', sido: '서울', ko: '서울', match: ['서울', 'Seoul', 'ソウル', '首尔', '首爾', 'Seúl'] },
+  { key: 'busan', sido: '부산', ko: '부산', match: ['부산', 'Busan', '釜山'] },
+  { key: 'jeju', sido: '제주', ko: '제주', match: ['제주', 'Jeju', '済州', '济州', '濟州'] },
+  // 🏛 2026-09-07 추가 — 경주. ⭐**사이트에서 처음으로 5개어가 전부 게이트를 넘는 도시다**
+  //   (서울·제주는 en·ja 만, 부산은 +zh·tw. 경주는 en 63 · ja 61 · tw 60 · es 55 · zh 41).
+  //   ⚠️ 경주는 «시·군» 이라 sido('경북')로 거르면 안동·포항까지 들어온다 → `sgg` 로 한 번 더 좁힌다.
+  //   ⚠️ 외국어 데이터의 `addr` 은 영문이다. 「경주」로 세면 0건이 나온다(거짓 0) — 판정은 `addrKo` 로 한다.
+  { key: 'gyeongju', sido: '경북', sgg: '경주시', ko: '경주', match: ['경주', 'Gyeongju', '慶州', '庆州', 'キョンジュ'] },
+  // 🏙 2026-09-07 추가 — 도시 10곳(외국인형 5 · 한국인형 5). 한국어는 `city-core.js`+`cities.js` 가 만든다.
+  //   ⚠️ 광역시(인천·대구)는 «구»가 아니라 «시 전체»가 한 도시라 `sgg` 를 두지 않는다.
+  //      도(道)의 시·군은 `sgg` 로 좁힌다 — 없으면 「경남」에 통영·거제가 같이 들어온다.
+  { key: 'incheon', sido: '인천', ko: '인천', match: ['인천', 'Incheon', '仁川'] },
+  { key: 'yeosu', sido: '전남', sgg: '여수시', ko: '여수', match: ['여수', 'Yeosu', '麗水', '丽水'] },
+  { key: 'suwon', sido: '경기', sgg: '수원시', ko: '수원', match: ['수원', 'Suwon', '水原'] },
+  { key: 'tongyeong', sido: '경남', sgg: '통영시', ko: '통영', match: ['통영', 'Tongyeong', '統営', '统营', '統營'] },
+  { key: 'geoje', sido: '경남', sgg: '거제시', ko: '거제', match: ['거제', 'Geoje', '巨済', '巨济', '巨濟'] },
+  { key: 'gangneung', sido: '강원', sgg: '강릉시', ko: '강릉', match: ['강릉', 'Gangneung', '江陵'] },
+  { key: 'sokcho', sido: '강원', sgg: '속초시', ko: '속초', match: ['속초', 'Sokcho', '束草'] },
+  { key: 'jeonju', sido: '전북', sgg: '전주시', ko: '전주', match: ['전주', 'Jeonju', '全州'] },
+  { key: 'daegu', sido: '대구', ko: '대구', match: ['대구', 'Daegu', '大邱'] },
+  { key: 'cheongju', sido: '충북', sgg: '청주시', ko: '청주', match: ['청주', 'Cheongju', '清州', '淸州'] }
+];
+// ⛔ 목록에서 «뺀» 도시 — 폴더를 지우기 위해 이름을 계속 들고 있어야 한다.
+//   군산: 여행 검색량 4위(275K)인데 공공데이터 관광지가 29곳으로 게이트(30)에 1 모자랐다 → 2026-09-07 청주로 교체.
+//   재고가 차면 CITIES 로 옮기고 여기서 뺀다.
+const RETIRED = ['gunsan'];
+
+// 🏙 2026-09-07 — 언어별 «도시 목록» 페이지 `/{lang}/cities/`.
+//   왜: 도시 페이지 15장이 홈에도 내비에도 안 걸려 **사실상 고아**였다(/en/ 홈 본문 링크는 1개뿐이었다).
+//   ⚠️ 헤더 내비에 도시를 «직접» 나열하면 언어마다 없는 도시가 생겨 끊긴 링크가 난다
+//      (실제로 `/tw/seoul/` 로 4건 낸 적이 있다). 그래서 **목록 페이지 한 장을 두고 내비는 거기로만 보낸다.**
+const CITIES_T = {
+  en: { t: 'Korean cities, one page each', h: 'Where to go in Korea — by city',
+    l: (n) => `${n} cities, each with the places worth going, where to eat and sleep, and — for every entry — <b>the Korean address you can paste into a map app</b>. Google Maps cannot route inside Korea; NAVER Map and KakaoMap can.`,
+    p: 'places', more: 'Open', pv: 'A few of them, in detail' },
+  ja: { t: '都市別ガイド', h: '韓国の都市別 — どこへ行くか',
+    l: (n) => `${n}都市。行ってみる場所、食べる所、泊まる所を都市ごとにまとめました。すべてに<b>地図アプリへ貼り付けられる韓国語の住所</b>を付けています。Googleマップは韓国国内の経路検索ができません — NAVERマップ・カカオマップをお使いください。`,
+    p: 'か所', more: '開く', pv: 'そのうちのいくつかを詳しく' },
+  zh: { t: '按城市浏览', h: '韩国城市指南 — 去哪里',
+    l: (n) => `共${n}个城市。每个城市都整理了值得一去的地方、吃饭和住宿，并且每一条都附<b>可粘贴到地图应用的韩文地址</b>。谷歌地图在韩国境内无法导航 —— 请用NAVER地图或Kakao地图。`,
+    p: '处', more: '查看', pv: '其中几处的详细介绍' },
+  tw: { t: '按城市瀏覽', h: '韓國城市指南 — 去哪裡',
+    l: (n) => `共${n}個城市。每個城市都整理了值得一去的地方、吃飯和住宿，並且每一條都附<b>可貼到地圖應用的韓文地址</b>。Google地圖在韓國境內無法導航 —— 請用NAVER地圖或Kakao地圖。`,
+    p: '處', more: '查看', pv: '其中幾處的詳細介紹' },
+  es: { t: 'Ciudades de Corea', h: 'A dónde ir en Corea — por ciudad',
+    l: (n) => `${n} ciudades. En cada una: los lugares que vale la pena visitar, dónde comer y dormir, y en cada entrada <b>la dirección en coreano que puedes pegar en una app de mapas</b>. Google Maps no da rutas dentro de Corea; NAVER Map y KakaoMap sí.`,
+    p: 'lugares', more: 'Abrir', pv: 'Algunos de ellos, en detalle' }
+};
+// 도시 이름 5개어 — CITIES 와 짝이 맞아야 한다(빠지면 제목이 undefined 로 나간다).
+const CITY_NAME = {
+  en: { incheon: 'Incheon', yeosu: 'Yeosu', suwon: 'Suwon', tongyeong: 'Tongyeong', geoje: 'Geoje', gangneung: 'Gangneung', sokcho: 'Sokcho', jeonju: 'Jeonju', daegu: 'Daegu', cheongju: 'Cheongju' },
+  ja: { incheon: '仁川', yeosu: '麗水', suwon: '水原', tongyeong: '統営', geoje: '巨済', gangneung: '江陵', sokcho: '束草', jeonju: '全州', daegu: '大邱', cheongju: '清州' },
+  zh: { incheon: '仁川', yeosu: '丽水', suwon: '水原', tongyeong: '统营', geoje: '巨济', gangneung: '江陵', sokcho: '束草', jeonju: '全州', daegu: '大邱', cheongju: '清州' },
+  tw: { incheon: '仁川', yeosu: '麗水', suwon: '水原', tongyeong: '統營', geoje: '巨濟', gangneung: '江陵', sokcho: '束草', jeonju: '全州', daegu: '大邱', cheongju: '淸州' },
+  es: { incheon: 'Incheon', yeosu: 'Yeosu', suwon: 'Suwon', tongyeong: 'Tongyeong', geoje: 'Geoje', gangneung: 'Gangneung', sokcho: 'Sokcho', jeonju: 'Jeonju', daegu: 'Daegu', cheongju: 'Cheongju' }
+};
+
+const T = {
+  en: {
+    city: { seoul: 'Seoul', busan: 'Busan', jeju: 'Jeju', gyeongju: 'Gyeongju' },
+    h1: c => `${c} — Festivals & Places Worth Going`,
+    lead: (c, n, f) => `${n} places in ${c} described in English by the Korea Tourism Organization${f ? `, plus ${f} festivals on now or coming up` : ''}. Every entry comes with the <b>Korean address you can paste into a map app</b>.`,
+    whyT: 'Why we give you Korean addresses',
+    why: 'Google Maps cannot give driving or transit directions inside South Korea — map data cannot be exported. Paste the Korean address (or the Korean name) into <b>NAVER Map</b> or <b>KakaoMap</b> instead. Both work with what is on this page, and they are what people here actually use.',
+    fesT: 'Festivals on now',
+    fesU: 'Festivals coming up',
+    fesA: 'Busan festivals through the year',
+    fesANote: 'Busan publishes these in English itself, with directions and admission. <b>They run on their own schedule each year and the city does not publish this year’s dates in this feed</b>, so we do not print a date we cannot verify — check the official page for the dates before you plan around one.',
+    placeT: c => `Places to go in ${c}`,
+    addr: 'Korean address for map apps', name: 'Korean name for map search',
+    copy: 'Copy', copied: 'Copied',
+    when: 'Dates', where: 'Where', fee: 'Admission', how: 'Getting there', free: 'Free',
+    more: 'More', other: 'Other cities', srcT: 'Sources',
+    src: 'Places and festival descriptions: Korea Tourism Organization (official English translation). Korean addresses come from Korean public data matched by name. Opening hours and admission can change — check the official page before you go.',
+    cultT: 'Exhibitions & performances on now',
+    cultNote: 'These come from Busan’s Korean-language culture portal, so <b>titles are in Korean only</b>. We do not translate them — a mistranslated venue or date sends you to the wrong place. Copy the Korean title into a map or ticket site and it will find them.',
+    cultTitle: 'Korean title — copy to search',
+    free: 'Free',
+    paid: 'Paid',
+    title: (c, m) => `${c} in ${m} — Festivals, Places & Korean Addresses`,
+    desc: (c, n) => `${n} places to visit in ${c}, each with the Korean address you can paste into NAVER Map or KakaoMap. Festivals on now, weather, and what to know before you go.`
+  },
+  ja: {
+    city: { seoul: 'ソウル', busan: '釜山', jeju: '済州', gyeongju: '慶州' },
+    h1: c => `${c} — お祭りと行ってみる価値のある場所`,
+    lead: (c, n, f) => `韓国観光公社が日本語で案内している${c}の${n}か所${f ? `と、開催中・これから始まるお祭り${f}件` : ''}です。すべてに<b>地図アプリにそのまま貼り付けられる韓国語の住所</b>を付けました。`,
+    whyT: 'なぜ韓国語の住所を載せるのか',
+    why: 'Googleマップは韓国国内の経路検索ができません（地図データの国外持ち出し規制）。代わりに韓国語の住所（または韓国語の名前）を<b>NAVERマップ</b>・<b>カカオマップ</b>に貼り付けてください。このページの表記でそのまま検索できます。',
+    fesT: '開催中のお祭り',
+    fesU: 'これから始まるお祭り',
+    fesA: '釜山の一年のお祭り',
+    fesANote: '釜山市が日本語で案内しているお祭りです（行き方・料金つき）。<b>毎年開かれますが、この案内には今年の日程が載っていません</b>。確かめられない日付は書きません — 日程は公式ページでご確認ください。',
+    placeT: c => `${c}で行ってみる場所`,
+    addr: '地図に貼り付ける住所（韓国語）', name: '地図検索用の韓国語名',
+    copy: 'コピー', copied: 'コピーしました',
+    when: '期間', where: '場所', fee: '料金', how: '行き方', free: '無料',
+    more: 'もっと見る', other: 'ほかの都市', srcT: '出典',
+    src: '場所とお祭りの説明は韓国観光公社の日本語案内です。韓国語の住所は韓国語の公開データと名前で突き合わせて付けました。営業時間や料金は変わることがあるので、出発前に公式ページでご確認ください。',
+    cultT: 'いま開催中の展示・公演',
+    cultNote: '釜山市の韓国語文化ポータルの情報なので、<b>タイトルは韓国語のみ</b>です。訳しません — 会場名や日付を訳し間違えると別の場所に行くことになるからです。韓国語のまま地図やチケットサイトに貼り付けると見つかります。',
+    cultTitle: '韓国語タイトル（検索用にコピー）',
+    free: '無料',
+    paid: '有料',
+    title: (c, m) => `${c} ${m} — お祭り・行き先・韓国語の住所`,
+    desc: (c, n) => `${c}で行ける${n}か所を、NAVERマップやカカオマップに貼り付けられる韓国語の住所付きで。開催中のお祭り、天気、行く前に知っておくことも。`
+  },
+  zh: {
+    city: { seoul: '首尔', busan: '釜山', jeju: '济州', gyeongju: '庆州' },
+    h1: c => `${c} — 庆典与值得一去的地方`,
+    lead: (c, n, f) => `韩国观光公社以中文介绍的${c}${n}处${f ? `，以及正在举办和即将举办的${f}个庆典` : ''}。每一条都附上<b>可直接粘贴到地图应用的韩文地址</b>。`,
+    whyT: '为什么我们提供韩文地址',
+    why: '谷歌地图在韩国境内无法提供路线导航（地图数据出境限制）。请把韩文地址（或韩文名称）粘贴到<b>NAVER地图</b>或<b>Kakao地图</b>，本页的写法可以直接搜索。',
+    fesT: '正在举办的庆典', fesU: '即将举办的庆典',
+    fesA: '釜山全年的庆典',
+    fesANote: '这些由釜山市以中文发布，附交通与费用。<b>每年举办，但该资料未提供今年的具体日期</b>。我们不写无法确认的日期 —— 出发前请到官方页面确认档期。',
+    placeT: c => `${c}可以去的地方`,
+    addr: '粘贴到地图的地址（韩文）', name: '地图搜索用韩文名称',
+    copy: '复制', copied: '已复制',
+    when: '时间', where: '地点', fee: '费用', how: '交通', free: '免费',
+    more: '更多', other: '其他城市', srcT: '资料来源',
+    src: '地点与庆典说明来自韩国观光公社的中文介绍。韩文地址由韩文公开数据按名称匹配而来。营业时间与费用可能变动，出发前请确认官方页面。',
+    cultT: '正在举办的展览与演出',
+    cultNote: '资料来自釜山市韩文文化门户，因此<b>标题只有韩文</b>。我们不翻译 —— 场馆名或日期译错会让您去错地方。把韩文标题粘贴到地图或购票网站即可找到。',
+    cultTitle: '韩文标题（复制后搜索）',
+    free: '免费',
+    paid: '收费',
+    title: (c, m) => `${c} ${m} — 庆典·景点·韩文地址`,
+    desc: (c, n) => `${c}值得一去的${n}处，附可粘贴到NAVER地图或Kakao地图的韩文地址。正在举办的庆典与出发前须知。`
+  },
+  tw: {
+    city: { seoul: '首爾', busan: '釜山', jeju: '濟州', gyeongju: '慶州' },
+    h1: c => `${c} — 慶典與值得一去的地方`,
+    lead: (c, n, f) => `韓國觀光公社以中文介紹的${c}${n}處${f ? `，以及正在舉辦和即將舉辦的${f}個慶典` : ''}。每一條都附上<b>可直接貼到地圖應用的韓文地址</b>。`,
+    whyT: '為什麼我們提供韓文地址',
+    why: 'Google地圖在韓國境內無法提供路線導航（地圖資料出境限制）。請把韓文地址（或韓文名稱）貼到<b>NAVER地圖</b>或<b>Kakao地圖</b>，本頁的寫法可以直接搜尋。',
+    fesT: '正在舉辦的慶典', fesU: '即將舉辦的慶典',
+    fesA: '釜山全年的慶典',
+    fesANote: '這些由釜山市以中文發布，附交通與費用。<b>每年舉辦，但該資料未提供今年的確切日期</b>。我們不寫無法確認的日期 —— 出發前請到官方頁面確認檔期。',
+    placeT: c => `${c}可以去的地方`,
+    addr: '貼到地圖的地址（韓文）', name: '地圖搜尋用韓文名稱',
+    copy: '複製', copied: '已複製',
+    when: '時間', where: '地點', fee: '費用', how: '交通', free: '免費',
+    more: '更多', other: '其他城市', srcT: '資料來源',
+    src: '地點與慶典說明來自韓國觀光公社的中文介紹。韓文地址由韓文公開資料按名稱比對而來。營業時間與費用可能變動，出發前請確認官方頁面。',
+    cultT: '正在舉辦的展覽與演出',
+    cultNote: '資料來自釜山市韓文文化入口網，因此<b>標題只有韓文</b>。我們不翻譯 —— 場館名或日期譯錯會讓您跑錯地方。把韓文標題貼到地圖或購票網站即可找到。',
+    cultTitle: '韓文標題（複製後搜尋）',
+    free: '免費',
+    paid: '收費',
+    title: (c, m) => `${c} ${m} — 慶典·景點·韓文地址`,
+    desc: (c, n) => `${c}值得一去的${n}處，附可貼到NAVER地圖或Kakao地圖的韓文地址。正在舉辦的慶典與出發前須知。`
+  },
+  es: {
+    city: { seoul: 'Seúl', busan: 'Busan', jeju: 'Jeju', gyeongju: 'Gyeongju' },
+    h1: c => `${c} — Fiestas y lugares que vale la pena visitar`,
+    lead: (c, n, f) => `${n} lugares de ${c} descritos en español por la Organización de Turismo de Corea${f ? `, y ${f} fiestas en curso o próximas` : ''}. Cada entrada incluye <b>la dirección en coreano que puedes pegar en una app de mapas</b>.`,
+    whyT: 'Por qué damos direcciones en coreano',
+    why: 'Google Maps no ofrece indicaciones dentro de Corea del Sur (los datos de mapas no pueden exportarse). Pega la dirección en coreano (o el nombre coreano) en <b>NAVER Map</b> o <b>KakaoMap</b>: funcionan con lo que ves en esta página.',
+    fesT: 'Fiestas en curso', fesU: 'Próximas fiestas',
+    fesA: 'Fiestas de Busan a lo largo del año',
+    fesANote: 'Busan las publica en español, con cómo llegar y precios. <b>Se celebran cada año, pero esta fuente no incluye las fechas de este año</b>, así que no ponemos una fecha que no podemos verificar: consulta la página oficial antes de organizar el viaje.',
+    placeT: c => `Lugares para ir en ${c}`,
+    addr: 'Dirección en coreano para mapas', name: 'Nombre coreano para buscar',
+    copy: 'Copiar', copied: 'Copiado',
+    when: 'Fechas', where: 'Dónde', fee: 'Entrada', how: 'Cómo llegar', free: 'Gratis',
+    more: 'Más', other: 'Otras ciudades', srcT: 'Fuentes',
+    src: 'Lugares y descripciones: Organización de Turismo de Corea (traducción oficial). Las direcciones en coreano provienen de datos públicos coreanos emparejados por nombre. Horarios y precios pueden cambiar: confirma en la página oficial antes de ir.',
+    cultT: 'Exposiciones y espectáculos en cartel',
+    cultNote: 'Provienen del portal cultural de Busan en coreano, así que <b>los títulos están solo en coreano</b>. No los traducimos: traducir mal un recinto o una fecha te lleva al lugar equivocado. Copia el título coreano en un mapa o una web de entradas y lo encontrarás.',
+    cultTitle: 'Título en coreano — copia para buscar',
+    free: 'Gratis',
+    paid: 'De pago',
+    title: (c, m) => `${c} en ${m} — fiestas, lugares y direcciones en coreano`,
+    desc: (c, n) => `${n} lugares para visitar en ${c}, con la dirección en coreano lista para pegar en NAVER Map o KakaoMap. Fiestas en curso y qué saber antes de ir.`
+  }
+};
+
+// ⚠️ 새 도시 이름을 T[lang].city 에 합친다. 여기 빠지면 제목에 undefined 가 찍혀 나간다
+//    — 그래서 CITIES 와 CITY_NAME 을 한 곳에서 «짝을 맞춰» 검사한다(아래 assert).
+for (const lang of Object.keys(CITY_NAME)) Object.assign(T[lang].city, CITY_NAME[lang]);
+{
+  const missing = [];
+  for (const c of CITIES) for (const lang of Object.keys(T)) if (!T[lang].city[c.key]) missing.push(`${lang}/${c.key}`);
+  if (missing.length) throw new Error('intl-city: 도시 이름이 없습니다 — ' + missing.join(', '));
+}
+
+const MONTH = {
+  en: ['', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+  ja: ['', '1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
+  zh: ['', '1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
+  tw: ['', '1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
+  es: ['', 'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre']
+};
+
+// 2026-09-04 보강: 장소를 40 → 60 으로 늘렸다(서울 ja 264곳을 40만 보여주고 있었다).
+const MIN_PLACES = 20, MIN_FESTS = 15, SHOW_PLACES = 60, SHOW_FESTS = 12, SHOW_CULT = 24;
+
+// 📷 2026-09-07 — 경주 직접 촬영 사진. ⭐사이트 콘텐츠는 거의 다 관광공사 «공식 사진»인데,
+//    이건 우리가 그 자리에 가서 찍은 1차 자료다. 외국인에게는 «공식 홍보사진이 아닌 실제 모습»이
+//    번역문보다 강한 신호다 — 그래서 외국어 페이지에도 한국어와 같은 사진·같은 순서로 싣는다.
+const { GJ_PHOTOS, PHOTO_LANG } = require('./cities.js');
+const PHOTO_T = {
+  en: { t: 'Photos we took ourselves — September 2026', n: 'These are not stock or tourism-board photos. We walked these places on 5–6 September 2026 and took these ourselves: the actual sky that day, the state of the paving, what the signboards really say. Faces have been left out and location metadata stripped.' },
+  ja: { t: '実際に行って撮った写真 — 2026年9月', n: '観光公社の公式写真ではありません。2026年9月5〜6日に私たちが実際に歩いて撮ったものです。その日の空、路面の様子、案内板に本当に何と書いてあるか。顔が写る写真は載せず、位置情報（EXIF）は削除しています。' },
+  zh: { t: '我们亲自去拍的照片 — 2026年9月', n: '这些不是官方宣传照。2026年9月5–6日我们实地走访拍摄：当天的天空、地面的状况、指示牌上真正写了什么。含人脸的照片未收录，位置信息已删除。' },
+  tw: { t: '我們親自去拍的照片 — 2026年9月', n: '這些不是官方宣傳照。2026年9月5–6日我們實地走訪拍攝：當天的天空、地面的狀況、指示牌上真正寫了什麼。含人臉的照片未收錄，位置資訊已刪除。' },
+  es: { t: 'Fotos que hicimos nosotros — septiembre de 2026', n: 'No son fotos de banco ni de la oficina de turismo. Recorrimos estos lugares el 5 y 6 de septiembre de 2026 y las tomamos nosotros: el cielo de ese día, el estado del pavimento, lo que dicen realmente los carteles. No incluimos fotos con rostros y hemos borrado los metadatos de ubicación.' }
+};
+
+// 🍊 2026-09-04 추가 — **제주에만** 붙이는 안내.
+//   왜: 제주는 「동쪽·서쪽」으로 나눠 다니는 섬인데, 이건 한국 사람은 다 알고 외국인은 아무도 모른다.
+//       검색량 실측에서도 「제주동쪽가볼만한곳 16,320 · 제주서쪽가볼만한곳 13,290」으로 확인됐다.
+//   ⚠️ 번역해서 옮기는 게 아니라 **각 언어로 직접 썼다** — 읍·면 이름은 한글 그대로 둔다(지도에 넣을 이름이니까).
+const JEJU = {
+  en: ['Split the island east and west',
+    `Jeju is a small island, but driving across it eats your day. Locals split it in two and so should you — <b>one day east, one day west</b>.<br>
+<b>East</b> (조천읍 · 구좌읍 · 성산읍 · 표선면 · 남원읍) is the sunrise side: Seongsan Ilchulbong, Seopjikoji, Woljeongri beach.<br>
+<b>West</b> (애월읍 · 한림읍 · 한경면 · 대정읍 · 안덕면) is the sunset side: the Aewol coastal cafés, Hyeopjae beach, Sanbangsan.<br>
+The Korean place names above are written the way a map app expects them — paste them straight in.`],
+  ja: ['島を東と西に分けて回る',
+    `済州は小さな島ですが、横断すると一日が終わります。地元の人は東西に分けて回ります — <b>一日は東、一日は西</b>。<br>
+<b>東</b>(조천읍 · 구좌읍 · 성산읍 · 표선면 · 남원읍)は日の出側。城山日出峰、涉地可支、月汀里の海。<br>
+<b>西</b>(애월읍 · 한림읍 · 한경면 · 대정읍 · 안덕면)は日の入り側。涯月の海沿いカフェ、挾才海水浴場、山房山。<br>
+上の韓国語の地名は地図アプリにそのまま貼り付けられる表記です。`],
+  zh: ['把岛分成东西两边走',
+    `济州岛不大，但横穿一次就是一天。当地人分东西走 — <b>一天东边，一天西边</b>。<br>
+<b>东边</b>(조천읍 · 구좌읍 · 성산읍 · 표선면 · 남원읍)是日出的一侧：城山日出峰、涉地可支、月汀里海边。<br>
+<b>西边</b>(애월읍 · 한림읍 · 한경면 · 대정읍 · 안덕면)是日落的一侧：涯月海边咖啡馆、挾才海水浴场、山房山。<br>
+上面的韩文地名可以直接粘贴到地图应用里。`],
+  tw: ['把島分成東西兩邊走',
+    `濟州島不大，但橫穿一次就是一天。當地人分東西走 — <b>一天東邊，一天西邊</b>。<br>
+<b>東邊</b>(조천읍 · 구좌읍 · 성산읍 · 표선면 · 남원읍)是日出的一側：城山日出峰、涉地可支、月汀里海邊。<br>
+<b>西邊</b>(애월읍 · 한림읍 · 한경면 · 대정읍 · 안덕면)是日落的一側：涯月海邊咖啡館、挾才海水浴場、山房山。<br>
+上面的韓文地名可以直接貼到地圖應用裡。`],
+  es: ['Divide la isla en este y oeste',
+    `Jeju es pequeña, pero cruzarla te come el día. Los locales la dividen en dos — <b>un día el este, otro el oeste</b>.<br>
+<b>Este</b> (조천읍 · 구좌읍 · 성산읍 · 표선면 · 남원읍): el lado del amanecer. Seongsan Ilchulbong, Seopjikoji, la playa de Woljeongri.<br>
+<b>Oeste</b> (애월읍 · 한림읍 · 한경면 · 대정읍 · 안덕면): el lado del atardecer. Los cafés de la costa de Aewol, la playa de Hyeopjae, Sanbangsan.<br>
+Los nombres en coreano de arriba están escritos tal como los espera una app de mapas.`]
+};
+
+// 🥾 2026-09-04 추가 — **올레길 26코스**를 외국어에도 붙인다.
+//   왜 이게 값어치가 큰가: 코스번호·거리·소요시간·«휠체어 가능 여부»는 **숫자와 참/거짓이라 번역이 필요 없다.**
+//   지어낼 여지가 없고, 휠체어 정보는 영어권에 거의 없다(제주올레 공식 데이터 26/26 중 10코스 가능).
+//   ⚠️ 코스명·출발지·도착지는 **한글 그대로** 둔다 — 그게 지도에 붙여넣을 이름이다(우리 강점).
+//      「시흥초등학교」를 "Siheung Elementary School" 로 옮기면 네이버 지도에서 안 찾아진다.
+const OLLE = {
+  en: { t: 'The Jeju Olle Trail — all 26 routes', n: `The Olle Trail rings the island in 26 numbered routes. What follows is the official route data: length, walking time, and <b>which routes are wheelchair-accessible</b> — that last one is hard to find in English anywhere else.<br>Route and trailhead names stay in Korean on purpose. Paste the start point into NAVER Map or KakaoMap and it will take you there; an English translation will not.`, wc: 'Wheelchair', km: 'km', hr: 'h', s2e: 'Start → Finish', cpS: 'Start point (Korean) — paste into a map', route: 'Route' },
+  ja: { t: '済州オルレ — 全26コース', n: `オルレは島を一周する26のコースです。以下は公式データで、距離・所要時間・<b>車いすで歩けるコースかどうか</b>まで載せました。最後のものは日本語ではほとんど見つかりません。<br>コース名と起終点は<b>あえて韓国語のまま</b>にしています。出発地をNAVERマップやカカオマップに貼り付ければそこへ案内されます — 訳した名前では出てきません。`, wc: '車いす可', km: 'km', hr: '時間', s2e: '起点 → 終点', cpS: '出発地（韓国語）— 地図に貼り付け', route: 'コース名' },
+  zh: { t: '济州偶来小路 — 全26条路线', n: `偶来小路以26条编号路线环岛。以下是官方数据：长度、步行时间，以及<b>哪几条轮椅可通行</b> — 最后这一项在中文资料里几乎找不到。<br>路线名与起终点<b>特意保留韩文</b>。把出发地粘贴到NAVER地图或Kakao地图就能导航过去，翻译过的名字搜不到。`, wc: '轮椅可通行', km: '公里', hr: '小时', s2e: '起点 → 终点', cpS: '出发地（韩文）— 粘贴到地图', route: '路线名' },
+  tw: { t: '濟州偶來小路 — 全26條路線', n: `偶來小路以26條編號路線環島。以下是官方資料：長度、步行時間，以及<b>哪幾條輪椅可通行</b> — 最後這一項在中文資料裡幾乎找不到。<br>路線名與起終點<b>特意保留韓文</b>。把出發地貼到NAVER地圖或Kakao地圖就能導航過去，翻譯過的名字搜不到。`, wc: '輪椅可通行', km: '公里', hr: '小時', s2e: '起點 → 終點', cpS: '出發地（韓文）— 貼到地圖', route: '路線名' },
+  es: { t: 'Sendero Olle de Jeju — las 26 rutas', n: `El Olle rodea la isla en 26 rutas numeradas. Abajo van los datos oficiales: distancia, tiempo a pie y <b>qué rutas son accesibles en silla de ruedas</b> — esto último casi no existe en español.<br>Los nombres de ruta y de los puntos de inicio se quedan <b>en coreano a propósito</b>. Pega el punto de inicio en NAVER Map o KakaoMap y te llevará; el nombre traducido no aparece.`, wc: 'Silla de ruedas', km: 'km', hr: 'h', s2e: 'Inicio → Final', cpS: 'Punto de inicio (coreano) — pégalo en el mapa', route: 'Ruta' }
+};
+
+// 🌧 2026-09-04 추가 — 비 올 때 갈 실내 장소.
+//   ⚠️ 관광공사가 «실내»라고 표시한 곳만 넣는다. 표시 없는 곳을 실내로 밀어넣지 않는다
+//      — 비 오는 날 헛걸음이 제일 나쁘다(한국어 /jeju/rainy/ 와 같은 규칙).
+//   ⚠️ 이름·주소는 한국어뿐이라 **번역하지 않는다** — 부산 전시·공연과 같은 방식으로 «붙여넣을 한글»을 준다.
+const RAIN = {
+  en: { t: 'If it rains — indoor places', n: `Rain is what ruins a Jeju trip. These are places the Jeju Tourism Organization has tagged <b>indoors</b> — only those, nothing guessed. Names and addresses are Korean-only in the source and we do not translate them: a mistranslated venue sends you to the wrong door. Copy the Korean and paste it into a map app.`, ind: 'Indoors', name: 'Korean name — copy to search', addr: 'Korean address — paste into a map', air: 'Near the airport' },
+  ja: { t: '雨が降ったら — 屋内の行き先', n: `済州旅行で一番つらいのが雨です。ここは済州観光公社が<b>屋内</b>と分類した場所だけを集めました — 推測は入れていません。原本の名前と住所は韓国語のみで、<b>訳しません</b>。訳し間違えると別の場所に着いてしまうからです。韓国語のままコピーして地図アプリに貼り付けてください。`, ind: '屋内', name: '韓国語名（検索用にコピー）', addr: '韓国語の住所（地図に貼り付け）', air: '空港の近く' },
+  zh: { t: '下雨的话 — 室内去处', n: `济州旅行最怕下雨。这里只收录济州观光公社标注为<b>室内</b>的地方 — 没有猜测的。原始资料的名称与地址只有韩文，我们<b>不翻译</b>：译错场馆名会让您走错地方。请复制韩文粘贴到地图应用。`, ind: '室内', name: '韩文名称（复制后搜索）', addr: '韩文地址（粘贴到地图）', air: '机场附近' },
+  tw: { t: '下雨的話 — 室內去處', n: `濟州旅行最怕下雨。這裡只收錄濟州觀光公社標註為<b>室內</b>的地方 — 沒有猜測的。原始資料的名稱與地址只有韓文，我們<b>不翻譯</b>：譯錯場館名會讓您走錯地方。請複製韓文貼到地圖應用。`, ind: '室內', name: '韓文名稱（複製後搜尋）', addr: '韓文地址（貼到地圖）', air: '機場附近' },
+  es: { t: 'Si llueve — sitios bajo techo', n: `La lluvia es lo que arruina un viaje a Jeju. Aquí solo van los sitios que la Organización de Turismo de Jeju marca como <b>interiores</b> — nada supuesto. En la fuente los nombres y direcciones están solo en coreano y <b>no los traducimos</b>: un nombre mal traducido te lleva a otra puerta. Copia el coreano y pégalo en el mapa.`, ind: 'Interior', name: 'Nombre en coreano — cópialo para buscar', addr: 'Dirección en coreano — pégala en el mapa', air: 'Cerca del aeropuerto' }
+};
+
+// 🏙 2026-09-04 — 서울 문화행사를 외국어에도 싣는다.
+//   🔴 왜 이제서야: **부산 197건은 이미 싣고 있었는데 서울 1,048건은 0건이었다**
+//      (실측: 외국어 서울 페이지에 서울 행사 제목 0/200). 서울이 외국인 방문 1위(984만 > 부산 406만)인데
+//      재료가 5배 많은 쪽을 비워 두고 있었다.
+//   ⚠️ 원본이 한국어뿐이다. **번역하지 않는다** — 부산 전시·공연과 똑같은 규칙으로
+//      «복사해서 붙여넣을 한글 제목»을 준다. 대신 **분류·요금무료·날짜·자치구는 번역해도 안전한 고정값**이다.
+const SEV = {
+  en: { t: 'What is on in Seoul right now', n: `Seoul city publishes every exhibition, concert and workshop happening in the city — in Korean only. We do not translate the titles: a mistranslated venue sends you to the wrong door. <b>Copy the Korean title</b> into a ticket site or a map and it will find it. What we can translate safely is the category, the dates and whether it is free.`, title: 'Korean title — copy to search', free: 'Free', paid: 'Ticketed', where: 'Venue (Korean) — paste into a map' },
+  ja: { t: 'いまソウルで開かれているもの', n: `ソウル市は市内の展示・公演・体験をすべて公開していますが、<b>韓国語のみ</b>です。タイトルは訳しません — 会場名を訳し間違えると別の場所に行くことになります。<b>韓国語のままコピー</b>してチケットサイトや地図に貼り付けてください。分類・日付・無料かどうかは訳しても間違いようがないので訳しました。`, title: '韓国語タイトル（検索用にコピー）', free: '無料', paid: '有料', where: '会場（韓国語）— 地図に貼り付け' },
+  zh: { t: '首尔现在正在举办的活动', n: `首尔市公开了市内所有展览、演出与体验活动，但<b>只有韩文</b>。我们不翻译标题 —— 译错场馆名会让您走错地方。请<b>复制韩文标题</b>粘贴到购票网站或地图。分类、日期、是否免费不会译错，所以翻译了。`, title: '韩文标题（复制后搜索）', free: '免费', paid: '收费', where: '场馆（韩文）— 粘贴到地图' },
+  tw: { t: '首爾現在正在舉辦的活動', n: `首爾市公開了市內所有展覽、演出與體驗活動，但<b>只有韓文</b>。我們不翻譯標題 —— 譯錯場館名會讓您跑錯地方。請<b>複製韓文標題</b>貼到購票網站或地圖。分類、日期、是否免費不會譯錯，所以翻譯了。`, title: '韓文標題（複製後搜尋）', free: '免費', paid: '收費', where: '場館（韓文）— 貼到地圖' },
+  es: { t: 'Qué hay ahora mismo en Seúl', n: `El ayuntamiento de Seúl publica todas las exposiciones, conciertos y talleres de la ciudad — <b>solo en coreano</b>. No traducimos los títulos: un recinto mal traducido te lleva a otra puerta. <b>Copia el título en coreano</b> y pégalo en una web de entradas o en el mapa. La categoría, las fechas y si es gratis sí se pueden traducir sin riesgo.`, title: 'Título en coreano — cópialo para buscar', free: 'Gratis', paid: 'Con entrada', where: 'Recinto (coreano) — pégalo en el mapa' }
+};
+// 분류는 값이 17가지뿐인 «고정 목록»이라 그대로 대응시킨다. 없는 값은 «표시하지 않는다»(한글을 그냥 두면 소음이 된다).
+const SEV_CAT = {
+  '전시/미술': { en: 'Exhibition', ja: '展示', zh: '展览', tw: '展覽', es: 'Exposición' },
+  '교육/체험': { en: 'Workshop', ja: '体験・講座', zh: '体验课程', tw: '體驗課程', es: 'Taller' },
+  '콘서트': { en: 'Concert', ja: 'コンサート', zh: '演唱会', tw: '演唱會', es: 'Concierto' },
+  '클래식': { en: 'Classical', ja: 'クラシック', zh: '古典音乐', tw: '古典音樂', es: 'Clásica' },
+  '국악': { en: 'Korean traditional music', ja: '韓国伝統音楽', zh: '韩国传统音乐', tw: '韓國傳統音樂', es: 'Música tradicional coreana' },
+  '연극': { en: 'Theatre', ja: '演劇', zh: '话剧', tw: '話劇', es: 'Teatro' },
+  '무용': { en: 'Dance', ja: '舞踊', zh: '舞蹈', tw: '舞蹈', es: 'Danza' },
+  '뮤지컬/오페라': { en: 'Musical / Opera', ja: 'ミュージカル・オペラ', zh: '音乐剧·歌剧', tw: '音樂劇·歌劇', es: 'Musical / Ópera' },
+  '영화': { en: 'Film', ja: '映画', zh: '电影', tw: '電影', es: 'Cine' },
+  '독주/독창회': { en: 'Recital', ja: 'リサイタル', zh: '独奏会', tw: '獨奏會', es: 'Recital' },
+  '축제-문화/예술': { en: 'Arts festival', ja: '文化・芸術のお祭り', zh: '文化艺术庆典', tw: '文化藝術慶典', es: 'Fiesta artística' },
+  '축제-전통/역사': { en: 'Traditional festival', ja: '伝統・歴史のお祭り', zh: '传统历史庆典', tw: '傳統歷史慶典', es: 'Fiesta tradicional' },
+  '축제-자연/경관': { en: 'Nature festival', ja: '自然・景観のお祭り', zh: '自然景观庆典', tw: '自然景觀慶典', es: 'Fiesta de naturaleza' },
+  '축제-관광/체육': { en: 'Sports & tourism festival', ja: '観光・スポーツのお祭り', zh: '观光体育庆典', tw: '觀光體育慶典', es: 'Fiesta deportiva' },
+  '축제-시민화합': { en: 'Community festival', ja: '市民のお祭り', zh: '市民庆典', tw: '市民慶典', es: 'Fiesta vecinal' },
+  '축제-기타': { en: 'Festival', ja: 'お祭り', zh: '庆典', tw: '慶典', es: 'Fiesta' }
+};
+const SHOW_SEV = 40;
+
+// 소요시간은 값이 5가지뿐인 «고정 문구»라 언어별로 그대로 대응시킨다(자유 번역이 아니다).
+const HRS = {
+  '1시간': { en: '1 hour', ja: '1時間', zh: '1小时', tw: '1小時', es: '1 hora' },
+  '1~2시간': { en: '1–2 hours', ja: '1~2時間', zh: '1~2小时', tw: '1~2小時', es: '1–2 horas' },
+  '2~3시간': { en: '2–3 hours', ja: '2~3時間', zh: '2~3小时', tw: '2~3小時', es: '2–3 horas' },
+  '3시간 이상': { en: '3+ hours', ja: '3時間以上', zh: '3小时以上', tw: '3小時以上', es: 'más de 3 h' }
+};
+// ⚠️ 화면에 48개만 싣고 배지·설명문엔 288이라고 적으면 «없는 것을 약속»하는 셈이다.
+//    한국어 /jeju/rainy/ 와 맞춰 80개를 싣고, 숫자는 «실은 개수»로 통일한다.
+const SHOW_OLLE = 26, SHOW_RAIN = 80, MIN_RAIN = 30;
+
+// 검색 결과에 뜨는 문장은 «남이 안 주는 것»을 말해야 한다 — 제주만 설명문을 갈아 끼운다.
+const JEJU_DESC = {
+  en: (n, o, r) => `${n} places in Jeju with the Korean address you can paste into NAVER Map, all ${o} Olle Trail routes with distance, walking time and wheelchair access, and ${r} indoor places for when it rains.`,
+  ja: (n, o, r) => `済州の${n}か所を地図に貼り付けられる韓国語の住所付きで。オルレ全${o}コースの距離・所要時間・車いす可否、雨の日の屋内${r}か所も。`,
+  zh: (n, o, r) => `济州${n}处景点，附可粘贴到NAVER地图的韩文地址。偶来小路全${o}条路线的距离、步行时间与轮椅通行情况，以及下雨天的${r}处室内去处。`,
+  tw: (n, o, r) => `濟州${n}處景點，附可貼到NAVER地圖的韓文地址。偶來小路全${o}條路線的距離、步行時間與輪椅通行情況，以及下雨天的${r}處室內去處。`,
+  es: (n, o, r) => `${n} sitios de Jeju con la dirección en coreano para pegar en NAVER Map, las ${o} rutas del sendero Olle con distancia, tiempo y accesibilidad en silla de ruedas, y ${r} sitios bajo techo para cuando llueve.`
+};
+
+// 🚇 2026-09-04 — 가장 가까운 지하철역.
+//   왜: 구글맵은 한국 안에서 길찾기가 안 된다. 외국인은 「Hongik Univ.」로 아는데
+//       네이버·카카오 지도는 **홍대입구**로만 찾는다. 그 대조를 주는 곳이 거의 없다.
+//   ⭐ 실측: 서울 문화행사 96%·축제 75%·장소 64~66%가 도보권이다. 붙일 데이터가 실제로 있다.
+//   ⚠️ 역 이름은 **한글 그대로** 준다 — 그게 붙여넣을 이름이다. 영·중·일 역명은 «알아보라고» 같이 준다.
+//   ⚠️ 서울·경기·인천 전용. 부산·제주는 이 데이터에 없으니 «조용히 아무것도 안 붙는다»(그게 맞다).
+const SUB = {
+  en: { near: 'Nearest station', walk: m => `${m} min walk`, cp: 'Station name in Korean — paste into a map', elev: 'Has a lift' },
+  ja: { near: '最寄り駅', walk: m => `徒歩${m}分`, cp: '駅名（韓国語）— 地図に貼り付け', elev: 'エレベーターあり' },
+  zh: { near: '最近地铁站', walk: m => `步行${m}分钟`, cp: '站名（韩文）— 粘贴到地图', elev: '有电梯' },
+  tw: { near: '最近地鐵站', walk: m => `步行${m}分鐘`, cp: '站名（韓文）— 貼到地圖', elev: '有電梯' },
+  es: { near: 'Estación más cercana', walk: m => `${m} min a pie`, cp: 'Nombre de la estación en coreano — pégalo en el mapa', elev: 'Tiene ascensor' }
+};
+// 도보 분 = 거리 ÷ 시속 4.5km. 반올림하되 최소 1분. 1.5km 넘으면 «도보권»이라 말하지 않는다.
+const WALK_MAX_KM = 1.5;
+const walkMin = km => Math.max(1, Math.round(km / 4.5 * 60));
+function nearestFn(rows) {
+  if (!rows || !rows.length) return () => null;
+  const R = 6371, T = Math.PI / 180;
+  return (x, y) => {
+    x = +x; y = +y; if (!x || !y) return null;
+    let best = null, bd = Infinity;
+    for (const s of rows) {
+      // 먼저 사각형으로 거른다 — 646역 × 수천 건이면 삼각함수가 비싸다
+      if (Math.abs(s.y - y) > 0.02 || Math.abs(s.x - x) > 0.025) continue;
+      const dLat = (s.y - y) * T, dLon = (s.x - x) * T;
+      const a = Math.sin(dLat / 2) ** 2 + Math.cos(y * T) * Math.cos(s.y * T) * Math.sin(dLon / 2) ** 2;
+      const d = 2 * R * Math.asin(Math.sqrt(a));
+      if (d < bd) { bd = d; best = s; }
+    }
+    return (best && bd <= WALK_MAX_KM) ? { st: best, km: bd, min: walkMin(bd) } : null;
+  };
+}
+
+function load(ROOT, f) {
+  try { return JSON.parse(fs.readFileSync(path.join(ROOT, 'data', f), 'utf8')); } catch (e) { return null; }
+}
+
+// 🗓 2026-09-09 — 공식 원문 «본문»에 지난 해 공지가 그대로 남아 있다.
+//   실측: 부산 공식 번역 175건 중 4건이 「** 2024 Busan Hydrangea … has been canceled.」 —
+//   ja·zh·tw 판에도 영어 그대로 들어 있다. 카드 미리보기는 260자라 이 한 문장이 맨 앞을 차지해
+//   **올해 취소된 것처럼 읽힌다.** 원문을 고쳐 쓰지는 않되, 「올해 이야기가 아닌」 지난 해 공지 문장은
+//   미리보기에서 뺀다 — 사실이 아닌 인상을 주지 않는 쪽이 정확하다.
+//   ⚠️ 올해(또는 이후) 연도가 하나라도 섞여 있으면 «살아 있는 정보»이므로 절대 건드리지 않는다.
+//   ⚠️ 연도가 없는 문장도 건드리지 않는다 — 언제 이야기인지 모르면 지우는 게 아니라 남긴다.
+//   ⚠️ 문장 나누기 — 일본어·중국어는 「。」 뒤에 «공백이 없다». 공백을 요구하는 정규식으로 쪼개면
+//      두 문장이 한 덩어리로 남아, 지난 해 공지를 지울 때 «멀쩡한 안내문까지» 통째로 사라진다
+//      (리허설에서 「2025年は中止…。毎年6月に開催されます。」가 통째로 비었다).
+const STALE_NOTE = /(cancel|postpon|suspend|취소|연기|무산|中止|取消|延期|推迟|順延|順延|cancelad|aplazad|suspendid)/i;
+function dropStaleNotes(text, year) {
+  return String(text || '')
+    .split(/(?<=[.!?])\s+|(?<=[。！？])|\n+/)
+    .filter(s => {
+      const yrs = (s.match(/\b20\d{2}\b/g) || []).map(Number);
+      return !(yrs.length && yrs.every(y => y < year) && STALE_NOTE.test(s));
+    })
+    .join(' ').replace(/\s+/g, ' ').trim();
+}
+
+// 🔗 2026-09-09 — 카드 제목에 «개별 축제 상세» 링크를 건다.
+//   ⚠️ 슬러그 규칙을 여기서 다시 구현하지 않는다 — festival-{lang}.js 가 «실제로 만든» 표를
+//      data/{lang}_festival_slugs.json 에 남기고, 우리는 그걸 읽기만 한다(중복 시 붙는 -2 접미사까지 맞아야 한다).
+//   ⚠️ 그런데 build.js 순서상 도시 페이지가 축제 상세보다 «먼저» 만들어졌었다 →
+//      순환 의존이라 gate()(그리지 않고 통과 여부만 계산)를 따로 뒀다. build.js 2068줄 주석 참고.
+function festLinks(ROOT, lang) {
+  const m = load(ROOT, `${lang}_festival_slugs.json`);
+  return m && typeof m === 'object' ? m : null;
+}
+
+// 게이트만 돌린다 — 한 장도 그리지 않고 «어느 도시가 통과하나»만 돌려준다.
+function gate(ctx) { return build({ ...ctx, phase: 1 }); }
+
+function build({ ROOT, layout, writePage, SITE, TODAY, WX, phase, ready: readyIn }) {
+  const T8 = String(TODAY).replace(/-/g, '');
+  const mn = +T8.slice(4, 6);
+  const busan = load(ROOT, 'busan_festivals.json');
+  // ⭐ 2026-09-04 보강 — 부산 전시·공연 126건을 외국어에도 싣는다.
+  //   ⚠️ 원본이 한국어뿐이다. **번역하지 않는다** — 회장명·날짜를 잘못 옮기면 엉뚱한 곳으로 보낸다.
+  //     대신 «한글 제목을 복사»하게 해 준다. 지도·티켓 사이트에 그대로 붙여넣으면 찾아진다.
+  //     이건 우리 강점(붙여넣을 한글)과 정확히 맞고, 지어내지 않는다는 원칙도 지킨다.
+  //   ⚠️ busan_culture.json 은 «배열이 아니라 {generated,source,stat,rows}» 다.
+  //      이 파일의 load() 는 파싱만 하고 배열로 바꾸지 않는다 — .rows 를 꺼내야 한다(안 그러면 빌드가 죽는다).
+  const busanCult = ((load(ROOT, 'busan_culture.json') || {}).rows || [])
+    .filter(r => r.end >= String(TODAY).replace(/-/g, ''))
+    .sort((a, b) => (b.x ? 1 : 0) - (a.x ? 1 : 0) || a.start.localeCompare(b.start));
+
+  // 🍊 제주 전용 재료 — 올레 26코스 + 비 올 때 실내.
+  //   ⚠️ 코스 번호는 「1코스·1-1코스·10코스」라 문자열 정렬하면 10이 2보다 앞에 온다 → 숫자로 쪼개 정렬한다.
+  const olle = ((load(ROOT, 'jeju_hub.json') || {}).olle || []).slice().sort((a, b) => {
+    const p = s => { const m = String(s).match(/^(\d+)(?:-(\d+))?/); return m ? [+m[1], +(m[2] || 0)] : [999, 0]; };
+    const [a1, a2] = p(a.no), [b1, b2] = p(b.no);
+    return a1 - b1 || a2 - b2;
+  });
+  //   ⚠️ 「모름」을 실내로 밀어넣지 않는다 — indoor === true 인 것만.
+  const rain = ((load(ROOT, 'visitjeju.json') || {}).rows || [])
+    .filter(o => o.indoor === true && o.x && o.y && o.addr && o.title);
+
+  // 🏙 서울 문화행사 — 진행·예정만. 무료 먼저, 그다음 시작일 순.
+  const sevAll = (() => { const d = load(ROOT, 'seoul_events.json'); return Array.isArray(d) ? d : ((d || {}).rows || []); })();
+  const norm8 = v => String(v || '').replace(/-/g, '').slice(0, 8);
+  // 🔴 첫 정렬은 「무료 먼저 → 시작일 순」이었는데, 그러면 **2021년에 시작한 상설 전시가 맨 앞**에 왔다.
+  //    제목이 「지금 뭐 하나」인데 5년 전 시작한 게 먼저 나오면 말과 화면이 어긋난다.
+  //    → ①400일 넘게 하는 «상설»은 뒤로 ②그다음 **끝나는 날이 가까운 순**(놓치기 전에 볼 것) ③무료 우선.
+  const dayNo = d => { const t = String(d); return Date.UTC(+t.slice(0, 4), +t.slice(4, 6) - 1, +t.slice(6, 8)) / 86400000; };
+  const LONG = 400;
+  const isLong = o => {
+    const d1 = norm8(o.start), d2 = norm8(o.end);
+    if (!d1 || !d2 || d2 < d1) return 1;
+    return (dayNo(d2) - dayNo(d1)) > LONG ? 1 : 0;
+  };
+  const sev = sevAll.filter(o => o.title && norm8(o.end) >= T8 && +o.x && +o.y)
+    .sort((a, b) => isLong(a) - isLong(b)
+      || norm8(a.end).localeCompare(norm8(b.end))
+      || (b.free ? 1 : 0) - (a.free ? 1 : 0));
+
+  // 🚇 지하철 — 없으면 조용히 아무것도 안 붙는다(제주·부산은 데이터가 없는 게 정상).
+  const subRows = ((load(ROOT, 'subway.json') || {}).rows || []);
+  const nearest = nearestFn(subRows);
+  let subHit = 0, subMiss = 0;                 // ⚠️ 「가드가 통과했다」가 아니라 미스율을 센다
+  const urls = [];
+  const skipped = [];
+  const LANGS = ['en', 'ja', 'zh', 'tw', 'es'];
+  const LANG_NAME = { en: 'English', ja: '日本語', zh: '简体中文', tw: '繁體中文', es: 'Español' };
+  // 🔴 2026-09-04 수정(2) — **모든 언어의 통과 여부를 먼저 다 계산한 뒤에 한 장도 그리지 않는다.**
+  //   그래야 「같은 도시의 다른 언어」 줄을 «실제로 만든 것만»으로 찍을 수 있다.
+  //   이 줄이 없어서 `/tw/busan/`·`/zh/busan/` 이 **홈에서 도달 불가(고아) 2건**이었다
+  //   — 그 두 장을 가리키는 링크가 사이트 어디에도 없었다.
+  const READY = readyIn || {};
+
+  for (const pass of (phase === 1 ? [1] : phase === 2 ? [2] : [1, 2])) {
+  for (const lang of LANGS) {
+    const t = T[lang];
+    const places = load(ROOT, `places_${lang}.json`) || [];
+    const fests = load(ROOT, `festivals_${lang}.json`) || [];
+    // 개별 축제 상세가 있는 언어만 표가 생긴다(2026-09-09 현재 en·ja). 없으면 링크를 안 건다.
+    const FLINK = festLinks(ROOT, lang);
+
+    // 🔴 2026-09-04 수정 — **먼저 「어느 도시가 통과하나」를 다 정하고 나서 렌더한다.**
+    //   전에는 도시를 하나씩 만들면서 하단 「다른 도시」 링크를 CITIES 전체로 찍었다.
+    //   그래서 게이트로 **만들지 않은** `/tw/seoul/`·`/tw/jeju/` 로 링크가 나가 **끊긴 내부 링크 4건**이 됐다.
+    //   ⚠️ 게이트가 있는 곳엔 «게이트를 통과한 것만 링크한다»가 따라와야 한다 — 하나만 넣으면 404를 만든다.
+    const mats = C => {
+      // ⚠️ 시·군 단위 도시(경주)는 sido 만으로는 이웃 시·군까지 빨아들인다 — `sgg` 가 있으면 한글주소로 한 번 더 좁힌다.
+      const P = places.filter(p => p.sido === C.sido && +p.x && +p.y
+        && String(p.ov || '').length >= 120 && p.addrKo
+        && (!C.sgg || String(p.addrKo).includes(C.sgg)));
+      let F = fests.filter(f => String(f.end || '') >= T8
+        && C.match.some(k => String(f.region || '').includes(k) || String(f.addr || '').includes(k)))
+        .map(f => ({ id: f.id, title: f.title, start: f.start, end: f.end, place: f.addr, img: f.img, x: f.x, y: f.y, ko: '', desc: '', traffic: '', fee: '' }));
+
+      // ⭐ 부산만 «공식 5개어 번역»이 따로 있다 — 우선 쓴다(교통안내·요금·한글원제까지 붙는다).
+      // 🔴 2026-09-09 실측 — 이 자료엔 **start/end 가 아예 없다**(41건 중 35건이 날짜 0).
+      //    남아 있는 day 문자열엔 「Oct. 2, 2024 – Jan. 10, 2025」처럼 **지난 해 날짜**까지 섞여 있다.
+      //    그런데 「지금 열리는 축제」 제목 아래 실려 있었다 — 사실이 아니다.
+      //    → 해마다 열리는 «연간 축제»로 따로 묶고, 날짜는 지어내지 않는다(annual 표시).
+      if (C.key === 'busan' && busan && busan.rows) {
+        const bf = busan.rows.filter(r => r.langs && r.langs[lang] && r.langs[lang].title)
+          .map(r => ({
+            annual: true,
+            title: r.langs[lang].title, sub: r.langs[lang].sub, ko: r.ko,
+            place: r.langs[lang].place, day: r.langs[lang].day, time: r.langs[lang].time,
+            fee: r.langs[lang].fee, traffic: r.langs[lang].traffic,
+            desc: r.langs[lang].desc, img: r.img, x: r.x, y: r.y
+          }));
+        if (bf.length) F = bf;
+      }
+      return { C, P, F };
+    };
+    const ready = CITIES.map(mats).filter(m => {
+      // ── 게이트: 재료가 없으면 «만들지 않는다»
+      if (m.P.length < MIN_PLACES && m.F.length < MIN_FESTS) {
+        if (pass === 1) skipped.push(`${lang}/${m.C.key}(장소 ${m.P.length}·축제 ${m.F.length})`);
+        return false;
+      }
+      return true;
+    });
+    const madeKeys = new Set(ready.map(m => m.C.key));
+    if (pass === 1) {
+      READY[lang] = madeKeys;
+      // 🗑 정리 — ⚠️ **정적 생성기는 「없어진 항목의 폴더」를 안 지운다.**
+      //    도시를 빼거나(군산→청주) 게이트를 올리면 옛 `/es/gunsan/` 같은 폴더가 그대로 남아 라이브 200을 낸다.
+      //    사이트맵엔 없어서 눈에 안 띄고, 그 안의 링크가 «끊긴 내부 링크»로 잡힌다(실제로 4건 났다).
+      //    ⚠️ CITIES 에 있는 이름만 지운다 — /en/search/·/en/closed/ 같은 다른 페이지를 건드리면 안 된다.
+      // ⚠️ CITIES 만 돌면 «목록에서 아예 빠진 도시»는 영영 안 지워진다 —
+      //    군산을 청주로 바꿨더니 `/es/gunsan/` 이 살아남아 끊긴 링크 4건을 만들었다(빌드를 두 번 돌려도 그대로였다).
+      //    → 뺀 도시는 RETIRED 에 남겨서 «지워야 할 대상»으로 계속 들고 간다.
+      for (const key of CITIES.map(c => c.key).concat(RETIRED)) {
+        if (madeKeys.has(key)) continue;
+        const dir = path.join(ROOT, lang, key);
+        if (fs.existsSync(dir)) { fs.rmSync(dir, { recursive: true, force: true }); console.log(`   🗑 /${lang}/${key}/ 삭제 — 재료 게이트 미달 또는 목록에서 제외된 도시`); }
+      }
+      continue;   // 1회차는 «누가 통과했나»만 모은다
+    }
+
+    for (const { C, P, F } of ready) {
+
+      const city = t.city[C.key];
+      const cp = (label, val) => val ? `<div class="xcopy"><div><span class="lb">${esc(label)}</span><span class="vl">${esc(val)}</span></div>
+<button data-v="${esc(val)}" data-done="${esc(t.copied)}">${esc(t.copy)}</button></div>` : '';
+
+      // 🚇 가장 가까운 역 한 줄 — 「내가 아는 이름(Hongik Univ.) → 지도에 넣을 한글(홍대입구)」
+      const sb = SUB[lang];
+      const stLine = (x, y) => {
+        const n = nearest(x, y);
+        if (!n) { subMiss++; return ''; }
+        subHit++;
+        const s = n.st;
+        const foreign = lang === 'ja' ? s.jp : (lang === 'zh' || lang === 'tw') ? s.cn : s.en;
+        return `<p class="ic-st">🚇 ${esc(sb.near)}: <b>${esc(foreign || s.ko)}</b>`
+          + `<span class="ic-stko">${esc(s.ko)}</span>`
+          + ` · ${esc(sb.walk(n.min))}`
+          + (s.lines && s.lines.length ? ` · ${esc(s.lines.slice(0, 3).join(' · '))}` : '')
+          + (s.elev ? ` · <span class="ic-tag">♿ ${esc(sb.elev)}</span>` : '')
+          + `</p>` + cp(sb.cp, s.ko);
+      };
+
+      const fesCard = f => {
+        const wx = (WX && f.x && f.y) ? WX.now(f.x, f.y, lang) : '';
+        // 🔴 day 문자열엔 「Oct. 2, 2024 – Jan. 10, 2025」처럼 지난 해 것이 섞여 있다.
+        //    지난 해 날짜를 그대로 보여 주느니 «날짜를 안 보여 준다» — 지어내지도, 낡은 걸 내밀지도 않는다.
+        const yrs = String(f.day || '').match(/\b(20\d{2})\b/g);
+        const dayOk = !yrs || yrs.some(y => +y >= +T8.slice(0, 4));
+        const dates = f.start ? `${String(f.start).slice(4, 6)}/${String(f.start).slice(6, 8)} – ${String(f.end).slice(4, 6)}/${String(f.end).slice(6, 8)}` : (dayOk ? (f.day || '') : '');
+        // 🔗 제목을 «개별 축제 상세»로 보낸다 — 표에 있는 것만(없으면 그냥 굵은 글씨).
+        //    2026-09-09 이전엔 전부 <b> 라 「눌러도 아무 일이 없다」는 지적을 받았다.
+        const slug = (f.id != null && FLINK) ? FLINK[String(f.id)] : '';
+        const name = slug
+          ? `<a class="ic-a" href="/${lang}/festival/${slug}/">${esc(f.title)}</a>`
+          : `<b>${esc(f.title)}</b>`;
+        // 📍 원문 주소가 한글로 남은 건이 있다(영문 서비스에 로마자 주소가 없는 곳).
+        //    외국어 본문에 한글을 그냥 흘리지 말고 «붙여넣기 상자»로 내려 실제로 쓸모 있게 만든다.
+        const koAddr = /[가-힣]/.test(String(f.place || '')) ? String(f.place) : '';
+        const place = koAddr ? '' : f.place;
+        return `<li class="ic-item">
+<div class="ic-h">${name}${f.ko ? `<span class="ic-ko">${esc(f.ko)}</span>` : ''}${wx}</div>
+${f.sub ? `<p class="ic-sub">${esc(f.sub)}</p>` : ''}
+<p class="ic-meta">${[
+          dates ? `📅 ${esc(t.when)}: ${esc(dates)}` : '',
+          place ? `📍 ${esc(String(place).slice(0, 60))}` : '',
+          // ⚠️ 원본에 요금이 「-」로 들어 있는 건이 있다 — 그건 「정보 없음」이지 요금이 아니다.
+          (f.fee && !/^[-–—\s]*$/.test(String(f.fee))) ? `💳 ${esc(String(f.fee).slice(0, 50))}` : ''
+        ].filter(Boolean).join(' · ')}</p>
+${(() => { const d = dropStaleNotes(f.desc, +T8.slice(0, 4)); return d ? `<p class="ic-ov">${esc(d.slice(0, 260))}</p>` : ''; })()}
+${f.traffic ? `<p class="ic-tr">🚇 ${esc(t.how)}: ${esc(String(f.traffic).slice(0, 200))}</p>` : ''}
+${stLine(f.x, f.y)}
+${cp(t.name, f.ko)}
+${cp(t.addr, koAddr)}
+</li>`;
+      };
+
+      const plCard = p => `<li class="ic-item">
+<div class="ic-h"><b>${esc(p.title)}</b>${p.ko ? `<span class="ic-ko">${esc(p.ko)}</span>` : ''}</div>
+<p class="ic-ov">${esc(String(p.ov).replace(/\s+/g, ' ').slice(0, 190))}…</p>
+${cp(t.addr, p.addrKo)}
+${stLine(p.x, p.y)}
+</li>`;
+
+      // ⚠️ «실제로 만든» 도시만 링크한다(madeKeys). CITIES 전체로 찍으면 404가 생긴다.
+      const others = CITIES.filter(o => o.key !== C.key && madeKeys.has(o.key))
+        .map(o => `<a href="/${lang}/${o.key}/">${esc(t.city[o.key])}</a>`).join('');
+      // 같은 도시의 «다른 언어» — 실제로 만든 것만. 이 줄이 고아 페이지를 없앤다.
+      const langRow = LANGS.filter(l => l !== lang && READY[l] && READY[l].has(C.key))
+        .map(l => `<a href="/${l}/${C.key}/">${LANG_NAME[l]}</a>`).join('')
+        + `<a href="/${C.key}/">한국어</a>`;
+
+      const content = `<main><div class="wrap">${CSS}
+<p class="ic-crumb"><a href="/${lang}/">${lang === 'ja' ? 'ホーム' : lang === 'zh' ? '首页' : lang === 'tw' ? '首頁' : lang === 'es' ? 'Inicio' : 'Home'}</a> › ${esc(city)}</p>
+<h1 class="ic-h1">${esc(t.h1(city))}</h1>
+<p class="ic-lead">${t.lead(esc(city), P.length, (F.length && F[0].annual) ? 0 : F.length)}</p>
+
+<div class="ic-why"><h2>${esc(t.whyT)}</h2><p>${t.why}</p></div>
+
+${(() => {
+        // 🗓 2026-09-09 수정 — 제목은 「지금 열리는 축제」인데 «아직 시작 안 한» 것이 더 많았다
+        //    (2026-09-09 실측: 날짜가 찍힌 48건 중 진행중 13 · 예정 35). 사실과 맞게 두 묶음으로 쪼갠다.
+        // 부산 공식 번역분은 «올해 날짜»가 아예 없다 — 「지금 열린다」고 말하지 않고 연간 축제로 묶는다.
+        if (F.length && F[0].annual) {
+          return `<h2 class="sec">${esc(t.fesA)} <span class="ic-n">${F.length}</span></h2>
+<p class="ic-cnote">${t.fesANote}</p>
+<ul class="ic-list">${F.slice(0, SHOW_FESTS).map(fesCard).join('')}</ul>`;
+        }
+        const onNow = F.filter(f => !f.start || String(f.start) <= T8);
+        const soon = F.filter(f => f.start && String(f.start) > T8)
+          .sort((a, b) => String(a.start).localeCompare(String(b.start)));
+        return (onNow.length ? `<h2 class="sec">${esc(t.fesT)}</h2>
+<ul class="ic-list">${onNow.slice(0, SHOW_FESTS).map(fesCard).join('')}</ul>` : '')
+          + (soon.length ? `<h2 class="sec">${esc(t.fesU)}</h2>
+<ul class="ic-list">${soon.slice(0, SHOW_FESTS).map(fesCard).join('')}</ul>` : '');
+      })()}
+
+${P.length ? `<h2 class="sec">${esc(t.placeT(city))}</h2>
+<ul class="ic-list">${P.slice(0, SHOW_PLACES).map(plCard).join('')}</ul>` : ''}
+
+${C.key === 'busan' && busanCult.length ? `<h2 class="sec">${esc(t.cultT)} <span class="ic-n">${busanCult.length}</span></h2>
+<p class="ic-cnote">${t.cultNote}</p>
+<ul class="ic-list">${busanCult.slice(0, SHOW_CULT).map(r => `<li class="ic-item">
+<div class="ic-h"><b>${esc(r.title)}</b><span class="ic-tag">${r.pay ? esc(t.paid) : esc(t.free)}</span></div>
+<p class="ic-meta">📅 ${esc(String(r.start).slice(4, 6))}/${esc(String(r.start).slice(6, 8))} – ${esc(String(r.end).slice(4, 6))}/${esc(String(r.end).slice(6, 8))} · 📍 ${esc(r.place)}</p>
+${cp(t.cultTitle, r.title)}
+${r.addr ? cp(t.addr, r.addr) : ''}
+</li>`).join('')}</ul>` : ''}
+
+${C.key === 'seoul' && sev.length >= 20 ? (() => { const v = SEV[lang], shown = Math.min(sev.length, SHOW_SEV); return `<h2 class="sec">${esc(v.t)} <span class="ic-n">${shown}</span></h2>
+<p class="ic-cnote">${v.n}</p>
+<ul class="ic-list">${sev.slice(0, SHOW_SEV).map(e => {
+        const cat = SEV_CAT[e.cat] && SEV_CAT[e.cat][lang];
+        // ⚠️ 해를 넘기는 장기 행사가 있다 — MM/DD 만 찍으면 「11/17 – 11/16」처럼 거꾸로 보인다.
+        //    연도가 다르면 «연도를 같이» 찍는다. 원본이 뒤집힌 1건은 기간을 아예 안 보여준다(지어내지 않는다).
+        const d1 = norm8(e.start), d2 = norm8(e.end);
+        const md = d => `${d.slice(4, 6)}/${d.slice(6, 8)}`;
+        const dates = (!d1 || (d2 && d1 > d2)) ? ''
+          : (d2 && d2 !== d1
+            ? (d1.slice(0, 4) === d2.slice(0, 4) ? `${md(d1)} – ${md(d2)}` : `${d1.slice(0, 4)}.${md(d1)} – ${d2.slice(0, 4)}.${md(d2)}`)
+            : md(d1));
+        return `<li class="ic-item">
+<div class="ic-h"><b>${esc(e.title)}</b>${cat ? `<span class="ic-tag">${esc(cat)}</span>` : ''}<span class="ic-tag">${e.free ? esc(v.free) : esc(v.paid)}</span></div>
+<p class="ic-meta">${dates ? `📅 ${esc(dates)}` : ''}${e.time ? ` · 🕘 ${esc(String(e.time).slice(0, 30))}` : ''}${e.gu ? ` · 📍 ${esc(e.gu)}` : ''}</p>
+${cp(v.title, e.title)}
+${e.place ? cp(v.where, e.place) : ''}
+${stLine(e.x, e.y)}
+</li>`;
+      }).join('')}</ul>` })() : ''}
+
+${C.key === 'gyeongju' && PHOTO_T[lang] ? (() => { const v = PHOTO_T[lang], li = PHOTO_LANG[lang]; return `<h2 class="sec">${esc(v.t)} <span class="ic-n">${GJ_PHOTOS.length}</span></h2>
+<p class="ic-lead">${esc(v.n)}</p>
+<div class="ic-photos">${GJ_PHOTOS.map(p => `<figure>
+<img src="/img/${p[0]}.webp" alt="${esc(p[li])}" loading="lazy" width="900" onerror="this.closest('figure').remove()">
+<figcaption><b>${esc(p[li])}</b><span>${esc(p[1])} · ${esc(p[2])}</span></figcaption></figure>`).join('')}</div>`; })() : ''}
+${C.key === 'jeju' && JEJU[lang] ? `<div class="ic-why"><h2>${esc(JEJU[lang][0])}</h2><p>${JEJU[lang][1]}</p></div>` : ''}
+
+${C.key === 'jeju' && olle.length ? (() => { const o = OLLE[lang]; return `<h2 class="sec">${esc(o.t)} <span class="ic-n">${olle.length}</span></h2>
+<p class="ic-cnote">${o.n}</p>
+<ul class="ic-list">${olle.slice(0, SHOW_OLLE).map(c => `<li class="ic-item">
+<div class="ic-h"><b>${esc(String(c.no).replace('코스', ''))}</b><span class="ic-ko">${esc(c.name)}</span>${c.wheelchair ? `<span class="ic-tag">♿ ${esc(o.wc)}</span>` : ''}</div>
+<p class="ic-meta">${c.km ? `📏 ${c.km} ${esc(o.km)}` : ''}${c.hours ? ` · ⏱ ${esc(c.hours)} ${esc(o.hr)}` : ''}${c.start ? ` · 🚩 ${esc(c.start)} → ${esc(c.end || '')}` : ''}</p>
+${cp(o.cpS, c.start)}
+</li>`).join('')}</ul>` })() : ''}
+
+${C.key === 'jeju' && rain.length >= MIN_RAIN ? (() => { const r = RAIN[lang], shown = Math.min(rain.length, SHOW_RAIN); return `<h2 class="sec">${esc(r.t)} <span class="ic-n">${shown}</span></h2>
+<p class="ic-cnote">${r.n}</p>
+<ul class="ic-list">${rain.slice(0, SHOW_RAIN).map(p => {
+        const hh = HRS[p.hours] && HRS[p.hours][lang];
+        return `<li class="ic-item">
+<div class="ic-h"><b>${esc(p.title)}</b><span class="ic-tag">🏠 ${esc(r.ind)}</span>${p.airport ? `<span class="ic-tag">✈️ ${esc(r.air)}</span>` : ''}</div>
+<p class="ic-meta">${hh ? `⏱ ${esc(hh)}` : ''}${p.region ? `${hh ? ' · ' : ''}📍 ${esc(p.region)}` : ''}</p>
+${cp(r.name, p.title)}
+${cp(r.addr, p.addr)}
+</li>`;
+      }).join('')}</ul>` })() : ''}
+
+${require('./kory.js').block(C.key, city, lang)}
+${others ? `<h2 class="sec">${esc(t.other)}</h2>
+<div class="ic-nav">${others}</div>` : ''}
+<div class="ic-nav" style="margin-top:10px">${langRow}</div>
+
+<p class="ic-src"><b>${esc(t.srcT)}</b> — ${esc(t.src)}</p>
+</div></main>`;
+
+      const desc = (C.key === 'jeju' && olle.length && rain.length >= MIN_RAIN && JEJU_DESC[lang])
+        ? JEJU_DESC[lang](P.length, olle.length, Math.min(rain.length, SHOW_RAIN))
+        : t.desc(city, P.length);
+      writePage(`${lang}/${C.key}`, layout(
+        t.title(city, MONTH[lang][mn]),
+        desc,
+        `/${lang}/${C.key}/`, content, { lang }));
+      urls.push(`/${lang}/${C.key}/`);
+    }
+
+    // 🏙 도시 목록 페이지 — «만들어진 도시만» 싣는다. 내비는 여기 한 곳으로만 보낸다.
+    if (ready.length && CITIES_T[lang]) {
+      const ct = CITIES_T[lang];
+      // ⚠️ `cp`(복사 박스)는 도시 루프 안에서만 정의돼 있다 — 여기선 같은 모양으로 새로 만든다.
+      const cpx = (label, val) => val ? `<div class="xcopy"><div><span class="lb">${esc(label)}</span><span class="vl">${esc(val)}</span></div>
+<button data-v="${esc(val)}" data-done="${esc(t.copied)}">${esc(t.copy)}</button></div>` : '';
+      // ⚠️ 처음엔 «도시 이름 + 링크» 한 줄씩만 뒀더니 audit 기준 435~1,207자로 **얇은 페이지**가 됐다.
+      //    목록 페이지도 «읽을 게» 있어야 한다 → 도시마다 실제 장소 이름 3개를 같이 보여준다(지어내는 게 아니라 우리 데이터다).
+      const cards = ready.map(({ C, P }) => {
+        const sample = P.slice(0, 3).map(p => esc(p.title)).join(' · ');
+        return `<li class="ic-item">
+<div class="ic-h"><b><a href="/${lang}/${C.key}/" style="color:#111827">${esc(t.city[C.key])}</a></b><span class="ic-ko">${esc(C.ko)}</span><span class="ic-tag">${P.length} ${esc(ct.p)}</span></div>
+${sample ? `<p class="ic-meta">${sample}${P.length > 3 ? ' …' : ''}</p>` : ''}
+<p class="ic-meta"><a href="/${lang}/${C.key}/" style="color:#0c7d72;font-weight:800">${esc(ct.more)} →</a></p>
+</li>`;
+      }).join('');
+      // 도시별 첫 장소를 모아 «설명이 붙은» 미리보기 6장 — 목록만 있는 페이지가 되지 않게.
+      const picks = ready.map(m => m.P.find(p => String(p.ov || '').length >= 160 && p.img)).filter(Boolean).slice(0, 6);
+      const preview = picks.length >= 4 ? `<h2 class="sec">${esc(ct.pv)}</h2>
+<ul class="ic-list">${picks.map(p => `<li class="ic-item">
+<div class="ic-h"><b>${esc(p.title)}</b>${p.ko ? `<span class="ic-ko">${esc(p.ko)}</span>` : ''}</div>
+<p class="ic-meta">${esc(String(p.ov).slice(0, 180))}…</p>
+${cpx(t.addr, p.addrKo)}
+</li>`).join('')}</ul>` : '';
+      const body = `<main><div class="wrap">${CSS}
+<p class="ic-crumb"><a href="/${lang}/">${lang === 'ja' ? 'ホーム' : lang === 'zh' ? '首页' : lang === 'tw' ? '首頁' : lang === 'es' ? 'Inicio' : 'Home'}</a> › ${esc(ct.t)}</p>
+<h1 class="ic-h1">${esc(ct.h)}</h1>
+<p class="ic-lead">${ct.l(ready.length)}</p>
+<div class="ic-why"><h2>${esc(t.whyT)}</h2><p>${t.why}</p></div>
+<ul class="ic-list">${cards}</ul>
+${preview}
+<p class="ic-src"><b>${esc(t.srcT)}</b> — ${esc(t.src)}</p>
+</div></main>`;
+      writePage(`${lang}/cities`, layout(
+        `${ct.h} | Chukjemoa`, ct.l(ready.length).replace(/<[^>]+>/g, ''),
+        `/${lang}/cities/`, body, { lang }));
+      urls.push(`/${lang}/cities/`);
+    }
+  }
+  }   // pass 1(통과 여부 수집) → pass 2(렌더)
+
+  // 게이트만 돌린 경우 — 아무것도 안 그렸으니 통과표만 돌려준다.
+  if (phase === 1) return READY;
+
+  console.log(`✓ /{lang}/{city}/ — ${urls.length}페이지`);
+  // ⚠️ 「붙었다」가 아니라 «미스율»을 센다 — 조용히 사라지는 걸 눈으로 보고서야 아는 일을 또 만들지 않는다.
+  if (subRows.length) {
+    const tot = subHit + subMiss;
+    console.log(`   🚇 가장 가까운 역 ${subHit}/${tot}건 적용(미스 ${tot ? Math.round(subMiss / tot * 100) : 0}%) · 역 ${subRows.length}개`
+      + ` — 부산·제주는 수도권 데이터에 없어 미스가 정상입니다`);
+  } else console.log('   🔴 data/subway.json 이 없습니다 — node fetch-subway.js 를 먼저 돌리세요');
+  if (skipped.length) console.log(`   재료 부족으로 «만들지 않음» ${skipped.length}개: ${skipped.join(' · ')}`);
+  return urls;
+}
+
+const CSS = `<style>
+.ic-photos{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));margin:10px 0 16px}
+.ic-photos figure{margin:0;background:#fff;border:1px solid #e6eaee;border-radius:14px;overflow:hidden}
+.ic-photos img{width:100%;height:210px;object-fit:cover;display:block}
+.ic-photos figcaption{padding:9px 12px;font-size:.86rem;color:#374151;line-height:1.55}
+.ic-photos figcaption span{display:block;color:#9aa3af;font-size:.79rem;margin-top:2px}
+.ic-crumb{font-size:.85rem;color:#9aa3af;margin:8px 0}
+.ic-crumb a{color:#0c7d72}
+.ic-h1{font-size:1.5rem;font-weight:900;letter-spacing:-.02em;margin:6px 0 8px}
+.ic-lead{color:#374151;font-size:1rem;line-height:1.8;margin:0 0 14px}
+.ic-why{background:#f4faf8;border:1.5px solid #dcefeb;border-radius:14px;padding:14px 17px;margin:14px 0}
+.ic-why h2{font-size:1rem;font-weight:900;color:#0a6c63;margin:0 0 6px}
+.ic-why p{color:#0a6c63;font-size:.94rem;line-height:1.75;margin:0}
+.ic-list{list-style:none;padding:0;margin:0;display:grid;gap:11px}
+.ic-item{border:1px solid #e6eaee;border-radius:12px;padding:13px 15px;background:#fff}
+.ic-h{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:5px}
+.ic-h b{font-size:1rem;font-weight:800;color:#111827}
+/* 🔗 개별 축제 상세로 가는 제목 — «눌러도 되는 것»으로 보여야 한다(밑줄+색). */
+.ic-h .ic-a{font-size:1rem;font-weight:800;color:#0a6c63;text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:1.5px}
+.ic-h .ic-a:hover{color:#08544d}
+.ic-ko{font-size:.84rem;color:#6b7280;font-weight:700}
+.ic-sub{font-size:.9rem;color:#0a6c63;font-weight:700;margin:0 0 5px}
+.ic-meta{font-size:.85rem;color:#6b7280;margin:0 0 6px;line-height:1.6}
+.ic-ov{font-size:.9rem;line-height:1.7;color:#374151;margin:0 0 8px}
+.ic-tr{font-size:.86rem;line-height:1.65;color:#374151;background:#f7fafc;border-radius:8px;padding:8px 10px;margin:0 0 8px}
+.ic-nav{display:flex;flex-wrap:wrap;gap:8px}
+.ic-nav a{display:inline-block;padding:9px 16px;border-radius:22px;background:#fff;border:1.5px solid #dfe6ea;color:#374151;font-weight:800;font-size:.92rem;text-decoration:none}
+.ic-src{font-size:.8rem;color:#9aa3af;line-height:1.7;margin-top:18px}
+.ic-n{font-size:.85rem;font-weight:800;color:#0a6c63;background:#e7f6f3;border-radius:999px;padding:2px 10px;margin-left:6px}
+.ic-cnote{font-size:.88rem;color:#6b7280;line-height:1.75;margin:0 0 12px}
+.ic-tag{font-size:.74rem;font-weight:800;color:#0a6c63;background:#e7f6f3;border-radius:6px;padding:2px 8px}
+.ic-st{font-size:.88rem;color:#374151;background:#eef4ff;border:1px solid #dbe6ff;border-radius:9px;padding:8px 11px;margin:6px 0 0;line-height:1.6}
+.ic-st b{color:#1e3a8a;font-weight:800}
+.ic-stko{font-size:.84rem;color:#4b5563;font-weight:700;margin-left:6px}
+.xcopy{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;
+  background:#f6fbfa;border:1.5px solid #dcefeb;border-radius:12px;padding:10px 12px;margin:6px 0}
+.xcopy .lb{font-size:.74rem;font-weight:800;color:#0a6c63;display:block;margin-bottom:3px}
+.xcopy .vl{font-size:.98rem;font-weight:800;color:#111827;word-break:keep-all;line-height:1.45}
+.xcopy button{background:#0f9d8f;color:#fff;border:0;border-radius:9px;padding:9px 14px;font-weight:800;font-size:.84rem;cursor:pointer;white-space:nowrap}
+</style>
+<script>
+if(!window.__xcopyBound){window.__xcopyBound=1;
+document.addEventListener('click',function(e){
+  var b=e.target.closest('.xcopy button'); if(!b) return;
+  var t=b.getAttribute('data-v')||'';
+  var done=function(){var o=b.textContent;b.textContent=b.getAttribute('data-done')||'OK';
+    setTimeout(function(){b.textContent=o;},1400);};
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,function(){});}
+  else{var ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);
+    ta.select();try{document.execCommand('copy');done();}catch(_){}document.body.removeChild(ta);}
+});}
+</script>`;
+
+// ⚠️ 도시 표기는 여기가 유일한 출처다 — build.js 가 홈 카드를 그릴 때도 이걸 쓴다.
+//    같은 이름을 두 곳에 적어 두면 한쪽만 고쳐져 조용히 어긋난다.
+const cityLabel = (lang, key) => (T[lang] && T[lang].city[key]) || key;
+module.exports = { build, gate, cityLabel };
