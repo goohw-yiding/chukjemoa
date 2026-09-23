@@ -116,6 +116,9 @@ const SRC = ['build.js', 'fetch-markets.js', 'fetch-spots.js', 'fetch-valleys.js
   //   드리프트가 나면 다음 회차가 옛 규칙으로 주소를 덮어쓴다.
   'en-nearby.js', 'fetch-en-places.js', 'data/places_en.json',
   'match-addr-ko.js', 'fix-addr-ko.js',
+  // 2026-09-23 추가 — 근처 볼거리 도로거리·차량시간. ja/en-nearby.js 가 road.js 를 require 하고 data/road_cache.json 을 읽는다.
+  //   ⚠️ road_cache.json 은 «돈 주고 산» 데이터(Directions 건당 5원, 1,587쌍) — 한쪽만 최신이면 되돌아가며 다시 사야 한다.
+  'road.js', 'fetch-road.js', 'data/road_cache.json',
   // 2026-09-03 추가 — 축제 당일 날씨. festival.js 가 weather.js 를 require 하고, 그게 data/weather.json 을 읽는다.
   //   ⚠️ weather.json 은 «하루만 지나도 틀린» 파일이라 매일 새로 만든다 → 양쪽이 어긋나면
   //      한쪽 빌드에서 날씨가 통째로 사라진다(weather.js 의 신선도 가드가 막는다).

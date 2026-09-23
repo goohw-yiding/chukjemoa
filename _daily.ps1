@@ -69,6 +69,14 @@ W "2b) weather fetch (open-meteo, no key)"
 & node fetch-weather.js 2>&1 | Select-Object -Last 2 | ForEach-Object { W "   $_" }
 if ($LASTEXITCODE -ne 0) { W "   WARNING: weather fetch failed - today's build will show no weather" }
 
+# 2026-09-23: ja/en "Nearby" lists now use road distance + drive time (road.js, NAVER Directions,
+#   5 won per call, NO free tier). The 1,587 existing pairs were bought once. A NEW festival has no
+#   cached pairs, so road.js falls back to straight-line for that festival (never mixes the two).
+#   This step fills only the missing pairs. HARD CAP 100 calls = 500 won/day; the script also stops
+#   after 5 errors in a row. Normal day: 0-40 calls. Failure must not block the deploy.
+W "2c) road distance for new nearby pairs (cap 100 calls/day)"
+& node fetch-road.js run 100 2>&1 | Select-Object -Last 2 | ForEach-Object { W "   $_" }
+
 W "3) build"
 $out = & node build.js 2>&1
 if ($LASTEXITCODE -ne 0) {
@@ -79,7 +87,7 @@ if ($LASTEXITCODE -ne 0) {
 ($out | Select-Object -Last 2) | ForEach-Object { W "   $_" }
 
 W "4) mirror + drift check"
-& node _d2p.js build.js festival.js _fest_trend.py _fest_volume.py _weekly_fetch.js _slow_fetch.js data/fest_trend.json data/fest_volume.json data/festivals_api.json data/cltur_fstvl.json 2>&1 | Select-Object -Last 1 | ForEach-Object { W "   $_" }
+& node _d2p.js build.js festival.js _fest_trend.py _fest_volume.py _weekly_fetch.js _slow_fetch.js data/fest_trend.json data/fest_volume.json data/festivals_api.json data/cltur_fstvl.json data/road_cache.json 2>&1 | Select-Object -Last 1 | ForEach-Object { W "   $_" }
 $sync = (& node _sync.js 2>&1 | Select-Object -Last 1)
 W "   $sync"
 
