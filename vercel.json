@@ -1,56 +1,171 @@
 {
-  "regions": ["icn1"],
+  "regions": [
+    "icn1"
+  ],
   "redirects": [
-    { "source": "/festival/donggangttenmokchukje", "destination": "/festival/", "permanent": true },
-    { "source": "/festival/donggangttenmokchukje/", "destination": "/festival/", "permanent": true },
-    { "source": "/festival/gimcheonpodochukje", "destination": "/festival/", "permanent": true },
-    { "source": "/festival/gimcheonpodochukje/", "destination": "/festival/", "permanent": true },
-    { "source": "/festival/gyeyangaraonwoteochukje", "destination": "/festival/", "permanent": true },
-    { "source": "/festival/gyeyangaraonwoteochukje/", "destination": "/festival/", "permanent": true },
-    { "source": "/festival/samcheok-bichi-sseom-peseutibeol", "destination": "/festival/", "permanent": true },
-    { "source": "/festival/samcheok-bichi-sseom-peseutibeol/", "destination": "/festival/", "permanent": true },
-    { "source": "/festival/seourilleoseuteureisyeonpeeov-21", "destination": "/festival/", "permanent": true },
-    { "source": "/festival/seourilleoseuteureisyeonpeeov-21/", "destination": "/festival/", "permanent": true },
-    { "source": "/blog/festival-gear-checklist", "destination": "/blog/", "permanent": true },
-    { "source": "/blog/festival-gear-checklist/", "destination": "/blog/", "permanent": true },
-    { "source": "/festival/janghang-maengmundong-kkot-chukje", "destination": "/festival/", "permanent": true },
-    { "source": "/festival/janghang-maengmundong-kkot-chukje/", "destination": "/festival/", "permanent": true },
-    { "source": "/festival/siyf", "destination": "/festival/", "permanent": true },
-    { "source": "/festival/siyf/", "destination": "/festival/", "permanent": true },
-    { "source": "/festival/wanju-geundaeyeoksa-munhwachukje-samnyeyeokjeonpocha", "destination": "/festival/", "permanent": true },
-    { "source": "/festival/wanju-geundaeyeoksa-munhwachukje-samnyeyeokjeonpocha/", "destination": "/festival/", "permanent": true },
-    { "source": "/festival/hanyeoreum-bamui-sinjeongho-byeolbitchukje", "destination": "/festival/", "permanent": true },
-    { "source": "/festival/hanyeoreum-bamui-sinjeongho-byeolbitchukje/", "destination": "/festival/", "permanent": true },
-    { "source": "/festival/jinju-gukgayusanyahaeng", "destination": "/festival/", "permanent": true },
-    { "source": "/festival/jinju-gukgayusanyahaeng/", "destination": "/festival/", "permanent": true },
-    { "source": "/festival/gyeongsan-gatbawisowonseongchwichukje", "destination": "/festival/", "permanent": true },
-    { "source": "/festival/gyeongsan-gatbawisowonseongchwichukje/", "destination": "/festival/", "permanent": true }
+    {
+      "source": "/festival/donggangttenmokchukje",
+      "destination": "/festival/",
+      "permanent": true
+    },
+    {
+      "source": "/festival/donggangttenmokchukje/",
+      "destination": "/festival/",
+      "permanent": true
+    },
+    {
+      "source": "/festival/gimcheonpodochukje",
+      "destination": "/festival/",
+      "permanent": true
+    },
+    {
+      "source": "/festival/gimcheonpodochukje/",
+      "destination": "/festival/",
+      "permanent": true
+    },
+    {
+      "source": "/festival/gyeyangaraonwoteochukje",
+      "destination": "/festival/",
+      "permanent": true
+    },
+    {
+      "source": "/festival/gyeyangaraonwoteochukje/",
+      "destination": "/festival/",
+      "permanent": true
+    },
+    {
+      "source": "/festival/samcheok-bichi-sseom-peseutibeol",
+      "destination": "/festival/",
+      "permanent": true
+    },
+    {
+      "source": "/festival/samcheok-bichi-sseom-peseutibeol/",
+      "destination": "/festival/",
+      "permanent": true
+    },
+    {
+      "source": "/festival/seourilleoseuteureisyeonpeeov-21",
+      "destination": "/festival/",
+      "permanent": true
+    },
+    {
+      "source": "/festival/seourilleoseuteureisyeonpeeov-21/",
+      "destination": "/festival/",
+      "permanent": true
+    },
+    {
+      "source": "/blog/festival-gear-checklist",
+      "destination": "/blog/",
+      "permanent": true
+    },
+    {
+      "source": "/blog/festival-gear-checklist/",
+      "destination": "/blog/",
+      "permanent": true
+    },
+    {
+      "source": "/festival/janghang-maengmundong-kkot-chukje",
+      "destination": "/festival/",
+      "permanent": true
+    },
+    {
+      "source": "/festival/janghang-maengmundong-kkot-chukje/",
+      "destination": "/festival/",
+      "permanent": true
+    },
+    {
+      "source": "/festival/siyf",
+      "destination": "/festival/",
+      "permanent": true
+    },
+    {
+      "source": "/festival/siyf/",
+      "destination": "/festival/",
+      "permanent": true
+    },
+    {
+      "source": "/festival/wanju-geundaeyeoksa-munhwachukje-samnyeyeokjeonpocha",
+      "destination": "/festival/",
+      "permanent": true
+    },
+    {
+      "source": "/festival/wanju-geundaeyeoksa-munhwachukje-samnyeyeokjeonpocha/",
+      "destination": "/festival/",
+      "permanent": true
+    },
+    {
+      "source": "/festival/hanyeoreum-bamui-sinjeongho-byeolbitchukje",
+      "destination": "/festival/",
+      "permanent": true
+    },
+    {
+      "source": "/festival/hanyeoreum-bamui-sinjeongho-byeolbitchukje/",
+      "destination": "/festival/",
+      "permanent": true
+    },
+    {
+      "source": "/festival/jinju-gukgayusanyahaeng",
+      "destination": "/festival/",
+      "permanent": true
+    },
+    {
+      "source": "/festival/jinju-gukgayusanyahaeng/",
+      "destination": "/festival/",
+      "permanent": true
+    }
   ],
   "headers": [
     {
       "source": "/api/(.*)",
-      "headers": [{ "key": "X-Robots-Tag", "value": "noindex, nofollow" }]
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        }
+      ]
     },
     {
       "source": "/course/d/(.*)",
-      "headers": [{ "key": "X-Robots-Tag", "value": "noindex" }]
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex"
+        }
+      ]
     },
     {
       "source": "/trip/d/(.*)",
-      "headers": [{ "key": "X-Robots-Tag", "value": "noindex" }]
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex"
+        }
+      ]
     },
     {
       "source": "/(map-data|hsearch).json",
       "headers": [
-        { "key": "X-Robots-Tag", "value": "noindex" },
-        { "key": "Cache-Control", "value": "public, max-age=0, s-maxage=3600, stale-while-revalidate=86400" }
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, s-maxage=3600, stale-while-revalidate=86400"
+        }
       ]
     },
     {
       "source": "/festival/map.json",
       "headers": [
-        { "key": "X-Robots-Tag", "value": "noindex" },
-        { "key": "Cache-Control", "value": "public, max-age=0, s-maxage=3600, stale-while-revalidate=86400" }
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, s-maxage=3600, stale-while-revalidate=86400"
+        }
       ]
     }
   ]

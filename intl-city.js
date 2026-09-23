@@ -42,12 +42,27 @@ const CITIES = [
   { key: 'cheongju', sido: '충북', sgg: '청주시', ko: '청주', match: ['청주', 'Cheongju', '清州', '淸州'] },
   // 🏛 2026-09-23 추가 — 공주. ⚠️ **en·ja 만** 게이트(20)를 넘는다(en 26 · ja 29 / zh 13 · tw 18 · es 15).
   //   한국어 `/gongju/` 가 외국어 링크를 걸기 때문에 여기 없으면 404 내부 링크가 난다(2026-09-04 사고와 같은 형태).
-  { key: 'gongju', sido: '충남', sgg: '공주시', ko: '공주', match: ['공주', 'Gongju', '公州', 'コンジュ'] }
+  { key: 'gongju', sido: '충남', sgg: '공주시', ko: '공주', match: ['공주', 'Gongju', '公州', 'コンジュ'] },
+  // 🚢 2026-09-23 추가 — 군산. **2026-09-07에 RETIRED 로 뺐다가 되살린 도시다.**
+  //   ⚠️ RETIRED 목록에서 'gunsan' 을 같이 빼야 한다 — 안 빼면 만든 폴더를 곧바로 지운다.
+  //   en 26 · ja 23 · zh 22 · es 22 통과 / tw 17 미달.
+  { key: 'gunsan', sido: '전북', sgg: '군산시', ko: '군산', match: ['군산', 'Gunsan', '群山', 'クンサン'] },
+  // 🔬 2026-09-23 추가 — 대전. ⚠️ 광역시라 sgg 없음(시 전체가 한 도시). 5개어 전부 통과.
+  { key: 'daejeon', sido: '대전', ko: '대전', match: ['대전', 'Daejeon', '大田', 'テジョン'] },
+  // 🐋 2026-09-23 추가 — 울산. ⚠️ 광역시라 sgg 없음. 5개어 전부 통과(en 53 · ja 52 로 재고가 두껍다).
+  { key: 'ulsan', sido: '울산', ko: '울산', match: ['울산', 'Ulsan', '蔚山', 'ウルサン'] },
+  // 🚂 2026-09-23 추가 — 춘천. en 30 · ja 31 · tw 30 · es 34 통과 / zh 19 로 **1 모자라** 중문만 안 열린다.
+  { key: 'chuncheon', sido: '강원', sgg: '춘천시', ko: '춘천', match: ['춘천', 'Chuncheon', '春川', 'チュンチョン'] },
+  // 🏖 2026-09-23 추가 — 태안. **en 23 · ja 21 만** 통과(zh 11 · tw 11 · es 15 미달) — 두 언어만 연다.
+  { key: 'taean', sido: '충남', sgg: '태안군', ko: '태안', match: ['태안', 'Taean', '泰安', 'テアン'] },
+  // ☕ 2026-09-23 추가 — 파주. 5개어 전부 통과.
+  { key: 'paju', sido: '경기', sgg: '파주시', ko: '파주', match: ['파주', 'Paju', '坡州', 'パジュ'] }
 ];
 // ⛔ 목록에서 «뺀» 도시 — 폴더를 지우기 위해 이름을 계속 들고 있어야 한다.
 //   군산: 여행 검색량 4위(275K)인데 공공데이터 관광지가 29곳으로 게이트(30)에 1 모자랐다 → 2026-09-07 청주로 교체.
 //   재고가 차면 CITIES 로 옮기고 여기서 뺀다.
-const RETIRED = ['gunsan'];
+// 2026-09-23 — 군산이 CITIES 로 돌아왔다(도시별 게이트 29 덮어쓰기). 그래서 RETIRED 는 비었다.
+const RETIRED = [];
 
 // 🏙 2026-09-07 — 언어별 «도시 목록» 페이지 `/{lang}/cities/`.
 //   왜: 도시 페이지 15장이 홈에도 내비에도 안 걸려 **사실상 고아**였다(/en/ 홈 본문 링크는 1개뿐이었다).
@@ -72,11 +87,11 @@ const CITIES_T = {
 };
 // 도시 이름 5개어 — CITIES 와 짝이 맞아야 한다(빠지면 제목이 undefined 로 나간다).
 const CITY_NAME = {
-  en: { incheon: 'Incheon', yeosu: 'Yeosu', suwon: 'Suwon', tongyeong: 'Tongyeong', geoje: 'Geoje', gangneung: 'Gangneung', sokcho: 'Sokcho', jeonju: 'Jeonju', daegu: 'Daegu', cheongju: 'Cheongju', gongju: 'Gongju' },
-  ja: { incheon: '仁川', yeosu: '麗水', suwon: '水原', tongyeong: '統営', geoje: '巨済', gangneung: '江陵', sokcho: '束草', jeonju: '全州', daegu: '大邱', cheongju: '清州', gongju: '公州' },
-  zh: { incheon: '仁川', yeosu: '丽水', suwon: '水原', tongyeong: '统营', geoje: '巨济', gangneung: '江陵', sokcho: '束草', jeonju: '全州', daegu: '大邱', cheongju: '清州', gongju: '公州' },
-  tw: { incheon: '仁川', yeosu: '麗水', suwon: '水原', tongyeong: '統營', geoje: '巨濟', gangneung: '江陵', sokcho: '束草', jeonju: '全州', daegu: '大邱', cheongju: '淸州', gongju: '公州' },
-  es: { incheon: 'Incheon', yeosu: 'Yeosu', suwon: 'Suwon', tongyeong: 'Tongyeong', geoje: 'Geoje', gangneung: 'Gangneung', sokcho: 'Sokcho', jeonju: 'Jeonju', daegu: 'Daegu', cheongju: 'Cheongju', gongju: 'Gongju' }
+  en: { incheon: 'Incheon', yeosu: 'Yeosu', suwon: 'Suwon', tongyeong: 'Tongyeong', geoje: 'Geoje', gangneung: 'Gangneung', sokcho: 'Sokcho', jeonju: 'Jeonju', daegu: 'Daegu', cheongju: 'Cheongju', gongju: 'Gongju', gunsan: 'Gunsan', daejeon: 'Daejeon', ulsan: 'Ulsan', chuncheon: 'Chuncheon', taean: 'Taean', paju: 'Paju' },
+  ja: { incheon: '仁川', yeosu: '麗水', suwon: '水原', tongyeong: '統営', geoje: '巨済', gangneung: '江陵', sokcho: '束草', jeonju: '全州', daegu: '大邱', cheongju: '清州', gongju: '公州', gunsan: '群山', daejeon: '大田', ulsan: '蔚山', chuncheon: '春川', taean: '泰安', paju: '坡州' },
+  zh: { incheon: '仁川', yeosu: '丽水', suwon: '水原', tongyeong: '统营', geoje: '巨济', gangneung: '江陵', sokcho: '束草', jeonju: '全州', daegu: '大邱', cheongju: '清州', gongju: '公州', gunsan: '群山', daejeon: '大田', ulsan: '蔚山', chuncheon: '春川', taean: '泰安', paju: '坡州' },
+  tw: { incheon: '仁川', yeosu: '麗水', suwon: '水原', tongyeong: '統營', geoje: '巨濟', gangneung: '江陵', sokcho: '束草', jeonju: '全州', daegu: '大邱', cheongju: '淸州', gongju: '公州', gunsan: '群山', daejeon: '大田', ulsan: '蔚山', chuncheon: '春川', taean: '泰安', paju: '坡州' },
+  es: { incheon: 'Incheon', yeosu: 'Yeosu', suwon: 'Suwon', tongyeong: 'Tongyeong', geoje: 'Geoje', gangneung: 'Gangneung', sokcho: 'Sokcho', jeonju: 'Jeonju', daegu: 'Daegu', cheongju: 'Cheongju', gongju: 'Gongju', gunsan: 'Gunsan', daejeon: 'Daejeon', ulsan: 'Ulsan', chuncheon: 'Chuncheon', taean: 'Taean', paju: 'Paju' }
 };
 
 const T = {
