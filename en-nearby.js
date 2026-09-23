@@ -49,22 +49,23 @@ const KIND = { spot: 'Attraction', culture: 'Cultural facility', course: 'Travel
  * @param n  최대 개수
  * @returns {html, count}
  */
+// 2026-09-23: 도로 기준 정렬·차량 소요시간 — 규칙은 road.js 한 곳에
+const ROAD = require('./road.js');
+const lab = o => o.mode === 'road' ? `approx. ${(o.m / 1000).toFixed(1)} km · ~${o.min} min by car`
+  : o.mode === 'walk' ? `${o.d.toFixed(1)} km straight · walkable` : `approx. ${o.d.toFixed(1)} km`;
+
 function nearby(f, n = 5) {
   const fx = +f.x, fy = +f.y;
   if (!fx || !fy) return { html: '', count: 0 };
-  const near = places()
-    .map(p => ({ p, d: km(fx, fy, +p.x, +p.y) }))
-    .filter(o => o.d <= 12 && o.d > 0.05)
-    .sort((a, b) => a.d - b.d)
-    .slice(0, n);
+  const { road, list: near } = ROAD.pick(f, places(), n);
   if (!near.length) return { html: '', count: 0 };
 
-  const rows = near.map(({ p, d }) => {
+  const rows = near.map(o => { const { p } = o;
     const ov = String(p.ov || '').replace(/\s+/g, ' ').trim();
     const cut = ov.length > 170 ? ov.slice(0, 170).replace(/\s+\S*$/, '') + '…' : ov;
     return `<li class="en-item">
 <div class="en-h"><b>${esc(p.title)}</b>${p.ko ? `<span class="en-ko">${esc(p.ko)}</span>` : ''}
-<span class="en-tag">${esc(KIND[p.kind] || '')}</span><span class="en-km">approx. ${d.toFixed(1)} km</span></div>
+<span class="en-tag">${esc(KIND[p.kind] || '')}</span><span class="en-km">${lab(o)}</span></div>
 <p class="en-ov">${esc(cut)}</p>
 <div class="xcopy"><div><span class="lb">Korean address for map apps</span><span class="vl">${esc(p.addrKo)}</span></div>
 <button data-v="${esc(p.addrKo)}" data-done="Copied">Copy</button></div>
@@ -74,7 +75,9 @@ function nearby(f, n = 5) {
   return {
     count: near.length,
     html: `<div class="ennear"><h2>Nearby Attractions</h2>
-<p class="en-note">Places within 12&nbsp;km of the festival venue (straight-line distance), described in English by the Korea Tourism Organization. Travel time depends on roads and traffic, so only distance is shown.</p>
+${road
+  ? `<p class="en-note">Places near the festival venue, described in English by the Korea Tourism Organization. Distances and times are road-based driving estimates from NAVER route search — useful for taxi trips — and can change with traffic. Places under 1&nbsp;km in a straight line are marked “walkable”. Anything more than 15&nbsp;km away by road is left out.</p>`
+  : `<p class="en-note">Places within 12&nbsp;km of the festival venue (straight-line distance), described in English by the Korea Tourism Organization. Travel time depends on roads and traffic, so only distance is shown.</p>`}
 <ul class="en-list">${rows}</ul>
 <p class="en-src">Google Maps cannot provide driving or transit directions inside South Korea. Paste the Korean addresses above into <b>NAVER Map</b> or <b>KakaoMap</b> — both work with these addresses and are what people here actually use.</p></div>`
   };
@@ -126,4 +129,4 @@ document.addEventListener('click',function(e){
 });}
 </script>`;
 
-module.exports = { nearby, CSS };
+module.exports = { nearby, CSS, places };

@@ -47,21 +47,22 @@ const KIND = { spot: '観光地', culture: '文化施設', course: '旅行コー
  * @param n  최대 개수
  * @returns {html, count}
  */
+// 2026-09-23: 도로 기준 정렬·차량 소요시간 — 규칙은 road.js 한 곳에
+const ROAD = require('./road.js');
+const lab = o => o.mode === 'road' ? `約 ${(o.m / 1000).toFixed(1)} km・車で約${o.min}分`
+  : o.mode === 'walk' ? `直線 約 ${o.d.toFixed(1)} km・徒歩圏` : `約 ${o.d.toFixed(1)} km`;
+
 function nearby(f, n = 5) {
   const fx = +f.x, fy = +f.y;
   if (!fx || !fy) return { html: '', count: 0 };
-  const near = places()
-    .map(p => ({ p, d: km(fx, fy, +p.x, +p.y) }))
-    .filter(o => o.d <= 12 && o.d > 0.05)
-    .sort((a, b) => a.d - b.d)
-    .slice(0, n);
+  const { road, list: near } = ROAD.pick(f, places(), n);
   if (!near.length) return { html: '', count: 0 };
 
-  const rows = near.map(({ p, d }) => {
+  const rows = near.map(o => { const { p } = o;
     const ov = String(p.ov || '').replace(/\s+/g, ' ').trim();
     const cut = ov.length > 150 ? ov.slice(0, 150) + '…' : ov;
     return `<li class="jn-item">
-<div class="jn-h"><b>${esc(p.title)}</b><span class="jn-tag">${esc(KIND[p.kind] || '')}</span><span class="jn-km">約 ${d.toFixed(1)} km</span></div>
+<div class="jn-h"><b>${esc(p.title)}</b><span class="jn-tag">${esc(KIND[p.kind] || '')}</span><span class="jn-km">${lab(o)}</span></div>
 <p class="jn-ov">${esc(cut)}</p>
 <div class="xcopy"><div><span class="lb">地図に貼り付ける住所（韓国語）</span><span class="vl">${esc(p.addrKo)}</span></div>
 <button data-v="${esc(p.addrKo)}" data-done="コピーしました">コピー</button></div>
@@ -71,7 +72,9 @@ function nearby(f, n = 5) {
   return {
     count: near.length,
     html: `<div class="jnear"><h2>近くの見どころ</h2>
-<p class="jn-note">この祭りの会場から直線距離で 12km 以内にある、韓国観光公社が日本語で案内している場所です。所要時間は道路事情で変わるため、距離のみ記載しています。</p>
+${road
+  ? `<p class="jn-note">この祭りの会場の近くにある、韓国観光公社が日本語で案内している場所です。距離と所要時間は NAVER の車ルート検索による道路距離の目安で（タクシー移動の参考に）、渋滞などで変わります。直線 1km 未満は歩ける距離として「徒歩圏」と表示しています。道路で 15km を超える場所は載せていません。</p>`
+  : `<p class="jn-note">この祭りの会場から直線距離で 12km 以内にある、韓国観光公社が日本語で案内している場所です。所要時間は道路事情で変わるため、距離のみ記載しています。</p>`}
 <ul class="jn-list">${rows}</ul>
 <p class="jn-src">住所は座標から逆引きした韓国語の道路名住所です。NAVER マップ・カカオマップにそのまま貼り付けて検索できます。</p></div>`
   };
@@ -91,4 +94,4 @@ const CSS = `<style>
 .jn-ov{font-size:.88rem;line-height:1.65;color:#374151;margin:0 0 9px}
 </style>`;
 
-module.exports = { nearby, CSS };
+module.exports = { nearby, CSS, places };
