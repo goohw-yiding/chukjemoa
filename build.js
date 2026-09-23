@@ -66,6 +66,10 @@ require('./verify-content').merge();
 const festivals = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/festivals.json'), 'utf8'));
 const markets = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/markets.json'), 'utf8'));
 const posts = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/posts.json'), 'utf8'));
+// 2026-09-23: 홈 「축제 가이드」·/blog/ 목록이 posts.json «추가 순서»로 나와 최신 글(9/20·9/17…)이 맨 아래에 묻혀 있었다.
+//   목록 «표시»만 최신순 사본을 쓴다. 원본 순서는 건드리지 않는다 — guidePostByTitle(태그→글 매핑)이 원본 순서에 기대고 있다.
+//   같은 날짜는 원래 순서 유지(안정 정렬). RSS(rssPosts)와 같은 기준.
+const postsNewest = [...posts].sort((a, b) => String(b.date).localeCompare(String(a.date)));
 let apiFests = [];
 try { apiFests = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/festivals_api.json'), 'utf8')); }
 catch (e) { console.log('⚠ festivals_api.json 없음 — 검색 데이터 비어있음 (node fetch-festivals.js 먼저 실행)'); }
@@ -4161,7 +4165,7 @@ ${monthNavHtml}
 const blogIndex = `<main><div class="wrap">
 <h1 style="font-size:1.5rem;margin-bottom:14px">축제·장터 가이드</h1>
 <div class="bloglist">
-${posts.map(p => `<a href="/blog/${p.slug}/">${esc(p.title)}<span>${p.date} · ${esc(p.desc)}</span></a>`).join('\n')}
+${postsNewest.map(p => `<a href="/blog/${p.slug}/">${esc(p.title)}<span>${p.date} · ${esc(p.desc)}</span></a>`).join('\n')}
 </div>
 <h2 class="sec">월별 축제 일정 보기</h2>
 ${monthNavHtml}
@@ -4709,7 +4713,7 @@ ${buyBox('jangteo')}
 <p><a href="/jangteo/" style="display:inline-block;background:#ff6b4a;color:#fff;font-weight:700;padding:10px 22px;border-radius:24px">오일장 날짜 보러가기 →</a></p>
 <h2 class="sec">축제 가이드</h2>
 <div class="bloglist">
-${posts.map(p => `<a href="/blog/${p.slug}/">${esc(p.title)}<span>${p.date}</span></a>`).join('\n')}
+${postsNewest.map(p => `<a href="/blog/${p.slug}/">${esc(p.title)}<span>${p.date}</span></a>`).join('\n')}
 </div>
 </div></main>`;
 
