@@ -232,6 +232,10 @@ function absImgOf(f) {
 // ---------- og:image ----------
 // 109페이지 전부 og:image가 없어서 카톡·SNS·숏폼에 링크를 붙여도 썸네일이 안 떴다.
 // 페이지 성격에 맞는 대표 이미지를 자동으로 물린다. 개별 지정은 layout opts.ogImage로.
+// 🖼 2026-09-23: 축제 상세와 월별 허브가 «둘 다 hero.webp」라, 네이버 블로그에 링크 카드를
+//    두 개 붙이면 같은 등불 사진이 두 번 떴다(장남 님 실측). 공유 썸네일은 페이지마다 달라야 한다.
+//    ⚠️ 관광공사 사진은 외부 절대 URL 이다 — SITE 를 앞에 붙이면 깨진다. 여기서 갈라 준다.
+const ogAbs = (x, SITE_) => /^https?:/i.test(String(x)) ? String(x).replace(/^http:/, 'https:') : SITE_ + x;
 function ogImageFor(urlPath) {
   const u = String(urlPath || '/');
   if (/^\/valley\//.test(u) || /\/trend\/valley\//.test(u)) return '/img/cat2-water-b.webp';
@@ -241,8 +245,13 @@ function ogImageFor(urlPath) {
   if (/^\/jangteo\//.test(u)) return '/img/jangteo.webp';
   if (/^\/trails\//.test(u)) return '/img/olle1-07-coast.webp';
   if (/^\/blog\/jeju-olle/.test(u)) return '/img/olle1-01-daepyo.webp';
-  if (/^\/2026-1[12]\//.test(u)) return '/img/cat2-snow-a.webp';
+  if (/^\/2026-1[12]\//.test(u) || /^\/2027-0[12]\//.test(u)) return '/img/cat2-snow-a.webp';
   if (/^\/2026-0[678]\//.test(u)) return '/img/cat2-water-a.webp';
+  if (/^\/2026-09\//.test(u)) return '/img/cat2-food-a.webp';     // 9월 = 수확·먹거리
+  if (/^\/2026-10\//.test(u)) return '/img/maple-fallback.webp';  // 10월 = 단풍
+  if (/^\/2026-0[345]\//.test(u) || /^\/2027-0[345]\//.test(u)) return '/img/cat2-flower-a.webp';
+  if (/^\/winter\//.test(u)) return '/img/cat2-snow-b.webp';
+  if (/^\/maple\//.test(u)) return '/img/maple-fallback.webp';
   if (/^\/holiday\//.test(u)) return '/img/cat2-firework-a.webp';
   if (/^\/pet\//.test(u)) return '/img/cat2-etc-a.webp';
   return '/img/hero.webp';
@@ -2314,14 +2323,14 @@ ${alts}
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="${SITE_NAME_L}">
 <meta property="og:locale" content="${lang === 'ko' ? 'ko_KR' : lang === 'ja' ? 'ja_JP' : lang === 'zh' ? 'zh_CN' : lang === 'es' ? 'es_ES' : 'en_US'}">
-<meta property="og:image" content="${SITE}${opts.ogImage || ogImageFor(urlPath)}">
+<meta property="og:image" content="${ogAbs(opts.ogImage || ogImageFor(urlPath), SITE)}">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="${escA(title)}">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="${escA(title)}">
 <meta name="twitter:description" content="${escA(desc)}">
-<meta name="twitter:image" content="${SITE}${opts.ogImage || ogImageFor(urlPath)}">${(opts.noindex || forceNoindex || suspendedLang) ? '\n<meta name="robots" content="noindex, follow">' : ''}
+<meta name="twitter:image" content="${ogAbs(opts.ogImage || ogImageFor(urlPath), SITE)}">${(opts.noindex || forceNoindex || suspendedLang) ? '\n<meta name="robots" content="noindex, follow">' : ''}
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE}" crossorigin="anonymous"></script>
 ${BRAND_LD}

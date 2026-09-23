@@ -112,7 +112,7 @@ ${faq.map(([q, a]) => `<p style="line-height:1.8"><b>${esc(q)}</b><br>${esc(a)}<
   writePage('winter', layout(
     '겨울 축제 2026-2027 — 12월·1월·2월 일정과 지역 총정리 | ' + SITE_NAME,
     `2026-2027 겨울 축제를 12월·1월·2월로 나눠 정리했습니다. 예년 겨울에 실제로 열린 ${winter.length}곳의 시기와 지역, 빛·얼음·온천·해돋이 성격별 분류, 그리고 축제가 적은 겨울에 갈 만한 온천·오일장·걷기길까지.`,
-    '/winter/', content, { jsonld: `<script type="application/ld+json">${JSON.stringify(faqLd)}</script>`, ogImage: '/img/hero.webp' }));
+    '/winter/', content, { jsonld: `<script type="application/ld+json">${JSON.stringify(faqLd)}</script>`, ogImage: '/img/cat2-snow-b.webp' }));
 
   console.log('✓ /winter/ — 예년 겨울 축제', winter.length, '곳 · 개요 있는 것', good.length, '곳');
   return ['/winter/'];

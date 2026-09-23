@@ -546,7 +546,10 @@ ${mapScript('ko')}
       + (idx ? ` ${sg}는 ${rm}월에 평소의 ${idx.toFixed(2)}배 붐빕니다.` : '');
 
     // ⚠️ 끝난 축제는 noindex(follow) — 색인에서만 뺀다. 링크·헤더검색·내부 이동은 그대로 살린다.
-    writePage('festival/' + f._slug, layout(title.slice(0, 95), desc.slice(0, 300), `/festival/${f._slug}/`, content, { jsonld, noindex: ended }));
+    // 🖼 공유 썸네일은 «그 축제 사진»으로. 없으면 build.js 의 기본값이 들어간다.
+  //    2026-09-23: 전부 hero.webp 라 네이버 링크 카드 두 개가 똑같이 떴다.
+  const ogImg = f.img ? String(f.img).replace(/^http:/, 'https:') : null;
+  writePage('festival/' + f._slug, layout(title.slice(0, 95), desc.slice(0, 300), `/festival/${f._slug}/`, content, { jsonld, noindex: ended, ...(ogImg ? { ogImage: ogImg } : {}) }));
     urls.push(`/festival/${f._slug}/`);
     if (ended) noindexUrls.push(`/festival/${f._slug}/`);
     index.push({ slug: f._slug, title: f.title, sido: f.sido, sigungu: sg, start: f.start, end: f.end, img: f.img, id: f.id });
