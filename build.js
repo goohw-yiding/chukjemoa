@@ -4713,8 +4713,9 @@ ${buyBox('jangteo')}
 <p><a href="/jangteo/" style="display:inline-block;background:#ff6b4a;color:#fff;font-weight:700;padding:10px 22px;border-radius:24px">오일장 날짜 보러가기 →</a></p>
 <h2 class="sec">축제 가이드</h2>
 <div class="bloglist">
-${postsNewest.map(p => `<a href="/blog/${p.slug}/">${esc(p.title)}<span>${p.date}</span></a>`).join('\n')}
+${postsNewest.slice(0, 8).map(p => `<a href="/blog/${p.slug}/">${esc(p.title)}<span>${p.date}</span></a>`).join('\n')}
 </div>
+<p style="margin:10px 0 0"><a href="/blog/" style="display:inline-block;font-weight:700;color:#0f766e">축제 가이드 전체 ${posts.length}편 보기 →</a></p>
 </div></main>`;
 
 // ---------- 홈 하단 '이 사이트가 가진 것' ----------
