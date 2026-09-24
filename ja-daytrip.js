@@ -268,6 +268,7 @@ function build(ctx) {
 <span class="rg">${esc(SIDO_JA[r.sido] || r.sido)}</span></div>
 <div class="dtfact">${facts.join('')}</div>
 ${why.length ? `<p class="dtwhy">${why.join(' ')}</p>` : ''}
+${require('./klook.js').ktx(r.nm, nmJa)}
 <div class="dtlinks">
 ${link ? `<a href="${link}">📍 ${cityLabel(r)}</a>` : ''}
 <a href="/ja/jangteo/">🏮 五日市</a><a href="/ja/busy/">📅 その日は開いてる？</a></div>
@@ -328,7 +329,8 @@ ${dayTrip.length ? `<div class="dtc"><h2>☀️ 片道${DAY}分以内 — 日帰
 
 ${overnight.length ? `<div class="dtc"><h2>🌙 片道${DAY}分超 — 1泊2日が向く街</h2>
 <p>日帰りもできますが、滞在時間より移動時間が長くなります。${esc(han(farthest.v.han || farthest.nm))}まで${farthest.v.min}分。</p>
-<div class="dtgrid">${overnight.map(r => card(r, '')).join('')}</div></div>` : ''}
+<div class="dtgrid">${overnight.map(r => card(r, '')).join('')}</div>
+${require('./klook.js').ktxNote()}</div>` : ''}
 
 ${tourRows ? `<div class="dtc"><h2>🚌 着いてから、どう回るか — 市内観光バス</h2>
 <p>地方でいちばん困るのが<b>駅から先</b>です。レンタカーを借りない旅行者にとって、バス路線が分からない街で一日を組むのは簡単ではありません。韓国の多くの自治体は<b>市内観光バス（시티투어버스）</b>を走らせていて、主要な見どころを一周します。<b>${tourCities}の街</b>で確認できました。</p>

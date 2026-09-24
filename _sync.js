@@ -164,6 +164,8 @@ const SRC = ['build.js', 'fetch-markets.js', 'fetch-spots.js', 'fetch-valleys.js
   // 2026-09-07 추가 — 🇰🇷 코리 연결. ⚠️ build.js·city-core·seoul·busan·jeju·intl-city **여섯 곳**이 require 한다.
   //   빠지면 「검사 안 되는 사각지대」가 되고 예약작업이 조용히 되돌린다.
   'kory.js',
+  // 2026-09-24 추가 — 클룩 제휴 링크. ja-palace·ja-daytrip·ja-holiday 가 require 한다.
+  'klook.js',
   // 2026-09-04 추가(4) — 제주 신규 데이터 2종. ⚠️ `jejuhub.key`·`visitjeju.key` 는 *.key 라 git 제외 →
   //   **양쪽에 다 있어야** 예약작업이 돈다(indexnow.key·busan.key 와 같은 함정).
   //   ⚠️ `jejuhub-ids.json` 은 «프록시ID 표»다 — 이게 어긋나면 수집기가 엉뚱한 데이터를 받는다.
