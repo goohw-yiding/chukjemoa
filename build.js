@@ -2333,6 +2333,9 @@ function layout(title, desc, urlPath, content, opts) {
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-GXJQ4SXMWY"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-GXJQ4SXMWY');</script>
+<!-- 네이버 애널리틱스 (goohw, 2026-09-26) -->
+<script src="//wcs.pstatic.net/wcslog.js"></script>
+<script>if(!wcs_add) var wcs_add = {};wcs_add["wa"] = "12274800cf03e00";if(window.wcs){wcs_do();}</script>
 <title>${esc(title)}</title>
 <meta name="description" content="${escA(desc)}">
 <link rel="canonical" href="${SITE}${urlPath}">
