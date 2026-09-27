@@ -2873,7 +2873,7 @@ window.OneSignalDeferred=window.OneSignalDeferred||[];window.OneSignalDeferred.p
 <p class="se-note">데이터 출처: <b>서울열린데이터광장 「서울시 문화행사 정보」</b>(서울특별시). 기준일 2026-09-27.
 요금·운영시간·대상은 원본에 등록된 값을 그대로 싣고, <b>등록돼 있지 않으면 비워 둡니다</b> — 추측해서 채우지 않습니다.
 일정과 예약 여부는 바뀔 수 있으니 방문 전 각 행사의 공식 안내를 확인하세요.</p>
-</div></main>
+<section class="nb-card" style="margin:28px 0 8px;padding:16px 18px;border:1px solid #cfe8dc;border-radius:14px;background:#f3faf6"><p style="margin:0 0 6px;font-weight:700;color:#0f766e">📷 축제모아 블로그 정리 글 1편</p><ul style="list-style:none;margin:0;padding:0"><li style="margin:6px 0;line-height:1.5"><a href="https://blog.naver.com/goohw/224422866068" target="_blank" rel="noopener" data-post="224422866068" data-place="seoul" style="color:#0f172a;font-weight:600">서울 무료 행사 총정리 — 문화행사 1,108건 중 71%가 공짜입니다</a> <span style="color:#6b7280;font-size:13px">· 9/26</span></li></ul><p style="margin:8px 0 0;font-size:12.5px;color:#6b7280">네이버 블로그 「축제모아 · 전국 축제 여행 기록」</p></section></div></main>
 <footer><div class="wrap">
 <p>축제모아 — 전국 축제·오일장 일정 모음</p>
 <p>축제 일정은 주최 측 사정에 따라 변경될 수 있습니다. 방문 전 공식 홈페이지를 확인하세요.</p>
@@ -3398,6 +3398,12 @@ window.cjmFestBB=function(elId,name,place){
     // ── ③ 축제 상세로 들어감 (모달·허브에서)
     if(href.indexOf('/festival/') === 0 && href !== '/festival/'){
       send('festival_open', { slug: href.replace(/^\/festival\/|\/$/g,'') });
+      return;
+    }
+
+    // ── 📝 2026-09-28 — 사이트 → 네이버 블로그(goohw) 역링크 카드. 어느 페이지에서 어느 글로 갔는지 센다
+    if(href.indexOf('blog.naver.com/goohw') >= 0){
+      send('blog_click', { post: a.getAttribute('data-post') || '', place: a.getAttribute('data-place') || '' });
       return;
     }
 

@@ -616,7 +616,7 @@ window.OneSignalDeferred=window.OneSignalDeferred||[];window.OneSignalDeferred.p
 </article>
 <h2 class="sec">월별 축제 일정 보기</h2>
 <div class="monthnav-wrap"><div class="monthnav-feat"><a class="mn-hero" href="/2026-09/"><span class="mn-badge">이번 달</span><span class="mn-emoji">🎆</span><b>9월 축제</b><span class="cnt">42개</span></a><a class="mn-next" href="/2026-10/"><span class="mn-badge">다음 달</span><span class="mn-emoji">🍁</span><b>10월 축제</b><span class="cnt">298개</span></a></div><div class="monthnav"><a href="/2026-11/"><span class="mn-emoji">🌾</span>11월 축제<span class="cnt">64개</span></a><a href="/2026-12/"><span class="mn-emoji">⛄</span>12·1월 겨울 축제<span class="cnt">34개</span></a><a href="/2027-02/"><span class="mn-emoji">⛄</span>2월 축제<span class="cnt">10개</span></a><a href="/2027-03/"><span class="mn-emoji">🌱</span>3월 축제<span class="cnt">21개</span></a><a href="/2027-04/"><span class="mn-emoji">🌸</span>4월 축제<span class="cnt">18개</span></a><a href="/2027-05/"><span class="mn-emoji">🌷</span>5월 축제<span class="cnt">20개</span></a><a href="/2027-06/"><span class="mn-emoji">🌿</span>6월 축제<span class="cnt">17개</span></a><a href="/2026-07/"><span class="mn-emoji">💦</span>7월 축제<span class="cnt">27개</span></a><a href="/2026-08/"><span class="mn-emoji">🌊</span>8월 축제<span class="cnt">30개</span></a></div></div>
-</div></main>
+<section class="nb-card" style="margin:28px 0 8px;padding:16px 18px;border:1px solid #cfe8dc;border-radius:14px;background:#f3faf6"><p style="margin:0 0 6px;font-weight:700;color:#0f766e">📷 이 내용, 블로그에서 사진·카드로 한눈에 정리했어요</p><ul style="list-style:none;margin:0;padding:0"><li style="margin:6px 0;line-height:1.5"><a href="https://blog.naver.com/goohw/224394975515" target="_blank" rel="noopener" data-post="224394975515" data-place="blog" style="color:#0f172a;font-weight:600">남파랑길 코스 추천, 85개 구간 데이터로 초보용 11개 골랐습니다</a> <span style="color:#6b7280;font-size:13px">· 8/30</span></li></ul><p style="margin:8px 0 0;font-size:12.5px;color:#6b7280">네이버 블로그 「축제모아 · 전국 축제 여행 기록」</p></section></div></main>
 <footer><div class="wrap">
 <p>축제모아 — 전국 축제·오일장 일정 모음</p>
 <p>축제 일정은 주최 측 사정에 따라 변경될 수 있습니다. 방문 전 공식 홈페이지를 확인하세요.</p>
@@ -1141,6 +1141,12 @@ window.cjmFestBB=function(elId,name,place){
     // ── ③ 축제 상세로 들어감 (모달·허브에서)
     if(href.indexOf('/festival/') === 0 && href !== '/festival/'){
       send('festival_open', { slug: href.replace(/^\/festival\/|\/$/g,'') });
+      return;
+    }
+
+    // ── 📝 2026-09-28 — 사이트 → 네이버 블로그(goohw) 역링크 카드. 어느 페이지에서 어느 글로 갔는지 센다
+    if(href.indexOf('blog.naver.com/goohw') >= 0){
+      send('blog_click', { post: a.getAttribute('data-post') || '', place: a.getAttribute('data-place') || '' });
       return;
     }
 

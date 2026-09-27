@@ -895,7 +895,7 @@ window.OneSignalDeferred=window.OneSignalDeferred||[];window.OneSignalDeferred.p
   setTimeout(sweep,1500);        // IO 가 조용한 환경 대비 — 한 번 더 확인한다
 })();
 </script>
-</div></main>
+<section class="nb-card" style="margin:28px 0 8px;padding:16px 18px;border:1px solid #cfe8dc;border-radius:14px;background:#f3faf6"><p style="margin:0 0 6px;font-weight:700;color:#0f766e">📷 이 내용, 블로그에서 사진·카드로 한눈에 정리했어요</p><ul style="list-style:none;margin:0;padding:0"><li style="margin:6px 0;line-height:1.5"><a href="https://blog.naver.com/goohw/224424150828" target="_blank" rel="noopener" data-post="224424150828" data-place="festival" style="color:#0f172a;font-weight:600">정선아리랑제 2026 — 10월 1~4일, 아리랑이 태어난 곳에서 나흘</a> <span style="color:#6b7280;font-size:13px">· 9/27</span></li></ul><p style="margin:8px 0 0;font-size:12.5px;color:#6b7280">네이버 블로그 「축제모아 · 전국 축제 여행 기록」</p></section></div></main>
 <footer><div class="wrap">
 <p>축제모아 — 전국 축제·오일장 일정 모음</p>
 <p>축제 일정은 주최 측 사정에 따라 변경될 수 있습니다. 방문 전 공식 홈페이지를 확인하세요.</p>
@@ -1500,6 +1500,12 @@ window.cjmFestBB=function(elId,name,place){
     // ── ③ 축제 상세로 들어감 (모달·허브에서)
     if(href.indexOf('/festival/') === 0 && href !== '/festival/'){
       send('festival_open', { slug: href.replace(/^\/festival\/|\/$/g,'') });
+      return;
+    }
+
+    // ── 📝 2026-09-28 — 사이트 → 네이버 블로그(goohw) 역링크 카드. 어느 페이지에서 어느 글로 갔는지 센다
+    if(href.indexOf('blog.naver.com/goohw') >= 0){
+      send('blog_click', { post: a.getAttribute('data-post') || '', place: a.getAttribute('data-place') || '' });
       return;
     }
 

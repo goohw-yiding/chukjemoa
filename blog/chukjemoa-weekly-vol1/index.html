@@ -1164,6 +1164,12 @@ window.cjmFestBB=function(elId,name,place){
       return;
     }
 
+    // ── 📝 2026-09-28 — 사이트 → 네이버 블로그(goohw) 역링크 카드. 어느 페이지에서 어느 글로 갔는지 센다
+    if(href.indexOf('blog.naver.com/goohw') >= 0){
+      send('blog_click', { post: a.getAttribute('data-post') || '', place: a.getAttribute('data-place') || '' });
+      return;
+    }
+
     // ── ④ 그 밖의 바깥 링크(네이버 검색·공식 홈페이지)
     if(/^https?:\/\//.test(href) && href.indexOf(location.host) < 0){
       var host = '';

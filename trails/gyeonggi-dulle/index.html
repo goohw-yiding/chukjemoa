@@ -1659,7 +1659,7 @@ window.OneSignalDeferred=window.OneSignalDeferred||[];window.OneSignalDeferred.p
 <h2 class="sec">지역별 걷기길</h2><div class="sidonav"><a href="/trails/area/gangwon/">강원</a><a href="/trails/area/gyeonggi/">경기</a><a href="/trails/area/gyeongnam/">경남</a><a href="/trails/area/gyeongbuk/">경북</a><a href="/trails/area/gwangju/">광주</a><a href="/trails/area/daegu/">대구</a><a href="/trails/area/daejeon/">대전</a><a href="/trails/area/busan/">부산</a><a href="/trails/area/seoul/">서울</a><a href="/trails/area/sejong/">세종</a><a href="/trails/area/ulsan/">울산</a><a href="/trails/area/incheon/">인천</a><a href="/trails/area/jeonnam/">전남</a><a href="/trails/area/jeonbuk/">전북</a><a href="/trails/area/jeju/">제주</a><a href="/trails/area/chungnam/">충남</a><a href="/trails/area/chungbuk/">충북</a></div>
 <p style="margin:14px 0 4px"><a href="/trails/" style="display:inline-block;background:#0f9d8f;color:#fff;font-weight:800;padding:10px 22px;border-radius:24px">🥾 걷기 여행 전체 보기 →</a></p>
 <p class="note" style="margin-top:18px">데이터 출처: 행정안전부 <b>전국길관광정보 표준데이터</b>(공공데이터포털) — 각 지자체·관리기관이 등록한 정보입니다. 코스 통제·우회는 방문 전 관리기관에 확인하세요.</p>
-</div></main>
+<section class="nb-card" style="margin:28px 0 8px;padding:16px 18px;border:1px solid #cfe8dc;border-radius:14px;background:#f3faf6"><p style="margin:0 0 6px;font-weight:700;color:#0f766e">📷 이 내용, 블로그에서 사진·카드로 한눈에 정리했어요</p><ul style="list-style:none;margin:0;padding:0"><li style="margin:6px 0;line-height:1.5"><a href="https://blog.naver.com/goohw/224407069316" target="_blank" rel="noopener" data-post="224407069316" data-place="trails" style="color:#0f172a;font-weight:600">경기둘레길 코스 추천 — 60개 구간 중 차 없이 갈 수 있는 8곳</a> <span style="color:#6b7280;font-size:13px">· 9/10</span></li></ul><p style="margin:8px 0 0;font-size:12.5px;color:#6b7280">네이버 블로그 「축제모아 · 전국 축제 여행 기록」</p></section></div></main>
 <footer><div class="wrap">
 <p>축제모아 — 전국 축제·오일장 일정 모음</p>
 <p>축제 일정은 주최 측 사정에 따라 변경될 수 있습니다. 방문 전 공식 홈페이지를 확인하세요.</p>
@@ -2220,6 +2220,12 @@ window.cjmFestBB=function(elId,name,place){
     // ── ③ 축제 상세로 들어감 (모달·허브에서)
     if(href.indexOf('/festival/') === 0 && href !== '/festival/'){
       send('festival_open', { slug: href.replace(/^\/festival\/|\/$/g,'') });
+      return;
+    }
+
+    // ── 📝 2026-09-28 — 사이트 → 네이버 블로그(goohw) 역링크 카드. 어느 페이지에서 어느 글로 갔는지 센다
+    if(href.indexOf('blog.naver.com/goohw') >= 0){
+      send('blog_click', { post: a.getAttribute('data-post') || '', place: a.getAttribute('data-place') || '' });
       return;
     }
 
