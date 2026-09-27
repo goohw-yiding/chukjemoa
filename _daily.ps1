@@ -77,6 +77,12 @@ if ($LASTEXITCODE -ne 0) { W "   WARNING: weather fetch failed - today's build w
 W "2c) road distance for new nearby pairs (cap 100 calls/day)"
 & node fetch-road.js run 100 2>&1 | Select-Object -Last 2 | ForEach-Object { W "   $_" }
 
+# 2026-09-28: site -> naver blog back-link cards (build.js naverBlogInject reads data/naver_posts.json).
+#   naver-posts.js reads rss.blog.naver.com/goohw.xml and fetches ONLY new posts' bodies (cached),
+#   1.5s apart (Naver returns 429 if faster). Failure must not block the deploy - the old json stays.
+W "2d) naver blog posts -> page map (back-link cards)"
+& node naver-posts.js 2>&1 | Select-Object -Last 1 | ForEach-Object { W "   $_" }
+
 W "3) build"
 $out = & node build.js 2>&1
 if ($LASTEXITCODE -ne 0) {
