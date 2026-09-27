@@ -2806,13 +2806,17 @@ try {
   const _live = new Set(FEST_PAGES.map(p => p.slug));
   const _td8 = TODAY.replace(/-/g, '');
   FEST_KEPT = Object.entries(_led)
+    // ⚠️ 2026-09-27 — 예전엔 `end >= 오늘` 만 걸었다. 그래서 «끝난 뒤 원천에서도 빠진» 축제
+    //    (동해 무릉제 등 9/20 종료 7개)가 폴더는 유예로 남고 링크는 0 → audit 🔴 고아.
+    //    폴더 존재 자체가 festival.js 유예 판정(종료+180일·미생성 30일)을 통과했다는 뜻이므로
+    //    파일이 있으면 종료 여부와 무관하게 건다. 끝난 것은 _ended 로 «종료» 라벨을 붙인다.
     .filter(([slug, r]) => r && r.title && !_live.has(slug)
-      && String(r.end) >= _td8
       && fs.existsSync(path.join(ROOT, 'festival', slug, 'index.html')))
     .map(([slug, r]) => ({
       slug, id: r.id || '', title: r.title,
       start: String(r.start || r.end), end: String(r.end),
-      sido: r.sido || '', sigungu: r.sigungu || '', _kept: true
+      sido: r.sido || '', sigungu: r.sigungu || '', _kept: true,
+      _ended: String(r.end) < _td8
     }));
   if (FEST_KEPT.length) console.log('  ↩ 유예 축제 상세', FEST_KEPT.length, '장을 월별 목록에 같이 건다');
 } catch (e) { }
@@ -3092,7 +3096,7 @@ ${/* ⚠️ 2026-09-22 — 여기 `deep.slice(0, 40)` 이 있었다. 바로 위 
   const gp = guidePostByTitle.get(f.title);
   // 유예 페이지(원천에서 빠진 뒤 얼어붙은 것)는 「자료 갱신 지연」을 밝힌다 — 현재 정보와 다를 수 있다.
   const sub = f._kept
-    ? '⏳ 자료 갱신 지연 · 일정 재확인'
+    ? (f._ended ? `${esc(f.sido)} ${esc(f.sigungu || '')} · 종료` : '⏳ 자료 갱신 지연 · 일정 재확인')
     : `${esc(f.sido)} ${esc(f.sigungu || '')}`;
   return `<a href="/festival/${f.slug}/"${f._kept ? ' class="frelm-k"' : ''}>${esc(f.title)}<span>${sub}</span></a>`
     + (gp ? `<a href="/blog/${gp.slug}/" class="frelm-g">📖 ${esc(f.title)} 완벽 가이드<span>사전 정보·연계 코스</span></a>` : '');

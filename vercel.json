@@ -112,6 +112,16 @@
       "source": "/festival/jinju-gukgayusanyahaeng/",
       "destination": "/festival/",
       "permanent": true
+    },
+    {
+      "source": "/pushtest",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/pushtest/",
+      "destination": "/",
+      "permanent": true
     }
   ],
   "headers": [
