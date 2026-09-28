@@ -77,6 +77,14 @@ if ($LASTEXITCODE -ne 0) { W "   WARNING: weather fetch failed - today's build w
 W "2c) road distance for new nearby pairs (cap 100 calls/day)"
 & node fetch-road.js run 100 2>&1 | Select-Object -Last 2 | ForEach-Object { W "   $_" }
 
+# 2026-09-28: the "estimated dates" badge never flipped by itself - confirmed:false in festivals.json is a hand flag.
+#   On 09-28 five festivals days away had WRONG dates (Jeonju bibimbap 10/15 vs real 10/2, Yangyang 9/30 vs 10/16).
+#   confirm-festivals.js auto-confirms when TourAPI shows this year's dates (same year, within 45 days),
+#   and logs to data/festival_confirm_log.json. Festivals TourAPI doesn't cover are researched by the
+#   Mon/Thu scheduled task "Chukjemoa festival date check" (official sites) via --set. Never blocks deploy.
+W "2e) confirm festival dates from TourAPI"
+& node confirm-festivals.js 2>&1 | Select-Object -First 12 | ForEach-Object { W "   $_" }
+
 W "3) build"
 $out = & node build.js 2>&1
 if ($LASTEXITCODE -ne 0) {

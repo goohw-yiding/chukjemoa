@@ -1094,13 +1094,13 @@
   "city": "화천군",
   "place": "화천천 일대",
   "start": "2027-01-09",
-  "end": "2027-02-01",
+  "end": "2027-01-31",
   "month": [
    1
   ],
   "category": "눈",
   "desc": "세계적 겨울축제, 산천어 얼음낚시",
-  "confirmed": false
+  "confirmed": true
  },
  {
   "name": "태백산눈축제",
