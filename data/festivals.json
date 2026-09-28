@@ -866,29 +866,28 @@
   "region": "경기",
   "city": "수원시",
   "place": "화성행궁·수원화성 일원",
-  "start": "2026-10-03",
-  "end": "2026-10-06",
+  "start": "2026-10-04",
+  "end": "2026-10-11",
   "month": [
    10
   ],
   "category": "문화",
   "desc": "정조대왕 능행차와 화성 문화제",
-  "confirmed": false
+  "confirmed": true
  },
  {
   "name": "백제문화제",
   "region": "충남",
   "city": "공주시·부여군",
   "place": "금강신관공원·구드래 일원",
-  "start": "2026-09-26",
-  "end": "2026-10-04",
+  "start": "2026-10-03",
+  "end": "2026-10-11",
   "month": [
-   9,
    10
   ],
   "category": "전통",
   "desc": "백제 역사문화 재현 대표 축제",
-  "confirmed": false
+  "confirmed": true
  },
  {
   "name": "추억의충장축제",
@@ -902,7 +901,7 @@
   ],
   "category": "문화",
   "desc": "7080 추억의 거리 퍼레이드",
-  "confirmed": false
+  "confirmed": true
  },
  {
   "name": "부산자갈치축제",
@@ -923,14 +922,14 @@
   "region": "전북",
   "city": "전주시",
   "place": "전주한옥마을 일원",
-  "start": "2026-10-15",
-  "end": "2026-10-18",
+  "start": "2026-10-02",
+  "end": "2026-10-04",
   "month": [
    10
   ],
   "category": "음식",
   "desc": "대표 한식 비빔밥 미식 축제",
-  "confirmed": false
+  "confirmed": true
  },
  {
   "name": "이천쌀문화축제",
@@ -944,21 +943,21 @@
   ],
   "category": "음식",
   "desc": "임금님표 이천쌀 가마솥 축제",
-  "confirmed": false
+  "confirmed": true
  },
  {
   "name": "서울억새축제",
   "region": "서울",
   "city": "마포구",
   "place": "하늘공원",
-  "start": "2026-10-16",
-  "end": "2026-10-22",
+  "start": "2026-10-17",
+  "end": "2026-10-23",
   "month": [
    10
   ],
   "category": "꽃",
   "desc": "하늘공원 은빛 억새 물결",
-  "confirmed": false
+  "confirmed": true
  },
  {
   "name": "임실N치즈축제",
@@ -972,36 +971,35 @@
   ],
   "category": "음식",
   "desc": "치즈 만들기 체험 미식 축제",
-  "confirmed": false
+  "confirmed": true
  },
  {
   "name": "강경젓갈축제",
   "region": "충남",
   "city": "논산시",
   "place": "강경읍 젓갈시장 일원",
-  "start": "2026-10-14",
+  "start": "2026-10-15",
   "end": "2026-10-18",
   "month": [
    10
   ],
   "category": "음식",
   "desc": "김장철 앞 전국 최대 젓갈 축제",
-  "confirmed": false
+  "confirmed": true
  },
  {
   "name": "양양송이축제",
   "region": "강원",
   "city": "양양군",
   "place": "남대천 둔치 일원",
-  "start": "2026-09-30",
-  "end": "2026-10-04",
+  "start": "2026-10-16",
+  "end": "2026-10-18",
   "month": [
-   9,
    10
   ],
   "category": "음식",
   "desc": "자연산 송이 채취·경매 체험",
-  "confirmed": false
+  "confirmed": true
  },
  {
   "name": "순천만갈대축제",
