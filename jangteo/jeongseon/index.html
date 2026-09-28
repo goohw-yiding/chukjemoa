@@ -625,7 +625,7 @@ window.OneSignalDeferred=window.OneSignalDeferred||[];window.OneSignalDeferred.p
 <div class="jsg-next">
 <div class="jsg-next-l">다음 장날</div>
 <div class="jsg-next-d">9월 30일 (수) · <b>모레</b></div>
-<div class="jsg-next-m">임계사통팔달시장<span class="wx-chip" title="흐림">☁️ 22° · 비 12%</span></div>
+<div class="jsg-next-m">임계사통팔달시장</div>
 </div>
 
 
@@ -691,7 +691,7 @@ window.OneSignalDeferred=window.OneSignalDeferred||[];window.OneSignalDeferred.p
 <ul class="jsg-list"><li><a href="/festival/jeongseonarirangje/"><b>정선아리랑제</b></a> <span class="jsg-km">약 11km</span><br>
 <span class="jsg-cal">10/1 ~ 10/4</span></li><li><a href="/festival/donggangdumchit/"><b>동강둠칫</b></a> <span class="jsg-km">약 39km</span><br>
 <span class="jsg-cal">10/3 ~ 10/3</span></li><li><a href="/festival/je24hoe-dongganggukjesajinje/"><b>제24회 동강국제사진제</b></a> <span class="jsg-km">약 39km</span><br>
-<span class="jsg-cal">7/17 ~ 10/11</span></li><li><a href="/search/?q=%EA%B0%95%EB%A6%89%20%EB%B9%B5%EA%B5%BD%EB%8A%94%20%EB%A7%88%EC%9D%84%2C%20%EC%98%A4%EC%A3%BD"><b>강릉 빵굽는 마을, 오죽</b></a> <span class="jsg-km">약 39km</span><br>
+<span class="jsg-cal">7/17 ~ 10/11</span></li><li><a href="/festival/gangneung-ppanggumneun-maeul-ojuk/"><b>강릉 빵굽는 마을, 오죽</b></a> <span class="jsg-km">약 39km</span><br>
 <span class="jsg-cal">10/9 ~ 10/11</span></li></ul>
 <h2 class="sec">정선군 근처 시·군의 장날</h2>
 <p class="jsg-p">정선군에 장이 서지 않는 날이라면 가까운 이 시·군을 보세요. 오일장은 시·군마다 끝자리가 달라서 <b>거의 매일 어딘가는 장이 섭니다.</b></p>
@@ -1248,12 +1248,6 @@ window.cjmFestBB=function(elId,name,place){
     // ── ③ 축제 상세로 들어감 (모달·허브에서)
     if(href.indexOf('/festival/') === 0 && href !== '/festival/'){
       send('festival_open', { slug: href.replace(/^\/festival\/|\/$/g,'') });
-      return;
-    }
-
-    // ── 📝 2026-09-28 — 사이트 → 네이버 블로그(goohw) 역링크 카드. 어느 페이지에서 어느 글로 갔는지 센다
-    if(href.indexOf('blog.naver.com/goohw') >= 0){
-      send('blog_click', { post: a.getAttribute('data-post') || '', place: a.getAttribute('data-place') || '' });
       return;
     }
 

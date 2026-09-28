@@ -625,7 +625,7 @@ window.OneSignalDeferred=window.OneSignalDeferred||[];window.OneSignalDeferred.p
 <div class="jsg-next">
 <div class="jsg-next-l">다음 장날</div>
 <div class="jsg-next-d">9월 28일 (월) · <b>오늘</b></div>
-<div class="jsg-next-m">감곡시장<span class="wx-chip" title="흐림">☁️ 25° · 비 8%</span></div>
+<div class="jsg-next-m">감곡시장</div>
 </div>
 
 
@@ -741,7 +741,7 @@ window.OneSignalDeferred=window.OneSignalDeferred||[];window.OneSignalDeferred.p
 <p class="jsg-p">음성군 중심에서 40km 안에서 <b>지금 열리고 있거나 앞으로 열릴</b> 축제입니다.</p>
 <ul class="jsg-list"><li><a href="/festival/anseong-namsadangbaudeogi-pungmuldan-sangseol-gongyeon-gomba/"><b>안성 남사당바우덕이 풍물단 상설 공연 ‘곰뱅이텄다’</b></a> <span class="jsg-km">약 24km</span><br>
 <span class="jsg-cal">4/4 ~ 11/29</span></li><li><a href="/festival/anseongmatchum-namsadang-baudeogichukje/"><b>안성맞춤 남사당 바우덕이축제</b></a> <span class="jsg-km">약 25km</span><br>
-<span class="jsg-cal">10/2 ~ 10/5</span></li><li><a href="/search/?q=%ED%98%B8%EB%B2%95%20%EC%BD%94%EC%8A%A4%EB%AA%A8%EC%8A%A4%20%EA%BD%83%EC%B6%95%EC%A0%9C"><b>호법 코스모스 꽃축제</b></a> <span class="jsg-km">약 28km</span><br>
+<span class="jsg-cal">10/2 ~ 10/5</span></li><li><a href="/festival/hobeop-koseumoseu-kkotchukje/"><b>호법 코스모스 꽃축제</b></a> <span class="jsg-km">약 28km</span><br>
 <span class="jsg-cal">10/3 ~ 10/4</span></li><li><a href="/search/?q=%EC%B6%A9%EB%B6%81%20%EA%B4%B4%EC%82%B0%20%EC%9A%B0%EC%A3%BC%ED%8A%B9%EB%B3%84%EC%8B%9C%EF%BC%9A%EB%B3%84%EB%B3%84%ED%83%90%EC%82%AC%EB%8C%80"><b>충북 괴산 우주특별시：별별탐사대</b></a> <span class="jsg-km">약 31km</span><br>
 <span class="jsg-cal">4/30 ~ 12/6</span></li><li><a href="/festival/sejongdaewanggwa-chojeongyaksuchukje/"><b>세종대왕과 초정약수축제</b></a> <span class="jsg-km">약 32km</span><br>
 <span class="jsg-cal">10/16 ~ 10/18</span></li></ul>
@@ -1300,12 +1300,6 @@ window.cjmFestBB=function(elId,name,place){
     // ── ③ 축제 상세로 들어감 (모달·허브에서)
     if(href.indexOf('/festival/') === 0 && href !== '/festival/'){
       send('festival_open', { slug: href.replace(/^\/festival\/|\/$/g,'') });
-      return;
-    }
-
-    // ── 📝 2026-09-28 — 사이트 → 네이버 블로그(goohw) 역링크 카드. 어느 페이지에서 어느 글로 갔는지 센다
-    if(href.indexOf('blog.naver.com/goohw') >= 0){
-      send('blog_click', { post: a.getAttribute('data-post') || '', place: a.getAttribute('data-place') || '' });
       return;
     }
 

@@ -625,7 +625,7 @@ window.OneSignalDeferred=window.OneSignalDeferred||[];window.OneSignalDeferred.p
 <div class="jsg-next">
 <div class="jsg-next-l">다음 장날</div>
 <div class="jsg-next-d">9월 28일 (월) · <b>오늘</b></div>
-<div class="jsg-next-m">고창전통시장<span class="wx-chip" title="흐림">☁️ 24° · 비 8%</span></div>
+<div class="jsg-next-m">고창전통시장</div>
 </div>
 
 
@@ -740,7 +740,7 @@ window.OneSignalDeferred=window.OneSignalDeferred||[];window.OneSignalDeferred.p
 <h2 class="sec">장 보러 간 김에 — 지금 열리는 근처 축제</h2>
 <p class="jsg-p">고창군 중심에서 40km 안에서 <b>지금 열리고 있거나 앞으로 열릴</b> 축제입니다.</p>
 <ul class="jsg-list"><li><a href="/festival/gochangmoyangseongje/"><b>고창모양성제</b></a> <span class="jsg-km">약 10km</span><br>
-<span class="jsg-cal">10/15 ~ 10/19</span></li><li><a href="/search/?q=%EB%B6%80%EC%95%88%20%EA%B3%B0%EC%86%8C%EC%A0%93%EA%B0%88%26%EC%99%95%EC%83%88%EC%9A%B0%EC%B6%95%EC%A0%9C"><b>부안 곰소젓갈&amp;왕새우축제</b></a> <span class="jsg-km">약 15km</span><br>
+<span class="jsg-cal">10/15 ~ 10/19</span></li><li><a href="/festival/buan-gomsojeotgal-wangsaeuchukje/"><b>부안 곰소젓갈&amp;왕새우축제</b></a> <span class="jsg-km">약 15km</span><br>
 <span class="jsg-cal">10/2 ~ 10/4</span></li><li><a href="/festival/jangseong-hwangnyonggang-gaeulkkotchukje/"><b>장성 황룡강 가을꽃축제</b></a> <span class="jsg-km">약 23km</span><br>
 <span class="jsg-cal">10/8 ~ 10/11</span></li><li><a href="/search/?q=%EB%B6%80%EC%95%88%EB%B6%89%EC%9D%80%EB%85%B8%EC%9D%84%EC%B6%95%EC%A0%9C"><b>부안붉은노을축제</b></a> <span class="jsg-km">약 25km</span><br>
 <span class="jsg-cal">10/16 ~ 10/18</span></li><li><a href="/search/?q=%EC%A0%95%EC%9D%8D%EC%82%AC%EB%AC%B8%ED%99%94%EC%A0%9C"><b>정읍사문화제</b></a> <span class="jsg-km">약 26km</span><br>
@@ -1300,12 +1300,6 @@ window.cjmFestBB=function(elId,name,place){
     // ── ③ 축제 상세로 들어감 (모달·허브에서)
     if(href.indexOf('/festival/') === 0 && href !== '/festival/'){
       send('festival_open', { slug: href.replace(/^\/festival\/|\/$/g,'') });
-      return;
-    }
-
-    // ── 📝 2026-09-28 — 사이트 → 네이버 블로그(goohw) 역링크 카드. 어느 페이지에서 어느 글로 갔는지 센다
-    if(href.indexOf('blog.naver.com/goohw') >= 0){
-      send('blog_click', { post: a.getAttribute('data-post') || '', place: a.getAttribute('data-place') || '' });
       return;
     }
 

@@ -747,7 +747,7 @@ window.OneSignalDeferred=window.OneSignalDeferred||[];window.OneSignalDeferred.p
 <div class="fnum"><h3>🏛 영동군가 가진 국가유산</h3><p>국보 1점 · 보물 7점 · 국가민속문화유산 4점. 국가유산청 공개 자료 기준입니다. 축제만 보고 오기 아깝다면 같이 묶어 보세요.</p></div>
 
 <h2 class="sec">무장애 여행 정보</h2>
-<ul class="flist"><li>♿ <b>영동문화원</b> — 0.3km</li><li>♿ <b>영동장 (4, 9일)</b> — 0.4km</li><li>♿ <b>영동 와인터널</b> — 1.4km</li></ul>
+<ul class="flist"><li>♿ <b>영동장 (4, 9일)</b> — 0.4km</li><li>♿ <b>영동문화원</b> — 0.6km</li><li>♿ <b>영동 와인터널</b> — 1.4km</li></ul>
 <p class="note">한국관광공사 무장애 관광정보에 등록된 시설입니다. 축제장 자체의 접근성은 주최 측에 확인하세요.</p>
 
 <details class="nai" id="nai" open>
@@ -759,7 +759,7 @@ window.OneSignalDeferred=window.OneSignalDeferred||[];window.OneSignalDeferred.p
 <div class="nairow"><input id="naiin" type="text" placeholder="예) 걷기 좋은 곳부터 보고 싶어요" maxlength="200"><button id="naisend" type="button">보내기</button></div>
 <p class="naifoot">답변은 AI가 만듭니다. 영업시간·요금·예약은 저희 데이터에 없어 답하지 않습니다 — 가시기 전에 직접 확인하세요.</p>
 </div>
-<script type="application/json" id="naidata">{"place":"대한민국와인축제 (충북 영동군)","near":{"관광지":["용두공원 0.7km","영동규당고택 0.9km","영동향교 1.0km","영동 와인터널 1.4km","레인보우식물원 1.5km","과일나라테마공원 1.8km"],"맛집":["갑돌갈비 0.0km 한식 영업 - 11:30~22:00 - 준비시간 14:00~17:00 - 마지막 주문 21:00 휴무 매주 월요일","이수한우전문점 1.2km 한식 영업 판매장 09:00~20:00 식당 11:00~21:00 휴무 연중무휴","아리랑가든 2.4km 한식 영업 10:00~20:00 휴무 연중무휴","와인코리아 4.6km 서양식 영업 09:00~18:00 휴무 매주 일요일, 월요일"],"카페":["레인보우순카페 1.7km 영업 09:00-18:00 (라스트 오더 17:30)"],"걷기길":[],"숙소":["일라이트 호텔 2.0km","구공스테이 옥천키즈 11.5km 펜션"],"무장애":["영동문화원 0.3km","영동장 (4, 9일) 0.4km","영동 와인터널 1.4km"],"오일장":[],"같은지역축제":["영동곶감축제 01월","제천빨간오뎅축제 02월","옥천묘목축제 04월","보은 벚꽃길 축제 04월","제천 청풍호 벚꽃축제 04월","생거진천 농다리축제 04월"]}}</script>
+<script type="application/json" id="naidata">{"place":"대한민국와인축제 (충북 영동군)","near":{"관광지":["용두공원 0.7km","영동규당고택 0.9km","영동향교 1.0km","영동 와인터널 1.4km","레인보우식물원 1.5km","과일나라테마공원 1.8km"],"맛집":["갑돌갈비 0.0km 한식 영업 - 11:30~22:00 - 준비시간 14:00~17:00 - 마지막 주문 21:00 휴무 매주 월요일","이수한우전문점 1.2km 한식 영업 판매장 09:00~20:00 식당 11:00~21:00 휴무 연중무휴","아리랑가든 2.4km 한식 영업 10:00~20:00 휴무 연중무휴","와인코리아 4.6km 서양식 영업 09:00~18:00 휴무 매주 일요일, 월요일"],"카페":["레인보우순카페 1.7km 영업 09:00-18:00 (라스트 오더 17:30)"],"걷기길":[],"숙소":["일라이트 호텔 2.0km","구공스테이 옥천키즈 11.5km 펜션"],"무장애":["영동장 (4, 9일) 0.4km","영동문화원 0.6km","영동 와인터널 1.4km"],"오일장":[],"같은지역축제":["영동곶감축제 01월","제천빨간오뎅축제 02월","옥천묘목축제 04월","보은 벚꽃길 축제 04월","제천 청풍호 벚꽃축제 04월","생거진천 농다리축제 04월"]}}</script>
 </details>
 
 
@@ -1420,12 +1420,6 @@ window.cjmFestBB=function(elId,name,place){
     // ── ③ 축제 상세로 들어감 (모달·허브에서)
     if(href.indexOf('/festival/') === 0 && href !== '/festival/'){
       send('festival_open', { slug: href.replace(/^\/festival\/|\/$/g,'') });
-      return;
-    }
-
-    // ── 📝 2026-09-28 — 사이트 → 네이버 블로그(goohw) 역링크 카드. 어느 페이지에서 어느 글로 갔는지 센다
-    if(href.indexOf('blog.naver.com/goohw') >= 0){
-      send('blog_click', { post: a.getAttribute('data-post') || '', place: a.getAttribute('data-place') || '' });
       return;
     }
 

@@ -625,7 +625,7 @@ window.OneSignalDeferred=window.OneSignalDeferred||[];window.OneSignalDeferred.p
 <div class="jsg-next">
 <div class="jsg-next-l">다음 장날</div>
 <div class="jsg-next-d">9월 29일 (화) · <b>내일</b></div>
-<div class="jsg-next-m">장호원전통시장<span class="wx-chip" title="대체로 맑음">🌤 24° · 비 0%</span></div>
+<div class="jsg-next-m">장호원전통시장</div>
 </div>
 
 
@@ -705,7 +705,7 @@ window.OneSignalDeferred=window.OneSignalDeferred||[];window.OneSignalDeferred.p
 
 <h2 class="sec">장 보러 간 김에 — 지금 열리는 근처 축제</h2>
 <p class="jsg-p">이천시 중심에서 40km 안에서 <b>지금 열리고 있거나 앞으로 열릴</b> 축제입니다.</p>
-<ul class="jsg-list"><li><a href="/search/?q=%ED%98%B8%EB%B2%95%20%EC%BD%94%EC%8A%A4%EB%AA%A8%EC%8A%A4%20%EA%BD%83%EC%B6%95%EC%A0%9C"><b>호법 코스모스 꽃축제</b></a> <span class="jsg-km">약 12km</span><br>
+<ul class="jsg-list"><li><a href="/festival/hobeop-koseumoseu-kkotchukje/"><b>호법 코스모스 꽃축제</b></a> <span class="jsg-km">약 12km</span><br>
 <span class="jsg-cal">10/3 ~ 10/4</span></li><li><a href="/festival/2026-gyeonggidojabiennalle/"><b>2026 경기도자비엔날레</b></a> <span class="jsg-km">약 13km</span><br>
 <span class="jsg-cal">9/18 ~ 11/1</span></li><li><a href="/festival/hangeullal-munhwahaengsa/"><b>한글날 문화행사</b></a> <span class="jsg-km">약 14km</span><br>
 <span class="jsg-cal">10/9 ~ 10/10</span></li><li><a href="/search/?q=%EC%97%AC%EC%A3%BC%EC%98%A4%EA%B3%A1%EB%82%98%EB%A3%A8%EC%B6%95%EC%A0%9C"><b>여주오곡나루축제</b></a> <span class="jsg-km">약 15km</span><br>
@@ -1266,12 +1266,6 @@ window.cjmFestBB=function(elId,name,place){
     // ── ③ 축제 상세로 들어감 (모달·허브에서)
     if(href.indexOf('/festival/') === 0 && href !== '/festival/'){
       send('festival_open', { slug: href.replace(/^\/festival\/|\/$/g,'') });
-      return;
-    }
-
-    // ── 📝 2026-09-28 — 사이트 → 네이버 블로그(goohw) 역링크 카드. 어느 페이지에서 어느 글로 갔는지 센다
-    if(href.indexOf('blog.naver.com/goohw') >= 0){
-      send('blog_click', { post: a.getAttribute('data-post') || '', place: a.getAttribute('data-place') || '' });
       return;
     }
 

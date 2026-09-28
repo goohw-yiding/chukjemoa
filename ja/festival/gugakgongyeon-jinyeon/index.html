@@ -691,11 +691,11 @@ document.addEventListener('click',function(e){
 <div class="nm" style="color:#0c7d72">昌徳宮月明かり紀行</div>
 <div class="mt">0.7km · 04/16 – 05/31</div></a><a class="xitem" style="display:block;text-decoration:none" href="/ja/festival/jeongjodaewang-neunghaengcha-gongdongjaehyeon/">
 <div class="nm" style="color:#0c7d72">正祖大王陵行次共同再現</div>
-<div class="mt">0.9km · 10/04 – 10/04</div></a><a class="xitem" style="display:block;text-decoration:none" href="/ja/festival/cosmos-bigbang-20th-anniversary-media-exhibition/">
+<div class="mt">0.9km · 10/04 – 10/04</div></a><a class="xitem" style="display:block;text-decoration:none" href="/ja/festival/2027-koriageuraendeuseil/">
+<div class="nm" style="color:#0c7d72">コリアグランドセール</div>
+<div class="mt">1.1km · 12/23 – 02/13</div></a><a class="xitem" style="display:block;text-decoration:none" href="/ja/festival/cosmos-bigbang-20th-anniversary-media-exhibition/">
 <div class="nm" style="color:#0c7d72">COSMOS BIGBANG 20TH ANNIVERSARY MEDIA EXHIBITION（COSMOS BIGBANG 20TH ANNIVERSARY MEDIA EXHIBITION）</div>
-<div class="mt">1.4km · 08/24 – 09/27</div></a><a class="xitem" style="display:block;text-decoration:none" href="/ja/festival/hanhwawa-hamkkehaneun-seoulsegyebulkkotchukje/">
-<div class="nm" style="color:#0c7d72">ソウル世界花火祭り</div>
-<div class="mt">6.9km · 09/05 – 09/05</div></a></div></div>
+<div class="mt">1.4km · 08/24 – 09/27</div></a></div></div>
 <div class="nmap-wrap">
 <div class="nmap" style="height:300px" data-x="126.985653181823" data-y="37.5728652641047" data-t="国楽公演進宴"><span class="nmap-ph">地図を読み込み中…</span></div>
 <a class="nmap-open" href="https://map.naver.com/p/search/%EA%B5%AD%EC%95%85%EA%B3%B5%EC%97%B0%20%EC%A7%84%EC%97%B0" target="_blank" rel="noopener">🗺️ NAVERマップで開く</a>
@@ -741,7 +741,7 @@ document.addEventListener('click',function(e){
 <button data-v="서울특별시 종로구 인사동10길 11-4 (관훈동)" data-done="コピーしました">コピー</button></div>
 </li></ul>
 <p class="jn-src">住所は座標から逆引きした韓国語の道路名住所です。NAVER マップ・カカオマップにそのまま貼り付けて検索できます。</p></div>
-<div class="frel"><h2>ソウルのほかの祭り</h2><div class="row"><a href="/ja/festival/jungangasia-bommajichukje/">K-POPカバーダンスフェスティバルワールドファイナル</a><a href="/ja/festival/yongsancheongnyeonchukje/">龍山青年祭り</a><a href="/ja/festival/gwanakganggamchanchukje/">冠岳姜邯贊祭り</a><a href="/ja/festival/2025-daehanminguk-gwangwangginyeompum-bangnamhoe/">大韓民国観光記念品博覧会</a><a href="/ja/festival/gwanakbyeolbitsanchaek/">冠岳ピョルピッ散策</a><a href="/ja/festival/yeongdeungpo-yeouido-bomkkotchukje/">永登浦汝矣島春の花祭り</a></div></div>
+<div class="frel"><h2>ソウルのほかの祭り</h2><div class="row"><a href="/ja/festival/2027-koriageuraendeuseil/">コリアグランドセール</a><a href="/ja/festival/jungangasia-bommajichukje/">K-POPカバーダンスフェスティバルワールドファイナル</a><a href="/ja/festival/yongsancheongnyeonchukje/">龍山青年祭り</a><a href="/ja/festival/gwanakganggamchanchukje/">冠岳姜邯贊祭り</a><a href="/ja/festival/2025-daehanminguk-gwangwangginyeompum-bangnamhoe/">大韓民国観光記念品博覧会</a><a href="/ja/festival/gwanakbyeolbitsanchaek/">冠岳ピョルピッ散策</a></div></div>
 <p class="fcity"><a href="/ja/seoul/">🏙 <b>ソウル</b>の旅行情報 — 行く場所・食べる所・泊まる所を、<b>地図に貼り付けられる韓国語の住所</b>つきで</a></p>
 <p style="margin-top:10px"><a href="/ja/search/" style="color:#0c7d72;font-weight:700">← 韓国の祭りをすべて見る</a></p>
 <style>
@@ -1075,12 +1075,6 @@ document.addEventListener('click',function(e){
     // ── ③ 축제 상세로 들어감 (모달·허브에서)
     if(href.indexOf('/festival/') === 0 && href !== '/festival/'){
       send('festival_open', { slug: href.replace(/^\/festival\/|\/$/g,'') });
-      return;
-    }
-
-    // ── 📝 2026-09-28 — 사이트 → 네이버 블로그(goohw) 역링크 카드. 어느 페이지에서 어느 글로 갔는지 센다
-    if(href.indexOf('blog.naver.com/goohw') >= 0){
-      send('blog_click', { post: a.getAttribute('data-post') || '', place: a.getAttribute('data-place') || '' });
       return;
     }
 

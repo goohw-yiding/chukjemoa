@@ -625,7 +625,7 @@ window.OneSignalDeferred=window.OneSignalDeferred||[];window.OneSignalDeferred.p
 <div class="jsg-next">
 <div class="jsg-next-l">다음 장날</div>
 <div class="jsg-next-d">9월 28일 (월) · <b>오늘</b></div>
-<div class="jsg-next-m">남원인월시장<span class="wx-chip" title="흐림">☁️ 22° · 비 29%</span></div>
+<div class="jsg-next-m">남원인월시장</div>
 </div>
 
 
@@ -707,7 +707,7 @@ window.OneSignalDeferred=window.OneSignalDeferred||[];window.OneSignalDeferred.p
 <p class="jsg-p">남원시 중심에서 40km 안에서 <b>지금 열리고 있거나 앞으로 열릴</b> 축제입니다.</p>
 <ul class="jsg-list"><li><a href="/search/?q=2026%EC%84%AC%EC%A7%84%EA%B0%95%EA%B5%AD%EC%A0%9C%EC%8B%A4%ED%97%98%EC%98%88%EC%88%A0%EC%A0%9C(SIEAF)"><b>2026섬진강국제실험예술제(SIEAF)</b></a> <span class="jsg-km">약 27km</span><br>
 <span class="jsg-cal">9/22 ~ 10/30</span></li><li><a href="/festival/imsilnchijeuchukje/"><b>임실N치즈축제</b></a> <span class="jsg-km">약 27km</span><br>
-<span class="jsg-cal">10/8 ~ 10/11</span></li><li><a href="/search/?q=2026%20%EC%A7%84%EC%95%88%EA%B3%A0%EC%9B%90%20%ED%8F%AC%EB%A0%88%EC%8A%A4%ED%8B%B0%EB%B2%8C"><b>2026 진안고원 포레스티벌</b></a> <span class="jsg-km">약 29km</span><br>
+<span class="jsg-cal">10/8 ~ 10/11</span></li><li><a href="/festival/2026-jinangowon-poreseutibeol/"><b>2026 진안고원 포레스티벌</b></a> <span class="jsg-km">약 29km</span><br>
 <span class="jsg-cal">10/10 ~ 10/11</span></li><li><a href="/festival/sunchangjangnyuchukje/"><b>순창장류축제</b></a> <span class="jsg-km">약 31km</span><br>
 <span class="jsg-cal">10/15 ~ 10/18</span></li><li><a href="/festival/sancheonghanbangyakchochukje/"><b>산청한방약초축제</b></a> <span class="jsg-km">약 34km</span><br>
 <span class="jsg-cal">10/2 ~ 10/11</span></li></ul>
@@ -1266,12 +1266,6 @@ window.cjmFestBB=function(elId,name,place){
     // ── ③ 축제 상세로 들어감 (모달·허브에서)
     if(href.indexOf('/festival/') === 0 && href !== '/festival/'){
       send('festival_open', { slug: href.replace(/^\/festival\/|\/$/g,'') });
-      return;
-    }
-
-    // ── 📝 2026-09-28 — 사이트 → 네이버 블로그(goohw) 역링크 카드. 어느 페이지에서 어느 글로 갔는지 센다
-    if(href.indexOf('blog.naver.com/goohw') >= 0){
-      send('blog_click', { post: a.getAttribute('data-post') || '', place: a.getAttribute('data-place') || '' });
       return;
     }
 

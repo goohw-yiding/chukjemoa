@@ -586,7 +586,7 @@ document.addEventListener('click',function(e){
 
 <h2 class="sec">これから始まるお祭り</h2>
 <ul class="ic-list"><li class="ic-item">
-<div class="ic-h"><a class="ic-a" href="/ja/festival/bupyeongpungmuldaechukje/">富平風物祭り</a><span class="wx-chip">☁️ 23° · 降水 0%</span></div>
+<div class="ic-h"><a class="ic-a" href="/ja/festival/bupyeongpungmuldaechukje/">富平風物祭り</a></div>
 
 <p class="ic-meta">📅 期間: 10/02 – 10/04 · 📍 インチョン広域市プピョン区プピョンデロ34-1（プピョン洞）</p>
 
@@ -596,7 +596,7 @@ document.addEventListener('click',function(e){
 
 
 </li><li class="ic-item">
-<div class="ic-h"><b>蘇莱浦祭り</b><span class="wx-chip">☁️ 22° · 降水 0%</span></div>
+<div class="ic-h"><b>蘇莱浦祭り</b></div>
 
 <p class="ic-meta">📅 期間: 10/02 – 10/04 · 📍 インチョン広域市ナムドン区チャンドロ86-17</p>
 
@@ -1282,12 +1282,6 @@ document.addEventListener('click',function(e){
     // ── ③ 축제 상세로 들어감 (모달·허브에서)
     if(href.indexOf('/festival/') === 0 && href !== '/festival/'){
       send('festival_open', { slug: href.replace(/^\/festival\/|\/$/g,'') });
-      return;
-    }
-
-    // ── 📝 2026-09-28 — 사이트 → 네이버 블로그(goohw) 역링크 카드. 어느 페이지에서 어느 글로 갔는지 센다
-    if(href.indexOf('blog.naver.com/goohw') >= 0){
-      send('blog_click', { post: a.getAttribute('data-post') || '', place: a.getAttribute('data-place') || '' });
       return;
     }
 

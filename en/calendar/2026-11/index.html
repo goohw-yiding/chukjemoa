@@ -578,8 +578,8 @@ window.OneSignalDeferred=window.OneSignalDeferred||[];window.OneSignalDeferred.p
 <div class="m">2026.11.05 – 11.07 · Jeju</div>
 <a class="map" href="https://map.kakao.com/link/to/2026%20%EC%A0%9C%EC%A3%BC%EC%98%AC%EB%A0%88%EA%B1%B7%EA%B8%B0%EC%B6%95%EC%A0%9C,33.5405232248,126.6421943052" target="_blank" rel="noopener">Open in Kakao Map →</a></li><li><div class="t">Gumi Ramyun Festival <span class="ic-kr">구미라면 축제</span></div>
 <div class="m">2026.11.06 – 11.08 · North Gyeongsang</div>
-<a class="map" href="https://map.kakao.com/link/to/%EA%B5%AC%EB%AF%B8%EB%9D%BC%EB%A9%B4%20%EC%B6%95%EC%A0%9C,36.1294040000,128.3314220000" target="_blank" rel="noopener">Open in Kakao Map →</a></li><li><div class="t">BusanilleoseuteureisyeonpeeoV.7 <span class="ic-kr">부산일러스트레이션페어V.7</span></div>
-<div class="m">2026.11.06 – 11.08 · Busan · no official translation</div>
+<a class="map" href="https://map.kakao.com/link/to/%EA%B5%AC%EB%AF%B8%EB%9D%BC%EB%A9%B4%20%EC%B6%95%EC%A0%9C,36.1294040000,128.3314220000" target="_blank" rel="noopener">Open in Kakao Map →</a></li><li><div class="t">Busan Illustration Fair V.6 <span class="ic-kr">부산일러스트레이션페어V.7</span></div>
+<div class="m">2026.11.06 – 11.08 · Busan</div>
 <a class="map" href="https://map.kakao.com/link/to/%EB%B6%80%EC%82%B0%EC%9D%BC%EB%9F%AC%EC%8A%A4%ED%8A%B8%EB%A0%88%EC%9D%B4%EC%85%98%ED%8E%98%EC%96%B4V.7,35.1687048508,129.1354937071" target="_blank" rel="noopener">Open in Kakao Map →</a></li><li><div class="t">EobujangteoXPoteubilliji Tongyeong <span class="ic-kr">어부장터X포트빌리지 통영</span></div>
 <div class="m">2026.11.06 – 11.08 · South Gyeongsang · no official translation</div>
 <a class="map" href="https://map.kakao.com/link/to/%EC%96%B4%EB%B6%80%EC%9E%A5%ED%84%B0X%ED%8F%AC%ED%8A%B8%EB%B9%8C%EB%A6%AC%EC%A7%80%20%ED%86%B5%EC%98%81,34.8255760000,128.4338030000" target="_blank" rel="noopener">Open in Kakao Map →</a></li><li><div class="t">Gimhaebuncheongdojagi Festival <span class="ic-kr">김해분청도자기축제</span></div>
@@ -891,12 +891,6 @@ window.OneSignalDeferred=window.OneSignalDeferred||[];window.OneSignalDeferred.p
     // ── ③ 축제 상세로 들어감 (모달·허브에서)
     if(href.indexOf('/festival/') === 0 && href !== '/festival/'){
       send('festival_open', { slug: href.replace(/^\/festival\/|\/$/g,'') });
-      return;
-    }
-
-    // ── 📝 2026-09-28 — 사이트 → 네이버 블로그(goohw) 역링크 카드. 어느 페이지에서 어느 글로 갔는지 센다
-    if(href.indexOf('blog.naver.com/goohw') >= 0){
-      send('blog_click', { post: a.getAttribute('data-post') || '', place: a.getAttribute('data-place') || '' });
       return;
     }
 

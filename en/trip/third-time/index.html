@@ -582,7 +582,7 @@ window.OneSignalDeferred=window.OneSignalDeferred||[];window.OneSignalDeferred.p
 <div class="tbadges"><span class="tb n">Not in the top 40 for foreign visitors</span><span class="tb hot">In August, Koreans make it ×1.43 busier than usual</span></div>
 </div>
 <div class="tass ther">🏛 <span><b>1</b> National Treasures</span><span><b>10</b> Treasures</span><span><b>2</b> Historic Sites</span><span><b>3</b> Scenic Sites</span></div>
-<div class="tass"><span><b>124</b> attractions</span><span><b>1</b> walking trails</span><span><b>8</b> mountains &amp; nature</span><span><b>53</b> wheelchair-accessible sites</span></div>
+<div class="tass"><span><b>124</b> attractions</span><span><b>1</b> walking trails</span><span><b>8</b> mountains &amp; nature</span><span><b>52</b> wheelchair-accessible sites</span></div>
 <div class="thi"><div class="thio"><img src="https://tong.visitkorea.or.kr/cms/resource/74/565874_image2_1.jpg" alt="Beopsuchigyegok Valley (법수치계곡)" loading="lazy"><div class="n">Beopsuchigyegok Valley (법수치계곡)</div></div><div class="thio"><img src="https://tong.visitkorea.or.kr/cms/resource/73/2745273_image2_1.jpg" alt="Hajodae Beach (하조대해수욕장)" loading="lazy"><div class="n">Hajodae Beach (하조대해수욕장)</div></div><div class="thio"><img src="https://tong.visitkorea.or.kr/cms/resource/88/3100088_image2_1.jpg" alt="Hujin Harbor (후진항)" loading="lazy"><div class="n">Hujin Harbor (후진항)</div></div><div class="thio"><div class="n">Haeparanggil 43 Course<span>해파랑길 43코스</span></div><div class="k">9km</div></div><div class="thio"><img src="https://tong.visitkorea.or.kr/cms/resource/05/3045905_image2_1.jpg" alt="Gongsujeon Valley" loading="lazy"><div class="n">Gongsujeon Valley<span>공수전계곡</span></div></div><div class="thio"><img src="https://tong.visitkorea.or.kr/cms/resource/55/3077255_image2_1.jpg" alt="Dunjeon Valley" loading="lazy"><div class="n">Dunjeon Valley<span>둔전계곡</span></div></div></div>
 </div><div class="tcard"><div class="tch">
 <h3>Samcheok-si <em>삼척시</em></h3>
@@ -638,7 +638,7 @@ window.OneSignalDeferred=window.OneSignalDeferred||[];window.OneSignalDeferred.p
 <div class="tbadges"><span class="tb n">Not in the top 40 for foreign visitors</span><span class="tb hot">In August, Koreans make it ×1.18 busier than usual</span></div>
 </div>
 <div class="tass ther">🏛 <span><b>3</b> Treasures</span><span><b>2</b> Historic Sites</span><span><b>3</b> Scenic Sites</span><span><b>7</b> Natural Monuments</span></div>
-<div class="tass"><span><b>97</b> attractions</span><span><b>6</b> walking trails</span><span><b>5</b> mountains &amp; nature</span><span><b>42</b> wheelchair-accessible sites</span></div>
+<div class="tass"><span><b>97</b> attractions</span><span><b>6</b> walking trails</span><span><b>5</b> mountains &amp; nature</span><span><b>41</b> wheelchair-accessible sites</span></div>
 <div class="thi"><div class="thio"><img src="https://tong.visitkorea.or.kr/cms/resource/96/2703896_image2_1.jpg" alt="Gacheon Daraengi Village (가천 다랭이마을)" loading="lazy"><div class="n">Gacheon Daraengi Village (가천 다랭이마을)</div></div><div class="thio"><img src="https://tong.visitkorea.or.kr/cms/resource/82/2652082_image2_1.jpg" alt="German Village (독일마을)" loading="lazy"><div class="n">German Village (독일마을)</div></div><div class="thio"><img src="https://tong.visitkorea.or.kr/cms/resource/56/3076956_image2_1.JPG" alt="Seolcheon Namhae Coastal Road (설천 남해해안도로)" loading="lazy"><div class="n">Seolcheon Namhae Coastal Road (설천 남해해안도로)</div></div><div class="thio"><div class="n">Namparanggil 39 Course<span>남파랑길 39코스</span></div><div class="k">10km</div></div><div class="thio"><div class="n">Namparanggil 45 Course<span>남파랑길 45코스</span></div><div class="k">13km</div></div><div class="thio"><img src="https://tong.visitkorea.or.kr/cms/resource/88/3554788_image2_1.jpg" alt="Yongmunsa Valley" loading="lazy"><div class="n">Yongmunsa Valley<span>용문사계곡</span></div></div></div>
 </div><div class="tcard"><div class="tch">
 <h3>Ulju-gun <em>울주군</em></h3>
@@ -683,7 +683,7 @@ window.OneSignalDeferred=window.OneSignalDeferred||[];window.OneSignalDeferred.p
 </div><div class="tcard"><div class="tch">
 <h3>Yeosu-si <em>여수시</em></h3>
 <div class="tsido">Jeonnam</div>
-<div class="tbadges"><span class="tb f">Foreign visitors: ranked #34 in Korea</span><span class="tb hot">In August, Koreans make it ×1.15 busier than usual</span></div>
+<div class="tbadges"><span class="tb f">Foreign visitors: ranked #33 in Korea</span><span class="tb hot">In August, Koreans make it ×1.15 busier than usual</span></div>
 </div>
 
 <div class="tass"><span><b>166</b> attractions</span><span><b>5</b> walking trails</span><span><b>3</b> mountains &amp; nature</span><span><b>80</b> wheelchair-accessible sites</span></div>
@@ -965,12 +965,6 @@ window.OneSignalDeferred=window.OneSignalDeferred||[];window.OneSignalDeferred.p
     // ── ③ 축제 상세로 들어감 (모달·허브에서)
     if(href.indexOf('/festival/') === 0 && href !== '/festival/'){
       send('festival_open', { slug: href.replace(/^\/festival\/|\/$/g,'') });
-      return;
-    }
-
-    // ── 📝 2026-09-28 — 사이트 → 네이버 블로그(goohw) 역링크 카드. 어느 페이지에서 어느 글로 갔는지 센다
-    if(href.indexOf('blog.naver.com/goohw') >= 0){
-      send('blog_click', { post: a.getAttribute('data-post') || '', place: a.getAttribute('data-place') || '' });
       return;
     }
 

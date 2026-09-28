@@ -658,10 +658,10 @@ document.addEventListener('click',function(e){
 <div class="xcopy" style="margin:9px 0 0"><div><span class="lb">Korean address for map apps</span><span class="vl">경상남도 함양군 함양읍 용평 중앙길 20</span></div>
 <button data-v="경상남도 함양군 함양읍 용평 중앙길 20" data-done="Copied">Copy</button></div>
 </div></div><p class="xnote">Names and addresses here stay in Korean on purpose. Google Maps cannot give directions inside South Korea, and NAVER Map / KakaoMap find these places only under their Korean names — copy an address above and paste it straight in.</p></div>
-<div class="xbox"><h2>🎪 Other festivals nearby at the same time</h2><p class="lead">Overlapping dates, within 60 km.</p><div class="xlist"><a class="xitem" style="display:block;text-decoration:none" href="/en/festival/guardians-of-jinju/">
-<div class="nm" style="color:#0c7d72">Guardians of Jinju</div>
-<div class="mt">36.6 km away · 10/03 – 10/18</div></a><a class="xitem" style="display:block;text-decoration:none" href="/en/festival/jinju-namgang-yudeung-festival/">
+<div class="xbox"><h2>🎪 Other festivals nearby at the same time</h2><p class="lead">Overlapping dates, within 60 km.</p><div class="xlist"><a class="xitem" style="display:block;text-decoration:none" href="/en/festival/jinju-namgang-yudeung-festival/">
 <div class="nm" style="color:#0c7d72">Jinju Namgang Yudeung Festival</div>
+<div class="mt">36.1 km away · 10/03 – 10/18</div></a><a class="xitem" style="display:block;text-decoration:none" href="/en/festival/guardians-of-jinju/">
+<div class="nm" style="color:#0c7d72">Guardians of Jinju</div>
 <div class="mt">36.6 km away · 10/03 – 10/18</div></a><a class="xitem" style="display:block;text-decoration:none" href="/en/festival/seomjinggang-interntional-experimental-arts-festvial/">
 <div class="nm" style="color:#0c7d72">Seomjinggang Interntional Experimental Arts Festvial</div>
 <div class="mt">49.4 km away · 09/22 – 10/30</div></a><a class="xitem" style="display:block;text-decoration:none" href="/en/festival/imsil-n-cheese-festival/">
@@ -1065,12 +1065,6 @@ document.addEventListener('click',function(e){
     // ── ③ 축제 상세로 들어감 (모달·허브에서)
     if(href.indexOf('/festival/') === 0 && href !== '/festival/'){
       send('festival_open', { slug: href.replace(/^\/festival\/|\/$/g,'') });
-      return;
-    }
-
-    // ── 📝 2026-09-28 — 사이트 → 네이버 블로그(goohw) 역링크 카드. 어느 페이지에서 어느 글로 갔는지 센다
-    if(href.indexOf('blog.naver.com/goohw') >= 0){
-      send('blog_click', { post: a.getAttribute('data-post') || '', place: a.getAttribute('data-place') || '' });
       return;
     }
 

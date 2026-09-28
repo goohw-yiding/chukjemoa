@@ -625,7 +625,7 @@ window.OneSignalDeferred=window.OneSignalDeferred||[];window.OneSignalDeferred.p
 <div class="jsg-next">
 <div class="jsg-next-l">다음 장날</div>
 <div class="jsg-next-d">9월 29일 (화) · <b>내일</b></div>
-<div class="jsg-next-m">한림민속오일시장<span class="wx-chip" title="흐림">☁️ 23° · 비 16%</span></div>
+<div class="jsg-next-m">한림민속오일시장</div>
 </div>
 
 
@@ -758,7 +758,7 @@ window.OneSignalDeferred=window.OneSignalDeferred||[];window.OneSignalDeferred.p
 <p class="jsg-p">제주시 중심에서 40km 안에서 <b>지금 열리고 있거나 앞으로 열릴</b> 축제입니다.</p>
 <ul class="jsg-list"><li><a href="/festival/2026-je5hoe-jejubiennalle-heokkeugok-modakchigok-iyahong-bye/"><b>2026 제5회 제주비엔날레 허끄곡 모닥치곡 이야홍 : 변용의 기술</b></a> <span class="jsg-km">약 8km</span><br>
 <span class="jsg-cal">8/25 ~ 11/15</span></li><li><a href="/festival/2026-jejuollegeotgichukje/"><b>2026 제주올레걷기축제</b></a> <span class="jsg-km">약 9km</span><br>
-<span class="jsg-cal">11/5 ~ 11/7</span></li><li><a href="/search/?q=2026%20%EB%8C%80%ED%95%9C%EB%AF%BC%EA%B5%AD%20%EC%A0%9C%EC%A3%BC%EC%A0%95%EC%9B%90%EB%AC%B8%ED%99%94%EB%B0%95%EB%9E%8C%ED%9A%8C"><b>2026 대한민국 제주정원문화박람회</b></a> <span class="jsg-km">약 27km</span><br>
+<span class="jsg-cal">11/5 ~ 11/7</span></li><li><a href="/festival/2026-daehanminguk-jejujeongwonmunhwabangnamhoe/"><b>2026 대한민국 제주정원문화박람회</b></a> <span class="jsg-km">약 27km</span><br>
 <span class="jsg-cal">11/6 ~ 11/10</span></li><li><a href="/festival/2026-seogwipo-wondosim-munhwapeseutibeol/"><b>2026 서귀포 원도심 문화페스티벌</b></a> <span class="jsg-km">약 27km</span><br>
 <span class="jsg-cal">4/11 ~ 10/30</span></li><li><a href="/festival/seogwipochilsimnichukje/"><b>서귀포칠십리축제</b></a> <span class="jsg-km">약 27km</span><br>
 <span class="jsg-cal">10/23 ~ 10/25</span></li></ul>
@@ -1315,12 +1315,6 @@ window.cjmFestBB=function(elId,name,place){
     // ── ③ 축제 상세로 들어감 (모달·허브에서)
     if(href.indexOf('/festival/') === 0 && href !== '/festival/'){
       send('festival_open', { slug: href.replace(/^\/festival\/|\/$/g,'') });
-      return;
-    }
-
-    // ── 📝 2026-09-28 — 사이트 → 네이버 블로그(goohw) 역링크 카드. 어느 페이지에서 어느 글로 갔는지 센다
-    if(href.indexOf('blog.naver.com/goohw') >= 0){
-      send('blog_click', { post: a.getAttribute('data-post') || '', place: a.getAttribute('data-place') || '' });
       return;
     }
 

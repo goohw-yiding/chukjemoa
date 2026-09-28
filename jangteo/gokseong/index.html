@@ -625,7 +625,7 @@ window.OneSignalDeferred=window.OneSignalDeferred||[];window.OneSignalDeferred.p
 <div class="jsg-next">
 <div class="jsg-next-l">다음 장날</div>
 <div class="jsg-next-d">9월 28일 (월) · <b>오늘</b></div>
-<div class="jsg-next-m">곡성기차마을전통시장<span class="wx-chip" title="흐림">☁️ 25° · 비 33%</span></div>
+<div class="jsg-next-m">곡성기차마을전통시장</div>
 </div>
 
 
@@ -708,7 +708,7 @@ window.OneSignalDeferred=window.OneSignalDeferred||[];window.OneSignalDeferred.p
 <ul class="jsg-list"><li><a href="/search/?q=2026%EC%84%AC%EC%A7%84%EA%B0%95%EA%B5%AD%EC%A0%9C%EC%8B%A4%ED%97%98%EC%98%88%EC%88%A0%EC%A0%9C(SIEAF)"><b>2026섬진강국제실험예술제(SIEAF)</b></a> <span class="jsg-km">약 14km</span><br>
 <span class="jsg-cal">9/22 ~ 10/30</span></li><li><a href="/festival/sunchangjangnyuchukje/"><b>순창장류축제</b></a> <span class="jsg-km">약 19km</span><br>
 <span class="jsg-cal">10/15 ~ 10/18</span></li><li><a href="/festival/damyang-gukgayusanyahaeng/"><b>담양 국가유산야행</b></a> <span class="jsg-km">약 24km</span><br>
-<span class="jsg-cal">10/9 ~ 10/10</span></li><li><a href="/search/?q=2026%20%EA%B4%91%EC%A3%BC%EB%AF%B8%EC%8B%9D%EC%A3%BC%EA%B0%84"><b>2026 광주미식주간</b></a> <span class="jsg-km">약 30km</span><br>
+<span class="jsg-cal">10/9 ~ 10/10</span></li><li><a href="/festival/2026-gwangjumisikjugan/"><b>2026 광주미식주간</b></a> <span class="jsg-km">약 30km</span><br>
 <span class="jsg-cal">10/2 ~ 10/11</span></li><li><a href="/search/?q=%EA%B4%91%EC%A3%BC%EB%B2%84%EC%8A%A4%ED%82%B9%EC%9B%94%EB%93%9C%EC%BB%B5"><b>광주버스킹월드컵</b></a> <span class="jsg-km">약 30km</span><br>
 <span class="jsg-cal">10/7 ~ 10/11</span></li></ul>
 <h2 class="sec">곡성군 근처 시·군의 장날</h2>
@@ -1266,12 +1266,6 @@ window.cjmFestBB=function(elId,name,place){
     // ── ③ 축제 상세로 들어감 (모달·허브에서)
     if(href.indexOf('/festival/') === 0 && href !== '/festival/'){
       send('festival_open', { slug: href.replace(/^\/festival\/|\/$/g,'') });
-      return;
-    }
-
-    // ── 📝 2026-09-28 — 사이트 → 네이버 블로그(goohw) 역링크 카드. 어느 페이지에서 어느 글로 갔는지 센다
-    if(href.indexOf('blog.naver.com/goohw') >= 0){
-      send('blog_click', { post: a.getAttribute('data-post') || '', place: a.getAttribute('data-place') || '' });
       return;
     }
 

@@ -625,7 +625,7 @@ window.OneSignalDeferred=window.OneSignalDeferred||[];window.OneSignalDeferred.p
 <div class="jsg-next">
 <div class="jsg-next-l">다음 장날</div>
 <div class="jsg-next-d">9월 28일 (월) · <b>오늘</b></div>
-<div class="jsg-next-m">경화시장<span class="wx-chip" title="흐림">☁️ 25° · 비 31%</span></div>
+<div class="jsg-next-m">경화시장</div>
 </div>
 
 
@@ -774,7 +774,7 @@ window.OneSignalDeferred=window.OneSignalDeferred||[];window.OneSignalDeferred.p
 <h2 class="sec">장 보러 간 김에 — 지금 열리는 근처 축제</h2>
 <p class="jsg-p">창원시 중심에서 40km 안에서 <b>지금 열리고 있거나 앞으로 열릴</b> 축제입니다.</p>
 <ul class="jsg-list"><li><a href="/festival/2026-rekkiui-susanghan-pikeunik/"><b>2026 렉키의 수상한 피크닉</b></a> <span class="jsg-km">약 8km</span><br>
-<span class="jsg-cal">10/17 ~ 10/25</span></li><li><a href="/search/?q=%EB%A7%88%EC%82%B0%EA%B0%80%EA%B3%A0%ED%8C%8C%EA%B5%AD%ED%99%94%EC%B6%95%EC%A0%9C"><b>마산가고파국화축제</b></a> <span class="jsg-km">약 10km</span><br>
+<span class="jsg-cal">10/17 ~ 10/25</span></li><li><a href="/festival/masangagopagukhwachukje/"><b>마산가고파국화축제</b></a> <span class="jsg-km">약 10km</span><br>
 <span class="jsg-cal">10/31 ~ 11/8</span></li><li><a href="/festival/gimhaebuncheongdojagichukje/"><b>김해분청도자기축제</b></a> <span class="jsg-km">약 15km</span><br>
 <span class="jsg-cal">11/6 ~ 11/10</span></li><li><a href="/festival/busangukjerokpeseutibeol/"><b>부산국제록페스티벌</b></a> <span class="jsg-km">약 27km</span><br>
 <span class="jsg-cal">10/2 ~ 10/4</span></li><li><a href="/festival/gyeongnamgoseonggongnyongsegyeekseupo/"><b>경남고성공룡세계엑스포</b></a> <span class="jsg-km">약 29km</span><br>
@@ -1334,12 +1334,6 @@ window.cjmFestBB=function(elId,name,place){
     // ── ③ 축제 상세로 들어감 (모달·허브에서)
     if(href.indexOf('/festival/') === 0 && href !== '/festival/'){
       send('festival_open', { slug: href.replace(/^\/festival\/|\/$/g,'') });
-      return;
-    }
-
-    // ── 📝 2026-09-28 — 사이트 → 네이버 블로그(goohw) 역링크 카드. 어느 페이지에서 어느 글로 갔는지 센다
-    if(href.indexOf('blog.naver.com/goohw') >= 0){
-      send('blog_click', { post: a.getAttribute('data-post') || '', place: a.getAttribute('data-place') || '' });
       return;
     }
 

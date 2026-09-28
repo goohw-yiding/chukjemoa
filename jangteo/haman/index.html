@@ -722,7 +722,7 @@ window.OneSignalDeferred=window.OneSignalDeferred||[];window.OneSignalDeferred.p
 
 <h2 class="sec">장 보러 간 김에 — 지금 열리는 근처 축제</h2>
 <p class="jsg-p">함안군 중심에서 40km 안에서 <b>지금 열리고 있거나 앞으로 열릴</b> 축제입니다.</p>
-<ul class="jsg-list"><li><a href="/search/?q=%EB%A7%88%EC%82%B0%EA%B0%80%EA%B3%A0%ED%8C%8C%EA%B5%AD%ED%99%94%EC%B6%95%EC%A0%9C"><b>마산가고파국화축제</b></a> <span class="jsg-km">약 18km</span><br>
+<ul class="jsg-list"><li><a href="/festival/masangagopagukhwachukje/"><b>마산가고파국화축제</b></a> <span class="jsg-km">약 18km</span><br>
 <span class="jsg-cal">10/31 ~ 11/8</span></li><li><a href="/festival/2026-rekkiui-susanghan-pikeunik/"><b>2026 렉키의 수상한 피크닉</b></a> <span class="jsg-km">약 20km</span><br>
 <span class="jsg-cal">10/17 ~ 10/25</span></li><li><a href="/festival/gyeongnamgoseonggongnyongsegyeekseupo/"><b>경남고성공룡세계엑스포</b></a> <span class="jsg-km">약 28km</span><br>
 <span class="jsg-cal">9/22 ~ 11/1</span></li><li><a href="/search/?q=%EC%A7%84%EC%A3%BC%EC%9D%98%20%EC%88%98%ED%98%B8%EC%9E%90%EB%93%A4"><b>진주의 수호자들</b></a> <span class="jsg-km">약 33km</span><br>
@@ -1283,12 +1283,6 @@ window.cjmFestBB=function(elId,name,place){
     // ── ③ 축제 상세로 들어감 (모달·허브에서)
     if(href.indexOf('/festival/') === 0 && href !== '/festival/'){
       send('festival_open', { slug: href.replace(/^\/festival\/|\/$/g,'') });
-      return;
-    }
-
-    // ── 📝 2026-09-28 — 사이트 → 네이버 블로그(goohw) 역링크 카드. 어느 페이지에서 어느 글로 갔는지 센다
-    if(href.indexOf('blog.naver.com/goohw') >= 0){
-      send('blog_click', { post: a.getAttribute('data-post') || '', place: a.getAttribute('data-place') || '' });
       return;
     }
 

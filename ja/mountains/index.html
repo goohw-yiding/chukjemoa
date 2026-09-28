@@ -748,7 +748,7 @@ window.OneSignalDeferred=window.OneSignalDeferred||[];window.OneSignalDeferred.p
 <div class="mthumb"><img loading="lazy" src="https://tong.visitkorea.or.kr/cms/resource/57/2661757_image2_1.jpg" alt="峨嵯山（아차산）" onerror="this.src='/img/hero.webp'"></div>
 <div class="mbody"><h3>峨嵯山（아차산）</h3>
 <div class="mloc">📍 ソウル · キョンギ道クリ市アチョン洞</div>
-<div class="mbs"><span class="mb hot">🍁 10月はこの地域が普段の ×1.07 倍</span><span class="mb kr">🇰🇷 韓国人に人気のエリア</span></div>
+<div class="mbs"><span class="mb hot">🍁 10月はこの地域が普段の ×1.07 倍</span><span class="mb fgn">🌏 外国人に人気のエリア</span></div>
 <p class="mov">峨嵯山（アチャサン）は、ソウル特別市と九里（クリ）市にまたがる標高295メートルの山で、アクセスが良く都心から近い場所に位置しています。初心者でも登山を楽しめるよう登山道が整備されており、山頂に登ると漢江（ハンガン）と調…</p>
 </div></a>
 <a class="mcard" href="https://search.naver.com/search.naver?query=%E5%BE%B3%E9%A0%85%E5%B1%B1%EF%BC%88%EB%8D%95%ED%95%AD%EC%82%B0%EF%BC%89" target="_blank" rel="noopener" data-sido="강원" data-kw="徳項山（덕항산） カンウォン道サムチョク市シンギ面テギ里">
@@ -1336,12 +1336,6 @@ window.OneSignalDeferred=window.OneSignalDeferred||[];window.OneSignalDeferred.p
     // ── ③ 축제 상세로 들어감 (모달·허브에서)
     if(href.indexOf('/festival/') === 0 && href !== '/festival/'){
       send('festival_open', { slug: href.replace(/^\/festival\/|\/$/g,'') });
-      return;
-    }
-
-    // ── 📝 2026-09-28 — 사이트 → 네이버 블로그(goohw) 역링크 카드. 어느 페이지에서 어느 글로 갔는지 센다
-    if(href.indexOf('blog.naver.com/goohw') >= 0){
-      send('blog_click', { post: a.getAttribute('data-post') || '', place: a.getAttribute('data-place') || '' });
       return;
     }
 

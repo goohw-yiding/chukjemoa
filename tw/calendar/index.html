@@ -608,9 +608,9 @@ window.OneSignalDeferred=window.OneSignalDeferred||[];window.OneSignalDeferred.p
 <p class="ic-note">依正在舉行或已排定的慶典統計。郡較多的道，場次自然會比單一城市多。</p></div>
 
 <div class="ic-card"><h2>外國遊客實際會去的地方</h2>
-<p>這不是推薦榜，是實測。以下是國家觀光資料中外國遊客人數最多的市·郡·區。第一名是 <b>Yeongjonggu</b>，<b>2,956,831</b> 人次。有機場與港口的區排在前面理所當然，後面那些才是大家真正花時間的地方。</p>
-<table class="ic-tbl"><thead><tr><th>市·郡·區</th><th class="n">外國遊客</th></tr></thead><tbody><tr><td>Yeongjong-gu <span class="ic-kr">영종구</span><br><span class="ic-note">仁川</span></td><td class="n">2,956,831</td></tr><tr><td>Jung-gu <span class="ic-kr">중구</span><br><span class="ic-note">首爾</span></td><td class="n">2,668,745</td></tr><tr><td>Jeju-si <span class="ic-kr">제주시</span><br><span class="ic-note">濟州</span></td><td class="n">1,413,886</td></tr><tr><td>Jongno-gu <span class="ic-kr">종로구</span><br><span class="ic-note">首爾</span></td><td class="n">1,333,398</td></tr><tr><td>Mapo-gu <span class="ic-kr">마포구</span><br><span class="ic-note">首爾</span></td><td class="n">1,229,320</td></tr><tr><td>Gangnam-gu <span class="ic-kr">강남구</span><br><span class="ic-note">首爾</span></td><td class="n">1,016,326</td></tr><tr><td>Yongsan-gu <span class="ic-kr">용산구</span><br><span class="ic-note">首爾</span></td><td class="n">999,393</td></tr><tr><td>Seogwipo-si <span class="ic-kr">서귀포시</span><br><span class="ic-note">濟州</span></td><td class="n">867,203</td></tr><tr><td>Haeundae-gu <span class="ic-kr">해운대구</span><br><span class="ic-note">釜山</span></td><td class="n">738,033</td></tr><tr><td>Gangseo-gu <span class="ic-kr">강서구</span><br><span class="ic-note">釜山</span></td><td class="n">658,302</td></tr></tbody></table>
-<p class="ic-note">資料來源：韓國觀光資料實驗室，各市郡區外國遊客人次（2026.07.24~2026.08.22）。依手機與刷卡資料推估。並列標註韓文，方便貼到地圖 App。</p></div>
+<p>這不是推薦榜，是實測。以下是國家觀光資料中外國遊客人數最多的市·郡·區。第一名是 <b>Yeongjonggu</b>，<b>3,067,535</b> 人次。有機場與港口的區排在前面理所當然，後面那些才是大家真正花時間的地方。</p>
+<table class="ic-tbl"><thead><tr><th>市·郡·區</th><th class="n">外國遊客</th></tr></thead><tbody><tr><td>Yeongjong-gu <span class="ic-kr">영종구</span><br><span class="ic-note">仁川</span></td><td class="n">3,067,535</td></tr><tr><td>Jung-gu <span class="ic-kr">중구</span><br><span class="ic-note">首爾</span></td><td class="n">2,684,951</td></tr><tr><td>Jeju-si <span class="ic-kr">제주시</span><br><span class="ic-note">濟州</span></td><td class="n">1,415,134</td></tr><tr><td>Jongno-gu <span class="ic-kr">종로구</span><br><span class="ic-note">首爾</span></td><td class="n">1,366,968</td></tr><tr><td>Mapo-gu <span class="ic-kr">마포구</span><br><span class="ic-note">首爾</span></td><td class="n">1,251,319</td></tr><tr><td>Gangnam-gu <span class="ic-kr">강남구</span><br><span class="ic-note">首爾</span></td><td class="n">1,019,717</td></tr><tr><td>Yongsan-gu <span class="ic-kr">용산구</span><br><span class="ic-note">首爾</span></td><td class="n">1,016,041</td></tr><tr><td>Seogwipo-si <span class="ic-kr">서귀포시</span><br><span class="ic-note">濟州</span></td><td class="n">876,945</td></tr><tr><td>Haeundae-gu <span class="ic-kr">해운대구</span><br><span class="ic-note">釜山</span></td><td class="n">778,339</td></tr><tr><td>Gangseo-gu <span class="ic-kr">강서구</span><br><span class="ic-note">釜山</span></td><td class="n">674,042</td></tr></tbody></table>
+<p class="ic-note">資料來源：韓國觀光資料實驗室，各市郡區外國遊客人次（2026.07.31~2026.08.29）。依手機與刷卡資料推估。並列標註韓文，方便貼到地圖 App。</p></div>
 
 <div class="ic-card"><h2>為什麼每個名字旁邊都有韓文</h2>
 <p>韓國的慶典在國家資料庫以韓文登錄，約有一半沒有官方外文名。有官方譯名的我們直接用，沒有的就轉寫成羅馬字。兩種情況都並列韓文原名，因為貼到 NAVER 地圖或 Kakao 地圖時真正搜得到的正是那串字——而這兩個才是在韓國真正好用的地圖應用。</p></div>
@@ -882,12 +882,6 @@ window.OneSignalDeferred=window.OneSignalDeferred||[];window.OneSignalDeferred.p
     // ── ③ 축제 상세로 들어감 (모달·허브에서)
     if(href.indexOf('/festival/') === 0 && href !== '/festival/'){
       send('festival_open', { slug: href.replace(/^\/festival\/|\/$/g,'') });
-      return;
-    }
-
-    // ── 📝 2026-09-28 — 사이트 → 네이버 블로그(goohw) 역링크 카드. 어느 페이지에서 어느 글로 갔는지 센다
-    if(href.indexOf('blog.naver.com/goohw') >= 0){
-      send('blog_click', { post: a.getAttribute('data-post') || '', place: a.getAttribute('data-place') || '' });
       return;
     }
 

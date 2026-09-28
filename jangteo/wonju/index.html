@@ -691,7 +691,7 @@ window.OneSignalDeferred=window.OneSignalDeferred||[];window.OneSignalDeferred.p
 <ul class="jsg-list"><li><a href="/festival/chiaksan-hanuchukje/"><b>치악산 한우축제</b></a> <span class="jsg-km">약 5km</span><br>
 <span class="jsg-cal">10/22 ~ 10/25</span></li><li><a href="/festival/2026-wonjusi-jungsogieop-usujepum-bangnamhoe/"><b>2026 원주시 중소기업 우수제품 박람회</b></a> <span class="jsg-km">약 6km</span><br>
 <span class="jsg-cal">10/2 ~ 10/4</span></li><li><a href="/festival/naorasyo/"><b>나오라쇼</b></a> <span class="jsg-km">약 6km</span><br>
-<span class="jsg-cal">4/25 ~ 10/31</span></li><li><a href="/search/?q=%EC%9B%90%EC%A3%BC%EC%9A%A9%EC%88%98%EA%B3%A8%EA%B0%80%EC%9D%84%EA%BD%83%EC%B6%95%EC%A0%9C"><b>원주용수골가을꽃축제</b></a> <span class="jsg-km">약 7km</span><br>
+<span class="jsg-cal">4/25 ~ 10/31</span></li><li><a href="/festival/wonjuyongsugolgaeulkkotchukje/"><b>원주용수골가을꽃축제</b></a> <span class="jsg-km">약 7km</span><br>
 <span class="jsg-cal">9/23 ~ 10/5</span></li><li><a href="/festival/bungnae-geumdangcheon-samsaekbyeolmichukje/"><b>북내 금당천 삼색별미축제</b></a> <span class="jsg-km">약 18km</span><br>
 <span class="jsg-cal">10/3 ~ 10/4</span></li></ul>
 <h2 class="sec">원주시 근처 시·군의 장날</h2>
@@ -1249,12 +1249,6 @@ window.cjmFestBB=function(elId,name,place){
     // ── ③ 축제 상세로 들어감 (모달·허브에서)
     if(href.indexOf('/festival/') === 0 && href !== '/festival/'){
       send('festival_open', { slug: href.replace(/^\/festival\/|\/$/g,'') });
-      return;
-    }
-
-    // ── 📝 2026-09-28 — 사이트 → 네이버 블로그(goohw) 역링크 카드. 어느 페이지에서 어느 글로 갔는지 센다
-    if(href.indexOf('blog.naver.com/goohw') >= 0){
-      send('blog_click', { post: a.getAttribute('data-post') || '', place: a.getAttribute('data-place') || '' });
       return;
     }
 

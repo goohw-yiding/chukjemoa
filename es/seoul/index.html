@@ -587,7 +587,7 @@ document.addEventListener('click',function(e){
 
 <h2 class="sec">Fiestas en curso</h2>
 <ul class="ic-list"><li class="ic-item">
-<div class="ic-h"><b>Tour bajo las Estrellas del Palacio Gyeongbokgung</b><span class="wx-chip">☁️ 24° · Lluvia 2%</span></div>
+<div class="ic-h"><b>Tour bajo las Estrellas del Palacio Gyeongbokgung</b></div>
 
 <p class="ic-meta">📅 Fechas: 09/02 – 10/24 · 📍 Sajik-ro 161, Jongno-gu, Seúl</p>
 
@@ -597,7 +597,7 @@ document.addEventListener('click',function(e){
 
 
 </li><li class="ic-item">
-<div class="ic-h"><b>Cambio de Guardia Real de Seúl</b><span class="wx-chip">☁️ 24° · Lluvia 2%</span></div>
+<div class="ic-h"><b>Cambio de Guardia Real de Seúl</b></div>
 
 <p class="ic-meta">📅 Fechas: 01/01 – 12/31 · 📍 Sejong-daero 99, Jung-gu, Seúl.</p>
 
@@ -607,7 +607,7 @@ document.addEventListener('click',function(e){
 
 
 </li><li class="ic-item">
-<div class="ic-h"><b>Espectáculo de música tradicional Jinyeon</b><span class="wx-chip">☁️ 24° · Lluvia 2%</span></div>
+<div class="ic-h"><b>Espectáculo de música tradicional Jinyeon</b></div>
 
 <p class="ic-meta">📅 Fechas: 01/01 – 12/31 · 📍 Insadong 5-gil 10, Jongno-gu, Seúl</p>
 
@@ -618,7 +618,7 @@ document.addEventListener('click',function(e){
 
 </li></ul><h2 class="sec">Próximas fiestas</h2>
 <ul class="ic-list"><li class="ic-item">
-<div class="ic-h"><b>Recreación del Desfile Real del Rey Jeongjo</b><span class="wx-chip">☁️ 24° · Lluvia 2%</span></div>
+<div class="ic-h"><b>Recreación del Desfile Real del Rey Jeongjo</b></div>
 
 <p class="ic-meta">📅 Fechas: 10/04 – 10/04 · 📍 Sajik-ro 161, Jongno-gu, Seúl</p>
 
@@ -628,7 +628,7 @@ document.addEventListener('click',function(e){
 
 
 </li><li class="ic-item">
-<div class="ic-h"><b>Festival de la Cultura de la Realeza</b><span class="wx-chip">☁️ 24° · Lluvia 2%</span></div>
+<div class="ic-h"><b>Festival de la Cultura de la Realeza</b></div>
 
 <p class="ic-meta">📅 Fechas: 10/07 – 10/11 · 📍 Sajik-ro 161, Jongno-gu, Seúl</p>
 
@@ -1702,12 +1702,6 @@ document.addEventListener('click',function(e){
     // ── ③ 축제 상세로 들어감 (모달·허브에서)
     if(href.indexOf('/festival/') === 0 && href !== '/festival/'){
       send('festival_open', { slug: href.replace(/^\/festival\/|\/$/g,'') });
-      return;
-    }
-
-    // ── 📝 2026-09-28 — 사이트 → 네이버 블로그(goohw) 역링크 카드. 어느 페이지에서 어느 글로 갔는지 센다
-    if(href.indexOf('blog.naver.com/goohw') >= 0){
-      send('blog_click', { post: a.getAttribute('data-post') || '', place: a.getAttribute('data-place') || '' });
       return;
     }
 

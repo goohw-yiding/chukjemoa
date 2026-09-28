@@ -692,9 +692,9 @@ document.addEventListener('click',function(e){
 <div class="nm" style="color:#0c7d72">海雲台砂祭り</div>
 <div class="mt">4.1km · 05/15 – 05/18</div></a><a class="xitem" style="display:block;text-decoration:none" href="/ja/festival/dalbamechejo-busan-chaellinji/">
 <div class="nm" style="color:#0c7d72">月夜に体操 釜山チャレンジ</div>
-<div class="mt">5.8km · 09/19 – 11/07</div></a><a class="xitem" style="display:block;text-decoration:none" href="/ja/festival/busangukjerokpeseutibeol/">
-<div class="nm" style="color:#0c7d72">釜山国際ロックフェスティバル</div>
-<div class="mt">13.8km · 10/02 – 10/04</div></a></div></div>
+<div class="mt">5.8km · 09/19 – 11/07</div></a><a class="xitem" style="display:block;text-decoration:none" href="/ja/festival/2026-daehanminguk-haeyang-mobilliti-anjeon-ekseupo/">
+<div class="nm" style="color:#0c7d72">大韓民国海洋モビリティ・安全エキスポ</div>
+<div class="mt">7.5km · 10/26 – 10/28</div></a></div></div>
 <div class="nmap-wrap">
 <div class="nmap" style="height:300px" data-x="129.1185199367" data-y="35.1537727886" data-t="広安里M"><span class="nmap-ph">地図を読み込み中…</span></div>
 <a class="nmap-open" href="https://map.naver.com/p/search/%EA%B4%91%EC%95%88%EB%A6%AC%20M(Marvelous)%20%EB%93%9C%EB%A1%A0%20%EB%9D%BC%EC%9D%B4%ED%8A%B8%EC%87%BC" target="_blank" rel="noopener">🗺️ NAVERマップで開く</a>
@@ -1074,12 +1074,6 @@ document.addEventListener('click',function(e){
     // ── ③ 축제 상세로 들어감 (모달·허브에서)
     if(href.indexOf('/festival/') === 0 && href !== '/festival/'){
       send('festival_open', { slug: href.replace(/^\/festival\/|\/$/g,'') });
-      return;
-    }
-
-    // ── 📝 2026-09-28 — 사이트 → 네이버 블로그(goohw) 역링크 카드. 어느 페이지에서 어느 글로 갔는지 센다
-    if(href.indexOf('blog.naver.com/goohw') >= 0){
-      send('blog_click', { post: a.getAttribute('data-post') || '', place: a.getAttribute('data-place') || '' });
       return;
     }
 

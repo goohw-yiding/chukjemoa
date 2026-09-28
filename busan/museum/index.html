@@ -680,7 +680,7 @@ window.OneSignalDeferred=window.OneSignalDeferred||[];window.OneSignalDeferred.p
 <a href="https://map.naver.com/p/search/%EA%B5%AD%EB%A6%BD%EB%B6%80%EC%82%B0%EA%B3%BC%ED%95%99%EA%B4%80" target="_blank" rel="noopener">🗺️ 지도</a>
 <a href="https://search.naver.com/search.naver?query=%EA%B5%AD%EB%A6%BD%EB%B6%80%EC%82%B0%EA%B3%BC%ED%95%99%EA%B4%80%20%EA%B4%80%EB%9E%8C%EC%8B%9C%EA%B0%84" target="_blank" rel="noopener">🕘 관람시간</a></div>
 </div></div><div class="mcard">
-<img src="https://tong.visitkorea.or.kr/cms/resource/96/3498596_image2_1.jpg" alt="국립해양박물관" loading="lazy" onerror="this.remove()">
+<img src="https://tong.visitkorea.or.kr/cms/resource/50/4111450_image2_1.jpg" alt="국립해양박물관" loading="lazy" onerror="this.remove()">
 <div class="mbody">
 <h3><span class="mrank">3</span>국립해양박물관</h3>
 <div class="mmeta">📍 영도구 · 부산광역시 영도구 해양로301번길 45</div>
@@ -1439,12 +1439,6 @@ window.cjmFestBB=function(elId,name,place){
     // ── ③ 축제 상세로 들어감 (모달·허브에서)
     if(href.indexOf('/festival/') === 0 && href !== '/festival/'){
       send('festival_open', { slug: href.replace(/^\/festival\/|\/$/g,'') });
-      return;
-    }
-
-    // ── 📝 2026-09-28 — 사이트 → 네이버 블로그(goohw) 역링크 카드. 어느 페이지에서 어느 글로 갔는지 센다
-    if(href.indexOf('blog.naver.com/goohw') >= 0){
-      send('blog_click', { post: a.getAttribute('data-post') || '', place: a.getAttribute('data-place') || '' });
       return;
     }
 

@@ -689,13 +689,13 @@ document.addEventListener('click',function(e){
 <div class="nm" style="color:#0c7d72">Dongnaeeupseong History Festival</div>
 <div class="mt">6.0 km away · 10/16 – 10/18</div></a><a class="xitem" style="display:block;text-decoration:none" href="/en/festival/hurshimchung-brau-oktoberfest/">
 <div class="nm" style="color:#0c7d72">Hurshimchung Bräu Oktoberfest</div>
-<div class="mt">6.5 km away · 10/15 – 10/17</div></a><a class="xitem" style="display:block;text-decoration:none" href="/en/festival/busan-international-rock-festival/">
+<div class="mt">6.5 km away · 10/15 – 10/17</div></a><a class="xitem" style="display:block;text-decoration:none" href="/en/festival/busan-illustration-fair-v-6/">
+<div class="nm" style="color:#0c7d72">Busan Illustration Fair V.6</div>
+<div class="mt">7.2 km away · 11/06 – 11/08</div></a><a class="xitem" style="display:block;text-decoration:none" href="/en/festival/busan-international-rock-festival/">
 <div class="nm" style="color:#0c7d72">Busan International Rock Festival</div>
 <div class="mt">8.0 km away · 10/02 – 10/04</div></a><a class="xitem" style="display:block;text-decoration:none" href="/en/festival/starry-sea-busan-night-camp-picnic/">
 <div class="nm" style="color:#0c7d72">Starry Sea Busan - Night Camp Picnic</div>
-<div class="mt">15.6 km away · 09/04 – 09/19</div></a><a class="xitem" style="display:block;text-decoration:none" href="/en/festival/bibliotheca-busan/">
-<div class="nm" style="color:#0c7d72">Bibliotheca Busan</div>
-<div class="mt">15.6 km away · 09/19 – 10/11</div></a></div></div>
+<div class="mt">15.6 km away · 09/04 – 09/19</div></a></div></div>
 <style>
 .ennear{margin:22px 0}
 .ennear h2{font-size:1.08rem;font-weight:900;margin:0 0 6px}
@@ -778,7 +778,7 @@ document.addEventListener('click',function(e){
 <div class="nmap" style="height:300px" data-x="129.0558397915" data-y="35.1655426683" data-t="Moonlit Night Exercise Busan Challenge"><span class="nmap-ph">Loading map…</span></div>
 <a class="nmap-open" href="https://map.naver.com/p/search/Moonlit%20Night%20Exercise%20Busan%20Challenge" target="_blank" rel="noopener">🗺️ Open in Naver Map</a>
 </div>
-<div class="frel"><h2>Other festivals in Busan</h2><div class="row"><a href="/en/festival/october-festa-in-gwangalli/">October Festa in Gwangalli</a><a href="/en/festival/busan-jung-gu-pet-festival/">Busan Jung-gu Pet Festival</a><a href="/en/festival/busan-street-festa-in-gwangbok/">Busan Street Festa in Gwangbok</a><a href="/en/festival/busan-fireworks-festival/">Busan Fireworks Festival</a><a href="/en/festival/gwangalli-m-drone-light-show/">Gwangalli M Drone Light Show</a><a href="/en/festival/haeundae-sand-festival/">Haeundae Sand Festival</a></div></div>
+<div class="frel"><h2>Other festivals in Busan</h2><div class="row"><a href="/en/festival/busan-illustration-fair-v-6/">Busan Illustration Fair V.6</a><a href="/en/festival/october-festa-in-gwangalli/">October Festa in Gwangalli</a><a href="/en/festival/busan-jung-gu-pet-festival/">Busan Jung-gu Pet Festival</a><a href="/en/festival/busan-street-festa-in-gwangbok/">Busan Street Festa in Gwangbok</a><a href="/en/festival/busan-fireworks-festival/">Busan Fireworks Festival</a><a href="/en/festival/gwangalli-m-drone-light-show/">Gwangalli M Drone Light Show</a></div></div>
 <p class="fcity"><a href="/en/busan/">🏙 <b>Busan</b> — where to go, what to eat, where to stay, each with the <b>Korean address you can paste into a map app</b></a></p>
 <p style="margin-top:10px"><a href="/en/search/?region=Busan" style="color:#0c7d72;font-weight:700">← Browse all festivals in Busan</a></p>
 <style>
@@ -1112,12 +1112,6 @@ document.addEventListener('click',function(e){
     // ── ③ 축제 상세로 들어감 (모달·허브에서)
     if(href.indexOf('/festival/') === 0 && href !== '/festival/'){
       send('festival_open', { slug: href.replace(/^\/festival\/|\/$/g,'') });
-      return;
-    }
-
-    // ── 📝 2026-09-28 — 사이트 → 네이버 블로그(goohw) 역링크 카드. 어느 페이지에서 어느 글로 갔는지 센다
-    if(href.indexOf('blog.naver.com/goohw') >= 0){
-      send('blog_click', { post: a.getAttribute('data-post') || '', place: a.getAttribute('data-place') || '' });
       return;
     }
 

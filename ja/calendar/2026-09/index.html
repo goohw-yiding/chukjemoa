@@ -578,8 +578,8 @@ window.OneSignalDeferred=window.OneSignalDeferred||[];window.OneSignalDeferred.p
 <div class="m">2026.09.05 – 10.25 · 京畿道 · 公式訳なし</div>
 <a class="map" href="https://map.kakao.com/link/to/%EC%88%B2%EC%86%8D%EC%9D%98%20%EC%82%B0%EC%84%B1%EB%8F%84%EC%8B%9C%20-%20%EB%82%A8%ED%95%9C%EC%82%B0%EC%84%B1%20%EA%B0%80%EC%9D%84%20%ED%8E%98%EC%8A%A4%ED%83%80,37.4789871959,127.1800243535" target="_blank" rel="noopener">カカオマップで開く →</a></li><li><div class="t">Cheongbaengniui Jip, Oneureul Bichuda <span class="ic-kr">청백리의 집, 오늘을 비추다</span></div>
 <div class="m">2026.09.05 – 11.07 · 京畿道 · 公式訳なし</div>
-<a class="map" href="https://map.kakao.com/link/to/%EC%B2%AD%EB%B0%B1%EB%A6%AC%EC%9D%98%20%EC%A7%91%2C%20%EC%98%A4%EB%8A%98%EC%9D%84%20%EB%B9%84%EC%B6%94%EB%8B%A4,37.4339272970,126.8777258264" target="_blank" rel="noopener">カカオマップで開く →</a></li><li><div class="t">Je16Hoe Gwangjubiennalle <span class="ic-kr">제16회 광주비엔날레</span></div>
-<div class="m">2026.09.05 – 11.15 · 光州 · 公式訳なし</div>
+<a class="map" href="https://map.kakao.com/link/to/%EC%B2%AD%EB%B0%B1%EB%A6%AC%EC%9D%98%20%EC%A7%91%2C%20%EC%98%A4%EB%8A%98%EC%9D%84%20%EB%B9%84%EC%B6%94%EB%8B%A4,37.4339272970,126.8777258264" target="_blank" rel="noopener">カカオマップで開く →</a></li><li><div class="t">光州ビエンナーレ <span class="ic-kr">제16회 광주비엔날레</span></div>
+<div class="m">2026.09.05 – 11.15 · 光州</div>
 <a class="map" href="https://map.kakao.com/link/to/%EC%A0%9C16%ED%9A%8C%20%EA%B4%91%EC%A3%BC%EB%B9%84%EC%97%94%EB%82%A0%EB%A0%88,35.1830982815,126.8892086565" target="_blank" rel="noopener">カカオマップで開く →</a></li><li><div class="t">Deoksugung Bamui Seokjojeon <span class="ic-kr">덕수궁 밤의 석조전</span></div>
 <div class="m">2026.09.09 – 10.18 · ソウル · 公式訳なし</div>
 <a class="map" href="https://map.kakao.com/link/to/%EB%8D%95%EC%88%98%EA%B6%81%20%EB%B0%A4%EC%9D%98%20%EC%84%9D%EC%A1%B0%EC%A0%84,37.5650549194,126.9765746344" target="_blank" rel="noopener">カカオマップで開く →</a></li><li><div class="t">Gukgayusan Midieoateu Cheorwon Nodongdangsa <span class="ic-kr">국가유산 미디어아트 철원 노동당사</span></div>
@@ -921,12 +921,6 @@ window.OneSignalDeferred=window.OneSignalDeferred||[];window.OneSignalDeferred.p
     // ── ③ 축제 상세로 들어감 (모달·허브에서)
     if(href.indexOf('/festival/') === 0 && href !== '/festival/'){
       send('festival_open', { slug: href.replace(/^\/festival\/|\/$/g,'') });
-      return;
-    }
-
-    // ── 📝 2026-09-28 — 사이트 → 네이버 블로그(goohw) 역링크 카드. 어느 페이지에서 어느 글로 갔는지 센다
-    if(href.indexOf('blog.naver.com/goohw') >= 0){
-      send('blog_click', { post: a.getAttribute('data-post') || '', place: a.getAttribute('data-place') || '' });
       return;
     }
 

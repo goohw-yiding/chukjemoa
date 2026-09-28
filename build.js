@@ -2503,50 +2503,6 @@ process.on('exit', () => {
   if (KORY_STAT.noAnchor.length) console.log('   ⚠️앵커 없음: ' + KORY_STAT.noAnchor.join(' · '));
 });
 
-// 📝 2026-09-28 신설 — 사이트 → 네이버 블로그 역링크(「블로그에서 사진·카드로 보기」 카드).
-//   이전까지는 블로그→사이트 한 방향뿐이었다(사이트에서 블로그로 가는 링크 0개, 2026-09-27 전수 확인).
-//   재료 = data/naver_posts.json (node naver-posts.js 가 RSS + 글 본문 링크 + 제목의 축제 이름으로 만든다).
-//   ⭐ 짝이 «확실한» 페이지에만 붙인다: 그 글 본문이 이 페이지로 링크했거나, 글 제목이 이 축제 이름일 때.
-//     상세(축제·원문·걷기길)는 1편만, 월별·허브는 최신 6편까지. 한 페이지에 카드 1개. 외국어 페이지엔 안 붙인다.
-//   ⭐ 클릭은 track.js 의 blog_click 이벤트로 센다(data-post·data-place).
-let NAVER_POSTS = [];
-try { NAVER_POSTS = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'naver_posts.json'), 'utf8')).posts || []; } catch (e) {}
-const NB_BY_PATH = {};
-for (const p of NAVER_POSTS) {
-  const ts = new Set([...(p.targets || []), ...(p.fest ? ['/festival/' + p.fest + '/'] : [])]);
-  for (const t of ts) (NB_BY_PATH[t] = NB_BY_PATH[t] || []).push(p);
-}
-for (const k in NB_BY_PATH) NB_BY_PATH[k].sort((a, b) => String(b.date).localeCompare(String(a.date)));
-const NB_STAT = { put: 0, pages: [] };
-function naverBlogInject(rel, html) {
-  if (!NAVER_POSTS.length) return html;
-  const r = String(rel).replace(/^\/+|\/+$/g, '');
-  if (/^(en|ja|zh|tw|es)(\/|$)/.test(r)) return html;
-  const key = r ? '/' + r + '/' : '/';
-  if (key === '/') return html;                                       // 홈은 이미 빽빽하다 — 붙이지 않는다
-  // 글 본문이 링크한 곳이라도 «읽을거리 페이지»에만 붙인다(추석 글 하나가 /contact/·/editorial/ 까지 링크해 둔 사례)
-  if (!/^\/(festival|blog|trails|jangteo|20\d\d-\d\d|maple|mountains|pet|citytour|seoul|jeju|holiday|onsen)\//.test(key)) return html;
-  const list = NB_BY_PATH[key];
-  if (!list || !list.length || html.includes('class="nb-card"')) return html;
-  const detail = /^\/(festival|blog|trails\/[^/]+|jangteo\/[^/]+)\/[^/]*\/?$/.test(key) && !/^\/(trails|jangteo)\/$/.test(key);
-  const pick = list.slice(0, detail ? 1 : 6);
-  const place = r.split('/')[0] || 'home';
-  const md = d => { const m = String(d).match(/^\d{4}-(\d{2})-(\d{2})/); return m ? `${+m[1]}/${+m[2]}` : ''; };
-  const items = pick.map(p => `<li style="margin:6px 0;line-height:1.5"><a href="${p.url}" target="_blank" rel="noopener" data-post="${p.id}" data-place="${place}" style="color:#0f172a;font-weight:600">${esc(p.title)}</a> <span style="color:#6b7280;font-size:13px">· ${md(p.date)}</span></li>`).join('');
-  const head = detail ? '📷 이 내용, 블로그에서 사진·카드로 한눈에 정리했어요' : `📷 축제모아 블로그 정리 글 ${pick.length}편`;
-  const blk = `<section class="nb-card" style="margin:28px 0 8px;padding:16px 18px;border:1px solid #cfe8dc;border-radius:14px;background:#f3faf6">`
-    + `<p style="margin:0 0 6px;font-weight:700;color:#0f766e">${head}</p><ul style="list-style:none;margin:0;padding:0">${items}</ul>`
-    + `<p style="margin:8px 0 0;font-size:12.5px;color:#6b7280">네이버 블로그 「축제모아 · 전국 축제 여행 기록」</p></section>`;
-  const re = /<\/div>\s*<\/main>/g; let at = -1, m;
-  while ((m = re.exec(html))) at = m.index;
-  if (at < 0) { const i = html.lastIndexOf('</main>'); if (i < 0) return html; at = i; }
-  NB_STAT.put++; if (NB_STAT.pages.length < 400) NB_STAT.pages.push(key);
-  return html.slice(0, at) + blk + html.slice(at);
-}
-process.on('exit', () => {
-  if (NAVER_POSTS.length) console.log(`📝 블로그 역링크 카드 — ${NB_STAT.put}장에 붙임 (블로그 글 ${NAVER_POSTS.length}편 기준)` + (NB_STAT.pages.length ? '\n   ' + NB_STAT.pages.join(' · ') : ''));
-});
-
 function writePage(rel, html) {
   const key = PAGE_BUYBOX[rel];
   if (key && !/class="buybox"[\s\S]*?<\/main>/.test(html.slice(html.indexOf('<main')))) {
@@ -2555,7 +2511,6 @@ function writePage(rel, html) {
     if (i > 0) html = html.slice(0, i) + bb + html.slice(i);
   }
   html = koryInject(rel, html);
-  html = naverBlogInject(rel, html);
   const dir = path.join(ROOT, rel);
   fs.mkdirSync(dir, { recursive: true });
   fs.writeFileSync(path.join(dir, 'index.html'), html);

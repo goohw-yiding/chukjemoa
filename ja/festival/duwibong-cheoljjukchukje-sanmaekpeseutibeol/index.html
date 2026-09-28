@@ -676,7 +676,7 @@ document.addEventListener('click',function(e){
 <a class="nmap-open" href="https://map.naver.com/p/search/%EB%91%90%EC%9C%84%EB%B4%89%20%EC%B2%A0%EC%AD%89%EC%B6%95%EC%A0%9C%26%EC%82%B0%EB%A7%A5%ED%8E%98%EC%8A%A4%ED%8B%B0%EB%B2%8C" target="_blank" rel="noopener">🗺️ NAVERマップで開く</a>
 </div>
 
-<div class="frel"><h2>江原のほかの祭り</h2><div class="row"><a href="/ja/festival/chuncheonmaimchukje/">春川マイム祭り</a><a href="/ja/festival/2026-pyeongchangdaegwallyeongeumakje/">平昌大関嶺音楽祭</a><a href="/ja/festival/gangneung-gukgayusanyahaeng/">江陵国家遺産夜行</a><a href="/ja/festival/taebaek-haebaragichukje/">太白ひまわり祭り</a><a href="/ja/festival/pyeongchanghyoseongmunhwaje/">平昌孝石文化祭り</a><a href="/ja/festival/jeongseonarirangje/">旌善アリラン祭り</a></div></div>
+<div class="frel"><h2>江原のほかの祭り</h2><div class="row"><a href="/ja/festival/chuncheonmaimchukje/">春川マイム祭り</a><a href="/ja/festival/2026-pyeongchangdaegwallyeongeumakje/">平昌大関嶺音楽祭</a><a href="/ja/festival/gangneung-gukgayusanyahaeng/">江陵国家遺産夜行</a><a href="/ja/festival/taebaek-haebaragichukje/">太白ひまわり祭り</a><a href="/ja/festival/pyeongchanghyoseongmunhwaje/">平昌孝石文化祭り</a><a href="/ja/festival/je67hoe-hangungminsogyesulje/">韓国民俗芸術祭</a></div></div>
 
 <p style="margin-top:10px"><a href="/ja/search/" style="color:#0c7d72;font-weight:700">← 韓国の祭りをすべて見る</a></p>
 <style>
@@ -1010,12 +1010,6 @@ document.addEventListener('click',function(e){
     // ── ③ 축제 상세로 들어감 (모달·허브에서)
     if(href.indexOf('/festival/') === 0 && href !== '/festival/'){
       send('festival_open', { slug: href.replace(/^\/festival\/|\/$/g,'') });
-      return;
-    }
-
-    // ── 📝 2026-09-28 — 사이트 → 네이버 블로그(goohw) 역링크 카드. 어느 페이지에서 어느 글로 갔는지 센다
-    if(href.indexOf('blog.naver.com/goohw') >= 0){
-      send('blog_click', { post: a.getAttribute('data-post') || '', place: a.getAttribute('data-place') || '' });
       return;
     }
 

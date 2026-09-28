@@ -673,7 +673,7 @@ document.addEventListener('click',function(e){
 <div class="nm" style="color:#0c7d72">Suwon Hwaseong Media Art</div>
 <div class="mt">52.6 km away · 09/19 – 10/06</div></a><a class="xitem" style="display:block;text-decoration:none" href="/en/festival/gyeryong-military-culture-festival/">
 <div class="nm" style="color:#0c7d72">Gyeryong Military Culture Festival</div>
-<div class="mt">58.1 km away · 10/01 – 10/05</div></a><a class="xitem" style="display:block;text-decoration:none" href="/en/festival/moonlight-music-festival/">
+<div class="mt">57.9 km away · 10/01 – 10/05</div></a><a class="xitem" style="display:block;text-decoration:none" href="/en/festival/moonlight-music-festival/">
 <div class="nm" style="color:#0c7d72">Moonlight Music Festival</div>
 <div class="mt">58.8 km away · 09/11 – 10/17</div></a></div></div>
 <style>
@@ -1092,12 +1092,6 @@ document.addEventListener('click',function(e){
     // ── ③ 축제 상세로 들어감 (모달·허브에서)
     if(href.indexOf('/festival/') === 0 && href !== '/festival/'){
       send('festival_open', { slug: href.replace(/^\/festival\/|\/$/g,'') });
-      return;
-    }
-
-    // ── 📝 2026-09-28 — 사이트 → 네이버 블로그(goohw) 역링크 카드. 어느 페이지에서 어느 글로 갔는지 센다
-    if(href.indexOf('blog.naver.com/goohw') >= 0){
-      send('blog_click', { post: a.getAttribute('data-post') || '', place: a.getAttribute('data-place') || '' });
       return;
     }
 

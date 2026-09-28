@@ -625,7 +625,7 @@ window.OneSignalDeferred=window.OneSignalDeferred||[];window.OneSignalDeferred.p
 <div class="jsg-next">
 <div class="jsg-next-l">다음 장날</div>
 <div class="jsg-next-d">9월 28일 (월) · <b>오늘</b></div>
-<div class="jsg-next-m">장계시장<span class="wx-chip" title="흐림">☁️ 23° · 비 14%</span></div>
+<div class="jsg-next-m">장계시장</div>
 </div>
 
 
@@ -705,7 +705,7 @@ window.OneSignalDeferred=window.OneSignalDeferred||[];window.OneSignalDeferred.p
 
 <h2 class="sec">장 보러 간 김에 — 지금 열리는 근처 축제</h2>
 <p class="jsg-p">장수군 중심에서 40km 안에서 <b>지금 열리고 있거나 앞으로 열릴</b> 축제입니다.</p>
-<ul class="jsg-list"><li><a href="/search/?q=2026%20%EC%A7%84%EC%95%88%EA%B3%A0%EC%9B%90%20%ED%8F%AC%EB%A0%88%EC%8A%A4%ED%8B%B0%EB%B2%8C"><b>2026 진안고원 포레스티벌</b></a> <span class="jsg-km">약 6km</span><br>
+<ul class="jsg-list"><li><a href="/festival/2026-jinangowon-poreseutibeol/"><b>2026 진안고원 포레스티벌</b></a> <span class="jsg-km">약 6km</span><br>
 <span class="jsg-cal">10/10 ~ 10/11</span></li><li><a href="/festival/imsilnchijeuchukje/"><b>임실N치즈축제</b></a> <span class="jsg-km">약 18km</span><br>
 <span class="jsg-cal">10/8 ~ 10/11</span></li><li><a href="/search/?q=%EC%A0%9C6%ED%9A%8C%20%EC%A0%84%EC%A3%BC%EA%B1%B0%EB%A6%AC%EC%9D%B8%ED%98%95%EA%B7%B9%EC%A0%9C"><b>제6회 전주거리인형극제</b></a> <span class="jsg-km">약 36km</span><br>
 <span class="jsg-cal">10/10 ~ 10/11</span></li><li><a href="/search/?q=%EC%A0%84%EC%A3%BC%ED%95%9C%EC%98%A5%EB%A7%88%EC%9D%84%20%EC%A0%84%ED%86%B5%EC%97%B0%ED%9D%AC%20%ED%8D%BC%EB%A0%88%EC%9D%B4%EB%93%9C-%EB%85%B8%EC%83%81%EB%86%80%EC%9D%B4%EC%95%BC"><b>전주한옥마을 전통연희 퍼레이드-노상놀이야</b></a> <span class="jsg-km">약 36km</span><br>
@@ -1266,12 +1266,6 @@ window.cjmFestBB=function(elId,name,place){
     // ── ③ 축제 상세로 들어감 (모달·허브에서)
     if(href.indexOf('/festival/') === 0 && href !== '/festival/'){
       send('festival_open', { slug: href.replace(/^\/festival\/|\/$/g,'') });
-      return;
-    }
-
-    // ── 📝 2026-09-28 — 사이트 → 네이버 블로그(goohw) 역링크 카드. 어느 페이지에서 어느 글로 갔는지 센다
-    if(href.indexOf('blog.naver.com/goohw') >= 0){
-      send('blog_click', { post: a.getAttribute('data-post') || '', place: a.getAttribute('data-place') || '' });
       return;
     }
 

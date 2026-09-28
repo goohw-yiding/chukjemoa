@@ -625,7 +625,7 @@ window.OneSignalDeferred=window.OneSignalDeferred||[];window.OneSignalDeferred.p
 <div class="jsg-next">
 <div class="jsg-next-l">다음 장날</div>
 <div class="jsg-next-d">9월 30일 (수) · <b>모레</b></div>
-<div class="jsg-next-m">안의시장<span class="wx-chip" title="구름 조금">⛅ 26° · 비 4%</span></div>
+<div class="jsg-next-m">안의시장</div>
 </div>
 
 
@@ -690,7 +690,7 @@ window.OneSignalDeferred=window.OneSignalDeferred||[];window.OneSignalDeferred.p
 <p class="jsg-p">함양군 중심에서 40km 안에서 <b>지금 열리고 있거나 앞으로 열릴</b> 축제입니다.</p>
 <ul class="jsg-list"><li><a href="/festival/gamaksan-kkotbyeol-yeohaeng/"><b>감악산 꽃별 여행</b></a> <span class="jsg-km">약 13km</span><br>
 <span class="jsg-cal">9/18 ~ 10/11</span></li><li><a href="/festival/sancheonghanbangyakchochukje/"><b>산청한방약초축제</b></a> <span class="jsg-km">약 16km</span><br>
-<span class="jsg-cal">10/2 ~ 10/11</span></li><li><a href="/search/?q=2026%20%EC%A7%84%EC%95%88%EA%B3%A0%EC%9B%90%20%ED%8F%AC%EB%A0%88%EC%8A%A4%ED%8B%B0%EB%B2%8C"><b>2026 진안고원 포레스티벌</b></a> <span class="jsg-km">약 32km</span><br>
+<span class="jsg-cal">10/2 ~ 10/11</span></li><li><a href="/festival/2026-jinangowon-poreseutibeol/"><b>2026 진안고원 포레스티벌</b></a> <span class="jsg-km">약 32km</span><br>
 <span class="jsg-cal">10/10 ~ 10/11</span></li></ul>
 <h2 class="sec">함양군 근처 시·군의 장날</h2>
 <p class="jsg-p">함양군에 장이 서지 않는 날이라면 가까운 이 시·군을 보세요. 오일장은 시·군마다 끝자리가 달라서 <b>거의 매일 어딘가는 장이 섭니다.</b></p>
@@ -1247,12 +1247,6 @@ window.cjmFestBB=function(elId,name,place){
     // ── ③ 축제 상세로 들어감 (모달·허브에서)
     if(href.indexOf('/festival/') === 0 && href !== '/festival/'){
       send('festival_open', { slug: href.replace(/^\/festival\/|\/$/g,'') });
-      return;
-    }
-
-    // ── 📝 2026-09-28 — 사이트 → 네이버 블로그(goohw) 역링크 카드. 어느 페이지에서 어느 글로 갔는지 센다
-    if(href.indexOf('blog.naver.com/goohw') >= 0){
-      send('blog_click', { post: a.getAttribute('data-post') || '', place: a.getAttribute('data-place') || '' });
       return;
     }
 

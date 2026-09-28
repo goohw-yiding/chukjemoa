@@ -586,7 +586,7 @@ document.addEventListener('click',function(e){
 
 <h2 class="sec">Festivals coming up</h2>
 <ul class="ic-list"><li class="ic-item">
-<div class="ic-h"><a class="ic-a" href="/en/festival/jeju-olle-walking-festival/">Jeju Olle Walking Festival</a><span class="wx-chip">🌦 24° · Rain 57%</span></div>
+<div class="ic-h"><a class="ic-a" href="/en/festival/jeju-olle-walking-festival/">Jeju Olle Walking Festival</a></div>
 
 <p class="ic-meta">📅 Dates: 11/05 – 11/07 · 📍 1141, Jocheon-ri, Jocheon-eup, Jeju-si, Jeju-do</p>
 
@@ -1935,12 +1935,6 @@ The Korean place names above are written the way a map app expects them — past
     // ── ③ 축제 상세로 들어감 (모달·허브에서)
     if(href.indexOf('/festival/') === 0 && href !== '/festival/'){
       send('festival_open', { slug: href.replace(/^\/festival\/|\/$/g,'') });
-      return;
-    }
-
-    // ── 📝 2026-09-28 — 사이트 → 네이버 블로그(goohw) 역링크 카드. 어느 페이지에서 어느 글로 갔는지 센다
-    if(href.indexOf('blog.naver.com/goohw') >= 0){
-      send('blog_click', { post: a.getAttribute('data-post') || '', place: a.getAttribute('data-place') || '' });
       return;
     }
 

@@ -682,11 +682,11 @@ document.addEventListener('click',function(e){
 <div class="nm" style="color:#0c7d72">正祖大王陵行次共同再現</div>
 <div class="mt">20.3km · 10/04 – 10/04</div></a><a class="xitem" style="display:block;text-decoration:none" href="/ja/festival/gugakgongyeon-jinyeon/">
 <div class="nm" style="color:#0c7d72">国楽公演進宴</div>
-<div class="mt">21.1km · 01/01 – 12/31</div></a><a class="xitem" style="display:block;text-decoration:none" href="/ja/festival/apap-jakpumtueo-anyanggonggongyesulpeurojekteu/">
+<div class="mt">21.1km · 01/01 – 12/31</div></a><a class="xitem" style="display:block;text-decoration:none" href="/ja/festival/2026-d-festa-sogeukjangchukje/">
+<div class="nm" style="color:#0c7d72">D.FESTA小劇場祭り</div>
+<div class="mt">22.1km · 10/07 – 10/25</div></a><a class="xitem" style="display:block;text-decoration:none" href="/ja/festival/apap-jakpumtueo-anyanggonggongyesulpeurojekteu/">
 <div class="nm" style="color:#0c7d72">APAP作品ツアー</div>
-<div class="mt">29.5km · 03/10 – 11/30</div></a><a class="xitem" style="display:block;text-decoration:none" href="/ja/festival/suwonhwaseongmunhwaje/">
-<div class="nm" style="color:#0c7d72">水原華城文化祭り</div>
-<div class="mt">46.7km · 10/04 – 10/11</div></a></div></div>
+<div class="mt">29.5km · 03/10 – 11/30</div></a></div></div>
 <div class="nmap-wrap">
 <div class="nmap" style="height:300px" data-x="126.7686505728" data-y="37.6538241589" data-t="高陽秋花祭り"><span class="nmap-ph">地図を読み込み中…</span></div>
 <a class="nmap-open" href="https://map.naver.com/p/search/%EA%B3%A0%EC%96%91%EA%B0%80%EC%9D%84%EA%BD%83%EC%B6%95%EC%A0%9C" target="_blank" rel="noopener">🗺️ NAVERマップで開く</a>
@@ -1066,12 +1066,6 @@ document.addEventListener('click',function(e){
     // ── ③ 축제 상세로 들어감 (모달·허브에서)
     if(href.indexOf('/festival/') === 0 && href !== '/festival/'){
       send('festival_open', { slug: href.replace(/^\/festival\/|\/$/g,'') });
-      return;
-    }
-
-    // ── 📝 2026-09-28 — 사이트 → 네이버 블로그(goohw) 역링크 카드. 어느 페이지에서 어느 글로 갔는지 센다
-    if(href.indexOf('blog.naver.com/goohw') >= 0){
-      send('blog_click', { post: a.getAttribute('data-post') || '', place: a.getAttribute('data-place') || '' });
       return;
     }
 

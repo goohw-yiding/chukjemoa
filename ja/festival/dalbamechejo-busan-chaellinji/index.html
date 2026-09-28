@@ -685,7 +685,9 @@ document.addEventListener('click',function(e){
 <div class="xcopy" style="margin:9px 0 0"><div><span class="lb">地図アプリ用の住所（ハングル）</span><span class="vl">경상남도 양산시 중앙로 133</span></div>
 <button data-v="경상남도 양산시 중앙로 133" data-done="コピーしました">コピー</button></div>
 </div></div><p class="xnote">ここの名前と住所はハングルのままにしています。Googleマップは韓国国内の経路案内が出ず、NAVERマップ・カカオマップはハングル表記でないと見つけられないためです。上の住所をコピーして、そのまま貼り付けてください。</p></div>
-<div class="xbox"><h2>🎪 同じ時期の近くの祭り</h2><p class="lead">日程が重なる、60km以内のもの。</p><div class="xlist"><a class="xitem" style="display:block;text-decoration:none" href="/ja/festival/gwangalli-m-marvelous-deuron-raiteusyo/">
+<div class="xbox"><h2>🎪 同じ時期の近くの祭り</h2><p class="lead">日程が重なる、60km以内のもの。</p><div class="xlist"><a class="xitem" style="display:block;text-decoration:none" href="/ja/festival/2026-daehanminguk-haeyang-mobilliti-anjeon-ekseupo/">
+<div class="nm" style="color:#0c7d72">大韓民国海洋モビリティ・安全エキスポ</div>
+<div class="mt">5.4km · 10/26 – 10/28</div></a><a class="xitem" style="display:block;text-decoration:none" href="/ja/festival/gwangalli-m-marvelous-deuron-raiteusyo/">
 <div class="nm" style="color:#0c7d72">広安里M</div>
 <div class="mt">5.8km · 01/01 – 12/31</div></a><a class="xitem" style="display:block;text-decoration:none" href="/ja/festival/busangukjerokpeseutibeol/">
 <div class="nm" style="color:#0c7d72">釜山国際ロックフェスティバル</div>
@@ -1071,12 +1073,6 @@ document.addEventListener('click',function(e){
     // ── ③ 축제 상세로 들어감 (모달·허브에서)
     if(href.indexOf('/festival/') === 0 && href !== '/festival/'){
       send('festival_open', { slug: href.replace(/^\/festival\/|\/$/g,'') });
-      return;
-    }
-
-    // ── 📝 2026-09-28 — 사이트 → 네이버 블로그(goohw) 역링크 카드. 어느 페이지에서 어느 글로 갔는지 센다
-    if(href.indexOf('blog.naver.com/goohw') >= 0){
-      send('blog_click', { post: a.getAttribute('data-post') || '', place: a.getAttribute('data-place') || '' });
       return;
     }
 

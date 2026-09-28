@@ -779,7 +779,7 @@ document.addEventListener('click',function(e){
 <div class="nmap" style="height:300px" data-x="128.9666251049" data-y="35.0460813236" data-t="Bibliotheca Busan"><span class="nmap-ph">Loading map…</span></div>
 <a class="nmap-open" href="https://map.naver.com/p/search/Bibliotheca%20Busan" target="_blank" rel="noopener">🗺️ Open in Naver Map</a>
 </div>
-<div class="frel"><h2>Other festivals in Busan</h2><div class="row"><a href="/en/festival/hurshimchung-brau-oktoberfest/">Hurshimchung Bräu Oktoberfest</a><a href="/en/festival/dongnaeeupseong-history-festival/">Dongnaeeupseong History Festival</a><a href="/en/festival/moonlit-night-exercise-busan-challenge/">Moonlit Night Exercise Busan Challenge</a><a href="/en/festival/october-festa-in-gwangalli/">October Festa in Gwangalli</a><a href="/en/festival/busan-jung-gu-pet-festival/">Busan Jung-gu Pet Festival</a><a href="/en/festival/busan-street-festa-in-gwangbok/">Busan Street Festa in Gwangbok</a></div></div>
+<div class="frel"><h2>Other festivals in Busan</h2><div class="row"><a href="/en/festival/hurshimchung-brau-oktoberfest/">Hurshimchung Bräu Oktoberfest</a><a href="/en/festival/dongnaeeupseong-history-festival/">Dongnaeeupseong History Festival</a><a href="/en/festival/moonlit-night-exercise-busan-challenge/">Moonlit Night Exercise Busan Challenge</a><a href="/en/festival/busan-illustration-fair-v-6/">Busan Illustration Fair V.6</a><a href="/en/festival/october-festa-in-gwangalli/">October Festa in Gwangalli</a><a href="/en/festival/busan-jung-gu-pet-festival/">Busan Jung-gu Pet Festival</a></div></div>
 <p class="fcity"><a href="/en/busan/">🏙 <b>Busan</b> — where to go, what to eat, where to stay, each with the <b>Korean address you can paste into a map app</b></a></p>
 <p style="margin-top:10px"><a href="/en/search/?region=Busan" style="color:#0c7d72;font-weight:700">← Browse all festivals in Busan</a></p>
 <style>
@@ -1113,12 +1113,6 @@ document.addEventListener('click',function(e){
     // ── ③ 축제 상세로 들어감 (모달·허브에서)
     if(href.indexOf('/festival/') === 0 && href !== '/festival/'){
       send('festival_open', { slug: href.replace(/^\/festival\/|\/$/g,'') });
-      return;
-    }
-
-    // ── 📝 2026-09-28 — 사이트 → 네이버 블로그(goohw) 역링크 카드. 어느 페이지에서 어느 글로 갔는지 센다
-    if(href.indexOf('blog.naver.com/goohw') >= 0){
-      send('blog_click', { post: a.getAttribute('data-post') || '', place: a.getAttribute('data-place') || '' });
       return;
     }
 

@@ -581,13 +581,13 @@ document.addEventListener('click',function(e){
 </script>
 <p class="ic-crumb"><a href="/zh/">首页</a> › 首尔</p>
 <h1 class="ic-h1">首尔 — 庆典与值得一去的地方</h1>
-<p class="ic-lead">韩国观光公社以中文介绍的首尔447处，以及正在举办和即将举办的4个庆典。每一条都附上<b>可直接粘贴到地图应用的韩文地址</b>。</p>
+<p class="ic-lead">韩国观光公社以中文介绍的首尔447处，以及正在举办和即将举办的6个庆典。每一条都附上<b>可直接粘贴到地图应用的韩文地址</b>。</p>
 
 <div class="ic-why"><h2>为什么我们提供韩文地址</h2><p>谷歌地图在韩国境内无法提供路线导航（地图数据出境限制）。请把韩文地址（或韩文名称）粘贴到<b>NAVER地图</b>或<b>Kakao地图</b>，本页的写法可以直接搜索。</p></div>
 
 <h2 class="sec">正在举办的庆典</h2>
 <ul class="ic-list"><li class="ic-item">
-<div class="ic-h"><b>国乐表演《进宴》</b><span class="wx-chip">☁️ 24° · 降水 2%</span></div>
+<div class="ic-h"><b>国乐表演《进宴》</b></div>
 
 <p class="ic-meta">📅 时间: 01/01 – 12/31 · 📍 首尔特别市钟路区仁寺洞5街10（仁寺洞）</p>
 
@@ -598,7 +598,7 @@ document.addEventListener('click',function(e){
 
 </li></ul><h2 class="sec">即将举办的庆典</h2>
 <ul class="ic-list"><li class="ic-item">
-<div class="ic-h"><b>凤山假面舞都聚起来吧！</b><span class="wx-chip">☁️ 24° · 降水 2%</span></div>
+<div class="ic-h"><b>凤山假面舞都聚起来吧！</b></div>
 
 <p class="ic-meta">📅 时间: 10/02 – 10/04</p>
 
@@ -609,7 +609,7 @@ document.addEventListener('click',function(e){
 <div class="xcopy"><div><span class="lb">粘贴到地图的地址（韩文）</span><span class="vl">서울특별시 종로구 종로1길 45 (세종로)</span></div>
 <button data-v="서울특별시 종로구 종로1길 45 (세종로)" data-done="已复制">复制</button></div>
 </li><li class="ic-item">
-<div class="ic-h"><b>正祖大王陵行次共同再现</b><span class="wx-chip">☁️ 24° · 降水 2%</span></div>
+<div class="ic-h"><b>正祖大王陵行次共同再现</b></div>
 
 <p class="ic-meta">📅 时间: 10/04 – 10/04 · 📍 首尔特别市钟路区社稷路161 (世宗路)</p>
 
@@ -619,13 +619,32 @@ document.addEventListener('click',function(e){
 
 
 </li><li class="ic-item">
-<div class="ic-h"><b>江东先史文化庆典</b><span class="wx-chip">☁️ 24° · 降水 2%</span></div>
+<div class="ic-h"><b>D.FESTA小剧场庆典</b></div>
+
+<p class="ic-meta">📅 时间: 10/07 – 10/25 · 📍 首尔特别市钟路区大学路120（东崇洞）</p>
+
+
+<p class="ic-st">🚇 最近地铁站: <b>惠化</b><span class="ic-stko">혜화</span> · 步行1分钟 · 4호선 · <span class="ic-tag">♿ 有电梯</span></p><div class="xcopy"><div><span class="lb">站名（韩文）— 粘贴到地图</span><span class="vl">혜화</span></div>
+<button data-v="혜화" data-done="已复制">复制</button></div>
+
+
+</li><li class="ic-item">
+<div class="ic-h"><b>江东先史文化庆典</b></div>
 
 <p class="ic-meta">📅 时间: 10/16 – 10/18 · 📍 首尔特别市江东区奥林匹克路875（岩寺洞）</p>
 
 
 <p class="ic-st">🚇 最近地铁站: <b>岩寺历史公园</b><span class="ic-stko">암사역사공원</span> · 步行8分钟 · 8호선</p><div class="xcopy"><div><span class="lb">站名（韩文）— 粘贴到地图</span><span class="vl">암사역사공원</span></div>
 <button data-v="암사역사공원" data-done="已复制">复制</button></div>
+
+
+</li><li class="ic-item">
+<div class="ic-h"><b>韩国购物优惠季</b></div>
+
+<p class="ic-meta">📅 时间: 12/23 – 02/13 · 📍 首尔特别市中区明洞街14（明洞2街）</p>
+
+
+
 
 
 </li></ul>
@@ -1692,12 +1711,6 @@ document.addEventListener('click',function(e){
     // ── ③ 축제 상세로 들어감 (모달·허브에서)
     if(href.indexOf('/festival/') === 0 && href !== '/festival/'){
       send('festival_open', { slug: href.replace(/^\/festival\/|\/$/g,'') });
-      return;
-    }
-
-    // ── 📝 2026-09-28 — 사이트 → 네이버 블로그(goohw) 역링크 카드. 어느 페이지에서 어느 글로 갔는지 센다
-    if(href.indexOf('blog.naver.com/goohw') >= 0){
-      send('blog_click', { post: a.getAttribute('data-post') || '', place: a.getAttribute('data-place') || '' });
       return;
     }
 

@@ -679,15 +679,15 @@ document.addEventListener('click',function(e){
 </div></div><p class="xnote">Names and addresses here stay in Korean on purpose. Google Maps cannot give directions inside South Korea, and NAVER Map / KakaoMap find these places only under their Korean names — copy an address above and paste it straight in.</p></div>
 <div class="xbox"><h2>🎪 Other festivals nearby at the same time</h2><p class="lead">Overlapping dates, within 60 km.</p><div class="xlist"><a class="xitem" style="display:block;text-decoration:none" href="/en/festival/jeonju-cultural-heritage-night-tour/">
 <div class="nm" style="color:#0c7d72">Jeonju Cultural Heritage Night Tour</div>
-<div class="mt">0.0 km away · 10/02 – 10/03</div></a><a class="xitem" style="display:block;text-decoration:none" href="/en/festival/imsil-n-rose-festival/">
+<div class="mt">0.0 km away · 10/02 – 10/03</div></a><a class="xitem" style="display:block;text-decoration:none" href="/en/festival/jeonbuk-do-x-jeonju-youth-festival/">
+<div class="nm" style="color:#0c7d72">Jeonbuk-do x Jeonju Youth Festival</div>
+<div class="mt">4.6 km away · 09/18 – 09/19</div></a><a class="xitem" style="display:block;text-decoration:none" href="/en/festival/imsil-n-rose-festival/">
 <div class="nm" style="color:#0c7d72">Imsil N Rose Festival</div>
 <div class="mt">24.3 km away · 05/28 – 05/31</div></a><a class="xitem" style="display:block;text-decoration:none" href="/en/festival/imsil-n-cheese-festival/">
 <div class="nm" style="color:#0c7d72">Imsil N Cheese Festival</div>
 <div class="mt">24.4 km away · 10/08 – 10/11</div></a><a class="xitem" style="display:block;text-decoration:none" href="/en/festival/jinan-red-ginseng-festival/">
 <div class="nm" style="color:#0c7d72">Jinan Red Ginseng Festival</div>
-<div class="mt">24.4 km away · 09/18 – 09/20</div></a><a class="xitem" style="display:block;text-decoration:none" href="/en/festival/gimje-horizon-festival/">
-<div class="nm" style="color:#0c7d72">Gimje Horizon Festival</div>
-<div class="mt">27.7 km away · 10/01 – 10/05</div></a></div></div>
+<div class="mt">24.4 km away · 09/18 – 09/20</div></a></div></div>
 <style>
 .ennear{margin:22px 0}
 .ennear h2{font-size:1.08rem;font-weight:900;margin:0 0 6px}
@@ -1104,12 +1104,6 @@ document.addEventListener('click',function(e){
     // ── ③ 축제 상세로 들어감 (모달·허브에서)
     if(href.indexOf('/festival/') === 0 && href !== '/festival/'){
       send('festival_open', { slug: href.replace(/^\/festival\/|\/$/g,'') });
-      return;
-    }
-
-    // ── 📝 2026-09-28 — 사이트 → 네이버 블로그(goohw) 역링크 카드. 어느 페이지에서 어느 글로 갔는지 센다
-    if(href.indexOf('blog.naver.com/goohw') >= 0){
-      send('blog_click', { post: a.getAttribute('data-post') || '', place: a.getAttribute('data-place') || '' });
       return;
     }
 

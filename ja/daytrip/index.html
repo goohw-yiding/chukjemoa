@@ -668,7 +668,7 @@ window.OneSignalDeferred=window.OneSignalDeferred||[];window.OneSignalDeferred.p
 <td class="n">174分</td><td>龍山</td>
 <td class="n">44,900</td><td class="n">39</td>
 <td class="n">40</td></tr></tbody></table></div>
-<p class="dtnote">「見どころ」は駅から半径12kmにある、日本語の情報が用意できている場所の数です（全国3,384件から数えました）。ゼロではなく「—」の街は、まだ日本語の情報が足りていないという意味です。</p></div>
+<p class="dtnote">「見どころ」は駅から半径12kmにある、日本語の情報が用意できている場所の数です（全国3,383件から数えました）。ゼロではなく「—」の街は、まだ日本語の情報が足りていないという意味です。</p></div>
 
 <div class="dtc"><h2>☀️ 片道120分以内 — 日帰りできる街</h2>
 <p>朝に出て夕方に戻れる範囲です。<b>大田</b>がいちばん近く47分。市場が立つ日を狙うと、同じ街でも見えるものが変わります。</p>
@@ -1090,12 +1090,6 @@ window.OneSignalDeferred=window.OneSignalDeferred||[];window.OneSignalDeferred.p
     // ── ③ 축제 상세로 들어감 (모달·허브에서)
     if(href.indexOf('/festival/') === 0 && href !== '/festival/'){
       send('festival_open', { slug: href.replace(/^\/festival\/|\/$/g,'') });
-      return;
-    }
-
-    // ── 📝 2026-09-28 — 사이트 → 네이버 블로그(goohw) 역링크 카드. 어느 페이지에서 어느 글로 갔는지 센다
-    if(href.indexOf('blog.naver.com/goohw') >= 0){
-      send('blog_click', { post: a.getAttribute('data-post') || '', place: a.getAttribute('data-place') || '' });
       return;
     }
 

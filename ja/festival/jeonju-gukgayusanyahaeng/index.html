@@ -669,7 +669,9 @@ document.addEventListener('click',function(e){
 <div class="nm" style="color:#0c7d72">金堤地平線祭り</div>
 <div class="mt">27.7km · 10/01 – 10/05</div></a><a class="xitem" style="display:block;text-decoration:none" href="/ja/festival/geumsansegyeinsamchukje/">
 <div class="nm" style="color:#0c7d72">錦山世界高麗人参祭り</div>
-<div class="mt">44.8km · 10/02 – 10/11</div></a></div></div>
+<div class="mt">44.8km · 10/02 – 10/11</div></a><a class="xitem" style="display:block;text-decoration:none" href="/ja/festival/gyeryong-munhwachukje/">
+<div class="nm" style="color:#0c7d72">鶏龍軍文化祭り</div>
+<div class="mt">55.5km · 10/01 – 10/05</div></a></div></div>
 <div class="nmap-wrap">
 <div class="nmap" style="height:300px" data-x="127.1500212472" data-y="35.8141717863" data-t="全州国家遺産夜行"><span class="nmap-ph">地図を読み込み中…</span></div>
 <a class="nmap-open" href="https://map.naver.com/p/search/%EC%A0%84%EC%A3%BC%20%EA%B5%AD%EA%B0%80%EC%9C%A0%EC%82%B0%EC%95%BC%ED%96%89" target="_blank" rel="noopener">🗺️ NAVERマップで開く</a>
@@ -1049,12 +1051,6 @@ document.addEventListener('click',function(e){
     // ── ③ 축제 상세로 들어감 (모달·허브에서)
     if(href.indexOf('/festival/') === 0 && href !== '/festival/'){
       send('festival_open', { slug: href.replace(/^\/festival\/|\/$/g,'') });
-      return;
-    }
-
-    // ── 📝 2026-09-28 — 사이트 → 네이버 블로그(goohw) 역링크 카드. 어느 페이지에서 어느 글로 갔는지 센다
-    if(href.indexOf('blog.naver.com/goohw') >= 0){
-      send('blog_click', { post: a.getAttribute('data-post') || '', place: a.getAttribute('data-place') || '' });
       return;
     }
 

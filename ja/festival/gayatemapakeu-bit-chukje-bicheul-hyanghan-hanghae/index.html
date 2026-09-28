@@ -736,7 +736,7 @@ document.addEventListener('click',function(e){
 <button data-v="경상남도 김해시 가야의길 190" data-done="コピーしました">コピー</button></div>
 </li></ul>
 <p class="jn-src">住所は座標から逆引きした韓国語の道路名住所です。NAVER マップ・カカオマップにそのまま貼り付けて検索できます。</p></div>
-<div class="frel"><h2>慶南のほかの祭り</h2><div class="row"><a href="/ja/festival/sancheonghanbangyakchochukje/">山清韓方薬草祭り</a><a href="/ja/festival/jinjuui-suhojadeul/">晋州南江流灯祭り</a><a href="/ja/festival/daejanggyeonggirongmunhwachukje/">大蔵経記録文化祭り</a><a href="/ja/festival/gyeongnamgoseonggongnyongsegyeekseupo/">慶南固城恐竜世界エキスポ</a><a href="/ja/festival/jinhaegunhangje/">鎮海軍港祭</a><a href="/ja/festival/hadongyasaengchamunhwachukje/">河東野生茶文化祭り</a></div></div>
+<div class="frel"><h2>慶南のほかの祭り</h2><div class="row"><a href="/ja/festival/sancheonghanbangyakchochukje/">山清韓方薬草祭り</a><a href="/ja/festival/jinjunamgangyudeungchukje/">晋州南江流灯祭り</a><a href="/ja/festival/daejanggyeonggirongmunhwachukje/">大蔵経記録文化祭り</a><a href="/ja/festival/gyeongnamgoseonggongnyongsegyeekseupo/">慶南固城恐竜世界エキスポ</a><a href="/ja/festival/jinhaegunhangje/">鎮海軍港祭</a><a href="/ja/festival/hadongyasaengchamunhwachukje/">河東野生茶文化祭り</a></div></div>
 
 <p style="margin-top:10px"><a href="/ja/search/" style="color:#0c7d72;font-weight:700">← 韓国の祭りをすべて見る</a></p>
 <style>
@@ -1070,12 +1070,6 @@ document.addEventListener('click',function(e){
     // ── ③ 축제 상세로 들어감 (모달·허브에서)
     if(href.indexOf('/festival/') === 0 && href !== '/festival/'){
       send('festival_open', { slug: href.replace(/^\/festival\/|\/$/g,'') });
-      return;
-    }
-
-    // ── 📝 2026-09-28 — 사이트 → 네이버 블로그(goohw) 역링크 카드. 어느 페이지에서 어느 글로 갔는지 센다
-    if(href.indexOf('blog.naver.com/goohw') >= 0){
-      send('blog_click', { post: a.getAttribute('data-post') || '', place: a.getAttribute('data-place') || '' });
       return;
     }
 

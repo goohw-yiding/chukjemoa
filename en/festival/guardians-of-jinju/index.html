@@ -687,7 +687,7 @@ document.addEventListener('click',function(e){
 </div></div><p class="xnote">Names and addresses here stay in Korean on purpose. Google Maps cannot give directions inside South Korea, and NAVER Map / KakaoMap find these places only under their Korean names — copy an address above and paste it straight in.</p></div>
 <div class="xbox"><h2>🎪 Other festivals nearby at the same time</h2><p class="lead">Overlapping dates, within 60 km.</p><div class="xlist"><a class="xitem" style="display:block;text-decoration:none" href="/en/festival/jinju-namgang-yudeung-festival/">
 <div class="nm" style="color:#0c7d72">Jinju Namgang Yudeung Festival</div>
-<div class="mt">0.0 km away · 10/03 – 10/18</div></a><a class="xitem" style="display:block;text-decoration:none" href="/en/festival/sancheong-medicinal-herb-festival/">
+<div class="mt">0.6 km away · 10/03 – 10/18</div></a><a class="xitem" style="display:block;text-decoration:none" href="/en/festival/sancheong-medicinal-herb-festival/">
 <div class="nm" style="color:#0c7d72">Sancheong Medicinal Herb Festival</div>
 <div class="mt">36.6 km away · 10/02 – 10/11</div></a></div></div>
 <style>
@@ -1106,12 +1106,6 @@ document.addEventListener('click',function(e){
     // ── ③ 축제 상세로 들어감 (모달·허브에서)
     if(href.indexOf('/festival/') === 0 && href !== '/festival/'){
       send('festival_open', { slug: href.replace(/^\/festival\/|\/$/g,'') });
-      return;
-    }
-
-    // ── 📝 2026-09-28 — 사이트 → 네이버 블로그(goohw) 역링크 카드. 어느 페이지에서 어느 글로 갔는지 센다
-    if(href.indexOf('blog.naver.com/goohw') >= 0){
-      send('blog_click', { post: a.getAttribute('data-post') || '', place: a.getAttribute('data-place') || '' });
       return;
     }
 
