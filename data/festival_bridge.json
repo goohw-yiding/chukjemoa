@@ -1,27 +1,27 @@
 {
- "generatedAt": "2026-09-30T18:18",
+ "generatedAt": "2026-10-01T07:08",
  "stats": {
   "en": {
    "total": 258,
-   "linked": 45,
-   "confirmed": 29,
-   "pending": 1,
-   "tbc": 13,
-   "est": 2,
-   "redated": 0,
-   "restored": 0,
-   "review": 4,
-   "removed": 0
-  },
-  "ja": {
-   "total": 213,
    "linked": 44,
    "confirmed": 28,
    "pending": 1,
    "tbc": 13,
    "est": 2,
    "redated": 0,
-   "restored": 0,
+   "restored": 1,
+   "review": 4,
+   "removed": 0
+  },
+  "ja": {
+   "total": 213,
+   "linked": 43,
+   "confirmed": 27,
+   "pending": 1,
+   "tbc": 13,
+   "est": 2,
+   "redated": 0,
+   "restored": 1,
    "review": 3,
    "removed": 0
   },
@@ -369,15 +369,6 @@
      "date"
     ],
     "apiId": "590921"
-   },
-   "1373574": {
-    "ko": "춘천막국수닭갈비축제",
-    "kv": "confirmed",
-    "signals": [
-     "geo",
-     "date"
-    ],
-    "apiId": "1230074"
    },
    "1385298": {
     "ko": "부산불꽃축제",
@@ -812,16 +803,6 @@
      "date"
     ],
     "apiId": "140799"
-   },
-   "1373413": {
-    "ko": "춘천막국수닭갈비축제",
-    "kv": "confirmed",
-    "signals": [
-     "tel",
-     "geo",
-     "date"
-    ],
-    "apiId": "1230074"
    },
    "1485500": {
     "ko": "여수거북선축제",

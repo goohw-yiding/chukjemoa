@@ -1,9 +1,8 @@
-영어 부산불꽃축제: 2025 날짜 → 2026-11-07(공식) + 클룩 좌석 티켓 링크(사실 바로 뒤)
+영어 세션 자동화: 제휴·안내 기한 자동 만료 + 날짜 대조 기록 파일
 
-- 공식 busanfireworks.com 행사개요: 제21회 2026-11-07(토), 광안리해수욕장·이기대·동백섬 일원, 부산시 주최·부산축제조직위 주관
-- Admission 「Paid」(좌석만 유료인데 전부 유료처럼 읽힘) → 「Reserved seats (R / S) are paid」, 2025 관람시간 줄은 숨김
-- 클룩 상품 171795(2026 Busan Fireworks Festival 21th Anniversary Ticket) 페이지를 열어 「November 7, 2026, at Gwangalli Beach」 확인 후, 좌석 판매 사실 문장 바로 뒤에 Paid link + 수수료 고지. data-bb=klook-ticket, 광고 ID 1466582(en-festival)
-- 구조: festivals_en_fix.json 의 aff 필드 → klook-en.js productLink(). 2,000자 게이트에서 제휴 문구는 빼고 잰다
+- en-fix.js: noteUntil / aff.until(YYYYMMDD, 한국시간) 지나면 매일 예약 빌드에서 자동으로 빠짐. 진주 Creatrip 투어 링크 ~10/14(마지막 출발 10/16의 2일 전 예약 마감)·안내 ~10/16, 부산불꽃 클룩 티켓 ~11/6
+- data/festivals_en_checked.json 신설: 공식 발표로 대조한 영문 축제 16건(교정 3·맞음 12·미확인 1 포항불빛) — 주간 자동 안건(_en_agenda.py, PC 로컬 도구)이 30일 동안 다시 올리지 않음
+  이번 추가 대조(맞음): 고양가을꽃 10/1~11 · 임실N치즈 10/8~11 · 정조대왕 능행차 10/4 · 구미라면 11/6~8
 
 Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
 Claude-Session: https://claude.ai/code/session_01PGZnsh3by95HzvcMJQLbmV
