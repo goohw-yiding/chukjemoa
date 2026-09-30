@@ -1,0 +1,24 @@
+{
+  "_readme": "영어 축제 수동 교정(2026-09-30~, 영어 세션). TourAPI 영문 DB(festivals_en.json)는 매일 자동 갱신으로 덮이므로 교정은 여기에만 둔다. en-fix.js 가 build.js·festival-en.js 에서 적용. ko: {title,addr} = 지도 복사 칸 한글 원제·주소 지정, null = 좌표만 겹친 «다른 축제» 이름이 붙던 것을 숨김. 날짜는 주최측 공식 발표로만 고친다(src 필수). 공식 날짜가 TourAPI 영문과 같아지면 이 항목을 지운다.",
+  "3310546": {
+    "start": "20261017", "end": "20261021",
+    "addr": "Citizens' Welfare Town Plaza (Donam-dong), Jeju-si, Jeju-do",
+    "x": "126.5229397", "y": "33.4916992",
+    "ko": { "title": "탐라문화제", "addr": "제주특별자치도 제주시 도남동 시민복지타운광장" },
+    "intro": { "place": "Citizens' Welfare Town Plaza area in Jeju City, plus venues across Jeju Island", "playtime": "", "fee": "", "program": "", "subevent": "", "host": "Jeju Special Self-Governing Province", "org": "Jeju Federation of Arts & Culture (Jeju Yechong)" },
+    "note": "The 65th Tamna Culture Festival runs Oct 17–21, 2026. The main venue has moved to Citizens' Welfare Town Plaza in Jeju City (in 2025 it was the Tapdong seafront). The opening ceremony is on Oct 17 at 7:30 pm, and this year the festival coincides with the National Sports Festival held in Jeju, so expect Jeju City to be busier than usual.",
+    "src": "제주도 주최·제주예총 주관 발표 — 뉴스N제주 2026-09-20(idxno=300227), 국제뉴스 2026-09-08(idxno=3687960). 좌표: 시민복지타운광장(도남동 582)"
+  },
+  "3307792": {
+    "start": "20261009", "end": "20261011",
+    "ko": { "title": "세종한글축제", "addr": "세종특별자치시 다솜로 216 (세종동)" },
+    "note": "2026 marks the 100th anniversary of Hangeul Day, and the festival runs three days, Oct 9–11, 2026, at Sejong Central Park and Sejong Lake Park. A drone light show of about 2,000 drones is planned for the first night (Oct 9).",
+    "src": "세종시 주최·세종시문화관광재단 주관 — 익스프레스뉴스 2026-09-09(idxno=329725). 한글판 TourAPI도 10/9~11"
+  },
+  "2588597": { "ko": { "title": "임실N치즈축제", "addr": "전북특별자치도 임실군 성수면 도인2길 50" }, "src": "좌표만 겹쳐 「임실N장미축제」가 붙던 것 교정. 한글판 TourAPI 2031318" },
+  "1385298": { "ko": { "title": "부산불꽃축제", "addr": "부산광역시 수영구 광안해변로 219 (광안동)" }, "src": "「카운트다운 부산」이 붙던 것 교정. 한글판 TourAPI 235076" },
+  "3536904": { "ko": { "title": "오슬로우 빈티지 마켓", "addr": "인천광역시 제물포구 제물량로218번길 3 (해안동1가)" }, "src": "「개항장 댕댕 도서관」이 붙던 것 교정. 한글판 TourAPI 3522322" },
+  "3337796": { "ko": null, "src": "「대한민국불교문화엑스포」가 붙던 것 — 한글 원제 미확인이라 숨김" },
+  "292632": { "ko": null, "src": "「고양가을꽃축제」가 붙던 것(국제꽃박람회와 다른 행사) — 숨김" },
+  "3562124": { "ko": null, "src": "「광복로 겨울빛 트리축제」가 붙던 것(다른 시기 행사) — 숨김" }
+}

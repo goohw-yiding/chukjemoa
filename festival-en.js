@@ -139,7 +139,8 @@ function build(ctx) {
     return head + BRAND;
   };
 
-  const fes = load('festivals_en.json').filter(f => (f.ov || '').length >= MIN_OV);
+  // 🛠 2026-09-30 수동 교정(공식 발표 날짜·한글 원제) — en-fix.js / data/festivals_en_fix.json
+  const fes = require('./en-fix').apply(load('festivals_en.json')).filter(f => (f.ov || '').length >= MIN_OV);
 
   // 슬러그 충돌 방지
   const used = new Set();
@@ -210,7 +211,7 @@ ${CSS}
 <dt>📍 Location</dt><dd>${esc(f.addr || f.region || '')}</dd>
 ${(() => {
       // 🎪 이 축제만의 사실 — 공공데이터에 «있는 것만». 없는 줄은 아예 만들지 않는다.
-      const q = INTRO[String(f.id)] || {};
+      const q = Object.assign({}, INTRO[String(f.id)] || {}, f._intro || {});
       const rows = [];
       if (q.fee) rows.push(`<dt>🎫 Admission</dt><dd>${esc(q.fee)}</dd>`);
       if (q.playtime) rows.push(`<dt>🕘 Hours</dt><dd>${esc(q.playtime)}</dd>`);
@@ -221,14 +222,16 @@ ${(() => {
       return rows.join('\n');
     })()}
 ${f.tel ? `<dt>☎️ Contact</dt><dd>${esc(f.tel)}</dd>` : ''}
-</dl></div>
+</dl></div>${f._note ? `
+<div class="fov" style="border-left:4px solid #0c7d72"><h2>What's new this year</h2><p>${esc(f._note)}</p>
+<p class="note" style="color:#9aa3af;font-size:.82rem;margin-top:8px">Checked against the organizer's announcement. Dates above are updated to match it.</p></div>` : ''}
 ${ended ? `<div class="fend"><h2>⚠️ This festival's listed dates have passed</h2>
 <p>The dates above are from the most recent official schedule. Many Korean festivals are annual events held around the same time each year, but the next date has not been officially confirmed yet — please check the official website or a Google search below before planning a trip.</p></div>` : ''}
 <div class="fov"><h2>Overview</h2><p>${esc(f.ov)}</p>
 <p class="note" style="color:#9aa3af;font-size:.82rem;margin-top:10px">Source: Korea Tourism Organization (official English translation, TourAPI).</p></div>
 ${(() => {
       // 🎪 무엇을 하는 축제인지 — 이게 붙으면 페이지가 더 이상 다른 축제와 같아 보이지 않는다.
-      const q = INTRO[String(f.id)] || {};
+      const q = Object.assign({}, INTRO[String(f.id)] || {}, f._intro || {});
       const raw = [q.program, q.subevent].filter(Boolean).join('\n');
       if (!raw) return '';
       let src = raw.split('\n').map(s => s.trim()).filter(s => s.length > 1);

@@ -79,6 +79,8 @@ catch (e) { console.log('⚠ pets.json 없음 — 반려견 여행지 데이터 
 let apiFestsEn = [];
 try { apiFestsEn = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/festivals_en.json'), 'utf8')); }
 catch (e) { console.log('⚠ festivals_en.json 없음 — 영문 데이터 비어있음 (node fetch-festivals-en.js 먼저 실행)'); }
+// 🛠 2026-09-30 영어 세션: 공식 발표로 확인한 날짜·한글 원제 교정(en-fix.js) — 허브·달력·상세가 같은 날짜를 보게
+try { require('./en-fix').apply(apiFestsEn); } catch (e) { console.log('⚠ en-fix 적용 실패:', e.message); }
 let apiAccessible = [];
 try { apiAccessible = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/accessible.json'), 'utf8')); }
 catch (e) { console.log('⚠ accessible.json 없음 — 무장애 데이터 비어있음 (node fetch-accessible.js 먼저 실행)'); }

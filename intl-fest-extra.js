@@ -218,7 +218,8 @@ function extras(f, lang, sameLang, opt) {
   const fx = num(f.x), fy = num(f.y), has = ok(f.x, f.y);
 
   // ① 한글 원제·주소
-  const ko = koMatch(f);
+  // f._ko — 영어 수동 교정(en-fix.js)이 정한 한글 원제. null 이면 숨김. 일본어는 안 넘긴다(종전 그대로).
+  const ko = f._ko !== undefined ? f._ko : koMatch(f);
   if (ko && ko.title) {
     stats.map = 1;
     const koAddr = String(ko.addr || '').trim();
