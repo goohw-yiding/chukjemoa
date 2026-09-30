@@ -82,9 +82,15 @@ module.exports = { hanbok, esim, ktx, ktxNote, url, AD, AID };
 //     /tw/busy/               : 「연휴가 겹치면 항공권·호텔이 같이 찬다」 표 뒤 → 서울 숙소
 //   ⚖️ 대만 공평교역위원회 「推薦式廣告」 규범: 광고임을 표시 + 대가 관계 고지 → 「廣告」 배지 + 고지문.
 //   클룩 zh-TW·zh-CN 검색 주소는 2026-09-30 브라우저로 열어 결과가 나오는 것 확인(eSIM 15건/6건, 서울 숙소 999+).
-AD.twEsim = '1466896';   // tw-closed / esim
-AD.zhEsim = '1466898';   // zh-closed / esim
-AD.twHotel = '1466900';  // tw-busy / hotel
+//   클룩은 웹사이트 1개당 「구독 대상 지역」을 한 나라만 고를 수 있어, 2026-09-30 웹사이트를 따로 등록했다:
+//     136460 chukjemoa(일본·기존 일본어) / 137183 chukjemoa-tw(타이완·번체) / 137184 chukjemoa-zh(홍콩·간체)
+//   (처음 136460 으로 만든 1466896/1466898/1466900 은 폐기 — 아래 새 광고로 교체)
+const AID_ZH = { tw: '137183', zh: '137184' };
+AD.twEsim = '1467024';   // chukjemoa-tw · tw-closed / esim
+AD.zhEsim = '1467027';   // chukjemoa-zh · zh-closed / esim
+AD.twHotel = '1467029';  // chukjemoa-tw · tw-busy / hotel
+const urlZh = (lang, target, adid) =>
+  `https://affiliate.klook.com/redirect?aid=${AID_ZH[lang]}&aff_adid=${adid}&k_site=${encodeURIComponent(target)}`;
 const TARGET_ZH = {
   twEsim: 'https://www.klook.com/zh-TW/search/result/?query=' + encodeURIComponent('韓國 eSIM'),
   zhEsim: 'https://www.klook.com/zh-CN/search/result/?query=' + encodeURIComponent('韩国 eSIM'),
@@ -105,11 +111,11 @@ const boxZh = (inner, T) => `<p style="background:#faf7f1;border:1px solid #eee5
 function esimZh(lang) {
   const T = ZH_TXT[lang]; if (!T) return '';
   const k = lang === 'tw' ? 'twEsim' : 'zhEsim';
-  return boxZh(badgeZh(T.badge) + T.esim + a(url(TARGET_ZH[k], AD[k]), T.esimA, 'esim', lang + '-closed', 'inline-context'), T);
+  return boxZh(badgeZh(T.badge) + T.esim + a(urlZh(lang, TARGET_ZH[k], AD[k]), T.esimA, 'esim', lang + '-closed', 'inline-context'), T);
 }
 function hotelTw() {
   const T = ZH_TXT.tw;
-  return boxZh(badgeZh(T.badge) + T.hotel + a(url(TARGET_ZH.twHotel, AD.twHotel), T.hotelA, 'hotel', 'tw-busy', 'inline-context'), T);
+  return boxZh(badgeZh(T.badge) + T.hotel + a(urlZh('tw', TARGET_ZH.twHotel, AD.twHotel), T.hotelA, 'hotel', 'tw-busy', 'inline-context'), T);
 }
 module.exports.esimZh = esimZh;
 module.exports.hotelTw = hotelTw;
