@@ -45,7 +45,8 @@ function getJSON(u) {
     const m = String(x.resourceDescription || '').match(/^(\d{3})年/);
     if (!m) return;
     const y = +m[1] + 1911;
-    if (y < thisYear) return;
+    // 작년 것도 남긴다 — 1월에 작년을 빼면 건수가 절반으로 줄어 _slow_fetch 의 건수 가드(70%)가 매번 되돌린다.
+    if (y < thisYear - 1) return;
     byYear[y] = { url: x.resourceDownloadUrl, desc: x.resourceDescription, order: i };   // 뒤에 나온 것이 이긴다
   });
   const years = Object.keys(byYear).sort();
@@ -55,6 +56,8 @@ function getJSON(u) {
   for (const y of years) {
     const buf = execFileSync('curl.exe', ['-sS', '-L', byYear[y].url], { maxBuffer: 10 * 1024 * 1024 });
     const text = buf.toString('utf8').replace(/^﻿/, '');
+    // 작년 파일은 옛 형식(Big5)일 수 있다(114年 실측) — 작년 것은 못 읽으면 건너뛴다. 올해 이후는 실패로 멈춘다.
+    if (!/西元日期/.test(text) && +y < thisYear) { console.log(`  ${y} 건너뜀 — 머리글 없음(옛 인코딩)`); continue; }
     if (!/西元日期/.test(text)) throw new Error(y + ' CSV 머리글이 없다 — 인코딩 확인(첫 줄: ' + text.slice(0, 40) + ')');
     let n = 0;
     for (const line of text.split(/\r?\n/).slice(1)) {

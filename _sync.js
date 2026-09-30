@@ -71,6 +71,8 @@ const SRC = ['build.js', 'fetch-markets.js', 'fetch-spots.js', 'fetch-valleys.js
   'ja-busy.js', 'fetch-jp-holidays.js', 'data/jp_holidays.json',
   // 2026-09-30 추가 — 🇹🇼 /tw/busy/ 「韓國連假」. tw-busy.js ← data/tw_holidays.json ← fetch-tw-holidays.js(人事行政總處 CSV). 셋이 한 묶음.
   'tw-busy.js', 'fetch-tw-holidays.js', 'data/tw_holidays.json',
+  // 2026-09-30 추가(2) — 중국어 주간 자동 관리. intl.js 가 교정 파일을 읽고, 예약 세션이 _zh_agenda.py 로 안건을 만든다.
+  '_zh_agenda.py', 'data/festivals_intl_fix.json', 'data/festivals_intl_checked.json', '_slow_fetch.js',
   // 2026-09-14 추가 — 🚄 서울→각 역 열차 소요시간 수집기.
   //   ⚠️ 네이버 지도 API 로는 못 한다(Directions 5 는 «자동차에 한해서만» — 공식 문서 확인).
   //      apikeys.json 의 `tago` 키로 받는다. 열차정보 활용신청이 승인되면 수집기가 돌아간다.

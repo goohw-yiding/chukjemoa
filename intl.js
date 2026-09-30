@@ -191,6 +191,44 @@ function build(ctx) {
   const markets = load('markets_std.json');   // 2026-09-11 — 월별 페이지의 「그 달에 서는 오일장」용
   const visitors = (() => { try { return JSON.parse(fs.readFileSync(path.join(__dirname, 'data', 'visitors.json'), 'utf8')); } catch (e) { return {}; } })();
   const koFes = load('festivals_api.json');
+  // ── 2026-09-30 외국어 달력 «정확한 날짜» 두 갈래 (중국어 주간 관리 신설 때 추가)
+  //   외국어 달력은 TourAPI 국문 원본(festivals_api.json)의 날짜를 그대로 쓴다. 그런데 원본이 늦거나 틀릴 때가 있다
+  //   (9/30: 한국어 수동 목록을 공식 발표로 고친 것이 외국어 달력엔 안 흘러가는 구조였다).
+  //   ① data/festival_confirm_log.json — 「Chukjemoa festival date check」가 공식 누리집·보도로 확인해 남긴 기록.
+  //      근거가 URL 인 «to» 기록만 쓴다(손으로 찍은 confirmed 표시는 안 믿는다 — 진주유등 10/1 오기 전력).
+  //   ② data/festivals_intl_fix.json — {TourAPI id: {start,end,src,at, cancel, name:{zh,tw,ja,es}}}
+  //      외국어 주간 관리 회차가 공식 발표로 확인한 것. ②가 ①보다 우선.
+  //   ⚠️ 번역 매칭 키(ckey)는 «원래 시작일»로 만든다 — 날짜를 고치면 공식 번역을 잃으므로 먼저 _ck 에 보관한다.
+  (() => {
+    const nz = s => String(s || '').replace(/제\s*\d+\s*회|\d{4}|[\s·・\-_()（）\[\]「」<>〈〉:：,.&]/g, '').toLowerCase();
+    const d8 = s => String(s || '').replace(/-/g, '');
+    let log = [], fx = {};
+    try { log = JSON.parse(fs.readFileSync(path.join(__dirname, 'data', 'festival_confirm_log.json'), 'utf8')); } catch (e) {}
+    try { fx = JSON.parse(fs.readFileSync(path.join(__dirname, 'data', 'festivals_intl_fix.json'), 'utf8')); } catch (e) {}
+    const conf = {};
+    (Array.isArray(log) ? log : []).forEach(r => {
+      if (!r || !r.to || !/^https?:\/\//.test(String(r.source || ''))) return;
+      const m = String(r.to).match(/^(\d{4}-\d{2}-\d{2})~(\d{4}-\d{2}-\d{2})$/); if (!m) return;
+      conf[nz(r.name)] = { start: d8(m[1]), end: d8(m[2]) };   // 뒤의 기록이 앞을 덮는다(최신 우선)
+    });
+    let n1 = 0, n2 = 0;
+    // 같은 이름이 원본에 여러 줄(작년 회차·올해 회차)일 수 있다 → 시작일이 가장 늦은 한 줄에만 씌운다(중복 카드 방지).
+    const pick = {};
+    koFes.forEach(f => { const k = nz(f.title); if (conf[k] && (!pick[k] || String(f.start) > String(pick[k].start))) pick[k] = f; });
+    koFes.forEach(f => {
+      const orig = (+f.x).toFixed(3) + '|' + (+f.y).toFixed(3) + '|' + String(f.start).slice(0, 8);
+      const k = nz(f.title), c = conf[k];
+      // 작년 원본(끝난 행사)에 올해 날짜를 씌우는 것도 맞다 — 같은 축제의 올해 회차다.
+      if (c && pick[k] === f && (c.start !== String(f.start) || c.end !== String(f.end))) { f._ck = orig; f.start = c.start; f.end = c.end; n1++; }
+      const x = fx[String(f.id)];
+      if (x && typeof x === 'object') {
+        if (x.cancel) { f._ck = orig; f.end = '00000000'; n2++; }
+        else if (x.start || x.end) { f._ck = orig; if (x.start) f.start = d8(x.start); if (x.end) f.end = d8(x.end); n2++; }
+        if (x.name) f._name = x.name;
+      }
+    });
+    if (n1 || n2) console.log(`🗓 외국어 달력 날짜 교정 — 공식확인 기록 ${n1}건 · 외국어 교정파일 ${n2}건`);
+  })();
 
   // ── 휴무 통계 (한 번만 계산해서 5개 언어가 같은 숫자를 쓴다)
   const DN = ['일', '월', '화', '수', '목', '금', '토'];
@@ -256,7 +294,7 @@ function build(ctx) {
   // 좌표가 성한 것만 — 지도 링크가 엉뚱한 데로 가면 안 된다(geo.js 참고)
   const upKo = koFes.filter(f => String(f.end || '') >= T && inKorea(f.x, f.y))
     .sort((a, b) => String(a.start).localeCompare(String(b.start)));
-  const ckey = f => (+f.x).toFixed(3) + '|' + (+f.y).toFixed(3) + '|' + String(f.start).slice(0, 8);
+  const ckey = f => f._ck || ((+f.x).toFixed(3) + '|' + (+f.y).toFixed(3) + '|' + String(f.start).slice(0, 8));
   const TRANS = {};
   LANGS.forEach(l => {
     const m = new Map();
@@ -535,7 +573,7 @@ ${lang !== 'ja' ? '' : `<div class="ic-card"><h2>📅 混む日は、移動そ�
     const runTotal = upKo.filter(f => String(f.start).slice(0, 8) <= T).length;
     const runItems = running.map(f => {
       const o = TRANS[lang].get(ckey(f));
-      const name = o && o.title ? o.title : festName(f.title, lang);
+      const name = (f._name && f._name[lang]) || (o && o.title ? o.title : festName(f.title, lang));
       const ed = String(f.end);
       return `<li><div class="t">${esc(name)} <span class="ic-kr">${esc(f.title)}</span></div>
 <div class="m">${S.cal.until} ${ed.slice(0, 4)}.${ed.slice(4, 6)}.${ed.slice(6, 8)}${f.sido ? ' · ' + esc(sido(f.sido, lang)) : ''}</div>
@@ -606,7 +644,8 @@ ${/* 📍 /ja/places/ 는 81만 자인데 구글이 «한 번도» 못 봤다(cr
       const tr = TRANS[lang];
       const items = list.map(f => {
         const o = tr.get(ckey(f));
-        const name = o && o.title ? o.title : festName(f.title, lang);
+        // f._name: 공식 번역이 없는 축제에 외국어 관리 회차가 붙인 이름. 「無官方譯名」 표시는 그대로 둔다(정직).
+        const name = (f._name && f._name[lang]) || (o && o.title ? o.title : festName(f.title, lang));
         const reg = f.sido ? sido(f.sido, lang) : '';
         const sd = String(f.start), ed = String(f.end);
         const dd = `${sd.slice(0, 4)}.${sd.slice(4, 6)}.${sd.slice(6, 8)} – ${ed.slice(4, 6)}.${ed.slice(6, 8)}`;

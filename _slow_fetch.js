@@ -66,6 +66,9 @@ const JOBS = [
   { s: 'fetch-rlte.js', out: 'data/rlte.json', every: 20, label: '레저' },
   { s: 'fetch-trail-routes.js', out: 'data/trail_routes.json', every: 20, label: '걷기길 경로' },
   { s: 'fetch-fame.js', out: 'data/fame.json', every: 20, label: '명성(유명도)' },
+  // ── 2026-09-30 대만 공휴일(/tw/busy/). 해마다 6~7월에 다음 해 공식 CSV 가 올라오고 수정판도 나온다.
+  //    TourAPI 가 아니라 한도 걱정은 없다. 20일 = audit.js 21일 감시선 안쪽.
+  { s: 'fetch-tw-holidays.js', out: 'data/tw_holidays.json', every: 20, label: '대만 공휴일(공식 CSV)' },
 ];
 
 const P = f => path.join(__dirname, f);
