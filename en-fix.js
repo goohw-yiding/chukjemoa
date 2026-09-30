@@ -5,6 +5,8 @@
 const fs = require('fs'), path = require('path');
 let FIX = {};
 try { FIX = JSON.parse(fs.readFileSync(path.join(__dirname, 'data', 'festivals_en_fix.json'), 'utf8')); } catch (e) { FIX = {}; }
+// 오늘(한국 시간) YYYYMMDD — 매일 예약 빌드가 돌 때마다 기한이 자동 반영된다
+const T8 = new Date(Date.now() + 9 * 3600e3).toISOString().slice(0, 10).replace(/-/g, '');
 const KEYS = ['start', 'end', 'addr', 'x', 'y', 'tel', 'hp'];
 function apply(list) {
   (list || []).forEach(f => {
@@ -13,9 +15,11 @@ function apply(list) {
     KEYS.forEach(k => { if (fx[k] !== undefined) f[k] = fx[k]; });
     if (fx.ko !== undefined) f._ko = fx.ko;        // null = 한글 원제 칸 숨김
     if (fx.intro) f._intro = fx.intro;               // fest_intro_en 필드 덮어쓰기('' = 그 줄 숨김)
-    if (fx.note) f._note = fx.note;
-    if (fx.noteFoot) f._noteFoot = fx.noteFoot;     // 「What's new」 상자 아래 출처 문장(없으면 기본 문구)
-    if (fx.aff) f._aff = fx.aff;                     // 확인된 제휴 상품(klook-en.js productLink)
+    // ⏳ 기한 — noteUntil / aff.until (YYYYMMDD) 이 지나면 자동으로 안 붙인다(투어 출발일이 지난 링크를 사람이 안 치워도 되게)
+    const live = u => !u || String(u) >= T8;
+    if (fx.note && live(fx.noteUntil)) f._note = fx.note;
+    if (fx.noteFoot && f._note) f._noteFoot = fx.noteFoot;     // 「What's new」 상자 아래 출처 문장(없으면 기본 문구)
+    if (fx.aff && live(fx.aff.until)) f._aff = fx.aff;                     // 확인된 제휴 상품(klook-en.js productLink)
   });
   return list;
 }

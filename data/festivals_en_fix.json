@@ -20,14 +20,15 @@
     "start": "20261107", "end": "20261107",
     "ko": { "title": "부산불꽃축제", "addr": "부산광역시 수영구 광안해변로 219 (광안동)" },
     "intro": { "fee": "Reserved seats (R / S) are paid", "playtime": "" },
-    "aff": { "url": "https://www.klook.com/en-US/activity/171795-2026-busan-fireworks-festival-21th-anniversary-ticket/", "lead": "Reserved-seat tickets for this Nov 7, 2026 show are also sold to overseas visitors on Klook", "text": "See Busan Fireworks Festival seat tickets on Klook", "checked": "2026-09-30 상품 페이지 열어 확인 — 「Held on November 7, 2026, at Gwangalli Beach」" },
+    "aff": { "until": "20261106", "url": "https://www.klook.com/en-US/activity/171795-2026-busan-fireworks-festival-21th-anniversary-ticket/", "lead": "Reserved-seat tickets for this Nov 7, 2026 show are also sold to overseas visitors on Klook", "text": "See Busan Fireworks Festival seat tickets on Klook", "checked": "2026-09-30 상품 페이지 열어 확인 — 「Held on November 7, 2026, at Gwangalli Beach」" },
     "note": "The 21st Busan Fireworks Festival is on Saturday, Nov 7, 2026, over Gwangalli Beach, with the show also visible from the Igidae and Dongbaekseom areas. Paid seats (R seats with a table, S seats with a chair) are sold by the organizer through NOL Ticket; the early-bird batch sold out within a minute.",
     "src": "공식 busanfireworks.com 행사개요(제21회, 2026-11-07(토), 광안리해수욕장·이기대·동백섬 일원, 부산시 주최·부산축제조직위 주관). 뉴스핌 2026-09-04 유료석. 한글 원제는 「카운트다운 부산」이 붙던 것 교정(한글판 TourAPI 235076)"
   },
   "697197": {
     "note": "The 2026 festival runs Oct 3–18. If you are staying in Busan, a guided day tour runs on set dates — Oct 7, 12, 14 and 16, 2026 — with pickups at Haeundae Station Exit 5 (11:40), Seomyeon Station Exit 15 (12:20) and Busan Station Exit 3 (12:40), round-trip transport included. It needs at least 4 bookings to run and must be booked 2 days ahead.",
+    "noteUntil": "20261016",
     "noteFoot": "Festival dates: Jinju City announcement. Tour dates and pickup points: the tour's booking page, checked Sep 30, 2026 — they can change, so confirm when you book.",
-    "aff": { "url": "https://creatrip.com/en/spot/14415?utm_source=AFF-4ljv46f&aff_id=AFF-4ljv46f", "lead": "That tour is sold on Creatrip", "text": "See the Jinju lantern festival day tour from Busan", "checked": "2026-09-30 상품 페이지(creatrip spot 14415) 열어 확인 — 출발일 10/7·12·14·16, 해운대역 5번 11:40·서면역 15번 12:20·부산역 3번 12:40, 최소 4명, 2일 전 예약" },
+    "aff": { "until": "20261014", "url": "https://creatrip.com/en/spot/14415?utm_source=AFF-4ljv46f&aff_id=AFF-4ljv46f", "lead": "That tour is sold on Creatrip", "text": "See the Jinju lantern festival day tour from Busan", "checked": "2026-09-30 상품 페이지(creatrip spot 14415) 열어 확인 — 출발일 10/7·12·14·16, 해운대역 5번 11:40·서면역 15번 12:20·부산역 3번 12:40, 최소 4명, 2일 전 예약" },
     "src": "축제 기간 10/3~18: 진주시 발표(다음뉴스 7/30, 0회차 확인). 투어 사실은 Creatrip 상품 페이지 원문"
   },
   "3536904": { "ko": { "title": "오슬로우 빈티지 마켓", "addr": "인천광역시 제물포구 제물량로218번길 3 (해안동1가)" }, "src": "「개항장 댕댕 도서관」이 붙던 것 교정. 한글판 TourAPI 3522322" },
