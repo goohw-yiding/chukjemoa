@@ -2186,7 +2186,11 @@ function layout(title, desc, urlPath, content, opts) {
   //        direct 는 페이지가 살아 있으므로 그대로 들어온다. → 감수한다.
   //   ⚠️ en·ja 는 건드리지 않는다 — 비구글 유입이 ja 46(yahoo 34·bing 9·naver 2) · en 21 로 크다.
   //   페이지는 그대로 두고 색인만 뮸다(링크 안 끊김). 되돌리려면 아래 배열을 비우면 된다.
-  const SUSPEND_LANGS = ['tw', 'zh', 'es'];
+  // 🔺 2026-09-30 — tw·zh 색인 재개(장남 님 결정). 근거: 중국어 70장은 본문 중앙값 5,843·6,681자로
+  //   반려 원인(한국어 축제 564장의 같은 틀)과 무관하고, 9/10 방침(「noindex로 분모 깎지 말 것」)과도 맞다.
+  //   번체는 90일 13클릭·「韓國10月活動」 1위 — 되는 자리를 끄고 있었다. es 는 그대로 보류.
+  //   기획서: 프로젝트 문서 claude/기획_2026-09-30_축제모아_중국어.md
+  const SUSPEND_LANGS = ['es'];
   const suspendedLang = SUSPEND_LANGS.length > 0 &&
     new RegExp('^/(' + SUSPEND_LANGS.join('|') + ')/').test(urlPath);
   // 🌏 2026-09-14 — og:site_name 이 «전 페이지 한글 축제모아»였다. /en/ · /ja/ 페이지도 그랬다.
@@ -8336,7 +8340,7 @@ const urls = ['/', ...MONTHS.map(m => `/${m.key}/`), '/search/', ...(holidays.le
 //    구글 클릭 0을 보고 뺐지만 GA4로는 구글 아닌 검색엔진에서 16세션/28일이 들어오고 있었다.
 // 🔻 2026-09-17: tw·zh·es 색인 보류 — layout() 의 SUSPEND_LANGS 주석 참고.
 //    사이트맵에서도 뺀다. 「색인해라(사이트맵) + 하지마라(noindex)」는 모순이다.
-const SUSPEND_LANG_URLS = urls.filter(u => /^\/(tw|zh|es)\//.test(u));
+const SUSPEND_LANG_URLS = urls.filter(u => /^\/(es)\//.test(u)); // 2026-09-30 tw·zh 재개
 // 🔻 2026-09-17: /advertise/ 도 색인에서 뺀다 — 광고주 모집면(GSC 90일 노출 0).
 //    /about/ · /contact/ · /privacy/ · /editorial/ 는 신뢰 페이지라 그대로 둔다.
 const NOINDEX_URLS = new Set([...SIDO_URLS, ...THEME_URLS, ...SUSPEND_LANG_URLS, '/advertise/']);
