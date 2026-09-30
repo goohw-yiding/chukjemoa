@@ -171,9 +171,16 @@ async function cli(a) {
       const apiAll = JSON.parse(fs.readFileSync(D('festivals_api.json'), 'utf8'));
       const offHosts = apiAll.filter(x => KV.norm(x.title) === KV.norm(ko) && x.hp).map(x => hpKey(x.hp).split('/')[0]);
       const evHost = hpKey(ev).split('/')[0];
-      const koHit = T.includes(ko.replace(/\s/g, '')) || T.includes(KV.norm(ko)) || (evHost && offHosts.includes(evHost));
+      // 또는: 페이지에 «한국어 교차확정 날짜»(올해 시작일)가 그 나라 말 표기로 있다 — 같은 해 같은 날 여는 같은 이름의 행사
+      const v = KV.load().byName[KV.norm(ko)];
+      const [Y, M, Dd] = String(v.start || '').split('-'); const m = +M, d = +Dd;
+      const dateHit = v.status === 'confirmed' && Y && [`${m}月${d}日`, `${Y}年${m}月${d}日`, `${Y}.${M}.${Dd}`, `${Y}-${M}-${Dd}`, `${Y}/${M}/${Dd}`, `${Y}/${m}/${d}`,
+        `${['', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'][m]}${d}`].some(p => T.includes(p));
+      const koHit = T.includes(ko.replace(/\s/g, '')) || T.includes(KV.norm(ko)) || (evHost && offHosts.includes(evHost)) || dateHit;
       const words = String(f.title).split(/[\s\-–:·・,()（）「」]+/).filter(w => w.length >= 2 && !/^(festival|祭り|庆典|節|节|慶典|フェスティバル)$/i.test(w));
-      const fHit = T.includes(String(f.title).replace(/\s/g, '')) || words.filter(w => T.includes(w)).length >= Math.min(2, words.length);
+      // 한·중·일 제목은 띄어쓰기가 없다 → «祭り·節·庆典·フェスティバル» 같은 꼬리를 떼고 남은 핵심(3자 이상)으로도 본다
+      const core = String(f.title).replace(/\s/g, '').replace(/(祭り|祭|フェスティバル|まつり|庆典|慶典|節|节|Festival)$/i, '');
+      const fHit = T.includes(String(f.title).replace(/\s/g, '')) || (core.length >= 3 && T.includes(core)) || (words.length > 1 && words.filter(w => T.includes(w)).length >= 2);
       if (!r.ok || !koHit || !fHit) { console.log(`⛔ 기록 안 함 — 근거 페이지에 ${!r.ok ? '접속 실패' : !koHit ? '한국어 축제명 없음' : '외국어 축제명 없음'}`); process.exit(2); }
     }
     const DEC = (() => { try { return JSON.parse(fs.readFileSync(D('festival_bridge_decisions.json'), 'utf8')); } catch (e) { return {}; } })();

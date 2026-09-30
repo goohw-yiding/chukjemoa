@@ -501,7 +501,9 @@
     "score": 12,
     "commerce": false,
     "status": "confirmed",
-    "ids": [],
+    "ids": [
+     "1016771"
+    ],
     "reasons": [
      {
       "claim": "한큐교통사 부산불꽃축제 관람 투어",
@@ -1713,7 +1715,9 @@
     "score": 8,
     "commerce": false,
     "status": "confirmed",
-    "ids": [],
+    "ids": [
+     "1113727"
+    ],
     "reasons": [
      {
       "claim": "부산시: 대만 여행사 대량 사전 예약",

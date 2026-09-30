@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-30T17:20",
+ "generatedAt": "2026-09-30T18:18",
  "stats": {
   "en": {
    "total": 258,
@@ -15,14 +15,14 @@
   },
   "ja": {
    "total": 213,
-   "linked": 43,
-   "confirmed": 27,
+   "linked": 44,
+   "confirmed": 28,
    "pending": 1,
    "tbc": 13,
    "est": 2,
    "redated": 0,
    "restored": 0,
-   "review": 4,
+   "review": 3,
    "removed": 0
   },
   "zh": {
@@ -39,14 +39,14 @@
   },
   "tw": {
    "total": 171,
-   "linked": 33,
-   "confirmed": 22,
+   "linked": 34,
+   "confirmed": 23,
    "pending": 0,
    "tbc": 9,
    "est": 2,
    "redated": 0,
    "restored": 0,
-   "review": 4,
+   "review": 3,
    "removed": 0
   }
  },
@@ -793,6 +793,15 @@
      "date"
     ],
     "apiId": "914138"
+   },
+   "1016771": {
+    "ko": "부산불꽃축제",
+    "kv": "confirmed",
+    "signals": [
+     "geo",
+     "decision"
+    ],
+    "apiId": "235076"
    },
    "1202956": {
     "ko": "부산국제록페스티벌",
@@ -1554,6 +1563,15 @@
     ],
     "apiId": "914138"
    },
+   "1113727": {
+    "ko": "부산불꽃축제",
+    "kv": "confirmed",
+    "signals": [
+     "geo",
+     "decision"
+    ],
+    "apiId": "235076"
+   },
    "1117216": {
     "ko": "서울빛초롱축제",
     "kv": "est",
@@ -1709,15 +1727,6 @@
   },
   {
    "lang": "ja",
-   "id": "1016771",
-   "title": "釜山花火祭り",
-   "why": "신호 1개(geo)뿐",
-   "ko": [
-    "부산불꽃축제"
-   ]
-  },
-  {
-   "lang": "ja",
    "id": "3352420",
    "title": "屋根部屋のネコ",
    "why": "신호 1개(geo)뿐",
@@ -1777,15 +1786,6 @@
    "why": "신호 1개(geo)뿐",
    "ko": [
     "부산바다축제"
-   ]
-  },
-  {
-   "lang": "tw",
-   "id": "1113727",
-   "title": "釜山煙火節",
-   "why": "신호 1개(geo)뿐",
-   "ko": [
-    "부산불꽃축제"
    ]
   },
   {

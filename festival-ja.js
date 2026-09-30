@@ -105,7 +105,15 @@ function build(ctx) {
     KOI[k3(f.x, f.y) + '|' + f.start] = f;
     if (!KOI2[k3(f.x, f.y)]) KOI2[k3(f.x, f.y)] = f;
   });
-  const koOf = f => (okXY(f.x, f.y) && (KOI[k3(f.x, f.y) + '|' + f.start] || KOI2[k3(f.x, f.y)])) || null;
+  // 2026-09-30(3) 한글 원제 매칭 — intl-bridge.js 가 교차 신호로 잇은 한국어 축제(kvName)가 1순위.
+  //   날짜 키는 «API 원래 시작일»(apiStart)로 본다 — 검증 날짜로 바꾼 start 로 찾으면 엉뚱한 국문 행사가 붙는다.
+  //   (전력: 釜山花火祭り 가 좌표만으로 「카운트다운 부산」에 붙어 슬러그·한글명이 틀려 있었다)
+  const KVN = require('./ko-verified').norm;
+  const koOf = f => {
+    if (!okXY(f.x, f.y)) return null;
+    if (f.kvName) { const n = KVN(f.kvName); const hit = ko.filter(k => okXY(k.x, k.y) && KVN(k.title).includes(n)).sort((a, b) => String(b.start).localeCompare(String(a.start)))[0]; if (hit) return hit; }
+    return KOI[k3(f.x, f.y) + '|' + (f.apiStart || f.start)] || KOI2[k3(f.x, f.y)] || null;
+  };
 
   const fes = all.filter(f => String(f.ov || '').trim().length >= MIN_OV && okXY(f.x, f.y));
 
@@ -263,11 +271,25 @@ ${mapScript('ja')}
   //    끊긴 링크를 만드느니 «실제로 만든 슬러그»를 그대로 넘긴다.
   const slugMap = {};
   rows.forEach(f => { if (f.id != null) slugMap[String(f.id)] = f._slug; });
-  fs.writeFileSync(path.join(ctx.ROOT || __dirname, 'data', 'ja_festival_slugs.json'),
-    JSON.stringify(slugMap), 'utf8');
+  const SLUGF = path.join(ctx.ROOT || __dirname, 'data', 'ja_festival_slugs.json');
+  // 2026-09-30(3) 슬러그가 바뀐 축제(같은 id, 다른 주소) — 옛 주소를 지우지 않고 «새 주소로 넘기는 페이지»로 남긴다.
+  //   누적 표(data/ja_slug_moves.json)로 관리해 다음 빌드에도 유지된다. 검색에 걸린 옛 주소가 404 가 되지 않게.
+  const MOVEF = path.join(ctx.ROOT || __dirname, 'data', 'ja_slug_moves.json');
+  let moves = {}; try { moves = JSON.parse(fs.readFileSync(MOVEF, 'utf8')); } catch (e) {}
+  try { const prev = JSON.parse(fs.readFileSync(SLUGF, 'utf8'));
+    for (const [id, s] of Object.entries(prev)) if (slugMap[id] && slugMap[id] !== s) moves[s] = slugMap[id]; } catch (e) {}
+  for (const [o, n] of Object.entries(moves)) { if (Object.values(slugMap).includes(o)) delete moves[o]; else if (!Object.values(slugMap).includes(n)) delete moves[o]; }
+  fs.writeFileSync(MOVEF, JSON.stringify(moves, null, 1) + '\n');
+  fs.writeFileSync(SLUGF, JSON.stringify(slugMap), 'utf8');
+  for (const [o, n] of Object.entries(moves)) {
+    const to = `/ja/festival/${n}/`;
+    const d = path.join(ctx.ROOT || __dirname, 'ja', 'festival', o); fs.mkdirSync(d, { recursive: true });
+    fs.writeFileSync(path.join(d, 'index.html'), `<!doctype html><html lang="ja"><head><meta charset="utf-8"><title>移動しました</title><meta name="robots" content="noindex"><link rel="canonical" href="${SITE}${to}"><meta http-equiv="refresh" content="0;url=${to}"></head><body><p><a href="${to}">新しいページへ移動しました</a></p></body></html>`);
+  }
+  if (Object.keys(moves).length) console.log(`  ↪ 옛 주소 → 새 주소 넘김 ${Object.keys(moves).length}건 (data/ja_slug_moves.json)`);
 
   // ⚠️ 유령 페이지 정리 — 영문판과 같은 이유(/jangteo/·/trend/ 에서 겪은 사고).
-  const keep = new Set(rows.map(f => f._slug));
+  const keep = new Set([...rows.map(f => f._slug), ...Object.keys(moves)]);
   const dir = path.join(ctx.ROOT || __dirname, 'ja', 'festival');
   if (fs.existsSync(dir)) {
     for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
