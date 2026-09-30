@@ -192,7 +192,7 @@ function build(ctx) {
     const names = uniq(k.days.filter(x => x.hol).map(x => krName(x.hol[0]).replace('・補假', '')));
     const hasSub = k.days.some(x => x.hol && x.hol.some(n => /^대체공휴일/.test(n)));
     return `<tr class="${k.days.some(x => x.hol && x.hol.some(isBig)) ? 'kr' : ''}"><td data-l="假日"><b>${esc(names.join('・'))}</b>${hasSub ? '<span style="color:#6b7280;font-size:.86em">（含補假）</span>' : ''}</td>
-<td data-l="日期">${ymd(k.start)}${k.len > 1 ? ' 〜' + mdShort(k.end) : ''}</td><td class="n" data-l="連假">${k.len}天</td></tr>`;
+<td data-l="日期" style="white-space:nowrap">${k.start.slice(0, 4)}/${mdShort(k.start)}${k.len > 1 ? '〜' + mdShort(k.end) : ''}</td><td class="n" data-l="連假">${k.len}天</td></tr>`;
   }).join('');
   const krYears = uniq(kb.map(k => k.start.slice(0, 4)));
 
@@ -302,7 +302,7 @@ ${next ? `<div class="tbw"><h2>⚠️ 最近的注意期間 — ${ymd(next.start
 
 <div class="tbc"><h2>🇰🇷 韓國國定假日 ${krYears.join('・')} — 連假一覽</h2>
 <p>把韓國的國定假日連同前後週末算成「連假」，一共 ${kb.length} 段。<b>韓國的春節和中秋各放三天</b>，碰到週末還會補假，所以常常變成四、五天的長假。</p>
-<div class="tbwrap"><table class="tbt stack"><thead><tr><th>假日</th><th>日期</th><th class="n">連假</th></tr></thead><tbody>${krBlockTable}</tbody></table></div>
+${/* 📱 2026-09-30 실물(375px) 실측: 카드로 펴니 16장·3,016px 이었다. 짧은 3열이라 표 그대로 둔다. */''}<div class="tbwrap"><table class="tbt" style="min-width:0"><thead><tr><th>假日</th><th>日期</th><th class="n">連假</th></tr></thead><tbody>${krBlockTable}</tbody></table></div>
 <p class="tbnote">韓國的國定假日若碰上週日（部分節日也包括週六），會補放「替代公休日」。這張表已經包含補假。2026年起韓國的勞動節（5/1）與制憲節（7/17）也列為公休日。</p></div>
 
 <div class="tbc"><h2>⭐ 光看假日表看不出來的 — 每週固定公休日</h2>
