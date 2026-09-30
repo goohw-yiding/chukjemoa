@@ -73,3 +73,43 @@ function ktx(stationKo, cityJa) {
 const ktxNote = () => `<p style="font-size:.8rem;color:#8a8178;margin-top:8px">${PR}「KTX切符を見る」はKlookの紹介リンクで、予約があると当サイトに紹介料が入ります。切符は<a href="https://www.korail.com/global/eng/main" target="_blank" rel="noopener" style="color:#0c7d72">韓国鉄道（コレール）の外国人向け公式サイト</a>でも買えます。</p>`;
 
 module.exports = { hanbok, esim, ktx, ktxNote, url, AD, AID };
+
+// ─────────────────────────────────────────────────────────────
+// 🇹🇼🇨🇳 2026-09-30 추가 — 중국어(번체 tw·간체 zh) 페이지. 기획서: 프로젝트 문서 claude/기획_2026-09-30_축제모아_중국어.md
+//   대만·홍콩이 클룩의 본진(홍콩 창업)이라 번체가 주력이다. 광고 ID 는 면별로 따로 만들었다(성과를 따로 재려고).
+//   자리 원칙은 일본어와 같다 — 상품이 필요한 사실을 본문이 먼저 말한 «바로 뒤»에만.
+//     /tw/closed/·/zh/closed/ : 「NAVER·Kakao 지도로 한글 검색해 영업시간 확인」 뒤 → eSIM(그걸 하려면 데이터가 필요)
+//     /tw/busy/               : 「연휴가 겹치면 항공권·호텔이 같이 찬다」 표 뒤 → 서울 숙소
+//   ⚖️ 대만 공평교역위원회 「推薦式廣告」 규범: 광고임을 표시 + 대가 관계 고지 → 「廣告」 배지 + 고지문.
+//   클룩 zh-TW·zh-CN 검색 주소는 2026-09-30 브라우저로 열어 결과가 나오는 것 확인(eSIM 15건/6건, 서울 숙소 999+).
+AD.twEsim = '1466896';   // tw-closed / esim
+AD.zhEsim = '1466898';   // zh-closed / esim
+AD.twHotel = '1466900';  // tw-busy / hotel
+const TARGET_ZH = {
+  twEsim: 'https://www.klook.com/zh-TW/search/result/?query=' + encodeURIComponent('韓國 eSIM'),
+  zhEsim: 'https://www.klook.com/zh-CN/search/result/?query=' + encodeURIComponent('韩国 eSIM'),
+  twHotel: 'https://www.klook.com/zh-TW/search/result/?query=' + encodeURIComponent('首爾 飯店'),
+};
+const ZH_TXT = {
+  tw: { badge: '廣告', note: '透過這個連結預訂，本站會收到介紹費；你支付的金額不會改變。',
+    esim: '在韓國要用 NAVER 地圖查營業時間、打電話或看店家 IG，手機都得有網路。韓國用的 eSIM 可以出發前先買好 → ',
+    esimA: '看韓國 eSIM（Klook）',
+    hotel: '連假重疊的期間飯店會最先被訂走。如果日期已經落在上表裡，首爾的住宿可以先比價訂好 → ',
+    hotelA: '看首爾飯店（Klook）' },
+  zh: { badge: '广告', note: '通过此链接预订，本站会获得介绍费；您支付的金额不变。',
+    esim: '在韩国用 NAVER 地图查营业时间、打电话或看店家的 SNS，手机都需要流量。韩国用的 eSIM 可以出发前买好 → ',
+    esimA: '查看韩国 eSIM（Klook）' },
+};
+const badgeZh = t => `<span style="display:inline-block;font-size:.72rem;font-weight:700;color:#8a8178;border:1px solid #cfc6b8;border-radius:4px;padding:0 5px;margin-right:6px;vertical-align:1px">${t}</span>`;
+const boxZh = (inner, T) => `<p style="background:#faf7f1;border:1px solid #eee5d6;border-radius:10px;padding:10px 12px;margin:10px 0;font-size:.92rem;line-height:1.6">${inner}<span style="display:block;font-size:.78rem;color:#8a8178;margin-top:4px">${T.note}</span></p>`;
+function esimZh(lang) {
+  const T = ZH_TXT[lang]; if (!T) return '';
+  const k = lang === 'tw' ? 'twEsim' : 'zhEsim';
+  return boxZh(badgeZh(T.badge) + T.esim + a(url(TARGET_ZH[k], AD[k]), T.esimA, 'esim', lang + '-closed', 'inline-context'), T);
+}
+function hotelTw() {
+  const T = ZH_TXT.tw;
+  return boxZh(badgeZh(T.badge) + T.hotel + a(url(TARGET_ZH.twHotel, AD.twHotel), T.hotelA, 'hotel', 'tw-busy', 'inline-context'), T);
+}
+module.exports.esimZh = esimZh;
+module.exports.hotelTw = hotelTw;

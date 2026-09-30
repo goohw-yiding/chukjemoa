@@ -1,6 +1,9 @@
-영어 eSIM 제휴를 영어 전용 클룩 광고 ID로 교체 (1466582, KTX 1466585 예약)
+영어 부산불꽃축제: 2025 날짜 → 2026-11-07(공식) + 클룩 좌석 티켓 링크(사실 바로 뒤)
 
-직전 커밋 2f29bb27 의 메시지는 옛 문구가 잘못 들어갔다 — 그 커밋 내용은 영어 축제 55장 eSIM 제휴 신설이다.
+- 공식 busanfireworks.com 행사개요: 제21회 2026-11-07(토), 광안리해수욕장·이기대·동백섬 일원, 부산시 주최·부산축제조직위 주관
+- Admission 「Paid」(좌석만 유료인데 전부 유료처럼 읽힘) → 「Reserved seats (R / S) are paid」, 2025 관람시간 줄은 숨김
+- 클룩 상품 171795(2026 Busan Fireworks Festival 21th Anniversary Ticket) 페이지를 열어 「November 7, 2026, at Gwangalli Beach」 확인 후, 좌석 판매 사실 문장 바로 뒤에 Paid link + 수수료 고지. data-bb=klook-ticket, 광고 ID 1466582(en-festival)
+- 구조: festivals_en_fix.json 의 aff 필드 → klook-en.js productLink(). 2,000자 게이트에서 제휴 문구는 빼고 잰다
 
 Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
-Claude-Session: https://claude.ai/code/session_016m991E2DHzVvVSZCVNFqWg
+Claude-Session: https://claude.ai/code/session_01PGZnsh3by95HzvcMJQLbmV

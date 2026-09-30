@@ -387,6 +387,7 @@ ${readCard}
 
 <div class="ic-card"><h2>${S.cl.h2how}</h2>
 <p>${S.cl.pHow}</p>
+${(lang === 'tw' || lang === 'zh') ? require('./klook.js').esimZh(lang) : ''}
 <p class="ic-note">${S.cl.src(nf(RS.n), nf(CS.n), TODAY)}</p></div>
 
 <div class="ic-nav">
