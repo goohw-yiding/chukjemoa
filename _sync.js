@@ -67,6 +67,8 @@ const SRC = ['build.js', 'fetch-markets.js', 'fetch-spots.js', 'fetch-valleys.js
   //   ⚠️ 세 개가 한 묶음이다. 하나라도 한쪽에만 있으면 다음 빌드에서 페이지가 통째로 안 만들어진다.
   //   ⚠️ 春分の日·秋分の日 는 해마다 국립천문대가 정한다 — 이 수집기 없이는 손으로 박게 된다.
   'ja-busy.js', 'fetch-jp-holidays.js', 'data/jp_holidays.json',
+  // 2026-09-30 추가 — 🇹🇼 /tw/busy/ 「韓國連假」. tw-busy.js ← data/tw_holidays.json ← fetch-tw-holidays.js(人事行政總處 CSV). 셋이 한 묶음.
+  'tw-busy.js', 'fetch-tw-holidays.js', 'data/tw_holidays.json',
   // 2026-09-14 추가 — 🚄 서울→각 역 열차 소요시간 수집기.
   //   ⚠️ 네이버 지도 API 로는 못 한다(Directions 5 는 «자동차에 한해서만» — 공식 문서 확인).
   //      apikeys.json 의 `tago` 키로 받는다. 열차정보 활용신청이 승인되면 수집기가 돌아간다.

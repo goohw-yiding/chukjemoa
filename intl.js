@@ -363,7 +363,9 @@ ${bigBlock ? `<div class="ic-warn"><h2>${S.cl.warnH(holName(bigBlock.days.find(d
 <table class="ic-tbl"><thead><tr><th>${S.cl.thDate}</th><th>${S.cl.thName}</th><th class="n">${S.cl.thDays}</th></tr></thead><tbody>${holRows}</tbody></table>
 <p class="ic-note">${S.cl.holNote}</p></div>
 
-${jaHolLinks}
+${jaHolLinks}${lang !== 'tw' ? '' : `<div class="ic-card"><h2>🔴 那天台灣也放假嗎</h2>
+<p>比店家關門更先影響行程的，是<b>台韓連假重疊</b>。我們把台灣連假（行政院人事行政總處辦公日曆表）和韓國國定假日放在同一張表，用日期列出兩國同時放假、最擠的期間。</p>
+<p style="margin-top:6px"><a href="/tw/busy/" style="display:inline-block;background:#0f9d8f;color:#fff;font-weight:800;font-size:.93rem;padding:11px 18px;border-radius:999px;text-decoration:none">📅 韓國連假 × 台灣連假 →</a></p></div>`}
 
 <div class="ic-card"><h2>${S.cl.h2week}</h2>
 <p>${S.cl.pWeek(nf(RS.n), WD[lang][worstDay], nf(RS.day[worstDay]), Math.round(RS.day[worstDay] / RS.n * 100))}</p>
@@ -582,6 +584,8 @@ ${/* 🇯🇵 2026-09-15 — 「いつ行くか」의 바로 다음 질문 세 �
      이 페이지는 달(月)까지만 답한다. 날짜를 정하려면 «혼잡한가»가 필요하고,
      날짜가 정해지면 «어디로 가나»가 온다. 이 페이지가 스스로 만든 질문이라 억지가 아니다.
      /ja/calendar/ 는 크롤 9/04 로 홈(8/28)보다 신선하다. */''}
+${lang !== 'tw' ? '' : `<div class="ic-card"><h2>🗓️ 決定月份之後，接著是「哪幾天」</h2>
+<p>這一頁能幫你決定<b>幾月去</b>。但同一個月裡，<b>碰上台韓連假重疊的那幾天</b>，機票、飯店和店家的情況完全不同。台灣連假和韓國國定假日放在同一張表的是<a href="/tw/busy/" style="color:#0c7d72;font-weight:800">韓國連假 × 台灣連假</a>。</p></div>`}
 ${lang !== 'ja' ? '' : `<div class="ic-card"><h2>🗓️ 月が決まったら、次は「日」です</h2>
 <p>ここまでで<b>何月に行くか</b>は決められます。ただし同じ月でも、<b>日韓の連休が重なる週</b>は航空券もホテルも店の混み方もまったく別物になります。日本の祝日（内閣府）と韓国の祝日を1枚に重ねたのが<a href="/ja/busy/" style="color:#0c7d72;font-weight:800">韓国が混む日</a>です。</p>
 <p>日が決まったら、次は<b>どこへ行くか</b>。ソウルから鉄道で行ける地方の街を、<a href="/ja/daytrip/" style="color:#0c7d72;font-weight:800">日帰りで行ける街</a>に所要時間・運賃・1日の本数つきで出しました。ソウルに残る日は<a href="/ja/palace/" style="color:#0c7d72;font-weight:800">王宮</a>が定番ですが、<b>宮ごとに休む曜日が違う</b>ので曜日を先に見てください。</p>
@@ -698,4 +702,4 @@ ${next ? `<a href="/${lang}/calendar/${next}/">${monthLabel(next, lang)} →</a>
   return urls;
 }
 
-module.exports = { build };
+module.exports = { build, holName };   // 2026-09-30 tw-busy.js 가 한국 공휴일 번체 이름을 같은 표에서 쓴다
