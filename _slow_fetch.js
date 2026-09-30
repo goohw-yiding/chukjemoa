@@ -69,6 +69,9 @@ const JOBS = [
   // ── 2026-09-30 대만 공휴일(/tw/busy/). 해마다 6~7월에 다음 해 공식 CSV 가 올라오고 수정판도 나온다.
   //    TourAPI 가 아니라 한도 걱정은 없다. 20일 = audit.js 21일 감시선 안쪽.
   { s: 'fetch-tw-holidays.js', out: 'data/tw_holidays.json', every: 20, label: '대만 공휴일(공식 CSV)' },
+  // ── 2026-09-30 외국어판 «그 나라 사람들이 좋아하는 축제» 근거 재검사(intl-picks.js --check).
+  //    근거 페이지가 사라지거나 내용이 바뀌면 자동으로 점수에서 빠지고, 선정표·대기열이 다음 빌드에 따라 바뀐다.
+  { s: 'intl-picks.js', a: ['--check'], out: 'data/intl_evidence_status.json', every: 7, label: '외국어 선정 근거 검사' },
 ];
 
 const P = f => path.join(__dirname, f);

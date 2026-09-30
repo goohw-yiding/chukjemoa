@@ -16,6 +16,9 @@ const SRC = ['build.js', 'fetch-markets.js', 'fetch-spots.js', 'fetch-valleys.js
   'en-blog.js', 'data/posts_en.json',
   // 2026-09-30 추가 — 영어 축제 수동 교정(공식 발표 날짜·한글 원제). build.js·festival-en.js 가 require.
   'en-fix.js', 'data/festivals_en_fix.json',
+  // 2026-09-30(3) 추가 — 외국어판 ↔ 한국어 교차검증 연결·언어별 선정. build.js 가 require 한다.
+  'ko-verified.js', 'intl-bridge.js', 'intl-picks.js', 'kv-label.js', 'intl-fest-index.js', 'festival-ja.js',
+  'confirm-festivals.js', '_slow_fetch.js', 'data/intl_evidence.json',
   // 2026-08-20 추가(3) — IndexNow(빙 웹마스터 추천). indexnow.key 는 git에는 안 올리지만(*.key
   // gitignore) 프로젝트폴더에는 반드시 있어야 build.js 가 매번 같은 키 파일을 만든다.
   'indexnow.key', 'submit-indexnow.js',

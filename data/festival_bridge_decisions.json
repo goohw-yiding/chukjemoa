@@ -1,0 +1,18 @@
+{
+ "en": {
+  "1385298": {
+   "ko": "부산불꽃축제",
+   "decision": "link",
+   "evidence": "https://www.bfo.or.kr/",
+   "title": "Busan Fireworks Festival",
+   "at": "2026-09-30"
+  },
+  "3352421": {
+   "ko": "D.FESTA 거리공연축제",
+   "decision": "reject",
+   "evidence": "연극 «옥탑방 고양이» — 다른 행사",
+   "title": "Cat on the Rooftop",
+   "at": "2026-09-30"
+  }
+ }
+}

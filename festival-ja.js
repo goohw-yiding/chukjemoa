@@ -170,7 +170,7 @@ ${CSS}
 <h1 style="font-size:1.46rem;font-weight:900;letter-spacing:-.02em;margin:6px 0">${esc(f.title)}</h1>
 <div class="fhero"><img loading="lazy" src="${esc(f.img || '/img/cat2-culture-a.webp')}" alt="${esc(f.title)}" onerror="this.src='/img/cat2-culture-a.webp'">
 <dl class="finfo">
-<dt>📅 開催期間</dt><dd>${fmtDate(f.start)} 〜 ${fmtDate(f.end)}</dd>
+<dt>📅 開催期間</dt><dd>${fmtDate(f.start)} 〜 ${fmtDate(f.end)}${ended ? '' : require('./kv-label').label(f, 'ja')}</dd>
 <dt>📍 場所</dt><dd>${esc(f.addr || f.region || '')}</dd>
 ${(() => {
       // 🎪 この祭りだけの事実 — 公共データに «あるものだけ» 載せる。無い行は作らない。

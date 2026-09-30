@@ -199,6 +199,11 @@ function build(ctx) {
   //   ② data/festivals_intl_fix.json — {TourAPI id: {start,end,src,at, cancel, name:{zh,tw,ja,es}}}
   //      외국어 주간 관리 회차가 공식 발표로 확인한 것. ②가 ①보다 우선.
   //   ⚠️ 번역 매칭 키(ckey)는 «원래 시작일»로 만든다 — 날짜를 고치면 공식 번역을 잃으므로 먼저 _ck 에 보관한다.
+  // ── 2026-09-30(3) 한국어 교차검증(ko-verified.js)이 ①의 1순위. --approve 도입으로 로그 형식이 바뀌어(sources 배열)
+  //   아래 ①이 새 확정분을 못 읽게 됐다 → 확정(3곳)·후보(2곳) 날짜와 폐지 삭제를 공용 모듈에서 받는다. ②(언어 교정)는 그대로 뒤에서 덮는다.
+  const KV = require('./ko-verified');
+  const KVS = KV.load();
+  { const r = KV.applyToKoApi(koFes); if (r.changed || r.removed) console.log(`🗓 외국어 달력 — 한국어 교차검증 날짜 ${r.changed}건 · 폐지 삭제 ${r.removed}건`); }
   (() => {
     const nz = s => String(s || '').replace(/제\s*\d+\s*회|\d{4}|[\s·・\-_()（）\[\]「」<>〈〉:：,.&]/g, '').toLowerCase();
     const d8 = s => String(s || '').replace(/-/g, '');
@@ -208,6 +213,7 @@ function build(ctx) {
     const conf = {};
     (Array.isArray(log) ? log : []).forEach(r => {
       if (!r || !r.to || !/^https?:\/\//.test(String(r.source || ''))) return;
+      if (KVS.byName[KV.norm(r.name)]) return;   // 한국어 목록에 있는 축제는 ko-verified 가 이미 처리(최신 진실)
       const m = String(r.to).match(/^(\d{4}-\d{2}-\d{2})~(\d{4}-\d{2}-\d{2})$/); if (!m) return;
       conf[nz(r.name)] = { start: d8(m[1]), end: d8(m[2]) };   // 뒤의 기록이 앞을 덮는다(최신 우선)
     });
@@ -216,14 +222,17 @@ function build(ctx) {
     const pick = {};
     koFes.forEach(f => { const k = nz(f.title); if (conf[k] && (!pick[k] || String(f.start) > String(pick[k].start))) pick[k] = f; });
     koFes.forEach(f => {
-      const orig = (+f.x).toFixed(3) + '|' + (+f.y).toFixed(3) + '|' + String(f.start).slice(0, 8);
+      const orig = f._ck || ((+f.x).toFixed(3) + '|' + (+f.y).toFixed(3) + '|' + String(f.start).slice(0, 8));   // ko-verified 가 먼저 고쳤으면 그때 보관한 원래 키
       const k = nz(f.title), c = conf[k];
       // 작년 원본(끝난 행사)에 올해 날짜를 씌우는 것도 맞다 — 같은 축제의 올해 회차다.
       if (c && pick[k] === f && (c.start !== String(f.start) || c.end !== String(f.end))) { f._ck = orig; f.start = c.start; f.end = c.end; n1++; }
       const x = fx[String(f.id)];
       if (x && typeof x === 'object') {
         if (x.cancel) { f._ck = orig; f.end = '00000000'; n2++; }
-        else if (x.start || x.end) { f._ck = orig; if (x.start) f.start = d8(x.start); if (x.end) f.end = d8(x.end); n2++; }
+        else if (x.start || x.end) {
+          if (f._kv === 'confirmed' && ((x.start && d8(x.start) !== String(f.start)) || (x.end && d8(x.end) !== String(f.end))))
+            console.log(`⚠️ 날짜 충돌 — ${f.title}: 한국어 교차확정 ${f.start}~${f.end} ≠ 외국어 교정파일 ${x.start}~${x.end} (교정파일 적용됨, 확인 필요)`);
+          f._ck = orig; if (x.start) f.start = d8(x.start); if (x.end) f.end = d8(x.end); n2++; }
         if (x.name) f._name = x.name;
       }
     });

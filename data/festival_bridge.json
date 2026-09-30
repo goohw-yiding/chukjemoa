@@ -1,0 +1,1803 @@
+{
+ "generatedAt": "2026-09-30T17:20",
+ "stats": {
+  "en": {
+   "total": 258,
+   "linked": 45,
+   "confirmed": 29,
+   "pending": 1,
+   "tbc": 13,
+   "est": 2,
+   "redated": 0,
+   "restored": 0,
+   "review": 4,
+   "removed": 0
+  },
+  "ja": {
+   "total": 213,
+   "linked": 43,
+   "confirmed": 27,
+   "pending": 1,
+   "tbc": 13,
+   "est": 2,
+   "redated": 0,
+   "restored": 0,
+   "review": 4,
+   "removed": 0
+  },
+  "zh": {
+   "total": 178,
+   "linked": 32,
+   "confirmed": 22,
+   "pending": 0,
+   "tbc": 8,
+   "est": 2,
+   "redated": 0,
+   "restored": 0,
+   "review": 2,
+   "removed": 0
+  },
+  "tw": {
+   "total": 171,
+   "linked": 33,
+   "confirmed": 22,
+   "pending": 0,
+   "tbc": 9,
+   "est": 2,
+   "redated": 0,
+   "restored": 0,
+   "review": 4,
+   "removed": 0
+  }
+ },
+ "links": {
+  "en": {
+   "292992": {
+    "ko": "음성품바축제",
+    "kv": "tbc",
+    "signals": [
+     "img",
+     "tel",
+     "geo",
+     "date"
+    ],
+    "apiId": "141731"
+   },
+   "293072": {
+    "ko": "무안연꽃축제",
+    "kv": "confirmed",
+    "signals": [
+     "img",
+     "geo",
+     "date"
+    ],
+    "apiId": "1302214"
+   },
+   "293078": {
+    "ko": "인천펜타포트 락 페스티벌",
+    "kv": "confirmed",
+    "signals": [
+     "img",
+     "tel",
+     "geo",
+     "date"
+    ],
+    "apiId": "561027"
+   },
+   "293080": {
+    "ko": "평창효석문화제",
+    "kv": "confirmed",
+    "signals": [
+     "img",
+     "tel",
+     "geo",
+     "date"
+    ],
+    "apiId": "507635"
+   },
+   "293090": {
+    "ko": "부산바다축제",
+    "kv": "confirmed",
+    "signals": [
+     "img",
+     "geo",
+     "date"
+    ],
+    "apiId": "142080"
+   },
+   "293091": {
+    "ko": "부산국제록페스티벌",
+    "kv": "confirmed",
+    "signals": [
+     "img",
+     "geo",
+     "date"
+    ],
+    "apiId": "140799"
+   },
+   "293155": {
+    "ko": "김제지평선축제",
+    "kv": "confirmed",
+    "signals": [
+     "img",
+     "tel",
+     "geo",
+     "date"
+    ],
+    "apiId": "574285"
+   },
+   "591440": {
+    "ko": "통영한산대첩축제",
+    "kv": "confirmed",
+    "signals": [
+     "img",
+     "tel",
+     "geo",
+     "date"
+    ],
+    "apiId": "507454"
+   },
+   "661861": {
+    "ko": "평창송어축제",
+    "kv": "est",
+    "signals": [
+     "img",
+     "tel",
+     "geo",
+     "date"
+    ],
+    "apiId": "386053"
+   },
+   "679008": {
+    "ko": "대관령눈꽃축제",
+    "kv": "est",
+    "signals": [
+     "img",
+     "tel",
+     "geo",
+     "date"
+    ],
+    "apiId": "391883"
+   },
+   "685135": {
+    "ko": "화천산천어축제",
+    "kv": "confirmed",
+    "signals": [
+     "img",
+     "geo",
+     "date"
+    ],
+    "apiId": "507599"
+   },
+   "697123": {
+    "ko": "안동국제탈춤페스티벌",
+    "kv": "confirmed",
+    "signals": [
+     "img",
+     "tel",
+     "geo",
+     "date"
+    ],
+    "apiId": "506670"
+   },
+   "697135": {
+    "ko": "보령머드축제",
+    "kv": "confirmed",
+    "signals": [
+     "img",
+     "geo",
+     "date"
+    ],
+    "apiId": "506534"
+   },
+   "697189": {
+    "ko": "춘천마임축제",
+    "kv": "tbc",
+    "signals": [
+     "img",
+     "tel",
+     "geo",
+     "date"
+    ],
+    "apiId": "506942"
+   },
+   "697197": {
+    "ko": "진주남강유등축제",
+    "kv": "confirmed",
+    "signals": [
+     "img",
+     "geo",
+     "date"
+    ],
+    "apiId": "506926"
+   },
+   "697199": {
+    "ko": "춘향제",
+    "kv": "tbc",
+    "signals": [
+     "img",
+     "geo"
+    ],
+    "apiId": "506473"
+   },
+   "697205": {
+    "ko": "무주반딧불축제",
+    "kv": "confirmed",
+    "signals": [
+     "img",
+     "tel",
+     "geo",
+     "date"
+    ],
+    "apiId": "506523"
+   },
+   "697439": {
+    "ko": "안성맞춤 남사당 바우덕이축제",
+    "kv": "confirmed",
+    "signals": [
+     "img",
+     "tel",
+     "geo",
+     "date"
+    ],
+    "apiId": "506690"
+   },
+   "697441": {
+    "ko": "정선아리랑제",
+    "kv": "confirmed",
+    "signals": [
+     "img",
+     "tel",
+     "geo",
+     "date"
+    ],
+    "apiId": "506895"
+   },
+   "700520": {
+    "ko": "진해군항제",
+    "kv": "tbc",
+    "signals": [
+     "img",
+     "tel",
+     "geo",
+     "date"
+    ],
+    "apiId": "523079"
+   },
+   "700890": {
+    "ko": "이천도자기축제",
+    "kv": "tbc",
+    "signals": [
+     "img",
+     "geo",
+     "date"
+    ],
+    "apiId": "527710"
+   },
+   "701688": {
+    "ko": "소래포구축제",
+    "kv": "confirmed",
+    "signals": [
+     "img",
+     "tel",
+     "geo",
+     "date"
+    ],
+    "apiId": "506809"
+   },
+   "708055": {
+    "ko": "논산딸기축제",
+    "kv": "tbc",
+    "signals": [
+     "img",
+     "tel",
+     "geo",
+     "date"
+    ],
+    "apiId": "525292"
+   },
+   "715355": {
+    "ko": "서울거리예술축제",
+    "kv": "confirmed",
+    "signals": [
+     "img",
+     "geo",
+     "date"
+    ],
+    "apiId": "706180"
+   },
+   "752980": {
+    "ko": "추억의충장축제",
+    "kv": "confirmed",
+    "signals": [
+     "img",
+     "tel",
+     "geo",
+     "date"
+    ],
+    "apiId": "692682"
+   },
+   "790394": {
+    "ko": "서울세계불꽃축제",
+    "kv": "confirmed",
+    "signals": [
+     "tel",
+     "geo",
+     "date"
+    ],
+    "apiId": "631268"
+   },
+   "978249": {
+    "ko": "수원화성문화제",
+    "kv": "confirmed",
+    "signals": [
+     "img",
+     "tel",
+     "geo",
+     "date"
+    ],
+    "apiId": "914138"
+   },
+   "1057670": {
+    "ko": "백제문화제",
+    "kv": "confirmed",
+    "signals": [
+     "tel",
+     "geo",
+     "date"
+    ],
+    "apiId": "952988"
+   },
+   "1074722": {
+    "ko": "태백 해바라기축제",
+    "kv": "confirmed",
+    "signals": [
+     "img",
+     "tel",
+     "geo",
+     "date"
+    ],
+    "apiId": "142228"
+   },
+   "1323437": {
+    "ko": "대관령음악제",
+    "kv": "confirmed",
+    "signals": [
+     "img",
+     "tel",
+     "geo",
+     "date"
+    ],
+    "apiId": "590921"
+   },
+   "1373574": {
+    "ko": "춘천막국수닭갈비축제",
+    "kv": "confirmed",
+    "signals": [
+     "geo",
+     "date"
+    ],
+    "apiId": "1230074"
+   },
+   "1385298": {
+    "ko": "부산불꽃축제",
+    "kv": "confirmed",
+    "signals": [
+     "geo",
+     "decision"
+    ],
+    "apiId": "235076"
+   },
+   "1675246": {
+    "ko": "강릉커피축제",
+    "kv": "confirmed",
+    "signals": [
+     "img",
+     "geo",
+     "date"
+    ],
+    "apiId": "825295"
+   },
+   "1807079": {
+    "ko": "정남진장흥물축제",
+    "kv": "confirmed",
+    "signals": [
+     "img",
+     "geo",
+     "date"
+    ],
+    "apiId": "767114"
+   },
+   "1811002": {
+    "ko": "수원연극축제",
+    "kv": "tbc",
+    "signals": [
+     "img",
+     "tel",
+     "geo",
+     "date"
+    ],
+    "apiId": "577335"
+   },
+   "1825470": {
+    "ko": "대구치맥페스티벌",
+    "kv": "confirmed",
+    "signals": [
+     "img",
+     "tel",
+     "geo",
+     "date"
+    ],
+    "apiId": "1801011"
+   },
+   "2481976": {
+    "ko": "시흥갯골축제",
+    "kv": "confirmed",
+    "signals": [
+     "img",
+     "geo",
+     "date"
+    ],
+    "apiId": "142197"
+   },
+   "2523275": {
+    "ko": "안성 동막골 빙어축제",
+    "kv": "tbc",
+    "signals": [
+     "img",
+     "tel",
+     "geo",
+     "date"
+    ],
+    "apiId": "1765272"
+   },
+   "2550244": {
+    "ko": "홍천강 별빛음악 맥주축제",
+    "kv": "pending",
+    "signals": [
+     "img",
+     "geo",
+     "date"
+    ],
+    "apiId": "2539802"
+   },
+   "2588597": {
+    "ko": "임실N치즈축제",
+    "kv": "confirmed",
+    "signals": [
+     "tel",
+     "geo",
+     "date"
+    ],
+    "apiId": "2031318"
+   },
+   "2656853": {
+    "ko": "D.FESTA 거리공연축제",
+    "kv": "tbc",
+    "signals": [
+     "img",
+     "geo",
+     "date"
+    ],
+    "apiId": "1717921"
+   },
+   "3108087": {
+    "ko": "여주흥천남한강 벚꽃축제",
+    "kv": "tbc",
+    "signals": [
+     "img",
+     "tel",
+     "date"
+    ],
+    "apiId": "2541370"
+   },
+   "3310511": {
+    "ko": "고령 대가야축제",
+    "kv": "tbc",
+    "signals": [
+     "img",
+     "tel",
+     "geo",
+     "date"
+    ],
+    "apiId": "2667017"
+   },
+   "4039393": {
+    "ko": "2026 인천개항장 페스타 - 1901 라이브로드",
+    "kv": "tbc",
+    "signals": [
+     "img",
+     "geo",
+     "date"
+    ],
+    "apiId": "3496655"
+   },
+   "4078308": {
+    "ko": "남해 마늘한우축제",
+    "kv": "tbc",
+    "signals": [
+     "img",
+     "tel",
+     "geo",
+     "date"
+    ],
+    "apiId": "141578"
+   }
+  },
+  "ja": {
+   "293562": {
+    "ko": "음성품바축제",
+    "kv": "tbc",
+    "signals": [
+     "img",
+     "tel",
+     "geo",
+     "date"
+    ],
+    "apiId": "141731"
+   },
+   "293638": {
+    "ko": "부산바다축제",
+    "kv": "confirmed",
+    "signals": [
+     "img",
+     "geo",
+     "date"
+    ],
+    "apiId": "142080"
+   },
+   "559146": {
+    "ko": "무주반딧불축제",
+    "kv": "confirmed",
+    "signals": [
+     "img",
+     "tel",
+     "geo",
+     "date"
+    ],
+    "apiId": "506523"
+   },
+   "559505": {
+    "ko": "통영한산대첩축제",
+    "kv": "confirmed",
+    "signals": [
+     "img",
+     "tel",
+     "geo",
+     "date"
+    ],
+    "apiId": "507454"
+   },
+   "571729": {
+    "ko": "보령머드축제",
+    "kv": "confirmed",
+    "signals": [
+     "img",
+     "geo",
+     "date"
+    ],
+    "apiId": "506534"
+   },
+   "634123": {
+    "ko": "진주남강유등축제",
+    "kv": "confirmed",
+    "signals": [
+     "img",
+     "geo",
+     "date"
+    ],
+    "apiId": "506926"
+   },
+   "650031": {
+    "ko": "평창송어축제",
+    "kv": "est",
+    "signals": [
+     "img",
+     "tel",
+     "geo",
+     "date"
+    ],
+    "apiId": "386053"
+   },
+   "657612": {
+    "ko": "화천산천어축제",
+    "kv": "confirmed",
+    "signals": [
+     "img",
+     "geo",
+     "date"
+    ],
+    "apiId": "507599"
+   },
+   "696906": {
+    "ko": "춘천마임축제",
+    "kv": "tbc",
+    "signals": [
+     "img",
+     "tel",
+     "geo",
+     "date"
+    ],
+    "apiId": "506942"
+   },
+   "696923": {
+    "ko": "안동국제탈춤페스티벌",
+    "kv": "confirmed",
+    "signals": [
+     "img",
+     "tel",
+     "geo",
+     "date"
+    ],
+    "apiId": "506670"
+   },
+   "697075": {
+    "ko": "정선아리랑제",
+    "kv": "confirmed",
+    "signals": [
+     "img",
+     "tel",
+     "geo",
+     "date"
+    ],
+    "apiId": "506895"
+   },
+   "697080": {
+    "ko": "안성맞춤 남사당 바우덕이축제",
+    "kv": "confirmed",
+    "signals": [
+     "img",
+     "tel",
+     "geo",
+     "date"
+    ],
+    "apiId": "506690"
+   },
+   "699454": {
+    "ko": "진해군항제",
+    "kv": "tbc",
+    "signals": [
+     "img",
+     "tel",
+     "geo",
+     "date"
+    ],
+    "apiId": "523079"
+   },
+   "700650": {
+    "ko": "이천도자기축제",
+    "kv": "tbc",
+    "signals": [
+     "img",
+     "geo",
+     "date"
+    ],
+    "apiId": "527710"
+   },
+   "700829": {
+    "ko": "진도신비의바닷길축제",
+    "kv": "tbc",
+    "signals": [
+     "img",
+     "geo",
+     "date"
+    ],
+    "apiId": "506909"
+   },
+   "707460": {
+    "ko": "논산딸기축제",
+    "kv": "tbc",
+    "signals": [
+     "img",
+     "tel",
+     "geo",
+     "date"
+    ],
+    "apiId": "525292"
+   },
+   "718616": {
+    "ko": "서울거리예술축제",
+    "kv": "confirmed",
+    "signals": [
+     "img",
+     "tel",
+     "geo",
+     "date"
+    ],
+    "apiId": "706180"
+   },
+   "731576": {
+    "ko": "인천펜타포트 락 페스티벌",
+    "kv": "confirmed",
+    "signals": [
+     "img",
+     "tel",
+     "geo",
+     "date"
+    ],
+    "apiId": "561027"
+   },
+   "746454": {
+    "ko": "추억의충장축제",
+    "kv": "confirmed",
+    "signals": [
+     "img",
+     "tel",
+     "geo",
+     "date"
+    ],
+    "apiId": "692682"
+   },
+   "773347": {
+    "ko": "김제지평선축제",
+    "kv": "confirmed",
+    "signals": [
+     "img",
+     "tel",
+     "geo",
+     "date"
+    ],
+    "apiId": "574285"
+   },
+   "773904": {
+    "ko": "평창효석문화제",
+    "kv": "confirmed",
+    "signals": [
+     "img",
+     "tel",
+     "geo",
+     "date"
+    ],
+    "apiId": "507635"
+   },
+   "775550": {
+    "ko": "소래포구축제",
+    "kv": "confirmed",
+    "signals": [
+     "img",
+     "tel",
+     "geo",
+     "date"
+    ],
+    "apiId": "506809"
+   },
+   "777202": {
+    "ko": "태백 해바라기축제",
+    "kv": "confirmed",
+    "signals": [
+     "img",
+     "tel",
+     "geo",
+     "date"
+    ],
+    "apiId": "142228"
+   },
+   "780502": {
+    "ko": "서울세계불꽃축제",
+    "kv": "confirmed",
+    "signals": [
+     "img",
+     "tel",
+     "hp",
+     "geo"
+    ],
+    "apiId": "631268"
+   },
+   "975432": {
+    "ko": "수원화성문화제",
+    "kv": "confirmed",
+    "signals": [
+     "img",
+     "tel",
+     "geo",
+     "date"
+    ],
+    "apiId": "914138"
+   },
+   "1202956": {
+    "ko": "부산국제록페스티벌",
+    "kv": "confirmed",
+    "signals": [
+     "img",
+     "geo",
+     "date"
+    ],
+    "apiId": "140799"
+   },
+   "1373413": {
+    "ko": "춘천막국수닭갈비축제",
+    "kv": "confirmed",
+    "signals": [
+     "tel",
+     "geo",
+     "date"
+    ],
+    "apiId": "1230074"
+   },
+   "1485500": {
+    "ko": "여수거북선축제",
+    "kv": "tbc",
+    "signals": [
+     "img",
+     "tel",
+     "geo",
+     "date"
+    ],
+    "apiId": "553315"
+   },
+   "1773857": {
+    "ko": "정남진장흥물축제",
+    "kv": "confirmed",
+    "signals": [
+     "img",
+     "geo",
+     "date"
+    ],
+    "apiId": "767114"
+   },
+   "1820425": {
+    "ko": "대관령음악제",
+    "kv": "confirmed",
+    "signals": [
+     "img",
+     "tel",
+     "geo",
+     "date"
+    ],
+    "apiId": "590921"
+   },
+   "1939291": {
+    "ko": "수원연극축제",
+    "kv": "tbc",
+    "signals": [
+     "img",
+     "geo",
+     "date"
+    ],
+    "apiId": "577335"
+   },
+   "1956428": {
+    "ko": "서울빛초롱축제",
+    "kv": "est",
+    "signals": [
+     "img",
+     "tel",
+     "geo"
+    ],
+    "apiId": "1095732"
+   },
+   "2007560": {
+    "ko": "강릉커피축제",
+    "kv": "confirmed",
+    "signals": [
+     "img",
+     "geo",
+     "date"
+    ],
+    "apiId": "825295"
+   },
+   "2019467": {
+    "ko": "무안연꽃축제",
+    "kv": "confirmed",
+    "signals": [
+     "img",
+     "geo",
+     "date"
+    ],
+    "apiId": "1302214"
+   },
+   "2394959": {
+    "ko": "대구치맥페스티벌",
+    "kv": "confirmed",
+    "signals": [
+     "img",
+     "tel",
+     "geo",
+     "date"
+    ],
+    "apiId": "1801011"
+   },
+   "2471173": {
+    "ko": "시흥갯골축제",
+    "kv": "confirmed",
+    "signals": [
+     "img",
+     "geo",
+     "date"
+    ],
+    "apiId": "142197"
+   },
+   "2521629": {
+    "ko": "안성 동막골 빙어축제",
+    "kv": "tbc",
+    "signals": [
+     "img",
+     "geo",
+     "date"
+    ],
+    "apiId": "1765272"
+   },
+   "2544581": {
+    "ko": "임실N치즈축제",
+    "kv": "confirmed",
+    "signals": [
+     "tel",
+     "geo",
+     "date"
+    ],
+    "apiId": "2031318"
+   },
+   "2549651": {
+    "ko": "홍천강 별빛음악 맥주축제",
+    "kv": "pending",
+    "signals": [
+     "img",
+     "geo",
+     "date"
+    ],
+    "apiId": "2539802"
+   },
+   "2657014": {
+    "ko": "D.FESTA 거리공연축제",
+    "kv": "tbc",
+    "signals": [
+     "img",
+     "geo",
+     "date"
+    ],
+    "apiId": "1717921"
+   },
+   "3308077": {
+    "ko": "고령 대가야축제",
+    "kv": "tbc",
+    "signals": [
+     "img",
+     "tel",
+     "geo",
+     "date"
+    ],
+    "apiId": "2667017"
+   },
+   "3497772": {
+    "ko": "2026 인천개항장 페스타 - 1901 라이브로드",
+    "kv": "tbc",
+    "signals": [
+     "img",
+     "geo",
+     "date"
+    ],
+    "apiId": "3496655"
+   },
+   "4074860": {
+    "ko": "남해 마늘한우축제",
+    "kv": "tbc",
+    "signals": [
+     "img",
+     "tel",
+     "geo",
+     "date"
+    ],
+    "apiId": "141578"
+   }
+  },
+  "zh": {
+   "331967": {
+    "ko": "음성품바축제",
+    "kv": "tbc",
+    "signals": [
+     "img",
+     "tel",
+     "geo",
+     "date"
+    ],
+    "apiId": "141731"
+   },
+   "692706": {
+    "ko": "보령머드축제",
+    "kv": "confirmed",
+    "signals": [
+     "img",
+     "geo",
+     "date"
+    ],
+    "apiId": "506534"
+   },
+   "692714": {
+    "ko": "안동국제탈춤페스티벌",
+    "kv": "confirmed",
+    "signals": [
+     "img",
+     "tel",
+     "geo",
+     "date"
+    ],
+    "apiId": "506670"
+   },
+   "692725": {
+    "ko": "춘천마임축제",
+    "kv": "tbc",
+    "signals": [
+     "img",
+     "tel",
+     "geo",
+     "date"
+    ],
+    "apiId": "506942"
+   },
+   "692782": {
+    "ko": "진주남강유등축제",
+    "kv": "confirmed",
+    "signals": [
+     "img",
+     "geo",
+     "date"
+    ],
+    "apiId": "506926"
+   },
+   "692791": {
+    "ko": "무주반딧불축제",
+    "kv": "confirmed",
+    "signals": [
+     "img",
+     "tel",
+     "geo",
+     "date"
+    ],
+    "apiId": "506523"
+   },
+   "694534": {
+    "ko": "통영한산대첩축제",
+    "kv": "confirmed",
+    "signals": [
+     "img",
+     "tel",
+     "geo",
+     "date"
+    ],
+    "apiId": "507454"
+   },
+   "694621": {
+    "ko": "안성맞춤 남사당 바우덕이축제",
+    "kv": "confirmed",
+    "signals": [
+     "img",
+     "tel",
+     "geo",
+     "date"
+    ],
+    "apiId": "506690"
+   },
+   "694622": {
+    "ko": "정선아리랑제",
+    "kv": "confirmed",
+    "signals": [
+     "tel",
+     "geo",
+     "date"
+    ],
+    "apiId": "506895"
+   },
+   "699068": {
+    "ko": "화천산천어축제",
+    "kv": "confirmed",
+    "signals": [
+     "img",
+     "geo",
+     "date"
+    ],
+    "apiId": "507599"
+   },
+   "699204": {
+    "ko": "추억의충장축제",
+    "kv": "confirmed",
+    "signals": [
+     "img",
+     "tel",
+     "geo",
+     "date"
+    ],
+    "apiId": "692682"
+   },
+   "699213": {
+    "ko": "소래포구축제",
+    "kv": "confirmed",
+    "signals": [
+     "img",
+     "tel",
+     "date"
+    ],
+    "apiId": "506809"
+   },
+   "699220": {
+    "ko": "인천펜타포트 락 페스티벌",
+    "kv": "confirmed",
+    "signals": [
+     "img",
+     "tel",
+     "geo",
+     "date"
+    ],
+    "apiId": "561027"
+   },
+   "699255": {
+    "ko": "평창효석문화제",
+    "kv": "confirmed",
+    "signals": [
+     "img",
+     "tel",
+     "geo",
+     "date"
+    ],
+    "apiId": "507635"
+   },
+   "702171": {
+    "ko": "진해군항제",
+    "kv": "tbc",
+    "signals": [
+     "img",
+     "tel",
+     "geo",
+     "date"
+    ],
+    "apiId": "523079"
+   },
+   "703102": {
+    "ko": "이천도자기축제",
+    "kv": "tbc",
+    "signals": [
+     "img",
+     "geo",
+     "date"
+    ],
+    "apiId": "527710"
+   },
+   "703953": {
+    "ko": "김제지평선축제",
+    "kv": "confirmed",
+    "signals": [
+     "img",
+     "tel",
+     "geo",
+     "date"
+    ],
+    "apiId": "574285"
+   },
+   "707644": {
+    "ko": "논산딸기축제",
+    "kv": "tbc",
+    "signals": [
+     "img",
+     "tel",
+     "geo",
+     "date"
+    ],
+    "apiId": "525292"
+   },
+   "714142": {
+    "ko": "서울거리예술축제",
+    "kv": "confirmed",
+    "signals": [
+     "img",
+     "tel",
+     "date"
+    ],
+    "apiId": "706180"
+   },
+   "768646": {
+    "ko": "정남진장흥물축제",
+    "kv": "confirmed",
+    "signals": [
+     "img",
+     "geo",
+     "date"
+    ],
+    "apiId": "767114"
+   },
+   "791059": {
+    "ko": "서울세계불꽃축제",
+    "kv": "confirmed",
+    "signals": [
+     "img",
+     "tel",
+     "geo"
+    ],
+    "apiId": "631268"
+   },
+   "873710": {
+    "ko": "평창송어축제",
+    "kv": "est",
+    "signals": [
+     "img",
+     "tel",
+     "geo",
+     "date"
+    ],
+    "apiId": "386053"
+   },
+   "976890": {
+    "ko": "수원화성문화제",
+    "kv": "confirmed",
+    "signals": [
+     "img",
+     "tel",
+     "geo",
+     "date"
+    ],
+    "apiId": "914138"
+   },
+   "1117166": {
+    "ko": "서울빛초롱축제",
+    "kv": "est",
+    "signals": [
+     "img",
+     "tel"
+    ],
+    "apiId": "1095732"
+   },
+   "1827968": {
+    "ko": "대구치맥페스티벌",
+    "kv": "confirmed",
+    "signals": [
+     "img",
+     "tel",
+     "geo",
+     "date"
+    ],
+    "apiId": "1801011"
+   },
+   "1832072": {
+    "ko": "부산국제록페스티벌",
+    "kv": "confirmed",
+    "signals": [
+     "img",
+     "geo",
+     "date"
+    ],
+    "apiId": "140799"
+   },
+   "1899699": {
+    "ko": "강릉커피축제",
+    "kv": "confirmed",
+    "signals": [
+     "img",
+     "geo",
+     "date"
+    ],
+    "apiId": "825295"
+   },
+   "2485861": {
+    "ko": "시흥갯골축제",
+    "kv": "confirmed",
+    "signals": [
+     "img",
+     "geo",
+     "date"
+    ],
+    "apiId": "142197"
+   },
+   "2589550": {
+    "ko": "임실N치즈축제",
+    "kv": "confirmed",
+    "signals": [
+     "tel",
+     "geo",
+     "date"
+    ],
+    "apiId": "2031318"
+   },
+   "3332440": {
+    "ko": "고령 대가야축제",
+    "kv": "tbc",
+    "signals": [
+     "img",
+     "tel",
+     "geo",
+     "date"
+    ],
+    "apiId": "2667017"
+   },
+   "3502113": {
+    "ko": "2026 인천개항장 페스타 - 1901 라이브로드",
+    "kv": "tbc",
+    "signals": [
+     "img",
+     "geo",
+     "date"
+    ],
+    "apiId": "3496655"
+   },
+   "4076125": {
+    "ko": "남해 마늘한우축제",
+    "kv": "tbc",
+    "signals": [
+     "img",
+     "tel",
+     "geo",
+     "date"
+    ],
+    "apiId": "141578"
+   }
+  },
+  "tw": {
+   "333292": {
+    "ko": "음성품바축제",
+    "kv": "tbc",
+    "signals": [
+     "img",
+     "tel",
+     "geo",
+     "date"
+    ],
+    "apiId": "141731"
+   },
+   "629191": {
+    "ko": "안동국제탈춤페스티벌",
+    "kv": "confirmed",
+    "signals": [
+     "img",
+     "tel",
+     "geo",
+     "date"
+    ],
+    "apiId": "506670"
+   },
+   "691038": {
+    "ko": "정선아리랑제",
+    "kv": "confirmed",
+    "signals": [
+     "img",
+     "tel",
+     "geo",
+     "date"
+    ],
+    "apiId": "506895"
+   },
+   "692687": {
+    "ko": "보령머드축제",
+    "kv": "confirmed",
+    "signals": [
+     "img",
+     "geo",
+     "date"
+    ],
+    "apiId": "506534"
+   },
+   "693713": {
+    "ko": "춘천마임축제",
+    "kv": "tbc",
+    "signals": [
+     "img",
+     "tel",
+     "geo",
+     "date"
+    ],
+    "apiId": "506942"
+   },
+   "694270": {
+    "ko": "진주남강유등축제",
+    "kv": "confirmed",
+    "signals": [
+     "img",
+     "geo",
+     "date"
+    ],
+    "apiId": "506926"
+   },
+   "694965": {
+    "ko": "무주반딧불축제",
+    "kv": "confirmed",
+    "signals": [
+     "img",
+     "tel",
+     "geo",
+     "date"
+    ],
+    "apiId": "506523"
+   },
+   "696167": {
+    "ko": "통영한산대첩축제",
+    "kv": "confirmed",
+    "signals": [
+     "img",
+     "tel",
+     "geo",
+     "date"
+    ],
+    "apiId": "507454"
+   },
+   "699053": {
+    "ko": "안성맞춤 남사당 바우덕이축제",
+    "kv": "confirmed",
+    "signals": [
+     "img",
+     "tel",
+     "geo",
+     "date"
+    ],
+    "apiId": "506690"
+   },
+   "699263": {
+    "ko": "김제지평선축제",
+    "kv": "confirmed",
+    "signals": [
+     "img",
+     "tel",
+     "geo",
+     "date"
+    ],
+    "apiId": "574285"
+   },
+   "699333": {
+    "ko": "인천펜타포트 락 페스티벌",
+    "kv": "confirmed",
+    "signals": [
+     "img",
+     "tel",
+     "geo",
+     "date"
+    ],
+    "apiId": "561027"
+   },
+   "699337": {
+    "ko": "소래포구축제",
+    "kv": "confirmed",
+    "signals": [
+     "img",
+     "tel",
+     "geo",
+     "date"
+    ],
+    "apiId": "506809"
+   },
+   "699342": {
+    "ko": "평창효석문화제",
+    "kv": "confirmed",
+    "signals": [
+     "img",
+     "tel",
+     "geo",
+     "date"
+    ],
+    "apiId": "507635"
+   },
+   "701457": {
+    "ko": "진해군항제",
+    "kv": "tbc",
+    "signals": [
+     "img",
+     "tel",
+     "geo",
+     "date"
+    ],
+    "apiId": "523079"
+   },
+   "702207": {
+    "ko": "화천산천어축제",
+    "kv": "confirmed",
+    "signals": [
+     "img",
+     "geo",
+     "date"
+    ],
+    "apiId": "507599"
+   },
+   "705916": {
+    "ko": "이천도자기축제",
+    "kv": "tbc",
+    "signals": [
+     "img",
+     "geo",
+     "date"
+    ],
+    "apiId": "527710"
+   },
+   "708506": {
+    "ko": "논산딸기축제",
+    "kv": "tbc",
+    "signals": [
+     "img",
+     "tel",
+     "geo",
+     "date"
+    ],
+    "apiId": "525292"
+   },
+   "715073": {
+    "ko": "서울거리예술축제",
+    "kv": "confirmed",
+    "signals": [
+     "img",
+     "geo",
+     "date"
+    ],
+    "apiId": "706180"
+   },
+   "746141": {
+    "ko": "추억의충장축제",
+    "kv": "confirmed",
+    "signals": [
+     "img",
+     "tel",
+     "geo",
+     "date"
+    ],
+    "apiId": "692682"
+   },
+   "791062": {
+    "ko": "서울세계불꽃축제",
+    "kv": "confirmed",
+    "signals": [
+     "hp",
+     "geo"
+    ],
+    "apiId": "631268"
+   },
+   "874760": {
+    "ko": "평창송어축제",
+    "kv": "est",
+    "signals": [
+     "img",
+     "tel",
+     "geo",
+     "date"
+    ],
+    "apiId": "386053"
+   },
+   "985574": {
+    "ko": "수원화성문화제",
+    "kv": "confirmed",
+    "signals": [
+     "img",
+     "tel",
+     "geo",
+     "date"
+    ],
+    "apiId": "914138"
+   },
+   "1117216": {
+    "ko": "서울빛초롱축제",
+    "kv": "est",
+    "signals": [
+     "img",
+     "tel",
+     "geo"
+    ],
+    "apiId": "1095732"
+   },
+   "1821573": {
+    "ko": "정남진장흥물축제",
+    "kv": "confirmed",
+    "signals": [
+     "img",
+     "geo",
+     "date"
+    ],
+    "apiId": "767114"
+   },
+   "1825635": {
+    "ko": "대구치맥페스티벌",
+    "kv": "confirmed",
+    "signals": [
+     "img",
+     "tel",
+     "geo",
+     "date"
+    ],
+    "apiId": "1801011"
+   },
+   "1831866": {
+    "ko": "부산국제록페스티벌",
+    "kv": "confirmed",
+    "signals": [
+     "img",
+     "geo",
+     "date"
+    ],
+    "apiId": "140799"
+   },
+   "1851043": {
+    "ko": "강릉커피축제",
+    "kv": "confirmed",
+    "signals": [
+     "img",
+     "geo",
+     "date"
+    ],
+    "apiId": "825295"
+   },
+   "2470820": {
+    "ko": "시흥갯골축제",
+    "kv": "confirmed",
+    "signals": [
+     "img",
+     "geo",
+     "date"
+    ],
+    "apiId": "142197"
+   },
+   "2545843": {
+    "ko": "임실N치즈축제",
+    "kv": "confirmed",
+    "signals": [
+     "tel",
+     "geo",
+     "date"
+    ],
+    "apiId": "2031318"
+   },
+   "3331168": {
+    "ko": "고령 대가야축제",
+    "kv": "tbc",
+    "signals": [
+     "img",
+     "tel",
+     "geo",
+     "date"
+    ],
+    "apiId": "2667017"
+   },
+   "3480413": {
+    "ko": "완주삼례딸기대축제",
+    "kv": "tbc",
+    "signals": [
+     "img",
+     "tel",
+     "geo",
+     "date"
+    ],
+    "apiId": "3479057"
+   },
+   "3502867": {
+    "ko": "2026 인천개항장 페스타 - 1901 라이브로드",
+    "kv": "tbc",
+    "signals": [
+     "img",
+     "geo",
+     "date"
+    ],
+    "apiId": "3496655"
+   },
+   "4076173": {
+    "ko": "남해 마늘한우축제",
+    "kv": "tbc",
+    "signals": [
+     "img",
+     "tel",
+     "geo",
+     "date"
+    ],
+    "apiId": "141578"
+   }
+  }
+ },
+ "review": [
+  {
+   "lang": "en",
+   "id": "705394",
+   "title": "Jindo Miracle Sea Road Festival",
+   "why": "신호 1개(geo)뿐",
+   "ko": [
+    "진도신비의바닷길축제"
+   ]
+  },
+  {
+   "lang": "en",
+   "id": "3043397",
+   "title": "Gwanghwamun Market",
+   "why": "신호 1개(geo)뿐",
+   "ko": [
+    "서울빛초롱축제"
+   ]
+  },
+  {
+   "lang": "en",
+   "id": "4100946",
+   "title": "Starry Sea Busan - Night Camp Picnic",
+   "why": "신호 1개(geo)뿐",
+   "ko": [
+    "부산바다축제"
+   ]
+  },
+  {
+   "lang": "en",
+   "id": "3546717",
+   "title": "Bibliotheca Busan",
+   "why": "신호 1개(geo)뿐",
+   "ko": [
+    "부산바다축제"
+   ]
+  },
+  {
+   "lang": "ja",
+   "id": "1016771",
+   "title": "釜山花火祭り",
+   "why": "신호 1개(geo)뿐",
+   "ko": [
+    "부산불꽃축제"
+   ]
+  },
+  {
+   "lang": "ja",
+   "id": "3352420",
+   "title": "屋根部屋のネコ",
+   "why": "신호 1개(geo)뿐",
+   "ko": [
+    "D.FESTA 거리공연축제"
+   ]
+  },
+  {
+   "lang": "ja",
+   "id": "4103875",
+   "title": "星の海・釜山「ナイトミュージック・キャンクニック」",
+   "why": "신호 1개(geo)뿐",
+   "ko": [
+    "부산바다축제"
+   ]
+  },
+  {
+   "lang": "ja",
+   "id": "3497773",
+   "title": "釜山パダ図書館",
+   "why": "신호 1개(geo)뿐",
+   "ko": [
+    "부산바다축제"
+   ]
+  },
+  {
+   "lang": "zh",
+   "id": "1808199",
+   "title": "釜山烟花庆典",
+   "why": "신호 1개(geo)뿐",
+   "ko": [
+    "부산불꽃축제"
+   ]
+  },
+  {
+   "lang": "zh",
+   "id": "3352392",
+   "title": "屋塔房小猫",
+   "why": "신호 1개(geo)뿐",
+   "ko": [
+    "D.FESTA 거리공연축제"
+   ]
+  },
+  {
+   "lang": "tw",
+   "id": "699340",
+   "title": "珍島神祕海路慶典",
+   "why": "신호 1개(geo)뿐",
+   "ko": [
+    "진도신비의바닷길축제"
+   ]
+  },
+  {
+   "lang": "tw",
+   "id": "333373",
+   "title": "釜山海洋節",
+   "why": "신호 1개(geo)뿐",
+   "ko": [
+    "부산바다축제"
+   ]
+  },
+  {
+   "lang": "tw",
+   "id": "1113727",
+   "title": "釜山煙火節",
+   "why": "신호 1개(geo)뿐",
+   "ko": [
+    "부산불꽃축제"
+   ]
+  },
+  {
+   "lang": "tw",
+   "id": "3352405",
+   "title": "屋塔房小貓",
+   "why": "신호 1개(geo)뿐",
+   "ko": [
+    "D.FESTA 거리공연축제"
+   ]
+  }
+ ],
+ "removed": [],
+ "conflicts": []
+}

@@ -27,6 +27,8 @@ const P = path.join(__dirname, 'data', 'festivals.json');
 const PA = path.join(__dirname, 'data', 'festivals_api.json');
 const PL = path.join(__dirname, 'data', 'festival_confirm_log.json');
 const PC = path.join(__dirname, 'data', 'festival_candidates.json');
+const PW = path.join(__dirname, 'data', 'festival_wishlist.json');    // 외국인 선호인데 한국어 목록에 없는 축제(intl-picks.js 자동)
+const PP = path.join(__dirname, 'data', 'festival_priority.json');    // 외국인 선호인데 미확정인 한국어 축제(intl-picks.js 자동)
 
 const raw = fs.readFileSync(P, 'utf8');
 const data = JSON.parse(raw);
@@ -123,7 +125,16 @@ async function verifyAll(urls, s, e) {
 
   // 조사자: 서로 다른 사이트 2곳이 기계 검증을 통과해야 후보가 된다
   if (args[0] === '--propose') {
-    const [, name, s, e, u1, u2, place] = args; const f = findF(name); checkDates(s, e);
+    const [, name, s, e, u1, u2, place] = args; checkDates(s, e);
+    // 외국인 선호 축제인데 한국어 목록에 없던 것(intl-picks.js 가 자동으로 올린 대기열) — 검증을 통과하면 새 줄로 들어간다
+    let f = L.find(x => x.name === name), isNew = false;
+    if (!f) {
+      const w = (fs.existsSync(PW) ? JSON.parse(fs.readFileSync(PW, 'utf8')) : []).find(x => x.name === name);
+      if (!w) { console.log(`❌ 이름이 없음(한국어 목록·외국인 선호 대기열 모두): ${name}`); process.exit(1); }
+      if (!w.region || !w.city) { console.log(`❌ 대기열 항목에 시·도/시·군 정보가 없음 — intl_evidence.json meta 보강 필요: ${name}`); process.exit(1); }
+      f = { name, region: w.region, city: w.city, place: place || '', start: s, end: e, month: [], category: w.category || '축제', desc: w.desc || '', confirmed: false, addedFrom: 'intl-wishlist' };
+      isNew = true;
+    }
     if (!u1 || !u2 || host(u1) === host(u2)) { console.log('❌ 근거 2곳 필요(서로 다른 사이트)'); process.exit(1); }
     console.log(`🔎 조사자 근거 검증 — ${name} ${s}~${e}`);
     const v = await verifyAll([u1, u2], s, e);
@@ -133,6 +144,7 @@ async function verifyAll(urls, s, e) {
     const was = cands[name] ? cands[name].from : `${f.start}~${f.end}`;
     cands[name] = { start: s, end: e, place: place || '', sources: v.map(x => x.url), proposedAt: today, from: was };
     f.start = s; f.end = e; f.month = months(s, e); f.pending = true; if (place) f.place = place; changed++;
+    if (isNew) { L.push(f); console.log(`🆕 외국인 선호 대기열 → 한국어 목록에 새로 추가: ${name}`); }
     log.push({ at: today, name, propose: `${s}~${e}`, from: was, place: place || undefined, sources: v.map(x => x.url) });
     saveAll(); console.log(`📋 후보 등록·반영(미확정): ${name} ${was} → ${s}~${e} — 검증자(--approve)의 독립 확인을 기다림`); return;
   }
@@ -198,8 +210,15 @@ async function verifyAll(urls, s, e) {
   const lim = addDays(today, DAYS), past = addDays(today, -PAST_DAYS);
   const lastNote = n => [...log].reverse().find(x => x.name === n && (x.note || x.mismatch));
   const line = f => { const nt = lastNote(f.name); return `- ${f.name} | 적힌 날짜 ${f.start}~${f.end} | ${f.city || ''} ${f.place || ''}${f.apiSource ? ' | 공공데이터 1곳' : ''}${nt ? ` | 지난 기록(${nt.at}): ${nt.note || nt.mismatch}` : ''}`; };
-  const up = L.filter(f => !f.confirmed && !cands[f.name] && f.end >= today && f.start <= lim).sort((a, b) => a.start < b.start ? -1 : 1);
-  const gone = L.filter(f => !f.confirmed && !cands[f.name] && f.end < today && f.end >= past).sort((a, b) => a.end < b.end ? 1 : -1);
+  // ⓪ 외국인 선호(외국어판 선정, intl-picks.js 자동) — 조사자는 이것부터. 외국어판 신뢰가 여기서 갈린다.
+  const readA = p => { try { return JSON.parse(fs.readFileSync(p, 'utf8')); } catch (e) { return []; } };
+  const prio = new Set(readA(PP)); const wish = readA(PW).filter(w => !L.some(x => x.name === w.name) && !cands[w.name]);
+  const pf = L.filter(f => prio.has(f.name) && !f.confirmed && !cands[f.name]);
+  console.log(`\n⭐ 조사 필요 ⓪ 외국인 선호 축제 — 먼저 할 것: 미확정 ${pf.length}건 + 한국어 목록에 없는 것 ${wish.length}건`);
+  pf.forEach(f => console.log(line(f)));
+  wish.forEach(w => console.log(`- ${w.name} | 새 축제(한국어 목록에 없음 — --propose 로 넣는다) | ${w.region} ${w.city}${w.apiTitle ? ` | 공공데이터 «${w.apiTitle}»` : ''} | 선호 언어: ${w.langs.join(',')}`));
+  const up = L.filter(f => !f.confirmed && !cands[f.name] && !prio.has(f.name) && f.end >= today && f.start <= lim).sort((a, b) => a.start < b.start ? -1 : 1);
+  const gone = L.filter(f => !f.confirmed && !cands[f.name] && !prio.has(f.name) && f.end < today && f.end >= past).sort((a, b) => a.end < b.end ? 1 : -1);
   console.log(`\n🔎 조사 필요 ① 곧 열림 (미확정 · ${DAYS}일 안): ${up.length}건`); up.forEach(f => console.log(line(f)));
   console.log(`\n🔎 조사 필요 ② 날짜가 지났는데 미확정 (사이트엔 «올해 일정 확인 중»): ${gone.length}건 — 최근 것부터`); gone.forEach(f => console.log(line(f)));
   const wait = Object.entries(cands);

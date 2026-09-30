@@ -1,0 +1,3641 @@
+{
+ "_readme": "외국어판 «그 나라 사람들이 좋아하는 축제» 근거 레지스트리 (2026-09-30). intl-evidence.js 가 매주 각 URL 을 직접 열어 needles(모두)가 페이지에 실제로 있는지 확인한다 — 통과한 근거만 intl-picks.js 점수에 들어간다. kind: stat(국적별 통계)=3 · agency(그 나라 여행사 상품)=2 · ota(예약 플랫폼 상품·실적)=2 · target(지자체 해외 타깃 명시)=2 · media(추천 기사·목록)=1. meta 는 한국어 목록에 아직 없는 축제를 교차검증 대기열에 올릴 때 쓰는 기본 정보.",
+ "meta": {
+  "대구약령시한방문화축제": {
+   "region": "대구",
+   "city": "중구",
+   "category": "전통",
+   "desc": "약령시 한방 체험·약초 장터"
+  },
+  "포항국제불빛축제": {
+   "region": "경북",
+   "city": "포항시",
+   "category": "불꽃",
+   "desc": "영일대 해변 국제 불꽃쇼"
+  },
+  "탐라문화제": {
+   "region": "제주",
+   "city": "제주시",
+   "category": "전통",
+   "desc": "제주 대표 전통문화 축제"
+  },
+  "연등회": {
+   "region": "서울",
+   "city": "종로구",
+   "category": "전통",
+   "desc": "국가무형유산 연등 행렬(국가유산·유네스코 인류무형유산)"
+  },
+  "함안낙화놀이": {
+   "region": "경남",
+   "city": "함안군",
+   "category": "전통",
+   "desc": "숯가루 불꽃이 물 위로 떨어지는 전통 불놀이"
+  },
+  "강릉단오제": {
+   "region": "강원",
+   "city": "강릉시",
+   "category": "전통",
+   "desc": "유네스코 인류무형유산 단오 축제"
+  }
+ },
+ "items": [
+  {
+   "id": "datalab-zh-fireworks",
+   "langs": [
+    "zh"
+   ],
+   "ko": "서울세계불꽃축제",
+   "kind": "stat",
+   "claim": "관광공사 데이터랩(2024): 중국인 방문 1위 축제",
+   "url": "https://v.daum.net/v/GieojnEQSF",
+   "needles": [
+    "중국",
+    "서울세계불꽃축제"
+   ]
+  },
+  {
+   "id": "datalab-zh-mud",
+   "langs": [
+    "zh"
+   ],
+   "ko": "보령머드축제",
+   "kind": "stat",
+   "claim": "관광공사 데이터랩(2024): 중국인 방문 2위 축제",
+   "url": "https://v.daum.net/v/GieojnEQSF",
+   "needles": [
+    "중국",
+    "보령머드"
+   ]
+  },
+  {
+   "id": "datalab-en-suwon",
+   "langs": [
+    "en"
+   ],
+   "ko": "수원화성문화제",
+   "kind": "stat",
+   "claim": "관광공사 데이터랩(2024): 미국인 방문 1위 축제",
+   "url": "https://v.daum.net/v/GieojnEQSF",
+   "needles": [
+    "미국",
+    "수원화성문화제"
+   ]
+  },
+  {
+   "id": "datalab-en-mime",
+   "langs": [
+    "en"
+   ],
+   "ko": "춘천마임축제",
+   "kind": "stat",
+   "claim": "관광공사 데이터랩(2024): 미국인 방문 2위 축제",
+   "url": "https://v.daum.net/v/GieojnEQSF",
+   "needles": [
+    "미국",
+    "춘천마임"
+   ]
+  },
+  {
+   "id": "datalab-en-jinju",
+   "langs": [
+    "en"
+   ],
+   "ko": "진주남강유등축제",
+   "kind": "stat",
+   "claim": "관광공사 데이터랩(2024): 미국인 방문 3위 축제",
+   "url": "https://v.daum.net/v/GieojnEQSF",
+   "needles": [
+    "미국",
+    "진주남강유등"
+   ]
+  },
+  {
+   "id": "datalab-tw-hwacheon",
+   "langs": [
+    "tw"
+   ],
+   "ko": "화천산천어축제",
+   "kind": "stat",
+   "claim": "관광공사 데이터랩(2024): 대만인 방문 1위 축제",
+   "url": "https://v.daum.net/v/GieojnEQSF",
+   "needles": [
+    "대만",
+    "산천어"
+   ]
+  },
+  {
+   "id": "datalab-tw-yakryeong",
+   "langs": [
+    "tw"
+   ],
+   "ko": "대구약령시한방문화축제",
+   "kind": "stat",
+   "claim": "관광공사 데이터랩(2024): 대만인 방문 2위 축제",
+   "url": "https://v.daum.net/v/GieojnEQSF",
+   "needles": [
+    "대만",
+    "약령시"
+   ]
+  },
+  {
+   "id": "datalab-all-fireworks",
+   "langs": [
+    "en",
+    "ja",
+    "zh",
+    "tw"
+   ],
+   "ko": "서울세계불꽃축제",
+   "kind": "media",
+   "claim": "2024 외국인 축제 방문 1위(19.6%)",
+   "url": "https://v.daum.net/v/Q4UHUQHE1l",
+   "needles": [
+    "서울세계불꽃축제"
+   ]
+  },
+  {
+   "id": "datalab-all-tamna",
+   "langs": [
+    "zh"
+   ],
+   "ko": "탐라문화제",
+   "kind": "media",
+   "claim": "2024 외국인 축제 방문 2위(제주 외국인 70%가 중국인)",
+   "url": "https://v.daum.net/v/Q4UHUQHE1l",
+   "needles": [
+    "탐라문화제"
+   ]
+  },
+  {
+   "id": "datalab-all-hwacheon",
+   "langs": [
+    "en",
+    "tw"
+   ],
+   "ko": "화천산천어축제",
+   "kind": "media",
+   "claim": "2024 외국인 축제 방문 3위",
+   "url": "https://v.daum.net/v/Q4UHUQHE1l",
+   "needles": [
+    "산천어"
+   ]
+  },
+  {
+   "id": "klook-jinhae-en",
+   "langs": [
+    "en"
+   ],
+   "ko": "진해군항제",
+   "kind": "ota",
+   "claim": "클룩 영문 진해 벚꽃 당일투어(예약 2만 건+)",
+   "url": "https://www.klook.com/en-US/activity/3024-jinhae-cherry-blossom-festival-seoul/",
+   "needles": [
+    "Jinhae"
+   ]
+  },
+  {
+   "id": "klook-jinhae-zh",
+   "langs": [
+    "zh"
+   ],
+   "ko": "진해군항제",
+   "kind": "ota",
+   "claim": "클룩 간체 진해 벚꽃 투어",
+   "url": "https://www.klook.com/zh-CN/activity/3024-jinhae-cherry-blossom-festival-seoul/",
+   "needles": [
+    "镇海"
+   ]
+  },
+  {
+   "id": "sedaily-sakura",
+   "langs": [
+    "ja",
+    "zh",
+    "en"
+   ],
+   "ko": "진해군항제",
+   "kind": "ota",
+   "claim": "트립닷컴: 한국 벚꽃 예약 송출 1위 일본·2위 중국",
+   "url": "https://en.sedaily.com/culture/2026/04/10/korea-becomes-top-global-destination-for-spring-cherry",
+   "needles": [
+    "Jinhae"
+   ]
+  },
+  {
+   "id": "hanchao-jinhae",
+   "langs": [
+    "zh"
+   ],
+   "ko": "진해군항제",
+   "kind": "media",
+   "claim": "韩巢 「一生一定要去一次的镇海樱花节」",
+   "url": "https://www.hanchao.com/contents/hot_report_detail.html?id=19930",
+   "needles": [
+    "镇海"
+   ]
+  },
+  {
+   "id": "colatour-sakura",
+   "langs": [
+    "tw"
+   ],
+   "ko": "진해군항제",
+   "kind": "agency",
+   "claim": "대만 可樂旅遊 한국 벚꽃 상품(진해)",
+   "url": "https://www.colatour.com.tw/webDM/theme/flower/kr_sakura.html",
+   "needles": [
+    "鎮海"
+   ]
+  },
+  {
+   "id": "kkday-jinhae-tw",
+   "langs": [
+    "tw"
+   ],
+   "ko": "진해군항제",
+   "kind": "ota",
+   "claim": "KKday 대만판 진해 벚꽃 전용 글",
+   "url": "https://www.kkday.com/zh-tw/blog/35942/asia-korea-busan-cherry-blossom",
+   "needles": [
+    "鎮海"
+   ]
+  },
+  {
+   "id": "daum-tw-charter-jinhae",
+   "langs": [
+    "tw"
+   ],
+   "ko": "진해군항제",
+   "kind": "agency",
+   "claim": "대만 전세기 관광객 진해군항제 방문(2026-04)",
+   "url": "https://v.daum.net/v/20260403113146070",
+   "needles": [
+    "대만",
+    "진해"
+   ]
+  },
+  {
+   "id": "jptrip-jinhae",
+   "langs": [
+    "ja"
+   ],
+   "ko": "진해군항제",
+   "kind": "media",
+   "claim": "트립닷컴 일본판 「韓国の祭り12選」",
+   "url": "https://jp.trip.com/guide/info/%E9%9F%93%E5%9B%BD%E3%81%AE%E7%A5%AD%E3%82%8A.html",
+   "needles": [
+    "鎮海"
+   ]
+  },
+  {
+   "id": "hankyu-busan-fw",
+   "langs": [
+    "ja"
+   ],
+   "ko": "부산불꽃축제",
+   "kind": "agency",
+   "claim": "한큐교통사 부산불꽃축제 관람 투어",
+   "url": "https://www.hankyu-travel.com/tour/detail_i.php?p_course_id=KT3386&p_hei=10",
+   "needles": [
+    "釜山",
+    "花火"
+   ]
+  },
+  {
+   "id": "his-busan-fw",
+   "langs": [
+    "ja"
+   ],
+   "ko": "부산불꽃축제",
+   "kind": "agency",
+   "claim": "HIS 부산 불꽃 투어",
+   "url": "https://tour.his-j.com/03A_20/NN-FPL3300-Z788A/",
+   "needles": [
+    "釜山",
+    "花火"
+   ]
+  },
+  {
+   "id": "nishitetsu-busan-fw",
+   "langs": [
+    "ja"
+   ],
+   "ko": "부산불꽃축제",
+   "kind": "agency",
+   "claim": "니시테쓰여행 부산 불꽃 투어(후쿠오카 출발)",
+   "url": "https://www.nishitetsutravel.jp/seoul-pusantour/pusan-hanabi",
+   "needles": [
+    "釜山",
+    "花火"
+   ]
+  },
+  {
+   "id": "yomiuri-busan-fw",
+   "langs": [
+    "ja"
+   ],
+   "ko": "부산불꽃축제",
+   "kind": "agency",
+   "claim": "요미우리여행 부산 불꽃 페어",
+   "url": "https://www.yomiuri-ryokou.co.jp/s/fair/kaigai/korea/busan_fireworks/",
+   "needles": [
+    "釜山",
+    "花火"
+   ]
+  },
+  {
+   "id": "konest-busan-fw",
+   "langs": [
+    "ja"
+   ],
+   "ko": "부산불꽃축제",
+   "kind": "ota",
+   "claim": "코네스트 주목 이벤트(예약 가능)",
+   "url": "https://www.konest.com/contents/spot_event_detail.html?id=16342",
+   "needles": [
+    "釜山",
+    "花火"
+   ]
+  },
+  {
+   "id": "hankyu-jinju-hamman",
+   "langs": [
+    "ja"
+   ],
+   "ko": "진주남강유등축제",
+   "kind": "agency",
+   "claim": "한큐 「咸安落火ノリと晋州南江流灯祭り」 상품",
+   "url": "https://www.hankyu-travel.com/tour/detail_i.php?p_hei=60&p_course_id=KF43020",
+   "needles": [
+    "晋州",
+    "流灯"
+   ]
+  },
+  {
+   "id": "hankyu-hamman",
+   "langs": [
+    "ja"
+   ],
+   "ko": "함안낙화놀이",
+   "kind": "agency",
+   "claim": "한큐 함안낙화놀이 + 진주유등 상품",
+   "url": "https://www.hankyu-travel.com/tour/detail_i.php?p_hei=60&p_course_id=KF43020",
+   "needles": [
+    "咸安",
+    "落火"
+   ]
+  },
+  {
+   "id": "4travel-lantern",
+   "langs": [
+    "ja"
+   ],
+   "ko": "서울빛초롱축제",
+   "kind": "media",
+   "claim": "4travel 한국 축제 순위 상위(청계천 랜턴)",
+   "url": "https://4travel.jp/overseas/area/asia/korea/event",
+   "needles": [
+    "清渓川"
+   ]
+  },
+  {
+   "id": "4travel-jagalchi",
+   "langs": [
+    "ja"
+   ],
+   "ko": "부산자갈치축제",
+   "kind": "media",
+   "claim": "4travel 한국 축제 순위(자갈치)",
+   "url": "https://4travel.jp/overseas/area/asia/korea/event",
+   "needles": [
+    "チャガルチ"
+   ]
+  },
+  {
+   "id": "4travel-busan-fw",
+   "langs": [
+    "ja"
+   ],
+   "ko": "부산불꽃축제",
+   "kind": "media",
+   "claim": "4travel 한국 축제 순위(부산 불꽃)",
+   "url": "https://4travel.jp/overseas/area/asia/korea/event",
+   "needles": [
+    "釜山",
+    "花火"
+   ]
+  },
+  {
+   "id": "jptrip-andong",
+   "langs": [
+    "ja"
+   ],
+   "ko": "안동국제탈춤페스티벌",
+   "kind": "media",
+   "claim": "트립닷컴 일본판 12선",
+   "url": "https://jp.trip.com/guide/info/%E9%9F%93%E5%9B%BD%E3%81%AE%E7%A5%AD%E3%82%8A.html",
+   "needles": [
+    "安東"
+   ]
+  },
+  {
+   "id": "creatrip-chimac",
+   "langs": [
+    "ja"
+   ],
+   "ko": "대구치맥페스티벌",
+   "kind": "media",
+   "claim": "크리에이트립 일본어판 인기 축제",
+   "url": "https://creatrip.com/ja/blog/12578",
+   "needles": [
+    "チメク"
+   ]
+  },
+  {
+   "id": "newspim-jinju-target",
+   "langs": [
+    "ja",
+    "tw"
+   ],
+   "ko": "진주남강유등축제",
+   "kind": "target",
+   "claim": "진주시 해외 1순위 타깃 일본·대만",
+   "url": "https://www.newspim.com/news/view/20260519000408",
+   "needles": [
+    "유등",
+    "대만",
+    "일본"
+   ]
+  },
+  {
+   "id": "newspim-busan-fw-tw",
+   "langs": [
+    "tw"
+   ],
+   "ko": "부산불꽃축제",
+   "kind": "target",
+   "claim": "부산시: 대만 여행사 대량 사전 예약",
+   "url": "https://www.newspim.com/news/view/20260904000501",
+   "needles": [
+    "불꽃",
+    "대만"
+   ]
+  },
+  {
+   "id": "travel4u-busan-fw",
+   "langs": [
+    "tw"
+   ],
+   "ko": "부산불꽃축제",
+   "kind": "agency",
+   "claim": "대만 山富旅遊 「釜山國際煙火節5日」",
+   "url": "https://www.travel4u.com.tw/en/group/itinerary/PUS05247CX/",
+   "needles": [
+    "煙火"
+   ]
+  },
+  {
+   "id": "eztravel-busan-fw",
+   "langs": [
+    "tw"
+   ],
+   "ko": "부산불꽃축제",
+   "kind": "agency",
+   "claim": "대만 易遊網 부산 불꽃 상품",
+   "url": "https://vacation.eztravel.com.tw/pkgfrn/p/VDR0000015695/PUS3AG5D",
+   "needles": [
+    "煙火"
+   ]
+  },
+  {
+   "id": "kkday-fw3-busan",
+   "langs": [
+    "tw"
+   ],
+   "ko": "부산불꽃축제",
+   "kind": "ota",
+   "claim": "KKday 대만판 「韓國三大煙火節」",
+   "url": "https://www.kkday.com/zh-tw/blog/210704/asia-korea-fireworks",
+   "needles": [
+    "釜山"
+   ]
+  },
+  {
+   "id": "kkday-fw3-seoul",
+   "langs": [
+    "tw"
+   ],
+   "ko": "서울세계불꽃축제",
+   "kind": "ota",
+   "claim": "KKday 대만판 「韓國三大煙火節」",
+   "url": "https://www.kkday.com/zh-tw/blog/210704/asia-korea-fireworks",
+   "needles": [
+    "首爾"
+   ]
+  },
+  {
+   "id": "kkday-fw3-pohang",
+   "langs": [
+    "tw"
+   ],
+   "ko": "포항국제불빛축제",
+   "kind": "ota",
+   "claim": "KKday 대만판 「韓國三大煙火節」",
+   "url": "https://www.kkday.com/zh-tw/blog/210704/asia-korea-fireworks",
+   "needles": [
+    "浦項"
+   ]
+  },
+  {
+   "id": "2news-seoul-fw-tw",
+   "langs": [
+    "tw"
+   ],
+   "ko": "서울세계불꽃축제",
+   "kind": "agency",
+   "claim": "서울관광재단×대만 可樂旅遊 불꽃 상품 조기 완판",
+   "url": "https://www.2news.co.kr/news/articleView.html?idxno=19080",
+   "needles": [
+    "불꽃",
+    "대만"
+   ]
+  },
+  {
+   "id": "shinailbo-hwacheon-tw",
+   "langs": [
+    "tw"
+   ],
+   "ko": "화천산천어축제",
+   "kind": "target",
+   "claim": "화천군 대만 마케팅(대만 여행사 경유 약 1만 명)",
+   "url": "https://www.shinailbo.co.kr/news/articleView.html?idxno=5022690",
+   "needles": [
+    "산천어"
+   ]
+  },
+  {
+   "id": "asiae-hwacheon-sea",
+   "langs": [
+    "en",
+    "tw"
+   ],
+   "ko": "화천산천어축제",
+   "kind": "stat",
+   "claim": "외국인 11만 명 이상 — 대만·태국·말레이시아·싱가포르",
+   "url": "https://view.asiae.co.kr/article/2026012010215265191",
+   "needles": [
+    "산천어",
+    "외국인"
+   ]
+  },
+  {
+   "id": "klook-hwacheon",
+   "langs": [
+    "en"
+   ],
+   "ko": "화천산천어축제",
+   "kind": "ota",
+   "claim": "클룩 화천+아침고요 투어",
+   "url": "https://www.klook.com/activity/26490-hwacheon-sancheoneo-ice-morning-calm-lighting-festival-seoul/",
+   "needles": [
+    "Hwacheon"
+   ]
+  },
+  {
+   "id": "herald-mud",
+   "langs": [
+    "en"
+   ],
+   "ko": "보령머드축제",
+   "kind": "media",
+   "claim": "코리아헤럴드 — 외국인 참가 대표 축제",
+   "url": "https://www.koreaherald.com/article/16249",
+   "needles": [
+    "Boryeong"
+   ]
+  },
+  {
+   "id": "klook-mud",
+   "langs": [
+    "en"
+   ],
+   "ko": "보령머드축제",
+   "kind": "ota",
+   "claim": "클룩 영문 보령머드 투어",
+   "url": "https://www.klook.com/en-MY/activity/3774-boryeong-mud-festival-seoul/",
+   "needles": [
+    "Boryeong"
+   ]
+  },
+  {
+   "id": "herald-global-suwon",
+   "langs": [
+    "en"
+   ],
+   "ko": "수원화성문화제",
+   "kind": "media",
+   "claim": "정부 지정 글로벌 축제 3곳",
+   "url": "https://www.koreaherald.com/article/10692986",
+   "needles": [
+    "Suwon"
+   ]
+  },
+  {
+   "id": "herald-global-penta",
+   "langs": [
+    "en"
+   ],
+   "ko": "인천펜타포트 락 페스티벌",
+   "kind": "media",
+   "claim": "정부 지정 글로벌 축제 3곳",
+   "url": "https://www.koreaherald.com/article/10692986",
+   "needles": [
+    "Pentaport"
+   ]
+  },
+  {
+   "id": "timeout-lotus",
+   "langs": [
+    "en"
+   ],
+   "ko": "연등회",
+   "kind": "media",
+   "claim": "타임아웃 서울 연등회 소개",
+   "url": "https://www.timeout.com/seoul/things-to-do/lotus-lantern-festival",
+   "needles": [
+    "Lotus Lantern"
+   ]
+  },
+  {
+   "id": "ibulgyo-lotus",
+   "langs": [
+    "en"
+   ],
+   "ko": "연등회",
+   "kind": "media",
+   "claim": "역대 최다 인파·외국인 참여 두드러짐",
+   "url": "http://www.ibulgyo.com/news/articleView.html?idxno=438427",
+   "needles": [
+    "연등회",
+    "외국인"
+   ]
+  },
+  {
+   "id": "edaily-lantern",
+   "langs": [
+    "en",
+    "tw"
+   ],
+   "ko": "서울빛초롱축제",
+   "kind": "target",
+   "claim": "대만·싱가포르 여행사 문의",
+   "url": "https://edaily.co.kr/News/Read?mediaCodeNo=257&newsId=01416966638761656",
+   "needles": [
+    "빛초롱"
+   ]
+  },
+  {
+   "id": "en-lp-danoje",
+   "langs": [
+    "en"
+   ],
+   "ko": "강릉단오제",
+   "kind": "media",
+   "claim": "Lonely Planet: 유네스코 강릉단오제 추천",
+   "url": "https://www.lonelyplanet.com/articles/best-time-to-visit-south-korea",
+   "needles": [
+    "Gangneung Danoje"
+   ]
+  },
+  {
+   "id": "en-wiki-danoje",
+   "langs": [
+    "en"
+   ],
+   "ko": "강릉단오제",
+   "kind": "media",
+   "claim": "영문 위키백과 강릉단오제",
+   "url": "https://en.wikipedia.org/wiki/Gangneung_Danoje_Festival",
+   "needles": [
+    "Danoje"
+   ]
+  },
+  {
+   "id": "en-trazy-coffee",
+   "langs": [
+    "en"
+   ],
+   "ko": "강릉커피축제",
+   "kind": "media",
+   "claim": "트레이지 영문 강릉커피축제·뮤직뱅크 당일투어",
+   "url": "https://www.trazy.com/experience/detail/gangneung-kpop-concert-1-day-tour",
+   "needles": [
+    "Gangneung Coffee Festival"
+   ],
+   "audit": "2026-09-30 독립 감사: 판매 종료된 옛 상품(원래 ota) → media 로 낮춤"
+  },
+  {
+   "id": "en-kte-coffee",
+   "langs": [
+    "en"
+   ],
+   "ko": "강릉커피축제",
+   "kind": "media",
+   "claim": "Korea Travel Easy 강릉커피축제·K-pop 콘서트 버스투어",
+   "url": "https://www.koreatraveleasy.com/product/gangneung-coffee-festival-k-pop-concert-bus-tour/",
+   "needles": [
+    "Coffee Festival"
+   ],
+   "audit": "2026-09-30 독립 감사: 판매 종료된 옛 상품(원래 ota) → media 로 낮춤"
+  },
+  {
+   "id": "en-soulofseoul-nonsan",
+   "langs": [
+    "en"
+   ],
+   "ko": "논산딸기축제",
+   "kind": "media",
+   "claim": "서울 거주 영어권 블로그 Soul of Seoul 봄 축제 목록(논산딸기축제)",
+   "url": "https://thesoulofseoul.net/complete-list-spring-festivals-korea/",
+   "needles": [
+    "Nonsan"
+   ]
+  },
+  {
+   "id": "en-soulofseoul-nonsan2",
+   "langs": [
+    "en"
+   ],
+   "ko": "논산딸기축제",
+   "kind": "media",
+   "claim": "Soul of Seoul 논산딸기축제 방문기",
+   "url": "https://thesoulofseoul.net/nonsan-strawberry-festival/",
+   "needles": [
+    "Nonsan Strawberry"
+   ]
+  },
+  {
+   "id": "en-trazy-daegwallyeong",
+   "langs": [
+    "en"
+   ],
+   "ko": "대관령눈꽃축제",
+   "kind": "media",
+   "claim": "트레이지 영문 대관령 등 겨울축제 셔틀 패키지",
+   "url": "https://www.trazy.com/experience/detail/winter-festival-shuttle-package-daegwallyeong-hongcheon-inje",
+   "needles": [
+    "Daegwallyeong"
+   ],
+   "audit": "2026-09-30 독립 감사: 판매 종료된 옛 상품(원래 ota) → media 로 낮춤"
+  },
+  {
+   "id": "en-kte-chimac",
+   "langs": [
+    "en"
+   ],
+   "ko": "대구치맥페스티벌",
+   "kind": "ota",
+   "claim": "Korea Travel Easy 대구 치맥페스티벌 당일투어",
+   "url": "https://www.koreatraveleasy.com/product/daegu-chicken-and-beer-chimaek-festival-one-day-tour/",
+   "needles": [
+    "Chimaek",
+    "Daegu"
+   ]
+  },
+  {
+   "id": "en-trazy-chimac",
+   "langs": [
+    "en"
+   ],
+   "ko": "대구치맥페스티벌",
+   "kind": "ota",
+   "claim": "트레이지 영문 대구치맥페스티벌 투어",
+   "url": "https://www.trazy.com/experience/detail/daegu-chimac-chicken-and-beer-festival-from-busan",
+   "needles": [
+    "Daegu Chimac"
+   ]
+  },
+  {
+   "id": "en-flipkorea-muju",
+   "langs": [
+    "en"
+   ],
+   "ko": "무주반딧불축제",
+   "kind": "media",
+   "claim": "영문 블로그 FlipKorea 무주반딧불축제 방문기",
+   "url": "https://www.flipkorea.com/post/muju-firefly-festival-%EB%AC%B4%EC%A3%BC%EB%B0%98%EB%94%A7%EB%B6%88%EC%B6%95%EC%A0%9C-a-magical-night-in-the-korean-countryside",
+   "needles": [
+    "Muju"
+   ]
+  },
+  {
+   "id": "en-koreaherald-muju",
+   "langs": [
+    "en"
+   ],
+   "ko": "무주반딧불축제",
+   "kind": "media",
+   "claim": "코리아헤럴드 영문 'Festivals, sights across Korea'(무주반딧불축제)",
+   "url": "https://www.koreaherald.com/article/10573565",
+   "needles": [
+    "Muju",
+    "Firefly"
+   ]
+  },
+  {
+   "id": "en-trazy-mud",
+   "langs": [
+    "en"
+   ],
+   "ko": "보령머드축제",
+   "kind": "ota",
+   "claim": "트레이지 영문 2026 보령머드축제·K-pop 콘서트 셔틀 상품",
+   "url": "https://www.trazy.com/experience/detail/boryong-mud-festival-super-concert",
+   "needles": [
+    "Boryeong Mud"
+   ]
+  },
+  {
+   "id": "en-kte-mud",
+   "langs": [
+    "en"
+   ],
+   "ko": "보령머드축제",
+   "kind": "ota",
+   "claim": "Korea Travel Easy 2026 보령머드축제 K-pop 콘서트 당일투어",
+   "url": "https://www.koreatraveleasy.com/product/boryeong-mud-festival-k-pop-super-live-concert-day-tour/",
+   "needles": [
+    "Boryeong Mud"
+   ]
+  },
+  {
+   "id": "en-wiki-busanrock",
+   "langs": [
+    "en"
+   ],
+   "ko": "부산국제록페스티벌",
+   "kind": "media",
+   "claim": "영문 위키백과 부산국제록페스티벌",
+   "url": "https://en.wikipedia.org/wiki/Busan_Rock_Festival",
+   "needles": [
+    "Busan"
+   ]
+  },
+  {
+   "id": "en-koreatimes-busanrock",
+   "langs": [
+    "en"
+   ],
+   "ko": "부산국제록페스티벌",
+   "kind": "media",
+   "claim": "코리아타임스 영문 '부산국제록페스티벌 99팀 라인업' 기사",
+   "url": "https://www.koreatimes.co.kr/entertainment/music/20260907/busan-intl-rock-festival-goes-big-with-99-act-lineup",
+   "needles": [
+    "Busan Int"
+   ]
+  },
+  {
+   "id": "en-trazy-busanfw",
+   "langs": [
+    "en"
+   ],
+   "ko": "부산불꽃축제",
+   "kind": "ota",
+   "claim": "트레이지 영문 부산불꽃축제 좌석 티켓",
+   "url": "https://www.trazy.com/experience/detail/busan-fireworks-festival",
+   "needles": [
+    "Busan Fireworks"
+   ]
+  },
+  {
+   "id": "en-kte-busanfw",
+   "langs": [
+    "en"
+   ],
+   "ko": "부산불꽃축제",
+   "kind": "ota",
+   "claim": "Korea Travel Easy(외국인 대상 영문 여행사) 2026 부산불꽃축제 광안리 티켓",
+   "url": "https://www.koreatraveleasy.com/product/2026-busan-fireworks-festival-ticket-gwangalli/",
+   "needles": [
+    "Busan Fireworks"
+   ]
+  },
+  {
+   "id": "en-wiki-lantern",
+   "langs": [
+    "en"
+   ],
+   "ko": "서울빛초롱축제",
+   "kind": "media",
+   "claim": "영문 위키백과 서울빛초롱축제 문서",
+   "url": "https://en.wikipedia.org/wiki/Seoul_Lantern_Festival",
+   "needles": [
+    "Seoul Lantern"
+   ]
+  },
+  {
+   "id": "en-soulofseoul-lantern",
+   "langs": [
+    "en"
+   ],
+   "ko": "서울빛초롱축제",
+   "kind": "media",
+   "claim": "Soul of Seoul 서울빛초롱축제 방문기",
+   "url": "https://thesoulofseoul.net/seoul-lantern-festival/",
+   "needles": [
+    "Seoul Lantern Festival"
+   ]
+  },
+  {
+   "id": "en-odynovo-lantern",
+   "langs": [
+    "en"
+   ],
+   "ko": "서울빛초롱축제",
+   "kind": "media",
+   "claim": "영국계 여행사 Odynovo 서울빛초롱축제 가이드",
+   "url": "https://www.odynovotours.com/south-korea/seoul-lantern-festival.html",
+   "needles": [
+    "Seoul Lantern Festival"
+   ]
+  },
+  {
+   "id": "en-wiki-seoulfw",
+   "langs": [
+    "en"
+   ],
+   "ko": "서울세계불꽃축제",
+   "kind": "media",
+   "claim": "영문 위키백과 서울세계불꽃축제 문서",
+   "url": "https://en.wikipedia.org/wiki/Seoul_International_Fireworks_Festival",
+   "needles": [
+    "Fireworks"
+   ]
+  },
+  {
+   "id": "en-koreatimes-seoulfw",
+   "langs": [
+    "en"
+   ],
+   "ko": "서울세계불꽃축제",
+   "kind": "media",
+   "claim": "코리아타임스 영문 서울세계불꽃축제 2026 가이드",
+   "url": "https://www.koreatimes.co.kr/lifestyle/people-events/20260830/seoul-international-fireworks-festival-2026-guide-everything-you-need-to-know",
+   "needles": [
+    "Seoul International Fireworks"
+   ]
+  },
+  {
+   "id": "en-trazy-seoulfw",
+   "langs": [
+    "en"
+   ],
+   "ko": "서울세계불꽃축제",
+   "kind": "ota",
+   "claim": "트레이지 영문 서울세계불꽃축제 티켓",
+   "url": "https://www.trazy.com/experience/detail/seoul-international-fireworks-festival-ticket-package",
+   "needles": [
+    "Seoul International Fireworks Festival"
+   ]
+  },
+  {
+   "id": "en-trazy-suwon",
+   "langs": [
+    "en"
+   ],
+   "ko": "수원화성문화제",
+   "kind": "ota",
+   "claim": "트레이지 영문 수원화성문화제 당일투어",
+   "url": "https://www.trazy.com/experience/detail/suwon-hwaseong-cultural-festival-from-seoul",
+   "needles": [
+    "Suwon Hwaseong Cultural Festival"
+   ]
+  },
+  {
+   "id": "all-seoulco-suwon-target",
+   "langs": [
+    "zh",
+    "tw",
+    "ja"
+   ],
+   "ko": "수원화성문화제",
+   "kind": "target",
+   "claim": "서울신문: 수원시, 수원화성문화제 앞두고 중국·일본·대만·홍콩·싱가포르 대상 집중 홍보(시부야 옥외광고 등)",
+   "url": "https://go.seoul.co.kr/news/newsView.php?id=20250908500072",
+   "needles": [
+    "수원화성문화제",
+    "중국, 일본, 대만과 홍콩, 싱가포르"
+   ],
+   "audit": "2026-09-30 독립 감사: 영어권 시장 언급 없음 → en 제외"
+  },
+  {
+   "id": "en-travie-andong",
+   "langs": [
+    "en"
+   ],
+   "ko": "안동국제탈춤페스티벌",
+   "kind": "media",
+   "claim": "Travie 영문 기사: 안동탈춤 글로벌축제 선정",
+   "url": "https://en.travie.com/news/articleView.html?idxno=445",
+   "needles": [
+    "Andong"
+   ]
+  },
+  {
+   "id": "en-lp-andong",
+   "langs": [
+    "en"
+   ],
+   "ko": "안동국제탈춤페스티벌",
+   "kind": "media",
+   "claim": "Lonely Planet: 10월 방문 이유로 안동탈춤축제 언급",
+   "url": "https://www.lonelyplanet.com/articles/best-time-to-visit-south-korea",
+   "needles": [
+    "Andong Mask Dance Festival"
+   ]
+  },
+  {
+   "id": "en-haniseoul-andong",
+   "langs": [
+    "en"
+   ],
+   "ko": "안동국제탈춤페스티벌",
+   "kind": "media",
+   "claim": "영문 여행 가이드 haniseoul 2026 안동국제탈춤페스티벌 가이드",
+   "url": "https://www.haniseoul.com/travels/korea/andong-mask-dance-festival-guide",
+   "needles": [
+    "Andong"
+   ]
+  },
+  {
+   "id": "en-lp-lotus",
+   "langs": [
+    "en"
+   ],
+   "ko": "연등회",
+   "kind": "media",
+   "claim": "Lonely Planet 한국 여행 적기 기사: 5월 연등회(Lotus Lantern Festival) 추천",
+   "url": "https://www.lonelyplanet.com/articles/best-time-to-visit-south-korea",
+   "needles": [
+    "Lotus Lantern Festival"
+   ]
+  },
+  {
+   "id": "en-travelstained-lotus",
+   "langs": [
+    "en"
+   ],
+   "ko": "연등회",
+   "kind": "media",
+   "claim": "영어 여행 블로그 연등회 가이드",
+   "url": "https://travel-stained.com/lotus-lantern-festival-in-seoul-yeondeunghoe/",
+   "needles": [
+    "Yeondeunghoe"
+   ]
+  },
+  {
+   "id": "en-soulofseoul-lotus",
+   "langs": [
+    "en"
+   ],
+   "ko": "연등회",
+   "kind": "media",
+   "claim": "Soul of Seoul 봄 축제 목록(연등회)",
+   "url": "https://thesoulofseoul.net/complete-list-spring-festivals-korea/",
+   "needles": [
+    "Lotus"
+   ]
+  },
+  {
+   "id": "en-soulofseoul-icheon",
+   "langs": [
+    "en"
+   ],
+   "ko": "이천도자기축제",
+   "kind": "media",
+   "claim": "Soul of Seoul 봄 축제 목록(이천)",
+   "url": "https://thesoulofseoul.net/complete-list-spring-festivals-korea/",
+   "needles": [
+    "Icheon"
+   ]
+  },
+  {
+   "id": "en-wiki-icheon",
+   "langs": [
+    "en"
+   ],
+   "ko": "이천도자기축제",
+   "kind": "media",
+   "claim": "영문 위키백과 이천도자기축제",
+   "url": "https://en.wikipedia.org/wiki/Icheon_Ceramic_Festival",
+   "needles": [
+    "Icheon"
+   ]
+  },
+  {
+   "id": "en-timeout-pentaport",
+   "langs": [
+    "en"
+   ],
+   "ko": "인천펜타포트 락 페스티벌",
+   "kind": "media",
+   "claim": "타임아웃 서울(영문) 인천펜타포트 락 페스티벌 소개",
+   "url": "https://www.timeout.com/seoul/music/incheon-pentaport-rock-festival-2017",
+   "needles": [
+    "Pentaport"
+   ]
+  },
+  {
+   "id": "en-kculture-pentaport",
+   "langs": [
+    "en"
+   ],
+   "ko": "인천펜타포트 락 페스티벌",
+   "kind": "media",
+   "claim": "K-Culture Now 영문 펜타포트 가이드",
+   "url": "https://kculturenow.com/guides/pentaport-rock-festival-guide/",
+   "needles": [
+    "Pentaport"
+   ]
+  },
+  {
+   "id": "en-trazy-pentaport",
+   "langs": [
+    "en"
+   ],
+   "ko": "인천펜타포트 락 페스티벌",
+   "kind": "ota",
+   "claim": "트레이지 영문 인천펜타포트 락 페스티벌 티켓",
+   "url": "https://www.trazy.com/experience/detail/incheon-pentaport-rock-festival-ticket",
+   "needles": [
+    "Pentaport"
+   ]
+  },
+  {
+   "id": "en-kte-jindo",
+   "langs": [
+    "en"
+   ],
+   "ko": "진도신비의바닷길축제",
+   "kind": "media",
+   "claim": "영문 여행사 Korea Travel Easy 진도 신비의바닷길축제 투어 상품",
+   "url": "https://www.koreatraveleasy.com/product/jindo-miracle-sea-road-festival-tour-from-seoul-busan/",
+   "needles": [
+    "Jindo"
+   ],
+   "audit": "2026-09-30 독립 감사: 판매 종료된 옛 상품(원래 ota) → media 로 낮춤"
+  },
+  {
+   "id": "en-adventurekorea-jindo",
+   "langs": [
+    "en"
+   ],
+   "ko": "진도신비의바닷길축제",
+   "kind": "ota",
+   "claim": "외국인 대상 여행사 Adventure Korea 2026 진도 바닷길축제 트립",
+   "url": "https://adventurekorea.com/jindo-sea-parting-festival-2026/",
+   "needles": [
+    "Jindo"
+   ]
+  },
+  {
+   "id": "en-ehat-jinju",
+   "langs": [
+    "en"
+   ],
+   "ko": "진주남강유등축제",
+   "kind": "media",
+   "claim": "영어 여행 블로그 진주 유등축제 방문기",
+   "url": "https://everybodyhatesatourist.net/attending-jinju-lantern-festival-jinju-south-korea/",
+   "needles": [
+    "Jinju"
+   ]
+  },
+  {
+   "id": "en-wiki-jinju",
+   "langs": [
+    "en"
+   ],
+   "ko": "진주남강유등축제",
+   "kind": "media",
+   "claim": "영문 위키백과 진주남강유등축제 문서",
+   "url": "https://en.wikipedia.org/wiki/Jinju_Namgang_Yudeung_Festival",
+   "needles": [
+    "Jinju"
+   ]
+  },
+  {
+   "id": "en-trazy-jinju",
+   "langs": [
+    "en"
+   ],
+   "ko": "진주남강유등축제",
+   "kind": "ota",
+   "claim": "트레이지 영문 2026 진주남강유등축제 투어(부산 출발)",
+   "url": "https://www.trazy.com/experience/detail/jinju-lantern-festival-from-busan",
+   "needles": [
+    "Jinju Lantern"
+   ]
+  },
+  {
+   "id": "en-trazy-jinhae",
+   "langs": [
+    "en"
+   ],
+   "ko": "진해군항제",
+   "kind": "ota",
+   "claim": "트레이지 영문 진해 벚꽃 당일투어(서울·부산 출발)",
+   "url": "https://www.trazy.com/experience/detail/jinhae-cherry-blossom-tour-seoul-busan",
+   "needles": [
+    "Jinhae"
+   ]
+  },
+  {
+   "id": "en-kte-jinhae",
+   "langs": [
+    "en"
+   ],
+   "ko": "진해군항제",
+   "kind": "ota",
+   "claim": "Korea Travel Easy 2026 진해군항제 벚꽃 당일투어",
+   "url": "https://www.koreatraveleasy.com/product/jinhae-cherry-blossom-festival-gunhangje-day-tour-shuttle-bus-package-korea/",
+   "needles": [
+    "Gunhangje"
+   ]
+  },
+  {
+   "id": "en-mygoodlife-taebaek",
+   "langs": [
+    "en"
+   ],
+   "ko": "태백 해바라기축제",
+   "kind": "ota",
+   "claim": "MYGOODLIFE 영문 태백 해바라기축제 투어 상품",
+   "url": "https://my-goodlife.com/en/products/taebaek-sunflower-festival-tour-3073",
+   "needles": [
+    "Taebaek"
+   ]
+  },
+  {
+   "id": "en-adventurekorea-taebaek",
+   "langs": [
+    "en"
+   ],
+   "ko": "태백 해바라기축제",
+   "kind": "ota",
+   "claim": "Adventure Korea 태백 해바라기축제 트립",
+   "url": "https://adventurekorea.com/taebaek-sunflower/",
+   "needles": [
+    "Taebaek"
+   ]
+  },
+  {
+   "id": "en-trazy-pyeongchang",
+   "langs": [
+    "en"
+   ],
+   "ko": "평창송어축제",
+   "kind": "ota",
+   "claim": "트레이지 영문 평창송어축제 얼음낚시 투어",
+   "url": "https://www.trazy.com/experience/detail/pyeongchang-trout-festival-ice-fishing-shuttle-bus-package",
+   "needles": [
+    "Pyeongchang Trout"
+   ]
+  },
+  {
+   "id": "en-kte-pyeongchang",
+   "langs": [
+    "en"
+   ],
+   "ko": "평창송어축제",
+   "kind": "media",
+   "claim": "Korea Travel Easy 평창송어축제·인제 빙어 당일투어",
+   "url": "https://www.koreatraveleasy.com/product/ice-fishing-winter-activity-festivals-pyeongchang-trout-festival-inje-ice-fish-day-tour-with-shuttle-bus-package/",
+   "needles": [
+    "Pyeongchang Trout"
+   ],
+   "audit": "2026-09-30 독립 감사: 판매 종료된 옛 상품(원래 ota) → media 로 낮춤"
+  },
+  {
+   "id": "en-trazy-pohang",
+   "langs": [
+    "en"
+   ],
+   "ko": "포항국제불빛축제",
+   "kind": "ota",
+   "claim": "트레이지 영문 포항국제불빛축제·스페이스워크 투어",
+   "url": "https://www.trazy.com/experience/detail/pohang-international-fireworks-festival",
+   "needles": [
+    "Pohang",
+    "Fireworks Festival"
+   ]
+  },
+  {
+   "id": "en-trazy-hwacheon-shuttle",
+   "langs": [
+    "en"
+   ],
+   "ko": "화천산천어축제",
+   "kind": "ota",
+   "claim": "트레이지 영문 화천산천어축제 셔틀버스 패키지",
+   "url": "https://www.trazy.com/experience/detail/hwacheon-sancheoneo-ice-festival-shuttle-bus-package",
+   "needles": [
+    "Hwacheon Sancheoneo"
+   ]
+  },
+  {
+   "id": "en-stp-hwacheon",
+   "langs": [
+    "en"
+   ],
+   "ko": "화천산천어축제",
+   "kind": "ota",
+   "claim": "Seoul Travel Pass 영문 화천산천어축제 당일 투어 상품",
+   "url": "https://www.seoultravelpass.com/en/products/1726-winter-special-hwacheon-sancheonfish-ice-festival-eobi-ice-valley-one-day-tour",
+   "needles": [
+    "Hwacheon"
+   ]
+  },
+  {
+   "id": "ja-seoulnavi-danoje",
+   "langs": [
+    "ja"
+   ],
+   "ko": "강릉단오제",
+   "kind": "media",
+   "claim": "서울나비 강릉단오제 소개",
+   "url": "https://www.seoulnavi.com/miru/1894/",
+   "needles": [
+    "江陵端午祭"
+   ]
+  },
+  {
+   "id": "ja-snlist-danoje",
+   "langs": [
+    "ja"
+   ],
+   "ko": "강릉단오제",
+   "kind": "media",
+   "claim": "서울나비 '지방 이벤트 연간 정보'(일본어)에 강릉단오제 수록",
+   "url": "https://www.seoulnavi.com/special/5048476",
+   "needles": [
+    "江陵端午祭",
+    "강릉단오제"
+   ]
+  },
+  {
+   "id": "ja-snlist-coffee",
+   "langs": [
+    "ja"
+   ],
+   "ko": "강릉커피축제",
+   "kind": "media",
+   "claim": "서울나비 '지방 이벤트 연간 정보'(일본어)에 강릉커피축제 수록",
+   "url": "https://www.seoulnavi.com/special/5048476",
+   "needles": [
+    "江陵コーヒー祭り",
+    "강릉커피축제"
+   ]
+  },
+  {
+   "id": "ja-gn-coffee",
+   "langs": [
+    "ja"
+   ],
+   "ko": "강릉커피축제",
+   "kind": "media",
+   "claim": "강릉시 일본어 뉴스레터 커피 특집(커피축제 언급)",
+   "url": "https://www.gn.go.kr/tour/E-NewsLetter/2518/jpn/1page.html",
+   "needles": [
+    "コーヒー祭"
+   ]
+  },
+  {
+   "id": "ja-snlist-gimje",
+   "langs": [
+    "ja"
+   ],
+   "ko": "김제지평선축제",
+   "kind": "media",
+   "claim": "서울나비 '지방 이벤트 연간 정보'(일본어)에 김제지평선축제 수록",
+   "url": "https://www.seoulnavi.com/special/5048476",
+   "needles": [
+    "金堤地平線祭り",
+    "김제지평선축제"
+   ]
+  },
+  {
+   "id": "ja-ktriptips-gimje",
+   "langs": [
+    "ja"
+   ],
+   "ko": "김제지평선축제",
+   "kind": "media",
+   "claim": "Korea Trip Tips 일본어판 김제지평선축제 페이지",
+   "url": "https://www.ktriptips.com/jpn/festival/773347",
+   "needles": [
+    "金堤地平線祭り"
+   ]
+  },
+  {
+   "id": "ja-snlist-nonsan",
+   "langs": [
+    "ja"
+   ],
+   "ko": "논산딸기축제",
+   "kind": "media",
+   "claim": "서울나비 '지방 이벤트 연간 정보'(일본어)에 논산딸기축제 수록",
+   "url": "https://www.seoulnavi.com/special/5048476",
+   "needles": [
+    "論山イチゴ祭り",
+    "논산딸기축제"
+   ]
+  },
+  {
+   "id": "ja-snlist-yakryeong",
+   "langs": [
+    "ja"
+   ],
+   "ko": "대구약령시한방문화축제",
+   "kind": "media",
+   "claim": "서울나비 '지방 이벤트 연간 정보'(일본어)에 대구약령시한방문화축제 수록",
+   "url": "https://www.seoulnavi.com/special/5048476",
+   "needles": [
+    "大邱薬令市韓方文化祭り",
+    "대구약령시한방문화축제"
+   ]
+  },
+  {
+   "id": "ja-ameblo-yakryeong",
+   "langs": [
+    "ja"
+   ],
+   "ko": "대구약령시한방문화축제",
+   "kind": "media",
+   "claim": "일본어 블로그 대구약령시한방문화축제 방문기",
+   "url": "https://ameblo.jp/byonjeonju2/entry-12027006817.html",
+   "needles": [
+    "大邱薬令市韓方文化祭り"
+   ]
+  },
+  {
+   "id": "ja-trazy-chimac",
+   "langs": [
+    "ja"
+   ],
+   "ko": "대구치맥페스티벌",
+   "kind": "ota",
+   "claim": "트레이지 일본어 대구치맥페스티벌 당일투어",
+   "url": "https://www.trazy.com/ja/experience/detail/daegu-chimac-chicken-and-beer-festival-from-busan",
+   "needles": [
+    "大邱チメク"
+   ]
+  },
+  {
+   "id": "ja-snlist-muju",
+   "langs": [
+    "ja"
+   ],
+   "ko": "무주반딧불축제",
+   "kind": "media",
+   "claim": "서울나비 '지방 이벤트 연간 정보'(일본어)에 무주반딧불축제 수록",
+   "url": "https://www.seoulnavi.com/special/5048476",
+   "needles": [
+    "茂朱ホタル祭り",
+    "무주반딧불축제"
+   ]
+  },
+  {
+   "id": "ja-sanshin-baekje",
+   "langs": [
+    "ja"
+   ],
+   "ko": "백제문화제",
+   "kind": "media",
+   "claim": "산신트래블 '대백제전 관람의 여행' 일본 출발 투어",
+   "url": "https://www.sanshin-travel.com/tour/19749",
+   "needles": [
+    "大百済典"
+   ],
+   "audit": "2026-09-30 독립 감사: 판매 종료된 옛 상품(원래 agency) → media 로 낮춤"
+  },
+  {
+   "id": "ja-seoulco-baekje-target",
+   "langs": [
+    "ja"
+   ],
+   "ko": "백제문화제",
+   "kind": "target",
+   "claim": "서울신문: 충남도, 일본 방문해 대백제전(백제문화제) 일본인 관광객 유치 프로모션",
+   "url": "https://www.seoul.co.kr/news/society/2023/05/28/20230528500028",
+   "needles": [
+    "대백제전",
+    "일본인 관광객"
+   ]
+  },
+  {
+   "id": "ja-veltra-mud",
+   "langs": [
+    "ja"
+   ],
+   "ko": "보령머드축제",
+   "kind": "ota",
+   "claim": "벨트라 보령머드축제 일본어 가이드 당일 투어",
+   "url": "https://www.veltra.com/jp/asia/korea/seoul/a/179031",
+   "needles": [
+    "保寧（ボリョン）マッド"
+   ]
+  },
+  {
+   "id": "ja-trazy-mud",
+   "langs": [
+    "ja"
+   ],
+   "ko": "보령머드축제",
+   "kind": "ota",
+   "claim": "트레이지 일본어판 보령머드축제 티켓",
+   "url": "https://www.trazy.com/ja/experience/detail/boryeong-mud-festival-ticket",
+   "needles": [
+    "保寧マッドフェスティバル"
+   ]
+  },
+  {
+   "id": "ja-busango-seafest",
+   "langs": [
+    "ja"
+   ],
+   "ko": "부산바다축제",
+   "kind": "media",
+   "claim": "부산시 일본어 사이트 제26회 부산바다축제 포토",
+   "url": "https://www.busan.go.kr/jpn/bsview01/1538986",
+   "needles": [
+    "釜山海祭り"
+   ]
+  },
+  {
+   "id": "ja-wiki-busanfw",
+   "langs": [
+    "ja"
+   ],
+   "ko": "부산불꽃축제",
+   "kind": "media",
+   "claim": "일본어 위키백과 부산불꽃축제(釜山花火大会) 문서",
+   "url": "https://ja.wikipedia.org/wiki/%E9%87%9C%E5%B1%B1%E8%8A%B1%E7%81%AB%E5%A4%A7%E4%BC%9A",
+   "needles": [
+    "広安里",
+    "釜山"
+   ]
+  },
+  {
+   "id": "ja-trazy-busanfw",
+   "langs": [
+    "ja"
+   ],
+   "ko": "부산불꽃축제",
+   "kind": "ota",
+   "claim": "트레이지 일본어 부산불꽃축제 티켓",
+   "url": "https://www.trazy.com/ja/experience/detail/busan-fireworks-festival",
+   "needles": [
+    "釜山花火大会チケット"
+   ]
+  },
+  {
+   "id": "ja-seoulnavi-lantern",
+   "langs": [
+    "ja"
+   ],
+   "ko": "서울빛초롱축제",
+   "kind": "media",
+   "claim": "서울나비 청계천 정기 이벤트(랜턴 페스티벌) 소개",
+   "url": "https://www.seoulnavi.com/miru/a997/g47/",
+   "needles": [
+    "ランタン"
+   ]
+  },
+  {
+   "id": "ja-afpbb-lantern",
+   "langs": [
+    "ja"
+   ],
+   "ko": "서울빛초롱축제",
+   "kind": "media",
+   "claim": "AFPBB 일본어판 청계천 서울 랜턴페스티벌 보도",
+   "url": "https://www.afpbb.com/articles/-/3552350",
+   "needles": [
+    "ランタンフェスティバル",
+    "清渓川"
+   ]
+  },
+  {
+   "id": "ja-seoulgo-lantern",
+   "langs": [
+    "ja"
+   ],
+   "ko": "서울빛초롱축제",
+   "kind": "media",
+   "claim": "서울시 일본어 공식사이트 겨울 빛축제(랜턴) 소개",
+   "url": "https://japanese.seoul.go.kr/%E8%89%B2%E3%81%A8%E5%85%89%E3%81%AB%E5%BD%A9%E3%82%89%E3%82%8C%E3%81%9F%E5%B9%BB%E6%83%B3%E7%9A%84%E3%81%AA%E5%86%AC%E3%81%AE%E9%83%BD%E5%B8%82%E3%83%BB%E3%82%BD%E3%82%A6%E3%83%AB%E4%B8%96/",
+   "needles": [
+    "ランタン"
+   ]
+  },
+  {
+   "id": "ja-veltra-seoulfw",
+   "langs": [
+    "ja"
+   ],
+   "ko": "서울세계불꽃축제",
+   "kind": "ota",
+   "claim": "일본 OTA 벨트라의 서울세계불꽃축제 관람 투어",
+   "url": "https://www.veltra.com/jp/asia/korea/seoul/a/197044",
+   "needles": [
+    "ソウル世界花火"
+   ]
+  },
+  {
+   "id": "ja-tripcom-seoulfw",
+   "langs": [
+    "ja"
+   ],
+   "ko": "서울세계불꽃축제",
+   "kind": "ota",
+   "claim": "트립닷컴 일본판 서울세계불꽃축제 상품 페이지",
+   "url": "https://jp.trip.com/sale/w/25139/seoul-international-fireworks-festival.html?locale=ja-JP",
+   "needles": [
+    "ソウル世界花火"
+   ]
+  },
+  {
+   "id": "ja-snlist-sorae",
+   "langs": [
+    "ja"
+   ],
+   "ko": "소래포구축제",
+   "kind": "media",
+   "claim": "서울나비 '지방 이벤트 연간 정보'(일본어)에 소래포구축제 수록",
+   "url": "https://www.seoulnavi.com/special/5048476",
+   "needles": [
+    "仁川蘇来浦口祭り",
+    "인천소래포구축제"
+   ]
+  },
+  {
+   "id": "ja-trazy-suwon",
+   "langs": [
+    "ja"
+   ],
+   "ko": "수원화성문화제",
+   "kind": "ota",
+   "claim": "트레이지 일본어 수원화성문화제 당일투어",
+   "url": "https://www.trazy.com/ja/experience/detail/suwon-hwaseong-cultural-festival-from-seoul",
+   "needles": [
+    "水原華城文化祭1日ツアー"
+   ]
+  },
+  {
+   "id": "ja-hankyu-andong-KT580A",
+   "langs": [
+    "ja"
+   ],
+   "ko": "안동국제탈춤페스티벌",
+   "kind": "agency",
+   "claim": "한큐교통사 안동 탈춤축제 투어 상품",
+   "url": "https://www.hankyu-travel.com/tour/detail_i.php?p_hei=10&p_course_id=KT580A",
+   "needles": [
+    "安東仮面"
+   ]
+  },
+  {
+   "id": "ja-seoulnavi-andong",
+   "langs": [
+    "ja"
+   ],
+   "ko": "안동국제탈춤페스티벌",
+   "kind": "media",
+   "claim": "서울나비 일본어 안동국제탈춤페스티벌 소개",
+   "url": "https://www.seoulnavi.com/special/5053265",
+   "needles": [
+    "安東",
+    "仮面"
+   ]
+  },
+  {
+   "id": "ja-seoulnavi-lotus",
+   "langs": [
+    "ja"
+   ],
+   "ko": "연등회",
+   "kind": "media",
+   "claim": "서울나비 일본어 연등회 소개",
+   "url": "https://www.seoulnavi.com/miru/1808/",
+   "needles": [
+    "燃灯"
+   ]
+  },
+  {
+   "id": "ja-ameblo-lotus",
+   "langs": [
+    "ja"
+   ],
+   "ko": "연등회",
+   "kind": "media",
+   "claim": "일본어 블로그(아메바) 연등회 방문기",
+   "url": "https://ameblo.jp/loadtokorea/entry-12966516677.html",
+   "needles": [
+    "燃灯"
+   ]
+  },
+  {
+   "id": "ja-afpbb-lotus",
+   "langs": [
+    "ja"
+   ],
+   "ko": "연등회",
+   "kind": "media",
+   "claim": "AFPBB 일본어판 서울 연등회 보도",
+   "url": "https://www.afpbb.com/articles/-/3635469",
+   "needles": [
+    "燃灯",
+    "提灯"
+   ]
+  },
+  {
+   "id": "ja-wiki-lotus",
+   "langs": [
+    "ja"
+   ],
+   "ko": "연등회",
+   "kind": "media",
+   "claim": "일본어 위키백과 연등회(燃灯会) 문서",
+   "url": "https://ja.wikipedia.org/wiki/%E7%87%83%E7%81%AF%E4%BC%9A",
+   "needles": [
+    "燃灯会",
+    "ソウル"
+   ]
+  },
+  {
+   "id": "ja-sanshin-icheon",
+   "langs": [
+    "ja"
+   ],
+   "ko": "이천도자기축제",
+   "kind": "agency",
+   "claim": "일본 한국전문 여행사 산신트래블서비스 '제40회 이천도자기축제와 박물관 여행' 모집",
+   "url": "https://www.sanshin-travel.com/24202",
+   "needles": [
+    "利川陶磁器祭り"
+   ]
+  },
+  {
+   "id": "ja-snlist-icheon",
+   "langs": [
+    "ja"
+   ],
+   "ko": "이천도자기축제",
+   "kind": "media",
+   "claim": "서울나비 '지방 이벤트 연간 정보'(일본어)에 이천도자기축제 수록",
+   "url": "https://www.seoulnavi.com/special/5048476",
+   "needles": [
+    "利川陶磁器祭り",
+    "이천도자기축제"
+   ]
+  },
+  {
+   "id": "ja-trazy-pentaport",
+   "langs": [
+    "ja"
+   ],
+   "ko": "인천펜타포트 락 페스티벌",
+   "kind": "ota",
+   "claim": "트레이지 일본어 인천펜타포트 락 페스티벌 티켓",
+   "url": "https://www.trazy.com/ja/experience/detail/incheon-pentaport-rock-festival-ticket",
+   "needles": [
+    "仁川ペンタポート・ロック・フェスティバル"
+   ]
+  },
+  {
+   "id": "ja-snlist-jeongseon",
+   "langs": [
+    "ja"
+   ],
+   "ko": "정선아리랑제",
+   "kind": "media",
+   "claim": "서울나비 '지방 이벤트 연간 정보'(일본어)에 정선아리랑제 수록",
+   "url": "https://www.seoulnavi.com/special/5048476",
+   "needles": [
+    "旌善アリラン祭り",
+    "정선아리랑제"
+   ]
+  },
+  {
+   "id": "ja-travelgw-jeongseon",
+   "langs": [
+    "ja"
+   ],
+   "ko": "정선아리랑제",
+   "kind": "media",
+   "claim": "강원도 여행 일본어 사이트 정선아리랑제 소개",
+   "url": "https://travelgangwondo.com/spot/1486/",
+   "needles": [
+    "旌善",
+    "アリラン祭り"
+   ]
+  },
+  {
+   "id": "ja-ktriptips-jeongseon",
+   "langs": [
+    "ja"
+   ],
+   "ko": "정선아리랑제",
+   "kind": "media",
+   "claim": "Korea Trip Tips 일본어판 정선아리랑제 페이지",
+   "url": "https://www.ktriptips.com/jpn/festival/697075",
+   "needles": [
+    "旌善アリラン祭り"
+   ]
+  },
+  {
+   "id": "ja-nishitetsu-jindo",
+   "langs": [
+    "ja"
+   ],
+   "ko": "진도신비의바닷길축제",
+   "kind": "media",
+   "claim": "니시테쓰여행 진도 바닷길·진해군항제 4일 투어(후쿠오카 출발)",
+   "url": "https://www.nishitetsutravel.jp/seoul-pusantour/jindo",
+   "needles": [
+    "珍島",
+    "海割れ"
+   ],
+   "audit": "2026-09-30 독립 감사: 판매 종료된 옛 상품(원래 agency) → media 로 낮춤"
+  },
+  {
+   "id": "ja-sanshin-jindo",
+   "langs": [
+    "ja"
+   ],
+   "ko": "진도신비의바닷길축제",
+   "kind": "media",
+   "claim": "산신트래블 진도 바닷길 투어(부산편)",
+   "url": "https://www.sanshin-travel.com/tour/22135",
+   "needles": [
+    "珍島",
+    "海割れ"
+   ],
+   "audit": "2026-09-30 독립 감사: 판매 종료된 옛 상품(원래 agency) → media 로 낮춤"
+  },
+  {
+   "id": "ja-hankyu-jinju-KN836B",
+   "langs": [
+    "ja"
+   ],
+   "ko": "진주남강유등축제",
+   "kind": "agency",
+   "claim": "한큐교통사 진주남강유등축제·함안낙화놀이 가을 투어 상품",
+   "url": "https://www.hankyu-travel.com/tour/detail_i.php?p_hei=20&p_course_id=KN836B",
+   "needles": [
+    "晋州",
+    "流灯"
+   ]
+  },
+  {
+   "id": "ja-newsgn-jinju-target",
+   "langs": [
+    "ja"
+   ],
+   "ko": "진주남강유등축제",
+   "kind": "target",
+   "claim": "뉴스경남: 진주문화관광재단, JTB 해외 EXPO 2026 참가해 일본 여행업계에 진주남강유등축제 집중 홍보",
+   "url": "https://www.newsgn.com/news/articleView.html?idxno=571272",
+   "needles": [
+    "진주남강유등축제",
+    "JTB"
+   ]
+  },
+  {
+   "id": "ja-nishitetsu-jinhae",
+   "langs": [
+    "ja"
+   ],
+   "ko": "진해군항제",
+   "kind": "media",
+   "claim": "니시테쓰여행 진도 바닷길·진해군항제 4일 투어",
+   "url": "https://www.nishitetsutravel.jp/seoul-pusantour/jindo",
+   "needles": [
+    "軍港",
+    "珍島"
+   ],
+   "audit": "2026-09-30 독립 감사: 판매 종료된 옛 상품(원래 agency) → media 로 낮춤"
+  },
+  {
+   "id": "ja-trazy-jinhae",
+   "langs": [
+    "ja"
+   ],
+   "ko": "진해군항제",
+   "kind": "ota",
+   "claim": "트레이지 일본어 진해 벚꽃 당일투어",
+   "url": "https://www.trazy.com/ja/experience/detail/jinhae-cherry-blossom-tour-seoul-busan",
+   "needles": [
+    "鎮海 (チネ) 桜"
+   ]
+  },
+  {
+   "id": "ja-snlist-mime",
+   "langs": [
+    "ja"
+   ],
+   "ko": "춘천마임축제",
+   "kind": "media",
+   "claim": "서울나비 '지방 이벤트 연간 정보'(일본어)에 춘천마임축제 수록",
+   "url": "https://www.seoulnavi.com/special/5048476",
+   "needles": [
+    "春川マイム祭り",
+    "춘천마임축제"
+   ]
+  },
+  {
+   "id": "ja-ameblo-mime",
+   "langs": [
+    "ja"
+   ],
+   "ko": "춘천마임축제",
+   "kind": "media",
+   "claim": "일본어 블로그 '세계 3대 마임축제! 춘천마임페스티벌'",
+   "url": "https://ameblo.jp/yokosogangwondo/entry-12376697763.html",
+   "needles": [
+    "春川マイムフェスティバル"
+   ]
+  },
+  {
+   "id": "ja-hatena-tamna",
+   "langs": [
+    "ja"
+   ],
+   "ko": "탐라문화제",
+   "kind": "media",
+   "claim": "제주관광공사 일본어 블로그의 탐라문화제 소개",
+   "url": "https://jejutour-jp.hatenablog.com/entry/2017/09/18/133505",
+   "needles": [
+    "耽羅"
+   ]
+  },
+  {
+   "id": "ja-snlist-taebaek",
+   "langs": [
+    "ja"
+   ],
+   "ko": "태백 해바라기축제",
+   "kind": "media",
+   "claim": "서울나비 '지방 이벤트 연간 정보'(일본어)에 태백 해바라기축제 수록",
+   "url": "https://www.seoulnavi.com/special/5048476",
+   "needles": [
+    "太白ひまわり祭り",
+    "태백해바라기축제"
+   ]
+  },
+  {
+   "id": "ja-snlist-tongyeong",
+   "langs": [
+    "ja"
+   ],
+   "ko": "통영한산대첩축제",
+   "kind": "media",
+   "claim": "서울나비 '지방 이벤트 연간 정보'(일본어)에 통영한산대첩축제 수록",
+   "url": "https://www.seoulnavi.com/special/5048476",
+   "needles": [
+    "統営閑山大捷祭り",
+    "통영한산대첩축제"
+   ]
+  },
+  {
+   "id": "ja-seoulnavi-pyeongchang",
+   "langs": [
+    "ja"
+   ],
+   "ko": "평창송어축제",
+   "kind": "media",
+   "claim": "서울나비 평창송어축제 소개",
+   "url": "https://www.seoulnavi.com/miru/2497/",
+   "needles": [
+    "平昌マス祭り"
+   ]
+  },
+  {
+   "id": "ja-trazy-pyeongchang",
+   "langs": [
+    "ja"
+   ],
+   "ko": "평창송어축제",
+   "kind": "ota",
+   "claim": "트레이지 일본어 평창송어축제 당일투어",
+   "url": "https://www.trazy.com/ja/experience/detail/pyeongchang-trout-festival-ice-fishing-shuttle-bus-package",
+   "needles": [
+    "平昌マス祭り"
+   ]
+  },
+  {
+   "id": "ja-straightpress-pohang",
+   "langs": [
+    "ja"
+   ],
+   "ko": "포항국제불빛축제",
+   "kind": "agency",
+   "claim": "일본 PR매체: 산스타라인(일본 여행브랜드) 포항 국제불꽃쇼 참가 3박4일 투어 판매",
+   "url": "https://straightpress.jp/20260824/1690283",
+   "needles": [
+    "浦項",
+    "国際花火ショー"
+   ]
+  },
+  {
+   "id": "ja-veltra-pohang",
+   "langs": [
+    "ja"
+   ],
+   "ko": "포항국제불빛축제",
+   "kind": "ota",
+   "claim": "벨트라 포항국제불꽃축제 지정석 투어",
+   "url": "https://www.veltra.com/jp/asia/korea/busan/a/193584",
+   "needles": [
+    "浦項国際花火"
+   ]
+  },
+  {
+   "id": "ja-hankyu-haman-KN836B",
+   "langs": [
+    "ja"
+   ],
+   "ko": "함안낙화놀이",
+   "kind": "agency",
+   "claim": "한큐교통사 함안낙화놀이·진주남강유등축제 투어 상품",
+   "url": "https://www.hankyu-travel.com/tour/detail_i.php?p_hei=20&p_course_id=KN836B",
+   "needles": [
+    "咸安",
+    "落火"
+   ]
+  },
+  {
+   "id": "ja-hankyu-haman-K065B",
+   "langs": [
+    "ja"
+   ],
+   "ko": "함안낙화놀이",
+   "kind": "agency",
+   "claim": "한큐교통사 가을 2대 축제(함안낙화·진주유등) 투어",
+   "url": "https://www.hankyu-travel.com/tour/detail_i.php?p_course_id=K065B&p_hei=30",
+   "needles": [
+    "咸安",
+    "落火"
+   ]
+  },
+  {
+   "id": "ja-kccj-hwacheon",
+   "langs": [
+    "ja"
+   ],
+   "ko": "화천산천어축제",
+   "kind": "media",
+   "claim": "주일한국문화원 일본어 페이지의 화천산천어축제 소개",
+   "url": "https://www.koreanculture.jp/info_event_view.php?number=6539",
+   "needles": [
+    "華川ヤマメ祭り"
+   ]
+  },
+  {
+   "id": "ja-trazy-hwacheon",
+   "langs": [
+    "ja"
+   ],
+   "ko": "화천산천어축제",
+   "kind": "ota",
+   "claim": "트레이지 일본어 화천산천어축제 셔틀 패키지",
+   "url": "https://www.trazy.com/ja/experience/detail/hwacheon-sancheoneo-ice-festival-shuttle-bus-package",
+   "needles": [
+    "華川山川魚氷祭り"
+   ]
+  },
+  {
+   "id": "zh-wiki-danoje",
+   "langs": [
+    "zh"
+   ],
+   "ko": "강릉단오제",
+   "kind": "media",
+   "claim": "중국어 위키백과(간체) 강릉단오제 문서",
+   "url": "https://zh.wikipedia.org/zh-hans/%E6%B1%9F%E9%99%B5%E7%AB%AF%E5%8D%88%E7%A5%AD",
+   "needles": [
+    "江陵端午祭"
+   ]
+  },
+  {
+   "id": "zh-people-danoje",
+   "langs": [
+    "zh"
+   ],
+   "ko": "강릉단오제",
+   "kind": "media",
+   "claim": "인민망 한국채널 '강릉단오제, 한국 제사문화 체험' 화보 기사",
+   "url": "http://korea.people.com.cn/n/2015/0619/c205551-8909000-2.html",
+   "needles": [
+    "江陵端午祭"
+   ]
+  },
+  {
+   "id": "zh-hyw4019-coffee",
+   "langs": [
+    "zh"
+   ],
+   "ko": "강릉커피축제",
+   "kind": "media",
+   "claim": "韩游网 '2015 하반기 한국 축제 총정리'에 강릉커피축제 수록",
+   "url": "https://www.hanyouwang.com/news/detail_4019.html",
+   "needles": [
+    "江陵咖啡庆典"
+   ]
+  },
+  {
+   "id": "zh-lhw-413",
+   "langs": [
+    "zh"
+   ],
+   "ko": "강릉커피축제",
+   "kind": "media",
+   "claim": "중국어 한국여행 사이트 来韩网의 강릉커피축제 소개 기사",
+   "url": "https://www.laihanwang.com/phone/news/show_413.html",
+   "needles": [
+    "江陵咖啡节"
+   ]
+  },
+  {
+   "id": "zh-hyw4019-gimje",
+   "langs": [
+    "zh"
+   ],
+   "ko": "김제지평선축제",
+   "kind": "media",
+   "claim": "韩游网 '2015 하반기 한국 축제 총정리'에 김제지평선축제 수록",
+   "url": "https://www.hanyouwang.com/news/detail_4019.html",
+   "needles": [
+    "金堤地平线庆典"
+   ]
+  },
+  {
+   "id": "zh-laihanwang-nonsan",
+   "langs": [
+    "zh"
+   ],
+   "ko": "논산딸기축제",
+   "kind": "media",
+   "claim": "来韩网 '논산딸기축제' 소개 기사",
+   "url": "https://www.laihanwang.com/phone/news/show_225.html",
+   "needles": [
+    "论山草莓节"
+   ]
+  },
+  {
+   "id": "zh-lhw-43",
+   "langs": [
+    "zh"
+   ],
+   "ko": "논산딸기축제",
+   "kind": "media",
+   "claim": "来韩网 '논산딸기와 사랑에 빠지다, 논산딸기축제' 기사",
+   "url": "https://www.laihanwang.com/phone/news/show_43.html",
+   "needles": [
+    "论山草莓节"
+   ]
+  },
+  {
+   "id": "zh-hanyouwang-daegwallyeong",
+   "langs": [
+    "zh"
+   ],
+   "ko": "대관령눈꽃축제",
+   "kind": "media",
+   "claim": "韩游网 '평창 겨울축제 개막'(평창송어·대관령눈꽃 통합) 기사",
+   "url": "https://www.hanyouwang.com/news/detail_5006.html",
+   "needles": [
+    "大关岭雪花庆典"
+   ]
+  },
+  {
+   "id": "zh-laihanwang-daegwallyeong",
+   "langs": [
+    "zh"
+   ],
+   "ko": "대관령눈꽃축제",
+   "kind": "media",
+   "claim": "来韩网 '2026년 2월 한국 축제' 기사(대관령눈꽃축제)",
+   "url": "https://www.laihanwang.com/phone/news/show_437.html",
+   "needles": [
+    "大关岭雪花节"
+   ]
+  },
+  {
+   "id": "zh-sina-chimac",
+   "langs": [
+    "zh"
+   ],
+   "ko": "대구치맥페스티벌",
+   "kind": "media",
+   "claim": "신랑 기사: 대구치맥페스티벌이 중국인 관광객용 열차 등 유치 시도(사드 여파로 취소)",
+   "url": "https://mil.sina.cn/2016-07-30/detail-ifxunuyk4144333.d.html",
+   "needles": [
+    "炸鸡啤酒节",
+    "中国游客"
+   ]
+  },
+  {
+   "id": "zh-hanyouwang-chimac",
+   "langs": [
+    "zh"
+   ],
+   "ko": "대구치맥페스티벌",
+   "kind": "media",
+   "claim": "중국어 한국여행 사이트 韩游网 대구치맥페스티벌 소개",
+   "url": "https://www.hanyouwang.com/news/detail_5720.html",
+   "needles": [
+    "炸鸡啤酒节"
+   ]
+  },
+  {
+   "id": "zh-kyongbuk-chimac-target",
+   "langs": [
+    "zh",
+    "tw"
+   ],
+   "ko": "대구치맥페스티벌",
+   "kind": "target",
+   "claim": "경북일보: 대구시, 치맥페스티벌에 중국 왕홍 초청해 중국 SNS 홍보 + 대구-홍콩 직항 탑승객 대상 글로벌존 연계 프로모션",
+   "url": "https://www.kyongbuk.co.kr/news/articleView.html?idxno=4077182",
+   "needles": [
+    "치맥페스티벌",
+    "중국 왕홍",
+    "홍콩 직항"
+   ]
+  },
+  {
+   "id": "zh-hyw4019-muju",
+   "langs": [
+    "zh"
+   ],
+   "ko": "무주반딧불축제",
+   "kind": "media",
+   "claim": "韩游网 '2015 하반기 한국 축제 총정리'에 무주반딧불축제 수록",
+   "url": "https://www.hanyouwang.com/news/detail_4019.html",
+   "needles": [
+    "茂朱萤火庆典"
+   ]
+  },
+  {
+   "id": "zh-lhw-366",
+   "langs": [
+    "zh"
+   ],
+   "ko": "무주반딧불축제",
+   "kind": "media",
+   "claim": "중국어 한국여행 사이트 来韩网의 무주반딧불축제 소개 기사",
+   "url": "https://www.laihanwang.com/phone/news/show_366.html",
+   "needles": [
+    "茂朱萤火虫庆典"
+   ]
+  },
+  {
+   "id": "zh-people-mud",
+   "langs": [
+    "zh"
+   ],
+   "ko": "보령머드축제",
+   "kind": "media",
+   "claim": "인민망 한국채널 보령머드축제 개막 화보 기사",
+   "url": "http://korea.people.com.cn/n3/2016/0718/c205167-9087480-3.html",
+   "needles": [
+    "保宁",
+    "泥浆"
+   ]
+  },
+  {
+   "id": "zh-hunan-mud",
+   "langs": [
+    "zh"
+   ],
+   "ko": "보령머드축제",
+   "kind": "media",
+   "claim": "중국 후난성 문화관광청 게재 보령머드축제 300만 관광객 기사",
+   "url": "http://whhlyt.hunan.gov.cn/whhlyt/news/mtjj/201909/t20190910_5462831.html",
+   "needles": [
+    "保宁",
+    "泥浆"
+   ]
+  },
+  {
+   "id": "zh-trazy-mud",
+   "langs": [
+    "zh"
+   ],
+   "ko": "보령머드축제",
+   "kind": "ota",
+   "claim": "트레이지 간체 2026 보령머드축제 티켓",
+   "url": "https://www.trazy.com/zh-CN/experience/detail/boryeong-mud-festival-ticket",
+   "needles": [
+    "保宁泥浆节门票"
+   ]
+  },
+  {
+   "id": "zh-busango-rock",
+   "langs": [
+    "zh"
+   ],
+   "ko": "부산국제록페스티벌",
+   "kind": "media",
+   "claim": "부산시 간체 뉴스 '2025 주요 행사 일정': 부산국제록페스티벌",
+   "url": "https://www.busan.go.kr/zhs/bsnews01/1663501",
+   "needles": [
+    "釜山国际摇滚节"
+   ]
+  },
+  {
+   "id": "zh-busango-rock2",
+   "langs": [
+    "zh"
+   ],
+   "ko": "부산국제록페스티벌",
+   "kind": "media",
+   "claim": "부산시 간체 뉴스: 2025 부산국제록페스티벌 2차 라인업 공개",
+   "url": "https://www.busan.go.kr/zhs/bsnews01/1684782",
+   "needles": [
+    "釜山国际摇滚音乐节"
+   ]
+  },
+  {
+   "id": "zh-busango-seafest",
+   "langs": [
+    "zh"
+   ],
+   "ko": "부산바다축제",
+   "kind": "media",
+   "claim": "부산시 간체 뉴스 '2025 주요 행사 일정': 제29회 부산바다축제",
+   "url": "https://www.busan.go.kr/zhs/bsnews01/1663501",
+   "needles": [
+    "釜山海洋庆典"
+   ]
+  },
+  {
+   "id": "zh-visitbusan-seafest",
+   "langs": [
+    "zh"
+   ],
+   "ko": "부산바다축제",
+   "kind": "media",
+   "claim": "VisitBusan 간체 부산바다축제 소개",
+   "url": "https://www.visitbusan.net/index.do?menuCd=DOM_000000601005001000&uc_seq=71&lang_cd=cng",
+   "needles": [
+    "釜山海洋节"
+   ]
+  },
+  {
+   "id": "zh-lhw-317",
+   "langs": [
+    "zh"
+   ],
+   "ko": "부산바다축제",
+   "kind": "media",
+   "claim": "중국어 한국여행 사이트 来韩网의 부산바다축제 소개 기사",
+   "url": "https://www.laihanwang.com/phone/news/show_317.html",
+   "needles": [
+    "釜山大海庆典"
+   ]
+  },
+  {
+   "id": "zh-visitbusan-busanfw",
+   "langs": [
+    "zh"
+   ],
+   "ko": "부산불꽃축제",
+   "kind": "media",
+   "claim": "부산관광공사 VisitBusan 간체 페이지: 부산불꽃축제 관람 명소 추천",
+   "url": "https://www.visitbusan.net/index.do?menuCd=DOM_000000502002001000&uc_seq=2604&lang_cd=cng",
+   "needles": [
+    "釜山烟花节"
+   ]
+  },
+  {
+   "id": "zh-busango-busanfw",
+   "langs": [
+    "zh"
+   ],
+   "ko": "부산불꽃축제",
+   "kind": "media",
+   "claim": "부산시 간체 행사 캘린더: 제20회 부산불꽃축제",
+   "url": "https://www.busan.go.kr/zhs/bsevents/1693997?curPage=&srchYear=2025&srchMonth=11&srchStartDt=&srchEndDt=&srchKey=&srchText=&check=",
+   "needles": [
+    "釜山烟花节"
+   ]
+  },
+  {
+   "id": "zh-hyw4019-jagalchi",
+   "langs": [
+    "zh"
+   ],
+   "ko": "부산자갈치축제",
+   "kind": "media",
+   "claim": "韩游网 '2015 하반기 한국 축제 총정리'에 부산자갈치축제 수록",
+   "url": "https://www.hanyouwang.com/news/detail_4019.html",
+   "needles": [
+    "釜山札嘎其庆典"
+   ]
+  },
+  {
+   "id": "zh-lhw-408",
+   "langs": [
+    "zh"
+   ],
+   "ko": "부산자갈치축제",
+   "kind": "media",
+   "claim": "중국어 한국여행 사이트 来韩网의 부산자갈치축제 소개 기사",
+   "url": "https://www.laihanwang.com/phone/news/show_408.html",
+   "needles": [
+    "釜山札嘎其庆典"
+   ]
+  },
+  {
+   "id": "zh-seoulgo-lantern",
+   "langs": [
+    "zh"
+   ],
+   "ko": "서울빛초롱축제",
+   "kind": "media",
+   "claim": "서울시 중문(간체) 공식사이트 서울빛초롱축제 소개",
+   "url": "https://chinese.seoul.go.kr/%E9%A6%96%E5%B0%94%E8%8A%B1%E7%81%AF%E8%8A%82/",
+   "needles": [
+    "首尔花灯节"
+   ]
+  },
+  {
+   "id": "zh-people-lantern",
+   "langs": [
+    "zh"
+   ],
+   "ko": "서울빛초롱축제",
+   "kind": "media",
+   "claim": "인민망 한국채널 '서울 빛초롱축제 청계광장 개막' 화보 기사",
+   "url": "http://korea.people.com.cn/n/2014/1121/c205167-8812462-5.html",
+   "needles": [
+    "首尔灯节"
+   ]
+  },
+  {
+   "id": "zh-lhw-429",
+   "langs": [
+    "zh"
+   ],
+   "ko": "서울빛초롱축제",
+   "kind": "media",
+   "claim": "중국어 한국여행 사이트 来韩网의 서울빛초롱축제 소개 기사",
+   "url": "https://www.laihanwang.com/phone/news/show_429.html",
+   "needles": [
+    "首尔灯笼庆典"
+   ]
+  },
+  {
+   "id": "zh-chinanews-seoulfw",
+   "langs": [
+    "zh"
+   ],
+   "ko": "서울세계불꽃축제",
+   "kind": "media",
+   "claim": "중국신문망 2024 서울세계불꽃축제 한강공원 개최 보도",
+   "url": "https://www.chinanews.com.cn/gj/2024/10-06/10297562.shtml",
+   "needles": [
+    "首尔世界烟花节"
+   ]
+  },
+  {
+   "id": "zh-seoulgo-seoulfw",
+   "langs": [
+    "zh"
+   ],
+   "ko": "서울세계불꽃축제",
+   "kind": "media",
+   "claim": "서울시 중문(간체) 공식사이트 서울세계불꽃축제 소개",
+   "url": "https://chinese.seoul.go.kr/%E6%9C%8D%E5%8A%A1/%E6%96%87%E5%8C%96%E4%BC%91%E9%97%B2/%E9%A6%96%E5%B0%94%E4%B8%96%E7%95%8C%E7%83%9F%E8%8A%B1%E8%8A%82/",
+   "needles": [
+    "首尔世界烟花节"
+   ]
+  },
+  {
+   "id": "zh-trazy-seoulfw",
+   "langs": [
+    "zh"
+   ],
+   "ko": "서울세계불꽃축제",
+   "kind": "ota",
+   "claim": "트레이지 간체 서울 국제불꽃축제·시내투어",
+   "url": "https://www.trazy.com/zh-CN/experience/detail/seoul-internaitonal-fireworks-festival-seoul-tour-package",
+   "needles": [
+    "首尔国际烟花节"
+   ]
+  },
+  {
+   "id": "zh-hyw4019-sorae",
+   "langs": [
+    "zh"
+   ],
+   "ko": "소래포구축제",
+   "kind": "media",
+   "claim": "韩游网 '2015 하반기 한국 축제 총정리'에 소래포구축제 수록",
+   "url": "https://www.hanyouwang.com/news/detail_4019.html",
+   "needles": [
+    "仁川苏来浦口庆典"
+   ]
+  },
+  {
+   "id": "zh-trazy-suwon",
+   "langs": [
+    "zh"
+   ],
+   "ko": "수원화성문화제",
+   "kind": "ota",
+   "claim": "트레이지 간체 수원화성문화제 당일투어",
+   "url": "https://www.trazy.com/zh-CN/experience/detail/suwon-hwaseong-cultural-festival-from-seoul",
+   "needles": [
+    "水原华城文化节一日游"
+   ]
+  },
+  {
+   "id": "zh-ci-andong",
+   "langs": [
+    "zh"
+   ],
+   "ko": "안동국제탈춤페스티벌",
+   "kind": "media",
+   "claim": "공자학원(ci.cn) 안동국제탈춤페스티벌 참가 기사",
+   "url": "https://ci.cn/site/1261018000/kyxw/14632",
+   "needles": [
+    "安东国际假面舞节"
+   ]
+  },
+  {
+   "id": "zh-tourandong-andong",
+   "langs": [
+    "zh"
+   ],
+   "ko": "안동국제탈춤페스티벌",
+   "kind": "media",
+   "claim": "안동시 관광 간체 페이지 안동국제탈춤페스티벌",
+   "url": "https://www.tourandong.com/cn/sub2/sub1.cshtml",
+   "needles": [
+    "假面舞"
+   ]
+  },
+  {
+   "id": "zh-hanyouwang-andong",
+   "langs": [
+    "zh"
+   ],
+   "ko": "안동국제탈춤페스티벌",
+   "kind": "media",
+   "claim": "韩游网 2019 안동국제탈춤페스티벌 소개 기사",
+   "url": "https://www.hanyouwang.com/news/detail_6004.html",
+   "needles": [
+    "安东国际假面舞节"
+   ]
+  },
+  {
+   "id": "zh-seoulgo-lotus",
+   "langs": [
+    "zh"
+   ],
+   "ko": "연등회",
+   "kind": "media",
+   "claim": "서울시 중문(간체) 공식사이트 연등회 소개",
+   "url": "https://chinese.seoul.go.kr/%E7%87%83%E7%81%AF%E4%BC%9A/",
+   "needles": [
+    "燃灯会"
+   ]
+  },
+  {
+   "id": "zh-wiki-lotus",
+   "langs": [
+    "zh"
+   ],
+   "ko": "연등회",
+   "kind": "media",
+   "claim": "중국어 위키백과(간체) 연등회 문서",
+   "url": "https://zh.wikipedia.org/zh-hans/%E7%87%83%E7%81%AF%E4%BC%9A",
+   "needles": [
+    "燃灯会",
+    "首尔"
+   ]
+  },
+  {
+   "id": "zh-ajudaily-lotus",
+   "langs": [
+    "zh"
+   ],
+   "ko": "연등회",
+   "kind": "media",
+   "claim": "아주경제 중문판 2025 연등회 서울 개최 기사",
+   "url": "https://www.ajudaily.com/view/20250427091105992",
+   "needles": [
+    "燃灯会"
+   ]
+  },
+  {
+   "id": "zh-hanyouwang-lotus",
+   "langs": [
+    "zh"
+   ],
+   "ko": "연등회",
+   "kind": "media",
+   "claim": "중국어 한국여행 사이트 韩游网 연등회 소개",
+   "url": "https://www.hanyouwang.com/news/detail_5671.html",
+   "needles": [
+    "燃灯会"
+   ]
+  },
+  {
+   "id": "zh-extrabux-pentaport",
+   "langs": [
+    "zh"
+   ],
+   "ko": "인천펜타포트 락 페스티벌",
+   "kind": "media",
+   "claim": "중국어 쇼핑가이드 extrabux '2024 한국 음악축제 추천'(펜타포트)",
+   "url": "https://www.extrabux.com/chs/guide/8310189",
+   "needles": [
+    "Pentaport"
+   ]
+  },
+  {
+   "id": "zh-laihanwang-pentaport",
+   "langs": [
+    "zh"
+   ],
+   "ko": "인천펜타포트 락 페스티벌",
+   "kind": "media",
+   "claim": "중국어 한국여행 사이트 来韩网 '한국 대표 음악축제 인천펜타포트' 기사",
+   "url": "https://www.laihanwang.com/phone/news/show_309.html",
+   "needles": [
+    "仁川Pentaport摇滚音乐节"
+   ]
+  },
+  {
+   "id": "zh-hyw4019-jeongseon",
+   "langs": [
+    "zh"
+   ],
+   "ko": "정선아리랑제",
+   "kind": "media",
+   "claim": "韩游网 '2015 하반기 한국 축제 총정리'에 정선아리랑제 수록",
+   "url": "https://www.hanyouwang.com/news/detail_4019.html",
+   "needles": [
+    "旌善阿里郎庆典"
+   ]
+  },
+  {
+   "id": "zh-people-jindo",
+   "langs": [
+    "zh"
+   ],
+   "ko": "진도신비의바닷길축제",
+   "kind": "media",
+   "claim": "인민망 한국채널 '모세의 기적 재현, 진도 바닷길축제' 기사",
+   "url": "http://korea.people.com.cn/n/2015/0326/c205171-8869213.html",
+   "needles": [
+    "珍岛",
+    "海路节"
+   ]
+  },
+  {
+   "id": "zh-haiwainet-jindo",
+   "langs": [
+    "zh"
+   ],
+   "ko": "진도신비의바닷길축제",
+   "kind": "media",
+   "claim": "해외망(人民日报海外版) 진도 신비의 바닷길 기사",
+   "url": "http://korea.haiwainet.cn/n/2016/0412/c3541820-29825072.html",
+   "needles": [
+    "珍岛",
+    "神秘海路"
+   ]
+  },
+  {
+   "id": "zh-xinhua-jindo",
+   "langs": [
+    "zh"
+   ],
+   "ko": "진도신비의바닷길축제",
+   "kind": "media",
+   "claim": "신화망 '한국판 모세의 기적 진도 신비의 바닷길' 화보",
+   "url": "http://www.xinhuanet.com/world/2016-04/12/c_128884072.htm",
+   "needles": [
+    "珍岛",
+    "神秘海路"
+   ]
+  },
+  {
+   "id": "zh-trazy-jinju",
+   "langs": [
+    "zh"
+   ],
+   "ko": "진주남강유등축제",
+   "kind": "ota",
+   "claim": "트레이지 간체 진주남강유등축제 당일투어",
+   "url": "https://www.trazy.com/zh-CN/experience/detail/jinju-lantern-festival-from-busan",
+   "needles": [
+    "晋州南江流灯节"
+   ]
+  },
+  {
+   "id": "zh-asiatoday-jinju-target",
+   "langs": [
+    "zh"
+   ],
+   "ko": "진주남강유등축제",
+   "kind": "target",
+   "claim": "아시아투데이: 경남도·경남관광재단 베이징 관광설명회서 진주남강유등축제 홍보, 중국 관광객 유치",
+   "url": "https://www.asiatoday.co.kr/kn/view.php?key=20260521010006334",
+   "needles": [
+    "진주남강유등축제",
+    "중국 관광객"
+   ]
+  },
+  {
+   "id": "zh-wiki-jinhae",
+   "langs": [
+    "zh"
+   ],
+   "ko": "진해군항제",
+   "kind": "media",
+   "claim": "중국어 위키백과(간체) 진해군항제 문서",
+   "url": "https://zh.wikipedia.org/zh-cn/%E9%95%87%E6%B5%B7%E5%86%9B%E6%B8%AF%E8%8A%82",
+   "needles": [
+    "镇海军港节"
+   ]
+  },
+  {
+   "id": "zh-xinhua-jinhae",
+   "langs": [
+    "zh"
+   ],
+   "ko": "진해군항제",
+   "kind": "media",
+   "claim": "신화망 '한국 진해: 벚꽃 만개' 사진 기사(2026.4)",
+   "url": "https://www.news.cn/photo/20260402/408e629b6954493cba474e5c4bdea2cc/c.html",
+   "needles": [
+    "镇海",
+    "樱花"
+   ]
+  },
+  {
+   "id": "zh-lhw-233",
+   "langs": [
+    "zh"
+   ],
+   "ko": "진해군항제",
+   "kind": "media",
+   "claim": "중국어 한국여행 사이트 来韩网의 진해군항제 소개 기사",
+   "url": "https://www.laihanwang.com/phone/news/show_233.html",
+   "needles": [
+    "镇海军港祭"
+   ]
+  },
+  {
+   "id": "zh-lhw-75",
+   "langs": [
+    "zh"
+   ],
+   "ko": "춘천마임축제",
+   "kind": "media",
+   "claim": "중국어 한국여행 사이트 来韩网의 춘천마임축제 소개 기사",
+   "url": "https://www.laihanwang.com/phone/news/show_75.html",
+   "needles": [
+    "春川哑剧节"
+   ]
+  },
+  {
+   "id": "zh-consulate-tamna",
+   "langs": [
+    "zh"
+   ],
+   "ko": "탐라문화제",
+   "kind": "media",
+   "claim": "주제주 중국총영사관: 제주 화교가 제61회 탐라문화제 참가",
+   "url": "http://jeju.china-consulate.gov.cn/lqdt/202210/t20221012_10781312.htm",
+   "needles": [
+    "耽罗文化节"
+   ]
+  },
+  {
+   "id": "zh-thepaper-tamna",
+   "langs": [
+    "zh"
+   ],
+   "ko": "탐라문화제",
+   "kind": "media",
+   "claim": "澎湃新闻: 뤄양 한푸 예술단 탐라문화제 공연",
+   "url": "https://m.thepaper.cn/newsDetail_forward_28949539",
+   "needles": [
+    "耽罗文化节"
+   ]
+  },
+  {
+   "id": "zh-lypt-tamna",
+   "langs": [
+    "zh"
+   ],
+   "ko": "탐라문화제",
+   "kind": "media",
+   "claim": "중국 뤄양 대학 사생의 탐라문화제 참가 기사",
+   "url": "https://www.lypt.edu.cn/2024/1007/c1454a48304/page.htm",
+   "needles": [
+    "耽罗文化节"
+   ]
+  },
+  {
+   "id": "zh-lhw-146",
+   "langs": [
+    "zh"
+   ],
+   "ko": "탐라문화제",
+   "kind": "media",
+   "claim": "중국어 한국여행 사이트 来韩网의 탐라문화제 소개 기사",
+   "url": "https://www.laihanwang.com/phone/news/show_146.html",
+   "needles": [
+    "耽罗文化节"
+   ]
+  },
+  {
+   "id": "zh-hyw4019-tongyeong",
+   "langs": [
+    "zh"
+   ],
+   "ko": "통영한산대첩축제",
+   "kind": "media",
+   "claim": "韩游网 '2015 하반기 한국 축제 총정리'에 통영한산대첩축제 수록",
+   "url": "https://www.hanyouwang.com/news/detail_4019.html",
+   "needles": [
+    "统营闲山大捷庆典"
+   ]
+  },
+  {
+   "id": "zh-hanyouwang-pyeongchang",
+   "langs": [
+    "zh"
+   ],
+   "ko": "평창송어축제",
+   "kind": "media",
+   "claim": "韩游网 '평창 겨울축제 개막'(평창송어축제) 기사",
+   "url": "https://www.hanyouwang.com/news/detail_5006.html",
+   "needles": [
+    "平昌鳟鱼庆典"
+   ]
+  },
+  {
+   "id": "zh-trazy-pyeongchang",
+   "langs": [
+    "zh"
+   ],
+   "ko": "평창송어축제",
+   "kind": "ota",
+   "claim": "트레이지 간체 평창송어축제 당일투어",
+   "url": "https://www.trazy.com/zh-CN/experience/detail/pyeongchang-trout-festival-ice-fishing-shuttle-bus-package",
+   "needles": [
+    "平昌鳟鱼节一日游"
+   ]
+  },
+  {
+   "id": "zh-consulate-pohang",
+   "langs": [
+    "zh"
+   ],
+   "ko": "포항국제불빛축제",
+   "kind": "media",
+   "claim": "주부산 중국총영사관: 부총영사 제16회 포항국제불빛축제 참석",
+   "url": "https://busan.china-consulate.gov.cn/xw/201906/t20190605_5292423.htm",
+   "needles": [
+    "浦项国际烟花节"
+   ]
+  },
+  {
+   "id": "zh-lhw-291",
+   "langs": [
+    "zh"
+   ],
+   "ko": "포항국제불빛축제",
+   "kind": "media",
+   "claim": "중국어 한국여행 사이트 来韩网의 포항국제불빛축제 소개 기사",
+   "url": "https://www.laihanwang.com/phone/news/show_291.html",
+   "needles": [
+    "浦项国际灯光庆典"
+   ]
+  },
+  {
+   "id": "zh-chinanews-hwacheon",
+   "langs": [
+    "zh"
+   ],
+   "ko": "화천산천어축제",
+   "kind": "media",
+   "claim": "중국신문망(中新网) 2026 화천산천어축제 개막 보도",
+   "url": "https://www.chinanews.com.cn/gj/2026/01-11/10549731.shtml",
+   "needles": [
+    "华川",
+    "山鳟鱼"
+   ]
+  },
+  {
+   "id": "zh-people-hwacheon",
+   "langs": [
+    "zh"
+   ],
+   "ko": "화천산천어축제",
+   "kind": "media",
+   "claim": "인민망 한국채널 화천산천어축제 기사",
+   "url": "http://korea.people.com.cn/n1/2026/0116/c407366-40646788.html",
+   "needles": [
+    "华川",
+    "山鳟鱼"
+   ]
+  },
+  {
+   "id": "zh-trazy-hwacheon",
+   "langs": [
+    "zh"
+   ],
+   "ko": "화천산천어축제",
+   "kind": "ota",
+   "claim": "트레이지 간체 2027 화천산천어축제 왕복버스 패키지",
+   "url": "https://www.trazy.com/zh-CN/experience/detail/hwacheon-sancheoneo-ice-festival-shuttle-bus-package",
+   "needles": [
+    "华川山鳟鱼冰节"
+   ]
+  },
+  {
+   "id": "tw-yahoo-danoje",
+   "langs": [
+    "tw"
+   ],
+   "ko": "강릉단오제",
+   "kind": "media",
+   "claim": "Yahoo 대만 뉴스 '대만·한국 단오 차이, 강릉단오제' 기사",
+   "url": "https://tw.news.yahoo.com/%E5%8F%B0%E9%9F%93%E7%AB%AF%E5%8D%88%E5%A4%A7%E4%B8%8D%E5%90%8C-%E6%B1%9F%E9%99%B5%E7%AB%AF%E5%8D%88%E7%A5%AD-%E9%9F%93%E5%9C%8B%E7%8D%A8%E7%89%B9%E7%9A%84%E9%9D%9E%E7%89%A9%E8%B3%AA%E6%96%87%E5%8C%96%E9%81%BA%E7%94%A2-011240899.html",
+   "needles": [
+    "江陵端午祭"
+   ]
+  },
+  {
+   "id": "tw-mook-danoje",
+   "langs": [
+    "tw"
+   ],
+   "ko": "강릉단오제",
+   "kind": "media",
+   "claim": "대만 여행잡지 MOOK '한국 최고(最古) 단오제례' 기사(강릉)",
+   "url": "https://www.mook.com.tw/article/5481",
+   "needles": [
+    "江陵",
+    "端午"
+   ]
+  },
+  {
+   "id": "tw-wiki-danoje",
+   "langs": [
+    "tw"
+   ],
+   "ko": "강릉단오제",
+   "kind": "media",
+   "claim": "중국어 위키백과(대만 정체) 강릉단오제",
+   "url": "https://zh.wikipedia.org/zh-tw/%E6%B1%9F%E9%99%B5%E7%AB%AF%E5%8D%88%E7%A5%AD",
+   "needles": [
+    "江陵端午祭"
+   ]
+  },
+  {
+   "id": "tw-ettoday-gimje",
+   "langs": [
+    "tw"
+   ],
+   "ko": "김제지평선축제",
+   "kind": "media",
+   "claim": "대만 ETtoday '하늘과 땅의 경계, 김제 지평선축제' 기사",
+   "url": "https://travel.ettoday.net/article/293074.htm",
+   "needles": [
+    "金堤",
+    "地平線"
+   ]
+  },
+  {
+   "id": "tw-ginatw-gimje",
+   "langs": [
+    "tw"
+   ],
+   "ko": "김제지평선축제",
+   "kind": "media",
+   "claim": "대만 블로그 ginatw 김제 지평선축제 후기",
+   "url": "https://ginatw.com/gimje/",
+   "needles": [
+    "金堤",
+    "地平線"
+   ]
+  },
+  {
+   "id": "tw-ettoday-daegwallyeong",
+   "langs": [
+    "tw"
+   ],
+   "ko": "대관령눈꽃축제",
+   "kind": "media",
+   "claim": "대만 ETtoday '한국 겨울 필수 6대 축제'(대관령 포함)",
+   "url": "https://travel.ettoday.net/article/444307.htm",
+   "needles": [
+    "大關嶺"
+   ]
+  },
+  {
+   "id": "tw-funliday-daegwallyeong",
+   "langs": [
+    "tw"
+   ],
+   "ko": "대관령눈꽃축제",
+   "kind": "media",
+   "claim": "대만 여행앱 Funliday 한국 눈 명소 TOP12(대관령)",
+   "url": "https://www.funliday.com/posts/korea-snow-spot-top12/",
+   "needles": [
+    "大關嶺"
+   ]
+  },
+  {
+   "id": "tw-kto-daegwallyeong",
+   "langs": [
+    "tw"
+   ],
+   "ko": "대관령눈꽃축제",
+   "kind": "media",
+   "claim": "한국관광공사 번체 사이트 대관령눈꽃축제 페이지",
+   "url": "https://big5chinese.visitkorea.or.kr/cht/ATT/3_4_view.jsp?cid=679303",
+   "needles": [
+    "大關嶺雪花節"
+   ]
+  },
+  {
+   "id": "tw-settour-chimac",
+   "langs": [
+    "tw"
+   ],
+   "ko": "대구치맥페스티벌",
+   "kind": "agency",
+   "claim": "동남여행 대구 치맥페스티벌 5일 단체여행",
+   "url": "https://tour.settour.com.tw/product/GFG0000024023",
+   "needles": [
+    "炸雞啤酒節"
+   ]
+  },
+  {
+   "id": "tw-trazy-mud",
+   "langs": [
+    "tw"
+   ],
+   "ko": "보령머드축제",
+   "kind": "ota",
+   "claim": "트레이지 번체 2026 보령머드축제 티켓",
+   "url": "https://www.trazy.com/zh-TW/experience/detail/boryeong-mud-festival-ticket",
+   "needles": [
+    "保寧泥漿節門票"
+   ]
+  },
+  {
+   "id": "tw-busannl-rock",
+   "langs": [
+    "tw"
+   ],
+   "ko": "부산국제록페스티벌",
+   "kind": "media",
+   "claim": "부산시 번체 뉴스레터(2020.7) 부산국제록페스티벌",
+   "url": "https://www.busan.go.kr/Upload/ENewsLetter/chineseTW/2020/file/tchi_eNewsletter_July_2020.html",
+   "needles": [
+    "搖滾節"
+   ]
+  },
+  {
+   "id": "tw-visitbusan-seafest",
+   "langs": [
+    "tw"
+   ],
+   "ko": "부산바다축제",
+   "kind": "media",
+   "claim": "부산관광공사 VisitBusan 번체 부산바다축제 페이지",
+   "url": "https://www.visitbusan.net/index.do?menuCd=DOM_000000601005001000&uc_seq=71&lang_cd=cnb",
+   "needles": [
+    "釜山海洋節"
+   ]
+  },
+  {
+   "id": "tw-pixnet-seafest",
+   "langs": [
+    "tw"
+   ],
+   "ko": "부산바다축제",
+   "kind": "media",
+   "claim": "대만 블로그(pixnet) '부산 최대 해양 축제 부산바다축제' 소개",
+   "url": "https://travelerts.pixnet.net/blog/post/383213636",
+   "needles": [
+    "釜山海洋節"
+   ]
+  },
+  {
+   "id": "tw-kto-seafest",
+   "langs": [
+    "tw"
+   ],
+   "ko": "부산바다축제",
+   "kind": "media",
+   "claim": "한국관광공사 번체 사이트 부산바다축제 페이지",
+   "url": "https://big5chinese.visitkorea.or.kr/cht/ATT/3_4_view.jsp?cid=333373",
+   "needles": [
+    "釜山海洋節"
+   ]
+  },
+  {
+   "id": "tw-popdaily-seafest",
+   "langs": [
+    "tw"
+   ],
+   "ko": "부산바다축제",
+   "kind": "media",
+   "claim": "대만 PopDaily '부산 사계절 축제 16선': 부산바다축제",
+   "url": "https://www.popdaily.com.tw/korea/1348982",
+   "needles": [
+    "釜山海洋慶典"
+   ]
+  },
+  {
+   "id": "tw-settour-busanfw",
+   "langs": [
+    "tw"
+   ],
+   "ko": "부산불꽃축제",
+   "kind": "agency",
+   "claim": "대만 동남여행(settour) 부산불꽃축제 단체여행 상품",
+   "url": "https://tour.settour.com.tw/product/GFG0000015408",
+   "needles": [
+    "釜山煙火"
+   ]
+  },
+  {
+   "id": "tw-settour-busanfw-28142",
+   "langs": [
+    "tw"
+   ],
+   "ko": "부산불꽃축제",
+   "kind": "agency",
+   "claim": "동남여행 부산불꽃축제 단체여행(2)",
+   "url": "https://tour.settour.com.tw/product/GFG0000028142",
+   "needles": [
+    "釜山煙火節"
+   ]
+  },
+  {
+   "id": "tw-popdaily-jagalchi",
+   "langs": [
+    "tw"
+   ],
+   "ko": "부산자갈치축제",
+   "kind": "media",
+   "claim": "대만 PopDaily '부산 사계절 축제 16선': 자갈치축제",
+   "url": "https://www.popdaily.com.tw/korea/1348982",
+   "needles": [
+    "札嘎其慶典"
+   ]
+  },
+  {
+   "id": "tw-busannl-jagalchi",
+   "langs": [
+    "tw"
+   ],
+   "ko": "부산자갈치축제",
+   "kind": "media",
+   "claim": "부산시 번체 뉴스레터(2019.9) 자갈치축제 소개",
+   "url": "https://www.busan.go.kr/Upload/ENewsLetter/chineseTW/2019/file/tchi_eNewsletter_September_2019.html",
+   "needles": [
+    "札嘎其慶典"
+   ]
+  },
+  {
+   "id": "tw-ginatw-lantern",
+   "langs": [
+    "tw"
+   ],
+   "ko": "서울빛초롱축제",
+   "kind": "media",
+   "claim": "대만 여행 블로그(ginatw) 서울빛초롱축제 공략",
+   "url": "https://ginatw.com/seoul-lantern-festival/",
+   "needles": [
+    "首爾燈節"
+   ]
+  },
+  {
+   "id": "tw-creatrip-lantern",
+   "langs": [
+    "tw"
+   ],
+   "ko": "서울빛초롱축제",
+   "kind": "media",
+   "claim": "Creatrip 번체 2023 서울빛초롱축제(首爾燈節) 정보",
+   "url": "https://creatrip.com/blog/5534",
+   "needles": [
+    "首爾燈節"
+   ]
+  },
+  {
+   "id": "tw-trazy-seoulfw-ticket",
+   "langs": [
+    "tw"
+   ],
+   "ko": "서울세계불꽃축제",
+   "kind": "ota",
+   "claim": "트레이지 번체 서울세계불꽃축제 티켓",
+   "url": "https://www.trazy.com/zh-TW/experience/detail/seoul-international-fireworks-festival-ticket-package",
+   "needles": [
+    "首爾世界煙火節門票"
+   ]
+  },
+  {
+   "id": "tw-insight-seoulfw-target",
+   "langs": [
+    "tw"
+   ],
+   "ko": "서울세계불꽃축제",
+   "kind": "target",
+   "claim": "인사이트: 서울관광재단·한화, 서울세계불꽃축제 해외 초청석으로 대만 관광객 유치 패키지",
+   "url": "https://www.insight.co.kr/news/566114",
+   "needles": [
+    "서울세계불꽃축제",
+    "대만 관광객"
+   ]
+  },
+  {
+   "id": "tw-trazy-suwon",
+   "langs": [
+    "tw"
+   ],
+   "ko": "수원화성문화제",
+   "kind": "ota",
+   "claim": "트레이지 번체 수원화성문화제 당일투어",
+   "url": "https://www.trazy.com/zh-TW/experience/detail/suwon-hwaseong-cultural-festival-from-seoul",
+   "needles": [
+    "水原華城文化祭一日遊"
+   ]
+  },
+  {
+   "id": "tw-ettoday-andong",
+   "langs": [
+    "tw"
+   ],
+   "ko": "안동국제탈춤페스티벌",
+   "kind": "media",
+   "claim": "대만 ETtoday 여행: 안동국제탈춤페스티벌 9월 개최 소개",
+   "url": "https://travel.ettoday.net/article/775968.htm",
+   "needles": [
+    "安東國際假面舞節"
+   ]
+  },
+  {
+   "id": "tw-epoch-andong",
+   "langs": [
+    "tw"
+   ],
+   "ko": "안동국제탈춤페스티벌",
+   "kind": "media",
+   "claim": "대기원시보(번체) 안동국제탈춤페스티벌 10월 개최 기사",
+   "url": "https://www.epochtimes.com/b5/23/9/7/n14069137.htm",
+   "needles": [
+    "安東國際假面舞節"
+   ]
+  },
+  {
+   "id": "tw-seoulgo-lotus",
+   "langs": [
+    "tw"
+   ],
+   "ko": "연등회",
+   "kind": "media",
+   "claim": "서울시 번체 공식사이트 광화문 연등회 소개",
+   "url": "https://tchinese.seoul.go.kr/%E5%85%89%E5%8C%96%E9%96%80%E7%87%83%E7%87%88%E6%9C%83/",
+   "needles": [
+    "燃燈會"
+   ]
+  },
+  {
+   "id": "tw-wiki-lotus",
+   "langs": [
+    "tw"
+   ],
+   "ko": "연등회",
+   "kind": "media",
+   "claim": "중국어 위키백과(대만 정체) 연등회 문서",
+   "url": "https://zh.wikipedia.org/zh-tw/%E7%87%83%E7%81%AF%E4%BC%9A",
+   "needles": [
+    "燃燈會"
+   ]
+  },
+  {
+   "id": "tw-hktrip-lotus",
+   "langs": [
+    "tw"
+   ],
+   "ko": "연등회",
+   "kind": "media",
+   "claim": "트립닷컴 홍콩 커뮤니티(Moments) 서울 연등회 후기",
+   "url": "https://hk.trip.com/moments/detail/seoul-234-121693251/",
+   "needles": [
+    "燃燈會"
+   ]
+  },
+  {
+   "id": "tw-kto-icheon",
+   "langs": [
+    "tw"
+   ],
+   "ko": "이천도자기축제",
+   "kind": "media",
+   "claim": "한국관광공사 번체 사이트 이천도자기축제 페이지",
+   "url": "https://big5chinese.visitkorea.or.kr/svc/contents/contentsView.do?vcontsId=93321",
+   "needles": [
+    "利川陶瓷器節"
+   ]
+  },
+  {
+   "id": "tw-trip-pentaport",
+   "langs": [
+    "tw"
+   ],
+   "ko": "인천펜타포트 락 페스티벌",
+   "kind": "media",
+   "claim": "트립닷컴 대만 Moments 인천 펜타포트 락페 소개",
+   "url": "https://tw.trip.com/moments/poi-incheon-pentaport-rock-festival-50527308/",
+   "needles": [
+    "Pentaport"
+   ]
+  },
+  {
+   "id": "tw-trazy-pentaport",
+   "langs": [
+    "tw"
+   ],
+   "ko": "인천펜타포트 락 페스티벌",
+   "kind": "ota",
+   "claim": "트레이지 번체 2024 인천펜타포트 락 페스티벌 티켓",
+   "url": "https://www.trazy.com/zh-TW/experience/detail/incheon-pentaport-rock-festival-ticket",
+   "needles": [
+    "仁川Pentaport搖滾音樂節"
+   ]
+  },
+  {
+   "id": "tw-lnanews-jindo",
+   "langs": [
+    "tw"
+   ],
+   "ko": "진도신비의바닷길축제",
+   "kind": "media",
+   "claim": "대만 매체 lnanews 제33회 진도신비의바닷길축제 개최 기사",
+   "url": "https://www.lnanews.com/news/49050",
+   "needles": [
+    "珍島",
+    "海路"
+   ]
+  },
+  {
+   "id": "tw-caneis-jindo",
+   "langs": [
+    "tw"
+   ],
+   "ko": "진도신비의바닷길축제",
+   "kind": "media",
+   "claim": "대만 여행사 凱尼斯 한국 정보 페이지: 진도 신비의 바닷길",
+   "url": "https://www.caneis.com.tw/info/jp/08-korea/quanS-006.html",
+   "needles": [
+    "珍島",
+    "海路"
+   ]
+  },
+  {
+   "id": "tw-pixnet-jindo",
+   "langs": [
+    "tw"
+   ],
+   "ko": "진도신비의바닷길축제",
+   "kind": "media",
+   "claim": "대만 블로그(pixnet) 진도 '모세의 길' 소개",
+   "url": "https://hotelishome.pixnet.net/blog/post/1136278-%E9%9F%93%E5%9C%8B%E6%AD%A3%E5%A4%AF%E6%97%85%E9%81%8A%E6%99%AF%E9%BB%9E:-%E7%8F%8D%E5%B3%B6%E7%9A%84%E3%80%8C%E6%91%A9%E8%A5%BF%E4%B9%8B%E8%B7%AF%E3%80%8D",
+   "needles": [
+    "珍島"
+   ]
+  },
+  {
+   "id": "tw-yahoo-jinju",
+   "langs": [
+    "tw"
+   ],
+   "ko": "진주남강유등축제",
+   "kind": "media",
+   "claim": "Yahoo 대만 뉴스 진주남강유등축제 소개 기사",
+   "url": "https://tw.news.yahoo.com/%E9%9F%93%E5%9C%8B%E6%99%89%E5%B7%9E%E5%8D%97%E6%B1%9F%E6%B5%81%E7%87%88%E7%AF%80104%E5%A3%AF%E8%A7%80%E7%99%BB%E5%A0%B4%EF%BC%81%E5%8D%97%E6%B1%9F%E6%B5%81%E7%87%88%E7%AF%80%E7%94%B1%E4%BE%86%E8%88%87%E6%B4%BB%E5%8B%95%EF%BC%9F%E6%99%89%E5%B7%9E%E6%99%AF%E9%BB%9E%E7%BE%8E%E9%A3%9F%E4%B8%80%E6%AC%A1%E7%9C%8B%EF%BC%81-021217006.html",
+   "needles": [
+    "晉州",
+    "流燈"
+   ]
+  },
+  {
+   "id": "tw-trazy-jinju",
+   "langs": [
+    "tw"
+   ],
+   "ko": "진주남강유등축제",
+   "kind": "ota",
+   "claim": "트레이지 번체 2026 진주남강유등축제·김해 당일투어",
+   "url": "https://www.trazy.com/zh-TW/experience/detail/jinju-lantern-festival-from-busan",
+   "needles": [
+    "晉州南江燈節"
+   ]
+  },
+  {
+   "id": "tw-settour-jinhae",
+   "langs": [
+    "tw"
+   ],
+   "ko": "진해군항제",
+   "kind": "agency",
+   "claim": "동남여행 2026 한국 벚꽃 상품 중 진해 벚꽃(鎮海賞櫻) 단체여행",
+   "url": "https://www.settour.com.tw/act/mkt/flower/kr.html",
+   "needles": [
+    "鎮海賞櫻"
+   ]
+  },
+  {
+   "id": "tw-trazy-jinhae",
+   "langs": [
+    "tw"
+   ],
+   "ko": "진해군항제",
+   "kind": "ota",
+   "claim": "트레이지 번체 진해 벚꽃 당일투어",
+   "url": "https://www.trazy.com/zh-TW/experience/detail/jinhae-cherry-blossom-tour-seoul-busan",
+   "needles": [
+    "鎮海櫻花一日遊"
+   ]
+  },
+  {
+   "id": "tw-yahoo-taebaek",
+   "langs": [
+    "tw"
+   ],
+   "ko": "태백 해바라기축제",
+   "kind": "media",
+   "claim": "Yahoo 대만 '여름 한국 꽃바다: 태백 해바라기' 기사",
+   "url": "https://tw.news.yahoo.com/%E5%A4%8F%E5%A4%A9%E5%88%B0%E9%9F%93%E5%9C%8B%E8%B3%9E%E7%B5%95%E7%BE%8E%E8%8A%B1%E6%B5%B7%EF%BC%81%E5%90%91%E6%97%A5%E8%91%B5%E6%9D%91%E3%80%81%E5%A4%AA%E7%99%BD%E5%B1%B1%E5%90%91%E6%97%A5%E8%91%B5%E8%8A%B1%E7%94%B0%E3%80%81%E7%9F%A5%E5%90%8D%E9%9F%93%E5%8A%87%E8%83%8C%E6%99%AF%E5%9C%B0%E8%93%AE%E8%8A%B1%E6%B1%A0%E3%80%81%E4%BA%9E%E6%B4%B2%E6%9C%80%E5%A4%A7%E7%99%BD%E8%93%AE%E8%8A%B1%E6%A3%B2%E6%81%AF%E5%9C%B0%EF%BD%9E-034011768.html",
+   "needles": [
+    "太白",
+    "向日葵"
+   ]
+  },
+  {
+   "id": "tw-trip-taebaek",
+   "langs": [
+    "tw"
+   ],
+   "ko": "태백 해바라기축제",
+   "kind": "media",
+   "claim": "트립닷컴 대만판 이벤트 페이지 '태백 해바라기축제'",
+   "url": "https://tw.trip.com/events/%E5%A4%AA%E7%99%BD%E5%90%91%E6%97%A5%E8%91%B5%E6%85%B6%E5%85%B8-20250619",
+   "needles": [
+    "太白向日葵慶典"
+   ]
+  },
+  {
+   "id": "tw-ettoday-pyeongchang",
+   "langs": [
+    "tw"
+   ],
+   "ko": "평창송어축제",
+   "kind": "media",
+   "claim": "대만 ETtoday 여행 기사: 대만-강원 직항과 평창송어축제 소개",
+   "url": "https://travel.ettoday.net/article/1601880.htm",
+   "needles": [
+    "平昌鱒魚節"
+   ]
+  },
+  {
+   "id": "tw-tvbs-pyeongchang",
+   "langs": [
+    "tw"
+   ],
+   "ko": "평창송어축제",
+   "kind": "media",
+   "claim": "대만 TVBS 식신 평창송어축제 체험 기사",
+   "url": "https://supertaste.tvbs.com.tw/asia/352739",
+   "needles": [
+    "平昌鱒魚節"
+   ]
+  },
+  {
+   "id": "tw-trazy-pyeongchang",
+   "langs": [
+    "tw"
+   ],
+   "ko": "평창송어축제",
+   "kind": "ota",
+   "claim": "트레이지 번체 평창송어축제 당일투어",
+   "url": "https://www.trazy.com/zh-TW/experience/detail/pyeongchang-trout-festival-ice-fishing-shuttle-bus-package",
+   "needles": [
+    "平昌鱒魚節一日遊"
+   ]
+  },
+  {
+   "id": "tw-marie-pohang",
+   "langs": [
+    "tw"
+   ],
+   "ko": "포항국제불빛축제",
+   "kind": "media",
+   "claim": "마리끌레르 대만판 한국 3대 불꽃축제(포항) 기사",
+   "url": "https://www.marieclaire.com.tw/lifestyle/travel/86217/korea-fireworks-festival-2025",
+   "needles": [
+    "浦項國際煙火節"
+   ]
+  },
+  {
+   "id": "tw-trazy-pohang",
+   "langs": [
+    "tw"
+   ],
+   "ko": "포항국제불빛축제",
+   "kind": "ota",
+   "claim": "트레이지 번체 포항 국제불꽃축제 1박 투어",
+   "url": "https://www.trazy.com/zh-TW/experience/detail/pohang-international-fireworks-festival",
+   "needles": [
+    "浦項天空步道＆國際煙火節"
+   ]
+  },
+  {
+   "id": "tw-travel4u-haman",
+   "langs": [
+    "tw"
+   ],
+   "ko": "함안낙화놀이",
+   "kind": "agency",
+   "claim": "대만 산부여행(山富) 부산·함안낙화놀이 5일 단체여행",
+   "url": "https://www.travel4u.com.tw/group/itinerary/PUS0525ZE4/",
+   "needles": [
+    "咸安",
+    "落火"
+   ]
+  },
+  {
+   "id": "tw-travelrich-haman-target",
+   "langs": [
+    "tw"
+   ],
+   "ko": "함안낙화놀이",
+   "kind": "target",
+   "claim": "대만 여행매체 旅遊經: 한국관광공사가 대만 전용 낙화놀이 단체 회차 개설",
+   "url": "https://www.travelrich.com.tw/news/overseasnews/overseasnews11713.html",
+   "needles": [
+    "落火",
+    "觀光公社"
+   ]
+  },
+  {
+   "id": "tw-settour-hwacheon",
+   "langs": [
+    "tw"
+   ],
+   "ko": "화천산천어축제",
+   "kind": "media",
+   "claim": "동남여행 화천 산천어 얼음낚시 단체여행 상품",
+   "url": "https://tour.settour.com.tw/product/GFG0000000780",
+   "needles": [
+    "華川",
+    "鱒魚"
+   ],
+   "audit": "2026-09-30 독립 감사: 판매 종료된 옛 상품(원래 agency) → media 로 낮춤"
+  },
+  {
+   "id": "tw-mtn-hwacheon-stat",
+   "langs": [
+    "tw"
+   ],
+   "ko": "화천산천어축제",
+   "kind": "stat",
+   "claim": "MTN: 올해 산천어축제 기간 대만 여행사 통해 대만 관광객 약 1만명 방문, 타이베이 박람회 참가",
+   "url": "https://news.mtn.co.kr/news-detail/2026052011313232584",
+   "needles": [
+    "산천어축제",
+    "대만 관광객"
+   ]
+  }
+ ]
+}

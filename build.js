@@ -76,6 +76,11 @@ catch (e) { console.log('⚠ festivals_api.json 없음 — 검색 데이터 비�
 let apiPets = [];
 try { apiPets = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/pets.json'), 'utf8')); }
 catch (e) { console.log('⚠ pets.json 없음 — 반려견 여행지 데이터 비어있음 (node fetch-pets.js 먼저 실행)'); }
+// 🌐 2026-09-30 외국어 축제 ↔ 한국어 교차검증 연결(intl-bridge.js) — 언어 파일을 읽기 «전에» 검증 날짜를 씌운다.
+//    수집기가 파일을 새로 받아도 빌드마다 다시 씌우므로 사람 손이 필요 없다. 실패해도 빌드는 계속(원본 날짜 그대로).
+try { require('./intl-bridge').run(); } catch (e) { console.log('⚠ intl-bridge 실패 — 외국어 날짜는 원본 그대로:', e.message); }
+// ⭐ 언어별 선정(intl-picks.js) — 기계 검증을 통과한 근거로만 점수. 선정표·교차검증 대기열·조사자 우선순위를 매 빌드 갱신.
+try { require('./intl-picks').pick(); } catch (e) { console.log('⚠ intl-picks 실패 — 선정표는 지난 것 그대로:', e.message); }
 let apiFestsEn = [];
 try { apiFestsEn = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/festivals_en.json'), 'utf8')); }
 catch (e) { console.log('⚠ festivals_en.json 없음 — 영문 데이터 비어있음 (node fetch-festivals-en.js 먼저 실행)'); }

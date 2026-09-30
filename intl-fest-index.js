@@ -79,6 +79,44 @@ const CSS = `
  * @param TODAY8 'YYYYMMDD'
  * @returns {url, title, desc, html}
  */
+// ⭐ 2026-09-30 «그 나라 사람들이 좋아하는 축제» — intl-picks.js 가 기계 검증한 근거로 뽑은 선정표(data/intl_picks.json).
+//   허브 맨 위에 조용히 한 줄 묶음으로. 근거 종류를 그 나라 말 꼬리표로만 보여 준다(한국어 근거 문장은 노출하지 않는다).
+const PICK_T = {
+  en: { h: 'Loved by international visitors', sub: 'Picked from tour-operator listings, booking platforms and Korea Tourism Organization visitor data — not from ads.',
+    tag: { stat: 'Visitor data', agency: 'Tour operators run trips', ota: 'Bookable tours', target: 'Welcomes foreign visitors' } },
+  ja: { h: '日本の旅行者に人気の祭り', sub: '日本の旅行会社のツアー、予約サイト、韓国観光公社の訪問データから選んでいます（広告ではありません）。',
+    tag: { stat: '訪問データ', agency: '日本発ツアーあり', ota: '現地ツアー予約可', target: '日本からの旅行者を歓迎' } },
+};
+function picksBlock(lang, rows, TODAY8, rowHtml) {
+  const P = PICK_T[lang]; if (!P) return '';
+  let picks = []; try { picks = ((JSON.parse(require('fs').readFileSync(require('path').join(__dirname, 'data', 'intl_picks.json'), 'utf8')).langs || {})[lang]) || []; } catch (e) { return ''; }
+  const byId = {}; rows.forEach(f => { byId[String(f.id)] = f; });
+  const items = [];
+  for (const p of picks) {
+    // 같은 축제의 여러 회차 줄 중 가장 최근 것(검증 날짜가 붙은 줄)
+    const f = (p.ids || []).map(id => byId[id]).filter(Boolean).sort((a, b) => String(b.start).localeCompare(String(a.start)))[0];
+    if (!f) continue;
+    const kinds = [...new Set((p.reasons || []).map(r => r.kind).filter(k => P.tag[k]))].slice(0, 2);
+    items.push({ f, kinds });
+    if (items.length >= 12) break;
+  }
+  if (items.length < 3) return '';
+  // 곧 열리는 것 먼저(지금 계획할 수 있는 것) — 같은 묶음 안에서는 선정 점수 순서 유지
+  items.sort((a, b) => (String(a.f.end || '') < TODAY8) - (String(b.f.end || '') < TODAY8));
+  const tagHtml = ks => ks.map(k => `<span style="display:inline-block;font-size:.72rem;font-weight:700;color:#0a6c63;background:#e8f6f3;border-radius:999px;padding:1px 8px;margin:4px 4px 0 0">${esc(P.tag[k])}</span>`).join('');
+  return `<h2 style="font-size:1.1rem;font-weight:900;margin:26px 0 2px">${esc(P.h)}</h2>
+<p style="color:#9aa3af;font-size:.84rem;margin:2px 0 10px">${esc(P.sub)}</p>
+<div class="ixgrid">${items.map(({ f, kinds }) => {
+    let h = rowHtml(f);
+    // 이미 지난 회차는 날짜 대신 «예년 ○월»로 — 지난 날짜를 인기 목록 맨 위에 걸어 두면 오해를 산다
+    if (String(f.end || '') < TODAY8) {
+      const m = +String(f.start).slice(4, 6);
+      h = h.replace(/<span class="dt">[^<]*<\/span>/, `<span class="dt">${lang === 'ja' ? `例年${m}月` : `Usually ${['', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][m]}`}</span>`);
+    }
+    return h.replace('</span></span></a>', `</span>${tagHtml(kinds)}</span></a>`);
+  }).join('')}</div>`;
+}
+
 function indexPage(lang, rows, TODAY8) {
   const t = T[lang], base = `/${lang}/festival/`;
   const year = TODAY8.slice(0, 4);
@@ -112,6 +150,7 @@ ${CSS}
 <div class="ixlead"><p>${esc(t.lead)}</p></div>
 <h2 style="font-size:1.04rem;font-weight:900;color:#0a6c63;margin:20px 0 8px">${esc(t.how)}</h2>
 <div class="ixtips">${t.tips.map(([a, b]) => `<div class="ixtip"><b>${esc(a)}</b><span>${esc(b)}</span></div>`).join('')}</div>
+${picksBlock(lang, rows, TODAY8, rowHtml)}
 <h2 style="font-size:1.1rem;font-weight:900;margin:26px 0 2px">${esc(t.upcoming)} <span style="color:#9aa3af;font-weight:700;font-size:.9rem">${esc(t.n(live.length))}</span></h2>
 ${group(live)}
 ${done.length ? `<h2 style="font-size:1.1rem;font-weight:900;margin:30px 0 2px">${esc(t.past)} <span style="color:#9aa3af;font-weight:700;font-size:.9rem">${esc(t.n(done.length))}</span></h2>${group(done)}` : ''}

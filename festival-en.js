@@ -207,7 +207,7 @@ ${CSS}
 <h1 style="font-size:1.5rem;font-weight:900;letter-spacing:-.02em;margin:6px 0">${esc(f.title + (useYr ? ' ' + useYr : ''))}</h1>
 <div class="fhero"><img loading="lazy" src="${esc(f.img || '/img/cat2-culture-a.webp')}" alt="${esc(f.title)}" onerror="this.src='/img/cat2-culture-a.webp'">
 <dl class="finfo">
-<dt>📅 Dates</dt><dd>${fmtDate(f.start)} – ${fmtDate(f.end)}</dd>
+<dt>📅 Dates</dt><dd>${fmtDate(f.start)} – ${fmtDate(f.end)}${ended ? '' : require('./kv-label').label(f, 'en')}</dd>
 <dt>📍 Location</dt><dd>${esc(f.addr || f.region || '')}</dd>
 ${(() => {
       // 🎪 이 축제만의 사실 — 공공데이터에 «있는 것만». 없는 줄은 아예 만들지 않는다.
