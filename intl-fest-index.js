@@ -82,7 +82,8 @@ const CSS = `
 // ⭐ 2026-09-30 «그 나라 사람들이 좋아하는 축제» — intl-picks.js 가 기계 검증한 근거로 뽑은 선정표(data/intl_picks.json).
 //   허브 맨 위에 조용히 한 줄 묶음으로. 근거 종류를 그 나라 말 꼬리표로만 보여 준다(한국어 근거 문장은 노출하지 않는다).
 const PICK_T = {
-  en: { h: 'Loved by international visitors', sub: 'Picked from tour-operator listings, booking platforms and Korea Tourism Organization visitor data — not from ads.',
+  en: { h: 'Loved by international visitors', sub: 'Picked from tour-operator listings, booking platforms and Korea Tourism Organization visitor data. The order also reflects whether tickets or tours can be booked online through our partners.',
+    // ⚖️ 2026-10-01 장남님 결정 — 선정 순서에 제휴 상품 유무가 가산되므로(intl-picks.js) 영어권(FTC) 기준으로 그 사실을 밝힌다. 「not from ads」는 뺐다.
     tag: { stat: 'Visitor data', agency: 'Tour operators run trips', ota: 'Bookable tours', target: 'Welcomes foreign visitors' } },
   ja: { h: '日本の旅行者に人気の祭り', sub: '日本の旅行会社のツアー、予約サイト、韓国観光公社の訪問データから選んでいます（広告ではありません）。',
     tag: { stat: '訪問データ', agency: '日本発ツアーあり', ota: '現地ツアー予約可', target: '日本からの旅行者を歓迎' } },
