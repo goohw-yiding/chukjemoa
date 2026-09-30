@@ -660,7 +660,7 @@ ${lang !== 'ja' ? '' : (() => {
 <ul class="ic-fest">${items}</ul></div>
 
 ${busy.length ? `<div class="ic-card"><h2>${S.cal.mBusyH}</h2>
-<p>${measured === m ? S.cal.mBusyP(MONN.en[m]) : S.cal.mBusyAlt(MONN.en[m], MONN.en[measured])}</p>
+<p>${measured === m ? S.cal.mBusyP((MONN[lang] || MONN.en)[m]) : S.cal.mBusyAlt((MONN[lang] || MONN.en)[m], (MONN[lang] || MONN.en)[measured])}</p>
 ${busyBars}
 <p class="ic-note">${S.cal.mBusyNote}</p></div>` : ''}
 
