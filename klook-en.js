@@ -6,10 +6,11 @@
 // 방침: 상품을 앞으로 빼지 않는다(klook.js 와 같다). 진행/예정 축제에만 붙인다(끝난 축제엔 안 붙인다).
 // ⚖️ 영어권(미국 FTC): 링크 가까이, 명확하게 — 「affiliate link」만으로는 불충분. 「Paid link」 + 수수료 문장.
 // 📏 track.js 가 affiliate.klook.com → shop_click merchant='klook'. data-place='en-festival'.
-// ⚠️ 광고 ID 는 일본어용 eSIM(1447554)을 임시로 같이 쓴다 — 장남님이 영어용 광고 ID 를 만들면 AD_EN 만 바꾼다.
-//    GA4 data-place 로 영어/일본어가 갈린다.
+// 광고 ID 는 영어 전용(아래 AD_EN). 클룩 대시보드에서 영어/일본어 실적이 따로 잡힌다.
 const { url, AD } = require('./klook.js');
-const AD_EN = { esim: AD.esim };
+// 2026-09-30 대시보드에서 영어용 광고 ID 발급(라벨1=en-festival). eSIM=1466582 · KTX=1466585(KTX는 아직 미사용)
+const AD_EN = { esim: '1466582', ktx: '1466585' };
+void AD;
 const ESIM = 'https://www.klook.com/en-US/search/result/?query=' + encodeURIComponent('Korea eSIM');
 
 const PAID = '<span style="display:inline-block;font-size:.72rem;font-weight:700;color:#8a8178;border:1px solid #cfc6b8;border-radius:4px;padding:0 5px;margin-right:6px;vertical-align:1px">Paid link</span>';
