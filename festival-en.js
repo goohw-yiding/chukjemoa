@@ -17,6 +17,7 @@
 //      아무도 공유하지 않는다. 코리 QR 착지점은 별도 페이지로 만든다.
 const fs = require('fs'), path = require('path');
 const { extras } = require('./intl-fest-extra.js');
+const KLOOK_EN = require('./klook-en.js');   // 2026-09-30 영어 제휴(eSIM) — 방침은 그 파일 머리말
 // 애드센스 「가치가 별로 없는 콘텐츠」 방지선 — 렌더된 본문을 직접 잰다(대리 지표 금지).
 const MIN_BODY = 2000;
 const textLen = h => String(h).replace(/<script[\s\S]*?<\/script>|<style[\s\S]*?<\/style>/g, ' ')
@@ -189,7 +190,9 @@ function build(ctx) {
     const span = ended ? '' : dateSpan(f);
     const cnm = ended ? '' : cityName(f);
 
-    const ex = extras(f, 'en', rows);
+    // 💳 2026-09-30 제휴 — 진행/예정 축제만, 지도 복사 칸 바로 뒤에 eSIM(klook-en.js). 끝난 축제엔 안 붙인다.
+    const affHtml = ended ? '' : KLOOK_EN.esimAfterMap('en-festival');
+    const ex = extras(f, 'en', rows, { afterMap: affHtml });
     // ⚠️ 지도 안내 문구가 «얇은 페이지» 판정을 밀어올린다 — 길이 측정에서 뺀다(게이트를 속이지 않는다).
     const mapHtml = mapBlock({ x: f.x, y: f.y, title: f.title, lang: 'en', query: (f._ko && f._ko.title) || f.title });
     const near = EN.nearby(f, 5);   // 영문 설명 + 붙여넣을 수 있는 한글주소
@@ -268,7 +271,7 @@ ${mapScript('en')}
     const urlPath = `/en/festival/${f.slug}/`;
     // ⚠️ 개요 길이(MIN_OV)만으로는 얇은 게 새어 나온다 — 2026-09-01 감사에서 8개가 2,000자 미만.
     //    렌더된 본문을 직접 재서 얇으면 noindex + 사이트맵 제외(페이지는 남겨 링크를 안 끊는다).
-    const tooThin = textLen(content) - textLen(mapHtml) < MIN_BODY;
+    const tooThin = textLen(content) - textLen(mapHtml) - (ex.stats.map ? textLen(affHtml) : 0) < MIN_BODY;   // 제휴 문구로 게이트를 넘기지 않는다
     // 🔻 2026-09-17 — 끝난 축제도 색인에서 뻐다. 한국어(festival.js 2026-08-18)·일본어와 같은 규칙.
     //   오늘까지 이 규칙이 한국어에만 걸려 있었다.
     //   ⚠️ 지우지 않는다 — 페이지는 그대로 두고 'dates have passed' 안내를 달아 둔 채

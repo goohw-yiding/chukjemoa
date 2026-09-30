@@ -210,7 +210,8 @@ document.addEventListener('click',function(e){
  * @param sameLang 같은 언어의 전체 축제 배열(근처 축제용) — 각 원소에 _slug 가 있어야 링크한다
  * @returns {html, stats} — stats 는 무엇이 실제로 붙었는지(감사용)
  */
-function extras(f, lang, sameLang) {
+function extras(f, lang, sameLang, opt) {
+  // opt.afterMap — 지도 상자 «안», 복사 칸 바로 뒤에 붙일 HTML(2026-09-30 영어 eSIM 제휴). ja 는 넘기지 않는다.
   const T = TEXT[lang] || TEXT.en;
   const out = [];
   const stats = { map: 0, busy: 0, trr: 0, mkt: 0, rel: 0 };
@@ -226,7 +227,7 @@ function extras(f, lang, sameLang) {
 <button data-v="${esc(ko.title)}" data-done="${esc(T.copied)}">${esc(T.copy)}</button></div>
 ${koAddr ? `<div class="xcopy"><div><span class="lb">${esc(T.mapA)}</span><span class="vl">${esc(koAddr)}</span></div>
 <button data-v="${esc(koAddr)}" data-done="${esc(T.copied)}">${esc(T.copy)}</button></div>` : ''}
-</div>`);
+${(opt && opt.afterMap) || ''}</div>`);
   }
 
   // ② 붐빔 — 그 시군구의 월별 배수

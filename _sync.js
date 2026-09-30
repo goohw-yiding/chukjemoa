@@ -166,6 +166,7 @@ const SRC = ['build.js', 'fetch-markets.js', 'fetch-spots.js', 'fetch-valleys.js
   'kory.js',
   // 2026-09-24 추가 — 클룩 제휴 링크. ja-palace·ja-daytrip·ja-holiday 가 require 한다.
   'klook.js',
+  'klook-en.js',   // 2026-09-30 영어 eSIM 제휴 — festival-en.js 가 require
   // 2026-09-04 추가(4) — 제주 신규 데이터 2종. ⚠️ `jejuhub.key`·`visitjeju.key` 는 *.key 라 git 제외 →
   //   **양쪽에 다 있어야** 예약작업이 돈다(indexnow.key·busan.key 와 같은 함정).
   //   ⚠️ `jejuhub-ids.json` 은 «프록시ID 표»다 — 이게 어긋나면 수집기가 엉뚱한 데이터를 받는다.
