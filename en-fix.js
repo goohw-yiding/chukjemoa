@@ -14,6 +14,7 @@ function apply(list) {
     if (fx.ko !== undefined) f._ko = fx.ko;        // null = 한글 원제 칸 숨김
     if (fx.intro) f._intro = fx.intro;               // fest_intro_en 필드 덮어쓰기('' = 그 줄 숨김)
     if (fx.note) f._note = fx.note;
+    if (fx.aff) f._aff = fx.aff;                     // 확인된 제휴 상품(klook-en.js productLink)
   });
   return list;
 }

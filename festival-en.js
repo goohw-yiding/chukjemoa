@@ -223,7 +223,7 @@ ${(() => {
     })()}
 ${f.tel ? `<dt>☎️ Contact</dt><dd>${esc(f.tel)}</dd>` : ''}
 </dl></div>${f._note ? `
-<div class="fov" style="border-left:4px solid #0c7d72"><h2>What's new this year</h2><p>${esc(f._note)}</p>
+<div class="fov" style="border-left:4px solid #0c7d72"><h2>What's new this year</h2><p>${esc(f._note)}</p>${ended ? '' : KLOOK_EN.productLink(f._aff, 'en-festival')}
 <p class="note" style="color:#9aa3af;font-size:.82rem;margin-top:8px">Checked against the organizer's announcement. Dates above are updated to match it.</p></div>` : ''}
 ${ended ? `<div class="fend"><h2>⚠️ This festival's listed dates have passed</h2>
 <p>The dates above are from the most recent official schedule. Many Korean festivals are annual events held around the same time each year, but the next date has not been officially confirmed yet — please check the official website or a Google search below before planning a trip.</p></div>` : ''}
@@ -274,7 +274,8 @@ ${mapScript('en')}
     const urlPath = `/en/festival/${f.slug}/`;
     // ⚠️ 개요 길이(MIN_OV)만으로는 얇은 게 새어 나온다 — 2026-09-01 감사에서 8개가 2,000자 미만.
     //    렌더된 본문을 직접 재서 얇으면 noindex + 사이트맵 제외(페이지는 남겨 링크를 안 끊는다).
-    const tooThin = textLen(content) - textLen(mapHtml) - (ex.stats.map ? textLen(affHtml) : 0) < MIN_BODY;   // 제휴 문구로 게이트를 넘기지 않는다
+    const tooThin = textLen(content) - textLen(mapHtml) - (ex.stats.map ? textLen(affHtml) : 0)
+      - (f._note && !ended ? textLen(KLOOK_EN.productLink(f._aff, 'en-festival')) : 0) < MIN_BODY;   // 제휴 문구로 게이트를 넘기지 않는다
     // 🔻 2026-09-17 — 끝난 축제도 색인에서 뻐다. 한국어(festival.js 2026-08-18)·일본어와 같은 규칙.
     //   오늘까지 이 규칙이 한국어에만 걸려 있었다.
     //   ⚠️ 지우지 않는다 — 페이지는 그대로 두고 'dates have passed' 안내를 달아 둔 채

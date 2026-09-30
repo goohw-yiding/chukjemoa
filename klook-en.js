@@ -22,4 +22,14 @@ function esimAfterMap(place) {
     + `<a href="${url(ESIM, AD_EN.esim)}" target="_blank" rel="sponsored noopener" data-bb="klook-esim" data-slot="inline-context" data-place="${place || 'en-festival'}" style="color:#0c7d72;font-weight:700">Compare Korea eSIMs on Klook</a>${NOTE}</p>`;
 }
 
-module.exports = { esimAfterMap, AD_EN };
+// 2026-09-30(2) 축제별 상품 — data/festivals_en_fix.json 의 aff:{url,text,lead} 로만 붙는다.
+//   ⚠️ 상품 페이지를 실제로 열어 «그 축제·그 날짜» 상품인지 확인한 것만 넣는다(src 에 확인일).
+//   위치: 「What's new this year」의 좌석·투어 사실 문장 바로 뒤. 광고 ID 는 영어 축제용(1466582, 라벨 en-festival)
+//   — 전용 ID 를 장남님이 새로 발급해 주시면 AD_EN.ticket 으로 바꾼다. GA 에선 data-bb=klook-ticket 으로 갈린다.
+function productLink(aff, place) {
+  if (!aff || !aff.url || !/^https:\/\/www\.klook\.com\//.test(aff.url)) return '';
+  return `<p class="aff-en" style="background:#faf7f1;border:1px solid #eee5d6;border-radius:10px;padding:10px 12px;margin:10px 0 0;font-size:.92rem;line-height:1.6">${PAID}${aff.lead ? aff.lead + ' → ' : ''}`
+    + `<a href="${url(aff.url, AD_EN.ticket || AD_EN.esim)}" target="_blank" rel="sponsored noopener" data-bb="klook-ticket" data-slot="inline-context" data-place="${place || 'en-festival'}" style="color:#0c7d72;font-weight:700">${aff.text}</a>${NOTE}</p>`;
+}
+
+module.exports = { esimAfterMap, productLink, AD_EN };
