@@ -773,6 +773,7 @@ window.OneSignalDeferred=window.OneSignalDeferred||[];window.OneSignalDeferred.p
     const d = Math.ceil((s - t) / 86400000);
     if (t >= s && t <= e) { el.textContent = '진행중 🔥'; el.classList.add('on'); }
     else if (d > 0 && d <= 99) { el.textContent = 'D-' + d; }
+    else if (t > e && c.dataset.conf === '0') { el.textContent = '일정 확인 중'; }
     else if (t > e) { el.textContent = '종료'; el.classList.add('off'); c.classList.add('ended'); }
   });
 })();

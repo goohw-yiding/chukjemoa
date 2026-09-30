@@ -865,8 +865,14 @@ function festCard(f, light) {
   const emoji = CAT_EMOJI[f.category] || '🎪';
   const img = CAT_IMG[f.category] || 'etc';
   const [la, lo] = coordOf(f);
+  // 2026-09-30: 미확정(예년 추정) 날짜가 지나면 «종료»로 단정하지 않는다 — 실제로는 아직 안 열린 경우가 있었다
+  //   (한성백제문화제 9/25로 적혀 있었으나 실제 10/23~25). confirm-festivals.js 가 교차 확인하기 전까진 «확인 중».
+  //   pending = 발표 근거 2곳(기계 검증 통과)으로 날짜는 고쳤지만 검증자 확인 전 — «일정 확정»은 아직 안 준다.
+  const unk = !f.confirmed && !f.pending && f.end < TODAY;
   const badge = f.confirmed
     ? '<span class="badge ok">일정 확정</span>'
+    : f.pending ? '<span class="badge est">발표 일정·교차 확인 중</span>'
+    : unk ? '<span class="badge est">올해 일정 확인 중</span>'
     : '<span class="badge est">예년 기준·변동 가능</span>';
   const mm = apiMatch(f);
   const ovTxt = mm && mm.ov ? (light ? String(mm.ov).slice(0, 180) : mm.ov) : '';
@@ -875,7 +881,7 @@ function festCard(f, light) {
   const dNear = (!light && mm && Array.isArray(nearby[mm.id]) && nearby[mm.id].length) ? ` data-near="${encodeURIComponent(JSON.stringify(nearby[mm.id]))}"` : '';
   const pg1 = mm && mm.id ? FEST_PAGE_BY_ID.get(String(mm.id)) : null;
   const dSlug = pg1 ? ` data-slug="${escA(pg1.slug)}"` : '';
-  return `<div class="card" data-region="${esc(f.region)}" data-start="${f.start}" data-end="${f.end}" data-lat="${la}" data-lng="${lo}" data-name="${escA(f.name)}" data-city="${escA(f.city)}" data-place="${escA(f.place)}" data-desc="${escA(f.desc)}" data-cat="${escA(f.category)}" data-img="${escA(thumbOf(f))}"${dOv}${dHp}${dNear}${dSlug}>
+  return `<div class="card" data-region="${esc(f.region)}" data-start="${f.start}" data-end="${f.end}" data-conf="${f.confirmed || f.pending ? 1 : 0}" data-lat="${la}" data-lng="${lo}" data-name="${escA(f.name)}" data-city="${escA(f.city)}" data-place="${escA(f.place)}" data-desc="${escA(f.desc)}" data-cat="${escA(f.category)}" data-img="${escA(thumbOf(f))}"${dOv}${dHp}${dNear}${dSlug}>
   <div class="thumb"><img src="${esc(thumbOf(f))}" alt="${esc(f.name)}" loading="lazy" onerror="this.src=&#39;${catImgOf(f)}&#39;"><span class="dday"></span><button class="fav" data-name="${esc(f.name)}" aria-label="찜하기">♡</button><span class="km"></span><span class="cat">${emoji} ${esc(f.category)}</span></div>
   <div class="card-body">
   <div class="card-top">${badge}</div>
@@ -905,6 +911,7 @@ const DDAY_JS = `<script>
     const d = Math.ceil((s - t) / 86400000);
     if (t >= s && t <= e) { el.textContent = '진행중 🔥'; el.classList.add('on'); }
     else if (d > 0 && d <= 99) { el.textContent = 'D-' + d; }
+    else if (t > e && c.dataset.conf === '0') { el.textContent = '일정 확인 중'; }
     else if (t > e) { el.textContent = '종료'; el.classList.add('off'); c.classList.add('ended'); }
   });
 })();

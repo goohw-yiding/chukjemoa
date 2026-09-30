@@ -1,0 +1,68 @@
+{
+ "한성백제문화제": {
+  "start": "2026-10-23",
+  "end": "2026-10-25",
+  "place": "올림픽공원 88잔디마당 일대",
+  "sources": [
+   "https://www.songpa.go.kr/hanseong/",
+   "https://festival.seoul.go.kr/festival/main/festivalView.do?festacode=581"
+  ],
+  "proposedAt": "2026-09-30",
+  "from": "2026-09-25~2026-09-27"
+ },
+ "평창더위사냥축제": {
+  "start": "2026-07-24",
+  "end": "2026-08-02",
+  "place": "",
+  "sources": [
+   "https://v.daum.net/v/20260721000700485",
+   "https://supple.kr/news/cmryp0yl90018145xyld3k1d8"
+  ],
+  "proposedAt": "2026-09-30",
+  "from": "2026-07-24~2026-08-02"
+ },
+ "홍천강 별빛음악 맥주축제": {
+  "start": "2026-08-05",
+  "end": "2026-08-09",
+  "place": "",
+  "sources": [
+   "https://www.seoul.co.kr/news/society/2026/08/04/20260804500198",
+   "https://www.devtimes.co.kr/news/502302"
+  ],
+  "proposedAt": "2026-09-30",
+  "from": "2026-07-31~2026-08-09"
+ },
+ "화천토마토축제": {
+  "start": "2026-07-31",
+  "end": "2026-08-09",
+  "place": "화천군 사내면 사내체육공원",
+  "sources": [
+   "https://www.chamnews.net/news/articleView.html?idxno=241521",
+   "https://news.mtn.co.kr/news-detail/2026080314184261962"
+  ],
+  "proposedAt": "2026-09-30",
+  "from": "2026-08-07~2026-08-09"
+ },
+ "정동진독립영화제": {
+  "start": "2026-08-07",
+  "end": "2026-08-10",
+  "place": "",
+  "sources": [
+   "https://edaily.co.kr/News/Read?mediaCodeNo=257&newsId=05566166645544696",
+   "https://tvreport.co.kr/movie/article/1066883/"
+  ],
+  "proposedAt": "2026-09-30",
+  "from": "2026-08-06~2026-08-09"
+ },
+ "괴산고추축제": {
+  "start": "2026-09-03",
+  "end": "2026-09-06",
+  "place": "",
+  "sources": [
+   "https://www.newspim.com/news/view/20260903000289",
+   "https://www.ftimes.kr/news/articleView.html?idxno=39201"
+  ],
+  "proposedAt": "2026-09-30",
+  "from": "2026-08-27~2026-08-30"
+ }
+}

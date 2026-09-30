@@ -96,5 +96,262 @@
   "from": "2026-09-25~2026-10-04",
   "to": "2026-09-24~2026-10-04",
   "source": "https://www.kukinews.com/article/view/kuk202609170163"
+ },
+ {
+  "at": "2026-09-30",
+  "name": "무안연꽃축제",
+  "propose": "2026-06-26~2026-06-28",
+  "from": "2026-07-24~2026-07-26",
+  "sources": [
+   "https://www.ajunews.com/view/20260626090848833",
+   "https://go.seoul.co.kr/news/newsView.php?id=20260622500053"
+  ]
+ },
+ {
+  "at": "2026-09-30",
+  "name": "무안연꽃축제",
+  "from": "2026-07-24~2026-07-26",
+  "to": "2026-06-26~2026-06-28",
+  "confirm": "교차확인(조사자 2곳 + 검증자 1곳, 기계 검증 통과)",
+  "sources": [
+   "https://www.ajunews.com/view/20260626090848833",
+   "https://go.seoul.co.kr/news/newsView.php?id=20260622500053",
+   "https://www.etoday.co.kr/news/view/2596140"
+  ]
+ },
+ {
+  "at": "2026-09-30",
+  "name": "대관령음악제",
+  "propose": "2026-07-23~2026-08-02",
+  "from": "2026-07-22~2026-08-08",
+  "sources": [
+   "https://www.asiatoday.co.kr/kn/view.php?key=20260504010000344",
+   "https://www.hankyung.com/article/202605269140i"
+  ]
+ },
+ {
+  "at": "2026-09-30",
+  "name": "대관령음악제",
+  "from": "2026-07-22~2026-08-08",
+  "to": "2026-07-23~2026-08-02",
+  "confirm": "교차확인(조사자 2곳 + 검증자 1곳, 기계 검증 통과)",
+  "sources": [
+   "https://www.asiatoday.co.kr/kn/view.php?key=20260504010000344",
+   "https://www.hankyung.com/article/202605269140i",
+   "https://v.daum.net/v/20260724092839905"
+  ]
+ },
+ {
+  "at": "2026-09-30",
+  "name": "이호테우축제",
+  "propose": "2026-07-31~2026-08-02",
+  "from": "2026-07-31~2026-08-02",
+  "sources": [
+   "https://www.visitjeju.net/kr/festival/view?contentsid=CNTS_300000000014662",
+   "https://v.daum.net/v/4M16Wp3GYX"
+  ]
+ },
+ {
+  "at": "2026-09-30",
+  "name": "이호테우축제",
+  "from": "2026-07-31~2026-08-02",
+  "to": "2026-07-31~2026-08-02",
+  "confirm": "교차확인(조사자 2곳 + 검증자 1곳, 기계 검증 통과)",
+  "sources": [
+   "https://www.visitjeju.net/kr/festival/view?contentsid=CNTS_300000000014662",
+   "https://v.daum.net/v/4M16Wp3GYX",
+   "https://www.newsjeju.net/news/articleView.html?idxno=423956"
+  ]
+ },
+ {
+  "at": "2026-09-30",
+  "name": "평창효석문화제",
+  "propose": "2026-09-04~2026-09-13",
+  "from": "2026-09-04~2026-09-13",
+  "sources": [
+   "https://www.khan.co.kr/article/202609011024001/",
+   "https://www.gukjenews.com/news/articleView.html?idxno=3697177"
+  ]
+ },
+ {
+  "at": "2026-09-30",
+  "name": "평창효석문화제",
+  "from": "2026-09-04~2026-09-13",
+  "to": "2026-09-04~2026-09-13",
+  "confirm": "교차확인(조사자 2곳 + 검증자 1곳, 기계 검증 통과)",
+  "sources": [
+   "https://www.khan.co.kr/article/202609011024001/",
+   "https://www.gukjenews.com/news/articleView.html?idxno=3697177",
+   "https://www.seoul.co.kr/news/life/sc_culture/sc_local/2026/09/04/20260904500035"
+  ]
+ },
+ {
+  "at": "2026-09-30",
+  "name": "명량대첩축제",
+  "propose": "2026-09-11~2026-09-13",
+  "from": "2026-09-04~2026-09-06",
+  "place": "진도 녹진관광지·해남 울돌목 일원",
+  "sources": [
+   "https://mldc.kr/",
+   "https://view.asiae.co.kr/article/2026083115255933873"
+  ]
+ },
+ {
+  "at": "2026-09-30",
+  "name": "명량대첩축제",
+  "from": "2026-09-04~2026-09-06",
+  "to": "2026-09-11~2026-09-13",
+  "place": "진도 녹진관광지·해남 울돌목 일원",
+  "confirm": "교차확인(조사자 2곳 + 검증자 1곳, 기계 검증 통과)",
+  "sources": [
+   "https://mldc.kr/",
+   "https://view.asiae.co.kr/article/2026083115255933873",
+   "https://www.m-i.kr/news/articleView.html?idxno=1413727"
+  ]
+ },
+ {
+  "at": "2026-09-30",
+  "name": "시흥갯골축제",
+  "propose": "2026-09-18~2026-09-20",
+  "from": "2026-09-11~2026-09-13",
+  "sources": [
+   "https://view.asiae.co.kr/article/2026091408245575106",
+   "https://www.newspim.com/news/view/20260909000151"
+  ]
+ },
+ {
+  "at": "2026-09-30",
+  "name": "시흥갯골축제",
+  "from": "2026-09-11~2026-09-13",
+  "to": "2026-09-18~2026-09-20",
+  "confirm": "교차확인(조사자 2곳 + 검증자 1곳, 기계 검증 통과)",
+  "sources": [
+   "https://view.asiae.co.kr/article/2026091408245575106",
+   "https://www.newspim.com/news/view/20260909000151",
+   "https://www.kifuture.com/news/article.html?no=176257"
+  ]
+ },
+ {
+  "at": "2026-09-30",
+  "name": "원주 다이내믹댄싱카니발",
+  "propose": "2026-09-18~2026-09-20",
+  "from": "2026-09-16~2026-09-20",
+  "sources": [
+   "https://www.wonju.go.kr/tour/selectBbsNttView.do?nttNo=490014&bbsNo=984&key=5538",
+   "https://www.kado.net/news/articleView.html?idxno=2073456"
+  ]
+ },
+ {
+  "at": "2026-09-30",
+  "name": "원주 다이내믹댄싱카니발",
+  "from": "2026-09-16~2026-09-20",
+  "to": "2026-09-18~2026-09-20",
+  "confirm": "교차확인(조사자 2곳 + 검증자 1곳, 기계 검증 통과)",
+  "sources": [
+   "https://www.wonju.go.kr/tour/selectBbsNttView.do?nttNo=490014&bbsNo=984&key=5538",
+   "https://www.kado.net/news/articleView.html?idxno=2073456",
+   "https://www.newspim.com/news/view/20260916001018"
+  ]
+ },
+ {
+  "at": "2026-09-30",
+  "name": "서울거리예술축제",
+  "propose": "2026-09-19~2026-09-20",
+  "from": "2026-09-25~2026-09-27",
+  "place": "뚝섬한강공원~서울숲 일대",
+  "sources": [
+   "https://festival.seoul.go.kr/festival/main/festivalView.do?festacode=382",
+   "http://www.gwangjin.com/27998"
+  ]
+ },
+ {
+  "at": "2026-09-30",
+  "name": "서울거리예술축제",
+  "from": "2026-09-25~2026-09-27",
+  "to": "2026-09-19~2026-09-20",
+  "place": "뚝섬한강공원~서울숲 일대",
+  "confirm": "교차확인(조사자 2곳 + 검증자 1곳, 기계 검증 통과)",
+  "sources": [
+   "https://festival.seoul.go.kr/festival/main/festivalView.do?festacode=382",
+   "http://www.gwangjin.com/27998",
+   "https://www.swtvnews.com/news/newsview.php?ncode=1065575810147922"
+  ]
+ },
+ {
+  "at": "2026-09-30",
+  "name": "한성백제문화제",
+  "propose": "2026-10-23~2026-10-25",
+  "from": "2026-09-25~2026-09-27",
+  "place": "올림픽공원 88잔디마당 일대",
+  "sources": [
+   "https://www.songpa.go.kr/hanseong/",
+   "https://festival.seoul.go.kr/festival/main/festivalView.do?festacode=581"
+  ]
+ },
+ {
+  "at": "2026-09-30",
+  "name": "평창더위사냥축제",
+  "propose": "2026-07-24~2026-08-02",
+  "from": "2026-07-24~2026-08-02",
+  "sources": [
+   "https://v.daum.net/v/20260721000700485",
+   "https://supple.kr/news/cmryp0yl90018145xyld3k1d8"
+  ]
+ },
+ {
+  "at": "2026-09-30",
+  "name": "홍천강 별빛음악 맥주축제",
+  "propose": "2026-08-05~2026-08-09",
+  "from": "2026-07-31~2026-08-09",
+  "sources": [
+   "https://www.seoul.co.kr/news/society/2026/08/04/20260804500198",
+   "https://www.devtimes.co.kr/news/502302"
+  ]
+ },
+ {
+  "at": "2026-09-30",
+  "name": "화천토마토축제",
+  "propose": "2026-07-31~2026-08-09",
+  "from": "2026-08-07~2026-08-09",
+  "place": "화천군 사내면 사내체육공원",
+  "sources": [
+   "https://www.chamnews.net/news/articleView.html?idxno=241521",
+   "https://news.mtn.co.kr/news-detail/2026080314184261962"
+  ]
+ },
+ {
+  "at": "2026-09-30",
+  "name": "정동진독립영화제",
+  "propose": "2026-08-07~2026-08-10",
+  "from": "2026-08-06~2026-08-09",
+  "sources": [
+   "https://edaily.co.kr/News/Read?mediaCodeNo=257&newsId=05566166645544696",
+   "https://tvreport.co.kr/movie/article/1066883/"
+  ]
+ },
+ {
+  "at": "2026-09-30",
+  "name": "괴산고추축제",
+  "propose": "2026-09-03~2026-09-06",
+  "from": "2026-08-27~2026-08-30",
+  "sources": [
+   "https://www.newspim.com/news/view/20260903000289",
+   "https://www.ftimes.kr/news/articleView.html?idxno=39201"
+  ]
+ },
+ {
+  "at": "2026-09-30",
+  "name": "영월 동강축제",
+  "note": "2026-09-30 교차조사: 조사자 A·B 모두 2026-07-31~08-02(명칭 「제28회 동강뗏목축제」). 근거가 다음(v.daum.net) 한 사이트뿐이라 후보 등록 못 함 — 다른 사이트 근거 필요"
+ },
+ {
+  "at": "2026-09-30",
+  "name": "영동포도축제",
+  "note": "2026-09-30 교차조사: 조사자 A·B 모두 2026-08-27~08-30, 장소 영동레인보우힐링관광지로 변경. 근거 페이지가 종료일 기계 검증 통과 못 함 — 다른 근거 필요"
+ },
+ {
+  "at": "2026-09-30",
+  "name": "물의나라 화천쪽배축제",
+  "note": "2026-09-30 교차조사: 조사자 A·B 모두 「2026년 미개최(축제 중단)」 판단. 근거: ajunews 2026-07-16 「축제가 중단된 이후」, narafestival.com 쪽배 페이지 404. 목록에서 뺄지 장남님 판단 대기"
  }
 ]

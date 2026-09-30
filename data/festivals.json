@@ -234,14 +234,20 @@
   "region": "전남",
   "city": "무안군",
   "place": "회산백련지 일원",
-  "start": "2026-07-24",
-  "end": "2026-07-26",
+  "start": "2026-06-26",
+  "end": "2026-06-28",
   "month": [
-   7
+   6
   ],
   "category": "꽃",
   "desc": "동양 최대 백련 자생지의 연꽃 축제",
-  "confirmed": false
+  "confirmed": true,
+  "sources": [
+   "https://www.ajunews.com/view/20260626090848833",
+   "https://go.seoul.co.kr/news/newsView.php?id=20260622500053",
+   "https://www.etoday.co.kr/news/view/2596140"
+  ],
+  "verifiedAt": "2026-09-30"
  },
  {
   "name": "평창더위사냥축제",
@@ -256,37 +262,44 @@
   ],
   "category": "물놀이",
   "desc": "얼음계곡에서 더위를 날리는 피서축제",
-  "confirmed": false
+  "confirmed": false,
+  "pending": true
  },
  {
   "name": "대관령음악제",
   "region": "강원",
   "city": "평창군",
   "place": "알펜시아 콘서트홀 일원",
-  "start": "2026-07-22",
-  "end": "2026-08-08",
+  "start": "2026-07-23",
+  "end": "2026-08-02",
   "month": [
    7,
    8
   ],
   "category": "음악",
   "desc": "산 위에서 즐기는 국제 클래식 음악제",
-  "confirmed": false
+  "confirmed": true,
+  "sources": [
+   "https://www.asiatoday.co.kr/kn/view.php?key=20260504010000344",
+   "https://www.hankyung.com/article/202605269140i",
+   "https://v.daum.net/v/20260724092839905"
+  ],
+  "verifiedAt": "2026-09-30"
  },
  {
   "name": "홍천강 별빛음악 맥주축제",
   "region": "강원",
   "city": "홍천군",
   "place": "홍천강 일원",
-  "start": "2026-07-31",
+  "start": "2026-08-05",
   "end": "2026-08-09",
   "month": [
-   7,
    8
   ],
   "category": "음악",
   "desc": "강변에서 맥주와 라이브 음악을 함께",
-  "confirmed": false
+  "confirmed": false,
+  "pending": true
  },
  {
   "name": "물의나라 화천쪽배축제",
@@ -361,7 +374,13 @@
   ],
   "category": "전통",
   "desc": "테우 노젓기 등 제주 어촌문화 체험",
-  "confirmed": false
+  "confirmed": true,
+  "sources": [
+   "https://www.visitjeju.net/kr/festival/view?contentsid=CNTS_300000000014662",
+   "https://v.daum.net/v/4M16Wp3GYX",
+   "https://www.newsjeju.net/news/articleView.html?idxno=423956"
+  ],
+  "verifiedAt": "2026-09-30"
  },
  {
   "name": "삼길포우럭축제",
@@ -409,15 +428,17 @@
   "name": "화천토마토축제",
   "region": "강원",
   "city": "화천군",
-  "place": "사내면 사창리 문화마을 일원",
-  "start": "2026-08-07",
+  "place": "화천군 사내면 사내체육공원",
+  "start": "2026-07-31",
   "end": "2026-08-09",
   "month": [
+   7,
    8
   ],
   "category": "음식",
   "desc": "토마토 속 황금반지 찾기 이색 체험",
-  "confirmed": false
+  "confirmed": false,
+  "pending": true
  },
  {
   "name": "대전 0시 축제",
@@ -494,14 +515,15 @@
   "region": "강원",
   "city": "강릉시",
   "place": "정동초등학교 운동장",
-  "start": "2026-08-06",
-  "end": "2026-08-09",
+  "start": "2026-08-07",
+  "end": "2026-08-10",
   "month": [
    8
   ],
   "category": "문화",
   "desc": "별빛 아래서 보는 야외 독립영화제",
-  "confirmed": false
+  "confirmed": false,
+  "pending": true
  },
  {
   "name": "영월 동강축제",
@@ -536,14 +558,15 @@
   "region": "충북",
   "city": "괴산군",
   "place": "괴산읍 동진천 일원",
-  "start": "2026-08-27",
-  "end": "2026-08-30",
+  "start": "2026-09-03",
+  "end": "2026-09-06",
   "month": [
-   8
+   9
   ],
   "category": "음식",
   "desc": "청결고추 수확철 농특산물 축제",
-  "confirmed": false
+  "confirmed": false,
+  "pending": true
  },
  {
   "name": "영동포도축제",
@@ -633,21 +656,33 @@
   ],
   "category": "꽃",
   "desc": "소금 뿌린 듯한 메밀꽃밭 문학 축제",
-  "confirmed": false
+  "confirmed": true,
+  "sources": [
+   "https://www.khan.co.kr/article/202609011024001/",
+   "https://www.gukjenews.com/news/articleView.html?idxno=3697177",
+   "https://www.seoul.co.kr/news/life/sc_culture/sc_local/2026/09/04/20260904500035"
+  ],
+  "verifiedAt": "2026-09-30"
  },
  {
   "name": "명량대첩축제",
   "region": "전남",
   "city": "해남군·진도군",
-  "place": "울돌목 일원",
-  "start": "2026-09-04",
-  "end": "2026-09-06",
+  "place": "진도 녹진관광지·해남 울돌목 일원",
+  "start": "2026-09-11",
+  "end": "2026-09-13",
   "month": [
    9
   ],
   "category": "전통",
   "desc": "울돌목에서 재현하는 명량해전",
-  "confirmed": false
+  "confirmed": true,
+  "sources": [
+   "https://mldc.kr/",
+   "https://view.asiae.co.kr/article/2026083115255933873",
+   "https://www.m-i.kr/news/articleView.html?idxno=1413727"
+  ],
+  "verifiedAt": "2026-09-30"
  },
  {
   "name": "차 없는 잠수교 뚜벅뚜벅 축제",
@@ -683,28 +718,40 @@
   "region": "경기",
   "city": "시흥시",
   "place": "갯골생태공원",
-  "start": "2026-09-11",
-  "end": "2026-09-13",
+  "start": "2026-09-18",
+  "end": "2026-09-20",
   "month": [
    9
   ],
   "category": "기타",
   "desc": "내만 갯골 생태를 체험하는 가족축제",
-  "confirmed": false
+  "confirmed": true,
+  "sources": [
+   "https://view.asiae.co.kr/article/2026091408245575106",
+   "https://www.newspim.com/news/view/20260909000151",
+   "https://www.kifuture.com/news/article.html?no=176257"
+  ],
+  "verifiedAt": "2026-09-30"
  },
  {
   "name": "원주 다이내믹댄싱카니발",
   "region": "강원",
   "city": "원주시",
   "place": "댄싱공연장·원주 일원",
-  "start": "2026-09-16",
+  "start": "2026-09-18",
   "end": "2026-09-20",
   "month": [
    9
   ],
   "category": "문화",
   "desc": "거리 퍼레이드 댄싱 경연 대축제",
-  "confirmed": false
+  "confirmed": true,
+  "sources": [
+   "https://www.wonju.go.kr/tour/selectBbsNttView.do?nttNo=490014&bbsNo=984&key=5538",
+   "https://www.kado.net/news/articleView.html?idxno=2073456",
+   "https://www.newspim.com/news/view/20260916001018"
+  ],
+  "verifiedAt": "2026-09-30"
  },
  {
   "name": "안성맞춤 남사당 바우덕이축제",
@@ -724,29 +771,36 @@
   "name": "한성백제문화제",
   "region": "서울",
   "city": "송파구",
-  "place": "올림픽공원·석촌호수 일원",
-  "start": "2026-09-25",
-  "end": "2026-09-27",
+  "place": "올림픽공원 88잔디마당 일대",
+  "start": "2026-10-23",
+  "end": "2026-10-25",
   "month": [
-   9
+   10
   ],
   "category": "전통",
   "desc": "한성백제 역사를 재현하는 문화축제",
-  "confirmed": false
+  "confirmed": false,
+  "pending": true
  },
  {
   "name": "서울거리예술축제",
   "region": "서울",
   "city": "중구",
-  "place": "서울광장·청계천 일원",
-  "start": "2026-09-25",
-  "end": "2026-09-27",
+  "place": "뚝섬한강공원~서울숲 일대",
+  "start": "2026-09-19",
+  "end": "2026-09-20",
   "month": [
    9
   ],
   "category": "문화",
   "desc": "도심 곳곳에서 만나는 거리공연 축제",
-  "confirmed": false
+  "confirmed": true,
+  "sources": [
+   "https://festival.seoul.go.kr/festival/main/festivalView.do?festacode=382",
+   "http://www.gwangjin.com/27998",
+   "https://www.swtvnews.com/news/newsview.php?ncode=1065575810147922"
+  ],
+  "verifiedAt": "2026-09-30"
  },
  {
   "name": "소래포구축제",
