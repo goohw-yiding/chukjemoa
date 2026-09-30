@@ -27,9 +27,13 @@ function esimAfterMap(place) {
 //   위치: 「What's new this year」의 좌석·투어 사실 문장 바로 뒤. 광고 ID 는 영어 축제용(1466582, 라벨 en-festival)
 //   — 전용 ID 를 장남님이 새로 발급해 주시면 AD_EN.ticket 으로 바꾼다. GA 에선 data-bb=klook-ticket 으로 갈린다.
 function productLink(aff, place) {
-  if (!aff || !aff.url || !/^https:\/\/www\.klook\.com\//.test(aff.url)) return '';
+  if (!aff || !aff.url) return '';
+  // 2026-09-30(3) Creatrip(aff_id=AFF-4ljv46f) — 링크에 제휴 ID가 이미 들어 있어 그대로 쓴다. track.js 가 merchant='creatrip'.
+  const isCt = /^https:\/\/creatrip\.com\/.*[?&]aff_id=AFF-/.test(aff.url);
+  if (!isCt && !/^https:\/\/www\.klook\.com\//.test(aff.url)) return '';
+  const href = isCt ? aff.url : url(aff.url, AD_EN.ticket || AD_EN.esim);
   return `<p class="aff-en" style="background:#faf7f1;border:1px solid #eee5d6;border-radius:10px;padding:10px 12px;margin:10px 0 0;font-size:.92rem;line-height:1.6">${PAID}${aff.lead ? aff.lead + ' → ' : ''}`
-    + `<a href="${url(aff.url, AD_EN.ticket || AD_EN.esim)}" target="_blank" rel="sponsored noopener" data-bb="klook-ticket" data-slot="inline-context" data-place="${place || 'en-festival'}" style="color:#0c7d72;font-weight:700">${aff.text}</a>${NOTE}</p>`;
+    + `<a href="${href.replace(/&/g, '&amp;')}" target="_blank" rel="sponsored noopener" data-bb="${isCt ? 'creatrip-tour' : 'klook-ticket'}" data-slot="inline-context" data-place="${place || 'en-festival'}" style="color:#0c7d72;font-weight:700">${aff.text}</a>${NOTE}</p>`;
 }
 
 module.exports = { esimAfterMap, productLink, AD_EN };

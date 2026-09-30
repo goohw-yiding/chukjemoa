@@ -570,6 +570,8 @@ window.OneSignalDeferred=window.OneSignalDeferred||[];window.OneSignalDeferred.p
 <dt>🏛️ Organizer</dt><dd>Jinju-si, Jinju Art &amp; Culture Foundation <span style="color:#9ca3af">· Jinju Namgang Yudeung Festival Committee</span></dd>
 <dt>☎️ Contact</dt><dd>+82-55-761-9111, 755-9111</dd>
 </dl></div>
+<div class="fov" style="border-left:4px solid #0c7d72"><h2>What's new this year</h2><p>The 2026 festival runs Oct 3–18. If you are staying in Busan, a guided day tour runs on set dates — Oct 7, 12, 14 and 16, 2026 — with pickups at Haeundae Station Exit 5 (11:40), Seomyeon Station Exit 15 (12:20) and Busan Station Exit 3 (12:40), round-trip transport included. It needs at least 4 bookings to run and must be booked 2 days ahead.</p><p class="aff-en" style="background:#faf7f1;border:1px solid #eee5d6;border-radius:10px;padding:10px 12px;margin:10px 0 0;font-size:.92rem;line-height:1.6"><span style="display:inline-block;font-size:.72rem;font-weight:700;color:#8a8178;border:1px solid #cfc6b8;border-radius:4px;padding:0 5px;margin-right:6px;vertical-align:1px">Paid link</span>That tour is sold on Creatrip → <a href="https://creatrip.com/en/spot/14415?utm_source=AFF-4ljv46f&amp;aff_id=AFF-4ljv46f" target="_blank" rel="sponsored noopener" data-bb="creatrip-tour" data-slot="inline-context" data-place="en-festival" style="color:#0c7d72;font-weight:700">See the Jinju lantern festival day tour from Busan</a><span style="display:block;font-size:.78rem;color:#8a8178;margin-top:4px">We earn a commission if you book through this link. Your price is the same.</span></p>
+<p class="note" style="color:#9aa3af;font-size:.82rem;margin-top:8px">Festival dates: Jinju City announcement. Tour dates and pickup points: the tour's booking page, checked Sep 30, 2026 — they can change, so confirm when you book.</p></div>
 
 <div class="fov"><h2>Overview</h2><p>*The information below is based on the 2025 festivals. Details for the 2026 festivals will be updated as they become available.*The Jinju Namgang Yudeung Festival is an event that continues the practice of making wishes by floating colorful lanterns down the Namgang River. This practice of over 400 years originated from the Siege of Jinju in 1592. The festival begins at sunset when lanterns of various shapes and sizes are lit on the Namgang River. World Pungmul lanterns, wish lanterns, traditional lanterns, religious lanterns, and customized lanterns embroider the night with colorful lights. F</p>
 <p class="note" style="color:#9aa3af;font-size:.82rem;margin-top:10px">Source: Korea Tourism Organization (official English translation, TourAPI).</p></div>
@@ -1084,9 +1086,11 @@ document.addEventListener('click',function(e){
     var isKory = href.indexOf('kory.kr') >= 0;
     // 🎫 2026-09-24 추가 — 클룩 제휴(일본어 페이지). 쿠팡·코리와 같은 shop_click 으로 비교한다.
     var isKlook = href.indexOf('affiliate.klook.com') >= 0;
-    if(isOwn || isAff || isKory || isKlook){
+    // 🗺 2026-09-30 추가 — Creatrip 제휴(영어 페이지 축제 투어, aff_id=AFF-4ljv46f). 같은 shop_click 으로 비교한다.
+    var isCt = href.indexOf('creatrip.com') >= 0 && href.indexOf('aff_id=') >= 0;
+    if(isOwn || isAff || isKory || isKlook || isCt){
       send('shop_click', {
-        merchant: isKlook ? 'klook' : (isKory ? 'kory' : (isOwn ? 'own' : 'coupang')),
+        merchant: isCt ? 'creatrip' : (isKlook ? 'klook' : (isKory ? 'kory' : (isOwn ? 'own' : 'coupang'))),
         // data-bb 가 정답이다. 쿠팡 딥링크는 주소에 아무 정보가 없어 이게 없으면 전부 'coupang' 으로 뭉개진다.
         item: a.getAttribute('data-bb') || detailOf(href) || (isAff ? 'coupang' : (isKory ? 'kory' : (isKlook ? 'klook' : 'store'))),
         slot: a.getAttribute('data-slot') || (a.classList.contains('bb-up') ? 'upsell' : (a.classList.contains('buybox') ? 'main' : 'inline')),

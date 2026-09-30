@@ -224,7 +224,7 @@ ${(() => {
 ${f.tel ? `<dt>☎️ Contact</dt><dd>${esc(f.tel)}</dd>` : ''}
 </dl></div>${f._note ? `
 <div class="fov" style="border-left:4px solid #0c7d72"><h2>What's new this year</h2><p>${esc(f._note)}</p>${ended ? '' : KLOOK_EN.productLink(f._aff, 'en-festival')}
-<p class="note" style="color:#9aa3af;font-size:.82rem;margin-top:8px">Checked against the organizer's announcement. Dates above are updated to match it.</p></div>` : ''}
+<p class="note" style="color:#9aa3af;font-size:.82rem;margin-top:8px">${esc(f._noteFoot || "Checked against the organizer's announcement. Dates above are updated to match it.")}</p></div>` : ''}
 ${ended ? `<div class="fend"><h2>⚠️ This festival's listed dates have passed</h2>
 <p>The dates above are from the most recent official schedule. Many Korean festivals are annual events held around the same time each year, but the next date has not been officially confirmed yet — please check the official website or a Google search below before planning a trip.</p></div>` : ''}
 <div class="fov"><h2>Overview</h2><p>${esc(f.ov)}</p>

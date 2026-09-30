@@ -1186,9 +1186,11 @@ window.cjmFestBB=function(elId,name,place){
     var isKory = href.indexOf('kory.kr') >= 0;
     // 🎫 2026-09-24 추가 — 클룩 제휴(일본어 페이지). 쿠팡·코리와 같은 shop_click 으로 비교한다.
     var isKlook = href.indexOf('affiliate.klook.com') >= 0;
-    if(isOwn || isAff || isKory || isKlook){
+    // 🗺 2026-09-30 추가 — Creatrip 제휴(영어 페이지 축제 투어, aff_id=AFF-4ljv46f). 같은 shop_click 으로 비교한다.
+    var isCt = href.indexOf('creatrip.com') >= 0 && href.indexOf('aff_id=') >= 0;
+    if(isOwn || isAff || isKory || isKlook || isCt){
       send('shop_click', {
-        merchant: isKlook ? 'klook' : (isKory ? 'kory' : (isOwn ? 'own' : 'coupang')),
+        merchant: isCt ? 'creatrip' : (isKlook ? 'klook' : (isKory ? 'kory' : (isOwn ? 'own' : 'coupang'))),
         // data-bb 가 정답이다. 쿠팡 딥링크는 주소에 아무 정보가 없어 이게 없으면 전부 'coupang' 으로 뭉개진다.
         item: a.getAttribute('data-bb') || detailOf(href) || (isAff ? 'coupang' : (isKory ? 'kory' : (isKlook ? 'klook' : 'store'))),
         slot: a.getAttribute('data-slot') || (a.classList.contains('bb-up') ? 'upsell' : (a.classList.contains('buybox') ? 'main' : 'inline')),
