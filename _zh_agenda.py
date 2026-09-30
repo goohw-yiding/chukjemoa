@@ -120,7 +120,11 @@ def eff(f):
     if x.get("start"): s = x["start"].replace("-", "")
     if x.get("end"): e = x["end"].replace("-", "")
     return s, e, x, c
+# 2026-10-01 — 날짜 세션의 교차검증(3곳 일치 «확정»)을 거친 축제는 다시 볼 필요가 없다 → 안건에서 뺀다
+BR = J("data/festival_bridge.json", {}) or {}
+CONFIRMED = {str(v.get("apiId")) for l in ("zh", "tw") for v in ((BR.get("links") or {}).get(l) or {}).values() if v.get("kv") == "confirmed"}
 def checked(fid):
+    if str(fid) in CONFIRMED: return True
     c = CHK.get(str(fid))
     if not c: return False
     try: return (TODAY - datetime.date.fromisoformat(c["date"])).days < 30 and c.get("result") != "미확인"
