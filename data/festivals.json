@@ -262,8 +262,13 @@
   ],
   "category": "물놀이",
   "desc": "얼음계곡에서 더위를 날리는 피서축제",
-  "confirmed": false,
-  "pending": true
+  "confirmed": true,
+  "sources": [
+   "https://v.daum.net/v/20260721000700485",
+   "https://supple.kr/news/cmryp0yl90018145xyld3k1d8",
+   "https://www.summer-hunter.com/m/notice"
+  ],
+  "verifiedAt": "2026-10-01"
  },
  {
   "name": "대관령음악제",
@@ -290,7 +295,7 @@
   "name": "홍천강 별빛음악 맥주축제",
   "region": "강원",
   "city": "홍천군",
-  "place": "홍천강 일원",
+  "place": "홍천 토리숲 일원",
   "start": "2026-08-05",
   "end": "2026-08-09",
   "month": [
@@ -298,8 +303,13 @@
   ],
   "category": "음악",
   "desc": "강변에서 맥주와 라이브 음악을 함께",
-  "confirmed": false,
-  "pending": true
+  "confirmed": true,
+  "sources": [
+   "https://www.seoul.co.kr/news/society/2026/08/04/20260804500198",
+   "https://www.devtimes.co.kr/news/502302",
+   "https://www.ftimes.kr/news/articleView.html?idxno=38777"
+  ],
+  "verifiedAt": "2026-10-01"
  },
  {
   "name": "동해 해변뮤직페스티벌",
@@ -413,7 +423,7 @@
   "name": "화천토마토축제",
   "region": "강원",
   "city": "화천군",
-  "place": "화천군 사내면 사내체육공원",
+  "place": "사내면 체육공원 일원",
   "start": "2026-07-31",
   "end": "2026-08-09",
   "month": [
@@ -422,8 +432,13 @@
   ],
   "category": "음식",
   "desc": "토마토 속 황금반지 찾기 이색 체험",
-  "confirmed": false,
-  "pending": true
+  "confirmed": true,
+  "sources": [
+   "https://www.chamnews.net/news/articleView.html?idxno=241521",
+   "https://news.mtn.co.kr/news-detail/2026080314184261962",
+   "https://supple.kr/news/cmru2746k003zipapy6uvrmpl"
+  ],
+  "verifiedAt": "2026-10-01"
  },
  {
   "name": "대전 0시 축제",
@@ -499,7 +514,7 @@
   "name": "정동진독립영화제",
   "region": "강원",
   "city": "강릉시",
-  "place": "정동초등학교 운동장",
+  "place": "정동초등학교·강릉 신영극장",
   "start": "2026-08-07",
   "end": "2026-08-10",
   "month": [
@@ -507,8 +522,13 @@
   ],
   "category": "문화",
   "desc": "별빛 아래서 보는 야외 독립영화제",
-  "confirmed": false,
-  "pending": true
+  "confirmed": true,
+  "sources": [
+   "https://edaily.co.kr/News/Read?mediaCodeNo=257&newsId=05566166645544696",
+   "https://tvreport.co.kr/movie/article/1066883/",
+   "https://www.kwtotalnews.kr/64620"
+  ],
+  "verifiedAt": "2026-10-01"
  },
  {
   "name": "영월 동강축제",
@@ -544,7 +564,7 @@
   "name": "괴산고추축제",
   "region": "충북",
   "city": "괴산군",
-  "place": "괴산읍 동진천 일원",
+  "place": "괴산 유기농엑스포광장 일원",
   "start": "2026-09-03",
   "end": "2026-09-06",
   "month": [
@@ -552,14 +572,19 @@
   ],
   "category": "음식",
   "desc": "청결고추 수확철 농특산물 축제",
-  "confirmed": false,
-  "pending": true
+  "confirmed": true,
+  "sources": [
+   "https://www.newspim.com/news/view/20260903000289",
+   "https://www.ftimes.kr/news/articleView.html?idxno=39201",
+   "https://www.theuniontimes.co.kr/2153155"
+  ],
+  "verifiedAt": "2026-10-01"
  },
  {
   "name": "영동포도축제",
   "region": "충북",
   "city": "영동군",
-  "place": "영동레인보우힐링관광지 일원",
+  "place": "영동레인보우힐링관광지",
   "start": "2026-08-27",
   "end": "2026-08-30",
   "month": [
@@ -567,8 +592,13 @@
   ],
   "category": "음식",
   "desc": "포도의 고장 영동의 달콤한 수확축제",
-  "confirmed": false,
-  "pending": true
+  "confirmed": true,
+  "sources": [
+   "http://www.inews24.com/view/1989765",
+   "https://www.pbsnews.kr/137595",
+   "https://www.etravelnews.kr/80841"
+  ],
+  "verifiedAt": "2026-10-01"
  },
  {
   "name": "금남로 차 없는 거리 걷자잉",
@@ -1459,7 +1489,7 @@
   "name": "진해군항제",
   "region": "경남",
   "city": "창원시",
-  "place": "경상남도 창원시 진해구 통신동",
+  "place": "창원시 진해구 일원",
   "start": "2026-03-27",
   "end": "2026-04-05",
   "month": [
@@ -1468,8 +1498,13 @@
   ],
   "category": "문화",
   "desc": "지난 1952년 4월 13일, 우리나라 최초로 충무공 이순신 장군의 동상을 북원로터리에 세우고 추모제를 거행하여 온 것이 계기가 되었다. 초창기에는 이충무공 동상이 있는 북원로터리에서 제를 지내는 ",
-  "confirmed": false,
-  "pending": true
+  "confirmed": true,
+  "sources": [
+   "https://www.mt.co.kr/policy/2026/02/23/2026022316355810363",
+   "https://jinju.news/front/news/view.do?articleId=ARTICLE_00041049",
+   "https://www.newspim.com/news/view/20260122000736"
+  ],
+  "verifiedAt": "2026-10-01"
  },
  {
   "name": "산수유마을꽃맞이행사",
@@ -1587,7 +1622,7 @@
   "name": "논산딸기축제",
   "region": "충남",
   "city": "논산시",
-  "place": "충청남도 논산시 관촉동",
+  "place": "논산 시민가족공원 일원",
   "start": "2026-03-26",
   "end": "2026-03-29",
   "month": [
@@ -1595,8 +1630,13 @@
   ],
   "category": "음식",
   "desc": "논산딸기축제는 충청남도 논산시에서 매년 개최되는 대한민국 대표 특산물 축제이다. 논산은 전국적인 딸기 주산지로서 안정적인 생산 기반과 유통 체계를 갖추고 있으며, 이를 바탕으로 농업·가공·관광이 연",
-  "confirmed": false,
-  "pending": true
+  "confirmed": true,
+  "sources": [
+   "http://www.glctimes.com/news/articleView.html?idxno=36745",
+   "https://www.localm.kr/bbs/board.php?bo_table=news&wr_id=3883",
+   "https://www.nonsan.go.kr/nsfestival/html/sub02/0202.html"
+  ],
+  "verifiedAt": "2026-10-01"
  },
  {
   "name": "양재천 벚꽃 등(燈) 축제",
@@ -1674,7 +1714,7 @@
   "name": "진도신비의바닷길축제",
   "region": "전남",
   "city": "진도군",
-  "place": "진도군 고군면 신비의바닷길 74",
+  "place": "진도군 고군면 신비의바닷길 일원",
   "start": "2026-04-17",
   "end": "2026-04-20",
   "month": [
@@ -1682,8 +1722,13 @@
   ],
   "category": "문화",
   "desc": "국가지정 명승 제9호 진도 신비의 바닷길은 고군면 회동리와 의신면 모도리 사이 약 2km 바다가 조수간만의 차이로 음력 2월 ~ 3월 수심이 낮아질 때 회동~모도 바닷길이 드러나는 현상으로 30~4",
-  "confirmed": false,
-  "pending": true
+  "confirmed": true,
+  "sources": [
+   "https://www.thefairnews.co.kr/news/articleView.html?idxno=73545",
+   "http://www.newsggam.com/news/articleView.html?idxno=151193",
+   "https://thefestival.co.kr/info/festival/10688"
+  ],
+  "verifiedAt": "2026-10-01"
  },
  {
   "name": "2026 대한민국 과학축제 with 부산과학축전",
@@ -1775,7 +1820,7 @@
   "name": "이천도자기축제",
   "region": "경기",
   "city": "이천시",
-  "place": "경기도 이천시 신둔면 도자예술로5번길 109",
+  "place": "이천도자예술마을(예스파크)·사기막골도예촌",
   "start": "2026-04-24",
   "end": "2026-05-05",
   "month": [
@@ -1784,8 +1829,13 @@
   ],
   "category": "문화",
   "desc": "제40회 이천도자기축제는 경기도 이천시 이천도자예술마을과 사기막골 일대에서 열리는 도자문화 행사이다. 이천은 예로부터 양질의 흙과 우수한 가마 기술을 바탕으로 전통과 현대를 아우르는 도자문화를 이어",
-  "confirmed": false,
-  "pending": true
+  "confirmed": true,
+  "sources": [
+   "https://www.ohmynews.com/NWS_Web/View/at_pg.aspx?CNTN_CD=A0003213986",
+   "https://view.asiae.co.kr/article/2026031119570996511",
+   "https://www.dongbangilbo.co.kr/news/articleView.html?idxno=82637"
+  ],
+  "verifiedAt": "2026-10-01"
  },
  {
   "name": "양양 남대천 벚꽃축제",
@@ -2186,7 +2236,7 @@
   "name": "2026 공예주간",
   "region": "충남",
   "city": "부여군",
-  "place": "충청남도 부여군 규암면 수북로41번길 11-21",
+  "place": "123사비공예마을 일원",
   "start": "2026-06-19",
   "end": "2026-06-28",
   "month": [
@@ -2194,8 +2244,13 @@
   ],
   "category": "문화",
   "desc": "공예주간은 공예의 즐거움을 알리고 나누고자 한국공예·디자인문화진흥원의 주관으로 시작한 공예 행사이다. 한국공예·디자인문화진흥원이 주관하는 국내 공예축제, 2026 공예주간이 오는 6월 19일부터 2",
-  "confirmed": false,
-  "pending": true
+  "confirmed": true,
+  "sources": [
+   "http://www.seoulilbo.com/news/articleView.html?idxno=832503",
+   "https://view.asiae.co.kr/article/2026061912482546818",
+   "https://www.shinailbo.co.kr/news/articleView.html?idxno=5029419"
+  ],
+  "verifiedAt": "2026-10-01"
  },
  {
   "name": "2026 농촌여행 페스티벌 (제14회 도농교류의 날 기념)",
@@ -2285,7 +2340,7 @@
   "name": "숲으로 오라",
   "region": "제주",
   "city": "제주시",
-  "place": "제주특별자치도 제주시 연삼로 286 (도남동)",
+  "place": "제주시 시민복지타운광장",
   "start": "2026-06-27",
   "end": "2026-06-28",
   "month": [
@@ -2293,8 +2348,13 @@
   ],
   "category": "문화",
   "desc": "‘숲으로 오라’는 제주의 숲과 자연을 주제로 어린이와 가족이 함께 참여하는 생태·친환경 행사이다. 본 행사는 자연환경의 가치와 환경보호의 중요성을 체험을 통해 배우고 공유할 수 있도록 기획된 프로그",
-  "confirmed": false,
-  "pending": true
+  "confirmed": true,
+  "sources": [
+   "http://www.ihalla.com/article.php?aid=1782093131787341044",
+   "https://www.jnuri.net/news/article.html?no=68804",
+   "https://newsseoul.co.kr/news/view/1065600037244798"
+  ],
+  "verifiedAt": "2026-10-01"
  },
  {
   "name": "옥토버페스트 서울 2026",

@@ -1,52 +1,52 @@
 {
- "generatedAt": "2026-10-01T10:49",
+ "generatedAt": "2026-10-01T14:21",
  "stats": {
   "en": {
    "total": 258,
-   "linked": 44,
-   "confirmed": 28,
-   "pending": 4,
+   "linked": 45,
+   "confirmed": 33,
+   "pending": 0,
    "tbc": 10,
    "est": 2,
    "redated": 0,
    "restored": 0,
-   "review": 4,
+   "review": 0,
    "removed": 0
   },
   "ja": {
    "total": 213,
    "linked": 43,
-   "confirmed": 27,
-   "pending": 5,
+   "confirmed": 32,
+   "pending": 0,
    "tbc": 9,
    "est": 2,
    "redated": 0,
    "restored": 0,
-   "review": 3,
+   "review": 0,
    "removed": 0
   },
   "zh": {
    "total": 178,
-   "linked": 32,
-   "confirmed": 22,
-   "pending": 3,
+   "linked": 33,
+   "confirmed": 26,
+   "pending": 0,
    "tbc": 5,
    "est": 2,
    "redated": 0,
    "restored": 0,
-   "review": 2,
+   "review": 0,
    "removed": 0
   },
   "tw": {
    "total": 171,
-   "linked": 34,
-   "confirmed": 23,
-   "pending": 3,
+   "linked": 36,
+   "confirmed": 28,
+   "pending": 0,
    "tbc": 6,
    "est": 2,
    "redated": 0,
    "restored": 0,
-   "review": 3,
+   "review": 0,
    "removed": 0
   }
  },
@@ -255,7 +255,7 @@
    },
    "700520": {
     "ko": "진해군항제",
-    "kv": "pending",
+    "kv": "confirmed",
     "signals": [
      "img",
      "tel",
@@ -266,7 +266,7 @@
    },
    "700890": {
     "ko": "이천도자기축제",
-    "kv": "pending",
+    "kv": "confirmed",
     "signals": [
      "img",
      "geo",
@@ -285,9 +285,18 @@
     ],
     "apiId": "506809"
    },
+   "705394": {
+    "ko": "진도신비의바닷길축제",
+    "kv": "confirmed",
+    "signals": [
+     "geo",
+     "decision"
+    ],
+    "apiId": "506909"
+   },
    "708055": {
     "ko": "논산딸기축제",
-    "kv": "pending",
+    "kv": "confirmed",
     "signals": [
      "img",
      "tel",
@@ -444,7 +453,7 @@
    },
    "2550244": {
     "ko": "홍천강 별빛음악 맥주축제",
-    "kv": "pending",
+    "kv": "confirmed",
     "signals": [
      "img",
      "geo",
@@ -646,7 +655,7 @@
    },
    "699454": {
     "ko": "진해군항제",
-    "kv": "pending",
+    "kv": "confirmed",
     "signals": [
      "img",
      "tel",
@@ -657,7 +666,7 @@
    },
    "700650": {
     "ko": "이천도자기축제",
-    "kv": "pending",
+    "kv": "confirmed",
     "signals": [
      "img",
      "geo",
@@ -667,7 +676,7 @@
    },
    "700829": {
     "ko": "진도신비의바닷길축제",
-    "kv": "pending",
+    "kv": "confirmed",
     "signals": [
      "img",
      "geo",
@@ -677,7 +686,7 @@
    },
    "707460": {
     "ko": "논산딸기축제",
-    "kv": "pending",
+    "kv": "confirmed",
     "signals": [
      "img",
      "tel",
@@ -919,7 +928,7 @@
    },
    "2549651": {
     "ko": "홍천강 별빛음악 맥주축제",
-    "kv": "pending",
+    "kv": "confirmed",
     "signals": [
      "img",
      "geo",
@@ -1122,7 +1131,7 @@
    },
    "702171": {
     "ko": "진해군항제",
-    "kv": "pending",
+    "kv": "confirmed",
     "signals": [
      "img",
      "tel",
@@ -1133,7 +1142,7 @@
    },
    "703102": {
     "ko": "이천도자기축제",
-    "kv": "pending",
+    "kv": "confirmed",
     "signals": [
      "img",
      "geo",
@@ -1154,7 +1163,7 @@
    },
    "707644": {
     "ko": "논산딸기축제",
-    "kv": "pending",
+    "kv": "confirmed",
     "signals": [
      "img",
      "tel",
@@ -1223,6 +1232,15 @@
      "tel"
     ],
     "apiId": "1095732"
+   },
+   "1808199": {
+    "ko": "부산불꽃축제",
+    "kv": "confirmed",
+    "signals": [
+     "geo",
+     "decision"
+    ],
+    "apiId": "235076"
    },
    "1827968": {
     "ko": "대구치맥페스티벌",
@@ -1319,6 +1337,15 @@
      "date"
     ],
     "apiId": "141731"
+   },
+   "333373": {
+    "ko": "부산바다축제",
+    "kv": "confirmed",
+    "signals": [
+     "geo",
+     "decision"
+    ],
+    "apiId": "142080"
    },
    "629191": {
     "ko": "안동국제탈춤페스티벌",
@@ -1439,6 +1466,15 @@
     ],
     "apiId": "506809"
    },
+   "699340": {
+    "ko": "진도신비의바닷길축제",
+    "kv": "confirmed",
+    "signals": [
+     "geo",
+     "decision"
+    ],
+    "apiId": "506909"
+   },
    "699342": {
     "ko": "평창효석문화제",
     "kv": "confirmed",
@@ -1452,7 +1488,7 @@
    },
    "701457": {
     "ko": "진해군항제",
-    "kv": "pending",
+    "kv": "confirmed",
     "signals": [
      "img",
      "tel",
@@ -1473,7 +1509,7 @@
    },
    "705916": {
     "ko": "이천도자기축제",
-    "kv": "pending",
+    "kv": "confirmed",
     "signals": [
      "img",
      "geo",
@@ -1483,7 +1519,7 @@
    },
    "708506": {
     "ko": "논산딸기축제",
-    "kv": "pending",
+    "kv": "confirmed",
     "signals": [
      "img",
      "tel",
@@ -1669,116 +1705,7 @@
    }
   }
  },
- "review": [
-  {
-   "lang": "en",
-   "id": "705394",
-   "title": "Jindo Miracle Sea Road Festival",
-   "why": "신호 1개(geo)뿐",
-   "ko": [
-    "진도신비의바닷길축제"
-   ]
-  },
-  {
-   "lang": "en",
-   "id": "3043397",
-   "title": "Gwanghwamun Market",
-   "why": "신호 1개(geo)뿐",
-   "ko": [
-    "서울빛초롱축제"
-   ]
-  },
-  {
-   "lang": "en",
-   "id": "4100946",
-   "title": "Starry Sea Busan - Night Camp Picnic",
-   "why": "신호 1개(geo)뿐",
-   "ko": [
-    "부산바다축제"
-   ]
-  },
-  {
-   "lang": "en",
-   "id": "3546717",
-   "title": "Bibliotheca Busan",
-   "why": "신호 1개(geo)뿐",
-   "ko": [
-    "부산바다축제"
-   ]
-  },
-  {
-   "lang": "ja",
-   "id": "3352420",
-   "title": "屋根部屋のネコ",
-   "why": "신호 1개(geo)뿐",
-   "ko": [
-    "D.FESTA 거리공연축제"
-   ]
-  },
-  {
-   "lang": "ja",
-   "id": "4103875",
-   "title": "星の海・釜山「ナイトミュージック・キャンクニック」",
-   "why": "신호 1개(geo)뿐",
-   "ko": [
-    "부산바다축제"
-   ]
-  },
-  {
-   "lang": "ja",
-   "id": "3497773",
-   "title": "釜山パダ図書館",
-   "why": "신호 1개(geo)뿐",
-   "ko": [
-    "부산바다축제"
-   ]
-  },
-  {
-   "lang": "zh",
-   "id": "1808199",
-   "title": "釜山烟花庆典",
-   "why": "신호 1개(geo)뿐",
-   "ko": [
-    "부산불꽃축제"
-   ]
-  },
-  {
-   "lang": "zh",
-   "id": "3352392",
-   "title": "屋塔房小猫",
-   "why": "신호 1개(geo)뿐",
-   "ko": [
-    "D.FESTA 거리공연축제"
-   ]
-  },
-  {
-   "lang": "tw",
-   "id": "699340",
-   "title": "珍島神祕海路慶典",
-   "why": "신호 1개(geo)뿐",
-   "ko": [
-    "진도신비의바닷길축제"
-   ]
-  },
-  {
-   "lang": "tw",
-   "id": "333373",
-   "title": "釜山海洋節",
-   "why": "신호 1개(geo)뿐",
-   "ko": [
-    "부산바다축제"
-   ]
-  },
-  {
-   "lang": "tw",
-   "id": "3352405",
-   "title": "屋塔房小貓",
-   "why": "신호 1개(geo)뿐",
-   "ko": [
-    "D.FESTA 거리공연축제"
-   ]
-  }
- ],
+ "review": [],
  "removed": [],
  "conflicts": []
 }

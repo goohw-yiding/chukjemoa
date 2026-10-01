@@ -278,7 +278,7 @@
     "ko": "진해군항제",
     "score": 4,
     "commerce": false,
-    "status": "pending",
+    "status": "confirmed",
     "ids": [
      "700520"
     ],
@@ -362,8 +362,10 @@
     "ko": "진도신비의바닷길축제",
     "score": 3,
     "commerce": false,
-    "status": "pending",
-    "ids": [],
+    "status": "confirmed",
+    "ids": [
+     "705394"
+    ],
     "reasons": [
      {
       "claim": "영문 여행사 Korea Travel Easy 진도 신비의바닷길축제 투어 상품",
@@ -627,7 +629,7 @@
     "ko": "진해군항제",
     "score": 4,
     "commerce": true,
-    "status": "pending",
+    "status": "confirmed",
     "ids": [
      "699454"
     ],
@@ -840,7 +842,7 @@
     "ko": "이천도자기축제",
     "score": 3,
     "commerce": false,
-    "status": "pending",
+    "status": "confirmed",
     "ids": [
      "700650"
     ],
@@ -1025,7 +1027,7 @@
     "ko": "진도신비의바닷길축제",
     "score": 2,
     "commerce": false,
-    "status": "pending",
+    "status": "confirmed",
     "ids": [
      "700829"
     ],
@@ -1369,7 +1371,7 @@
     "ko": "진도신비의바닷길축제",
     "score": 3,
     "commerce": false,
-    "status": "pending",
+    "status": "confirmed",
     "ids": [],
     "reasons": [
      {
@@ -1393,7 +1395,7 @@
     "ko": "진해군항제",
     "score": 3,
     "commerce": false,
-    "status": "pending",
+    "status": "confirmed",
     "ids": [
      "702171"
     ],
@@ -1480,7 +1482,7 @@
     "ko": "논산딸기축제",
     "score": 2,
     "commerce": false,
-    "status": "pending",
+    "status": "confirmed",
     "ids": [
      "707644"
     ],
@@ -1563,7 +1565,9 @@
     "score": 2,
     "commerce": false,
     "status": "confirmed",
-    "ids": [],
+    "ids": [
+     "1808199"
+    ],
     "reasons": [
      {
       "claim": "부산관광공사 VisitBusan 간체 페이지: 부산불꽃축제 관람 명소 추천",
@@ -1683,7 +1687,7 @@
     "ko": "진해군항제",
     "score": 8,
     "commerce": false,
-    "status": "pending",
+    "status": "confirmed",
     "ids": [
      "701457"
     ],
@@ -1871,7 +1875,9 @@
     "score": 4,
     "commerce": false,
     "status": "confirmed",
-    "ids": [],
+    "ids": [
+     "333373"
+    ],
     "reasons": [
      {
       "claim": "부산관광공사 VisitBusan 번체 부산바다축제 페이지",
@@ -2006,8 +2012,10 @@
     "ko": "진도신비의바닷길축제",
     "score": 3,
     "commerce": false,
-    "status": "pending",
-    "ids": [],
+    "status": "confirmed",
+    "ids": [
+     "699340"
+    ],
     "reasons": [
      {
       "claim": "대만 매체 lnanews 제33회 진도신비의바닷길축제 개최 기사",

@@ -1,5 +1,12 @@
 {
  "en": {
+  "705394": {
+   "ko": "진도신비의바닷길축제",
+   "decision": "link",
+   "evidence": "https://en.sedaily.com/society/2026/04/14/jindo-sea-parting-festival-returns-for-46th-year",
+   "title": "Jindo Miracle Sea Road Festival",
+   "at": "2026-10-01"
+  },
   "1385298": {
    "ko": "부산불꽃축제",
    "decision": "link",
@@ -7,12 +14,33 @@
    "title": "Busan Fireworks Festival",
    "at": "2026-09-30"
   },
+  "3043397": {
+   "ko": "서울빛초롱축제",
+   "decision": "reject",
+   "evidence": "광화문마켓(겨울 시장)은 서울빛초롱축제와 별개 행사",
+   "title": "Gwanghwamun Market",
+   "at": "2026-10-01"
+  },
   "3352421": {
    "ko": "D.FESTA 거리공연축제",
    "decision": "reject",
    "evidence": "연극 «옥탑방 고양이» — 다른 행사",
    "title": "Cat on the Rooftop",
    "at": "2026-09-30"
+  },
+  "3546717": {
+   "ko": "부산바다축제",
+   "decision": "reject",
+   "evidence": "부산바다도서관(Bibliotheca Busan)은 해변 독서 프로그램으로 별개 행사",
+   "title": "Bibliotheca Busan",
+   "at": "2026-10-01"
+  },
+  "4100946": {
+   "ko": "부산바다축제",
+   "decision": "reject",
+   "evidence": "별바다부산 나이트캠크닉은 부산관광공사 별도 야간 피크닉 행사",
+   "title": "Starry Sea Busan - Night Camp Picnic",
+   "at": "2026-10-01"
   }
  },
  "ja": {
@@ -22,15 +50,73 @@
    "evidence": "https://ja.wikipedia.org/wiki/%E9%87%9C%E5%B1%B1%E8%8A%B1%E7%81%AB%E5%A4%A7%E4%BC%9A",
    "title": "釜山花火祭り",
    "at": "2026-09-30"
+  },
+  "3352420": {
+   "ko": "D.FESTA 거리공연축제",
+   "decision": "reject",
+   "evidence": "옥탑방 고양이는 대학로 연극 공연으로 별개",
+   "title": "屋根部屋のネコ",
+   "at": "2026-10-01"
+  },
+  "3497773": {
+   "ko": "부산바다축제",
+   "decision": "reject",
+   "evidence": "부산바다도서관은 해변 독서 프로그램으로 별개 행사",
+   "title": "釜山パダ図書館",
+   "at": "2026-10-01"
+  },
+  "4103875": {
+   "ko": "부산바다축제",
+   "decision": "reject",
+   "evidence": "별바다부산 나이트캠크닉은 별도 야간 피크닉 행사",
+   "title": "星の海・釜山「ナイトミュージック・キャンクニック」",
+   "at": "2026-10-01"
   }
  },
  "tw": {
+  "333373": {
+   "ko": "부산바다축제",
+   "decision": "link",
+   "evidence": "http://big5chinese.visitkorea.or.kr/cht/ATT/3_4_view.jsp?cid=333373",
+   "title": "釜山海洋節",
+   "at": "2026-10-01"
+  },
+  "699340": {
+   "ko": "진도신비의바닷길축제",
+   "decision": "link",
+   "evidence": "http://big5chinese.visitkorea.or.kr/cht/ATT/3_4_view.jsp?cid=699340",
+   "title": "珍島神祕海路慶典",
+   "at": "2026-10-01"
+  },
   "1113727": {
    "ko": "부산불꽃축제",
    "decision": "link",
    "evidence": "https://tour.settour.com.tw/product/GFG0000015408",
    "title": "釜山煙火節",
    "at": "2026-09-30"
+  },
+  "3352405": {
+   "ko": "D.FESTA 거리공연축제",
+   "decision": "reject",
+   "evidence": "옥탑방 고양이는 대학로 연극 공연으로 별개",
+   "title": "屋塔房小貓",
+   "at": "2026-10-01"
+  }
+ },
+ "zh": {
+  "1808199": {
+   "ko": "부산불꽃축제",
+   "decision": "link",
+   "evidence": "http://chinese.visitkorea.or.kr/chs/ATT/3_4_view.jsp?cid=1808199",
+   "title": "釜山烟花庆典",
+   "at": "2026-10-01"
+  },
+  "3352392": {
+   "ko": "D.FESTA 거리공연축제",
+   "decision": "reject",
+   "evidence": "옥탑방 고양이는 대학로 연극 공연으로 별개",
+   "title": "屋塔房小猫",
+   "at": "2026-10-01"
   }
  }
 }
