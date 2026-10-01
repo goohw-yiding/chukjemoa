@@ -1,12 +1,12 @@
 {
- "generatedAt": "2026-10-01T09:59",
+ "generatedAt": "2026-10-01T10:49",
  "stats": {
   "en": {
    "total": 258,
    "linked": 44,
    "confirmed": 28,
-   "pending": 1,
-   "tbc": 13,
+   "pending": 4,
+   "tbc": 10,
    "est": 2,
    "redated": 0,
    "restored": 0,
@@ -17,8 +17,8 @@
    "total": 213,
    "linked": 43,
    "confirmed": 27,
-   "pending": 1,
-   "tbc": 13,
+   "pending": 5,
+   "tbc": 9,
    "est": 2,
    "redated": 0,
    "restored": 0,
@@ -29,8 +29,8 @@
    "total": 178,
    "linked": 32,
    "confirmed": 22,
-   "pending": 0,
-   "tbc": 8,
+   "pending": 3,
+   "tbc": 5,
    "est": 2,
    "redated": 0,
    "restored": 0,
@@ -41,8 +41,8 @@
    "total": 171,
    "linked": 34,
    "confirmed": 23,
-   "pending": 0,
-   "tbc": 9,
+   "pending": 3,
+   "tbc": 6,
    "est": 2,
    "redated": 0,
    "restored": 0,
@@ -255,7 +255,7 @@
    },
    "700520": {
     "ko": "진해군항제",
-    "kv": "tbc",
+    "kv": "pending",
     "signals": [
      "img",
      "tel",
@@ -266,7 +266,7 @@
    },
    "700890": {
     "ko": "이천도자기축제",
-    "kv": "tbc",
+    "kv": "pending",
     "signals": [
      "img",
      "geo",
@@ -287,7 +287,7 @@
    },
    "708055": {
     "ko": "논산딸기축제",
-    "kv": "tbc",
+    "kv": "pending",
     "signals": [
      "img",
      "tel",
@@ -646,7 +646,7 @@
    },
    "699454": {
     "ko": "진해군항제",
-    "kv": "tbc",
+    "kv": "pending",
     "signals": [
      "img",
      "tel",
@@ -657,7 +657,7 @@
    },
    "700650": {
     "ko": "이천도자기축제",
-    "kv": "tbc",
+    "kv": "pending",
     "signals": [
      "img",
      "geo",
@@ -667,7 +667,7 @@
    },
    "700829": {
     "ko": "진도신비의바닷길축제",
-    "kv": "tbc",
+    "kv": "pending",
     "signals": [
      "img",
      "geo",
@@ -677,7 +677,7 @@
    },
    "707460": {
     "ko": "논산딸기축제",
-    "kv": "tbc",
+    "kv": "pending",
     "signals": [
      "img",
      "tel",
@@ -1122,7 +1122,7 @@
    },
    "702171": {
     "ko": "진해군항제",
-    "kv": "tbc",
+    "kv": "pending",
     "signals": [
      "img",
      "tel",
@@ -1133,7 +1133,7 @@
    },
    "703102": {
     "ko": "이천도자기축제",
-    "kv": "tbc",
+    "kv": "pending",
     "signals": [
      "img",
      "geo",
@@ -1154,7 +1154,7 @@
    },
    "707644": {
     "ko": "논산딸기축제",
-    "kv": "tbc",
+    "kv": "pending",
     "signals": [
      "img",
      "tel",
@@ -1452,7 +1452,7 @@
    },
    "701457": {
     "ko": "진해군항제",
-    "kv": "tbc",
+    "kv": "pending",
     "signals": [
      "img",
      "tel",
@@ -1473,7 +1473,7 @@
    },
    "705916": {
     "ko": "이천도자기축제",
-    "kv": "tbc",
+    "kv": "pending",
     "signals": [
      "img",
      "geo",
@@ -1483,7 +1483,7 @@
    },
    "708506": {
     "ko": "논산딸기축제",
-    "kv": "tbc",
+    "kv": "pending",
     "signals": [
      "img",
      "tel",

@@ -359,5 +359,121 @@
   "name": "물의나라 화천쪽배축제",
   "action": "removed",
   "reason": "폐지 판단(조사자·검증자 모두) — 장남님 삭제 지시"
+ },
+ {
+  "at": "2026-10-01",
+  "name": "진해군항제",
+  "propose": "2026-03-27~2026-04-05",
+  "from": "2026-03-27~2026-04-05",
+  "sources": [
+   "https://www.mt.co.kr/policy/2026/02/23/2026022316355810363",
+   "https://jinju.news/front/news/view.do?articleId=ARTICLE_00041049"
+  ]
+ },
+ {
+  "at": "2026-10-01",
+  "name": "논산딸기축제",
+  "propose": "2026-03-26~2026-03-29",
+  "from": "2026-03-26~2026-03-29",
+  "sources": [
+   "http://www.glctimes.com/news/articleView.html?idxno=36745",
+   "https://www.localm.kr/bbs/board.php?bo_table=news&wr_id=3883"
+  ]
+ },
+ {
+  "at": "2026-10-01",
+  "name": "이천도자기축제",
+  "propose": "2026-04-24~2026-05-05",
+  "from": "2026-04-24~2026-05-05",
+  "sources": [
+   "https://www.ohmynews.com/NWS_Web/View/at_pg.aspx?CNTN_CD=A0003213986",
+   "https://view.asiae.co.kr/article/2026031119570996511"
+  ]
+ },
+ {
+  "at": "2026-10-01",
+  "name": "진도신비의바닷길축제",
+  "propose": "2026-04-17~2026-04-20",
+  "from": "2026-04-17~2026-04-20",
+  "sources": [
+   "https://www.thefairnews.co.kr/news/articleView.html?idxno=73545",
+   "http://www.newsggam.com/news/articleView.html?idxno=151193"
+  ]
+ },
+ {
+  "at": "2026-10-01",
+  "name": "영동포도축제",
+  "propose": "2026-08-27~2026-08-30",
+  "from": "2026-08-26~2026-08-30",
+  "place": "영동레인보우힐링관광지 일원",
+  "sources": [
+   "http://www.inews24.com/view/1989765",
+   "https://www.pbsnews.kr/137595"
+  ]
+ },
+ {
+  "at": "2026-10-01",
+  "name": "영월 동강축제",
+  "propose": "2026-07-31~2026-08-02",
+  "from": "2026-08-06~2026-08-09",
+  "sources": [
+   "https://www.ywcf.or.kr/cultural-events/186",
+   "http://www.crs-news.com/sub_read.html?uid=59154"
+  ]
+ },
+ {
+  "at": "2026-10-01",
+  "name": "숲으로 오라",
+  "propose": "2026-06-27~2026-06-28",
+  "from": "2026-06-27~2026-06-28",
+  "sources": [
+   "http://www.ihalla.com/article.php?aid=1782093131787341044",
+   "https://www.jnuri.net/news/article.html?no=68804"
+  ]
+ },
+ {
+  "at": "2026-10-01",
+  "name": "2026 공예주간",
+  "propose": "2026-06-19~2026-06-28",
+  "from": "2026-06-19~2026-06-28",
+  "sources": [
+   "http://www.seoulilbo.com/news/articleView.html?idxno=832503",
+   "https://view.asiae.co.kr/article/2026061912482546818"
+  ]
+ },
+ {
+  "at": "2026-10-01",
+  "name": "부산자갈치축제",
+  "note": "2026-10-01 재조사: 2026 개별 일정 여전히 미발표. 예년 날짜 자체가 의심 — 작년 제32회는 2025-10-23~10-26(https://m.joongdo.co.kr/view.php?key=20251015010003663), 적힌 10/08~10/11과 다름"
+ },
+ {
+  "at": "2026-10-01",
+  "name": "서울빛초롱축제",
+  "note": "2026-10-01: 2026-27 회차 미발표 — 확인한 곳: https://culture.seoul.go.kr/culture/culture/cultureEvent/view.do?cultcode=155808&menuNo=200008, 작년 2025-12-12~2026-01-04(청계천·우이천)"
+ },
+ {
+  "at": "2026-10-01",
+  "name": "평창송어축제",
+  "note": "2026-10-01: 2026-27 시즌 미발표. 직전 제17회는 이상기온으로 연기돼 2026-01-09 개막(https://view.asiae.co.kr/article/2026010809413826034)"
+ },
+ {
+  "at": "2026-10-01",
+  "name": "대관령눈꽃축제",
+  "note": "2026-10-01: 2027 회차 미발표 — 확인한 곳: https://www.snowfestival.net/notice"
+ },
+ {
+  "at": "2026-10-01",
+  "name": "정읍 내장산단풍축제",
+  "note": "2026-10-01 재조사: 축제 일정 미발표, 단풍철 행락질서 대책만 보도(https://www.economicpost.co.kr/179493)"
+ },
+ {
+  "at": "2026-10-01",
+  "name": "순천만갈대축제",
+  "note": "2026-10-01 재조사: 2026 일정 미발표. 작년 가을 갈대축제 11/01~11/09 + 12/13~14 겨울 특별판, 2026부터 계절별 축제 추진 예고(https://m.joongdo.co.kr/view.php?key=20251207010002170) — 형식 변경 가능"
+ },
+ {
+  "at": "2026-10-01",
+  "name": "서울김장문화제",
+  "note": "2026-10-01 재조사: 서울광장 주간일정(9/28~10/4)·문화행사 목록에 아직 없음 https://plaza.seoul.go.kr/archives/18698"
  }
 ]

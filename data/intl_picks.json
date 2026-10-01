@@ -278,7 +278,7 @@
     "ko": "진해군항제",
     "score": 4,
     "commerce": false,
-    "status": "tbc",
+    "status": "pending",
     "ids": [
      "700520"
     ],
@@ -362,7 +362,7 @@
     "ko": "진도신비의바닷길축제",
     "score": 3,
     "commerce": false,
-    "status": "tbc",
+    "status": "pending",
     "ids": [],
     "reasons": [
      {
@@ -627,7 +627,7 @@
     "ko": "진해군항제",
     "score": 4,
     "commerce": true,
-    "status": "tbc",
+    "status": "pending",
     "ids": [
      "699454"
     ],
@@ -840,7 +840,7 @@
     "ko": "이천도자기축제",
     "score": 3,
     "commerce": false,
-    "status": "tbc",
+    "status": "pending",
     "ids": [
      "700650"
     ],
@@ -1025,7 +1025,7 @@
     "ko": "진도신비의바닷길축제",
     "score": 2,
     "commerce": false,
-    "status": "tbc",
+    "status": "pending",
     "ids": [
      "700829"
     ],
@@ -1369,7 +1369,7 @@
     "ko": "진도신비의바닷길축제",
     "score": 3,
     "commerce": false,
-    "status": "tbc",
+    "status": "pending",
     "ids": [],
     "reasons": [
      {
@@ -1393,7 +1393,7 @@
     "ko": "진해군항제",
     "score": 3,
     "commerce": false,
-    "status": "tbc",
+    "status": "pending",
     "ids": [
      "702171"
     ],
@@ -1480,7 +1480,7 @@
     "ko": "논산딸기축제",
     "score": 2,
     "commerce": false,
-    "status": "tbc",
+    "status": "pending",
     "ids": [
      "707644"
     ],
@@ -1683,7 +1683,7 @@
     "ko": "진해군항제",
     "score": 8,
     "commerce": false,
-    "status": "tbc",
+    "status": "pending",
     "ids": [
      "701457"
     ],
@@ -2006,7 +2006,7 @@
     "ko": "진도신비의바닷길축제",
     "score": 3,
     "commerce": false,
-    "status": "tbc",
+    "status": "pending",
     "ids": [],
     "reasons": [
      {
