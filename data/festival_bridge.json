@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-01T07:08",
+ "generatedAt": "2026-10-01T09:19",
  "stats": {
   "en": {
    "total": 258,
@@ -9,7 +9,7 @@
    "tbc": 13,
    "est": 2,
    "redated": 0,
-   "restored": 1,
+   "restored": 0,
    "review": 4,
    "removed": 0
   },
@@ -21,7 +21,7 @@
    "tbc": 13,
    "est": 2,
    "redated": 0,
-   "restored": 1,
+   "restored": 0,
    "review": 3,
    "removed": 0
   },

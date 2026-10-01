@@ -1,8 +1,6 @@
-영어 세션 자동화: 제휴·안내 기한 자동 만료 + 날짜 대조 기록 파일
+영어 허브 선정 묶음: 순서에 제휴 예약 가능 여부가 반영된다는 한 줄 표기 (FTC)
 
-- en-fix.js: noteUntil / aff.until(YYYYMMDD, 한국시간) 지나면 매일 예약 빌드에서 자동으로 빠짐. 진주 Creatrip 투어 링크 ~10/14(마지막 출발 10/16의 2일 전 예약 마감)·안내 ~10/16, 부산불꽃 클룩 티켓 ~11/6
-- data/festivals_en_checked.json 신설: 공식 발표로 대조한 영문 축제 16건(교정 3·맞음 12·미확인 1 포항불빛) — 주간 자동 안건(_en_agenda.py, PC 로컬 도구)이 30일 동안 다시 올리지 않음
-  이번 추가 대조(맞음): 고양가을꽃 10/1~11 · 임실N치즈 10/8~11 · 정조대왕 능행차 10/4 · 구미라면 11/6~8
+「not from ads」 문구를 빼고 "The order also reflects whether tickets or tours can be booked online through our partners." 로 교체. 일본어 문구는 그대로.
 
 Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
-Claude-Session: https://claude.ai/code/session_01PGZnsh3by95HzvcMJQLbmV
+Claude-Session: https://claude.ai/code/session_016m991E2DHzVvVSZCVNFqWg
