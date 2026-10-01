@@ -1,0 +1,23 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><meta name="robots" content="noindex,nofollow"><title>relay</title></head>
+<body style="font:14px sans-serif;padding:20px">
+<div id="s">loading…</div>
+<script>
+// Instagram 업로드용 중계 페이지: ?set=palace&n=6 → /ig/palace_1.png … 을 읽어 opener(instagram.com)에 넘긴다
+(async () => {
+  const q = new URLSearchParams(location.search);
+  const set = q.get('set'), n = +q.get('n');
+  const s = document.getElementById('s');
+  if (!window.opener || !/^[a-z0-9_]+$/.test(set || '') || !(n > 0 && n <= 10)) { s.textContent = 'bad request'; return; }
+  const files = [];
+  for (let i = 1; i <= n; i++) {
+    const r = await fetch(`/ig/${set}_${i}.png`, { cache: 'no-store' });
+    if (!r.ok) { s.textContent = 'missing ' + i; return; }
+    files.push({ name: `${set}_${i}.png`, type: 'image/png', buf: await r.arrayBuffer() });
+  }
+  window.opener.postMessage({ igRelay: true, set, files }, 'https://www.instagram.com', files.map(f => f.buf));
+  s.textContent = 'sent ' + files.length;
+  setTimeout(() => window.close(), 800);
+})();
+</script>
+</body></html>
