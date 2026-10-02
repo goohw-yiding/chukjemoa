@@ -1917,6 +1917,7 @@ const KO_NAV = `<button class="navtoggle" id="navtoggle" aria-label="메뉴 열�
 <a href="/holiday/">🎌 연휴 축제</a>
 <a href="/winter/">❄️ 겨울 축제</a>
 <a href="/blog/">📖 축제 가이드</a>
+<a href="/letter/">💌 이주의 축제모아</a>
 <a href="/test/">🔮 취향 테스트</a>
 </div></div>
 <div class="ndrop"><button class="nbtn" type="button">🗺️ 여행지<span class="arw">▼</span></button><div class="nmenu">
@@ -4177,19 +4178,59 @@ function articleLd(p) {
   })}</script>`;
 }
 
+// ---------- 💌 이주의 축제모아 구독 신청 상자 (2026-10-02) ----------
+// 지금은 «주소만 모은다». 발송은 구독자가 생긴 뒤 발송 서비스를 붙일 때 시작 — 문구도 그렇게 정직하게 쓴다.
+// 저장은 api/subscribe.js → Supabase(aeo-app) newsletter_subscribers. 동의 문구를 바꾸면 api/subscribe.js 의
+// CONSENT_VERSION 과 /privacy/ 7항도 같이 바꿀 것.
+const isWeekly = p => /^chukjemoa-weekly-vol\d+$/.test(p.slug);
+const weeklyPosts = postsNewest.filter(isWeekly);
+function letterBox(source) {
+  return `<section class="letterbox" style="margin:28px 0;padding:20px 18px;border:2px solid #0f9d8f;border-radius:14px;background:#f0fbf9">
+<h2 style="margin:0 0 6px;font-size:1.15rem;color:#0a6c63">💌 매주 목요일, 이번 주말 갈 만한 곳을 메일로</h2>
+<p style="margin:0 0 12px;color:#374151;font-size:.95rem;line-height:1.6">「이주의 축제모아」는 검색량으로 고른 이번 주말 축제, 그 주에 서는 오일장, 붐비는 곳과 한적한 곳을 데이터로 짚어 드리는 주간 소식입니다. 지금은 구독 신청을 먼저 받고 있으며, 메일 발송을 시작하면 신청하신 주소로 보내 드립니다. 지난 호는 <a href="/letter/">모아보기</a>에서 언제든 볼 수 있습니다.</p>
+<form class="lbform" data-source="${source}" novalidate style="display:flex;flex-direction:column;gap:10px">
+<div style="display:flex;gap:8px;flex-wrap:wrap">
+<input type="email" name="email" required autocomplete="email" placeholder="이메일 주소" aria-label="이메일 주소" style="flex:1 1 200px;min-width:0;padding:11px 12px;border:1px solid #9ca3af;border-radius:8px;font-size:1rem">
+<button type="submit" style="flex:0 0 auto;padding:11px 18px;border:0;border-radius:8px;background:#0a6c63;color:#fff;font-weight:700;font-size:1rem;cursor:pointer">구독 신청</button>
+</div>
+<input type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
+<label style="display:flex;gap:8px;align-items:flex-start;font-size:.88rem;color:#374151;line-height:1.5"><input type="checkbox" name="agree" style="margin-top:3px;flex:0 0 auto"><span>(필수) 개인정보 수집·이용에 동의합니다.</span></label>
+<details style="font-size:.84rem;color:#4b5563;line-height:1.6"><summary style="cursor:pointer">수집·이용 내용 보기</summary>
+<ul style="margin:6px 0 0;padding-left:18px">
+<li>수집 항목: 이메일 주소</li>
+<li>이용 목적: 「이주의 축제모아」 소식 메일 발송</li>
+<li>보유 기간: 구독 해지 요청 시까지(해지 즉시 파기)</li>
+<li>동의를 거부할 수 있으며, 거부하면 구독 신청만 할 수 없습니다. 사이트 이용에는 영향이 없습니다.</li>
+<li>해지·삭제 요청: <a href="mailto:goohw593@gmail.com">goohw593@gmail.com</a> · 자세한 내용은 <a href="/privacy/">개인정보처리방침</a></li>
+</ul></details>
+<p class="lbmsg" role="status" aria-live="polite" style="margin:0;font-size:.92rem;min-height:1.2em"></p>
+</form>
+</section>`;
+}
+const LETTER_JS = `<script>(function(){document.querySelectorAll('form.lbform').forEach(function(f){f.addEventListener('submit',function(ev){ev.preventDefault();var m=f.querySelector('.lbmsg'),b=f.querySelector('button'),e=f.email.value.trim();
+function say(t,ok){m.textContent=t;m.style.color=ok?'#0a6c63':'#b91c1c';}
+if(!/^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$/.test(e)){say('이메일 주소를 다시 확인해 주세요.');f.email.focus();return;}
+if(!f.agree.checked){say('개인정보 수집·이용에 동의해 주셔야 신청할 수 있습니다.');return;}
+b.disabled=true;say('신청하는 중…',true);
+fetch('/api/subscribe',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:e,agree:true,website:f.website.value,source:f.getAttribute('data-source')})})
+.then(function(r){return r.json().catch(function(){return {ok:false};});})
+.then(function(j){if(j&&j.ok){say('신청되었습니다. 메일 발송을 시작하면 이 주소로 보내 드릴게요.',true);f.email.value='';f.agree.checked=false;try{if(window.gtag)gtag('event','letter_subscribe',{source:f.getAttribute('data-source')});}catch(x){}}else{say((j&&j.msg)||'지금 신청을 받을 수 없습니다. 잠시 후 다시 시도해 주세요.');}})
+.catch(function(){say('연결이 끊겼습니다. 잠시 후 다시 시도해 주세요.');})
+.then(function(){b.disabled=false;});});});})();</script>`;
+
 // ---------- 블로그 ----------
 posts.forEach(p => {
   const content = `<main><div class="wrap"><article>
 <h1>${esc(p.title)}</h1>
 ${metaBlock(p.date)}
-${p.body}
+${p.body}${isWeekly(p) ? '\n' + letterBox('/blog/' + p.slug + '/') + `<p style="margin:-12px 0 20px;font-size:.92rem"><a href="/letter/">💌 「이주의 축제모아」 지난 호 전체 보기 →</a></p>` : ''}
 ${blogBuyBox(p)}
 ${SCHEDULE_NOTICE}
 ${refsBlock(p.slug)}
 </article>
 <h2 class="sec">월별 축제 일정 보기</h2>
 ${monthNavHtml}
-</div></main>`;
+</div></main>${isWeekly(p) ? LETTER_JS : ''}`;
   writePage(`blog/${p.slug}`, layout(`${p.title} | ${SITE_NAME}`, p.desc, `/blog/${p.slug}/`, content, { jsonld: articleLd(p) }));
 });
 
@@ -4202,6 +4243,45 @@ ${postsNewest.map(p => `<a href="/blog/${p.slug}/">${esc(p.title)}<span>${p.date
 ${monthNavHtml}
 </div></main>`;
 writePage('blog', layout(`축제·장터 가이드 | ${SITE_NAME}`, `축제 준비물, 오일장 이용 팁, 여름 물축제·가을 단풍 축제 코스까지 — 축제모아 에디터가 직접 정리한 축제·장터 가이드 모음.`, '/blog/', blogIndex));
+
+// ---------- 💌 /letter/ — 「이주의 축제모아」 지난 호 모아보기 + 구독 신청 (2026-10-02) ----------
+// 회차 글 자체는 /blog/chukjemoa-weekly-volN/ 에 그대로 두고(이미 색인된 URL), 여기는 «모아 두는 곳».
+const letterIssues = weeklyPosts.map(p => {
+  const n = (p.slug.match(/vol(\d+)$/) || [])[1];
+  const t = p.title.replace(/^이주의 축제모아 Vol\.\d+\s*[—-]\s*/, '');
+  return `<a href="/blog/${p.slug}/" style="display:block;padding:14px 16px;border:1px solid #e5e7eb;border-radius:12px;margin-bottom:10px;text-decoration:none;color:inherit;background:#fff">
+<span style="display:inline-block;font-size:.8rem;font-weight:700;color:#fff;background:#0a6c63;border-radius:999px;padding:2px 10px;margin-bottom:6px">Vol.${n}</span>
+<span style="display:block;font-weight:700;font-size:1.05rem;color:#111827;line-height:1.45">${esc(t)}</span>
+<span style="display:block;font-size:.88rem;color:#6b7280;margin-top:4px">${p.date} · ${esc(p.desc)}</span>
+</a>`;
+}).join('\n');
+const letterContent = `<main><div class="wrap"><article>
+<h1>💌 이주의 축제모아</h1>
+<p style="color:#4b5563;line-height:1.7">「이주의 축제모아」는 축제모아가 매주 목요일 내는 주간 소식입니다. 주말을 앞두고 «이번 주말 어디 가지»를 고민하는 분께, 우리가 매일 모으는 공공데이터와 검색량 데이터로 고른 몇 곳을 짧게 정리해 드립니다. 다른 매체의 기사나 목록을 옮기지 않고, 축제모아가 직접 집계한 숫자와 우리 문장으로만 씁니다.</p>
+${letterBox('/letter/')}
+<h2>지난 호 모아보기</h2>
+<p style="color:#6b7280;font-size:.92rem;margin-top:-4px">최신 호가 맨 위에 있습니다. 모두 ${weeklyPosts.length}호.</p>
+${letterIssues || '<p>아직 발행한 호가 없습니다.</p>'}
+<h2>매주 무엇이 들어가나요</h2>
+<ul style="line-height:1.8">
+<li><b>이번 주말 축제</b> — 그 주말에 열리는 축제를 네이버 월간 검색량과 최근 7일 검색 추세로 줄 세운 순위입니다. 날짜·장소는 한국관광공사 TourAPI 등 공공데이터와 주최 측 공지를 기준으로 합니다.</li>
+<li><b>이번 주 장날</b> — 전국 오일장 가운데 그 주에 서는 곳입니다. 오일장은 끝자리 날짜(1·6일장, 2·7일장 등)로 열리므로 주말과 겹치는 장을 골라 드립니다.</li>
+<li><b>붐비는 곳 / 한적한 곳</b> — 한국관광공사 지역별 방문자 데이터로 계산한 «성수기 배수»(그 달 방문자 ÷ 연평균)를 회차마다 번갈아 소개합니다. 사람이 몰리는 동네는 <a href="/hot/">인기 여행지 랭킹</a>, 덜 붐비는 동네는 <a href="/healing/">웰니스 여행지</a>에 전체 순위가 있습니다.</li>
+<li><b>그 주의 계절 소식</b> — 단풍·봄꽃·계곡처럼 시기가 중요한 주제는 그 주 상황에 맞춰 덧붙입니다.</li>
+</ul>
+<h2>이렇게 만듭니다</h2>
+<p style="line-height:1.7">순위와 숫자는 매번 그 주 사이트 빌드 결과에서 그대로 가져옵니다. 추정한 숫자나 출처를 확인하지 못한 정보는 넣지 않습니다. 축제 일정은 주최 측 사정으로 바뀔 수 있으니, 가시기 전에는 각 축제 상세 페이지에 연결해 둔 공식 채널에서 최종 일정을 꼭 확인해 주세요. 데이터를 모으고 검증하는 기준은 <a href="${EDITORIAL_URL}">편집 원칙</a>에 공개해 두었습니다.</p>
+<h2>메일 구독 안내</h2>
+<p style="line-height:1.7">위 신청칸에 이메일을 남기시면 메일 발송을 시작할 때부터 매주 받아 보실 수 있습니다. 받는 주소 외에는 아무것도 묻지 않으며, 언제든 <a href="mailto:goohw593@gmail.com">goohw593@gmail.com</a>으로 해지·삭제를 요청하실 수 있습니다. 메일이 부담스러우시면 이 페이지를 즐겨찾기 해 두셔도 매주 새 호를 볼 수 있습니다.</p>
+</article>
+<h2 class="sec">월별 축제 일정 보기</h2>
+${monthNavHtml}
+</div></main>${LETTER_JS}`;
+const letterLd = `<script type="application/ld+json">${JSON.stringify({
+  '@context': 'https://schema.org', '@type': 'CollectionPage', name: '이주의 축제모아', inLanguage: 'ko', url: SITE + '/letter/',
+  mainEntity: { '@type': 'ItemList', itemListElement: weeklyPosts.map((p, i) => ({ '@type': 'ListItem', position: i + 1, url: SITE + '/blog/' + p.slug + '/', name: p.title })) }
+})}</script>`;
+writePage('letter', layout(`이주의 축제모아 — 매주 목요일 주말 축제·오일장 소식 | ${SITE_NAME}`, `이번 주말 축제 순위, 그 주에 서는 오일장, 붐비는 곳과 한적한 곳을 데이터로 짚는 축제모아의 주간 소식. 지난 호를 모아 보고 메일 구독도 신청할 수 있습니다.`, '/letter/', letterContent, { jsonld: letterLd }));
 
 // ---------- 편집 원칙 (/editorial/) ----------
 const editorialContent = `<main><div class="wrap"><article>
@@ -4747,7 +4827,8 @@ ${buyBox('jangteo')}
 ${postsNewest.slice(0, 8).map(p => `<a href="/blog/${p.slug}/">${esc(p.title)}<span>${p.date}</span></a>`).join('\n')}
 </div>
 <p style="margin:10px 0 0"><a href="/blog/" style="display:inline-block;font-weight:700;color:#0f766e">축제 가이드 전체 ${posts.length}편 보기 →</a></p>
-</div></main>`;
+${letterBox('/')}
+</div></main>${LETTER_JS}`;
 
 // ---------- 홈 하단 '이 사이트가 가진 것' ----------
 // 홈이 사이트에서 가장 얇았다(2026-08-08 진단). 광고 문구가 아니라 **실제 보유 데이터를 숫자로** 적는다.
@@ -4856,9 +4937,9 @@ writePage('.', layout(
 // ---------- 개인정보처리방침 ----------
 const privacyContent = `<main><div class="wrap"><article>
 <h1>개인정보처리방침</h1>
-<p>시행일: 2026년 7월 11일</p>
+<p>시행일: 2026년 10월 2일 (이전 버전: 2026년 7월 11일 — 7항 「뉴스레터 구독」 신설)</p>
 <h2>1. 개요</h2>
-<p>축제모아(chukjemoa.co.kr, 이하 "사이트")는 이용자의 개인정보를 중요시하며, 관련 법령을 준수합니다. 본 사이트는 회원가입 없이 이용 가능하며, 이용자가 직접 입력하는 개인정보를 수집·저장하지 않습니다.</p>
+<p>축제모아(chukjemoa.co.kr, 이하 "사이트")는 이용자의 개인정보를 중요시하며, 관련 법령을 준수합니다. 본 사이트는 회원가입 없이 이용 가능하며, 이용자가 직접 입력하는 개인정보는 이용자가 스스로 신청하는 뉴스레터 구독(7항)의 이메일 주소 외에는 수집·저장하지 않습니다.</p>
 <h2>2. 쿠키 및 광고</h2>
 <p>본 사이트는 Google AdSense 광고를 게재합니다. Google을 포함한 제3자 광고 사업자는 쿠키를 사용하여 이용자의 이전 방문 기록을 바탕으로 광고를 게재할 수 있습니다. Google의 광고 쿠키 사용으로 Google 및 파트너는 사이트 방문 기록에 기반한 맞춤 광고를 제공할 수 있습니다.</p>
 <p>이용자는 <a href="https://www.google.com/settings/ads" target="_blank" rel="noopener">Google 광고 설정</a>에서 맞춤 광고를 비활성화할 수 있습니다.</p>
@@ -4870,6 +4951,17 @@ const privacyContent = `<main><div class="wrap"><article>
 <p>본 사이트는 축제 공식 홈페이지 등 외부 사이트 링크를 포함합니다. 외부 사이트의 개인정보 처리에 대해서는 책임지지 않습니다.</p>
 <h2>6. 문의</h2>
 <p>개인정보 관련 문의: goohw593@gmail.com</p>
+<h2>7. 뉴스레터(「이주의 축제모아」) 구독</h2>
+<p>이용자가 <a href="/letter/">구독 신청칸</a>에 이메일 주소를 입력하고 수집·이용에 동의한 경우에만 아래와 같이 처리합니다.</p>
+<ul>
+<li>수집 항목: 이메일 주소 (신청 시각, 신청한 페이지 주소, 동의한 방침 버전이 함께 기록됩니다)</li>
+<li>이용 목적: 「이주의 축제모아」 주간 소식 메일 발송</li>
+<li>보유·이용 기간: 구독 해지 요청 시까지. 해지 요청을 받으면 지체 없이 파기합니다.</li>
+<li>보관 위치: 데이터베이스 서비스 Supabase(서울 리전)에 저장하며, 외부에서 직접 열람할 수 없도록 접근을 제한합니다.</li>
+<li>제3자 제공: 하지 않습니다. 메일 발송을 위해 발송 대행 서비스를 이용하게 되면, 시작 전에 수탁자와 위탁 업무를 이 방침에 먼저 공개합니다.</li>
+<li>동의 거부: 동의하지 않을 수 있으며, 이 경우 구독 신청만 할 수 없고 사이트 이용에는 제한이 없습니다.</li>
+<li>열람·정정·해지·삭제: goohw593@gmail.com 으로 요청하시면 처리합니다. 발송을 시작하면 매 메일에도 수신 거부 방법을 안내합니다.</li>
+</ul>
 </article></div></main>`;
 writePage('privacy', layout(`개인정보처리방침 | ${SITE_NAME}`, `축제모아가 수집하는 정보와 쓰임, 보관 기간, 광고·분석 도구(구글 애널리틱스·애드센스)의 쿠키 사용, 이용자의 열람·삭제 요청 방법을 정리했습니다.`, '/privacy/', privacyContent));
 
@@ -8354,7 +8446,7 @@ const ADV_TRAFFIC = {
 }
 
 // ---------- sitemap / robots ----------
-const urls = ['/', ...MONTHS.map(m => `/${m.key}/`), '/search/', ...(holidays.length ? ['/holiday/'] : []), '/pet/', ...(apiAccessible.length ? ['/accessible/'] : []), ...INDOOR_URLS, ...(apiTrails.length ? ['/trails/'] : []), ...(apiValleys.length ? ['/valley/'] : []), ...(apiMaple.length ? ['/maple/'] : []), ...(apiFlower.length ? ['/flower/'] : []), ...(apiOnsen.length ? ['/onsen/'] : []), '/jangteo/', '/test/', '/trip-cost/', ...CITYTOUR_URLS, ...(visitors.kor && visitors.kor.length ? ['/trend/'] : []), ...SIDO_URLS, ...THEME_URLS, ...TRAIL_URLS, ...WALK_URLS, ...TREND_LANG_URLS, '/blog/', ...posts.map(p => `/blog/${p.slug}/`), '/about/', EDITORIAL_URL, '/contact/', '/advertise/', '/privacy/',...(apiFestsEn.length ? ['/en/', '/en/search/'] : []), ...EN_FESTIVAL_URLS, ...EN_JANGTEO_URLS, ...EN_BLOG_URLS, ...(apiFestsJa.length ? ['/ja/', '/ja/search/'] : []), ...JA_JANGTEO_URLS, ...JA_FESTIVAL_URLS, ...JA_HOLIDAY_URLS, ...JA_BUSY_URLS, ...JA_DAYTRIP_URLS, ...JA_PALACE_URLS, ...JA_PLACES_URLS, ...(apiFestsEs.length ? ['/es/', '/es/search/'] : []), ...ES_JANGTEO_URLS, ...(apiFestsZh.length ? ['/zh/', '/zh/search/'] : []), ...ZH_JANGTEO_URLS, ...(apiFestsTw.length ? ['/tw/', '/tw/search/'] : []), ...TW_EXTRA_URLS, ...TW_BUSY_URLS, ...MOUNTAIN_URLS, ...CAFE_URLS, ...HOT_URLS, ...HEALING_URLS, ...COURSE_URLS, ...WINTER_URLS, ...JANGTEO_SIDO_URLS, ...JANGTEO_SIGUNGU_URLS, ...JANGTEO_ENDDAY_URLS, ...SIDO_HUB_URLS, ...TRIP_URLS, ...FESTIVAL_URLS, ...MAP_URLS, ...INTL_URLS, ...CHUSEOK_URLS, ...SEOUL_URLS, ...BUSAN_URLS, ...JEJU_URLS, ...MUSEUM_URLS, ...CITY_URLS, ...INTL_CITY_URLS];
+const urls = ['/', ...MONTHS.map(m => `/${m.key}/`), '/search/', ...(holidays.length ? ['/holiday/'] : []), '/pet/', ...(apiAccessible.length ? ['/accessible/'] : []), ...INDOOR_URLS, ...(apiTrails.length ? ['/trails/'] : []), ...(apiValleys.length ? ['/valley/'] : []), ...(apiMaple.length ? ['/maple/'] : []), ...(apiFlower.length ? ['/flower/'] : []), ...(apiOnsen.length ? ['/onsen/'] : []), '/jangteo/', '/test/', '/trip-cost/', ...CITYTOUR_URLS, ...(visitors.kor && visitors.kor.length ? ['/trend/'] : []), ...SIDO_URLS, ...THEME_URLS, ...TRAIL_URLS, ...WALK_URLS, ...TREND_LANG_URLS, '/blog/', ...posts.map(p => `/blog/${p.slug}/`), '/letter/', '/about/', EDITORIAL_URL, '/contact/', '/advertise/', '/privacy/',...(apiFestsEn.length ? ['/en/', '/en/search/'] : []), ...EN_FESTIVAL_URLS, ...EN_JANGTEO_URLS, ...EN_BLOG_URLS, ...(apiFestsJa.length ? ['/ja/', '/ja/search/'] : []), ...JA_JANGTEO_URLS, ...JA_FESTIVAL_URLS, ...JA_HOLIDAY_URLS, ...JA_BUSY_URLS, ...JA_DAYTRIP_URLS, ...JA_PALACE_URLS, ...JA_PLACES_URLS, ...(apiFestsEs.length ? ['/es/', '/es/search/'] : []), ...ES_JANGTEO_URLS, ...(apiFestsZh.length ? ['/zh/', '/zh/search/'] : []), ...ZH_JANGTEO_URLS, ...(apiFestsTw.length ? ['/tw/', '/tw/search/'] : []), ...TW_EXTRA_URLS, ...TW_BUSY_URLS, ...MOUNTAIN_URLS, ...CAFE_URLS, ...HOT_URLS, ...HEALING_URLS, ...COURSE_URLS, ...WINTER_URLS, ...JANGTEO_SIDO_URLS, ...JANGTEO_SIGUNGU_URLS, ...JANGTEO_ENDDAY_URLS, ...SIDO_HUB_URLS, ...TRIP_URLS, ...FESTIVAL_URLS, ...MAP_URLS, ...INTL_URLS, ...CHUSEOK_URLS, ...SEOUL_URLS, ...BUSAN_URLS, ...JEJU_URLS, ...MUSEUM_URLS, ...CITY_URLS, ...INTL_CITY_URLS];
 // noindex 페이지는 사이트맵에서 뺀다 — "색인해라(사이트맵) + 하지마라(noindex)"는 모순 신호다.
 // 🔁 2026-08-19: en/ja/zh 사이트맵 제외를 되돌린다(위 layout()의 forceNoindex 주석 참고).
 //    구글 클릭 0을 보고 뺐지만 GA4로는 구글 아닌 검색엔진에서 16세션/28일이 들어오고 있었다.
