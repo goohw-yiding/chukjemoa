@@ -378,6 +378,12 @@ const CSS = `<style>
 .jsg-faq{line-height:1.85;margin:0 0 12px}
 .jsg-h3{font-size:1rem;font-weight:800;margin:14px 0 8px;color:#0a6c63}
 .jsg-list li a{color:#111827;text-decoration:none}
+/* 2026-10-02: 「○○ 장 보고 나서」 줄 — 이 모듈엔 스타일이 없어 108장 전부 링크가 맨 글자로 붙어 보였다(build.js 오일장 CSS 와 같은 규칙) */
+.nextup{background:#f4faf8;border:1.5px solid #dcefeb;border-radius:14px;padding:14px 16px;margin:16px 0 22px}
+.nextup-t{font-size:.86rem;font-weight:800;color:#0a6c63;margin-bottom:8px}
+.nextup-row{display:flex;flex-wrap:wrap;gap:7px}
+.nextup-row a{display:inline-block;background:#fff;border:1.5px solid #cfe9e3;color:#0a6c63;font-weight:800;font-size:.92rem;padding:9px 14px;border-radius:999px;text-decoration:none}
+.nextup-row a.hot{background:#0f9d8f;border-color:#0f9d8f;color:#fff}
 </style>`;
 
 module.exports = { build };
