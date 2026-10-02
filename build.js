@@ -8409,9 +8409,24 @@ function pageHash(u) {
   const f = path.join(ROOT, u === '/' ? 'index.html' : u.replace(/^\/|\/$/g, '') + '/index.html');
   let h;
   try { h = fs.readFileSync(f, 'utf8'); } catch (e) { return null; }
-  h = h.replace(new RegExp(TODAY, 'g'), '')          // 최종 갱신 표기
-    .replace(/D-\d+|진행중|종료/g, '')                // D-day 배지
+  // 2026-10-02 실측: 899장 전부가 매일 «변경됨»이었다(사이트맵 lastmod 가 전부 오늘·어제).
+  //   원인 = ①메뉴의 축제 개수 «332개» ②어제 날짜 «2026-10-01.» 기준일 표기 ③날씨(아이콘·기온·강수확률)
+  //   ④오일장 «다음 장날» — 내용이 아닌 장식이 매일 바뀌어 크롤러에게 «lastmod 는 믿을 수 없다»를 가르치고 있었다.
+  //   → 해시는 «본문(<main>) + 제목 + 설명»만 보고, 장식성 변동을 지운 뒤에 잰다. 진짜 내용(축제 날짜·목록)이 바뀌면 여전히 갱신된다.
+  const near = new Set([-3, -2, -1, 0, 1].map(k => new Date(new Date(TODAY).getTime() + k * 864e5).toISOString().slice(0, 10)));
+  const head = (h.match(/<title>[\s\S]*?<\/title>/) || [''])[0] + (h.match(/<meta name="description"[^>]*>/) || [''])[0];
+  const main = (h.match(/<main[\s\S]*<\/main>/) || [h])[0];
+  h = (head + main)
+    .replace(/20\d\d-\d\d-\d\d/g, d => near.has(d) ? '' : d)                 // 오늘 근처 기준일·갱신일
+    .replace(/<script[\s\S]*?<\/script>/g, '')
+    .replace(/D-\d+|D-DAY|진행중|開催中|종료|일정 확인 중/g, '')            // D-day 배지
+    .replace(/class="cnt">[^<]*/g, 'class="cnt">')                          // 메뉴 개수
+    .replace(/title="[^"]*"/g, '').replace(/-?\d+(\.\d+)?\s*°[CF]?/g, '').replace(/(?:💧)?\s*\d+\s*%/g, '')   // 날씨
+    .replace(/class="wx[^"]*"[^>]*>[^<]*/g, 'class="wx">').replace(/Open-Meteo[^<]*/g, '')               // 날씨 칩(비 여부 class 포함)·예보 시각
+    .replace(/다음 장날\s*\d{1,2}\/\d{1,2}/g, '다음 장날')                                                  // 축제 상세의 «다음 장날»
+    .replace(/[☀🌤⛅🌥☁🌦🌧⛈🌩🌨❄🌫🌙]️?/gu, '')
     .replace(/<lastmod>.*?<\/lastmod>/g, '');
+  if (u.startsWith('/jangteo/')) h = h.replace(/\d{1,2}\/\d{1,2}(?=<)/g, '');   // 다음 장날(고정 주기에서 계산되는 값)
   return crypto.createHash('sha1').update(h).digest('hex');
 }
 const LM_NEW = {};
@@ -8419,8 +8434,9 @@ function lastmodOf(u) {
   const h = pageHash(u);
   if (!h) return TODAY;
   const prev = LM[u];
-  const date = (prev && prev.h === h) ? prev.d : TODAY;
-  LM_NEW[u] = { h, d: date };
+  // v2(2026-10-02 해시 방식 변경) 첫 빌드는 해시만 갈아끼우고 날짜는 그대로 둔다 — 방식 변경을 «내용 변경»으로 세지 않는다
+  const date = (prev && (prev.h === h || prev.v !== 2)) ? prev.d : TODAY;
+  LM_NEW[u] = { h, d: date, v: 2 };
   return date;
 }
 

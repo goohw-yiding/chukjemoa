@@ -152,12 +152,25 @@ function build(ctx) {
   const HOT = typeof hotOf === 'function' ? hotOf : (() => 0);
   // 🏙 「이 축제가 있는 도시」 — 도시 페이지가 «실제로 열린» 곳만 링크한다(CITY.open).
   //    없으면 그 시·도 축제 검색으로 보낸다. 축제 564장 중 253장(45%)이 도시 14곳에 걸린다.
-  const cityLink = f => {
-    if (!CITY) return '';
-    const k = CITY.of(f);
-    if (!k || !CITY.open.has(k)) return '';
-    const [nm, em] = CITY.ko[k] || [k, '🏙'];
-    return `<p class="fcity"><a href="/${k}/">${em} <b>${esc(nm)}</b> 여행 정보 — 가볼 만한 곳·맛집·숙소를 한 장에</a></p>`;
+  // 2026-10-02 «발견됨-미색인» 대책: 도시 하위 페이지(가볼 만한 곳·맛집·숙소…)와 시·군 장날 페이지는 들어오는 본문 링크가
+  //   평균 3개뿐이었다(색인된 같은 종류는 8개). 축제 상세(185장 색인)에서 «그 축제 가는 사람에게 필요한 다음 페이지»로 잇는다.
+  //   실제로 만들어진 페이지만(폴더에 index.html 이 있을 때) 링크한다.
+  const SUB_LABEL = { spot: '가볼 만한 곳', food: '맛집', cafe: '카페', stay: '숙소', pet: '반려견 동반', museum: '박물관·미술관',
+    exhibition: '전시', performance: '공연', free: '무료로 즐길 거리', rainy: '비 오는 날', olle: '올레길', venue: '공연장' };
+  let SG_SLUG = {}; try { SG_SLUG = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'sigungu_slug.json'), 'utf8')); } catch (e) {}
+  const has = p => { try { return fs.existsSync(path.join(ROOT, p, 'index.html')); } catch (e) { return false; } };
+  const cityLink = (f, sg) => {
+    let html = '';
+    const k = CITY ? CITY.of(f) : '';
+    if (k && CITY.open.has(k)) {
+      const [nm, em] = CITY.ko[k] || [k, '🏙'];
+      html += `<p class="fcity"><a href="/${k}/">${em} <b>${esc(nm)}</b> 여행 정보 — 가볼 만한 곳·맛집·숙소를 한 장에</a></p>`;
+      const subs = Object.keys(SUB_LABEL).filter(s => has(`${k}/${s}`));
+      if (subs.length) html += `<p class="fsub" style="margin:6px 0 2px;font-size:.9rem;color:#4b5563">${esc(nm)}에서 축제 전후로: ${subs.map(s => `<a href="/${k}/${s}/" style="color:#0a6c63;font-weight:700">${esc(nm)} ${SUB_LABEL[s]}</a>`).join(' · ')}</p>`;
+    }
+    const js = sg && SG_SLUG[sg];
+    if (js && has(`jangteo/${js}`)) html += `<p class="fsub" style="margin:6px 0 2px;font-size:.9rem;color:#4b5563">🧺 축제 가는 길에 들르기 좋은 <a href="/jangteo/${js}/" style="color:#0a6c63;font-weight:700">${esc(sg)} 장날·오일장 날짜</a></p>`;
+    return html;
   };
   // 축제 시작월 → 월별 페이지 키. **실제로 만드는 달일 때만** 돌려준다(없으면 링크하지 않는다).
   const MK = new Set(MONTH_KEYS || []);
@@ -491,7 +504,7 @@ ${cand.filter(o => o !== f && o.sido !== f.sido && String(o.start).slice(4, 6) =
 ${/* 🏙 2026-09-07 신설 — 축제 → 도시. 상품이 아니라 «정보» 링크다.
       축제 상세는 세션당 1.0~1.1장짜리 막다른 길인데, 그중 45%는 우리가 도시 페이지를 가진 곳이다.
       ⚠️ 한 줄만 넣는다 — 축제상세 평균 유사도가 0.156으로 사이트 최고라 같은 블록을 크게 넣으면 판박이가 된다. */''}
-${cityLink(f)}
+${cityLink(f, sg)}
 
 ${/* 🏛 2026-09-04 신설 — «자연스러운» 인바운드 접점.
       장남 님: 「광고·협업 문의가 들어왔으면 좋겠다」. 그런데 지금은 받을 자리가 없었다.
