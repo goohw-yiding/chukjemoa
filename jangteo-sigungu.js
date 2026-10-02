@@ -81,6 +81,38 @@ function build(ctx) {
   const m3Y = nextM === 12 ? nextY + 1 : nextY, m3M = nextM === 12 ? 1 : nextM + 1;
   const fesLive = (apiFests || []).filter(f => +f.x && +f.y && String(f.end) >= String(TODAY).replace(/-/g, ''));
 
+  // 🧭 2026-10-02 「발견됨-미색인」 38장 대책 — 색인 안 된 시·군 장날 페이지 본문이 평균 3,544자로 색인된 쪽(6,707자)의 절반이었다.
+  //   시장이 1~2곳뿐인 시·군은 «시장 카드 + 공통 안내»만 남아 서로 판박이에 가까웠다.
+  //   → 그 시장 «바로 옆» 실제 장소(한국관광공사 공공데이터)로 채운다: 장 보고 들를 관광지 · 장터 근처 밥집(대표 메뉴·영업시간) · 카페.
+  //   지어낸 문장 없이 좌표 거리로만 고르고, 데이터에 없는 시·군은 그 칸을 그리지 않는다.
+  const readArr = f => { try { const d = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', f), 'utf8')); return Array.isArray(d) ? d : (Object.values(d)[0] || []); } catch (e) { return []; } };
+  const SPOTS = readArr('spots_ko.json').filter(s => +s.x && +s.y);
+  const FOODS = readArr('restaurants_ko.json').filter(s => +s.x && +s.y);
+  const CAFES = readArr('cafes_ko.json').filter(s => +s.x && +s.y);
+  const KIND = { nature: '자연', heritage: '역사·문화유산', architecture: '건축·명소', industry: '산업관광' };
+  const nearList = (arr, ms, km, n, skip) => {
+    const seen = new Set(), out = [];
+    arr.map(o => ({ o, d: Math.min(...ms.map(m => hav(+m.x, +m.y, +o.x, +o.y))) }))
+      .filter(r => r.d <= km && !(skip && skip(r.o))).sort((a, b) => a.d - b.d)
+      .forEach(r => { if (out.length < n && !seen.has(r.o.title)) { seen.add(r.o.title); out.push(r); } });
+    return out;
+  };
+  const kmTxt = d => d < 1 ? `${Math.round(d * 1000 / 50) * 50}m` : `${d.toFixed(1)}km`;
+  const nearPlacesHtml = (city, list) => {
+    const ms = list.filter(m => +m.x && +m.y); if (!ms.length) return '';
+    const isMkt = o => /시장|장터|오일장/.test(o.title);
+    const sp = nearList(SPOTS, ms, 8, 6, isMkt), fd = nearList(FOODS, ms, 3, 5), cf = nearList(CAFES, ms, 5, 3);
+    if (!sp.length && !fd.length && !cf.length) return '';
+    const mp = t => `https://map.naver.com/p/search/${encodeURIComponent(t)}`;
+    const sent = s => { const t = String(s || '').replace(/\s+/g, ' ').trim(); const i = t.search(/[.다]\s/); return (i > 20 && i < 140 ? t.slice(0, i + 1) : t.slice(0, 110) + (t.length > 110 ? '…' : '')); };
+    return `<h2 class="sec">${esc(city)} 장 보고 들르기 좋은 곳</h2>
+<p class="jsg-p">${esc(city)} 오일장${ms.length > 1 ? ` ${ms.length}곳` : ''}에서 가까운 순서입니다(직선거리). 한국관광공사 공공데이터에 등록된 곳만 골랐습니다.</p>
+${sp.length ? `<h3 class="jsg-h3">가볼 만한 곳</h3><ul class="jsg-list">${sp.map(({ o, d }) => `<li><a href="${mp(o.title)}" target="_blank" rel="noopener"><b>${esc(o.title)}</b></a>${KIND[o.kind] ? ` <span class="jsg-tag">${KIND[o.kind]}</span>` : ''} <span class="jsg-km">장터에서 ${kmTxt(d)}</span>${o.addr ? `<br><span class="jsg-cal">${esc(o.addr)}</span>` : ''}</li>`).join('')}</ul>` : ''}
+${fd.length ? `<h3 class="jsg-h3">장터 근처 밥집</h3><ul class="jsg-list">${fd.map(({ o, d }) => `<li><a href="${mp(o.title)}" target="_blank" rel="noopener"><b>${esc(o.title)}</b></a>${o.kind ? ` <span class="jsg-tag">${esc(o.kind)}</span>` : ''} <span class="jsg-km">${kmTxt(d)}</span>${o.menu ? `<br>대표 메뉴 <b>${esc(o.menu)}</b>` : ''}${(o.open || o.rest) ? `<br><span class="jsg-cal">${o.open ? '🕘 ' + esc(o.open) : ''}${o.rest ? ' · 쉬는 날 ' + esc(o.rest) : ''}</span>` : ''}</li>`).join('')}</ul>
+<p class="jsg-p">영업시간·휴무는 공공데이터 등록 기준이라 바뀌었을 수 있습니다. 장날에는 장터 주변 식당이 일찍 붐비니 점심은 11시 반 전에 들어가는 편이 낫습니다.</p>` : ''}
+${cf.length ? `<h3 class="jsg-h3">근처 카페</h3><ul class="jsg-list">${cf.map(({ o, d }) => `<li><a href="${mp(o.title)}" target="_blank" rel="noopener"><b>${esc(o.title)}</b></a> <span class="jsg-km">${kmTxt(d)}</span>${o.ov ? `<br><span class="jsg-cal">${esc(sent(o.ov))}</span>` : ''}</li>`).join('')}</ul>` : ''}`;
+  };
+
   const made = [];   // {city, slug, html, ...} — 길이 게이트를 통과한 것만 쓴다
   const skipped = [];
 
@@ -176,7 +208,7 @@ ${m.tel ? `☎️ ${esc(m.tel)}` : ''}
 
     made.push({
       city, slug, sido, g, withDay, noDay, list, soon, gapWord, soonChip,
-      calRow, card, festHtml, nearCities, faq
+      calRow, card, festHtml, nearCities, faq, placesHtml: nearPlacesHtml(city, withDay)
     });
   });
 
@@ -187,7 +219,7 @@ ${m.tel ? `☎️ ${esc(m.tel)}` : ''}
   //      2패스 = 그 목록으로만 근처 링크를 걸어 렌더
   //    (1패스에서 근처 링크로 걸러 버리면 끊긴 링크가 생긴다 — 2026-09-09 실제로 그럴 뻔했다.)
   const render = (o, nearHtml) => {
-    const { city, slug, sido, withDay, noDay, soon, gapWord, soonChip, calRow, card, festHtml, faq } = o;
+    const { city, slug, sido, withDay, noDay, soon, gapWord, soonChip, calRow, card, festHtml, faq, placesHtml } = o;
     const dnAll = [...new Set(withDay.map(m => m.daysNum.join('·')))];
     const content = `<main><div class="wrap">
 <h1 class="jsg-h1">${esc(city)} 장날 — 오일장 ${withDay.length}곳, 다음 장날과 파는 것</h1>
@@ -230,6 +262,7 @@ ${noDay.length ? `<h2 class="sec">장날을 확인하지 못한 시장 ${noDay.l
 <p class="jsg-p">전통시장으로 등록돼 있지만 공공데이터에 장날이 적혀 있지 않습니다. <b>추측해서 날짜를 적지 않았습니다.</b></p>
 ${noDay.map(card).join('')}` : ''}
 
+${placesHtml || ''}
 ${festHtml}
 ${nearHtml}
 
@@ -272,7 +305,9 @@ ${faq.map(([q, a]) => `<p class="jsg-faq"><b>${esc(q)}</b><br>${esc(a)}</p>`).jo
   // ── 1패스: 근처 링크 «없이» 재서 만들 목록을 정한다
   const pass = [];
   made.forEach(o => {
-    const r = render(o, '');
+    // ⚠️ 게이트는 «근처 장소» 칸 없이 잰다 — 이 칸 때문에 새 시·군 페이지가 한꺼번에 생기면 안 된다
+    //   (2026-10-02 원칙: 색인 대기 186건이 소화될 때까지 새 페이지 대량 생성 금지).
+    const r = render({ ...o, placesHtml: '' }, '');
     if (r.bodyLen < MIN_BODY) { skipped.push(`${o.city}(본문 ${r.bodyLen}자)`); return; }
     pass.push(o);
   });
@@ -332,6 +367,8 @@ const CSS = `<style>
 .jsg-near a b{display:block;font-size:.98rem;font-weight:800;color:#111827}
 .jsg-near a span{display:block;color:#6b7280;font-size:.84rem;font-weight:600;margin-top:2px}
 .jsg-faq{line-height:1.85;margin:0 0 12px}
+.jsg-h3{font-size:1rem;font-weight:800;margin:14px 0 8px;color:#0a6c63}
+.jsg-list li a{color:#111827;text-decoration:none}
 </style>`;
 
 module.exports = { build };
