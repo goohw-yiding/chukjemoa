@@ -22,6 +22,7 @@
 //    이 모듈이 돌려주는 URL 목록을 그 keep 집합에 반드시 넣어야 한다.
 const fs = require('fs'), path = require('path');
 
+const APPROVED_FULL = new Set(['양양군', '고령군', '횡성군', '오산시', '포천시', '성주군', '강화군']);
 const MIN_BODY = 2400;   // 렌더된 본문 최소 길이(시·도 최소가 3,076자, 시·군은 그보다 작게 잡되 얇지 않게)
 const NEAR_FEST_KM = 40, NEAR_CITY_KM = 45;   // 축제 30→40km: 시·군은 시·도보다 좁아 30km면 0건이 잦다
 
@@ -307,7 +308,10 @@ ${faq.map(([q, a]) => `<p class="jsg-faq"><b>${esc(q)}</b><br>${esc(a)}</p>`).jo
   made.forEach(o => {
     // ⚠️ 게이트는 «근처 장소» 칸 없이 잰다 — 이 칸 때문에 새 시·군 페이지가 한꺼번에 생기면 안 된다
     //   (2026-10-02 원칙: 색인 대기 186건이 소화될 때까지 새 페이지 대량 생성 금지).
-    const r = render({ ...o, placesHtml: '' }, '');
+    //   ✅ 예외(2026-10-02 장남 님 승인): 「○○장날」 검색량이 큰데 시장이 1~2곳뿐이라 빠져 있던 7곳은
+    //   «근처 장소» 칸까지 넣고 잰다. 장날은 각 시·군청·관광공사 등 공식 출처로 확인했다.
+    //   (영주는 넣지 않는다 — 「영주장날」은 농특산물 쇼핑몰·축제 이름이라 오일장 검색이 아니다)
+    const r = render(APPROVED_FULL.has(o.city) ? o : { ...o, placesHtml: '' }, '');
     if (r.bodyLen < MIN_BODY) { skipped.push(`${o.city}(본문 ${r.bodyLen}자)`); return; }
     pass.push(o);
   });

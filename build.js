@@ -3258,7 +3258,9 @@ const marketsAll = (() => {
     const a = byKey.get(hit) || {};
     byKey.set(hit, Object.assign({}, a, {
       name: o.name, region: o.region, city: o.city, days: o.days, daysNum: o.daysNum || [],
-      famous: o.famous || a.famous || '', desc: o.desc || a.desc || '', src: 'hand'
+      famous: o.famous || a.famous || '', desc: o.desc || a.desc || '', src: 'hand',
+      // 2026-10-02: 손큐레이션에만 있는 장(포천 신읍5일장)은 주소를 여기서만 받는다. 없으면 기존 값 유지.
+      ...(o.addr ? { addr: o.addr } : {})
     }));
   });
   return [...byKey.values()];
