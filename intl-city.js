@@ -444,6 +444,26 @@ function festLinks(ROOT, lang) {
   return m && typeof m === 'object' ? m : null;
 }
 
+// ✍️ 2026-10-02 — 「발견됨-미색인」 시범: 도시마다 따로 조사한 고유 본문(공항·역 접근, 현지 팁, 결제).
+//   ⚠️ 번역·도시명 치환 금지. 재료는 data/intl_city_guide.json — 출처 URL 과 확인일을 같이 든다.
+//   ⚠️ 항목이 없는 언어·도시는 아무것도 안 붙인다(지어내지 않는다).
+function guideHtml(ROOT, lang, key) {
+  let G; try { G = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'intl_city_guide.json'), 'utf8')); } catch (e) { return ''; }
+  const L = G[lang], c = L && L[key];
+  if (!c) return '';
+  const lb = L._label || {};
+  const ul = a => `<ul class="ig-ul">${a.map(s => `<li>${esc(s)}</li>`).join('')}</ul>`;
+  const src = (c.src || []).concat(L._paySrc || [])
+    .map(([t, u]) => `<li><a href="${esc(u)}" rel="nofollow noopener" target="_blank">${esc(t)}</a></li>`).join('');
+  return `<style>.ig{background:#f7f9fc;border:1px solid #e3e8f0;border-radius:12px;padding:14px 16px;margin:18px 0}.ig h2{font-size:1.15rem;margin:.2em 0 .5em}.ig h3{font-size:1rem;margin:1em 0 .3em}.ig-ul{margin:0;padding-left:1.2em}.ig-ul li{margin:.35em 0;line-height:1.65}.ig-src{font-size:.82rem;color:#666}.ig-src ul{padding-left:1.2em;margin:.3em 0}.ig-src a{color:#666}</style>
+<section class="ig">
+<h2>${esc(lb.access || 'Access')}</h2>${ul(c.access || [])}
+${(c.local || []).length ? `<h3>${esc(lb.local || '')}</h3>${ul(c.local)}` : ''}
+${(L._pay || []).length ? `<h3>${esc(lb.pay || '')}</h3>${ul(L._pay)}` : ''}
+<div class="ig-src"><p>${esc(lb.checked || '')}</p><details><summary>${esc(lb.src || 'Sources')}</summary><ul>${src}</ul></details></div>
+</section>`;
+}
+
 // 게이트만 돌린다 — 한 장도 그리지 않고 «어느 도시가 통과하나»만 돌려준다.
 function gate(ctx) { return build({ ...ctx, phase: 1 }); }
 
@@ -645,7 +665,7 @@ ${stLine(p.x, p.y)}
 <h1 class="ic-h1">${esc(t.h1(city))}</h1>
 <p class="ic-lead">${t.lead(esc(city), P.length, (F.length && F[0].annual) ? 0 : F.length)}</p>
 
-<div class="ic-why"><h2>${esc(t.whyT)}</h2><p>${t.why}</p></div>
+<div class="ic-why"><h2>${esc(t.whyT)}</h2><p>${t.why}</p></div>${guideHtml(ROOT, lang, C.key)}
 
 ${(() => {
         // 🗓 2026-09-09 수정 — 제목은 「지금 열리는 축제」인데 «아직 시작 안 한» 것이 더 많았다

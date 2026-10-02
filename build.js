@@ -8478,6 +8478,28 @@ console.log('✓ 섹션 사이트맵 —', Object.entries(SEC).map(([f, l]) => f
   const kept = Object.keys(LM_NEW).filter(u => LM_NEW[u].d !== TODAY).length;
   console.log('✓ sitemap —', sitemapUrls.length, '개(noindex', NOINDEX_URLS.size, '개 제외) · 내용 그대로라 이전 날짜 유지', kept, '개 / 갱신', sitemapUrls.length - kept, '개');
 }
+// 🚧 2026-10-02 — 「새 페이지 대량 생성 중단」 가드.
+//   GSC 「발견됨-미색인」 186건의 주원인이 «어린 도메인에서 한꺼번에 찍어낸 묶음»이었다.
+//   밀린 걸 구글이 소화할 때까지(10/9·10/16 재측정) 새 URL 은 한 빌드에 NEW_URL_LIMIT 개까지만 «조용히» 허용하고,
+//   넘으면 크게 경고하고 data/new_urls_log.json 에 남긴다(빌드는 멈추지 않는다 — 다른 세션 배포를 깨지 않기 위해).
+//   ⚠️ 경고가 뜨면: 의도한 생성인지 확인하고, 아니면 그 생성기를 되돌린다.
+{
+  const NEW_URL_LIMIT = 20;
+  const fresh = sitemapUrls.filter(u => !LM[u]);
+  if (fresh.length) {
+    const logP = path.join(ROOT, 'data', 'new_urls_log.json');
+    let log = []; try { log = JSON.parse(fs.readFileSync(logP, 'utf8')); } catch (e) { }
+    log.push({ d: TODAY, n: fresh.length, urls: fresh.slice(0, 200) });
+    fs.writeFileSync(logP, JSON.stringify(log.slice(-60), null, 1));
+  }
+  if (fresh.length > NEW_URL_LIMIT) {
+    console.log('\n🚨🚨🚨 [대량 생성 경고] 이번 빌드에서 사이트맵 새 URL', fresh.length, '개 (한도', NEW_URL_LIMIT, ')');
+    console.log('   「발견됨-미색인」 소화 전 대량 생성 중단 원칙 위반 가능 — 예:', fresh.slice(0, 8).join(' '));
+    console.log('   → data/new_urls_log.json 확인. 의도한 게 아니면 해당 생성기를 되돌릴 것.\n');
+  } else {
+    console.log('✓ 새 URL', fresh.length, '개 (대량 생성 가드 한도', NEW_URL_LIMIT, ')');
+  }
+}
 
 // ---------- RSS 2.0 피드 (네이버 서치어드바이저 RSS 제출 / 구글 뉴스 / 피드 구독) ----------
 // 원문 전체(content:encoded)를 실어 색인에 유리하게. 최신순 정렬.
