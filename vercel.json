@@ -4,6 +4,28 @@
   ],
   "redirects": [
     {
+      "source": "/:path(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.chukjemoa.co.kr"
+        }
+      ],
+      "destination": "https://chukjemoa.co.kr/:path",
+      "permanent": true
+    },
+    {
+      "source": "/:path(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "chukjemoa.vercel.app"
+        }
+      ],
+      "destination": "https://chukjemoa.co.kr/:path",
+      "permanent": true
+    },
+    {
       "source": "/festival/donggangttenmokchukje",
       "destination": "/festival/",
       "permanent": true
