@@ -58,6 +58,11 @@ function build(ctx) {
   try { SLUG = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/sigungu_slug.json'), 'utf8')); }
   catch (e) { console.log('  ⚠️ sigungu_slug.json 없음 — 시·군 장날 페이지를 건너뜁니다'); return URLS; }
 
+  // 🔗 2026-10-02: 시·도 장날 페이지는 «시장 6곳 이상»인 시·도만 생긴다(build.js JANGTEO_SIDO_URLS 와 같은 기준).
+  //   강화군(인천) 페이지가 없는 /jangteo/incheon/ 을 링크해 404 가 났다 — 페이지가 있는 시·도만 링크한다.
+  const sidoCnt = {};
+  (marketsAll || []).forEach(m => { if (m.region) sidoCnt[m.region] = (sidoCnt[m.region] || 0) + 1; });
+  const SIDO_HAS_PAGE = s => (sidoCnt[s] || 0) >= 6;
   const okCity = new Map();                      // 시·군 → 게이트 정보(검색량 등)
   gate.filter(r => r.gate === 'OK' && SLUG[r.city]).forEach(r => okCity.set(r.city, r));
 
@@ -247,7 +252,7 @@ ${/* 🔗 2026-09-15 — 시·군 120장에는 월별 축제 링크가 «하나�
 ${MR[0] ? `<a href="/${MR[0].key}/">🎪 ${MR[0].short} 축제</a>` : ''}
 ${MR[1] ? `<a href="/${MR[1].key}/">${MR[1].short} 축제</a>` : ''}
 <a href="/jangteo/" class="hot">🏮 오늘 서는 오일장 전국</a>
-<a href="/jangteo/${({ 서울: 'seoul', 부산: 'busan', 대구: 'daegu', 인천: 'incheon', 광주: 'gwangju', 대전: 'daejeon', 울산: 'ulsan', 세종: 'sejong', 경기: 'gyeonggi', 강원: 'gangwon', 충북: 'chungbuk', 충남: 'chungnam', 전북: 'jeonbuk', 전남: 'jeonnam', 경북: 'gyeongbuk', 경남: 'gyeongnam', 제주: 'jeju' })[sido] || ''}/">${esc(sido)} 오일장 전체</a>
+${SIDO_HAS_PAGE(sido) ? `<a href="/jangteo/${({ 서울: 'seoul', 부산: 'busan', 대구: 'daegu', 인천: 'incheon', 광주: 'gwangju', 대전: 'daejeon', 울산: 'ulsan', 세종: 'sejong', 경기: 'gyeonggi', 강원: 'gangwon', 충북: 'chungbuk', 충남: 'chungnam', 전북: 'jeonbuk', 전남: 'jeonnam', 경북: 'gyeongbuk', 경남: 'gyeongnam', 제주: 'jeju' })[sido] || ''}/">${esc(sido)} 오일장 전체</a>` : ''}
 <a href="/holiday/">🌕 연휴에 여는 곳</a>
 </div>
 </div>
