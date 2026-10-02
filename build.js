@@ -4112,6 +4112,16 @@ const REF_NATIONAL = [
   ['https://www.data.go.kr/', '공공데이터포털', '축제·반려동물 동반·무장애 정보 개방 데이터 원본']
 ];
 const POST_REFS = {
+  // 이주의 축제모아 Vol.3 — TOP5 날짜·장소·프로그램을 교차 확인한 보도(2026-10-02 확인)
+  'chukjemoa-weekly-vol3': [
+    ['https://koreatopnews.net/news/article.html?no=420886', '코리아탑뉴스', '2026 지상군페스티벌 10월 1~5일 계룡대 개최'],
+    ['https://www.ftimes.kr/news/articleView.html?idxno=40045', 'FT스포츠', '제72회 백제문화제 10월 3~11일 공주·부여'],
+    ['https://www.ajunews.com/view/20260929142709711', '아주경제', '부여 백제문화제 프로그램(9일 역사문화행렬)'],
+    ['https://www.gukjenews.com/news/articleView.html?idxno=3687570', '국제뉴스', '제26회 소래포구축제 10월 2~4일'],
+    ['https://www.specialtimes.co.kr/news/articleView.html?idxno=466844', '스페셜타임스', '제28회 김제지평선축제 10월 1~5일 벽골제'],
+    ['https://www.kmib.co.kr/article/view_amp.asp?arcid=9000018270', '국민일보', '2026 강남페스티벌 10월 3~5일 도산대로'],
+    ['https://www.vegannews.co.kr/news/article.html?no=389153', '비건뉴스', '개천절 대체공휴일 10월 5일']
+  ],
   'boryeong-mud-guide': [
     ['https://www.brcn.go.kr/', '보령시청', '보령머드축제 개최 지자체 공식 홈페이지']
   ],
@@ -4264,7 +4274,7 @@ ${letterBox('/letter/')}
 ${letterIssues || '<p>아직 발행한 호가 없습니다.</p>'}
 <h2>매주 무엇이 들어가나요</h2>
 <ul style="line-height:1.8">
-<li><b>이번 주말 축제</b> — 그 주말에 열리는 축제를 네이버 월간 검색량과 최근 7일 검색 추세로 줄 세운 순위입니다. 날짜·장소는 한국관광공사 TourAPI 등 공공데이터와 주최 측 공지를 기준으로 합니다.</li>
+<li><b>이번 주말 축제</b> — 그 주말과 기간이 겹치는 축제를 네이버 월간 검색량 순으로 줄 세운 순위입니다. 몇 달씩 이어지는 장기 행사가 매주 상위를 차지하지 않도록 기간이 짧은 축제를 먼저 봅니다. 날짜·장소는 한국관광공사 TourAPI 등 공공데이터와 주최 측 공지를 기준으로 합니다.</li>
 <li><b>이번 주 장날</b> — 전국 오일장 가운데 그 주에 서는 곳입니다. 오일장은 끝자리 날짜(1·6일장, 2·7일장 등)로 열리므로 주말과 겹치는 장을 골라 드립니다.</li>
 <li><b>붐비는 곳 / 한적한 곳</b> — 한국관광공사 지역별 방문자 데이터로 계산한 «성수기 배수»(그 달 방문자 ÷ 연평균)를 회차마다 번갈아 소개합니다. 사람이 몰리는 동네는 <a href="/hot/">인기 여행지 랭킹</a>, 덜 붐비는 동네는 <a href="/healing/">웰니스 여행지</a>에 전체 순위가 있습니다.</li>
 <li><b>그 주의 계절 소식</b> — 단풍·봄꽃·계곡처럼 시기가 중요한 주제는 그 주 상황에 맞춰 덧붙입니다.</li>
