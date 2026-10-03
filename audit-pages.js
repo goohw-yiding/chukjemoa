@@ -79,7 +79,13 @@ module.exports = function (R, RED, ORANGE, red, orange) {
   const benign = u => {
     const m = u.match(/(\d{4}-\d{2})\/$/);
     if (m && m[1] < THISMONTH) return true;
-    return endedFest.has(u);
+    if (endedFest.has(u) || endedFest.has(u.replace(/^\/(en|ja|zh|tw|es)\//, '/'))) return true;
+    // noindex 로 일부러 링크를 뗀 얇은 외국어 페이지(thin_intl)도 고아가 아니다
+    try {
+      const f = path.join(ROOT, u.replace(/^\//, ''), u.endsWith('.html') ? '' : 'index.html');
+      if (/content="noindex/.test(fs.readFileSync(f, 'utf8'))) return true;
+    } catch (e) { }
+    return false;
   };
   let benignOrphan = 0;
   for (const u of pages.keys()) {

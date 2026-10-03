@@ -1,10 +1,10 @@
 {
- "generatedAt": "2026-10-04T07:06",
+ "generatedAt": "2026-10-04T08:51",
  "stats": {
   "en": {
    "total": 258,
-   "linked": 45,
-   "confirmed": 33,
+   "linked": 44,
+   "confirmed": 32,
    "pending": 0,
    "tbc": 10,
    "est": 2,
@@ -15,8 +15,8 @@
   },
   "ja": {
    "total": 213,
-   "linked": 43,
-   "confirmed": 32,
+   "linked": 42,
+   "confirmed": 31,
    "pending": 0,
    "tbc": 9,
    "est": 2,
@@ -27,8 +27,8 @@
   },
   "zh": {
    "total": 178,
-   "linked": 33,
-   "confirmed": 26,
+   "linked": 32,
+   "confirmed": 25,
    "pending": 0,
    "tbc": 5,
    "est": 2,
@@ -39,8 +39,8 @@
   },
   "tw": {
    "total": 171,
-   "linked": 36,
-   "confirmed": 28,
+   "linked": 35,
+   "confirmed": 27,
    "pending": 0,
    "tbc": 6,
    "est": 2,
@@ -325,16 +325,6 @@
      "date"
     ],
     "apiId": "692682"
-   },
-   "790394": {
-    "ko": "서울세계불꽃축제",
-    "kv": "confirmed",
-    "signals": [
-     "tel",
-     "geo",
-     "date"
-    ],
-    "apiId": "631268"
    },
    "978249": {
     "ko": "수원화성문화제",
@@ -772,17 +762,6 @@
     ],
     "apiId": "142228"
    },
-   "780502": {
-    "ko": "서울세계불꽃축제",
-    "kv": "confirmed",
-    "signals": [
-     "img",
-     "tel",
-     "hp",
-     "geo"
-    ],
-    "apiId": "631268"
-   },
    "975432": {
     "ko": "수원화성문화제",
     "kv": "confirmed",
@@ -1192,16 +1171,6 @@
     ],
     "apiId": "767114"
    },
-   "791059": {
-    "ko": "서울세계불꽃축제",
-    "kv": "confirmed",
-    "signals": [
-     "img",
-     "tel",
-     "geo"
-    ],
-    "apiId": "631268"
-   },
    "873710": {
     "ko": "평창송어축제",
     "kv": "est",
@@ -1548,15 +1517,6 @@
      "date"
     ],
     "apiId": "692682"
-   },
-   "791062": {
-    "ko": "서울세계불꽃축제",
-    "kv": "confirmed",
-    "signals": [
-     "hp",
-     "geo"
-    ],
-    "apiId": "631268"
    },
    "874760": {
     "ko": "평창송어축제",

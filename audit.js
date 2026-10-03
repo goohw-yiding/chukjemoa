@@ -107,7 +107,7 @@ R.push('\n## 2. 데이터 갱신 상태');
     //   지우지는 않는다 — 열차·터미널 축을 다시 할 때 출발점이 된다. 다만 늙었다고 울 이유는 없다.
     'ktx_fare.json',          // 코레일 공식 XLSX(train_time.json)로 갈아탔다
     'bus_terminals.json',     // 시외버스 축은 아직 페이지가 없다
-    'jeju_oreum.json', 'jangteo_volume.json', 'thin_intl.json', 'thin_intl_age.json', 'ncp.json',
+    'jeju_oreum.json', 'jangteo_volume.json', 'thin_intl.json', 'thin_intl_age.json', 'ncp.json', 'citytour_override.json', 'museum_volume.json',
   ]);
   for (const f of fs.readdirSync(DATA)) {
     if (!f.endsWith('.json') || HANDMADE.has(f)) continue;

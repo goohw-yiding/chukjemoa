@@ -96,9 +96,7 @@
     "score": 5,
     "commerce": false,
     "status": "confirmed",
-    "ids": [
-     "790394"
-    ],
+    "ids": [],
     "reasons": [
      {
       "claim": "2024 외국인 축제 방문 1위(19.6%)",
@@ -604,9 +602,7 @@
     "score": 5,
     "commerce": true,
     "status": "confirmed",
-    "ids": [
-     "780502"
-    ],
+    "ids": [],
     "reasons": [
      {
       "claim": "2024 외국인 축제 방문 1위(19.6%)",
@@ -1072,9 +1068,7 @@
     "score": 8,
     "commerce": false,
     "status": "confirmed",
-    "ids": [
-     "791059"
-    ],
+    "ids": [],
     "reasons": [
      {
       "claim": "관광공사 데이터랩(2024): 중국인 방문 1위 축제",
@@ -1750,9 +1744,7 @@
     "score": 7,
     "commerce": false,
     "status": "confirmed",
-    "ids": [
-     "791062"
-    ],
+    "ids": [],
     "reasons": [
      {
       "claim": "2024 외국인 축제 방문 1위(19.6%)",
