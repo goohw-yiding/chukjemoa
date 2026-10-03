@@ -212,7 +212,7 @@ R.push('\n## 5. 축제 재고 — 앞으로 몇 개가 남나');
     const d = new Date(Date.now() + (9 * 3600e3) + k * 86400e3).toISOString().slice(0, 10);
     const n = fp.filter(f => dnorm(f.end) >= d).length;
     R.push('| ' + (k ? '+' + k + '일 (' + d + ')' : '오늘') + ' | ' + n + ' / ' + fp.length + ' |');
-    if (k === 30 && n < 40) RED.push('30일 뒤 축제 재고 ' + n + '건 (임계 40 미만)');
+    if (k === 30 && n < 40) ORANGE.push('30일 뒤 축제 재고 ' + n + '건 (임계 40 미만)');
   });
 }
 

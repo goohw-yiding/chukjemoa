@@ -1,0 +1,1176 @@
+[
+ {
+  "d": "2026-10-02",
+  "tot": {
+   "IDX": 671,
+   "DISC": 186,
+   "CRAWL": 7,
+   "UNK": 32,
+   "ETC": 3
+  },
+  "byWeek": {
+   "2026-08-10주": {
+    "n": 99,
+    "IDX": 96,
+    "DISC": 3,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "2026-08-24주": {
+    "n": 39,
+    "IDX": 38,
+    "DISC": 1,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "2026-08-17주": {
+    "n": 121,
+    "IDX": 119,
+    "DISC": 1,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 1
+   },
+   "2026-09-14주": {
+    "n": 33,
+    "IDX": 24,
+    "DISC": 9,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "2026-09-21주": {
+    "n": 125,
+    "IDX": 55,
+    "DISC": 58,
+    "CRAWL": 0,
+    "UNK": 12,
+    "ETC": 0
+   },
+   "2026-09-28주": {
+    "n": 29,
+    "IDX": 18,
+    "DISC": 8,
+    "CRAWL": 0,
+    "UNK": 3,
+    "ETC": 0
+   },
+   "2026-09-07주": {
+    "n": 211,
+    "IDX": 114,
+    "DISC": 82,
+    "CRAWL": 2,
+    "UNK": 13,
+    "ETC": 0
+   },
+   "2026-08-31주": {
+    "n": 84,
+    "IDX": 58,
+    "DISC": 21,
+    "CRAWL": 2,
+    "UNK": 2,
+    "ETC": 1
+   },
+   "알수없음": {
+    "n": 27,
+    "IDX": 23,
+    "DISC": 2,
+    "CRAWL": 0,
+    "UNK": 2,
+    "ETC": 0
+   },
+   "2026-08-03주": {
+    "n": 96,
+    "IDX": 92,
+    "DISC": 1,
+    "CRAWL": 3,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "2026-07-06주": {
+    "n": 25,
+    "IDX": 24,
+    "DISC": 0,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 1
+   },
+   "2026-07-13주": {
+    "n": 5,
+    "IDX": 5,
+    "DISC": 0,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "2026-07-20주": {
+    "n": 2,
+    "IDX": 2,
+    "DISC": 0,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "2026-07-27주": {
+    "n": 3,
+    "IDX": 3,
+    "DISC": 0,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   }
+  },
+  "bySec": {
+   "festival/x": {
+    "n": 185,
+    "IDX": 184,
+    "DISC": 1,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "festival": {
+    "n": 1,
+    "IDX": 1,
+    "DISC": 0,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "course": {
+    "n": 1,
+    "IDX": 1,
+    "DISC": 0,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "course/x": {
+    "n": 12,
+    "IDX": 12,
+    "DISC": 0,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "trails": {
+    "n": 1,
+    "IDX": 1,
+    "DISC": 0,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "trails/x": {
+    "n": 38,
+    "IDX": 35,
+    "DISC": 0,
+    "CRAWL": 3,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "blog": {
+    "n": 1,
+    "IDX": 1,
+    "DISC": 0,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "blog/x": {
+    "n": 48,
+    "IDX": 45,
+    "DISC": 2,
+    "CRAWL": 0,
+    "UNK": 1,
+    "ETC": 0
+   },
+   "en/city": {
+    "n": 40,
+    "IDX": 17,
+    "DISC": 18,
+    "CRAWL": 0,
+    "UNK": 5,
+    "ETC": 0
+   },
+   "ja/city": {
+    "n": 43,
+    "IDX": 17,
+    "DISC": 19,
+    "CRAWL": 1,
+    "UNK": 6,
+    "ETC": 0
+   },
+   "zh/city": {
+    "n": 27,
+    "IDX": 14,
+    "DISC": 9,
+    "CRAWL": 1,
+    "UNK": 3,
+    "ETC": 0
+   },
+   "tw/city": {
+    "n": 30,
+    "IDX": 17,
+    "DISC": 10,
+    "CRAWL": 1,
+    "UNK": 2,
+    "ETC": 0
+   },
+   "en": {
+    "n": 1,
+    "IDX": 1,
+    "DISC": 0,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "en/festival/x": {
+    "n": 68,
+    "IDX": 62,
+    "DISC": 4,
+    "CRAWL": 0,
+    "UNK": 1,
+    "ETC": 1
+   },
+   "en/blog/x": {
+    "n": 7,
+    "IDX": 7,
+    "DISC": 0,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "ja": {
+    "n": 1,
+    "IDX": 1,
+    "DISC": 0,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "ja/festival/x": {
+    "n": 37,
+    "IDX": 26,
+    "DISC": 8,
+    "CRAWL": 0,
+    "UNK": 2,
+    "ETC": 1
+   },
+   "ja/closed/x": {
+    "n": 6,
+    "IDX": 5,
+    "DISC": 1,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "ja/places/x": {
+    "n": 17,
+    "IDX": 3,
+    "DISC": 14,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "zh": {
+    "n": 1,
+    "IDX": 0,
+    "DISC": 0,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 1
+   },
+   "tw": {
+    "n": 1,
+    "IDX": 1,
+    "DISC": 0,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "en/trip/x": {
+    "n": 3,
+    "IDX": 3,
+    "DISC": 0,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "ja/trip/x": {
+    "n": 3,
+    "IDX": 3,
+    "DISC": 0,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "zh/trip/x": {
+    "n": 3,
+    "IDX": 3,
+    "DISC": 0,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "tw/trip/x": {
+    "n": 3,
+    "IDX": 3,
+    "DISC": 0,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "en/calendar/x": {
+    "n": 2,
+    "IDX": 2,
+    "DISC": 0,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "ja/calendar/x": {
+    "n": 2,
+    "IDX": 1,
+    "DISC": 1,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "zh/calendar/x": {
+    "n": 2,
+    "IDX": 1,
+    "DISC": 1,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "tw/calendar/x": {
+    "n": 2,
+    "IDX": 2,
+    "DISC": 0,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "home": {
+    "n": 1,
+    "IDX": 1,
+    "DISC": 0,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "2026-07": {
+    "n": 1,
+    "IDX": 1,
+    "DISC": 0,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "2026-08": {
+    "n": 1,
+    "IDX": 1,
+    "DISC": 0,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "2026-09": {
+    "n": 1,
+    "IDX": 1,
+    "DISC": 0,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "2026-10": {
+    "n": 1,
+    "IDX": 1,
+    "DISC": 0,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "2026-11": {
+    "n": 1,
+    "IDX": 1,
+    "DISC": 0,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "2026-12": {
+    "n": 1,
+    "IDX": 1,
+    "DISC": 0,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "2027-02": {
+    "n": 1,
+    "IDX": 1,
+    "DISC": 0,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "2027-03": {
+    "n": 1,
+    "IDX": 1,
+    "DISC": 0,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "2027-04": {
+    "n": 1,
+    "IDX": 1,
+    "DISC": 0,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "2027-05": {
+    "n": 1,
+    "IDX": 1,
+    "DISC": 0,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "2027-06": {
+    "n": 1,
+    "IDX": 1,
+    "DISC": 0,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "search": {
+    "n": 1,
+    "IDX": 1,
+    "DISC": 0,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "holiday": {
+    "n": 1,
+    "IDX": 1,
+    "DISC": 0,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "pet": {
+    "n": 1,
+    "IDX": 1,
+    "DISC": 0,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "accessible": {
+    "n": 1,
+    "IDX": 1,
+    "DISC": 0,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "indoor": {
+    "n": 1,
+    "IDX": 1,
+    "DISC": 0,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "valley": {
+    "n": 1,
+    "IDX": 1,
+    "DISC": 0,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "maple": {
+    "n": 1,
+    "IDX": 1,
+    "DISC": 0,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "flower": {
+    "n": 1,
+    "IDX": 1,
+    "DISC": 0,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "onsen": {
+    "n": 1,
+    "IDX": 1,
+    "DISC": 0,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "jangteo": {
+    "n": 1,
+    "IDX": 1,
+    "DISC": 0,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "test": {
+    "n": 1,
+    "IDX": 1,
+    "DISC": 0,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "trip-cost": {
+    "n": 1,
+    "IDX": 1,
+    "DISC": 0,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "citytour": {
+    "n": 1,
+    "IDX": 1,
+    "DISC": 0,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "trend": {
+    "n": 1,
+    "IDX": 1,
+    "DISC": 0,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "about": {
+    "n": 1,
+    "IDX": 1,
+    "DISC": 0,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "editorial": {
+    "n": 1,
+    "IDX": 1,
+    "DISC": 0,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "contact": {
+    "n": 1,
+    "IDX": 1,
+    "DISC": 0,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "privacy": {
+    "n": 1,
+    "IDX": 1,
+    "DISC": 0,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "mountains": {
+    "n": 1,
+    "IDX": 1,
+    "DISC": 0,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "cafe": {
+    "n": 1,
+    "IDX": 1,
+    "DISC": 0,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "hot": {
+    "n": 1,
+    "IDX": 1,
+    "DISC": 0,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "healing": {
+    "n": 1,
+    "IDX": 1,
+    "DISC": 0,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "winter": {
+    "n": 1,
+    "IDX": 1,
+    "DISC": 0,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "jangteo/x": {
+    "n": 117,
+    "IDX": 77,
+    "DISC": 38,
+    "CRAWL": 0,
+    "UNK": 2,
+    "ETC": 0
+   },
+   "accessible/x": {
+    "n": 17,
+    "IDX": 17,
+    "DISC": 0,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "pet/x": {
+    "n": 15,
+    "IDX": 15,
+    "DISC": 0,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "indoor/x": {
+    "n": 12,
+    "IDX": 7,
+    "DISC": 5,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "map": {
+    "n": 1,
+    "IDX": 1,
+    "DISC": 0,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "seoul/x": {
+    "n": 9,
+    "IDX": 4,
+    "DISC": 4,
+    "CRAWL": 0,
+    "UNK": 1,
+    "ETC": 0
+   },
+   "seoul": {
+    "n": 1,
+    "IDX": 1,
+    "DISC": 0,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "busan/x": {
+    "n": 5,
+    "IDX": 1,
+    "DISC": 4,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "busan": {
+    "n": 1,
+    "IDX": 1,
+    "DISC": 0,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "jeju/x": {
+    "n": 10,
+    "IDX": 4,
+    "DISC": 5,
+    "CRAWL": 0,
+    "UNK": 1,
+    "ETC": 0
+   },
+   "jeju": {
+    "n": 1,
+    "IDX": 1,
+    "DISC": 0,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "gyeongju/x": {
+    "n": 3,
+    "IDX": 2,
+    "DISC": 0,
+    "CRAWL": 1,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "gyeongju": {
+    "n": 1,
+    "IDX": 1,
+    "DISC": 0,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "incheon/x": {
+    "n": 4,
+    "IDX": 0,
+    "DISC": 4,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "incheon": {
+    "n": 1,
+    "IDX": 1,
+    "DISC": 0,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "yeosu/x": {
+    "n": 2,
+    "IDX": 0,
+    "DISC": 2,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "yeosu": {
+    "n": 1,
+    "IDX": 1,
+    "DISC": 0,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "suwon/x": {
+    "n": 2,
+    "IDX": 0,
+    "DISC": 2,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "suwon": {
+    "n": 1,
+    "IDX": 1,
+    "DISC": 0,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "tongyeong/x": {
+    "n": 3,
+    "IDX": 2,
+    "DISC": 0,
+    "CRAWL": 0,
+    "UNK": 1,
+    "ETC": 0
+   },
+   "tongyeong": {
+    "n": 1,
+    "IDX": 1,
+    "DISC": 0,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "geoje/x": {
+    "n": 2,
+    "IDX": 0,
+    "DISC": 2,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "geoje": {
+    "n": 1,
+    "IDX": 1,
+    "DISC": 0,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "gangneung/x": {
+    "n": 4,
+    "IDX": 2,
+    "DISC": 1,
+    "CRAWL": 0,
+    "UNK": 1,
+    "ETC": 0
+   },
+   "gangneung": {
+    "n": 1,
+    "IDX": 1,
+    "DISC": 0,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "sokcho/x": {
+    "n": 2,
+    "IDX": 0,
+    "DISC": 1,
+    "CRAWL": 0,
+    "UNK": 1,
+    "ETC": 0
+   },
+   "sokcho": {
+    "n": 1,
+    "IDX": 1,
+    "DISC": 0,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "jeonju/x": {
+    "n": 3,
+    "IDX": 2,
+    "DISC": 1,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "jeonju": {
+    "n": 1,
+    "IDX": 1,
+    "DISC": 0,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "daegu/x": {
+    "n": 2,
+    "IDX": 0,
+    "DISC": 1,
+    "CRAWL": 0,
+    "UNK": 1,
+    "ETC": 0
+   },
+   "daegu": {
+    "n": 1,
+    "IDX": 1,
+    "DISC": 0,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "cheongju/x": {
+    "n": 2,
+    "IDX": 1,
+    "DISC": 1,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "cheongju": {
+    "n": 1,
+    "IDX": 1,
+    "DISC": 0,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "gongju/x": {
+    "n": 1,
+    "IDX": 0,
+    "DISC": 1,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "gongju": {
+    "n": 1,
+    "IDX": 1,
+    "DISC": 0,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "gunsan/x": {
+    "n": 2,
+    "IDX": 0,
+    "DISC": 1,
+    "CRAWL": 0,
+    "UNK": 1,
+    "ETC": 0
+   },
+   "gunsan": {
+    "n": 1,
+    "IDX": 1,
+    "DISC": 0,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "daejeon/x": {
+    "n": 2,
+    "IDX": 0,
+    "DISC": 2,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "daejeon": {
+    "n": 1,
+    "IDX": 1,
+    "DISC": 0,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "ulsan/x": {
+    "n": 3,
+    "IDX": 0,
+    "DISC": 3,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "ulsan": {
+    "n": 1,
+    "IDX": 1,
+    "DISC": 0,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "chuncheon/x": {
+    "n": 3,
+    "IDX": 0,
+    "DISC": 3,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "chuncheon": {
+    "n": 1,
+    "IDX": 1,
+    "DISC": 0,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "taean/x": {
+    "n": 3,
+    "IDX": 0,
+    "DISC": 2,
+    "CRAWL": 0,
+    "UNK": 1,
+    "ETC": 0
+   },
+   "taean": {
+    "n": 1,
+    "IDX": 1,
+    "DISC": 0,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "paju/x": {
+    "n": 2,
+    "IDX": 1,
+    "DISC": 1,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "paju": {
+    "n": 1,
+    "IDX": 1,
+    "DISC": 0,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "danyang/x": {
+    "n": 1,
+    "IDX": 0,
+    "DISC": 1,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "danyang": {
+    "n": 1,
+    "IDX": 1,
+    "DISC": 0,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "pohang/x": {
+    "n": 2,
+    "IDX": 0,
+    "DISC": 1,
+    "CRAWL": 0,
+    "UNK": 1,
+    "ETC": 0
+   },
+   "pohang": {
+    "n": 1,
+    "IDX": 1,
+    "DISC": 0,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "mokpo/x": {
+    "n": 2,
+    "IDX": 0,
+    "DISC": 2,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "mokpo": {
+    "n": 1,
+    "IDX": 1,
+    "DISC": 0,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "jecheon/x": {
+    "n": 2,
+    "IDX": 0,
+    "DISC": 2,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "jecheon": {
+    "n": 1,
+    "IDX": 1,
+    "DISC": 0,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "pocheon/x": {
+    "n": 2,
+    "IDX": 0,
+    "DISC": 1,
+    "CRAWL": 0,
+    "UNK": 1,
+    "ETC": 0
+   },
+   "pocheon": {
+    "n": 1,
+    "IDX": 1,
+    "DISC": 0,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "andong/x": {
+    "n": 1,
+    "IDX": 0,
+    "DISC": 1,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "andong": {
+    "n": 1,
+    "IDX": 1,
+    "DISC": 0,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "chungju/x": {
+    "n": 2,
+    "IDX": 0,
+    "DISC": 2,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "chungju": {
+    "n": 1,
+    "IDX": 1,
+    "DISC": 0,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "samcheok/x": {
+    "n": 1,
+    "IDX": 0,
+    "DISC": 1,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "samcheok": {
+    "n": 1,
+    "IDX": 1,
+    "DISC": 0,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "namhae/x": {
+    "n": 1,
+    "IDX": 0,
+    "DISC": 1,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "namhae": {
+    "n": 1,
+    "IDX": 1,
+    "DISC": 0,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "gapyeong/x": {
+    "n": 2,
+    "IDX": 0,
+    "DISC": 2,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "gapyeong": {
+    "n": 1,
+    "IDX": 1,
+    "DISC": 0,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   }
+  }
+ }
+]

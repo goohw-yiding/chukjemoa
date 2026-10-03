@@ -99,7 +99,7 @@ module.exports = function (R, RED, ORANGE, red, orange) {
   ['사이트맵 유령 URL', ghost], ['canonical 누락', canon], ['인라인 JS 문법오류', jsErr],
   ['개발용 주석 유출', [...new Set(leak)]]];
   checks.forEach(([l, a]) => R.push('| ' + l + ' | ' + (a.length ? '**' + a.length + '**' : '0') + ' |'));
-  checks.forEach(([l, a]) => { if (a.length) { R.push('\n' + red(l + ' ' + a.length + '건')); a.slice(0, 10).forEach(s => R.push('- ' + s)); } });
+  checks.forEach(([l, a]) => { if (a.length) { R.push('\n' + (l.startsWith('홈에서 도달 불가') ? orange : red)(l + ' ' + a.length + '건')); a.slice(0, 10).forEach(s => R.push('- ' + s)); } });
   if (checks.every(([, a]) => !a.length)) R.push('\n✅ 산출물 이상 없음');
 
   // ── 섹션별 두께 · 판박이
