@@ -57,6 +57,36 @@ function build({ ROOT, layout, writePage, SITE_NAME, buyBox }) {
 ${curW.slice(0, 30).map(f => `<li><b>${esc(f.name)}</b> <span style="color:#9ca3af">${esc(f.region || '')}${f.city ? ' ' + esc(f.city) : ''}</span>${f.desc ? ' — ' + esc(f.desc) : ''}</li>`).join('')}
 </ul>` : '';
 
+  // ── 올겨울(2026-11 ~ 2027-02 시작)로 «이미 공공데이터에 올라온» 일정 (2026-10-04)
+  //    예년 기준 목록만 있으면 지금 확정된 일정이 있어도 못 보여 준다. TourAPI + 행안부 문화축제표준데이터에서
+  //    실제 2026~27 날짜가 붙은 것만 따로 싣는다. 확정 전이라 변동 가능 — 그 사실을 같이 적는다.
+  const clturAll = load('cltur_fstvl.json');
+  let pageById = new Map(), pageByTitle = new Map();
+  try {
+    JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'festival_pages.json'), 'utf8')).forEach(p => {
+      pageById.set(String(p.id), p.slug); pageByTitle.set(String(p.title).replace(/\s/g, ''), p.slug);
+    });
+  } catch (e) { }
+  const inWin = x => n(x.start) >= '20261101' && n(x.start) <= '20270228' && n(x.end) >= n(x.start);
+  const seenT = new Set();
+  const liveList = [];
+  api.concat(clturAll).filter(inWin).sort((a, b) => n(a.start).localeCompare(n(b.start))).forEach(x => {
+    const k = String(x.title || '').replace(/\s/g, '');
+    if (!k || seenT.has(k)) return;
+    seenT.add(k);
+    liveList.push(x);
+  });
+  const liveBlock = liveList.length ? `
+<h2 class="sec">올겨울 이미 등록된 일정 <span style="color:#9ca3af;font-weight:600;font-size:.9rem">— ${liveList.length}건</span></h2>
+<p style="color:#6b7280;font-size:.94rem">한국관광공사와 행정안전부 공공데이터에 <b>2026~27년 날짜로 올라온</b> 축제입니다. 주최 측 확정 전일 수 있어 <b>날짜가 바뀔 수 있으니</b> 출발 전 공식 채널을 확인하세요.</p>
+<ul style="list-style:none;padding:0;margin:12px 0 0">${liveList.slice(0, 40).map(x => {
+    const slug = pageById.get(String(x.id)) || pageByTitle.get(String(x.title).replace(/\s/g, ''));
+    const t = slug ? '<a href="/festival/' + slug + '/" style="color:#0a6c63">' + esc(x.title) + '</a>' : esc(x.title);
+    return '<li style="margin:0 0 12px;padding:0 0 12px;border-bottom:1px solid #eef2f1"><b style="font-size:1rem">' + t + '</b>'
+      + '<div style="color:#6b7280;font-size:.9rem;margin:3px 0">' + esc(x.sido || '') + (x.sigungu ? ' ' + esc(x.sigungu) : '') + ' · ' + MD(x.start) + (n(x.end) !== n(x.start) ? '~' + MD(x.end) : '') + ' <span style="color:#9ca3af">(공공데이터 등록 일정)</span></div>'
+      + ((x.ov || '').length >= 40 ? '<div style="color:#374151;font-size:.94rem;line-height:1.75">' + esc(String(x.ov).replace(/\s+/g, ' ').slice(0, 140)) + '…</div>' : '') + '</li>';
+  }).join('')}</ul>` : '';
+
   const faq = [
     ['2026-2027 겨울 축제 일정은 언제 확정되나요?',
       `대부분 개막 1~2개월 전에 확정됩니다. 한국관광공사 TourAPI 기준으로 지금 등록된 축제 ${api.length}건 중 12월 이후 시작하는 것은 아직 손에 꼽습니다. 그래서 이 페이지는 예년에 실제로 열린 ${winter.length}곳을 시기별로 정리해 «언제쯤 어디서»를 먼저 알려 드립니다. 확정되는 대로 월별 페이지에 반영됩니다.`],
@@ -75,6 +105,8 @@ ${curW.slice(0, 30).map(f => `<li><b>${esc(f.name)}</b> <span style="color:#9ca3
 <div style="background:#f4faf8;border:1.5px solid #dcefeb;border-radius:14px;padding:14px 18px;margin:16px 0;color:#0a6c63;font-size:.95rem;line-height:1.8">
 <b>이 페이지의 날짜는 전부 «예년 기준»입니다.</b> 해마다 요일과 날씨에 따라 며칠씩 달라지고, 얼음 축제는 결빙이 늦으면 개막 자체가 밀립니다. 출발 전 주최 측 공식 채널 확인이 필요합니다.
 </div>
+
+${liveBlock}
 
 ${monthBlock(12, '❄️ 12월', '연말 분위기와 겹쳐 «빛·등불» 계열이 가장 많은 달입니다. 도심에서 열리는 것이 많아 이동 부담이 작습니다.')}
 ${monthBlock(1, '⛄ 1월', '해맞이와 얼음 축제가 몰리는 달입니다. 1월 1일 해돋이는 숙소·교통이 가장 먼저 동나는 날이기도 합니다.')}
