@@ -22,6 +22,9 @@
 //   · **근처 맛집·카페(영업시간·휴무일)** · 숙소 · **이 축제 중심 하루 코스(코스 엔진 재사용)**
 //   · 그날 열리는 오일장 · 무장애/반려 · 그 지역 국가유산 · 같은 달/같은 지역 축제
 const fs = require('fs'), path = require('path');
+
+// 받침 있으면 「은」, 없으면 「는」 (예: 의령군은 · 진주시는) — 2026-10-04
+const eunNeun = w => { const c = String(w || '').trim().slice(-1).charCodeAt(0); return (c >= 0xAC00 && c <= 0xD7A3 && (c - 0xAC00) % 28) ? '은' : '는'; };
 const E = require('./course/engine.js');
 const R = require('./course/render.js');
 const { romanizeMixed } = require('./placename.js');
@@ -299,8 +302,8 @@ function build(ctx) {
     let busyP = '';
     if (idx) {
       busyP = idx >= 1.15
-        ? `<p>축제가 열리는 <b>${esc(f.sido)} ${esc(sg)}</b>는 ${rm}월에 평소보다 <b>${idx.toFixed(2)}배</b> 붐빕니다. 한국관광공사 「한국관광 데이터랩」의 시·군·구 방문자 수를 그 지역의 평소 하루 평균과 비교한 값입니다. 숙소는 미리 잡고, 주차장은 오전에 차는 편이라고 보시면 됩니다.</p>`
-        : `<p>축제가 열리는 <b>${esc(f.sido)} ${esc(sg)}</b>는 ${rm}월 기준 평소의 <b>${idx.toFixed(2)}배</b>로, 이 지역치고는 <b>한산한 편</b>입니다. 사람에 치이지 않고 축제를 보고 싶다면 유리한 조건입니다.</p>`;
+        ? `<p>축제가 열리는 <b>${esc(f.sido)} ${esc(sg)}</b>${eunNeun(sg)} ${rm}월에 평소보다 <b>${idx.toFixed(2)}배</b> 붐빕니다. 한국관광공사 「한국관광 데이터랩」의 시·군·구 방문자 수를 그 지역의 평소 하루 평균과 비교한 값입니다. 숙소는 미리 잡고, 주차장은 오전에 차는 편이라고 보시면 됩니다.</p>`
+        : `<p>축제가 열리는 <b>${esc(f.sido)} ${esc(sg)}</b>${eunNeun(sg)} ${rm}월 기준 평소의 <b>${idx.toFixed(2)}배</b>로, 이 지역치고는 <b>한산한 편</b>입니다. 사람에 치이지 않고 축제를 보고 싶다면 유리한 조건입니다.</p>`;
       busyP += `<p class="note" style="margin-top:6px">이 숫자는 축제장 자체가 아니라 <b>${esc(sg)} 전체</b>의 방문자 기준입니다. 축제장 앞 혼잡과는 다를 수 있습니다.</p>`;
     }
 
@@ -340,7 +343,7 @@ ${alt.length ? `<p class="fend-h"><b>지금 ${esc(f.sido)}에서 갈 수 있는 
         ? [`${f.title}은 아직 열리나요?`, `아닙니다. ${fmtDate(String(f.end))}(${dayName(String(f.end))})에 이미 종료됐습니다. 예년 기준 ${mStart}월 ${+String(f.start).slice(6, 8) <= 10 ? '초' : +String(f.start).slice(6, 8) <= 20 ? '중' : '하'}순에 열렸고, 다음 회차 일정은 주최 측 공지 후 공공데이터에 반영되면 이 페이지도 갱신됩니다${f.tel ? `. 급하시면 ${f.tel}로 확인하세요` : ''}.`]
         : [`${f.title}은 언제 열리나요?`, `${fmtDate(String(f.start))}(${dayName(String(f.start))})부터 ${fmtDate(String(f.end))}(${dayName(String(f.end))})까지입니다. 일정은 주최 측 사정으로 바뀔 수 있으니 출발 전 ${f.tel ? `${f.tel}로 ` : ''}확인하시는 편이 안전합니다.`],
       [`${f.title} 근처에 뭐가 있나요?`, `${nbList.slice(0, 3).map(n => n.t).join(', ')} 등이 가까이 있습니다. 걸어서 갈 만한 거리의 식당 ${nFood.length}곳과 카페 ${nCafe.length}곳, 반경 20km 안 걷기길 ${nWalk.length}개도 이 페이지에 정리해 뒀습니다.`],
-      idx ? [`축제 기간에 사람이 많은가요?`, `${sg}는 ${rm}월에 평소의 ${idx.toFixed(2)}배 붐빕니다. 이 수치는 한국관광공사 데이터랩의 시·군·구 방문자 수 기준이며, 축제장 자체의 혼잡도가 아니라 그 지역 전체의 값입니다.`] : null,
+      idx ? [`축제 기간에 사람이 많은가요?`, `${sg}${eunNeun(sg)} ${rm}월에 평소의 ${idx.toFixed(2)}배 붐빕니다. 이 수치는 한국관광공사 데이터랩의 시·군·구 방문자 수 기준이며, 축제장 자체의 혼잡도가 아니라 그 지역 전체의 값입니다.`] : null,
       [`주차나 숙소는 어떻게 하나요?`, `반경 15km 안 숙소 ${nStay.length}곳을 위치와 유형으로 정리해 뒀습니다. 가격과 빈방은 저희 데이터에 없어 표시하지 않습니다. 주차는 축제장 안내를 따르시고, 붐비는 축제는 오전에 도착하는 편이 안전합니다.`]
     ].filter(Boolean);
 
@@ -556,7 +559,7 @@ ${mapScript('ko')}
     const title = `${f.title} — ${fmtDate(String(f.start)).slice(5)} 일정·가는 길·근처 맛집 | ${SITE_NAME}`;
     const desc = `${f.title} ${fmtDate(String(f.start))}~${fmtDate(String(f.end)).slice(5)}. ${f.addr}. `
       + `근처 맛집 ${nFood.length}곳(영업시간 포함)·카페 ${nCafe.length}곳·걷기길 ${nWalk.length}개와 하루 코스까지 한 페이지에.`
-      + (idx ? ` ${sg}는 ${rm}월에 평소의 ${idx.toFixed(2)}배 붐빕니다.` : '');
+      + (idx ? ` ${sg}${eunNeun(sg)} ${rm}월에 평소의 ${idx.toFixed(2)}배 붐빕니다.` : '');
 
     // ⚠️ 끝난 축제는 noindex(follow) — 색인에서만 뺀다. 링크·헤더검색·내부 이동은 그대로 살린다.
     // 🖼 공유 썸네일은 «그 축제 사진»으로. 없으면 build.js 의 기본값이 들어간다.
