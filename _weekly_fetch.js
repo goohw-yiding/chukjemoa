@@ -17,6 +17,11 @@ const fs = require('fs'), { execFileSync } = require('child_process');
 const JOBS = [
   { script: 'fetch-festivals.js',    out: 'data/festivals_api.json', label: 'TourAPI 축제' },
   { script: 'fetch-cltur-fstvl.js',  out: 'data/cltur_fstvl.json',   label: '공공 표준데이터' },
+  // 2026-10-04 추가 — 새로 등록된 축제는 «근처 볼거리»(nearby.json)가 없으면 festival.js 게이트(근처 3곳↑)에 걸려
+  //   상세 페이지가 안 만들어진다. 10/4 실측: 새 축제 31건이 이 때문에 막혀 30일 뒤 재고가 34건이었다.
+  //   수집기가 «없는 것만» 받는 증분 방식이라 매번 돌려도 싸다. 반드시 fetch-festivals 다음에 둔다.
+  { script: 'fetch-nearby.js',       out: 'data/nearby.json',        label: '축제 근처 볼거리' },
+  { script: 'fetch-fest-intro.js',   out: 'data/fest_intro.json',    label: '축제 행사정보', args: ['300'] },
   { script: 'fetch-seoul-venue.js',  out: 'data/seoul_culture.json', label: '서울 전시' },
   { script: 'fetch-busan-culture.js', out: 'data/busan_culture.json', label: '부산 전시' },
 ];
@@ -27,7 +32,7 @@ const count = f => {
   try {
     const j = JSON.parse(fs.readFileSync(f, 'utf8'));
     if (Array.isArray(j)) return j.length;
-    return (j.rows || j.live || j.items || []).length;
+    return (j.rows || j.live || j.items || Object.keys(j)).length;
   } catch (e) { return -1; }
 };
 
@@ -37,7 +42,7 @@ for (const j of JOBS) {
   if (before > 0) fs.copyFileSync(j.out, j.out + '.prev');
   let err = '';
   try {
-    execFileSync(process.execPath, [j.script], { cwd: __dirname, timeout: 15 * 60e3, stdio: ['ignore', 'pipe', 'pipe'] });
+    execFileSync(process.execPath, [j.script].concat(j.args || []), { cwd: __dirname, timeout: 15 * 60e3, stdio: ['ignore', 'pipe', 'pipe'] });
   } catch (e) { err = String(e.message || e).slice(0, 120); }
   const after = count(j.out);
 
