@@ -618,7 +618,9 @@ ${mapScript('ko')}
         .filter(d => d.isDirectory() && !liveSlugs.has(d.name))
         .forEach(d => {
           const rec = led[d.name];
-          const keep = rec && daysPast(rec.end) <= GRACE && daysPast(rec.last) <= STALE_MAX;
+          // 2026-10-04 — 아직 안 끝난 축제는 «30일 미생성»으로 지우지 않는다(의령 리치리치·신라문화제가 행사 직전 404 될 뻔).
+          //   얼어붙은 내용의 정확성은 매주 _frozen_watch.js(공식 누리집 대조 + 안내 상자)가 맡는다.
+          const keep = rec && daysPast(rec.end) <= GRACE && (daysPast(rec.last) <= STALE_MAX || daysPast(rec.end) < 0);
           if (keep) {
             kept++;
             if (keptEx.length < 8) keptEx.push(`${d.name}(종료 ${daysPast(rec.end)}일 전·마지막 생성 ${daysPast(rec.last)}일 전)`);
