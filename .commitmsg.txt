@@ -1,5 +1,6 @@
-fix(frozen): 양주 천일홍 가을 페스타 2026 일정 안내상자 (9/26~10/18)
+영어 허브 선정 묶음: 순서에 제휴 예약 가능 여부가 반영된다는 한 줄 표기 (FTC)
 
-TourAPI에서 빠져 얼어붙은 상세 페이지 주간 대조 결과.
-페이지 날짜 9/26~10/4 → 시 보도자료 기준 9/26~10/18 (공연은 10/4까지).
-근거: newspim 2026-09-09, webeconomy 보도자료.
+「not from ads」 문구를 빼고 "The order also reflects whether tickets or tours can be booked online through our partners." 로 교체. 일본어 문구는 그대로.
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_016m991E2DHzVvVSZCVNFqWg

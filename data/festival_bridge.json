@@ -1,38 +1,38 @@
 {
- "generatedAt": "2026-10-05T07:06",
+ "generatedAt": "2026-10-05T09:45",
  "stats": {
   "en": {
-   "total": 258,
-   "linked": 44,
-   "confirmed": 32,
+   "total": 280,
+   "linked": 45,
+   "confirmed": 33,
    "pending": 0,
    "tbc": 10,
    "est": 2,
-   "redated": 0,
+   "redated": 3,
    "restored": 0,
    "review": 0,
    "removed": 0
   },
   "ja": {
-   "total": 213,
+   "total": 219,
    "linked": 42,
    "confirmed": 31,
    "pending": 0,
    "tbc": 9,
    "est": 2,
-   "redated": 0,
+   "redated": 2,
    "restored": 0,
    "review": 0,
    "removed": 0
   },
   "zh": {
-   "total": 178,
+   "total": 182,
    "linked": 32,
    "confirmed": 25,
    "pending": 0,
    "tbc": 5,
    "est": 2,
-   "redated": 0,
+   "redated": 1,
    "restored": 0,
    "review": 0,
    "removed": 0
@@ -230,6 +230,16 @@
      "date"
     ],
     "apiId": "506523"
+   },
+   "697209": {
+    "ko": "강경젓갈축제",
+    "kv": "confirmed",
+    "signals": [
+     "img",
+     "geo",
+     "date"
+    ],
+    "apiId": "506376"
    },
    "697439": {
     "ko": "안성맞춤 남사당 바우덕이축제",
@@ -1049,6 +1059,7 @@
     "ko": "정선아리랑제",
     "kv": "confirmed",
     "signals": [
+     "img",
      "tel",
      "geo",
      "date"
