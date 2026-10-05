@@ -20,5 +20,82 @@
   ],
   "proposedAt": "2026-10-01",
   "from": "2026-08-06~2026-08-09"
+ },
+ "연등회": {
+  "start": "2026-05-16",
+  "end": "2026-05-17",
+  "place": "",
+  "sources": [
+   "https://scpm.seoul.go.kr/seoul-policy/evt0267",
+   "https://www.newscj.com/news/articleView.html?idxno=3400694"
+  ],
+  "proposedAt": "2026-10-05",
+  "from": "2026-05-16~2026-05-17"
+ },
+ "강릉단오제": {
+  "start": "2026-06-15",
+  "end": "2026-06-22",
+  "place": "",
+  "sources": [
+   "https://www.khan.co.kr/article/202605261045001/",
+   "http://news.lghellovision.net/news/articleView.html?idxno=545356"
+  ],
+  "proposedAt": "2026-10-05",
+  "from": "2026-06-15~2026-06-22"
+ },
+ "춘천마임축제": {
+  "start": "2026-05-24",
+  "end": "2026-05-31",
+  "place": "",
+  "sources": [
+   "https://www.seoul.co.kr/news/life/sc_culture/sc_exhibition/2026/05/21/20260521500120",
+   "https://www.kookminnews.com/117010"
+  ],
+  "proposedAt": "2026-10-05",
+  "from": "2026-05-24~2026-05-31"
+ },
+ "MyK FESTA(마이케이 페스타)": {
+  "start": "2026-06-25",
+  "end": "2026-06-28",
+  "place": "",
+  "sources": [
+   "https://isplus.com/article/view/isp202605290041",
+   "https://www.etoday.co.kr/news/view/2596351"
+  ],
+  "proposedAt": "2026-10-05",
+  "from": "2026-06-25~2026-06-28"
+ },
+ "마토예술제": {
+  "start": "2026-06-27",
+  "end": "2026-06-27",
+  "place": "",
+  "sources": [
+   "https://www.kukak21.com/bbs/board.php?bo_table=news&wr_id=43341",
+   "https://www.joongang.tv/news/articleView.html?idxno=300205"
+  ],
+  "proposedAt": "2026-10-05",
+  "from": "2026-06-27~2026-06-27"
+ },
+ "2026 농촌여행 페스티벌 (제14회 도농교류의 날 기념)": {
+  "start": "2026-06-16",
+  "end": "2026-06-16",
+  "place": "중구 서울광장",
+  "sources": [
+   "http://incheon.thesegye.com/news/view/1065570513455311",
+   "https://www.dkitnews.com/483281"
+  ],
+  "proposedAt": "2026-10-05",
+  "from": "2026-06-16~2026-06-16"
+ },
+ "2026 서울식품유통대전(K푸드쇼)": {
+  "start": "2026-06-16",
+  "end": "2026-06-16",
+  "place": "",
+  "sources": [
+   "https://www.fnnews.com/news/202606161825138278",
+   "https://onoffmix.com/event/340711"
+  ],
+  "proposedAt": "2026-10-05",
+  "from": "2026-06-16~2026-06-16"
  }
 }

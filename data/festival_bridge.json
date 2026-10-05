@@ -1,14 +1,14 @@
 {
- "generatedAt": "2026-10-05T09:45",
+ "generatedAt": "2026-10-05T10:52",
  "stats": {
   "en": {
    "total": 280,
    "linked": 45,
    "confirmed": 33,
-   "pending": 0,
-   "tbc": 10,
+   "pending": 1,
+   "tbc": 9,
    "est": 2,
-   "redated": 3,
+   "redated": 0,
    "restored": 0,
    "review": 0,
    "removed": 0
@@ -17,10 +17,10 @@
    "total": 219,
    "linked": 42,
    "confirmed": 31,
-   "pending": 0,
-   "tbc": 9,
+   "pending": 1,
+   "tbc": 8,
    "est": 2,
-   "redated": 2,
+   "redated": 0,
    "restored": 0,
    "review": 0,
    "removed": 0
@@ -29,20 +29,20 @@
    "total": 182,
    "linked": 32,
    "confirmed": 25,
-   "pending": 0,
-   "tbc": 5,
+   "pending": 1,
+   "tbc": 4,
    "est": 2,
-   "redated": 1,
+   "redated": 0,
    "restored": 0,
-   "review": 0,
+   "review": 1,
    "removed": 0
   },
   "tw": {
    "total": 171,
    "linked": 35,
    "confirmed": 27,
-   "pending": 0,
-   "tbc": 6,
+   "pending": 1,
+   "tbc": 5,
    "est": 2,
    "redated": 0,
    "restored": 0,
@@ -192,7 +192,7 @@
    },
    "697189": {
     "ko": "춘천마임축제",
-    "kv": "tbc",
+    "kv": "pending",
     "signals": [
      "img",
      "tel",
@@ -611,7 +611,7 @@
    },
    "696906": {
     "ko": "춘천마임축제",
-    "kv": "tbc",
+    "kv": "pending",
     "signals": [
      "img",
      "tel",
@@ -1003,7 +1003,7 @@
    },
    "692725": {
     "ko": "춘천마임축제",
-    "kv": "tbc",
+    "kv": "pending",
     "signals": [
      "img",
      "tel",
@@ -1361,7 +1361,7 @@
    },
    "693713": {
     "ko": "춘천마임축제",
-    "kv": "tbc",
+    "kv": "pending",
     "signals": [
      "img",
      "tel",
@@ -1676,7 +1676,17 @@
    }
   }
  },
- "review": [],
+ "review": [
+  {
+   "lang": "zh",
+   "id": "1812008",
+   "title": "江陵端午祭",
+   "why": "신호 1개(geo)뿐",
+   "ko": [
+    "강릉단오제"
+   ]
+  }
+ ],
  "removed": [],
  "conflicts": []
 }

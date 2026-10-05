@@ -1111,5 +1111,111 @@
   "to": "2026-06-13~2026-06-14",
   "source": "TourAPI «김제 모악산 뮤직페스티벌» id 1248817",
   "confirm": "공공데이터 1곳(미확정 유지)"
+ },
+ {
+  "at": "2026-10-05",
+  "name": "연등회",
+  "propose": "2026-05-16~2026-05-17",
+  "from": "2026-05-16~2026-05-17",
+  "sources": [
+   "https://scpm.seoul.go.kr/seoul-policy/evt0267",
+   "https://www.newscj.com/news/articleView.html?idxno=3400694"
+  ]
+ },
+ {
+  "at": "2026-10-05",
+  "name": "강릉단오제",
+  "propose": "2026-06-15~2026-06-22",
+  "from": "2026-06-15~2026-06-22",
+  "sources": [
+   "https://www.khan.co.kr/article/202605261045001/",
+   "http://news.lghellovision.net/news/articleView.html?idxno=545356"
+  ]
+ },
+ {
+  "at": "2026-10-05",
+  "name": "춘천마임축제",
+  "propose": "2026-05-24~2026-05-31",
+  "from": "2026-05-24~2026-05-31",
+  "sources": [
+   "https://www.seoul.co.kr/news/life/sc_culture/sc_exhibition/2026/05/21/20260521500120",
+   "https://www.kookminnews.com/117010"
+  ]
+ },
+ {
+  "at": "2026-10-05",
+  "name": "MyK FESTA(마이케이 페스타)",
+  "propose": "2026-06-25~2026-06-28",
+  "from": "2026-06-25~2026-06-28",
+  "sources": [
+   "https://isplus.com/article/view/isp202605290041",
+   "https://www.etoday.co.kr/news/view/2596351"
+  ]
+ },
+ {
+  "at": "2026-10-05",
+  "name": "마토예술제",
+  "propose": "2026-06-27~2026-06-27",
+  "from": "2026-06-27~2026-06-27",
+  "sources": [
+   "https://www.kukak21.com/bbs/board.php?bo_table=news&wr_id=43341",
+   "https://www.joongang.tv/news/articleView.html?idxno=300205"
+  ]
+ },
+ {
+  "at": "2026-10-05",
+  "name": "2026 농촌여행 페스티벌 (제14회 도농교류의 날 기념)",
+  "propose": "2026-06-16~2026-06-16",
+  "from": "2026-06-16~2026-06-16",
+  "place": "중구 서울광장",
+  "sources": [
+   "http://incheon.thesegye.com/news/view/1065570513455311",
+   "https://www.dkitnews.com/483281"
+  ]
+ },
+ {
+  "at": "2026-10-05",
+  "name": "2026 서울식품유통대전(K푸드쇼)",
+  "propose": "2026-06-16~2026-06-16",
+  "from": "2026-06-16~2026-06-16",
+  "sources": [
+   "https://www.fnnews.com/news/202606161825138278",
+   "https://onoffmix.com/event/340711"
+  ]
+ },
+ {
+  "at": "2026-10-05",
+  "name": "부산자갈치축제",
+  "note": "2026-10-05 재조사: 2026 제33회 일정 여전히 미발표(검색 결과 2024·2025 기사뿐). 적힌 10/08~10/11 근거 없음 — 예년 날짜 자체가 의심, 작년 제32회 2025-10-23~10-26"
+ },
+ {
+  "at": "2026-10-05",
+  "name": "서울빛초롱축제",
+  "note": "2026-10-05: 2026-27 회차 미발표 — 검색상 2025 회차 자료만"
+ },
+ {
+  "at": "2026-10-05",
+  "name": "평창송어축제",
+  "note": "2026-10-05: 2026-27 시즌 미발표 — festival700.or.kr 확인, 직전 회차 2026-01-09 개막"
+ },
+ {
+  "at": "2026-10-05",
+  "name": "대관령눈꽃축제",
+  "note": "2026-10-05: 2027 회차 미발표 — https://www.snowfestival.net/"
+ },
+ {
+  "at": "2026-10-05",
+  "name": "정읍 내장산단풍축제",
+  "note": "2026-10-05 재조사: 축제 미발표. 정읍시는 10/26~11/22 단풍철 행락질서 대책만 발표(https://www.jungbunews.com/news/articleView.html?idxno=2736004)"
+ },
+ {
+  "at": "2026-10-05",
+  "name": "순천만갈대축제",
+  "note": "2026-10-05 재조사: 2026(제27회) 미발표. 검색되는 제26회 11/01~11/09는 2025 회차(https://www.asiaa.co.kr/news/articleView.html?idxno=227567)"
+ },
+ {
+  "at": "2026-10-05",
+  "name": "서울김장문화제",
+  "note": "2026-10-05 재조사: 미발표 — 서울축제지도 가을편(https://culture.seoul.go.kr/culture/bbs/B0000000/view.do?nttId=16465&menuNo=200050)에도 없음"
  }
 ]

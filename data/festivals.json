@@ -2180,7 +2180,8 @@
   "category": "문화",
   "desc": "춘천마임축제는 몸의 움직임으로 마음을 전달하는 예술, 마임(MIME)으로 도시와 예술, 시민을 잇는 대한민국 대표 공연예술축제이다. 해마다 5월 마지막 주 물과 봄의도시 춘천에서 열리고 있으며 프랑",
   "confirmed": false,
-  "apiSource": "TourAPI «춘천마임축제» id 506942"
+  "apiSource": "TourAPI «춘천마임축제» id 506942",
+  "pending": true
  },
  {
   "name": "2026 서울식품유통대전(K푸드쇼)",
@@ -2195,7 +2196,8 @@
   "category": "음식",
   "desc": "파이낸셜뉴스가 오는 6월16일 농수산식품 전문 전시컨벤션인 서울 양재동 aT센터에서 '2026 서울식품유통대전(K푸드쇼)'을 개최한다. 올해는 한국인의 소울 푸드인 'K분식(K스트리트푸드), 세계의",
   "confirmed": false,
-  "apiSource": "TourAPI «2026 서울식품유통대전(K푸드쇼)» id 3491755"
+  "apiSource": "TourAPI «2026 서울식품유통대전(K푸드쇼)» id 3491755",
+  "pending": true
  },
  {
   "name": "근대역사문화축전",
@@ -2285,7 +2287,8 @@
   "category": "문화",
   "desc": "MyK FESTA(마이케이 페스타)는 2026년 6월 25일(목)부터 28일(일)까지 경기도 고양시 킨텍스에서 열리는 K-컬처 종합 행사이다. MyK Live에서 정상급 아티스트가 출연하여 K-PO",
   "confirmed": false,
-  "apiSource": "TourAPI «MyK FESTA(마이케이 페스타)» id 3488940"
+  "apiSource": "TourAPI «MyK FESTA(마이케이 페스타)» id 3488940",
+  "pending": true
  },
  {
   "name": "2026 공예주간",
@@ -2311,7 +2314,7 @@
   "name": "2026 농촌여행 페스티벌 (제14회 도농교류의 날 기념)",
   "region": "서울",
   "city": "중구",
-  "place": "서울특별시 중구 을지로 지하12 (을지로1가)",
+  "place": "중구 서울광장",
   "start": "2026-06-16",
   "end": "2026-06-16",
   "month": [
@@ -2320,7 +2323,8 @@
   "category": "문화",
   "desc": "제 14회 도농교류의 날 기념 2026 농촌여행 페스티벌은 도시민에게 농촌의 가치와 매력을 직접 체험할 기회를 제공하고, 농촌관을 일상적인 여행 선택지로 확산하기 위해 추진되는 행사이다. 본 행사는",
   "confirmed": false,
-  "apiSource": "TourAPI «2026 농촌여행 페스티벌 (제14회 도농교류의 날 기념)» id 4071535"
+  "apiSource": "TourAPI «2026 농촌여행 페스티벌 (제14회 도농교류의 날 기념)» id 4071535",
+  "pending": true
  },
  {
   "name": "마토예술제",
@@ -2334,7 +2338,8 @@
   ],
   "category": "문화",
   "desc": "마토예술제는 ‘마지막 주 토요일에 하는 예술제’라는 의미를 담은 안정리 대표 문화예술축제로, 6월에는 ‘썸머크리스-마토(Summer Christ-MATO)’, 10월에는 ‘브로드웨이 인 안정리(Br",
-  "confirmed": false
+  "confirmed": false,
+  "pending": true
  },
  {
   "name": "2026 캠핑요리축제",
@@ -2429,5 +2434,37 @@
   "category": "음식",
   "desc": "뮌헨시 명칭 승인을 받은 정통 독일 맥주 축제",
   "confirmed": true
+ },
+ {
+  "name": "연등회",
+  "region": "서울",
+  "city": "종로구",
+  "place": "",
+  "start": "2026-05-16",
+  "end": "2026-05-17",
+  "month": [
+   5
+  ],
+  "category": "전통",
+  "desc": "국가무형유산 연등 행렬(국가유산·유네스코 인류무형유산)",
+  "confirmed": false,
+  "addedFrom": "intl-wishlist",
+  "pending": true
+ },
+ {
+  "name": "강릉단오제",
+  "region": "강원",
+  "city": "강릉시",
+  "place": "",
+  "start": "2026-06-15",
+  "end": "2026-06-22",
+  "month": [
+   6
+  ],
+  "category": "전통",
+  "desc": "유네스코 인류무형유산 단오 축제",
+  "confirmed": false,
+  "addedFrom": "intl-wishlist",
+  "pending": true
  }
 ]
