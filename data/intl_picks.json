@@ -181,7 +181,7 @@
     "ko": "연등회",
     "score": 4,
     "commerce": false,
-    "status": "pending",
+    "status": "confirmed",
     "ids": [],
     "reasons": [
      {
@@ -318,7 +318,7 @@
     "ko": "춘천마임축제",
     "score": 3,
     "commerce": false,
-    "status": "pending",
+    "status": "confirmed",
     "ids": [
      "697189"
     ],
@@ -402,7 +402,7 @@
     "ko": "강릉단오제",
     "score": 2,
     "commerce": false,
-    "status": "pending",
+    "status": "confirmed",
     "ids": [],
     "reasons": [
      {
@@ -750,7 +750,7 @@
     "ko": "연등회",
     "score": 4,
     "commerce": false,
-    "status": "pending",
+    "status": "confirmed",
     "ids": [],
     "reasons": [
      {
@@ -927,7 +927,7 @@
     "ko": "강릉단오제",
     "score": 2,
     "commerce": false,
-    "status": "pending",
+    "status": "confirmed",
     "ids": [],
     "reasons": [
      {
@@ -1044,7 +1044,7 @@
     "ko": "춘천마임축제",
     "score": 2,
     "commerce": false,
-    "status": "pending",
+    "status": "confirmed",
     "ids": [
      "696906"
     ],
@@ -1213,7 +1213,7 @@
     "ko": "연등회",
     "score": 4,
     "commerce": false,
-    "status": "pending",
+    "status": "confirmed",
     "ids": [],
     "reasons": [
      {
@@ -1436,8 +1436,10 @@
     "ko": "강릉단오제",
     "score": 2,
     "commerce": false,
-    "status": "pending",
-    "ids": [],
+    "status": "confirmed",
+    "ids": [
+     "1812008"
+    ],
     "reasons": [
      {
       "claim": "중국어 위키백과(간체) 강릉단오제 문서",
@@ -1956,7 +1958,7 @@
     "ko": "강릉단오제",
     "score": 3,
     "commerce": false,
-    "status": "pending",
+    "status": "confirmed",
     "ids": [],
     "reasons": [
      {
@@ -2145,7 +2147,7 @@
     "ko": "연등회",
     "score": 2,
     "commerce": false,
-    "status": "pending",
+    "status": "confirmed",
     "ids": [],
     "reasons": [
      {

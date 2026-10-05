@@ -1217,5 +1217,106 @@
   "at": "2026-10-05",
   "name": "서울김장문화제",
   "note": "2026-10-05 재조사: 미발표 — 서울축제지도 가을편(https://culture.seoul.go.kr/culture/bbs/B0000000/view.do?nttId=16465&menuNo=200050)에도 없음"
+ },
+ {
+  "at": "2026-10-05",
+  "name": "연등회",
+  "from": "2026-05-16~2026-05-17",
+  "to": "2026-05-16~2026-05-17",
+  "place": "조계사·종로 일대",
+  "confirm": "교차확인(조사자 2곳 + 검증자 1곳, 기계 검증 통과)",
+  "sources": [
+   "https://scpm.seoul.go.kr/seoul-policy/evt0267",
+   "https://www.newscj.com/news/articleView.html?idxno=3400694",
+   "https://mediahub.seoul.go.kr/archives/2018146"
+  ]
+ },
+ {
+  "at": "2026-10-05",
+  "name": "마토예술제",
+  "mismatch": "조사자 2026-06-27~2026-06-27 ≠ 검증자 2026-10-31~2026-10-31",
+  "sources": [
+   "https://www.kukak21.com/bbs/board.php?bo_table=news&wr_id=43341",
+   "https://www.joongang.tv/news/articleView.html?idxno=300205",
+   "https://www.ggplaza.co.kr/news/article.html?no=60575"
+  ]
+ },
+ {
+  "at": "2026-10-05",
+  "name": "MyK FESTA(마이케이 페스타)",
+  "from": "2026-06-25~2026-06-28",
+  "to": "2026-06-25~2026-06-28",
+  "place": "킨텍스 제1전시장·소노캄 고양",
+  "confirm": "교차확인(조사자 2곳 + 검증자 1곳, 기계 검증 통과)",
+  "sources": [
+   "https://isplus.com/article/view/isp202605290041",
+   "https://www.etoday.co.kr/news/view/2596351",
+   "https://view.asiae.co.kr/article/2026040109282754961"
+  ]
+ },
+ {
+  "at": "2026-10-05",
+  "name": "2026 서울식품유통대전(K푸드쇼)",
+  "from": "2026-06-16~2026-06-16",
+  "to": "2026-06-16~2026-06-16",
+  "place": "양재 aT센터 제1전시장",
+  "confirm": "교차확인(조사자 2곳 + 검증자 1곳, 기계 검증 통과)",
+  "sources": [
+   "https://www.fnnews.com/news/202606161825138278",
+   "https://onoffmix.com/event/340711",
+   "https://event.fnnews.com/event/386"
+  ]
+ },
+ {
+  "at": "2026-10-05",
+  "name": "영월 동강축제",
+  "from": "2026-08-06~2026-08-09",
+  "to": "2026-07-31~2026-08-02",
+  "place": "영월 동강둔치",
+  "confirm": "교차확인(조사자 2곳 + 검증자 1곳, 기계 검증 통과)",
+  "sources": [
+   "https://www.ywcf.or.kr/cultural-events/186",
+   "http://www.crs-news.com/sub_read.html?uid=59154",
+   "https://www.devtimes.co.kr/news/501388"
+  ]
+ },
+ {
+  "at": "2026-10-05",
+  "name": "강릉단오제",
+  "from": "2026-06-15~2026-06-22",
+  "to": "2026-06-15~2026-06-22",
+  "place": "강릉 남대천 일원",
+  "confirm": "교차확인(조사자 2곳 + 검증자 1곳, 기계 검증 통과)",
+  "sources": [
+   "https://www.khan.co.kr/article/202605261045001/",
+   "http://news.lghellovision.net/news/articleView.html?idxno=545356",
+   "https://www.danojefestival.or.kr/kor/gdfestival/dano2.html"
+  ]
+ },
+ {
+  "at": "2026-10-05",
+  "name": "춘천마임축제",
+  "from": "2026-05-24~2026-05-31",
+  "to": "2026-05-24~2026-05-31",
+  "place": "춘천 중앙로·축제극장 몸짓 일원",
+  "confirm": "교차확인(조사자 2곳 + 검증자 1곳, 기계 검증 통과)",
+  "sources": [
+   "https://www.seoul.co.kr/news/life/sc_culture/sc_exhibition/2026/05/21/20260521500120",
+   "https://www.kookminnews.com/117010",
+   "https://v.daum.net/v/20260514113000667"
+  ]
+ },
+ {
+  "at": "2026-10-05",
+  "name": "2026 농촌여행 페스티벌 (제14회 도농교류의 날 기념)",
+  "from": "2026-06-16~2026-06-16",
+  "to": "2026-06-16~2026-06-16",
+  "place": "서울광장",
+  "confirm": "교차확인(조사자 2곳 + 검증자 1곳, 기계 검증 통과)",
+  "sources": [
+   "http://incheon.thesegye.com/news/view/1065570513455311",
+   "https://www.dkitnews.com/483281",
+   "https://m.news.nate.com/view/20260616n28167"
+  ]
  }
 ]

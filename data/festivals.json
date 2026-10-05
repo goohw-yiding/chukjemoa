@@ -534,7 +534,7 @@
   "name": "영월 동강축제",
   "region": "강원",
   "city": "영월군",
-  "place": "동강둔치 일원",
+  "place": "영월 동강둔치",
   "start": "2026-07-31",
   "end": "2026-08-02",
   "month": [
@@ -543,8 +543,13 @@
   ],
   "category": "물놀이",
   "desc": "동강 래프팅과 맨손 물고기 잡기",
-  "confirmed": false,
-  "pending": true
+  "confirmed": true,
+  "sources": [
+   "https://www.ywcf.or.kr/cultural-events/186",
+   "http://www.crs-news.com/sub_read.html?uid=59154",
+   "https://www.devtimes.co.kr/news/501388"
+  ],
+  "verifiedAt": "2026-10-05"
  },
  {
   "name": "춘천막국수닭갈비축제",
@@ -2171,7 +2176,7 @@
   "name": "춘천마임축제",
   "region": "강원",
   "city": "춘천시",
-  "place": "강원특별자치도 춘천시 춘천로 112 (효자동)",
+  "place": "춘천 중앙로·축제극장 몸짓 일원",
   "start": "2026-05-24",
   "end": "2026-05-31",
   "month": [
@@ -2179,15 +2184,20 @@
   ],
   "category": "문화",
   "desc": "춘천마임축제는 몸의 움직임으로 마음을 전달하는 예술, 마임(MIME)으로 도시와 예술, 시민을 잇는 대한민국 대표 공연예술축제이다. 해마다 5월 마지막 주 물과 봄의도시 춘천에서 열리고 있으며 프랑",
-  "confirmed": false,
+  "confirmed": true,
   "apiSource": "TourAPI «춘천마임축제» id 506942",
-  "pending": true
+  "sources": [
+   "https://www.seoul.co.kr/news/life/sc_culture/sc_exhibition/2026/05/21/20260521500120",
+   "https://www.kookminnews.com/117010",
+   "https://v.daum.net/v/20260514113000667"
+  ],
+  "verifiedAt": "2026-10-05"
  },
  {
   "name": "2026 서울식품유통대전(K푸드쇼)",
   "region": "서울",
   "city": "서초구",
-  "place": "서울특별시 서초구 강남대로 27 (양재동)",
+  "place": "양재 aT센터 제1전시장",
   "start": "2026-06-16",
   "end": "2026-06-16",
   "month": [
@@ -2195,9 +2205,14 @@
   ],
   "category": "음식",
   "desc": "파이낸셜뉴스가 오는 6월16일 농수산식품 전문 전시컨벤션인 서울 양재동 aT센터에서 '2026 서울식품유통대전(K푸드쇼)'을 개최한다. 올해는 한국인의 소울 푸드인 'K분식(K스트리트푸드), 세계의",
-  "confirmed": false,
+  "confirmed": true,
   "apiSource": "TourAPI «2026 서울식품유통대전(K푸드쇼)» id 3491755",
-  "pending": true
+  "sources": [
+   "https://www.fnnews.com/news/202606161825138278",
+   "https://onoffmix.com/event/340711",
+   "https://event.fnnews.com/event/386"
+  ],
+  "verifiedAt": "2026-10-05"
  },
  {
   "name": "근대역사문화축전",
@@ -2278,7 +2293,7 @@
   "name": "MyK FESTA(마이케이 페스타)",
   "region": "경기",
   "city": "고양시",
-  "place": "경기도 고양시 일산서구 킨텍스로 217-60 (대화동)",
+  "place": "킨텍스 제1전시장·소노캄 고양",
   "start": "2026-06-25",
   "end": "2026-06-28",
   "month": [
@@ -2286,9 +2301,14 @@
   ],
   "category": "문화",
   "desc": "MyK FESTA(마이케이 페스타)는 2026년 6월 25일(목)부터 28일(일)까지 경기도 고양시 킨텍스에서 열리는 K-컬처 종합 행사이다. MyK Live에서 정상급 아티스트가 출연하여 K-PO",
-  "confirmed": false,
+  "confirmed": true,
   "apiSource": "TourAPI «MyK FESTA(마이케이 페스타)» id 3488940",
-  "pending": true
+  "sources": [
+   "https://isplus.com/article/view/isp202605290041",
+   "https://www.etoday.co.kr/news/view/2596351",
+   "https://view.asiae.co.kr/article/2026040109282754961"
+  ],
+  "verifiedAt": "2026-10-05"
  },
  {
   "name": "2026 공예주간",
@@ -2314,7 +2334,7 @@
   "name": "2026 농촌여행 페스티벌 (제14회 도농교류의 날 기념)",
   "region": "서울",
   "city": "중구",
-  "place": "중구 서울광장",
+  "place": "서울광장",
   "start": "2026-06-16",
   "end": "2026-06-16",
   "month": [
@@ -2322,9 +2342,14 @@
   ],
   "category": "문화",
   "desc": "제 14회 도농교류의 날 기념 2026 농촌여행 페스티벌은 도시민에게 농촌의 가치와 매력을 직접 체험할 기회를 제공하고, 농촌관을 일상적인 여행 선택지로 확산하기 위해 추진되는 행사이다. 본 행사는",
-  "confirmed": false,
+  "confirmed": true,
   "apiSource": "TourAPI «2026 농촌여행 페스티벌 (제14회 도농교류의 날 기념)» id 4071535",
-  "pending": true
+  "sources": [
+   "http://incheon.thesegye.com/news/view/1065570513455311",
+   "https://www.dkitnews.com/483281",
+   "https://m.news.nate.com/view/20260616n28167"
+  ],
+  "verifiedAt": "2026-10-05"
  },
  {
   "name": "마토예술제",
@@ -2439,7 +2464,7 @@
   "name": "연등회",
   "region": "서울",
   "city": "종로구",
-  "place": "",
+  "place": "조계사·종로 일대",
   "start": "2026-05-16",
   "end": "2026-05-17",
   "month": [
@@ -2447,15 +2472,20 @@
   ],
   "category": "전통",
   "desc": "국가무형유산 연등 행렬(국가유산·유네스코 인류무형유산)",
-  "confirmed": false,
+  "confirmed": true,
   "addedFrom": "intl-wishlist",
-  "pending": true
+  "sources": [
+   "https://scpm.seoul.go.kr/seoul-policy/evt0267",
+   "https://www.newscj.com/news/articleView.html?idxno=3400694",
+   "https://mediahub.seoul.go.kr/archives/2018146"
+  ],
+  "verifiedAt": "2026-10-05"
  },
  {
   "name": "강릉단오제",
   "region": "강원",
   "city": "강릉시",
-  "place": "",
+  "place": "강릉 남대천 일원",
   "start": "2026-06-15",
   "end": "2026-06-22",
   "month": [
@@ -2463,8 +2493,13 @@
   ],
   "category": "전통",
   "desc": "유네스코 인류무형유산 단오 축제",
-  "confirmed": false,
+  "confirmed": true,
   "addedFrom": "intl-wishlist",
-  "pending": true
+  "sources": [
+   "https://www.khan.co.kr/article/202605261045001/",
+   "http://news.lghellovision.net/news/articleView.html?idxno=545356",
+   "https://www.danojefestival.or.kr/kor/gdfestival/dano2.html"
+  ],
+  "verifiedAt": "2026-10-05"
  }
 ]
