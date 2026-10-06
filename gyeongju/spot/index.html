@@ -704,7 +704,7 @@ window.OneSignalDeferred=window.OneSignalDeferred||[];window.OneSignalDeferred.p
 봉황대는 밑둘레 230m, 직경 82m, 높이 22m로 황남대총 다음으로 규모가 큰…</p>
 <p class="cy-meta"><span class="cy-tag">♿ 무장애여행 등록</span></p>
 </div></div><div class="cy-card"><img class="cy-img" src="https://tong.visitkorea.or.kr/cms/resource/60/3096260_image2_1.jpg" alt="경주 독락당" loading="lazy" onerror="this.remove()"><div class="cy-body"><h3>경주 독락당</h3>
-<p class="cy-meta">📍 경주 · 관광지<span class="wx-chip" title="맑음">☀️ 20° · 비 0%</span></p>
+<p class="cy-meta">📍 경주 · 관광지<span class="wx-chip" title="맑음">☀️ 21° · 비 0%</span></p>
 
 <p class="cy-desc">독락당은 회재 이언적(1491∼1553) 선생이 벼슬을 그만두고 고향에 돌아와 지은 집의 사랑채이다. 조선 중종 11년(1516)에 건립된 이 독락당은 정면 4칸, 측면 2칸의 팔작집으로 온돌방(1칸× 2칸)과 대청(3칸× 2칸)으로 되어 있다. 건물의 짜임새는 오량(五樑)에 두리기둥을 세우고 쇠서 하나를 둔 초익공(初翼工)의 공포(拱包)…</p>
 <p class="cy-meta"><span class="cy-tag">♿ 무장애여행 등록</span></p>
@@ -940,7 +940,7 @@ window.OneSignalDeferred=window.OneSignalDeferred||[];window.OneSignalDeferred.p
 <p class="cy-desc">경주 감포읍에 있는 오류고아라해변은 1㎞의 백사장과 1.5m 안팎의 수심에 소나무 숲이 우거진 해변으로, 모래가 부드러워 모래찜질로 유명한 곳이다. 소나무숲에는 오류캠핑장이 조성되어 있어 텐트, 카라반캠핑이 가능하고, 여름철에는 바나나보트, 모터보트와 같은 수상레저를 즐길 수 있다. 주변 관광지로는 감포항, 감포공설시장 등이 있다.…</p>
 <p class="cy-meta"><span class="cy-tag">♿ 무장애여행 등록</span></p>
 </div></div><div class="cy-card"><img class="cy-img" src="https://tong.visitkorea.or.kr/cms/resource/52/3501352_image2_1.jpg" alt="옥산서원(경주)" loading="lazy" onerror="this.remove()"><div class="cy-body"><h3>옥산서원(경주)</h3>
-<p class="cy-meta">📍 경주 · 관광지<span class="wx-chip" title="맑음">☀️ 20° · 비 0%</span></p>
+<p class="cy-meta">📍 경주 · 관광지<span class="wx-chip" title="맑음">☀️ 21° · 비 0%</span></p>
 
 <p class="cy-desc">경주 옥산서원은 조선시대 성리학자인 회재 이언적을 기리기 위한 곳으로 이언적의 학문은 퇴계 이황에게 이어져 영남학파 성리설의 선구가 되었다. 이러한 회재 이언적 선생을 기리기 위해 선조 5년(1572)에 경주부윤 이제민이 처음 세웠고 그다음 해에 임금에게 ‘옥산’이라는 이름을 받아 사액서원이 되었다. 공부하는 공간 구인당이 앞에 있고 제사…</p>
 <p class="cy-meta"><span class="cy-tag">♿ 무장애여행 등록</span></p>
@@ -1466,6 +1466,16 @@ window.cjmFestBB=function(elId,name,place){
     body = body.slice(0, m.index).trim();
   }
   if (!body) { body = text.replace(/[*※]/g, ' ').trim(); notes = []; }
+  // ①-b 본문과 모순되는 「전년도 내용, 올해 내용은 업데이트 중」 안내는 뺀다.
+  //    ⚠️ 2026-10-06: 임실N치즈축제(개막 D-2) 개요를 사람이 2026년 내용으로 고쳐 써 놓았는데도
+  //       관광공사 원문의 「2026년도 축제 내용은 업데이트 중」 주석이 그대로 따라 나갔다.
+  //       본문에 그 해(예: 2026년)가 나오면 이미 갱신된 글이므로 안내가 거짓이 된다 → 뺀다.
+  //       본문에 그 해가 없으면(=정말 작년 글) 안내는 사실이므로 남긴다.
+  //    ⚠️ 데이터에서 지우면 안 된다 — 개요 길이(MIN_OV 300자)가 줄어 상세 페이지 14장이 빠졌다(실측).
+  notes = notes.filter(function (n) {
+    var y = String(n).match(/(\d{4})\s*년도?\s*축제\s*(?:장\s*)?(?:먹거리\s*)?(?:내용|정보)[은는]?\s*업데이트/);
+    return !(y && body.indexOf(y[1] + '년') >= 0);
+  });
 
   // ② 문장 나누기 — 마침표 앞이 숫자면 소수점이니 자르지 않는다(1.5km)
   var parts = body.split(/\n+/).join(' ');

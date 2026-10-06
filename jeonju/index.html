@@ -674,7 +674,7 @@ window.OneSignalDeferred=window.OneSignalDeferred||[];window.OneSignalDeferred.p
 <p class="cy-desc">한벽당과 전주향교의 북쪽 4차선 노변, 벼랑같이 솟은 언덕에 세워진 오목대는 고려 말 우왕 6년(1380년)에 이성계가 운봉 황산에서 왜군을 무찌르고 돌아가던 중 조상인 목조가 살았던 이 곳에 들러 승전을 자축한 곳으로, 그 후 고종 황제가 친필로 쓴 태조고황 제주필유지비를 세웠다. 여기서 육교를 건너서 이목대가 있는데, 천주교의 성지 치…</p>
 <p class="cy-meta"><span class="cy-tag">♿ 무장애여행 등록</span></p>
 </div></div><div class="cy-card"><img class="cy-img" src="https://tong.visitkorea.or.kr/cms/resource/08/2796208_image2_1.jpg" alt="완산생활체육공원" loading="lazy" onerror="this.remove()"><div class="cy-body"><h3>완산생활체육공원</h3>
-<p class="cy-meta">📍 전주 · 관광지<span class="wx-chip" title="대체로 맑음">🌤 20° · 비 0%</span></p>
+<p class="cy-meta">📍 전주 · 관광지<span class="wx-chip" title="대체로 맑음">🌤 21° · 비 0%</span></p>
 
 <p class="cy-desc">완산생활체육공원은 모악산 자락길에 자리 잡고 있다. 시민들의 건강한 체력증진을 위하여 2008년 건립되었으며, 축구장, 테니스장, 족구장, 정구장, 인공암벽장, 그라운드골프장, 풋살장 등 7개의 체육시설로 구성되어 다양한 종류의 체육 활동을 즐길 수 있다. 또한 매년 종목별 수십 건의 대규모 전국대회 및 동호인 대회가 개최됨에 따라 전주 …</p>
 <p class="cy-meta"><span class="cy-tag">♿ 무장애여행 등록</span></p>
@@ -1136,6 +1136,16 @@ window.cjmFestBB=function(elId,name,place){
     body = body.slice(0, m.index).trim();
   }
   if (!body) { body = text.replace(/[*※]/g, ' ').trim(); notes = []; }
+  // ①-b 본문과 모순되는 「전년도 내용, 올해 내용은 업데이트 중」 안내는 뺀다.
+  //    ⚠️ 2026-10-06: 임실N치즈축제(개막 D-2) 개요를 사람이 2026년 내용으로 고쳐 써 놓았는데도
+  //       관광공사 원문의 「2026년도 축제 내용은 업데이트 중」 주석이 그대로 따라 나갔다.
+  //       본문에 그 해(예: 2026년)가 나오면 이미 갱신된 글이므로 안내가 거짓이 된다 → 뺀다.
+  //       본문에 그 해가 없으면(=정말 작년 글) 안내는 사실이므로 남긴다.
+  //    ⚠️ 데이터에서 지우면 안 된다 — 개요 길이(MIN_OV 300자)가 줄어 상세 페이지 14장이 빠졌다(실측).
+  notes = notes.filter(function (n) {
+    var y = String(n).match(/(\d{4})\s*년도?\s*축제\s*(?:장\s*)?(?:먹거리\s*)?(?:내용|정보)[은는]?\s*업데이트/);
+    return !(y && body.indexOf(y[1] + '년') >= 0);
+  });
 
   // ② 문장 나누기 — 마침표 앞이 숫자면 소수점이니 자르지 않는다(1.5km)
   var parts = body.split(/\n+/).join(' ');

@@ -698,7 +698,7 @@ window.OneSignalDeferred=window.OneSignalDeferred||[];window.OneSignalDeferred.p
 <p class="cy-desc">오창 송대리에 위치한 방죽, 즉 송대제 저수지를 끼고 공원이 조성되어 있는데, 이곳이 송대공원이다. 송대제를 감상하며 걸을 수 있는 데크 산책로가 조성되어 있다. 공원 곳곳에는 쉴 수 있는 벤치와 운동기구가 있다. 봄에는 벚꽃이 만개하여 널찍한 잔디밭에 돗자리를 펴고 휴식을 취하는 사람들도 많다. 가족이나 연인끼리 가볍게 산책 겸 나들이 …</p>
 <p class="cy-meta"><span class="cy-tag">♿ 무장애여행 등록</span></p>
 </div></div><div class="cy-card"><img class="cy-img" src="https://tong.visitkorea.or.kr/cms/resource/67/3504167_image2_1.jpg" alt="오송호수공원" loading="lazy" onerror="this.remove()"><div class="cy-body"><h3>오송호수공원</h3>
-<p class="cy-meta">📍 청주 · 관광지<span class="wx-chip" title="대체로 맑음">🌤 20° · 비 0%</span></p>
+<p class="cy-meta">📍 청주 · 관광지<span class="wx-chip" title="맑음">☀️ 20° · 비 0%</span></p>
 
 <p class="cy-desc">청주오송공원은 청주 오송역 8번 출구에서 도보로 약 15~20분 거리에 위치하여 산책 겸 도보로 이동하기에 편리하다. 공원 이름에 걸맞게 다섯 그루의 소나무도 볼 수 있으며 규모가 큰 편이어서 공원을 한 바퀴 다 돌기 위해서는 약 한 시간이 소요된다. 걷는 길에는 수상 데크 길이 있어 사시사철 계절의 바람을 느끼며 산책하기 좋다. 수변에는…</p>
 <p class="cy-meta"><span class="cy-tag">♿ 무장애여행 등록</span></p>
@@ -814,7 +814,7 @@ window.OneSignalDeferred=window.OneSignalDeferred||[];window.OneSignalDeferred.p
 <p class="cy-desc">1999년 1월 충청북도교육연구원과 충청북도과학 연구원을 통합하였고, 1999년 10월 충청북도교육과학연구원을 신축 개관하였다. 이 연구원은 과학전시관과 교육 연수관으로 구성되어 있다. 과학전시관에는 생물과 물리를 주제로 전시된 탐구의 광장, 다양한 동식물의 표본을 볼 수 있는 꿈돌이 광장, 과학적 현상을 직접 체험해 볼 수 있는 체험의 …</p>
 <p class="cy-meta"><span class="cy-tag">♿ 무장애여행 등록</span></p>
 </div></div><div class="cy-card"><img class="cy-img" src="https://tong.visitkorea.or.kr/cms/resource/46/3504346_image2_1.jpg" alt="한국교원대학교 교육박물관" loading="lazy" onerror="this.remove()"><div class="cy-body"><h3>한국교원대학교 교육박물관</h3>
-<p class="cy-meta">📍 청주 · 문화시설<span class="wx-chip" title="대체로 맑음">🌤 20° · 비 0%</span></p>
+<p class="cy-meta">📍 청주 · 문화시설<span class="wx-chip" title="맑음">☀️ 20° · 비 0%</span></p>
 
 <p class="cy-desc">한국 교육의 요람인 한국교원대학교의 특성을 살린 교육 분야 특화 박물관이다. 2010년 11월 16일 개관한 한국교원대학교 교육박물관은 한국 교육에 관한 유물을 전문적으로 수집, 정리, 보존할 뿐만 아니라, 우리 교육의 발자취를 생생하게 보고 느낄 수 있도록 다양한 전시와 체험 프로그램을 진행하고 있다. 한국 교육사실, 교육 테마실, 학교…</p>
 <p class="cy-meta"><span class="cy-tag">♿ 무장애여행 등록</span></p>
@@ -1232,6 +1232,16 @@ window.cjmFestBB=function(elId,name,place){
     body = body.slice(0, m.index).trim();
   }
   if (!body) { body = text.replace(/[*※]/g, ' ').trim(); notes = []; }
+  // ①-b 본문과 모순되는 「전년도 내용, 올해 내용은 업데이트 중」 안내는 뺀다.
+  //    ⚠️ 2026-10-06: 임실N치즈축제(개막 D-2) 개요를 사람이 2026년 내용으로 고쳐 써 놓았는데도
+  //       관광공사 원문의 「2026년도 축제 내용은 업데이트 중」 주석이 그대로 따라 나갔다.
+  //       본문에 그 해(예: 2026년)가 나오면 이미 갱신된 글이므로 안내가 거짓이 된다 → 뺀다.
+  //       본문에 그 해가 없으면(=정말 작년 글) 안내는 사실이므로 남긴다.
+  //    ⚠️ 데이터에서 지우면 안 된다 — 개요 길이(MIN_OV 300자)가 줄어 상세 페이지 14장이 빠졌다(실측).
+  notes = notes.filter(function (n) {
+    var y = String(n).match(/(\d{4})\s*년도?\s*축제\s*(?:장\s*)?(?:먹거리\s*)?(?:내용|정보)[은는]?\s*업데이트/);
+    return !(y && body.indexOf(y[1] + '년') >= 0);
+  });
 
   // ② 문장 나누기 — 마침표 앞이 숫자면 소수점이니 자르지 않는다(1.5km)
   var parts = body.split(/\n+/).join(' ');

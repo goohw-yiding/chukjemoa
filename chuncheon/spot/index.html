@@ -688,7 +688,7 @@ window.OneSignalDeferred=window.OneSignalDeferred||[];window.OneSignalDeferred.p
 구곡폭포 매표소에서 걸어서 약 20분 거리에 폭포가 나타나는데 47m 높이에서 떨어지는 하얀 물줄기가 장관을 이룬다. 특히 겨울철에는 떨어지는 폭포가 그대로 빙벽으로 변해 빙벽 등반인들이 찾는 관광명소이다.…</p>
 <p class="cy-meta"><span class="cy-tag">♿ 무장애여행 등록</span><span class="cy-tag">🐾 반려견 동반</span></p>
 </div></div><div class="cy-card"><img class="cy-img" src="https://tong.visitkorea.or.kr/cms/resource/85/2739785_image2_1.jpg" alt="구성폭포" loading="lazy" onerror="this.remove()"><div class="cy-body"><h3>구성폭포</h3>
-<p class="cy-meta">📍 춘천 · 관광지<span class="wx-chip" title="맑음">☀️ 20° · 비 0%</span></p>
+<p class="cy-meta">📍 춘천 · 관광지<span class="wx-chip" title="맑음">☀️ 19° · 비 0%</span></p>
 
 <p class="cy-desc">청평사로 오르는 계곡 숲길에 높이 약 9m의 구성폭포가 있다. 폭포 주변에 소나무 아홉 그루가 있다 하여 구송폭포라 불리고 아홉 가지 소리를 낸다고 구성폭포라고도 한다. 오봉산에서 시작된 물줄기는 명쾌한 소리를 내며 폭포를 타고 흘러내린다. 폭포 규모는 그리 크지 않지만 병풍처럼 펼쳐진 기암괴석과 울창한 나무, 맑은 물이 어우러져 수려한 …</p>
 <p class="cy-meta"><span class="cy-tag">♿ 무장애여행 등록</span></p>
@@ -839,7 +839,7 @@ window.OneSignalDeferred=window.OneSignalDeferred||[];window.OneSignalDeferred.p
 <p class="cy-desc">책과 인쇄문화와 관련한 다양한 자료를 전시하고 체험하는 박물관이다. 우리나라의 우수한 인쇄문화와 선현들의 독서문화를 널리 알리고 많은 사람에게 책과 인쇄문화를 향유할 기회를 제공한다는 뜻에서 설립됐다. 1층은 인쇄전시실, 2, 3층은 책전시실이다. 1층은 수만 가지 활자와 활판인쇄기, 등사기 등 활판인쇄 역사를 보여주는 물품과 전시로 꾸며…</p>
 <p class="cy-meta"><span class="cy-tag">♿ 무장애여행 등록</span></p>
 </div></div><div class="cy-card"><img class="cy-img" src="https://tong.visitkorea.or.kr/cms/resource_photo/82/3513382_image2_1.JPG" alt="청평사(춘천)" loading="lazy" onerror="this.remove()"><div class="cy-body"><h3>청평사(춘천)</h3>
-<p class="cy-meta">📍 춘천 · 관광지<span class="wx-chip" title="맑음">☀️ 20° · 비 0%</span></p>
+<p class="cy-meta">📍 춘천 · 관광지<span class="wx-chip" title="맑음">☀️ 19° · 비 0%</span></p>
 <p class="cy-meta">🅿️ 주차 137대 · 수용 2800명</p>
 <p class="cy-desc">청평사는 대한불교 조계종 제3교구 신흥사(新興寺)의 말사이며 춘천을 대표하는 사찰이다.
 고려 광종 24년(973년)에 창건되었으며 세 번의 중창과 조선 명종 때 보우대사가 중건하여 대사찰이 되었다. 한국전쟁 때 거의 소실된 것을 1970년대에 전각들을 다시 짓고 회전문을 보수하고 범종각과 요사채를 앉혔다. 천년이 넘은 고려선원(高麗禪園)의…</p>
@@ -1364,6 +1364,16 @@ window.cjmFestBB=function(elId,name,place){
     body = body.slice(0, m.index).trim();
   }
   if (!body) { body = text.replace(/[*※]/g, ' ').trim(); notes = []; }
+  // ①-b 본문과 모순되는 「전년도 내용, 올해 내용은 업데이트 중」 안내는 뺀다.
+  //    ⚠️ 2026-10-06: 임실N치즈축제(개막 D-2) 개요를 사람이 2026년 내용으로 고쳐 써 놓았는데도
+  //       관광공사 원문의 「2026년도 축제 내용은 업데이트 중」 주석이 그대로 따라 나갔다.
+  //       본문에 그 해(예: 2026년)가 나오면 이미 갱신된 글이므로 안내가 거짓이 된다 → 뺀다.
+  //       본문에 그 해가 없으면(=정말 작년 글) 안내는 사실이므로 남긴다.
+  //    ⚠️ 데이터에서 지우면 안 된다 — 개요 길이(MIN_OV 300자)가 줄어 상세 페이지 14장이 빠졌다(실측).
+  notes = notes.filter(function (n) {
+    var y = String(n).match(/(\d{4})\s*년도?\s*축제\s*(?:장\s*)?(?:먹거리\s*)?(?:내용|정보)[은는]?\s*업데이트/);
+    return !(y && body.indexOf(y[1] + '년') >= 0);
+  });
 
   // ② 문장 나누기 — 마침표 앞이 숫자면 소수점이니 자르지 않는다(1.5km)
   var parts = body.split(/\n+/).join(' ');

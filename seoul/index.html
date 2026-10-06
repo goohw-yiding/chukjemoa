@@ -767,7 +767,7 @@ window.OneSignalDeferred=window.OneSignalDeferred||[];window.OneSignalDeferred.p
 
 <h2 class="sec">서울 말고 다른 곳도</h2>
 <div class="se-nav"><a href="/search/?region=서울">🎪 서울 축제 검색</a><a href="/busan/museum/">🏛 부산 박물관·미술관</a><a href="/">🏠 전국 축제</a><a href="/jangteo/">🏮 전국 오일장</a></div>
-<p class="se-note">데이터 출처: <b>서울열린데이터광장 「서울시 문화행사 정보」</b>(서울특별시). 기준일 2026-10-04.
+<p class="se-note">데이터 출처: <b>서울열린데이터광장 「서울시 문화행사 정보」</b>(서울특별시). 기준일 2026-10-06.
 요금·운영시간·대상은 원본에 등록된 값을 그대로 싣고, <b>등록돼 있지 않으면 비워 둡니다</b> — 추측해서 채우지 않습니다.
 일정과 예약 여부는 바뀔 수 있으니 방문 전 각 행사의 공식 안내를 확인하세요.</p>
 </div></main>
@@ -1176,6 +1176,16 @@ window.cjmFestBB=function(elId,name,place){
     body = body.slice(0, m.index).trim();
   }
   if (!body) { body = text.replace(/[*※]/g, ' ').trim(); notes = []; }
+  // ①-b 본문과 모순되는 「전년도 내용, 올해 내용은 업데이트 중」 안내는 뺀다.
+  //    ⚠️ 2026-10-06: 임실N치즈축제(개막 D-2) 개요를 사람이 2026년 내용으로 고쳐 써 놓았는데도
+  //       관광공사 원문의 「2026년도 축제 내용은 업데이트 중」 주석이 그대로 따라 나갔다.
+  //       본문에 그 해(예: 2026년)가 나오면 이미 갱신된 글이므로 안내가 거짓이 된다 → 뺀다.
+  //       본문에 그 해가 없으면(=정말 작년 글) 안내는 사실이므로 남긴다.
+  //    ⚠️ 데이터에서 지우면 안 된다 — 개요 길이(MIN_OV 300자)가 줄어 상세 페이지 14장이 빠졌다(실측).
+  notes = notes.filter(function (n) {
+    var y = String(n).match(/(\d{4})\s*년도?\s*축제\s*(?:장\s*)?(?:먹거리\s*)?(?:내용|정보)[은는]?\s*업데이트/);
+    return !(y && body.indexOf(y[1] + '년') >= 0);
+  });
 
   // ② 문장 나누기 — 마침표 앞이 숫자면 소수점이니 자르지 않는다(1.5km)
   var parts = body.split(/\n+/).join(' ');

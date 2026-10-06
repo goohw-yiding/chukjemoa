@@ -663,7 +663,7 @@ window.OneSignalDeferred=window.OneSignalDeferred||[];window.OneSignalDeferred.p
 </div>
 <h2 class="sec">가볼만한 곳</h2>
 <div class="cy-grid"><div class="cy-card"><img class="cy-img" src="https://tong.visitkorea.or.kr/cms/resource/26/3540626_image2_1.jpg" alt="갤러리박영" loading="lazy" onerror="this.remove()"><div class="cy-body"><h3>갤러리박영</h3>
-<p class="cy-meta">📍 파주 · 문화시설<span class="wx-chip" title="맑음">☀️ 21° · 비 0%</span></p>
+<p class="cy-meta">📍 파주 · 문화시설<span class="wx-chip" title="맑음">☀️ 20° · 비 0%</span></p>
 
 <p class="cy-desc">갤러리박영은 2008년에 개관한 파주출판단지 내의 1호 갤러리이다. 박영(博英)의 뜻은 ‘널리 인재를 양성한다’라는 의미로 창업주의 기업 정신을 담고 있다. 파주출판단지는 책을 기반으로 한 미술, 음악, 건축, 교육, 가구, 엔터테인먼트 등 다양한 문화 콘텐츠가 모인 미술 문화 특구로 형성되었으며, 현재 300명이 넘는 미술인들이 모일 수…</p>
 <p class="cy-meta"><span class="cy-tag">♿ 무장애여행 등록</span></p>
@@ -699,7 +699,7 @@ window.OneSignalDeferred=window.OneSignalDeferred||[];window.OneSignalDeferred.p
 <p class="cy-desc">파주시 통일동산 관광특구 내 위치한 뮤지엄 헤이는 아트와 신기술로 탄생된 몰입형 예술 전시 공간으로, 헤이미디어가 선보이는 국내 최대 규모의 미디어아트 전시관이다. 행복지수 세계 1위인 핀란드의 인사말 ‘Hei’에서 모티브를 얻어 이름을 지었다. ‘인생의 아름다운 순간들’을 주제로 시공간, 자연, 일상 등 20여 가지의 콘텐츠를 선보인다.…</p>
 <p class="cy-meta"><span class="cy-tag">♿ 무장애여행 등록</span></p>
 </div></div><div class="cy-card"><img class="cy-img" src="https://tong.visitkorea.or.kr/cms/resource/38/3505438_image2_1.jpg" alt="미메시스 아트 뮤지엄" loading="lazy" onerror="this.remove()"><div class="cy-body"><h3>미메시스 아트 뮤지엄</h3>
-<p class="cy-meta">📍 파주 · 문화시설<span class="wx-chip" title="맑음">☀️ 21° · 비 0%</span></p>
+<p class="cy-meta">📍 파주 · 문화시설<span class="wx-chip" title="맑음">☀️ 20° · 비 0%</span></p>
 
 <p class="cy-desc">미메시스 아트 뮤지엄은 대지 1,400평에 연면적 1,100평으로 지상 3층(지하 1층)으로 이루어져 있는데, 다양한 크기와 개수의 전시 공간이 하나의 덩어리에 담긴 설계로 유명하다. 다양한 곡면으로 이루어진 백색의 전시 공간은 가급적 인조광을 배제하고 자연광을 끌어들여 은은하고 차분한 분위기를 연출하며 시시때때로 변하는 빛의 향연을 볼 …</p>
 <p class="cy-meta"><span class="cy-tag">♿ 무장애여행 등록</span></p>
@@ -1147,6 +1147,16 @@ window.cjmFestBB=function(elId,name,place){
     body = body.slice(0, m.index).trim();
   }
   if (!body) { body = text.replace(/[*※]/g, ' ').trim(); notes = []; }
+  // ①-b 본문과 모순되는 「전년도 내용, 올해 내용은 업데이트 중」 안내는 뺀다.
+  //    ⚠️ 2026-10-06: 임실N치즈축제(개막 D-2) 개요를 사람이 2026년 내용으로 고쳐 써 놓았는데도
+  //       관광공사 원문의 「2026년도 축제 내용은 업데이트 중」 주석이 그대로 따라 나갔다.
+  //       본문에 그 해(예: 2026년)가 나오면 이미 갱신된 글이므로 안내가 거짓이 된다 → 뺀다.
+  //       본문에 그 해가 없으면(=정말 작년 글) 안내는 사실이므로 남긴다.
+  //    ⚠️ 데이터에서 지우면 안 된다 — 개요 길이(MIN_OV 300자)가 줄어 상세 페이지 14장이 빠졌다(실측).
+  notes = notes.filter(function (n) {
+    var y = String(n).match(/(\d{4})\s*년도?\s*축제\s*(?:장\s*)?(?:먹거리\s*)?(?:내용|정보)[은는]?\s*업데이트/);
+    return !(y && body.indexOf(y[1] + '년') >= 0);
+  });
 
   // ② 문장 나누기 — 마침표 앞이 숫자면 소수점이니 자르지 않는다(1.5km)
   var parts = body.split(/\n+/).join(' ');

@@ -689,7 +689,7 @@ window.OneSignalDeferred=window.OneSignalDeferred||[];window.OneSignalDeferred.p
 금소생태공원은 하천구역 내 생태공원으로, 캠핑카 장기 주차 금지, 공원 잔디밭 내 텐트 설치 금지, 숯 …</p>
 <p class="cy-meta"><span class="cy-tag">♿ 무장애여행 등록</span></p>
 </div></div><div class="cy-card"><img class="cy-img" src="https://tong.visitkorea.or.kr/cms/resource/04/3364104_image2_1.jpg" alt="낙강물길공원" loading="lazy" onerror="this.remove()"><div class="cy-body"><h3>낙강물길공원</h3>
-<p class="cy-meta">📍 안동 · 관광지<span class="wx-chip" title="맑음">☀️ 20° · 비 0%</span></p>
+<p class="cy-meta">📍 안동 · 관광지<span class="wx-chip" title="맑음">☀️ 21° · 비 0%</span></p>
 
 <p class="cy-desc">안동댐 수력발전소 입구 좌측에 위치한 낙강물길공원은 주변 수자원 환경과 어울리는 숲길과 정원을 조성하여 탐방객들에게 편안한 휴식과 힐링공간을 제공을 목적으로 조성되었다.
 작은 연못을 끼고 메타세쿼이아와 전나무가 자라고, 연못 위의 돌다리, 오솔길이 어우러져 이국적인 풍경을 자아내고 있어 한국의 지베르니라고 불린다. 나무 아래 곳곳의 벤치가…</p>
@@ -1129,6 +1129,16 @@ window.cjmFestBB=function(elId,name,place){
     body = body.slice(0, m.index).trim();
   }
   if (!body) { body = text.replace(/[*※]/g, ' ').trim(); notes = []; }
+  // ①-b 본문과 모순되는 「전년도 내용, 올해 내용은 업데이트 중」 안내는 뺀다.
+  //    ⚠️ 2026-10-06: 임실N치즈축제(개막 D-2) 개요를 사람이 2026년 내용으로 고쳐 써 놓았는데도
+  //       관광공사 원문의 「2026년도 축제 내용은 업데이트 중」 주석이 그대로 따라 나갔다.
+  //       본문에 그 해(예: 2026년)가 나오면 이미 갱신된 글이므로 안내가 거짓이 된다 → 뺀다.
+  //       본문에 그 해가 없으면(=정말 작년 글) 안내는 사실이므로 남긴다.
+  //    ⚠️ 데이터에서 지우면 안 된다 — 개요 길이(MIN_OV 300자)가 줄어 상세 페이지 14장이 빠졌다(실측).
+  notes = notes.filter(function (n) {
+    var y = String(n).match(/(\d{4})\s*년도?\s*축제\s*(?:장\s*)?(?:먹거리\s*)?(?:내용|정보)[은는]?\s*업데이트/);
+    return !(y && body.indexOf(y[1] + '년') >= 0);
+  });
 
   // ② 문장 나누기 — 마침표 앞이 숫자면 소수점이니 자르지 않는다(1.5km)
   var parts = body.split(/\n+/).join(' ');

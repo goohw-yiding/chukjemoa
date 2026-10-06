@@ -126,5 +126,19 @@
   "urls": [
    "/ja/closed/labour-day/"
   ]
+ },
+ {
+  "d": "2026-10-06",
+  "n": 8,
+  "urls": [
+   "/festival/sancheonghanbangyakchochukje/",
+   "/festival/yeongju-punggiinsamchukje/",
+   "/festival/seosanhaemieupseongchukje/",
+   "/festival/dongnaeeupseongyeoksachukje/",
+   "/festival/mokpohangguchukje/",
+   "/festival/cheongsongsagwachukje/",
+   "/festival/gumiramyeon-chukje/",
+   "/festival/pohanggukjebulbitchukje/"
+  ]
  }
 ]

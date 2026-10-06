@@ -1,6 +1,10 @@
-영어 허브 선정 묶음: 순서에 제휴 예약 가능 여부가 반영된다는 한 줄 표기 (FTC)
+ja: 일본어 주간 관리 10/6 — 휴무 페이지 다음 연휴 안내·축제 4건 날짜 대조·일본어 이름
 
-「not from ads」 문구를 빼고 "The order also reflects whether tickets or tours can be booked online through our partners." 로 교체. 일본어 문구는 그대로.
+- /ja/closed/ 첫 화면에 「次の韓国の祝日」 한 줄 (ja-holiday blocks 에서 매일 계산) → /ja/closed/{연휴}/ 링크
+  근거: GSC 28일 「ハングルの日 お店 休み」 62노출·6.5위인데 첫 화면에 연휴 이름이 없었다
+- /ja/closed/{연휴}/ title 「お店は開いてる？」→「お店は休み？」 (실제 검색어에 맞춤)
+- 날짜 대조 4건 모두 맞음: 백제문화제 10/3~11 · 강경젓갈축제 10/15~18 · 궁중문화축전 10/7~11 · 임실N치즈축제 10/8~11
+- 일본어 이름(name.ja): 百済文化祭 · 宮中文化祝典 · 任実Nチーズ祭り · 江景塩辛祭り (날짜는 손대지 않음)
 
 Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
-Claude-Session: https://claude.ai/code/session_016m991E2DHzVvVSZCVNFqWg
+Claude-Session: https://claude.ai/code/session_01VzQ3c6AaB4b46qAmYewHYH

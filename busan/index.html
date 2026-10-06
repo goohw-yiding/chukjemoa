@@ -717,7 +717,7 @@ window.OneSignalDeferred=window.OneSignalDeferred||[];window.OneSignalDeferred.p
 <img class="bs-img" src="https://www.visitbusan.net/uploadImgs/files/cntnts/20191227115551778_ttiel" alt="금정산성축제" loading="lazy" onerror="this.remove()">
 <div class="bs-body"><h3>금정산성축제</h3>
 
-<p class="bs-meta">📅 일정 미정<span class="wx-chip" title="맑음">☀️ 21° · 비 0%</span></p>
+<p class="bs-meta">📅 일정 미정<span class="wx-chip" title="맑음">☀️ 22° · 비 0%</span></p>
 <p class="bs-meta">📍 금정산성축제</p>
 <p class="bs-meta">💳 무료</p>
 <p class="bs-desc">5월은 축제의 계절, 부산 금정구에서도 금정산성의 역사와 문화를 연계한 금정산성축제를 개최한다. 전국 최장 길이 금정산성과 경치 좋은 산책길 온천천 일대에서 펼쳐지는 3일간의 문화예술 체험축제이다. 녹음이 우거진 금정산성 마을에서 즐기는 역사문화여행, 호패 하나 손에 쥐고 떠나는 오감만족 체험의 세계로 방문객을 초대한다. 금정구 일원에서도 신나는 거리공연과</p>
@@ -1209,6 +1209,16 @@ window.cjmFestBB=function(elId,name,place){
     body = body.slice(0, m.index).trim();
   }
   if (!body) { body = text.replace(/[*※]/g, ' ').trim(); notes = []; }
+  // ①-b 본문과 모순되는 「전년도 내용, 올해 내용은 업데이트 중」 안내는 뺀다.
+  //    ⚠️ 2026-10-06: 임실N치즈축제(개막 D-2) 개요를 사람이 2026년 내용으로 고쳐 써 놓았는데도
+  //       관광공사 원문의 「2026년도 축제 내용은 업데이트 중」 주석이 그대로 따라 나갔다.
+  //       본문에 그 해(예: 2026년)가 나오면 이미 갱신된 글이므로 안내가 거짓이 된다 → 뺀다.
+  //       본문에 그 해가 없으면(=정말 작년 글) 안내는 사실이므로 남긴다.
+  //    ⚠️ 데이터에서 지우면 안 된다 — 개요 길이(MIN_OV 300자)가 줄어 상세 페이지 14장이 빠졌다(실측).
+  notes = notes.filter(function (n) {
+    var y = String(n).match(/(\d{4})\s*년도?\s*축제\s*(?:장\s*)?(?:먹거리\s*)?(?:내용|정보)[은는]?\s*업데이트/);
+    return !(y && body.indexOf(y[1] + '년') >= 0);
+  });
 
   // ② 문장 나누기 — 마침표 앞이 숫자면 소수점이니 자르지 않는다(1.5km)
   var parts = body.split(/\n+/).join(' ');
