@@ -1,3 +1,7 @@
 {
-  "_readme": "외국어(중국어·일본어·스페인어) 달력 교정 — intl.js 가 매일 빌드 때 읽는다. {TourAPI 국문 id: {start:'YYYY-MM-DD', end, src:'공식 근거 URL', at:'확인일', cancel:true(취소·연기), name:{tw,zh,ja,es}(공식 번역이 없을 때 붙이는 이름)}}. 공식 발표로 확인한 것만 넣는다. 영어는 festivals_en_fix.json 이 따로 있다."
+  "_readme": "외국어(중국어·일본어·스페인어) 달력 교정 — intl.js 가 매일 빌드 때 읽는다. {TourAPI 국문 id: {start:'YYYY-MM-DD', end, src:'공식 근거 URL', at:'확인일', cancel:true(취소·연기), name:{tw,zh,ja,es}(공식 번역이 없을 때 붙이는 이름)}}. 공식 발표로 확인한 것만 넣는다. 영어는 festivals_en_fix.json 이 따로 있다.",
+  "952988": {"name": {"ja": "百済文化祭"}, "at": "2026-10-06", "src": "name only (날짜는 그대로) — 宮中文化祝典: japanese.korea.net 표기, 나머지는 뜻 번역"},
+  "1998564": {"name": {"ja": "宮中文化祝典"}, "at": "2026-10-06", "src": "name only (날짜는 그대로) — 宮中文化祝典: japanese.korea.net 표기, 나머지는 뜻 번역"},
+  "2031318": {"name": {"ja": "任実Nチーズ祭り"}, "at": "2026-10-06", "src": "name only (날짜는 그대로) — 宮中文化祝典: japanese.korea.net 표기, 나머지는 뜻 번역"},
+  "506376": {"name": {"ja": "江景塩辛祭り"}, "at": "2026-10-06", "src": "name only (날짜는 그대로) — 宮中文化祝典: japanese.korea.net 표기, 나머지는 뜻 번역"}
 }

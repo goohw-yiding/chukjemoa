@@ -305,7 +305,8 @@ ${bs.filter(o => o.slug !== b.slug).map(o => `<a href="/ja/closed/${o.slug}/">${
 </div></main>`;
 
     writePage(`ja/closed/${b.slug}`, layout(
-      `${b.ja}（${b.span.length}連休）韓国のお店は開いてる？定休日と休業を数えました | Chukjemoa`,
+      // 2026-10-06: 실제 검색어가 「ハングルの日 お店 休み」(48노출·5.4위·클릭 0) — 「休み」를 제목 앞쪽에 넣는다.
+      `${b.ja}（${b.span.length}連休）韓国のお店は休み？開いてる店と定休日を数えました | Chukjemoa`,
       `${md(b.span[0])}〜${md(b.span[b.span.length - 1])}。飲食店${nf(R.n)}店・カフェ${nf(C.n)}店の営業時間データから、この連休に閉まる店と曜日ごとの定休日を数えました。`,
       `/ja/closed/${b.slug}/`, content, { lang: 'ja' }));
     urls.push(`/ja/closed/${b.slug}/`);

@@ -401,7 +401,12 @@ ${/* 🏯 2026-09-15 — /ja/palace/ 로 가는 «본문» 링크.
     const closedContent = `<main><div class="wrap"><style>${CSS}</style>
 <h1 class="ic-h1">${S.cl.h1}</h1>
 <p class="ic-lead">${S.cl.lead(nf(RS.n + CS.n), nf(RS.day[worstDay] + CS.day[worstDay]), WD[lang][worstDay])}</p>
-
+${/* 🇯🇵 2026-10-06 — «바로 다음 연휴» 한 줄. GSC 28일: 「ハングルの日 お店 休み」가 이 페이지로 62노출·6.5위인데
+     첫 화면에 그 연휴 이름이 없었다(대형 연휴 경고는 설날만 띄운다). 날짜는 ja-holiday.js blocks() 에서 받아 매일 바뀐다. */''}${lang !== 'ja' ? '' : (() => {
+      const b = require('./ja-holiday.js').blocks(TODAY)[0]; if (!b) return '';
+      const W = ['日', '月', '火', '水', '木', '金', '土'], m = d => `${d.getMonth() + 1}月${d.getDate()}日（${W[d.getDay()]}）`;
+      return `<p style="background:#fef2f2;border:1.5px solid #fecaca;border-radius:12px;padding:12px 15px;margin:10px 0 14px;font-size:.95rem;line-height:1.75"><b>🔴 次の韓国の祝日：${esc(b.ja)}</b> — ${m(b.span[0])}〜${m(b.span[b.span.length - 1])}の${b.span.length}連休です。この連休にお店が休みになるか、曜日ごとの定休日と合わせて数えました。<br><a href="/ja/closed/${b.slug}/" style="color:#b91c1c;font-weight:800">${esc(b.ja)}、韓国のお店は休み？ →</a></p>`;
+    })()}
 ${bigBlock ? `<div class="ic-warn"><h2>${S.cl.warnH(holName(bigBlock.days.find(d => /설날|추석/.test(d.name)).name, lang))}</h2>
 <p>${S.cl.warnP(dateLabel(bigBlock.days[0].date, lang), dateLabel(bigBlock.days[bigBlock.days.length - 1].date, lang), nf(RS.hol + CS.hol))}</p></div>` : ''}
 
