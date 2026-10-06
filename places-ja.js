@@ -46,6 +46,19 @@ const sgOf = p => {
   const k = t[1] || '';
   return /[시군구]$/.test(k) ? k : '';
 };
+// 시·군·구의 일본어 읽기 — 일문 주소(addr)의 둘째 토큰(「ソウル特別市 チョンノ区 …」 → チョンノ区)을
+// 그 그룹에서 가장 많이 나온 것으로 고른다. 한글만 보여 주면 일본 독자가 못 읽는다.
+const sgJaOf = arr => {
+  const c = {};
+  // ⚠️ 일문 주소는 띄어쓰기가 없다(「テグ広域市チュン区トンサン洞」) — 시·도 접미사 뒤의 가타카나+市郡区를 잡는다
+  arr.forEach(p => {
+    const m = String(p.addr || '').match(/(?:特別自治市|特別自治道|特別市|広域市|道)\s*([ァ-ヶー]{1,8}[市郡区])/);
+    if (m) c[m[1]] = (c[m[1]] || 0) + 1;
+  });
+  const top = Object.entries(c).sort((a, b) => b[1] - a[1])[0];
+  return top ? top[0] : '';
+};
+const sgLabel = (sg, arr) => { const j = sg === 'その他' ? '' : sgJaOf(arr); return j ? `${j}（${sg}）` : sg; };
 const kana = s => (String(s).match(/[ぁ-んァ-ヶ]/g) || []).length / Math.max(1, String(s).length);
 const usable = p => String(p.ov || '').length >= OV_MIN
   && kana(p.ov) >= KANA_MIN
@@ -77,13 +90,22 @@ const CSS = `<style>
 .jp-links{margin:7px 0 0;font-size:.86rem}.jp-links a{color:#0c7d72;text-decoration:none;margin-right:10px}
 .jp-note{color:#6b7280;font-size:.85rem;line-height:1.7;margin:18px 0 0}
 .jp-others{margin:20px 0 0;font-size:.9rem;line-height:2}.jp-others a{color:#0c7d72;text-decoration:none;margin-right:12px}
+.jp-tag{display:inline-block;background:#e8f5f2;color:#0a6c63;font-size:.74rem;font-weight:800;border-radius:6px;padding:1px 7px;margin-right:6px;vertical-align:2px}
+.jp-mini{margin:4px 0 0 18px;padding:0;line-height:1.9;font-size:.94rem;color:#374151}.jp-mini a{color:#0c7d72;font-weight:700}
+.jp-jump{font-size:.88rem;line-height:2;margin:8px 0}.jp-jump a{color:#0c7d72;text-decoration:none;margin-right:10px;white-space:nowrap}
+.jp-rows{list-style:none;padding:0;margin:0;border:1px solid #e6eaee;border-radius:12px;background:#fff}
+.jp-rows li{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:9px 13px;border-top:1px solid #eef2f5;font-size:.93rem}
+.jp-rows li:first-child{border-top:0}
+.jp-ad{display:block;color:#4b5563;font-size:.84rem;margin-top:2px;word-break:keep-all}
+.jp-bt{display:flex;gap:8px;align-items:center;white-space:nowrap}.jp-bt a{color:#0c7d72;font-size:.84rem;text-decoration:none}
+.jp-cp{border:1px solid #0c7d72;background:#fff;color:#0c7d72;border-radius:8px;padding:4px 9px;font-size:.8rem;font-weight:800;cursor:pointer;font-family:inherit}
 </style>`;
 
 const COPY_JS = `<script>
 (function(){
   if(window.__jpCopy)return; window.__jpCopy=1;
   document.addEventListener('click',function(e){
-    var b=e.target.closest('.xcopy button'); if(!b)return;
+    var b=e.target.closest('.xcopy button,.jp-cp'); if(!b)return;
     var v=b.getAttribute('data-v')||''; var done=b.getAttribute('data-done')||'コピーしました';
     var old=b.textContent;
     var ok=function(){b.textContent=done;setTimeout(function(){b.textContent=old;},1400);};
@@ -116,18 +138,117 @@ function homepage(hp) {
   return /^https?:\/\/[^\s"'<>]+\.[a-z]{2,}/i.test(u) ? u : '';
 }
 
-function plCard(p) {
+function plCard(p, cat) {
   const q = encodeURIComponent(p.ko || p.title);
   const hp = homepage(p.hp);
   return `<li class="jp-item">
-<div class="jp-h"><b>${esc(p.title)}</b>${p.ko ? `<span class="jp-ko">${esc(p.ko)}</span>` : ''}</div>
-<p class="jp-ov">${esc(String(p.ov).replace(/\s+/g, ' ').slice(0, 200))}…</p>
+<div class="jp-h">${cat ? `<span class="jp-tag">${esc(cat)}</span>` : ''}<b>${esc(p.title)}</b>${p.ko ? `<span class="jp-ko">${esc(p.ko)}</span>` : ''}</div>
+<p class="jp-ov">${esc(String(p.ov).replace(/\s+/g, ' ').slice(0, 160))}…</p>
 ${cp(p.addrKo)}
 <p class="jp-links"><a href="https://map.naver.com/p/search/${q}" target="_blank" rel="noopener nofollow">NAVERマップで見る →</a>${hp ? `<a href="${esc(hp)}" target="_blank" rel="noopener nofollow">公式サイト →</a>` : ''}</p>
 </li>`;
 }
 
-function build({ ROOT, layout, writePage }) {
+// ---------- 2026-10-06 「그곳만의 것」 블록 ----------
+// 🔴 10/6 서치콘솔: 시·도 16장 중 13장이 한 달째 미색인. 본문 평균 4만 자.
+//    원인 추정 — 카드마다 붙인 개요가 «한국관광공사 일본어 사이트와 같은 문장»이고(우리 것이 아니다),
+//    지역 페이지끼리 틀이 똑같아 숫자·지명만 다른 페이지로 보였다.
+//    → 위에는 «이 지역에서만 나오는 데이터»(관광지 성격·몰린 곳·이번 축제·오일장)를 올리고,
+//      목록은 개요를 빼고 「이름 + 붙여넣을 한글 주소」만 남긴다(이 페이지의 진짜 쓸모가 그것이다).
+const CAT_JA = c => {
+  c = String(c || '');
+  if (/^A010/.test(c)) return '自然';
+  if (c === 'A0201') return '歴史・遺跡';
+  if (c === 'A0202') return '休養・リゾート';
+  if (c === 'A0203') return '体験';
+  if (c === 'A0204') return '産業見学';
+  if (c === 'A0205') return '建築・名所';
+  if (c === 'A0206') return '博物館・文化施設';
+  if (/^A03/.test(c)) return 'レジャー・スポーツ';
+  if (/^A04/.test(c)) return 'ショッピング';
+  return '';
+};
+// festivals_ja / markets_ja 의 region 표기(짧은 이름)
+const SHORT = { seoul: 'ソウル', busan: '釜山', daegu: '大邱', incheon: '仁川', gwangju: '光州', daejeon: '大田',
+  ulsan: '蔚山', sejong: '世宗', gyeonggi: '京畿', gangwon: '江原', chungbuk: '忠北', chungnam: '忠南',
+  jeonbuk: '全北', jeonnam: '全南', gyeongbuk: '慶北', gyeongnam: '慶南', jeju: '済州' };
+const ymd = s => { s = String(s || ''); return s.length === 8 ? `${+s.slice(4, 6)}/${+s.slice(6, 8)}` : ''; };
+const pct = (a, b) => Math.round(a * 100 / Math.max(1, b));
+
+function profileOf(list, nat) {
+  const c = {};
+  list.forEach(p => { const k = CAT_JA(p.cat); if (k) c[k] = (c[k] || 0) + 1; });
+  const known = Object.values(c).reduce((a, b) => a + b, 0);
+  const rank = Object.entries(c).sort((a, b) => b[1] - a[1]);
+  // 전국 평균보다 비율이 가장 높은 성격 — «이 지역다운 것»
+  let lift = null;
+  rank.forEach(([k, n]) => {
+    if (n < 5) return;
+    const d = pct(n, known) - (nat[k] || 0);
+    if (!lift || d > lift.d) lift = { k, n, d };
+  });
+  return { rank, known, lift };
+}
+
+function regionBlock(m, ctx) {
+  const { nat, fests, markets, slugs, ROOT, TODAY8, groups } = ctx;
+  const pf = profileOf(m.list, nat);
+  const parts = [];
+  // ① 관광지 성격
+  if (pf.rank.length) {
+    const top = pf.rank.slice(0, 3).map(([k, n]) => `${k} ${n}か所（${pct(n, pf.known)}%）`).join('、');
+    const liftTxt = pf.lift && pf.lift.d >= 4
+      ? `全国の平均（${nat[pf.lift.k]}%）と比べて<b>「${esc(pf.lift.k)}」の割合が${pf.lift.d}ポイント高い</b>のが${esc(m.ja)}の特徴です。` : '';
+    const sgTop = groups.filter(([sg]) => sg !== 'その他').slice(0, 3).map(([sg, arr]) => `${esc(sgLabel(sg, arr))} ${arr.length}か所`).join('、');
+    parts.push(`<div class="jp-why" style="background:#fff8ef;border-color:#f6e2c4"><h2 style="color:#9a5b12">${esc(m.ja)}はどんな場所が多い？</h2>
+<p style="color:#5b4a35">種類がわかる${pf.known}か所のうち、多いのは ${esc(top)}。${liftTxt}
+${sgTop ? `スポットが集まっているのは ${sgTop} で、ここを拠点にすると回りやすくなります。` : ''}</p></div>`);
+  }
+  // ② 이번·다음 축제 (끝나지 않은 것만)
+  const fs8 = fests.filter(f => f.region === SHORT[m.slug] && String(f.end || '') >= TODAY8 && String(f.start || '') <= String(+TODAY8 + 200))   // 두 달 안에 시작하는 것까지
+    // 1년 내내 하는 상설 공연(「国楽公演 1/1〜12/31」)은 «축제»가 아니다 — 90일 넘는 것은 뺀다
+    .filter(f => { const d = s => new Date(+String(s).slice(0, 4), +String(s).slice(4, 6) - 1, +String(s).slice(6, 8));
+      return (d(f.end) - d(f.start)) / 864e5 <= 90; })
+    .sort((a, b) => String(a.start).localeCompare(String(b.start))).slice(0, 6);
+  if (fs8.length) {
+    const li = fs8.map(f => {
+      const sl = slugs[f.id];
+      const has = sl && fs.existsSync(path.join(ROOT, 'ja/festival', sl, 'index.html'));
+      const name = has ? `<a href="/ja/festival/${sl}/">${esc(f.title)}</a>` : esc(f.title);
+      const run = String(f.start) <= TODAY8 ? '<b style="color:#c2410c">開催中</b> ' : '';
+      return `<li>${run}${name} <span class="jp-ko">${ymd(f.start)}〜${ymd(f.end)}</span></li>`;
+    }).join('');
+    parts.push(`<h2 class="jp-sec">${esc(m.ja)}でこれから開かれるお祭り</h2><ul class="jp-mini">${li}</ul>`);
+  }
+  // ③ 오일장
+  const mk = markets.filter(x => x.region === SHORT[m.slug] && x.fair).slice(0, 6);
+  if (mk.length) {
+    const li = mk.map(x => `<li><b>${esc(x.name)}</b> <span class="jp-ko">${esc(x.fair)}</span></li>`).join('');
+    parts.push(`<h2 class="jp-sec">${esc(m.ja)}の五日市・伝統市場</h2><ul class="jp-mini">${li}</ul>
+<p class="jp-note" style="margin-top:6px">五日市は5日ごとに立ちます。日にちの見方は<a href="/ja/jangteo/" style="color:#0c7d72">五日市ガイド</a>へ。</p>`);
+  }
+  // ④ 먼저 갈 곳 — 성격별로 한 곳씩(개요가 충분한 것)
+  const seen = new Set(), picks = [];
+  m.list.slice().sort((a, b) => String(b.ov).length - String(a.ov).length).forEach(p => {
+    const k = CAT_JA(p.cat);
+    if (k && picks.length < 6 && !seen.has(k)) { seen.add(k); picks.push(p); }
+  });
+  if (picks.length) {
+    parts.push(`<h2 class="jp-sec">まず見てほしい${picks.length}か所（種類ごとに1か所）</h2>
+<ul class="jp-list">${picks.map(p => plCard(p, CAT_JA(p.cat))).join('')}</ul>`);
+  }
+  return parts.join('\n');
+}
+
+// 목록 한 줄 — 개요 없이 이름·한글명·주소 복사만
+function plRow(p) {
+  const q = encodeURIComponent(p.ko || p.title);
+  return `<li><div><b>${esc(p.title)}</b>${p.ko ? `<span class="jp-ko">${esc(p.ko)}</span>` : ''}
+<span class="jp-ad">${esc(p.addrKo)}</span></div>
+<span class="jp-bt"><button class="jp-cp" data-v="${esc(p.addrKo)}" data-done="OK">住所コピー</button><a href="https://map.naver.com/p/search/${q}" target="_blank" rel="noopener nofollow">地図</a></span></li>`;
+}
+
+function build({ ROOT, layout, writePage, TODAY }) {
   let all = [];
   try { all = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/places_ja.json'), 'utf8')); }
   catch (e) { return []; }
@@ -143,6 +264,14 @@ function build({ ROOT, layout, writePage }) {
   }
   const total = made.reduce((a, b) => a + b.n, 0);
 
+  // 전국 평균 성격 비율 — 지역마다 «평균보다 많은 것»을 찾는 기준
+  const natC = {}; let natN = 0;
+  made.forEach(m => m.list.forEach(p => { const k = CAT_JA(p.cat); if (k) { natC[k] = (natC[k] || 0) + 1; natN++; } }));
+  const nat = {}; Object.entries(natC).forEach(([k, n]) => { nat[k] = pct(n, natN); });
+  const rd = f => { try { return JSON.parse(fs.readFileSync(path.join(ROOT, 'data', f), 'utf8')); } catch (e) { return f.endsWith('slugs.json') ? {} : []; } };
+  const fests = rd('festivals_ja.json'), markets = rd('markets_ja.json'), slugs = rd('ja_festival_slugs.json');
+  const TODAY8 = String(TODAY || new Date().toISOString().slice(0, 10)).replace(/-/g, '');
+
   const sidoNav = (exceptSlug) => made.filter(m => m.slug !== exceptSlug)
     .map(m => `<a href="/ja/places/${m.slug}/">${esc(m.ja)} (${m.n})</a>`).join('');
 
@@ -153,19 +282,26 @@ function build({ ROOT, layout, writePage }) {
     //    → 오늘 채운 addrKo 의 둘째 토큰에서 시·군·구를 뽑는다(「서울특별시 종로구 …」 → 종로구).
     const bySg = {};
     m.list.forEach(p => { const k = sgOf(p) || 'その他'; (bySg[k] = bySg[k] || []).push(p); });
-    const groups = Object.entries(bySg).sort((a, b) => b[1].length - a[1].length);
-    const body = groups.map(([sg, arr]) =>
-      `<h2 class="jp-sec">${esc(sg)} <span style="font-weight:600;color:#9aa3af;font-size:.9rem">${arr.length}か所</span></h2>
-<ul class="jp-list">${arr.map(plCard).join('')}</ul>`).join('');
+    let groups = Object.entries(bySg).sort((a, b) => b[1].length - a[1].length);
+    // 세종처럼 시·군·구가 없는 곳은 「その他」 한 덩어리가 된다 — 이름을 지역 전체로
+    if (groups.length === 1 && groups[0][0] === 'その他') groups = [[`${m.ja}全域`, groups[0][1]]];
+    const top = regionBlock(m, { nat, fests, markets, slugs, ROOT, TODAY8, groups });
+    const jump = groups.map(([sg, arr], i) => `<a href="#sg${i}">${esc(sgLabel(sg, arr))} ${arr.length}</a>`).join('');
+    const body = `<h2 class="jp-sec">市・郡・区別 全${m.n}か所 — 住所をコピーして地図アプリへ</h2>
+<p class="jp-jump">${jump}</p>` + groups.map(([sg, arr], i) =>
+      `<h3 class="jp-sec" id="sg${i}" style="font-size:.98rem">${esc(sgLabel(sg, arr))} <span style="font-weight:600;color:#9aa3af;font-size:.86rem">${arr.length}か所</span></h3>
+<ul class="jp-rows">${arr.map(plRow).join('')}</ul>`).join('');
 
     const cityKey = CITY_PAGE[m.slug];
     const content = `<main><div class="wrap">${CSS}
 <p class="jp-crumb"><a href="/ja/">ホーム</a> › <a href="/ja/places/">行ってみる場所</a> › ${esc(m.ja)}</p>
 <h1 class="jp-h1">${esc(m.ja)}で行ってみる場所 ${m.n}か所 — 韓国語の住所つき</h1>
-<p class="jp-lead">${esc(m.ja)}の観光スポット${m.n}か所を市・郡・区ごとにまとめました。韓国観光公社の公式日本語紹介に、
-<b>地図アプリにそのまま貼り付けられる韓国語の住所</b>を添えています。${groups.length}の市・郡・区に分かれています。</p>
-${WHY}
+<p class="jp-lead">${esc(m.ja)}の観光スポット${m.n}か所を、${groups.length}の市・郡・区ごとに一覧にしました。どれも
+<b>地図アプリにそのまま貼り付けられる韓国語の住所</b>つきです。一覧の前に、${esc(m.ja)}にどんな種類の場所が多いか、
+これからのお祭りや五日市をまとめています。</p>
 ${cityKey ? `<p class="jp-lead">👉 <a href="/ja/${cityKey}/" style="color:#0c7d72;font-weight:800">${esc(m.ja)}の「今月のお祭り・行き先」ページ</a>もあります。こちらは季節で入れ替わります。</p>` : ''}
+${top}
+${WHY}
 ${body}
 <div class="jp-others"><b>ほかの地域</b><br>${sidoNav(m.slug)}</div>
 <p class="jp-note">出典：韓国観光公社（公共データポータル）。日本語の紹介文は韓国観光公社の公式翻訳です。
@@ -175,7 +311,7 @@ ${body}
 
     writePage('ja/places/' + m.slug, layout(
       `${m.ja}の観光スポット ${m.n}か所 — 韓国語の住所つき | Chukjemoa`,
-      `${m.ja}で行ってみる場所${m.n}か所を市・郡・区別に。韓国観光公社の公式日本語紹介と、NAVER・カカオマップに貼り付けられる韓国語の住所つき。Googleマップが使えない韓国での移動に。`,
+      `${m.ja}で行ってみる場所${m.n}か所を市・郡・区別に一覧。どんな種類の場所が多いか、これからのお祭り・五日市と、NAVER・カカオマップに貼り付けられる韓国語の住所つき。`,
       `/ja/places/${m.slug}/`, content, { lang: 'ja' }));
     URLS.push(`/ja/places/${m.slug}/`);
   }
@@ -203,6 +339,10 @@ ${WHY}
 <h2 class="jp-sec">地域を選ぶ</h2>
 <p class="jp-lead" style="margin-bottom:6px">各地域のページでは、市・郡・区ごとにまとめてあります。地名がわからなくても上から順に見ていけます。</p>
 <ul class="jp-grid">${cards}</ul>
+<h2 class="jp-sec">地域ごとの「らしさ」— 全国平均より多い種類</h2>
+<p class="jp-lead" style="margin-bottom:6px">観光公社が分類している種類（自然・歴史・博物館など）の割合を、全国平均と比べました。行き先選びの目安にどうぞ。</p>
+<ul class="jp-mini">${sorted.map(m => { const pf = profileOf(m.list, nat); const l = pf.lift;
+    return `<li><a href="/ja/places/${m.slug}/">${esc(m.ja)}</a>：${l && l.d >= 4 ? `「${esc(l.k)}」が全国平均より${l.d}ポイント多い` : `種類のかたよりが小さく、まんべんなくそろう`}（いちばん多いのは${esc((pf.rank[0] || ['—'])[0])}）</li>`; }).join('')}</ul>
 <h2 class="jp-sec">このページの使い方</h2>
 <p class="jp-lead">① 行きたい地域を開く → ② 気になる場所の<b>「コピー」ボタン</b>で韓国語の住所をコピー →
 ③ <a href="https://map.naver.com/" target="_blank" rel="noopener nofollow">NAVERマップ</a>か

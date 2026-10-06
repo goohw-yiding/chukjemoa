@@ -656,7 +656,21 @@ ${/* 📍 /ja/places/ 는 81만 자인데 구글이 «한 번도» 못 봤다(cr
     bigMonths.forEach((ym, mi) => {
       const list = byMonth[ym], m = +ym.slice(5, 7);
       const tr = TRANS[lang];
-      const items = list.map(f => {
+      // 🇯🇵 2026-10-06 — /ja/calendar/2026-10/ 이 두 달째 「발견됨-미색인」. 151건 중 상당수가
+      //   공식 일본어명이 없어 「Busangukjegongyeonyesulmaket」 같은 기계 로마자로 찍혀 있었다.
+      //   일본 독자도 못 읽고, 구글 눈에는 자동 생성 목록이다.
+      //   → ja 만: 일본어 이름이 있는 축제를 본 목록에, 없는 것은 아래 「ハングル名だけ」 표로 따로 접는다
+      //     (로마자는 안 찍는다 — 지도앱에 붙일 한글 원제가 진짜 쓸모다). 다른 언어는 그대로.
+      const named = f => (f._name && f._name[lang]) || tr.get(ckey(f));
+      const jaSplit = lang === 'ja';
+      const restList = jaSplit ? list.filter(f => !named(f)) : [];
+      const restHtml = restList.length ? `<div class="ic-card"><h2>日本語の公式名がないお祭り（${restList.length}件）</h2>
+<p>韓国観光公社に日本語の名前が登録されていないお祭りです。ローマ字にすると読めない綴りになるので、<b>ハングルの原題のまま</b>載せています。NAVERマップやカカオマップにそのまま貼ると会場が出ます。</p>
+<table class="ic-tbl" style="width:100%;border-collapse:collapse;font-size:.88rem"><tbody>${restList.map(f => {
+        const sd = String(f.start), ed = String(f.end);
+        return `<tr style="border-top:1px solid #eef2f5"><td style="padding:6px 4px">${esc(f.title)}</td><td style="padding:6px 4px;white-space:nowrap;color:#6b7280">${+sd.slice(4, 6)}/${+sd.slice(6, 8)}〜${+ed.slice(4, 6)}/${+ed.slice(6, 8)}</td><td style="padding:6px 4px;white-space:nowrap;color:#6b7280">${esc(f.sido ? sido(f.sido, lang) : '')}</td><td style="padding:6px 4px;white-space:nowrap"><a href="${kakao(f.title, f.x, f.y)}" target="_blank" rel="noopener" style="color:#0c7d72">地図</a></td></tr>`;
+      }).join('')}</tbody></table></div>` : '';
+      const items = (jaSplit ? list.filter(named) : list).map(f => {
         const o = tr.get(ckey(f));
         // f._name: 공식 번역이 없는 축제에 외국어 관리 회차가 붙인 이름. 「無官方譯名」 표시는 그대로 둔다(정직).
         const name = (f._name && f._name[lang]) || (o && o.title ? o.title : festName(f.title, lang));
@@ -716,6 +730,7 @@ ${lang !== 'ja' ? '' : (() => {
 <div class="ic-card"><h2>${S.cal.mFesH(monthLabel(ym, lang))}</h2>
 <p>${S.cal.mFesP}</p>
 <ul class="ic-fest">${items}</ul></div>
+${restHtml}
 
 ${busy.length ? `<div class="ic-card"><h2>${S.cal.mBusyH}</h2>
 <p>${measured === m ? S.cal.mBusyP((MONN[lang] || MONN.en)[m]) : S.cal.mBusyAlt((MONN[lang] || MONN.en)[m], (MONN[lang] || MONN.en)[measured])}</p>
