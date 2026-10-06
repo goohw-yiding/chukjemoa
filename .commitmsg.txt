@@ -1,10 +1,8 @@
-ja: 일본어 주간 관리 10/6 — 휴무 페이지 다음 연휴 안내·축제 4건 날짜 대조·일본어 이름
+영어 미색인 단건 처리: /en/blog/ 본문 진입로 + 제주올레걷기축제 2026 공식 정보
 
-- /ja/closed/ 첫 화면에 「次の韓国の祝日」 한 줄 (ja-holiday blocks 에서 매일 계산) → /ja/closed/{연휴}/ 링크
-  근거: GSC 28일 「ハングルの日 お店 休み」 62노출·6.5위인데 첫 화면에 연휴 이름이 없었다
-- /ja/closed/{연휴}/ title 「お店は開いてる？」→「お店は休み？」 (실제 검색어에 맞춤)
-- 날짜 대조 4건 모두 맞음: 백제문화제 10/3~11 · 강경젓갈축제 10/15~18 · 궁중문화축전 10/7~11 · 임실N치즈축제 10/8~11
-- 일본어 이름(name.ja): 百済文化祭 · 宮中文化祝典 · 任実Nチーズ祭り · 江景塩辛祭り (날짜는 손대지 않음)
+- /en/festival/ 허브(색인) 팁 아래 「Planning guides」 — 블로그 3편 + 목록 /en/blog/ 본문 링크 (en 만, ja 변화 없음)
+- /en/jangteo/ 「Before you go」 끝에 오일장 글 2편 + /en/blog/ 본문 링크
+- 제주올레걷기축제(1084180): 19·20코스 일자별 구간·참가비·올레패스 사전신청(7/8~10/9)·외국인 신청·2027 개편 — 서울신문·제이누리 두 곳 대조, 11/7 자동 만료
 
 Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
-Claude-Session: https://claude.ai/code/session_01VzQ3c6AaB4b46qAmYewHYH
+Claude-Session: https://claude.ai/code/session_016m991E2DHzVvVSZCVNFqWg
