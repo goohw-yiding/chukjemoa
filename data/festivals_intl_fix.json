@@ -1,7 +1,51 @@
 {
-  "_readme": "외국어(중국어·일본어·스페인어) 달력 교정 — intl.js 가 매일 빌드 때 읽는다. {TourAPI 국문 id: {start:'YYYY-MM-DD', end, src:'공식 근거 URL', at:'확인일', cancel:true(취소·연기), name:{tw,zh,ja,es}(공식 번역이 없을 때 붙이는 이름)}}. 공식 발표로 확인한 것만 넣는다. 영어는 festivals_en_fix.json 이 따로 있다.",
-  "952988": {"name": {"ja": "百済文化祭"}, "at": "2026-10-06", "src": "name only (날짜는 그대로) — 宮中文化祝典: japanese.korea.net 표기, 나머지는 뜻 번역"},
-  "1998564": {"name": {"ja": "宮中文化祝典"}, "at": "2026-10-06", "src": "name only (날짜는 그대로) — 宮中文化祝典: japanese.korea.net 표기, 나머지는 뜻 번역"},
-  "2031318": {"name": {"ja": "任実Nチーズ祭り"}, "at": "2026-10-06", "src": "name only (날짜는 그대로) — 宮中文化祝典: japanese.korea.net 표기, 나머지는 뜻 번역"},
-  "506376": {"name": {"ja": "江景塩辛祭り"}, "at": "2026-10-06", "src": "name only (날짜는 그대로) — 宮中文化祝典: japanese.korea.net 표기, 나머지는 뜻 번역"}
+ "235076": {
+  "at": "2026-10-06",
+  "name": {
+   "tw": "釜山煙火節",
+   "zh": "釜山烟花节"
+  },
+  "src_zh": "부산시 중문 https://www.busan.go.kr/zhs/bsevents/1693997 · VisitBusan 번체"
+ },
+ "506376": {
+  "name": {
+   "ja": "江景塩辛祭り",
+   "tw": "江景醃海鮮節",
+   "zh": "江景腌海鲜节"
+  },
+  "at": "2026-10-06",
+  "src": "name only (날짜는 그대로) — 宮中文化祝典: japanese.korea.net 표기, 나머지는 뜻 번역",
+  "src_zh": "뜻 번역(공식 중문명 없음)"
+ },
+ "952988": {
+  "name": {
+   "ja": "百済文化祭",
+   "tw": "百濟文化節",
+   "zh": "百济文化节"
+  },
+  "at": "2026-10-06",
+  "src": "name only (날짜는 그대로) — 宮中文化祝典: japanese.korea.net 표기, 나머지는 뜻 번역",
+  "src_zh": "백제문화제재단 중문 https://www.baekje.org/chn/"
+ },
+ "1998564": {
+  "name": {
+   "ja": "宮中文化祝典",
+   "tw": "宮中文化慶典",
+   "zh": "宫中文化庆典"
+  },
+  "at": "2026-10-06",
+  "src": "name only (날짜는 그대로) — 宮中文化祝典: japanese.korea.net 표기, 나머지는 뜻 번역",
+  "src_zh": "국가유산청 중문 보도자료 PR Newswire https://hk.prnasia.com/story/525533-2.shtml"
+ },
+ "2031318": {
+  "name": {
+   "ja": "任実Nチーズ祭り",
+   "tw": "任實N起司節",
+   "zh": "任实N奶酪节"
+  },
+  "at": "2026-10-06",
+  "src": "name only (날짜는 그대로) — 宮中文化祝典: japanese.korea.net 표기, 나머지는 뜻 번역",
+  "src_zh": "뜻 번역(공식 중문명 없음, 번체는 대만 통용 起司)"
+ },
+ "_readme": "외국어(중국어·일본어·스페인어) 달력 교정 — intl.js 가 매일 빌드 때 읽는다. {TourAPI 국문 id: {start:'YYYY-MM-DD', end, src:'공식 근거 URL', at:'확인일', cancel:true(취소·연기), name:{tw,zh,ja,es}(공식 번역이 없을 때 붙이는 이름)}}. 공식 발표로 확인한 것만 넣는다. 영어는 festivals_en_fix.json 이 따로 있다."
 }

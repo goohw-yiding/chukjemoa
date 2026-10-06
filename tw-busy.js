@@ -279,6 +279,15 @@ function build(ctx) {
   if (seol) faq.push(['韓國春節（설날）放幾天？', `下一次是${blockTxt(seol)}。韓國的法定春節是農曆除夕、初一、初二這三天，碰到週末時會另外補放「替代公休日」。`]);
   faq.push(['韓國過年、中秋店家會開嗎？', `大型百貨、連鎖咖啡廳、便利商店、宮殿等觀光景點大多照常營業；最常關門的是巷弄小吃店、傳統市場和個人小店。我們統計的${nf(TOT)}家餐廳與咖啡廳中，營業資料上<b>明寫「名節公休」的就有${nf(R.hol + C.hol)}家</b>，沒寫但當天關門的店也不少。`]);
   if (chu) faq.push(['韓國中秋節（추석）是哪幾天？', `下一次是${blockTxt(chu)}。韓國的中秋是農曆八月十五前後共三天，和台灣只放一天不同。`]);
+  // 2026-10-06 — GSC 「韓國清明節有放假嗎」(5.0위). 4월에 한국 공휴일이 있는지는 holidays.json 으로 판정(손으로 안 적는다).
+  //   사실: 청명·한식은 한국 공휴일이 아니고, 식목일(4/5)은 2006년부터 공휴일에서 빠졌다.
+  try {
+    const KH = JSON.parse(require('fs').readFileSync(require('path').join(__dirname, 'data', 'holidays.json'), 'utf8'));
+    const yrs = [...new Set(KH.map(h => h.date.slice(0, 4)))].filter(y => y >= TODAY.slice(0, 4)).sort();
+    const aprY = yrs.find(y => `${y}-04-30` >= TODAY);
+    if (aprY && !KH.some(h => h.date.slice(0, 7) === `${aprY}-04`))
+      faq.push(['韓國清明節有放假嗎？', `<b>不放。</b>韓國的國定假日裡沒有清明節（청명）與寒食（한식），4月5日的植樹節（식목일）也從2006年起不再是公休日。${aprY}年4月韓國沒有任何國定假日，店家、景點都照常營業 — 台灣清明連假去韓國，反而碰不到韓國人的連假人潮。`]);
+  } catch (e) {}
   faq.push(['韓國連假人潮最多是哪幾天？', lapRows.length
     ? `和台灣連假重疊的期間最擠：${lapRows.slice(0, 3).map(r => `<b>${ymd(r.start)}〜${mdShort(r.end)}</b>`).join('、')}。詳見上方表格。`
     : '請看上方的韓國國定假日表。']);
