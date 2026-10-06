@@ -199,7 +199,7 @@ function regionBlock(m, ctx) {
     const top = pf.rank.slice(0, 3).map(([k, n]) => `${k} ${n}か所（${pct(n, pf.known)}%）`).join('、');
     const liftTxt = pf.lift && pf.lift.d >= 4
       ? `全国の平均（${nat[pf.lift.k]}%）と比べて<b>「${esc(pf.lift.k)}」の割合が${pf.lift.d}ポイント高い</b>のが${esc(m.ja)}の特徴です。` : '';
-    const sgTop = groups.filter(([sg]) => sg !== 'その他').slice(0, 3).map(([sg, arr]) => `${esc(sgLabel(sg, arr))} ${arr.length}か所`).join('、');
+    const sgTop = groups.filter(([sg]) => sg !== 'その他' && !/全域$/.test(sg)).slice(0, 3).map(([sg, arr]) => `${esc(sgLabel(sg, arr))} ${arr.length}か所`).join('、');
     parts.push(`<div class="jp-why" style="background:#fff8ef;border-color:#f6e2c4"><h2 style="color:#9a5b12">${esc(m.ja)}はどんな場所が多い？</h2>
 <p style="color:#5b4a35">種類がわかる${pf.known}か所のうち、多いのは ${esc(top)}。${liftTxt}
 ${sgTop ? `スポットが集まっているのは ${sgTop} で、ここを拠点にすると回りやすくなります。` : ''}</p></div>`);
