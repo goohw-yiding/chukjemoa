@@ -202,7 +202,8 @@ ${b.length ? `<div class="cy-key">${b.join('<br>')}</div>` : ''}</div></div>`;
     stay: r => {
       const b = [];
       if (r.ci || r.co) b.push(`🕒 체크인 ${esc(r.ci || '-')} · 체크아웃 ${esc(r.co || '-')}`);
-      if (r.rooms) b.push(`🚪 객실 ${esc(String(r.rooms))}실`);
+      // 2026-10-06: 원천 값에 «4실»처럼 단위가 붙어 오는 곳이 있어 «4실실»로 나왔다 — 숫자만 남기고 단위는 한 번만 붙인다.
+  if (r.rooms) { const rn = String(r.rooms).trim(); b.push(`🚪 객실 ${esc(/^\d+\s*실$/.test(rn) ? rn.replace(/\s*실$/, '') : rn)}${/^\d+(\s*실)?$/.test(rn) ? '실' : ''}`); }
       if (r.park) b.push(`🅿️ 주차 ${esc(String(r.park).slice(0, 18))}`);
       return `<div class="cy-card">${img(r)}<div class="cy-body"><h3>${esc(r.title)}</h3>
 <p class="cy-meta">${r.kind ? `<span class="cy-tag">${esc(r.kind)}</span>` : ''}${shortAddr(r)}</p>

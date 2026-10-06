@@ -6635,6 +6635,29 @@ if (apiTrails.length) {
     const totalH = Math.round(list.reduce((s, t) => s + (+t.min || 0), 0) / 60);
     const sidos = [...new Set(list.map(t => t.sido).filter(Boolean))];
     const guides = [...new Set(list.map(t => t.sigun).filter(Boolean))];
+    // 2026-10-06 — 구글이 «읽고 뺀»(크롤링됨-미색인) 노선 페이지가 있었다(DMZ·남파랑길). 본문 대부분이 두루누비 원문 그대로라
+    //   다른 곳과 똑같고, 위의 공식 소개(«총 35개 코스, 510km»)와 아래 집계(«37개·575km»)가 서로 어긋나 있었다.
+    //   ① 어긋남을 숨기지 않고 이유를 적는다(우회로 포함 / 공개 데이터 미등록 코스) ② 우리가 계산한 «고르는 기준»을 위에 둔다.
+    const paraTxt = info && info.paras ? info.paras.join(' ') : '';
+    const offN = +((paraTxt.match(/총\s*(\d+)\s*개\s*코스/) || paraTxt.match(/(\d+)\s*개\s*코스로/) || [])[1] || 0);
+    const detour = list.filter(t => /우회/.test(t.name)).length;
+    const mainNos = new Set(list.filter(t => !/우회/.test(t.name)).map(t => crsNo(t.name)).filter(n => n !== 999));
+    const missing = offN ? Array.from({ length: offN }, (_, i) => i + 1).filter(n => !mainNos.has(n)) : [];
+    let gapNote = '';
+    if (offN && offN !== list.length) {
+      if (missing.length) gapNote = `공식 노선은 <b>${offN}개 코스</b>인데, 한국관광공사 공개 데이터에는 그중 ${offN - missing.length}개 코스만 등록돼 있습니다${list.length > offN - missing.length ? `(여기에 우회로·지선 ${list.length - (offN - missing.length)}개를 더해 ${list.length}개를 실었습니다)` : ''}. 빠진 <b>${missing.slice(0, 12).join('·')}${missing.length > 12 ? ' 등' : ''}코스</b>는 <a href="https://www.durunubi.kr/" target="_blank" rel="noopener">두루누비</a>에서 확인하세요. 그래서 아래 총 거리·소요 시간은 공식 수치와 다릅니다.`;
+      else if (detour) gapNote = `공식 노선은 <b>${offN}개 코스</b>이고, 여기에는 <b>우회로 ${detour}개</b>를 더해 ${list.length}개를 실었습니다. 그래서 아래 총 거리·소요 시간이 공식 수치보다 깁니다.`;
+    }
+    const withKm = list.filter(t => +t.dist > 0);
+    const shortest = withKm.slice().sort((a, b) => a.dist - b.dist).slice(0, 3);
+    const longest = withKm.slice().sort((a, b) => b.dist - a.dist)[0];
+    const lv = {}; list.forEach(t => { const k = /쉬|하/.test(t.level || '') ? '쉬움' : /어려|상/.test(t.level || '') ? '어려움' : t.level ? '보통' : ''; if (k) lv[k] = (lv[k] || 0) + 1; });
+    const loops = list.filter(t => /^순환/.test(t.cycle || '')).length;
+    const pickBox = withKm.length >= 3 ? `<div class="rt-pick" style="background:#fff;border:1px solid ${M.bd};border-radius:14px;padding:14px 16px;margin:12px 0">
+<b style="color:${M.color}">🧭 처음 걷는다면 — 코스 고르는 기준</b>
+<p style="margin:8px 0 0;font-size:.92rem;line-height:1.8;color:#374151">· 가장 짧은 코스: ${shortest.map(t => `<b>${esc(t.name.replace(TITLE, '').trim() || t.name)}</b> ${t.dist}km${t.sigun ? `(${esc(t.sigun)})` : ''}`).join(' · ')}<br>
+· 가장 긴 코스: <b>${esc(longest.name.replace(TITLE, '').trim() || longest.name)}</b> ${longest.dist}km${longest.min ? ` · ${hrs(longest.min)}` : ''}<br>
+${Object.keys(lv).length ? `· 난이도: ${['쉬움', '보통', '어려움'].filter(k => lv[k]).map(k => `${k} ${lv[k]}개`).join(' · ')}<br>` : ''}· 출발점으로 돌아오는 <b>순환형</b>은 ${loops}개${loops ? '' : ' — 전부 편도라 차를 두고 가면 돌아오는 교통편을 먼저 확인하세요'}.</p></div>` : '';
 
     const courseCards = list.map(t => `<details class="crs">
 <summary>
@@ -6689,6 +6712,8 @@ ${info && info.paras.length ? info.paras.map(p => `<p>${esc(p)}</p>`).join('') :
 <div class="rt-stats"><span>총 <b>${list.length}개</b> 코스</span><span>총 거리 <b>${totalKm.toLocaleString()}km</b></span><span>총 소요 <b>약 ${totalH.toLocaleString()}시간</b></span><span>지나는 지역 <b>${sidos.length}개 시·도</b></span></div>
 </div>
 <p class="note">지나는 지역: ${esc(sidos.join(' · '))}</p>
+${gapNote ? `<p class="note" style="background:#fffbea;border:1px solid #f3e3a1;border-radius:10px;padding:10px 13px">ℹ️ ${gapNote}</p>` : ''}
+${pickBox}
 
 <h2 class="sec">코스별 안내 <span style="font-size:.9rem;font-weight:600;color:#9aa3af">${list.length}개 · 눌러서 펼치기</span></h2>
 <p class="note" style="margin-top:-4px">각 코스를 누르면 거리·소요 시간·난이도와 함께 구간 설명, 주변 볼거리가 나옵니다.</p>
@@ -8524,6 +8549,11 @@ function pageHash(u) {
   h = (head + main)
     .replace(/20\d\d-\d\d-\d\d/g, d => near.has(d) ? '' : d)                 // 오늘 근처 기준일·갱신일
     .replace(/<script[\s\S]*?<\/script>/g, '')
+    // 2026-10-06 실측: 그래도 하루에 57%가 «변경됨». 날씨 칩이 예보가 있는 날만 «통째로» 붙었다 빠졌다 하고(도시 하위 페이지),
+    //   장날 페이지의 «다음 장날 10월 7일 (수) · 내일»·«오늘(10월 6일) 이후만» 이 매일 바뀌었다 → 이것도 지운다.
+    .replace(/<span class="wx-chip"[^>]*>[^<]*<\/span>/g, '')
+    .replace(/<div class="jsg-next-d">[\s\S]*?<\/div>/g, '')
+    .replace(/오늘\(\d{1,2}월 \d{1,2}일\)/g, '').replace(/<b>(오늘|내일|모레)<\/b>/g, '').replace(/today-open/g, '')
     .replace(/D-\d+|D-DAY|진행중|開催中|종료|일정 확인 중/g, '')            // D-day 배지
     .replace(/class="cnt">[^<]*/g, 'class="cnt">')                          // 메뉴 개수
     .replace(/title="[^"]*"/g, '').replace(/-?\d+(\.\d+)?\s*°[CF]?/g, '').replace(/(?:💧)?\s*\d+\s*%/g, '')   // 날씨
@@ -8531,7 +8561,9 @@ function pageHash(u) {
     .replace(/다음 장날\s*\d{1,2}\/\d{1,2}/g, '다음 장날')                                                  // 축제 상세의 «다음 장날»
     .replace(/[☀🌤⛅🌥☁🌦🌧⛈🌩🌨❄🌫🌙]️?/gu, '')
     .replace(/<lastmod>.*?<\/lastmod>/g, '');
-  if (u.startsWith('/jangteo/')) h = h.replace(/\d{1,2}\/\d{1,2}(?=<)/g, '');   // 다음 장날(고정 주기에서 계산되는 값)
+  if (u.startsWith('/jangteo/')) h = h.replace(/\d{1,2}\/\d{1,2}(?=<)/g, '')   // 다음 장날(고정 주기에서 계산되는 값)
+    .replace(/<div class="jsg-next-m">[^<]*/g, '')                              // 다음 장이 서는 시장 이름(매일 돌아감)
+    .replace(/<span class="jsg-cal">(?:\d{1,2}월 [\d·]+일(?: · )?)+/g, '<span class="jsg-cal">');   // 석 달 장날 달력(지난 날짜가 매일 빠짐)
   return crypto.createHash('sha1').update(h).digest('hex');
 }
 const LM_NEW = {};
@@ -8540,8 +8572,8 @@ function lastmodOf(u) {
   if (!h) return TODAY;
   const prev = LM[u];
   // v2(2026-10-02 해시 방식 변경) 첫 빌드는 해시만 갈아끼우고 날짜는 그대로 둔다 — 방식 변경을 «내용 변경»으로 세지 않는다
-  const date = (prev && (prev.h === h || prev.v !== 2)) ? prev.d : TODAY;
-  LM_NEW[u] = { h, d: date, v: 2 };
+  const date = (prev && (prev.h === h || prev.v !== 3)) ? prev.d : TODAY;   // v3 = 2026-10-06 정규화 보강
+  LM_NEW[u] = { h, d: date, v: 3 };
   return date;
 }
 
