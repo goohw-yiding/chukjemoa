@@ -89,19 +89,23 @@ const AID_ZH = { tw: '137183', zh: '137184' };
 AD.twEsim = '1467024';   // chukjemoa-tw · tw-closed / esim
 AD.zhEsim = '1467027';   // chukjemoa-zh · zh-closed / esim
 AD.twHotel = '1467029';  // chukjemoa-tw · tw-busy / hotel
+AD.twKtx = '1482478';    // chukjemoa-tw · tw-busan / ktx (2026-10-06, zh-TW 「KTX」 검색 16건 확인 — 상품 상세는 날짜 고정 철도검색으로 리다이렉트돼 검색 주소를 쓴다)
 const urlZh = (lang, target, adid) =>
   `https://affiliate.klook.com/redirect?aid=${AID_ZH[lang]}&aff_adid=${adid}&k_site=${encodeURIComponent(target)}`;
 const TARGET_ZH = {
   twEsim: 'https://www.klook.com/zh-TW/search/result/?query=' + encodeURIComponent('韓國 eSIM'),
   zhEsim: 'https://www.klook.com/zh-CN/search/result/?query=' + encodeURIComponent('韩国 eSIM'),
   twHotel: 'https://www.klook.com/zh-TW/search/result/?query=' + encodeURIComponent('首爾 飯店'),
+  twKtx: 'https://www.klook.com/zh-TW/search/result/?query=KTX',
 };
 const ZH_TXT = {
   tw: { badge: '廣告', note: '透過這個連結預訂，本站會收到介紹費；你支付的金額不會改變。',
     esim: '在韓國要用 NAVER 地圖查營業時間、打電話或看店家 IG，手機都得有網路。韓國用的 eSIM 可以出發前先買好 → ',
     esimA: '看韓國 eSIM（Klook）',
     hotel: '連假重疊的期間飯店會最先被訂走。如果日期已經落在上表裡，首爾的住宿可以先比價訂好 → ',
-    hotelA: '看首爾飯店（Klook）' },
+    hotelA: '看首爾飯店（Klook）',
+    ktx: '從首爾到釜山，最快的是 KTX 高鐵，首爾站出發約2小時20分到3小時。連假期間車票常常提早賣完，日期一確定就先訂好 → ',
+    ktxA: '看首爾—釜山 KTX 車票（Klook）' },
   zh: { badge: '广告', note: '通过此链接预订，本站会获得介绍费；您支付的金额不变。',
     esim: '在韩国用 NAVER 地图查营业时间、打电话或看店家的 SNS，手机都需要流量。韩国用的 eSIM 可以出发前买好 → ',
     esimA: '查看韩国 eSIM（Klook）' },
@@ -117,5 +121,11 @@ function hotelTw() {
   const T = ZH_TXT.tw;
   return boxZh(badgeZh(T.badge) + T.hotel + a(urlZh('tw', TARGET_ZH.twHotel, AD.twHotel), T.hotelA, 'hotel', 'tw-busy', 'inline-context'), T);
 }
+// 2026-10-06 — /tw/busan/ : 「서울→부산은 KTX, 연휴엔 표가 먼저 팔린다」 사실 문장 바로 뒤 → KTX 승차권
+function ktxTw() {
+  const T = ZH_TXT.tw;
+  return boxZh(badgeZh(T.badge) + T.ktx + a(urlZh('tw', TARGET_ZH.twKtx, AD.twKtx), T.ktxA, 'ktx', 'tw-busan', 'inline-context'), T);
+}
+module.exports.ktxTw = ktxTw;
 module.exports.esimZh = esimZh;
 module.exports.hotelTw = hotelTw;
