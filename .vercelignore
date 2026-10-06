@@ -42,3 +42,4 @@ data
 /_*
 /.commitmsg*
 /.fuse_hidden*
+_cards_tmp_* 
