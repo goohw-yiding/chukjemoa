@@ -27,6 +27,8 @@ const T = {
       ['Google Maps will not give you directions', 'Korean law restricts exporting map data, so Google Maps has no walking or transit routing inside Korea. Use Naver Map or Kakao Map. Every festival page here gives you the Korean name and address to paste in.'],
       ['A country festival often sits next to a 5-day market', 'Rural markets open only on days ending in fixed digits, every 5 days. Where one falls inside a festival\'s dates, we list the actual date on that festival\'s page.']
     ],
+    // 2026-10-06 — /en/blog/ 목록이 «발견됨-미색인»(내비 링크만 받음). 색인된 허브 본문에서 목록·관련 글로 잇는다. en 만.
+    guides: { lead: 'Planning guides:', items: [['How Korea\'s 5-day market days work', '/en/blog/ojang-day-guide-en/'], ['Korean holidays and the festivals around them', '/en/blog/korean-holidays-and-festivals/'], ['Finding food near a festival', '/en/blog/finding-food-near-korean-festivals/']], all: ['All travel guides', '/en/blog/'] },
     upcoming: 'Happening now and coming up',
     past: 'Earlier this year (dates for reference — most are annual)',
     on: 'Now on',
@@ -150,7 +152,8 @@ ${CSS}
 <h1 style="font-size:1.52rem;font-weight:900;letter-spacing:-.02em;margin:14px 0 4px">${esc(t.h1(year))}</h1>
 <div class="ixlead"><p>${esc(t.lead)}</p></div>
 <h2 style="font-size:1.04rem;font-weight:900;color:#0a6c63;margin:20px 0 8px">${esc(t.how)}</h2>
-<div class="ixtips">${t.tips.map(([a, b]) => `<div class="ixtip"><b>${esc(a)}</b><span>${esc(b)}</span></div>`).join('')}</div>
+<div class="ixtips">${t.tips.map(([a, b]) => `<div class="ixtip"><b>${esc(a)}</b><span>${esc(b)}</span></div>`).join('')}</div>${t.guides ? `
+<p style="margin:10px 0 0;font-size:.92rem;line-height:1.7"><b>${esc(t.guides.lead)}</b> ${t.guides.items.map(([a, h]) => `<a href="${h}" style="color:#0c7d72;font-weight:700">${esc(a)}</a>`).join(' · ')} · <a href="${t.guides.all[1]}" style="color:#0c7d72;font-weight:700">${esc(t.guides.all[0])} →</a></p>` : ''}
 ${picksBlock(lang, rows, TODAY8, rowHtml)}
 <h2 style="font-size:1.1rem;font-weight:900;margin:26px 0 2px">${esc(t.upcoming)} <span style="color:#9aa3af;font-weight:700;font-size:.9rem">${esc(t.n(live.length))}</span></h2>
 ${group(live)}

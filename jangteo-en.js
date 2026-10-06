@@ -80,6 +80,7 @@ ${r.sale ? `<div class="jfam">🛒 ${esc(r.sale)}</div>` : ''}
 <li><b>Street food is the highlight.</b> Pancakes (jeon), Korean sausage (sundae) and soup with rice (gukbap) are made fresh and cheaper than in the city.</li>
 <li><b>Dates follow the solar calendar</b>, not the lunar calendar — "2nd and 7th" means the day-of-month number, every month.</li>
 </ul>
+<p>Longer reads: <a href="/en/blog/ojang-day-guide-en/">how to work out market days</a> · <a href="/en/blog/five-day-market-shopping-guide/">what to buy at a 5-day market</a> · <a href="/en/blog/">all travel guides →</a></p>
 </div>
 
 <div class="jfilter" id="jf"><button data-r="" class="on">All regions</button>${regions.map(r => `<button data-r="${esc(r)}">${esc(r)}</button>`).join('')}</div>
