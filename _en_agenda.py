@@ -58,7 +58,42 @@ P(f"# 영어 페이지 주간 안건 — {TODAY} 자동 생성\n")
 P("## 1. 숫자 (GSC 3일 지연)")
 P(f"| | 전주 {W0[0]:%m/%d}~{W0[1]:%m/%d} | 최근주 {W1[0]:%m/%d}~{W1[1]:%m/%d} |\n|---|---|---|")
 P(f"| 구글 노출 | {i0:,.0f} | {i1:,.0f} |\n| 구글 클릭 | {c0:.0f} | {c1:.0f} |\n| 영어 착지 세션(참여) | {s0}({e0}) | {s1}({e1}) |")
-P(f"\n90일 누적 클릭 **{c90:.0f}** / 목표 100 (12월 말)\n")
+# ── 1-1. 목표 자율 운영 (2026-10-07 장남님 지시: 목표는 Claude 가 스스로 정하고 올린다 — 선실행 후 보고)
+#   data/en_goals.json 에 현재 목표·이력. 달성하면 자동 상향, 속도가 모자라면 «속도 부족» 경보를 안건 맨 위로.
+import math
+GOALS_P = os.path.join(ROOT, "data", "en_goals.json")
+try: GOALS = J("data/en_goals.json")
+except Exception: GOALS = {"_readme": "영어(/en/) 자율 목표. _en_agenda.py 가 매주 읽고, 달성하면 자동 상향한다. 손으로 고치면 history 에 이유를 남길 것.", "clicks90": None, "history": []}
+wk = []
+for k in range(4):
+    e = END - datetime.timedelta(days=7 * k); wk.append(tot((e - datetime.timedelta(days=6), e))[1])
+pace = sum(wk) / 4.0                      # 최근 4주 주평균 클릭
+proj = pace * 90 / 7.0                     # 이 속도가 이어질 때 90일 누적
+ceil50 = lambda v: int(math.ceil(v / 50.0) * 50)
+YEAR_END = datetime.date(TODAY.year, 12, 31)
+g = GOALS.get("clicks90")
+alerts = []
+if not g:
+    t = max(200, ceil50(proj * 1.2))
+    g = GOALS["clicks90"] = {"target": t, "deadline": str(YEAR_END), "set_on": str(TODAY), "basis": f"최근 4주 주평균 {pace:.1f} → 90일 환산 {proj:.0f} ×1.2"}
+    GOALS["history"].append({"date": str(TODAY), "event": "설정", "target": t, "c90": c90, "basis": g["basis"]})
+    alerts.append(f"🎯 목표 새로 설정: 90일 클릭 {t} ({g['basis']})")
+if c90 >= g["target"]:
+    old = g["target"]; t = max(ceil50(old * 1.5), ceil50(proj * 1.2))
+    dl = g["deadline"] if datetime.date.fromisoformat(g["deadline"]) > TODAY + datetime.timedelta(days=21) else str(datetime.date(TODAY.year + (TODAY.month > 9), (TODAY.month + 2) % 12 + 1, 1) - datetime.timedelta(days=1))
+    g.update({"target": t, "deadline": dl, "set_on": str(TODAY), "basis": f"{old} 달성(90일 {c90:.0f}) → max(×1.5, 4주 속도 환산 {proj:.0f}×1.2)"})
+    GOALS["history"].append({"date": str(TODAY), "event": "자동 상향", "from": old, "target": t, "c90": c90})
+    alerts.append(f"🎯 목표 달성 → 자동 상향 {old} → {t} (기한 {dl})")
+need_week = g["target"] * 7 / 90.0          # 기한에 90일 누적이 목표가 되려면 필요한 주평균
+if pace < need_week * 0.8:
+    alerts.append(f"⚠️ 속도 부족: 최근 4주 주평균 {pace:.1f} < 필요 {need_week:.1f} — 이번 회차 6번(11~20위 보강)을 2장→4장으로 늘리고, 노출 많은데 클릭 0인 페이지 제목·설명을 먼저 손본다")
+if c0 and c1 < c0 * 0.8:
+    alerts.append(f"⚠️ 주간 클릭 하락 {c0:.0f}→{c1:.0f} — 원인(순위·축제 종료·색인 제외) 먼저 확인")
+GOALS["last"] = {"date": str(TODAY), "c90": c90, "pace4w": round(pace, 1), "proj90": round(proj), "weeks": wk}
+json.dump(GOALS, open(GOALS_P, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
+P(f"\n90일 누적 클릭 **{c90:.0f}** / 목표 **{g['target']}** ({g['deadline']}까지, {g['set_on']} 설정) · 최근 4주 주평균 {pace:.1f}(최근→과거 {', '.join(str(int(x)) for x in wk)}) · 이 속도면 90일 {proj:.0f}\n")
+for a in alerts: P(f"> {a}")
+P("")
 
 # ── 2. 수익 클릭
 P("## 2. 수익 링크 클릭 (shop_click, /en/ 페이지, 최근 14일)")

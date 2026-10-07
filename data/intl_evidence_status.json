@@ -1,2154 +1,2154 @@
 {
  "datalab-zh-fireworks": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "datalab-zh-mud": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "datalab-en-suwon": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "datalab-en-mime": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "datalab-en-jinju": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "datalab-tw-hwacheon": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "datalab-tw-yakryeong": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "datalab-all-fireworks": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "datalab-all-tamna": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "datalab-all-hwacheon": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "klook-jinhae-en": {
   "ok": false,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 403,
   "why": "접속 실패(403)",
   "lastOk": "",
-  "failStreak": 2
+  "failStreak": 3
  },
  "klook-jinhae-zh": {
   "ok": false,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 403,
   "why": "접속 실패(403)",
   "lastOk": "",
-  "failStreak": 2
+  "failStreak": 3
  },
  "sedaily-sakura": {
   "ok": false,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "없는 문구: Jinhae",
   "lastOk": "",
-  "failStreak": 2
+  "failStreak": 3
  },
  "hanchao-jinhae": {
   "ok": false,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 406,
   "why": "접속 실패(406)",
   "lastOk": "",
-  "failStreak": 2
+  "failStreak": 3
  },
  "colatour-sakura": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "kkday-jinhae-tw": {
   "ok": false,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 403,
   "why": "접속 실패(403)",
   "lastOk": "",
-  "failStreak": 2
+  "failStreak": 3
  },
  "daum-tw-charter-jinhae": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "jptrip-jinhae": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "hankyu-busan-fw": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "his-busan-fw": {
-  "ok": true,
-  "at": "2026-09-30",
+  "ok": false,
+  "at": "2026-10-08",
   "http": 200,
-  "why": "",
+  "why": "없는 문구: 釜山, 花火",
   "lastOk": "2026-09-30",
-  "failStreak": 0
+  "failStreak": 1
  },
  "nishitetsu-busan-fw": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "yomiuri-busan-fw": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "konest-busan-fw": {
   "ok": false,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 406,
   "why": "접속 실패(406)",
   "lastOk": "",
-  "failStreak": 2
+  "failStreak": 3
  },
  "hankyu-jinju-hamman": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "hankyu-hamman": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "4travel-lantern": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "4travel-jagalchi": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "4travel-busan-fw": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "jptrip-andong": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "creatrip-chimac": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "newspim-jinju-target": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "newspim-busan-fw-tw": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "travel4u-busan-fw": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "eztravel-busan-fw": {
   "ok": false,
-  "at": "2026-09-30",
-  "http": 200,
-  "why": "빈 페이지",
+  "at": "2026-10-08",
+  "http": 404,
+  "why": "접속 실패(404)",
   "lastOk": "",
-  "failStreak": 2
+  "failStreak": 3
  },
  "kkday-fw3-busan": {
   "ok": false,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 403,
   "why": "접속 실패(403)",
   "lastOk": "",
-  "failStreak": 2
+  "failStreak": 3
  },
  "kkday-fw3-seoul": {
   "ok": false,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 403,
   "why": "접속 실패(403)",
   "lastOk": "",
-  "failStreak": 2
+  "failStreak": 3
  },
  "kkday-fw3-pohang": {
   "ok": false,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 403,
   "why": "접속 실패(403)",
   "lastOk": "",
-  "failStreak": 2
+  "failStreak": 3
  },
  "2news-seoul-fw-tw": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "shinailbo-hwacheon-tw": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "asiae-hwacheon-sea": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "klook-hwacheon": {
   "ok": false,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 403,
   "why": "접속 실패(403)",
   "lastOk": "",
-  "failStreak": 2
+  "failStreak": 3
  },
  "herald-mud": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "klook-mud": {
   "ok": false,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 403,
   "why": "접속 실패(403)",
   "lastOk": "",
-  "failStreak": 2
+  "failStreak": 3
  },
  "herald-global-suwon": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "herald-global-penta": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "timeout-lotus": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "ibulgyo-lotus": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "edaily-lantern": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "en-lp-danoje": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "en-wiki-danoje": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "en-trazy-coffee": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "en-kte-coffee": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "en-soulofseoul-nonsan": {
-  "ok": false,
-  "at": "2026-09-30",
-  "http": 0,
-  "why": "접속 실패(This operation was aborted)",
-  "lastOk": "",
-  "failStreak": 1
+  "ok": true,
+  "at": "2026-10-08",
+  "http": 200,
+  "why": "",
+  "lastOk": "2026-10-08",
+  "failStreak": 0
  },
  "en-soulofseoul-nonsan2": {
-  "ok": false,
-  "at": "2026-09-30",
-  "http": 0,
-  "why": "접속 실패(This operation was aborted)",
-  "lastOk": "",
-  "failStreak": 1
+  "ok": true,
+  "at": "2026-10-08",
+  "http": 200,
+  "why": "",
+  "lastOk": "2026-10-08",
+  "failStreak": 0
  },
  "en-trazy-daegwallyeong": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "en-kte-chimac": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "en-trazy-chimac": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "en-flipkorea-muju": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "en-koreaherald-muju": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "en-trazy-mud": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "en-kte-mud": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "en-wiki-busanrock": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "en-koreatimes-busanrock": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "en-trazy-busanfw": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "en-kte-busanfw": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "en-wiki-lantern": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "en-soulofseoul-lantern": {
-  "ok": false,
-  "at": "2026-09-30",
-  "http": 0,
-  "why": "접속 실패(This operation was aborted)",
-  "lastOk": "",
-  "failStreak": 1
+  "ok": true,
+  "at": "2026-10-08",
+  "http": 200,
+  "why": "",
+  "lastOk": "2026-10-08",
+  "failStreak": 0
  },
  "en-odynovo-lantern": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "en-wiki-seoulfw": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "en-koreatimes-seoulfw": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "en-trazy-seoulfw": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "en-trazy-suwon": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "all-seoulco-suwon-target": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "en-travie-andong": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "en-lp-andong": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "en-haniseoul-andong": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "en-lp-lotus": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "en-travelstained-lotus": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "en-soulofseoul-lotus": {
-  "ok": false,
-  "at": "2026-09-30",
-  "http": 0,
-  "why": "접속 실패(This operation was aborted)",
-  "lastOk": "",
-  "failStreak": 1
+  "ok": true,
+  "at": "2026-10-08",
+  "http": 200,
+  "why": "",
+  "lastOk": "2026-10-08",
+  "failStreak": 0
  },
  "en-soulofseoul-icheon": {
-  "ok": false,
-  "at": "2026-09-30",
-  "http": 0,
-  "why": "접속 실패(This operation was aborted)",
-  "lastOk": "",
-  "failStreak": 1
+  "ok": true,
+  "at": "2026-10-08",
+  "http": 200,
+  "why": "",
+  "lastOk": "2026-10-08",
+  "failStreak": 0
  },
  "en-wiki-icheon": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "en-timeout-pentaport": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "en-kculture-pentaport": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "en-trazy-pentaport": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "en-kte-jindo": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "en-adventurekorea-jindo": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "en-ehat-jinju": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "en-wiki-jinju": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "en-trazy-jinju": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "en-trazy-jinhae": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "en-kte-jinhae": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "en-mygoodlife-taebaek": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "en-adventurekorea-taebaek": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "en-trazy-pyeongchang": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "en-kte-pyeongchang": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "en-trazy-pohang": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "en-trazy-hwacheon-shuttle": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "en-stp-hwacheon": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "ja-seoulnavi-danoje": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "ja-snlist-danoje": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "ja-snlist-coffee": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "ja-gn-coffee": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "ja-snlist-gimje": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "ja-ktriptips-gimje": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "ja-snlist-nonsan": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "ja-snlist-yakryeong": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "ja-ameblo-yakryeong": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "ja-trazy-chimac": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "ja-snlist-muju": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "ja-sanshin-baekje": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "ja-seoulco-baekje-target": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "ja-veltra-mud": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "ja-trazy-mud": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "ja-busango-seafest": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "ja-wiki-busanfw": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "ja-trazy-busanfw": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "ja-seoulnavi-lantern": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "ja-afpbb-lantern": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "ja-seoulgo-lantern": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "ja-veltra-seoulfw": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "ja-tripcom-seoulfw": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "ja-snlist-sorae": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "ja-trazy-suwon": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "ja-hankyu-andong-KT580A": {
-  "ok": true,
-  "at": "2026-09-30",
-  "http": 200,
-  "why": "",
+  "ok": false,
+  "at": "2026-10-08",
+  "http": 404,
+  "why": "접속 실패(404)",
   "lastOk": "2026-09-30",
-  "failStreak": 0
+  "failStreak": 1
  },
  "ja-seoulnavi-andong": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "ja-seoulnavi-lotus": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "ja-ameblo-lotus": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "ja-afpbb-lotus": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "ja-wiki-lotus": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "ja-sanshin-icheon": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "ja-snlist-icheon": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "ja-trazy-pentaport": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "ja-snlist-jeongseon": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "ja-travelgw-jeongseon": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "ja-ktriptips-jeongseon": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "ja-nishitetsu-jindo": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "ja-sanshin-jindo": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "ja-hankyu-jinju-KN836B": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "ja-newsgn-jinju-target": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "ja-nishitetsu-jinhae": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "ja-trazy-jinhae": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "ja-snlist-mime": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "ja-ameblo-mime": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "ja-hatena-tamna": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "ja-snlist-taebaek": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "ja-snlist-tongyeong": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "ja-seoulnavi-pyeongchang": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "ja-trazy-pyeongchang": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "ja-straightpress-pohang": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "ja-veltra-pohang": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "ja-hankyu-haman-KN836B": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "ja-hankyu-haman-K065B": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "ja-kccj-hwacheon": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "ja-trazy-hwacheon": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "zh-wiki-danoje": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "zh-people-danoje": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "zh-hyw4019-coffee": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "zh-lhw-413": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "zh-hyw4019-gimje": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "zh-laihanwang-nonsan": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "zh-lhw-43": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "zh-hanyouwang-daegwallyeong": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "zh-laihanwang-daegwallyeong": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "zh-sina-chimac": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "zh-hanyouwang-chimac": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "zh-kyongbuk-chimac-target": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "zh-hyw4019-muju": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "zh-lhw-366": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "zh-people-mud": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "zh-hunan-mud": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "zh-trazy-mud": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "zh-busango-rock": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "zh-busango-rock2": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "zh-busango-seafest": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "zh-visitbusan-seafest": {
-  "ok": true,
-  "at": "2026-09-30",
-  "http": 200,
-  "why": "",
+  "ok": false,
+  "at": "2026-10-08",
+  "http": 0,
+  "why": "접속 실패(fetch failed)",
   "lastOk": "2026-09-30",
-  "failStreak": 0
+  "failStreak": 1
  },
  "zh-lhw-317": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "zh-visitbusan-busanfw": {
-  "ok": true,
-  "at": "2026-09-30",
-  "http": 200,
-  "why": "",
+  "ok": false,
+  "at": "2026-10-08",
+  "http": 0,
+  "why": "접속 실패(fetch failed)",
   "lastOk": "2026-09-30",
-  "failStreak": 0
+  "failStreak": 1
  },
  "zh-busango-busanfw": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "zh-hyw4019-jagalchi": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "zh-lhw-408": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "zh-seoulgo-lantern": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "zh-people-lantern": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "zh-lhw-429": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "zh-chinanews-seoulfw": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "zh-seoulgo-seoulfw": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "zh-trazy-seoulfw": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "zh-hyw4019-sorae": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "zh-trazy-suwon": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "zh-ci-andong": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "zh-tourandong-andong": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "zh-hanyouwang-andong": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "zh-seoulgo-lotus": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "zh-wiki-lotus": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "zh-ajudaily-lotus": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "zh-hanyouwang-lotus": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "zh-extrabux-pentaport": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "zh-laihanwang-pentaport": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "zh-hyw4019-jeongseon": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "zh-people-jindo": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "zh-haiwainet-jindo": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "zh-xinhua-jindo": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "zh-trazy-jinju": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "zh-asiatoday-jinju-target": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "zh-wiki-jinhae": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "zh-xinhua-jinhae": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "zh-lhw-233": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "zh-lhw-75": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "zh-consulate-tamna": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "zh-thepaper-tamna": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "zh-lypt-tamna": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "zh-lhw-146": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "zh-hyw4019-tongyeong": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "zh-hanyouwang-pyeongchang": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "zh-trazy-pyeongchang": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "zh-consulate-pohang": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "zh-lhw-291": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "zh-chinanews-hwacheon": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "zh-people-hwacheon": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "zh-trazy-hwacheon": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "tw-yahoo-danoje": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "tw-mook-danoje": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "tw-wiki-danoje": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "tw-ettoday-gimje": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "tw-ginatw-gimje": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "tw-ettoday-daegwallyeong": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "tw-funliday-daegwallyeong": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "tw-kto-daegwallyeong": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "tw-settour-chimac": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "tw-trazy-mud": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "tw-busannl-rock": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "tw-visitbusan-seafest": {
-  "ok": true,
-  "at": "2026-09-30",
-  "http": 200,
-  "why": "",
+  "ok": false,
+  "at": "2026-10-08",
+  "http": 0,
+  "why": "접속 실패(fetch failed)",
   "lastOk": "2026-09-30",
-  "failStreak": 0
+  "failStreak": 1
  },
  "tw-pixnet-seafest": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "tw-kto-seafest": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "tw-popdaily-seafest": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "tw-settour-busanfw": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "tw-settour-busanfw-28142": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "tw-popdaily-jagalchi": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "tw-busannl-jagalchi": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "tw-ginatw-lantern": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "tw-creatrip-lantern": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "tw-trazy-seoulfw-ticket": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "tw-insight-seoulfw-target": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "tw-trazy-suwon": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "tw-ettoday-andong": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "tw-epoch-andong": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "tw-seoulgo-lotus": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "tw-wiki-lotus": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "tw-hktrip-lotus": {
   "ok": false,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "없는 문구: 燃燈會",
   "lastOk": "",
-  "failStreak": 1
+  "failStreak": 2
  },
  "tw-kto-icheon": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "tw-trip-pentaport": {
   "ok": false,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "없는 문구: Pentaport",
   "lastOk": "",
-  "failStreak": 1
+  "failStreak": 2
  },
  "tw-trazy-pentaport": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "tw-lnanews-jindo": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "tw-caneis-jindo": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "tw-pixnet-jindo": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "tw-yahoo-jinju": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "tw-trazy-jinju": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "tw-settour-jinhae": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "tw-trazy-jinhae": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "tw-yahoo-taebaek": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "tw-trip-taebaek": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "tw-ettoday-pyeongchang": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "tw-tvbs-pyeongchang": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "tw-trazy-pyeongchang": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "tw-marie-pohang": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "tw-trazy-pohang": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "tw-travel4u-haman": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "tw-travelrich-haman-target": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "tw-settour-hwacheon": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  },
  "tw-mtn-hwacheon-stat": {
   "ok": true,
-  "at": "2026-09-30",
+  "at": "2026-10-08",
   "http": 200,
   "why": "",
-  "lastOk": "2026-09-30",
+  "lastOk": "2026-10-08",
   "failStreak": 0
  }
 }

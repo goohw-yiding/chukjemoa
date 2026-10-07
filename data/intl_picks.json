@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-07",
+ "generatedAt": "2026-10-08",
  "rule": "근거 점수 2 이상 · 언어당 최대 25",
  "langs": {
   "en": [
@@ -179,7 +179,7 @@
    },
    {
     "ko": "연등회",
-    "score": 4,
+    "score": 5,
     "commerce": false,
     "status": "confirmed",
     "ids": [],
@@ -203,12 +203,17 @@
       "claim": "영어 여행 블로그 연등회 가이드",
       "url": "https://travel-stained.com/lotus-lantern-festival-in-seoul-yeondeunghoe/",
       "kind": "media"
+     },
+     {
+      "claim": "Soul of Seoul 봄 축제 목록(연등회)",
+      "url": "https://thesoulofseoul.net/complete-list-spring-festivals-korea/",
+      "kind": "media"
      }
     ]
    },
    {
     "ko": "서울빛초롱축제",
-    "score": 4,
+    "score": 5,
     "commerce": false,
     "status": "est",
     "ids": [],
@@ -221,6 +226,11 @@
      {
       "claim": "영문 위키백과 서울빛초롱축제 문서",
       "url": "https://en.wikipedia.org/wiki/Seoul_Lantern_Festival",
+      "kind": "media"
+     },
+     {
+      "claim": "Soul of Seoul 서울빛초롱축제 방문기",
+      "url": "https://thesoulofseoul.net/seoul-lantern-festival/",
       "kind": "media"
      },
      {
@@ -439,6 +449,27 @@
     ]
    },
    {
+    "ko": "논산딸기축제",
+    "score": 2,
+    "commerce": false,
+    "status": "confirmed",
+    "ids": [
+     "708055"
+    ],
+    "reasons": [
+     {
+      "claim": "서울 거주 영어권 블로그 Soul of Seoul 봄 축제 목록(논산딸기축제)",
+      "url": "https://thesoulofseoul.net/complete-list-spring-festivals-korea/",
+      "kind": "media"
+     },
+     {
+      "claim": "Soul of Seoul 논산딸기축제 방문기",
+      "url": "https://thesoulofseoul.net/nonsan-strawberry-festival/",
+      "kind": "media"
+     }
+    ]
+   },
+   {
     "ko": "무주반딧불축제",
     "score": 2,
     "commerce": false,
@@ -476,6 +507,27 @@
      {
       "claim": "코리아타임스 영문 '부산국제록페스티벌 99팀 라인업' 기사",
       "url": "https://www.koreatimes.co.kr/entertainment/music/20260907/busan-intl-rock-festival-goes-big-with-99-act-lineup",
+      "kind": "media"
+     }
+    ]
+   },
+   {
+    "ko": "이천도자기축제",
+    "score": 2,
+    "commerce": false,
+    "status": "confirmed",
+    "ids": [
+     "700890"
+    ],
+    "reasons": [
+     {
+      "claim": "Soul of Seoul 봄 축제 목록(이천)",
+      "url": "https://thesoulofseoul.net/complete-list-spring-festivals-korea/",
+      "kind": "media"
+     },
+     {
+      "claim": "영문 위키백과 이천도자기축제",
+      "url": "https://en.wikipedia.org/wiki/Icheon_Ceramic_Festival",
       "kind": "media"
      }
     ]

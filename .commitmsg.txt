@@ -1,8 +1,4 @@
-영어 미색인 단건 처리: /en/blog/ 본문 진입로 + 제주올레걷기축제 2026 공식 정보
-
-- /en/festival/ 허브(색인) 팁 아래 「Planning guides」 — 블로그 3편 + 목록 /en/blog/ 본문 링크 (en 만, ja 변화 없음)
-- /en/jangteo/ 「Before you go」 끝에 오일장 글 2편 + /en/blog/ 본문 링크
-- 제주올레걷기축제(1084180): 19·20코스 일자별 구간·참가비·올레패스 사전신청(7/8~10/9)·외국인 신청·2027 개편 — 서울신문·제이누리 두 곳 대조, 11/7 자동 만료
+﻿en: 영어 목표 자율 운영 — data/en_goals.json (90일 클릭 목표 400·12/31, 달성 시 자동 상향·속도 부족 경보)
 
 Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
-Claude-Session: https://claude.ai/code/session_016m991E2DHzVvVSZCVNFqWg
+Claude-Session: https://claude.ai/code/session_01JSsgPeqzedxtkPrhuiPPFp

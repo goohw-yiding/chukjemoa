@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-07T14:17",
+ "generatedAt": "2026-10-08T07:09",
  "stats": {
   "en": {
    "total": 280,
@@ -351,7 +351,7 @@
     "ko": "백제문화제",
     "kv": "confirmed",
     "signals": [
-     "tel",
+     "img",
      "geo",
      "date"
     ],
