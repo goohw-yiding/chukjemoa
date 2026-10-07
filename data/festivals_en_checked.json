@@ -14,5 +14,13 @@
   "697439": { "title": "Anseong Namsadang Baudeogi Festival", "date": "2026-09-30", "result": "맞음 10/2~5", "src": "9/30 한국어 세션 공식 대조(커밋 3fdbea1f)" },
   "293091": { "title": "Busan International Rock Festival", "date": "2026-09-30", "result": "맞음 10/2~4", "src": "9/30 한국어 세션 공식 대조(커밋 3fdbea1f)" },
   "701688": { "title": "Soraepogu Festival", "date": "2026-09-30", "result": "맞음 10/2~4", "src": "9/30 한국어 세션 공식 대조(커밋 3fdbea1f)" },
-  "1037621": { "title": "Pohang International Fireworks Festival", "date": "2026-09-30", "result": "미확인", "src": "TourAPI 11/20 — 포항문화재단 공식 발표 못 찾음" }
+  "293106": { "title": "Geumsan World K-Insam Festival", "date": "2026-10-07", "result": "맞음 10/2~11, 금산세계인삼엑스포광장·인삼약초거리", "src": "더팩트 2026-09-30 금산군 발표(제44회)" },
+  "293152": { "title": "Hoengseong Hanu Festival", "date": "2026-10-07", "result": "맞음 10/7~11, 섬강 둔치", "src": "K-Radio 우리방송 기사 603489 — 횡성문화관광재단 발표(제22회)" },
+  "3364856": { "title": "Han River Walk", "date": "2026-10-07", "result": "맞음 9/19·10/10·11/7 3회(연속 아님) → note 추가, 시간 9~14시로 교정", "src": "hanriver.or.kr 공식 행사 페이지" },
+  "3520887": { "title": "Gyeryong Military Culture Festival", "date": "2026-10-07", "result": "맞음 10/1~5, 계룡대 활주로 일원", "src": "더팩트 2026-10-01 개막 기사(제16회)" },
+  "2394700": { "title": "Jeonju Cultural Heritage Night Tour", "date": "2026-10-07", "result": "맞음 10/2~3 경기전 일원 + 한글 원제 오매칭 교정", "src": "아이뉴스24 2026-10-01 전주시 10월 축제" },
+  "790394": { "title": "Hanwha Seoul International Fireworks Festival", "date": "2026-10-07", "result": "교정 2025-09-27 → 2026-09-05 + 한글 원제 오매칭 교정", "src": "한화 발표(다음뉴스 2026-08-06)" },
+  "4076928": { "title": "Hangang River Festival", "date": "2026-10-07", "result": "맞음 가을 10/17~25", "src": "seoul.go.kr/festa/hangang/y2026 공식" },
+  "978249": { "title": "Suwon Hwaseong Festival", "date": "2026-10-07", "result": "날짜는 kv 확정(대조 생략) — 외국인 전용 프로그램 note·Creatrip 링크", "src": "Creatrip 15902·15901 상품 페이지" },
+  "1037621": { "title": "Pohang International Fireworks Festival", "date": "2026-10-07", "result": "미확인", "src": "관광공사 11/19~21 vs 다른 목록 11/20~22, 포항문화재단 공식 공지 없음 — 잠정 안내 note 추가" }
 }
