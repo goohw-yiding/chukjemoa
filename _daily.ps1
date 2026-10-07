@@ -53,6 +53,16 @@ W "1) volume fetch (naver search-ad, new only / full every 30d)"
 cmd /c "chcp 65001 >nul & set PYTHONIOENCODING=utf-8 & py -3 _fest_volume.py 420" 2>&1 |
   Select-Object -First 3 | ForEach-Object { W "   $_" }
 
+# 2026-10-07: jangteo_volume.json (27d old) / museum_volume.json (25d old) had NO scheduled writer.
+# Jangteo TOP5 short (Thu) and market/museum ordering read them. Refresh weekly on Sunday.
+if ((Get-Date).DayOfWeek -eq 'Sunday') {
+  W "1b) jangteo + museum volume (weekly, Sunday)"
+  cmd /c "chcp 65001 >nul & set PYTHONIOENCODING=utf-8 & py -3 _jangteo_volume.py" 2>&1 |
+    Select-Object -Last 1 | ForEach-Object { W "   $_" }
+  cmd /c "chcp 65001 >nul & set PYTHONIOENCODING=utf-8 & py -3 _museum_volume.py" 2>&1 |
+    Select-Object -Last 1 | ForEach-Object { W "   $_" }
+}
+
 W "2) trend fetch (naver datalab)"
 cmd /c "chcp 65001 >nul & set PYTHONIOENCODING=utf-8 & py -3 _fest_trend.py 600" 2>&1 |
   Select-Object -Last 2 | ForEach-Object { W "   $_" }

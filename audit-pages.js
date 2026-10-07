@@ -15,7 +15,9 @@ module.exports = function (R, RED, ORANGE, red, orange) {
   const pages = new Map();
   (function walk(d, rel) {
     for (const e of fs.readdirSync(d, { withFileTypes: true })) {
-      if (e.isDirectory()) { if (!SKIP.has(e.name) && !e.name.startsWith('.')) walk(path.join(d, e.name), rel + e.name + '/'); continue; }
+      // 2026-10-07: .vercelignore 의 `/_*` (루트 밑줄 폴더 — _cards_tmp_*·_tmp_places_ja·_scratch 등)는 라이브에 없다.
+      //   빼지 않으면 작업용 카드 HTML 이 「고아 29 + canonical 누락 30」 🔴 로 매일 아침 보고를 오염시켰다.
+      if (e.isDirectory()) { if (!SKIP.has(e.name) && !e.name.startsWith('.') && !(rel === '/' && e.name.startsWith('_'))) walk(path.join(d, e.name), rel + e.name + '/'); continue; }
       if (e.name.endsWith('.html')) pages.set(rel + (e.name === 'index.html' ? '' : e.name), fs.readFileSync(path.join(d, e.name), 'utf8'));
     }
   })(ROOT, '/');
@@ -43,7 +45,7 @@ module.exports = function (R, RED, ORANGE, red, orange) {
     outLinks.set(u, outs);
     const b = bodyOf(h);
     if (/\bundefined\b|\bNaN\b|\[object Object\]|Invalid Date|�/.test(b)) render.push(u);
-    if (!/rel="canonical"/.test(h)) canon.push(u);
+    if (!/rel="canonical"/.test(h) && !/<meta[^>]+name="robots"[^>]+noindex/i.test(h)) canon.push(u);   // noindex 페이지(ig/relay 등)는 canonical 불필요
     // 개발용 메모가 HTML 주석으로 새어 나갔는지 (2026-08-18 611페이지 실사고)
     for (const c of h.match(/<!--[\s\S]*?-->/g) || []) {
       if (/⚠️|실사고|TODO|FIXME|주의:/.test(c)) leak.push(u);
