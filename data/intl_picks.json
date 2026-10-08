@@ -629,7 +629,7 @@
     "ko": "함안낙화놀이",
     "score": 6,
     "commerce": false,
-    "status": "pending",
+    "status": "confirmed",
     "ids": [],
     "reasons": [
      {
@@ -1040,7 +1040,7 @@
     "ko": "대구약령시한방문화축제",
     "score": 2,
     "commerce": false,
-    "status": "pending",
+    "status": "confirmed",
     "ids": [
      "697092"
     ],
@@ -1186,7 +1186,7 @@
     "ko": "탐라문화제",
     "score": 5,
     "commerce": false,
-    "status": "pending",
+    "status": "confirmed",
     "ids": [
      "3332442"
     ],
@@ -1981,7 +1981,7 @@
     "ko": "함안낙화놀이",
     "score": 4,
     "commerce": false,
-    "status": "pending",
+    "status": "confirmed",
     "ids": [],
     "reasons": [
      {
@@ -2000,7 +2000,7 @@
     "ko": "대구약령시한방문화축제",
     "score": 3,
     "commerce": false,
-    "status": "pending",
+    "status": "confirmed",
     "ids": [
      "698138"
     ],

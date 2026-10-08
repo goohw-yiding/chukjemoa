@@ -1,11 +1,11 @@
 {
- "generatedAt": "2026-10-08T11:01",
+ "generatedAt": "2026-10-08T14:21",
  "stats": {
   "en": {
    "total": 280,
    "linked": 47,
-   "confirmed": 34,
-   "pending": 4,
+   "confirmed": 38,
+   "pending": 0,
    "tbc": 7,
    "est": 2,
    "redated": 0,
@@ -16,8 +16,8 @@
   "ja": {
    "total": 219,
    "linked": 43,
-   "confirmed": 32,
-   "pending": 3,
+   "confirmed": 35,
+   "pending": 0,
    "tbc": 6,
    "est": 2,
    "redated": 0,
@@ -28,8 +28,8 @@
   "zh": {
    "total": 182,
    "linked": 35,
-   "confirmed": 27,
-   "pending": 4,
+   "confirmed": 31,
+   "pending": 0,
    "tbc": 2,
    "est": 2,
    "redated": 0,
@@ -40,8 +40,8 @@
   "tw": {
    "total": 171,
    "linked": 36,
-   "confirmed": 28,
-   "pending": 3,
+   "confirmed": 31,
+   "pending": 0,
    "tbc": 3,
    "est": 2,
    "redated": 0,
@@ -54,7 +54,7 @@
   "en": {
    "292992": {
     "ko": "음성품바축제",
-    "kv": "pending",
+    "kv": "confirmed",
     "signals": [
      "img",
      "tel",
@@ -243,7 +243,7 @@
    },
    "697432": {
     "ko": "대구약령시한방문화축제",
-    "kv": "pending",
+    "kv": "confirmed",
     "signals": [
      "tel",
      "geo"
@@ -513,7 +513,7 @@
    },
    "3310546": {
     "ko": "탐라문화제",
-    "kv": "pending",
+    "kv": "confirmed",
     "signals": [
      "img",
      "tel",
@@ -533,7 +533,7 @@
    },
    "4078308": {
     "ko": "남해 마늘한우축제",
-    "kv": "pending",
+    "kv": "confirmed",
     "signals": [
      "img",
      "tel",
@@ -546,7 +546,7 @@
   "ja": {
    "293562": {
     "ko": "음성품바축제",
-    "kv": "pending",
+    "kv": "confirmed",
     "signals": [
      "img",
      "tel",
@@ -674,7 +674,7 @@
    },
    "697092": {
     "ko": "대구약령시한방문화축제",
-    "kv": "pending",
+    "kv": "confirmed",
     "signals": [
      "tel",
      "geo"
@@ -986,7 +986,7 @@
    },
    "4074860": {
     "ko": "남해 마늘한우축제",
-    "kv": "pending",
+    "kv": "confirmed",
     "signals": [
      "img",
      "tel",
@@ -999,7 +999,7 @@
   "zh": {
    "331967": {
     "ko": "음성품바축제",
-    "kv": "pending",
+    "kv": "confirmed",
     "signals": [
      "img",
      "tel",
@@ -1074,7 +1074,7 @@
    },
    "694603": {
     "ko": "대구약령시한방문화축제",
-    "kv": "pending",
+    "kv": "confirmed",
     "signals": [
      "tel",
      "geo"
@@ -1332,7 +1332,7 @@
    },
    "3332442": {
     "ko": "탐라문화제",
-    "kv": "pending",
+    "kv": "confirmed",
     "signals": [
      "tel",
      "date"
@@ -1351,7 +1351,7 @@
    },
    "4076125": {
     "ko": "남해 마늘한우축제",
-    "kv": "pending",
+    "kv": "confirmed",
     "signals": [
      "img",
      "tel",
@@ -1364,7 +1364,7 @@
   "tw": {
    "333292": {
     "ko": "음성품바축제",
-    "kv": "pending",
+    "kv": "confirmed",
     "signals": [
      "img",
      "tel",
@@ -1459,7 +1459,7 @@
    },
    "698138": {
     "ko": "대구약령시한방문화축제",
-    "kv": "pending",
+    "kv": "confirmed",
     "signals": [
      "tel",
      "geo"
@@ -1729,7 +1729,7 @@
    },
    "4076173": {
     "ko": "남해 마늘한우축제",
-    "kv": "pending",
+    "kv": "confirmed",
     "signals": [
      "img",
      "tel",
