@@ -4115,6 +4115,16 @@ const REF_NATIONAL = [
   ['https://www.data.go.kr/', '공공데이터포털', '축제·반려동물 동반·무장애 정보 개방 데이터 원본']
 ];
 const POST_REFS = {
+  // 이주의 축제모아 Vol.4 — TOP5 날짜·장소를 교차 확인한 보도(2026-10-08 확인)
+  'chukjemoa-weekly-vol4': [
+    ['https://www.newspim.com/news/view/20260827001239', '뉴스핌', '2026 대전 동구동락 축제 10월 9~11일 소제동 일원'],
+    ['https://m.joongdo.co.kr/view.php?key=20260928010008300', '중도일보', '제33회 증평인삼골축제 10월 8~11일 보강천 체육공원'],
+    ['https://www.wikitree.co.kr/articles/1160361', '위키트리', '2026 나주영산강축제 10월 7~11일 영산강정원'],
+    ['https://www.fnnews.com/news/202610050932221859', '파이낸셜뉴스', '횡성한우축제 10월 7~11일 섬강둔치'],
+    ['https://www.ftimes.kr/news/articleView.html?idxno=40045', 'FT스포츠', '제72회 백제문화제 10월 3~11일 공주·부여'],
+    ['https://www.ajunews.com/view/20260929142709711', '아주경제', '부여 백제문화제 프로그램(9일 역사문화행렬)'],
+    ['https://publicholidays.co.kr/ko/2026-dates/', 'publicholidays.co.kr', '2026년 한글날 10월 9일(금)']
+  ],
   // 이주의 축제모아 Vol.3 — TOP5 날짜·장소·프로그램을 교차 확인한 보도(2026-10-02 확인)
   'chukjemoa-weekly-vol3': [
     ['https://koreatopnews.net/news/article.html?no=420886', '코리아탑뉴스', '2026 지상군페스티벌 10월 1~5일 계룡대 개최'],
