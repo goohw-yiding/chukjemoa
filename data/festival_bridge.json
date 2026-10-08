@@ -1,50 +1,50 @@
 {
- "generatedAt": "2026-10-08T09:40",
+ "generatedAt": "2026-10-08T10:56",
  "stats": {
   "en": {
    "total": 280,
-   "linked": 45,
+   "linked": 47,
    "confirmed": 34,
-   "pending": 0,
-   "tbc": 9,
+   "pending": 4,
+   "tbc": 7,
    "est": 2,
-   "redated": 0,
+   "redated": 2,
    "restored": 0,
    "review": 0,
    "removed": 0
   },
   "ja": {
    "total": 219,
-   "linked": 42,
+   "linked": 43,
    "confirmed": 32,
-   "pending": 0,
-   "tbc": 8,
+   "pending": 3,
+   "tbc": 6,
    "est": 2,
-   "redated": 0,
+   "redated": 1,
    "restored": 0,
    "review": 0,
    "removed": 0
   },
   "zh": {
    "total": 182,
-   "linked": 33,
+   "linked": 35,
    "confirmed": 27,
-   "pending": 0,
-   "tbc": 4,
+   "pending": 4,
+   "tbc": 2,
    "est": 2,
-   "redated": 0,
+   "redated": 2,
    "restored": 0,
    "review": 0,
    "removed": 0
   },
   "tw": {
    "total": 171,
-   "linked": 35,
+   "linked": 36,
    "confirmed": 28,
-   "pending": 0,
-   "tbc": 5,
+   "pending": 3,
+   "tbc": 3,
    "est": 2,
-   "redated": 0,
+   "redated": 1,
    "restored": 0,
    "review": 0,
    "removed": 0
@@ -54,7 +54,7 @@
   "en": {
    "292992": {
     "ko": "음성품바축제",
-    "kv": "tbc",
+    "kv": "pending",
     "signals": [
      "img",
      "tel",
@@ -240,6 +240,15 @@
      "date"
     ],
     "apiId": "506376"
+   },
+   "697432": {
+    "ko": "대구약령시한방문화축제",
+    "kv": "pending",
+    "signals": [
+     "tel",
+     "geo"
+    ],
+    "apiId": "506516"
    },
    "697439": {
     "ko": "안성맞춤 남사당 바우덕이축제",
@@ -502,6 +511,16 @@
     ],
     "apiId": "2667017"
    },
+   "3310546": {
+    "ko": "탐라문화제",
+    "kv": "pending",
+    "signals": [
+     "img",
+     "tel",
+     "date"
+    ],
+    "apiId": "140930"
+   },
    "4039393": {
     "ko": "2026 인천개항장 페스타 - 1901 라이브로드",
     "kv": "tbc",
@@ -514,7 +533,7 @@
    },
    "4078308": {
     "ko": "남해 마늘한우축제",
-    "kv": "tbc",
+    "kv": "pending",
     "signals": [
      "img",
      "tel",
@@ -527,7 +546,7 @@
   "ja": {
    "293562": {
     "ko": "음성품바축제",
-    "kv": "tbc",
+    "kv": "pending",
     "signals": [
      "img",
      "tel",
@@ -652,6 +671,15 @@
      "date"
     ],
     "apiId": "506690"
+   },
+   "697092": {
+    "ko": "대구약령시한방문화축제",
+    "kv": "pending",
+    "signals": [
+     "tel",
+     "geo"
+    ],
+    "apiId": "506516"
    },
    "699454": {
     "ko": "진해군항제",
@@ -958,7 +986,7 @@
    },
    "4074860": {
     "ko": "남해 마늘한우축제",
-    "kv": "tbc",
+    "kv": "pending",
     "signals": [
      "img",
      "tel",
@@ -971,7 +999,7 @@
   "zh": {
    "331967": {
     "ko": "음성품바축제",
-    "kv": "tbc",
+    "kv": "pending",
     "signals": [
      "img",
      "tel",
@@ -1043,6 +1071,15 @@
      "date"
     ],
     "apiId": "507454"
+   },
+   "694603": {
+    "ko": "대구약령시한방문화축제",
+    "kv": "pending",
+    "signals": [
+     "tel",
+     "geo"
+    ],
+    "apiId": "506516"
    },
    "694621": {
     "ko": "안성맞춤 남사당 바우덕이축제",
@@ -1293,6 +1330,15 @@
     ],
     "apiId": "2667017"
    },
+   "3332442": {
+    "ko": "탐라문화제",
+    "kv": "pending",
+    "signals": [
+     "tel",
+     "date"
+    ],
+    "apiId": "140930"
+   },
    "3502113": {
     "ko": "2026 인천개항장 페스타 - 1901 라이브로드",
     "kv": "tbc",
@@ -1305,7 +1351,7 @@
    },
    "4076125": {
     "ko": "남해 마늘한우축제",
-    "kv": "tbc",
+    "kv": "pending",
     "signals": [
      "img",
      "tel",
@@ -1318,7 +1364,7 @@
   "tw": {
    "333292": {
     "ko": "음성품바축제",
-    "kv": "tbc",
+    "kv": "pending",
     "signals": [
      "img",
      "tel",
@@ -1410,6 +1456,15 @@
      "date"
     ],
     "apiId": "507454"
+   },
+   "698138": {
+    "ko": "대구약령시한방문화축제",
+    "kv": "pending",
+    "signals": [
+     "tel",
+     "geo"
+    ],
+    "apiId": "506516"
    },
    "699053": {
     "ko": "안성맞춤 남사당 바우덕이축제",
@@ -1674,7 +1729,7 @@
    },
    "4076173": {
     "ko": "남해 마늘한우축제",
-    "kv": "tbc",
+    "kv": "pending",
     "signals": [
      "img",
      "tel",

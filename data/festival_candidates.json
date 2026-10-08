@@ -20,5 +20,71 @@
   ],
   "proposedAt": "2026-10-05",
   "from": "2026-06-27~2026-06-27"
+ },
+ "대구약령시한방문화축제": {
+  "start": "2026-05-07",
+  "end": "2026-05-10",
+  "place": "",
+  "sources": [
+   "https://www.heraldk.com/article/2026041606260549943",
+   "https://www.kukinews.com/article/view/kuk202604160146"
+  ],
+  "proposedAt": "2026-10-08",
+  "from": "2026-05-07~2026-05-10"
+ },
+ "함안낙화놀이": {
+  "start": "2026-05-24",
+  "end": "2026-05-24",
+  "place": "",
+  "sources": [
+   "https://m.go.seoul.co.kr/news/2026/03/11/20260311500141",
+   "https://www.kpinews.kr/newsView/1065594919500513"
+  ],
+  "proposedAt": "2026-10-08",
+  "from": "2026-05-24~2026-05-24"
+ },
+ "탐라문화제": {
+  "start": "2026-10-17",
+  "end": "2026-10-21",
+  "place": "제주시 시민복지타운광장 일대",
+  "sources": [
+   "https://www.ijejutoday.com/news/articleView.html?idxno=403302",
+   "http://www.jejunews.com/news/articleView.html?idxno=2228061"
+  ],
+  "proposedAt": "2026-10-08",
+  "from": "2026-10-17~2026-10-21"
+ },
+ "남해 마늘한우축제": {
+  "start": "2026-06-11",
+  "end": "2026-06-14",
+  "place": "",
+  "sources": [
+   "https://m.go.seoul.co.kr/news/2026/05/28/20260528500136",
+   "https://www.kairnews.com/news/495888"
+  ],
+  "proposedAt": "2026-10-08",
+  "from": "2026-06-11~2026-06-14"
+ },
+ "김제 모악산 뮤직페스티벌": {
+  "start": "2026-06-13",
+  "end": "2026-06-14",
+  "place": "",
+  "sources": [
+   "https://www.jjan.kr/articleAmp/20260522500020",
+   "https://www.ajunews.com/view/20260523082612529"
+  ],
+  "proposedAt": "2026-10-08",
+  "from": "2026-06-13~2026-06-14"
+ },
+ "음성품바축제": {
+  "start": "2026-06-10",
+  "end": "2026-06-14",
+  "place": "",
+  "sources": [
+   "https://www.kmib.co.kr/article/view.asp?arcid=0029912337",
+   "https://www.nsenior.co.kr/news/article.html?no=136977"
+  ],
+  "proposedAt": "2026-10-08",
+  "from": "2026-06-10~2026-06-14"
  }
 }

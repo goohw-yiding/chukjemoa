@@ -629,7 +629,7 @@
     "ko": "함안낙화놀이",
     "score": 6,
     "commerce": false,
-    "status": "not-listed",
+    "status": "pending",
     "ids": [],
     "reasons": [
      {
@@ -1040,8 +1040,10 @@
     "ko": "대구약령시한방문화축제",
     "score": 2,
     "commerce": false,
-    "status": "not-listed",
-    "ids": [],
+    "status": "pending",
+    "ids": [
+     "697092"
+    ],
     "reasons": [
      {
       "claim": "서울나비 '지방 이벤트 연간 정보'(일본어)에 대구약령시한방문화축제 수록",
@@ -1184,8 +1186,10 @@
     "ko": "탐라문화제",
     "score": 5,
     "commerce": false,
-    "status": "not-listed",
-    "ids": [],
+    "status": "pending",
+    "ids": [
+     "3332442"
+    ],
     "reasons": [
      {
       "claim": "2024 외국인 축제 방문 2위(제주 외국인 70%가 중국인)",
@@ -1977,7 +1981,7 @@
     "ko": "함안낙화놀이",
     "score": 4,
     "commerce": false,
-    "status": "not-listed",
+    "status": "pending",
     "ids": [],
     "reasons": [
      {
@@ -1996,8 +2000,10 @@
     "ko": "대구약령시한방문화축제",
     "score": 3,
     "commerce": false,
-    "status": "not-listed",
-    "ids": [],
+    "status": "pending",
+    "ids": [
+     "698138"
+    ],
     "reasons": [
      {
       "claim": "관광공사 데이터랩(2024): 대만인 방문 2위 축제",
