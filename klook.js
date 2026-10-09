@@ -97,7 +97,9 @@ const TARGET_ZH = {
   zhEsim: 'https://www.klook.com/zh-CN/search/result/?query=' + encodeURIComponent('韩国 eSIM'),
   twHotel: 'https://www.klook.com/zh-TW/search/result/?query=' + encodeURIComponent('首爾 飯店'),
   twKtx: 'https://www.klook.com/zh-TW/search/result/?query=KTX',
+  twKtxGj: 'https://www.klook.com/zh-TW/search/result/?query=' + encodeURIComponent('慶州 KTX'),
 };
+AD.twKtxGj = '1488589';  // chukjemoa-tw · tw-gyeongju / ktx (2026-10-09, zh-TW 「慶州 KTX」 검색 15건 — 首爾至慶州 KTX NT$1,173 확인)
 const ZH_TXT = {
   tw: { badge: '廣告', note: '透過這個連結預訂，本站會收到介紹費；你支付的金額不會改變。',
     esim: '在韓國要用 NAVER 地圖查營業時間、打電話或看店家 IG，手機都得有網路。韓國用的 eSIM 可以出發前先買好 → ',
@@ -127,5 +129,12 @@ function ktxTw() {
   return boxZh(badgeZh(T.badge) + T.ktx + a(urlZh('tw', TARGET_ZH.twKtx, AD.twKtx), T.ktxA, 'ktx', 'tw-busan', 'inline-context'), T);
 }
 module.exports.ktxTw = ktxTw;
+// 2026-10-09 — /tw/gyeongju/ : 「서울→경주는 KTX 신경주역, 약 2시간 남짓」 사실 문장 바로 뒤 → 서울~경주 KTX 승차권
+function ktxGjTw() {
+  const T = ZH_TXT.tw;
+  return boxZh(badgeZh(T.badge) + '從首爾去慶州，搭 KTX 高鐵到「新慶州站」（신경주역）最快，首爾站出發約2小時出頭；市區的舊「慶州站」已停用，買票時請選新慶州。週末和連假車票常常提早賣完 → '
+    + a(urlZh('tw', TARGET_ZH.twKtxGj, AD.twKtxGj), '看首爾—慶州 KTX 車票（Klook）', 'ktx', 'tw-gyeongju', 'inline-context'), T);
+}
+module.exports.ktxGjTw = ktxGjTw;
 module.exports.esimZh = esimZh;
 module.exports.hotelTw = hotelTw;

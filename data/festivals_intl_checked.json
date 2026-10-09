@@ -1,56 +1,92 @@
 {
- "235076": {
-  "title": "부산불꽃축제",
-  "date": "2026-10-02",
-  "result": "일치 11/07 (zh·tw)",
-  "src": "https://busanfireworks.com/reservation"
- },
- "506376": {
-  "title": "강경젓갈축제",
-  "date": "2026-10-06",
-  "result": "맞음 — 10/15~10/18 (제30회, 강경읍 일원)",
-  "src": "https://www.joongdo.co.kr/web/view.php?key=20260925010007875"
- },
- "506670": {
-  "title": "안동국제탈춤페스티벌",
-  "date": "2026-09-30",
-  "result": "맞음 — 9/24~10/4 (원본 그대로. 한국어 수동목록 9/25 가 틀려 있었다)",
-  "src": "https://www.kukinews.com/article/view/kuk202609170163"
- },
- "574285": {
-  "title": "김제지평선축제",
-  "date": "2026-10-02",
-  "result": "일치 10/01~10/05 (zh·tw)",
-  "src": "https://nocutnews.co.kr/news/6585091"
- },
- "825295": {
-  "title": "강릉커피축제",
-  "date": "2026-10-02",
-  "result": "일치 10/21~10/25 (zh·tw)",
-  "src": "https://www.coffeefestival.net/"
- },
- "914138": {
-  "title": "수원화성문화제",
-  "date": "2026-10-02",
-  "result": "일치 10/04~10/11 (zh·tw)",
-  "src": "https://www.seoul.co.kr/news/life/performance/2026/09/29/20260929500146"
- },
- "952988": {
-  "title": "백제문화제",
-  "date": "2026-10-06",
-  "result": "맞음 — 10/3~10/11 (제72회, 공주·부여)",
-  "src": "https://www.tournews21.com/news/articleView.html?idxno=144784"
- },
- "1998564": {
-  "title": "궁중문화축전",
-  "date": "2026-10-06",
-  "result": "맞음 — 10/7~10/11 (가을, 4대궁·종묘)",
-  "src": "https://zdnet.co.kr/view/?no=20260930155206"
- },
- "2031318": {
-  "title": "임실N치즈축제",
-  "date": "2026-10-06",
-  "result": "맞음 — 10/8~10/11 (제12회)",
-  "src": "https://www.newspim.com/news/view/20260918000462"
- }
+  "235076": {
+    "title": "부산불꽃축제",
+    "date": "2026-10-02",
+    "result": "일치 11/07 (zh·tw)",
+    "src": "https://busanfireworks.com/reservation"
+  },
+  "386053": {
+    "title": "평창송어축제",
+    "date": "2026-10-09",
+    "result": "미확인 — 2027 회차 공식 발표 못 찾음(여행상품만 1/9~2/9 표기, 근거 불인정). 달력은 往年 표기 유지",
+    "src": "https://www.trazy.com/ko/experience/detail/pyeongchang-trout-festival-samyang-ranch-eobi-valley-seoul"
+  },
+  "506376": {
+    "title": "강경젓갈축제",
+    "date": "2026-10-06",
+    "result": "맞음 — 10/15~10/18 (제30회, 강경읍 일원)",
+    "src": "https://www.joongdo.co.kr/web/view.php?key=20260925010007875"
+  },
+  "506670": {
+    "title": "안동국제탈춤페스티벌",
+    "date": "2026-09-30",
+    "result": "맞음 — 9/24~10/4 (원본 그대로. 한국어 수동목록 9/25 가 틀려 있었다)",
+    "src": "https://www.kukinews.com/article/view/kuk202609170163"
+  },
+  "507599": {
+    "title": "얼음나라화천 산천어축제",
+    "date": "2026-10-09",
+    "result": "맞음 — 2027-01-09~01-31 (23일간)",
+    "src": "https://www.ajunews.com/view/20261002095755372"
+  },
+  "574285": {
+    "title": "김제지평선축제",
+    "date": "2026-10-02",
+    "result": "일치 10/01~10/05 (zh·tw)",
+    "src": "https://nocutnews.co.kr/news/6585091"
+  },
+  "825295": {
+    "title": "강릉커피축제",
+    "date": "2026-10-09",
+    "result": "맞음 — 2026-10-21~10-25 (제18회, 강릉커피거리 일원)",
+    "src": "https://news.mtn.co.kr/news-detail/2026070811343756007"
+  },
+  "914138": {
+    "title": "수원화성문화제",
+    "date": "2026-10-02",
+    "result": "일치 10/04~10/11 (zh·tw)",
+    "src": "https://www.seoul.co.kr/news/life/performance/2026/09/29/20260929500146"
+  },
+  "952988": {
+    "title": "백제문화제",
+    "date": "2026-10-06",
+    "result": "맞음 — 10/3~10/11 (제72회, 공주·부여)",
+    "src": "https://www.tournews21.com/news/articleView.html?idxno=144784"
+  },
+  "1095732": {
+    "title": "서울빛초롱축제",
+    "date": "2026-10-09",
+    "result": "미확인 — 2026 회차 미발표. 참고: 2025 회차는 2025-12-12~2026-01-18(대한민국 구석구석), 달력은 往年12月 표기",
+    "src": "https://m.visitkorea.or.kr/kfes/detail/fstvlDetail.do?fstvlCntntsId=bcd79254-697d-47f5-a408-e022f0e9f7fd"
+  },
+  "1841539": {
+    "title": "마토예술제",
+    "date": "2026-10-09",
+    "result": "미확인 — 평택시문화재단 2026 운영 용역 공고에 「6~11월 중 2회, 2회차 9~11월 중」만 있음. 10/31 공식 발표 못 찾음",
+    "src": "https://momo365.net/BidInfo?ViewType=detail&cd=free&iBidCode=2026031131600-1"
+  },
+  "1998564": {
+    "title": "궁중문화축전",
+    "date": "2026-10-06",
+    "result": "맞음 — 10/7~10/11 (가을, 4대궁·종묘)",
+    "src": "https://zdnet.co.kr/view/?no=20260930155206"
+  },
+  "2031318": {
+    "title": "임실N치즈축제",
+    "date": "2026-10-06",
+    "result": "맞음 — 10/8~10/11 (제12회)",
+    "src": "https://www.newspim.com/news/view/20260918000462"
+  },
+  "2874909": {
+    "title": "여수밤바다 불꽃축제",
+    "date": "2026-10-09",
+    "result": "맞음 — 2026-10-31 하루, 여수세계박람회장(이순신광장에서 이전)",
+    "src": "https://www.pressian.com/pages/articles/2026080417310951825"
+  },
+  "3018117": {
+    "title": "전포커피축제",
+    "date": "2026-10-09",
+    "result": "미확인 — 부산시 누리집에 2025 제9회(10/17~19)만 있음. 2026 공식 발표 못 찾음",
+    "src": "https://www.busan.go.kr/eng/bsevents/1701555"
+  }
 }

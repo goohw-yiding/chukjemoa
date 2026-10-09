@@ -665,7 +665,7 @@ ${stLine(p.x, p.y)}
 <h1 class="ic-h1">${esc(t.h1(city))}</h1>
 <p class="ic-lead">${t.lead(esc(city), P.length, (F.length && F[0].annual) ? 0 : F.length)}</p>
 
-<div class="ic-why"><h2>${esc(t.whyT)}</h2><p>${t.why}</p></div>${guideHtml(ROOT, lang, C.key)}${/* 2026-10-06 중국어 회차 — 번체 부산만: 서울→부산 KTX 사실 문장 + 클룩(광고 표시·대가 고지) */ lang === 'tw' && C.key === 'busan' ? require('./klook.js').ktxTw() : ''}
+<div class="ic-why"><h2>${esc(t.whyT)}</h2><p>${t.why}</p></div>${guideHtml(ROOT, lang, C.key)}${/* 2026-10-06 중국어 회차 — 번체 부산만: 서울→부산 KTX 사실 문장 + 클룩(광고 표시·대가 고지) */ lang === 'tw' && C.key === 'busan' ? require('./klook.js').ktxTw() : ''}${/* 2026-10-09 중국어 회차 — 번체 경주만: 서울→신경주 KTX 사실 문장 + 클룩 */ lang === 'tw' && C.key === 'gyeongju' ? require('./klook.js').ktxGjTw() : ''}
 
 ${(() => {
         // 🗓 2026-09-09 수정 — 제목은 「지금 열리는 축제」인데 «아직 시작 안 한» 것이 더 많았다

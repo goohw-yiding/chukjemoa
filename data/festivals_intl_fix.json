@@ -1,51 +1,78 @@
 {
- "235076": {
-  "at": "2026-10-06",
-  "name": {
-   "tw": "釜山煙火節",
-   "zh": "釜山烟花节"
+  "235076": {
+    "at": "2026-10-06",
+    "name": {
+      "tw": "釜山煙火節",
+      "zh": "釜山烟花节"
+    },
+    "src_zh": "부산시 중문 https://www.busan.go.kr/zhs/bsevents/1693997 · VisitBusan 번체"
   },
-  "src_zh": "부산시 중문 https://www.busan.go.kr/zhs/bsevents/1693997 · VisitBusan 번체"
- },
- "506376": {
-  "name": {
-   "ja": "江景塩辛祭り",
-   "tw": "江景醃海鮮節",
-   "zh": "江景腌海鲜节"
+  "292961": {
+    "name": {
+      "tw": "首爾王宮守門將交接儀式",
+      "zh": "首尔王宫守门将交接仪式"
+    },
+    "src_zh": "서울시 공식 번체 페이지 「王宮守門將交接儀式」 https://tchinese.seoul.go.kr/?p=30360 (간체는 같은 글자 간화)",
+    "at": "2026-10-09",
+    "src": "name only (날짜는 그대로)"
   },
-  "at": "2026-10-06",
-  "src": "name only (날짜는 그대로) — 宮中文化祝典: japanese.korea.net 표기, 나머지는 뜻 번역",
-  "src_zh": "뜻 번역(공식 중문명 없음)"
- },
- "952988": {
-  "name": {
-   "ja": "百済文化祭",
-   "tw": "百濟文化節",
-   "zh": "百济文化节"
+  "506376": {
+    "name": {
+      "ja": "江景塩辛祭り",
+      "tw": "江景醃海鮮節",
+      "zh": "江景腌海鲜节"
+    },
+    "at": "2026-10-06",
+    "src": "name only (날짜는 그대로) — 宮中文化祝典: japanese.korea.net 표기, 나머지는 뜻 번역",
+    "src_zh": "뜻 번역(공식 중문명 없음)"
   },
-  "at": "2026-10-06",
-  "src": "name only (날짜는 그대로) — 宮中文化祝典: japanese.korea.net 표기, 나머지는 뜻 번역",
-  "src_zh": "백제문화제재단 중문 https://www.baekje.org/chn/"
- },
- "1998564": {
-  "name": {
-   "ja": "宮中文化祝典",
-   "tw": "宮中文化慶典",
-   "zh": "宫中文化庆典"
+  "952988": {
+    "name": {
+      "ja": "百済文化祭",
+      "tw": "百濟文化節",
+      "zh": "百济文化节"
+    },
+    "at": "2026-10-06",
+    "src": "name only (날짜는 그대로) — 宮中文化祝典: japanese.korea.net 표기, 나머지는 뜻 번역",
+    "src_zh": "백제문화제재단 중문 https://www.baekje.org/chn/"
   },
-  "at": "2026-10-06",
-  "src": "name only (날짜는 그대로) — 宮中文化祝典: japanese.korea.net 표기, 나머지는 뜻 번역",
-  "src_zh": "국가유산청 중문 보도자료 PR Newswire https://hk.prnasia.com/story/525533-2.shtml"
- },
- "2031318": {
-  "name": {
-   "ja": "任実Nチーズ祭り",
-   "tw": "任實N起司節",
-   "zh": "任实N奶酪节"
+  "1998564": {
+    "name": {
+      "ja": "宮中文化祝典",
+      "tw": "宮中文化慶典",
+      "zh": "宫中文化庆典"
+    },
+    "at": "2026-10-06",
+    "src": "name only (날짜는 그대로) — 宮中文化祝典: japanese.korea.net 표기, 나머지는 뜻 번역",
+    "src_zh": "국가유산청 중문 보도자료 PR Newswire https://hk.prnasia.com/story/525533-2.shtml"
   },
-  "at": "2026-10-06",
-  "src": "name only (날짜는 그대로) — 宮中文化祝典: japanese.korea.net 표기, 나머지는 뜻 번역",
-  "src_zh": "뜻 번역(공식 중문명 없음, 번체는 대만 통용 起司)"
- },
- "_readme": "외국어(중국어·일본어·스페인어) 달력 교정 — intl.js 가 매일 빌드 때 읽는다. {TourAPI 국문 id: {start:'YYYY-MM-DD', end, src:'공식 근거 URL', at:'확인일', cancel:true(취소·연기), name:{tw,zh,ja,es}(공식 번역이 없을 때 붙이는 이름)}}. 공식 발표로 확인한 것만 넣는다. 영어는 festivals_en_fix.json 이 따로 있다."
+  "2031318": {
+    "name": {
+      "ja": "任実Nチーズ祭り",
+      "tw": "任實N起司節",
+      "zh": "任实N奶酪节"
+    },
+    "at": "2026-10-06",
+    "src": "name only (날짜는 그대로) — 宮中文化祝典: japanese.korea.net 표기, 나머지는 뜻 번역",
+    "src_zh": "뜻 번역(공식 중문명 없음, 번체는 대만 통용 起司)"
+  },
+  "3107059": {
+    "name": {
+      "tw": "2026 崇禮門把守儀式",
+      "zh": "2026 崇礼门把守仪式"
+    },
+    "src_zh": "뜻 번역(파수=把守, 공식 중문명 못 찾음)",
+    "at": "2026-10-09",
+    "src": "name only (날짜는 그대로)"
+  },
+  "3481597": {
+    "name": {
+      "tw": "The Painters 塗鴉秀",
+      "zh": "The Painters 涂鸦秀"
+    },
+    "src_zh": "공연명 The Painters + 중화권 통용 표기 塗鴉秀(creatrip zh-HK 「The Painters新塗鴉秀」) — 공식 중문명 없음",
+    "at": "2026-10-09",
+    "src": "name only (날짜는 그대로)"
+  },
+  "_readme": "외국어(중국어·일본어·스페인어) 달력 교정 — intl.js 가 매일 빌드 때 읽는다. {TourAPI 국문 id: {start:'YYYY-MM-DD', end, src:'공식 근거 URL', at:'확인일', cancel:true(취소·연기), name:{tw,zh,ja,es}(공식 번역이 없을 때 붙이는 이름)}}. 공식 발표로 확인한 것만 넣는다. 영어는 festivals_en_fix.json 이 따로 있다."
 }
