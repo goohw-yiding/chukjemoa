@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-11",
+ "generatedAt": "2026-10-12",
  "rule": "근거 점수 2 이상 · 언어당 최대 25",
  "langs": {
   "en": [
@@ -1637,7 +1637,7 @@
     "ko": "부산자갈치축제",
     "score": 2,
     "commerce": false,
-    "status": "est",
+    "status": "tbc",
     "ids": [],
     "reasons": [
      {
@@ -2165,7 +2165,7 @@
     "ko": "부산자갈치축제",
     "score": 2,
     "commerce": false,
-    "status": "est",
+    "status": "tbc",
     "ids": [],
     "reasons": [
      {
