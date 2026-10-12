@@ -18,6 +18,7 @@
 //   node confirm-festivals.js --propose "축제명" 시작 종료 URL1 URL2 ["장소"]   조사자: 후보 등록
 //   node confirm-festivals.js --approve "축제명" 시작 종료 URL ["장소"]         검증자: 독립 확인 → 일치하면 확정
 //   node confirm-festivals.js --owner "축제명" 시작 종료 URL ["장소"]           장남님 판정: 불일치 후보를 장남님이 정한 날짜로 확정
+//   node confirm-festivals.js --desc "축제명" "새 설명" | "옛 부분" "새 부분"    설명 문구 고치기(날짜 어긋난 문구 즉시 수정)
 //   node confirm-festivals.js --list-blind    검증자용: 후보 이름·지역만(조사자 날짜·근거를 가림)
 //   node confirm-festivals.js --note "축제명" "메모"                          미발표·의심 기록
 //
@@ -62,6 +63,13 @@ function saveAll() {
   fs.writeFileSync(PC, JSON.stringify(cands, null, 1) + '\n');
 }
 function findF(name) { const f = L.find(x => x.name === name); if (!f) { console.log(`❌ 이름이 없음: ${name}`); process.exit(1); } return f; }
+// 설명 문구 속 «N월 N일»(음력 제외)이 확정 기간 밖이면 경고 — 예년·다른 회차 문구가 남은 것. --desc 로 바로 고친다.
+function descWarn(f) {
+  const Y = f.start.slice(0, 4);
+  const bad = [...String(f.desc || '').matchAll(/(음력\s*|지난\s*\d{4}년\s*)?(\d{1,2})\s*월\s*(\d{1,2})\s*일/g)].filter(m => !m[1])
+    .filter(m => { const s = `${Y}-${String(m[2]).padStart(2, '0')}-${String(m[3]).padStart(2, '0')}`; return s < f.start || s > f.end; });
+  if (bad.length) console.log(`⚠️ 설명 문구에 기간 밖 날짜(${bad.map(m => m[0]).join(', ')}) — 바로 고칠 것: node confirm-festivals.js --desc "${f.name}" "옛 부분" "새 부분"`);
+}
 function checkDates(s, e) { if (!isDate(s) || !isDate(e) || e < s) { console.log('❌ 날짜 형식은 YYYY-MM-DD, 종료 ≥ 시작'); process.exit(1); } }
 
 // ── 근거 페이지 기계 검증: 페이지를 직접 받아 «연도» 와 «날짜 문구»가 실제로 있는지 본다 ──
@@ -169,7 +177,7 @@ async function verifyAll(urls, s, e) {
     f.sources = [...c.sources, u]; f.verifiedAt = today;
     delete cands[name]; changed++;
     log.push({ at: today, name, from, to: `${s}~${e}`, place: pl || undefined, confirm: '교차확인(조사자 2곳 + 검증자 1곳, 기계 검증 통과)', sources: f.sources });
-    saveAll(); console.log(`✅ 확정 ${name}: ${from} → ${s}~${e}${pl ? ' · ' + pl : ''}`); return;
+    saveAll(); console.log(`✅ 확정 ${name}: ${from} → ${s}~${e}${pl ? ' · ' + pl : ''}`); descWarn(f); return;
   }
 
   // 장남님 판정: 조사자·검증자 불일치(⚠️)를 장남님이 직접 확인(네이버 등)해 정한 날짜로 확정.
@@ -187,7 +195,18 @@ async function verifyAll(urls, s, e) {
     f.sources = [u]; f.verifiedAt = today;
     delete cands[name]; changed++;
     log.push({ at: today, name, from, to: `${s}~${e}`, place: pl || undefined, confirm: `장남님 판정(불일치 해소 — 조사자 ${c.start}~${c.end})`, sources: [u] });
-    saveAll(); console.log(`✅ 확정(장남님 판정) ${name}: ${from} → ${s}~${e}${pl ? ' · ' + pl : ''}`); return;
+    saveAll(); console.log(`✅ 확정(장남님 판정) ${name}: ${from} → ${s}~${e}${pl ? ' · ' + pl : ''}`); descWarn(f); return;
+  }
+
+  // 설명 문구 고치기(2026-10-12 장남님: 날짜와 어긋난 문구는 «바로 고쳐»). festivals.json 손편집 대신 이 명령으로.
+  //   --desc "축제명" "새 설명"            전체 교체
+  //   --desc "축제명" "옛 부분" "새 부분"   일부 교체
+  if (args[0] === '--desc') {
+    const [, name, a, b] = args; const f = findF(name); const before = f.desc || '';
+    if (b === undefined) { if (!a) { console.log('❌ 새 설명이 비었음'); process.exit(1); } f.desc = a; }
+    else { if (!before.includes(a)) { console.log('❌ 옛 부분이 설명에 없음'); process.exit(1); } f.desc = before.replace(a, b); }
+    changed++; log.push({ at: today, name, desc: { from: before.slice(0, 120), to: f.desc.slice(0, 120) } });
+    saveAll(); console.log(`✏️ 설명 고침 ${name}: ${f.desc.slice(0, 80)}…`); return;
   }
 
   if (args[0] === '--note') {
