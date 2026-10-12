@@ -1,14 +1,14 @@
 {
- "generatedAt": "2026-10-12T08:07",
+ "generatedAt": "2026-10-12T09:45",
  "stats": {
   "en": {
-   "total": 280,
+   "total": 291,
    "linked": 47,
    "confirmed": 38,
    "pending": 0,
    "tbc": 7,
    "est": 2,
-   "redated": 0,
+   "redated": 5,
    "restored": 0,
    "review": 0,
    "removed": 0
@@ -20,19 +20,19 @@
    "pending": 0,
    "tbc": 6,
    "est": 2,
-   "redated": 0,
+   "redated": 3,
    "restored": 0,
    "review": 0,
    "removed": 0
   },
   "zh": {
-   "total": 182,
+   "total": 181,
    "linked": 35,
    "confirmed": 31,
    "pending": 0,
    "tbc": 2,
    "est": 2,
-   "redated": 0,
+   "redated": 4,
    "restored": 0,
    "review": 0,
    "removed": 0
@@ -474,6 +474,7 @@
     "ko": "임실N치즈축제",
     "kv": "confirmed",
     "signals": [
+     "img",
      "tel",
      "geo",
      "date"
@@ -937,6 +938,7 @@
     "ko": "임실N치즈축제",
     "kv": "confirmed",
     "signals": [
+     "img",
      "tel",
      "geo",
      "date"
@@ -1313,6 +1315,7 @@
     "ko": "임실N치즈축제",
     "kv": "confirmed",
     "signals": [
+     "img",
      "tel",
      "geo",
      "date"

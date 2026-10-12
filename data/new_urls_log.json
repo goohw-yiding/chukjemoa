@@ -212,8 +212,17 @@
  },
  {
   "d": "2026-10-12",
-  "n": 7,
+  "n": 16,
   "urls": [
+   "/en/festival/gwanak-gang-gam-chan-festival/",
+   "/en/festival/gochang-moyang-fortress-festival/",
+   "/en/festival/seoul-silver-grass-festival/",
+   "/en/festival/gyeongnam-goseong-dinosaur-world-expo/",
+   "/en/festival/hantangang-garden-festa/",
+   "/en/festival/iksan-gukhwa-festival/",
+   "/en/festival/pohang-steel-art-festival/",
+   "/en/festival/suseong-international-biennale/",
+   "/en/festival/korea-grand-sale/",
    "/ja/festival/hampyeong-gyeoulbitchukje/",
    "/festival/buanbugeunnoeulchukje/",
    "/festival/segyemunhwayusan-hwasun-goindol-gaeulkkot-chukje/",
@@ -221,13 +230,6 @@
    "/festival/moim-international/",
    "/festival/2026-wondosim-yaganyeohaeng-seom-sijeun/",
    "/festival/2026-jirisangeotgichukje-jirisansopung/"
-  ]
- },
- {
-  "d": "2026-10-12",
-  "n": 1,
-  "urls": [
-   "/blog/chukjemoa-weekly-vol4/"
   ]
  }
 ]

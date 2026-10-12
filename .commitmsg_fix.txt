@@ -1,5 +1,1 @@
-fix(audit): 감사 🔴 자동 수리 - 끊긴 구례 장날 링크 제거, 블로그 Vol.4 posts.json 복원(고아 해소)
-
-- vol3 본문의 /jangteo/gurye/ 링크(없는 페이지) 벗김, 글자는 유지
-- 8e4f0ab5 자동 글 추가 커밋에서 사라진 chukjemoa-weekly-vol4 를 fe9f88a7 에서 복원
-- 재빌드로 구례 장날 링크가 끊긴 축제 상세 3장 정리
+감사 오탐 수리 — 루트 _*.html 은 .vercelignore(/_*) 대상이라 라이브에 없음, audit-pages.js 에서 제외 (canonical 누락 1→0)
