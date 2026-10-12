@@ -1577,5 +1577,75 @@
   "at": "2026-10-12",
   "name": "대관령눈꽃축제",
   "note": "2026-10-12: 2027 회차 여전히 미발표"
+ },
+ {
+  "at": "2026-10-12",
+  "name": "서초 클래식 테마파크",
+  "from": "2026-06-12~2026-06-14",
+  "to": "2026-06-12~2026-06-14",
+  "confirm": "교차확인(조사자 2곳 + 검증자 1곳, 기계 검증 통과)",
+  "sources": [
+   "https://festival.seoul.go.kr/festival/main/festivalView.do?festacode=675",
+   "https://www.sijung.co.kr/news/articleView.html?idxno=430687",
+   "https://www.munhwa.com/article/11595446"
+  ]
+ },
+ {
+  "at": "2026-10-12",
+  "name": "2026 대한민국불교문화엑스포",
+  "from": "2026-06-11~2026-06-14",
+  "to": "2026-06-11~2026-06-14",
+  "place": "엑스코",
+  "confirm": "교차확인(조사자 2곳 + 검증자 1곳, 기계 검증 통과)",
+  "sources": [
+   "https://www.newspim.com/news/view/20260610001161",
+   "http://www.ibulgyo.com/news/articleView.html?idxno=437866",
+   "https://www.pressian.com/pages/articles/2026061015363836452"
+  ]
+ },
+ {
+  "at": "2026-10-12",
+  "name": "Colorful Garden 자라섬 꽃 페스타",
+  "mismatch": "조사자 2026-05-23~2026-06-14 ≠ 검증자 2026-09-12~2026-10-05",
+  "sources": [
+   "http://www.ktsketch.co.kr/news/articleView.html?idxno=8722",
+   "https://www.wikitree.co.kr/articles/1139189",
+   "https://www.reportera.co.kr/travel/gapyeong-jaraseom-autumn-flower/"
+  ]
+ },
+ {
+  "at": "2026-10-12",
+  "name": "마토예술제",
+  "mismatch": "조사자 2026-06-27~2026-06-27 ≠ 검증자 2026-10-31~2026-10-31",
+  "sources": [
+   "https://www.kukak21.com/bbs/board.php?bo_table=news&wr_id=43341",
+   "https://www.joongang.tv/news/articleView.html?idxno=300205",
+   "https://korean.visitkorea.or.kr/kfes/detail/fstvlDetail.do?fstvlCntntsId=5fa03d15-98d2-48c0-bab5-be597a7f15eb"
+  ]
+ },
+ {
+  "at": "2026-10-12",
+  "name": "한성백제문화제",
+  "from": "2026-09-25~2026-09-27",
+  "to": "2026-10-23~2026-10-25",
+  "place": "올림픽공원 88잔디마당",
+  "confirm": "교차확인(조사자 2곳 + 검증자 1곳, 기계 검증 통과)",
+  "sources": [
+   "https://www.songpa.go.kr/hanseong/",
+   "https://festival.seoul.go.kr/festival/main/festivalView.do?festacode=581",
+   "https://biz.heraldcorp.com/article/10899649"
+  ]
+ },
+ {
+  "at": "2026-10-12",
+  "name": "부산자갈치축제",
+  "from": "2026-10-08~2026-10-11",
+  "to": "2026-10-15~2026-10-18",
+  "confirm": "교차확인(조사자 2곳 + 검증자 1곳, 기계 검증 통과)",
+  "sources": [
+   "https://www.newspim.com/news/view/20261008001271",
+   "https://www.fnnews.com/news/202610110814579297",
+   "https://www.ksw-news.com/news/articleView.html?idxno=3044641"
+  ]
  }
 ]

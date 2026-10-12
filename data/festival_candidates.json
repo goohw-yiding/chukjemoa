@@ -1,15 +1,4 @@
 {
- "한성백제문화제": {
-  "start": "2026-10-23",
-  "end": "2026-10-25",
-  "place": "올림픽공원 88잔디마당 일대",
-  "sources": [
-   "https://www.songpa.go.kr/hanseong/",
-   "https://festival.seoul.go.kr/festival/main/festivalView.do?festacode=581"
-  ],
-  "proposedAt": "2026-09-30",
-  "from": "2026-09-25~2026-09-27"
- },
  "마토예술제": {
   "start": "2026-06-27",
   "end": "2026-06-27",
@@ -20,39 +9,6 @@
   ],
   "proposedAt": "2026-10-05",
   "from": "2026-06-27~2026-06-27"
- },
- "부산자갈치축제": {
-  "start": "2026-10-15",
-  "end": "2026-10-18",
-  "place": "",
-  "sources": [
-   "https://www.newspim.com/news/view/20261008001271",
-   "https://www.fnnews.com/news/202610110814579297"
-  ],
-  "proposedAt": "2026-10-12",
-  "from": "2026-10-08~2026-10-11"
- },
- "서초 클래식 테마파크": {
-  "start": "2026-06-12",
-  "end": "2026-06-14",
-  "place": "",
-  "sources": [
-   "https://festival.seoul.go.kr/festival/main/festivalView.do?festacode=675",
-   "https://www.sijung.co.kr/news/articleView.html?idxno=430687"
-  ],
-  "proposedAt": "2026-10-12",
-  "from": "2026-06-12~2026-06-14"
- },
- "2026 대한민국불교문화엑스포": {
-  "start": "2026-06-11",
-  "end": "2026-06-14",
-  "place": "",
-  "sources": [
-   "https://www.newspim.com/news/view/20260610001161",
-   "http://www.ibulgyo.com/news/articleView.html?idxno=437866"
-  ],
-  "proposedAt": "2026-10-12",
-  "from": "2026-06-11~2026-06-14"
  },
  "Colorful Garden 자라섬 꽃 페스타": {
   "start": "2026-05-23",

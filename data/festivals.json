@@ -794,17 +794,22 @@
   "name": "한성백제문화제",
   "region": "서울",
   "city": "송파구",
-  "place": "올림픽공원 88잔디마당 일대",
-  "start": "2026-10-03",
-  "end": "2026-10-11",
+  "place": "올림픽공원 88잔디마당",
+  "start": "2026-10-23",
+  "end": "2026-10-25",
   "month": [
    10
   ],
   "category": "전통",
   "desc": "한성백제 역사를 재현하는 문화축제",
-  "confirmed": false,
-  "pending": true,
-  "apiSource": "TourAPI «백제문화제» id 952988"
+  "confirmed": true,
+  "apiSource": "TourAPI «백제문화제» id 952988",
+  "sources": [
+   "https://www.songpa.go.kr/hanseong/",
+   "https://festival.seoul.go.kr/festival/main/festivalView.do?festacode=581",
+   "https://biz.heraldcorp.com/article/10899649"
+  ],
+  "verifiedAt": "2026-10-12"
  },
  {
   "name": "서울거리예술축제",
@@ -993,8 +998,13 @@
   ],
   "category": "음식",
   "desc": "싱싱한 수산물 맛보는 시장 축제",
-  "confirmed": false,
-  "pending": true
+  "confirmed": true,
+  "sources": [
+   "https://www.newspim.com/news/view/20261008001271",
+   "https://www.fnnews.com/news/202610110814579297",
+   "https://www.ksw-news.com/news/articleView.html?idxno=3044641"
+  ],
+  "verifiedAt": "2026-10-12"
  },
  {
   "name": "전주비빔밥축제",
@@ -2250,7 +2260,7 @@
   "name": "2026 대한민국불교문화엑스포",
   "region": "대구",
   "city": "북구",
-  "place": "대구광역시 북구 엑스코로 10 (산격동)",
+  "place": "엑스코",
   "start": "2026-06-11",
   "end": "2026-06-14",
   "month": [
@@ -2258,9 +2268,14 @@
   ],
   "category": "전통",
   "desc": "대한민국불교문화엑스포는 신라시대의 찬란한 불교문화의 중심지이자 전통문화의 메카인 대구, 경북의 불교&전통문화 인프라를 중심으로 한 예술산업 활성화를 하는 대표 MICE산업이다. 대구, 경북의 불교자",
-  "confirmed": false,
+  "confirmed": true,
   "apiSource": "TourAPI «2026 대한민국불교문화엑스포» id 2807078",
-  "pending": true
+  "sources": [
+   "https://www.newspim.com/news/view/20260610001161",
+   "http://www.ibulgyo.com/news/articleView.html?idxno=437866",
+   "https://www.pressian.com/pages/articles/2026061015363836452"
+  ],
+  "verifiedAt": "2026-10-12"
  },
  {
   "name": "서초 클래식 테마파크",
@@ -2274,9 +2289,14 @@
   ],
   "category": "음악",
   "desc": "서초 클래식 테마파크는 서초구가 주최하는 참여형 음악 축제이다. 도심 속 자연 공간인 방배 뒷벌 어린이공원 전체를 클래식 테마파크로 조성하여 시민들에게 차별화된 문화 예술 체험의 장을 제공한다. 본",
-  "confirmed": false,
+  "confirmed": true,
   "apiSource": "TourAPI «서초 클래식 테마파크» id 4069856",
-  "pending": true
+  "sources": [
+   "https://festival.seoul.go.kr/festival/main/festivalView.do?festacode=675",
+   "https://www.sijung.co.kr/news/articleView.html?idxno=430687",
+   "https://www.munhwa.com/article/11595446"
+  ],
+  "verifiedAt": "2026-10-12"
  },
  {
   "name": "실향민문화축제",
