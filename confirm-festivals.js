@@ -17,6 +17,7 @@
 //   node confirm-festivals.js --check-url URL YYYY-MM-DD YYYY-MM-DD   근거 페이지 기계 검증만
 //   node confirm-festivals.js --propose "축제명" 시작 종료 URL1 URL2 ["장소"]   조사자: 후보 등록
 //   node confirm-festivals.js --approve "축제명" 시작 종료 URL ["장소"]         검증자: 독립 확인 → 일치하면 확정
+//   node confirm-festivals.js --owner "축제명" 시작 종료 URL ["장소"]           장남님 판정: 불일치 후보를 장남님이 정한 날짜로 확정
 //   node confirm-festivals.js --list-blind    검증자용: 후보 이름·지역만(조사자 날짜·근거를 가림)
 //   node confirm-festivals.js --note "축제명" "메모"                          미발표·의심 기록
 //
@@ -169,6 +170,24 @@ async function verifyAll(urls, s, e) {
     delete cands[name]; changed++;
     log.push({ at: today, name, from, to: `${s}~${e}`, place: pl || undefined, confirm: '교차확인(조사자 2곳 + 검증자 1곳, 기계 검증 통과)', sources: f.sources });
     saveAll(); console.log(`✅ 확정 ${name}: ${from} → ${s}~${e}${pl ? ' · ' + pl : ''}`); return;
+  }
+
+  // 장남님 판정: 조사자·검증자 불일치(⚠️)를 장남님이 직접 확인(네이버 등)해 정한 날짜로 확정.
+  //   장남님이 채팅으로 날짜를 정해 준 경우에만 쓴다. 근거 URL 1곳은 여전히 기계 검증을 통과해야 한다.
+  if (args[0] === '--owner') {
+    const [, name, s, e, u, place] = args; const f = findF(name); checkDates(s, e);
+    const c = cands[name];
+    if (!c) { console.log(`❌ 후보가 없음 — 불일치로 남은 후보에만 쓴다: ${name}`); process.exit(1); }
+    console.log(`🔎 장남님 판정 근거 검증 — ${name} ${s}~${e}`);
+    const v = await verifyAll([u], s, e);
+    if (!v[0].pass) { console.log('⛔ 확정 안 함 — 근거가 기계 검증을 통과하지 못함'); process.exit(2); }
+    const from = c.from || `${f.start}~${f.end}`;
+    f.start = s; f.end = e; f.month = months(s, e); f.confirmed = true; delete f.pending;
+    const pl = place || (c.start === s && c.end === e ? c.place : ''); if (pl) f.place = pl;
+    f.sources = [u]; f.verifiedAt = today;
+    delete cands[name]; changed++;
+    log.push({ at: today, name, from, to: `${s}~${e}`, place: pl || undefined, confirm: `장남님 판정(불일치 해소 — 조사자 ${c.start}~${c.end})`, sources: [u] });
+    saveAll(); console.log(`✅ 확정(장남님 판정) ${name}: ${from} → ${s}~${e}${pl ? ' · ' + pl : ''}`); return;
   }
 
   if (args[0] === '--note') {

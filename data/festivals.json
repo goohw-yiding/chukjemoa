@@ -2037,16 +2037,19 @@
   "region": "경기",
   "city": "가평군",
   "place": "경기도 가평군 가평읍 자라섬로 60",
-  "start": "2026-05-23",
-  "end": "2026-06-14",
+  "start": "2026-09-12",
+  "end": "2026-10-05",
   "month": [
-   5,
-   6
+   9,
+   10
   ],
   "category": "꽃",
   "desc": "선선한 봄바람이 머무는 계절, 5월 23일부터 6월 14일까지 자라섬이 다시 한번 화사한 꽃빛으로 물든다. 형형색색의 봄꽃이 드넓게 펼쳐진 꽃 정원과 북한강의 푸른 물결이 어우러진 풍경 속에서, 일",
-  "confirmed": false,
-  "pending": true
+  "confirmed": true,
+  "sources": [
+   "https://www.reportera.co.kr/travel/gapyeong-jaraseom-autumn-flower/"
+  ],
+  "verifiedAt": "2026-10-12"
  },
  {
   "name": "ING 페스티벌",
@@ -2379,16 +2382,19 @@
   "name": "마토예술제",
   "region": "경기",
   "city": "평택시",
-  "place": "경기도 평택시 팽성읍 안정쇼핑로 11",
-  "start": "2026-06-27",
-  "end": "2026-06-27",
+  "place": "안정리예술인광장",
+  "start": "2026-10-31",
+  "end": "2026-10-31",
   "month": [
-   6
+   10
   ],
   "category": "문화",
   "desc": "마토예술제는 ‘마지막 주 토요일에 하는 예술제’라는 의미를 담은 안정리 대표 문화예술축제로, 6월에는 ‘썸머크리스-마토(Summer Christ-MATO)’, 10월에는 ‘브로드웨이 인 안정리(Br",
-  "confirmed": false,
-  "pending": true
+  "confirmed": true,
+  "sources": [
+   "https://korean.visitkorea.or.kr/kfes/detail/fstvlDetail.do?fstvlCntntsId=5fa03d15-98d2-48c0-bab5-be597a7f15eb"
+  ],
+  "verifiedAt": "2026-10-12"
  },
  {
   "name": "2026 캠핑요리축제",
