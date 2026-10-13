@@ -10,11 +10,13 @@
   "292961": {
     "name": {
       "tw": "首爾王宮守門將交接儀式",
-      "zh": "首尔王宫守门将交接仪式"
+      "zh": "首尔王宫守门将交接仪式",
+      "ja": "ソウル王宮守門将交代儀式"
     },
     "src_zh": "서울시 공식 번체 페이지 「王宮守門將交接儀式」 https://tchinese.seoul.go.kr/?p=30360 (간체는 같은 글자 간화)",
     "at": "2026-10-09",
-    "src": "name only (날짜는 그대로)"
+    "src": "name only (날짜는 그대로)",
+    "src_ja": "/ja/palace/ 표기와 통일(royalguard.kr 「王宮守門将 交代儀式」)"
   },
   "506376": {
     "name": {
@@ -59,20 +61,56 @@
   "3107059": {
     "name": {
       "tw": "2026 崇禮門把守儀式",
-      "zh": "2026 崇礼门把守仪式"
+      "zh": "2026 崇礼门把守仪式",
+      "ja": "崇礼門把守儀式"
     },
     "src_zh": "뜻 번역(파수=把守, 공식 중문명 못 찾음)",
     "at": "2026-10-09",
-    "src": "name only (날짜는 그대로)"
+    "src": "name only (날짜는 그대로)",
+    "src_ja": "뜻 번역 — /ja/palace/ 「光化門 把守儀式」 표기에 맞춤"
   },
   "3481597": {
     "name": {
       "tw": "The Painters 塗鴉秀",
-      "zh": "The Painters 涂鸦秀"
+      "zh": "The Painters 涂鸦秀",
+      "ja": "ペインターズ（THE PAINTERS）"
     },
     "src_zh": "공연명 The Painters + 중화권 통용 표기 塗鴉秀(creatrip zh-HK 「The Painters新塗鴉秀」) — 공식 중문명 없음",
     "at": "2026-10-09",
+    "src": "name only (날짜는 그대로)",
+    "src_ja": "일본 예약사이트 통용 표기(VELTRA 「ペインターズ『THE PAINTERS』」)"
+  },
+  "_readme": "외국어(중국어·일본어·스페인어) 달력 교정 — intl.js 가 매일 빌드 때 읽는다. {TourAPI 국문 id: {start:'YYYY-MM-DD', end, src:'공식 근거 URL', at:'확인일', cancel:true(취소·연기), name:{tw,zh,ja,es}(공식 번역이 없을 때 붙이는 이름)}}. 공식 발표로 확인한 것만 넣는다. 영어는 festivals_en_fix.json 이 따로 있다.",
+  "2809535": {
+    "name": {
+      "ja": "南山烽燧儀式など伝統文化行事"
+    },
+    "src_ja": "뜻 번역(공식 일본어명 못 찾음)",
+    "at": "2026-10-13",
     "src": "name only (날짜는 그대로)"
   },
-  "_readme": "외국어(중국어·일본어·스페인어) 달력 교정 — intl.js 가 매일 빌드 때 읽는다. {TourAPI 국문 id: {start:'YYYY-MM-DD', end, src:'공식 근거 URL', at:'확인일', cancel:true(취소·연기), name:{tw,zh,ja,es}(공식 번역이 없을 때 붙이는 이름)}}. 공식 발표로 확인한 것만 넣는다. 영어는 festivals_en_fix.json 이 따로 있다."
+  "1841539": {
+    "name": {
+      "ja": "マト芸術祭（平沢・安亭里）"
+    },
+    "src_ja": "뜻 번역 — 마토=마지막 주 토요일, 공식 일본어명 없음",
+    "at": "2026-10-13",
+    "src": "name only (날짜는 그대로)"
+  },
+  "3473295": {
+    "name": {
+      "ja": "DDP建築ツアー"
+    },
+    "src_ja": "뜻 번역(공식 일본어명 못 찾음)",
+    "at": "2026-10-13",
+    "src": "name only (날짜는 그대로)"
+  },
+  "2433596": {
+    "name": {
+      "ja": "王家の散策（仁川空港）"
+    },
+    "src_ja": "뜻 번역 — 인천공항 전통문화행사",
+    "at": "2026-10-13",
+    "src": "name only (날짜는 그대로)"
+  }
 }

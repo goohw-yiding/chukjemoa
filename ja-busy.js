@@ -300,8 +300,8 @@ function build(ctx) {
 
   const content = `<main><div class="wrap">${CSS}
 <p style="font-size:.85rem;color:#9aa3af;margin:8px 0"><a href="/ja/" style="color:#0c7d72">ホーム</a> › 混む日</p>
-<h1 style="font-size:1.46rem;font-weight:900;letter-spacing:-.02em;margin:6px 0 6px">韓国が混む日 — 日本と韓国の祝日を1枚に重ねました</h1>
-<p style="color:#6b7280;font-size:.94rem;line-height:1.8;margin:0 0 4px">「韓国に行かない方がいい時期はいつですか」。この質問の答えは、桜や夏といった<b>季節</b>ではなく<b>日付</b>です。日本の祝日（内閣府の公式カレンダー）と韓国の祝日（韓国政府）を同じ表に並べ、さらに韓国観光公社に登録された飲食店${nf(R.n)}店・カフェ${nf(C.n)}店の営業時間データから「その曜日に定休日の店が何店あるか」を重ねました。${ymd(TODAY)}から${ymd(END)}までです。</p>
+<h1 style="font-size:1.46rem;font-weight:900;letter-spacing:-.02em;margin:6px 0 6px">韓国に行かない方がいい日（混む日）— 日本と韓国の祝日を1枚に重ねました</h1>
+<p style="color:#6b7280;font-size:.94rem;line-height:1.8;margin:0 0 4px">「韓国に行かない方がいい日はいつですか」。この質問の答えは、桜や夏といった<b>季節</b>ではなく<b>日付</b>です。${ymd(TODAY)}〜${ymd(END)}の間に<b>日韓の連休が重なる期間は${lapRows.length}回</b>あり、下の表にすべて日付で出しています。日本の祝日（内閣府の公式カレンダー）と韓国の祝日（韓国政府）を同じ表に並べ、さらに韓国観光公社に登録された飲食店${nf(R.n)}店・カフェ${nf(C.n)}店の営業時間データから「その曜日に定休日の店が何店あるか」を重ねました。</p>
 
 ${next ? `<div class="bzw"><h2>⚠️ いちばん近い注意期間 — ${ymd(next.start)}〜${mdShort(next.end)}</h2>
 <p>${daysTo <= 0 ? '<b>すでに始まっています。</b>' : `今日から<b>${daysTo}日後</b>です。`}${lapWhat(next).replace(/^[^ ]+ /, '')}。この期間に旅行の予定があるなら、下の表で何が重なっているかを先に見てください。</p></div>` : ''}
@@ -373,8 +373,8 @@ ${/* 🇰🇷 코리 블록으로 가는 «다리» 한 줄.
 </div></main>`;
 
   writePage('ja/busy', layout(
-    '韓国が混む日 2026-2027 — 日韓の祝日が重なる期間と、店が閉まる日 | チュクチェモア',
-    `日本の祝日（内閣府）と韓国の祝日を1枚に重ねました。両国とも連休になる期間、韓国だけ店が閉まる日を、飲食店${nf(R.n)}店・カフェ${nf(C.n)}店の営業時間データと合わせて日付で出しています。`,
+    '韓国に行かない方がいい日 2026-2027 — 日韓の連休が重なる混む日と店が閉まる日 | チュクチェモア',
+    `韓国に行かない方がいい日を日付で。日本の祝日（内閣府）と韓国の祝日を1枚に重ねました。両国とも連休になる期間、韓国だけ店が閉まる日を、飲食店${nf(R.n)}店・カフェ${nf(C.n)}店の営業時間データと合わせて日付で出しています。`,
     '/ja/busy/', content, { lang: 'ja' }));
 
   console.log(`✓ /ja/busy/ — 겹치는 구간 ${lapRows.length}개 · 달력 ${allDates.length}일 (${TODAY}~${END})`);

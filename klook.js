@@ -72,7 +72,20 @@ function ktx(stationKo, cityJa) {
 // 당일치기 — 섹션 끝에 한 번. 공식 판매처도 같이 밝힌다(우리만 파는 게 아니다).
 const ktxNote = () => `<p style="font-size:.8rem;color:#8a8178;margin-top:8px">${PR}「KTX切符を見る」はKlookの紹介リンクで、予約があると当サイトに紹介料が入ります。切符は<a href="https://www.korail.com/global/eng/main" target="_blank" rel="noopener" style="color:#0c7d72">韓国鉄道（コレール）の外国人向け公式サイト</a>でも買えます。</p>`;
 
-module.exports = { hanbok, esim, ktx, ktxNote, url, AD, AID };
+// 2026-10-13 일본어 회차 — /ja/festival/busanbulkkotchukje/ : 「🎫 料金 有料（R席…）」 사실 바로 뒤 → 부산불꽃축제 R석
+//   클룩 상품 171795 를 Claude 브라우저로 열어 확인: 「2026 釜山花火大会 21周年記念チケット」【R席】「2026年11月7日から利用可能」 = 우리 달력 11/7(3곳 확인)과 같다.
+//   ⚠️ 전용 광고 ID 는 대시보드(장남님 크롬에만 로그인)에서만 만들 수 있다 → 그때까지 eSIM 광고 ID 를 빌려 쓴다(k_site 가 달라도 302 — 9/24 실측).
+//      우리 쪽 구분은 data-bb="klook-fireworks"·data-place 로 한다. 전용 ID 가 생기면 아래 한 줄만 바꾼다.
+AD.fireworks = AD.esim;
+const FIREWORKS = { busanbulkkotchukje: { url: 'https://www.klook.com/ja/activity/171795-2026-busan-fireworks-festival-21th-anniversary-ticket/', until: '20261107' } };
+function fireworks(slug, today8) {
+  const P = FIREWORKS[slug];
+  if (!P || (today8 && today8 > P.until)) return '';
+  return box(`${PR}上のとおり、この花火祭りの座席は有料です。2026年11月7日の回のR席は、Klookでも日本語で予約できます → `
+    + a(url(P.url, AD.fireworks), '釜山花火祭りのR席を見る（Klook）', 'fireworks', 'ja-festival-' + slug, 'inline-context'));
+}
+
+module.exports = { hanbok, esim, ktx, ktxNote, url, AD, AID, fireworks };
 
 // ─────────────────────────────────────────────────────────────
 // 🇹🇼🇨🇳 2026-09-30 추가 — 중국어(번체 tw·간체 zh) 페이지. 기획서: 프로젝트 문서 claude/기획_2026-09-30_축제모아_중국어.md
