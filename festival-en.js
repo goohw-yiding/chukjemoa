@@ -293,8 +293,11 @@ ${mapScript('en')}
     //    더 붙여 205자가 나갔다(구글이 160자쯤에서 자르므로 출처 문장은 아무도 못 봤다). 앞뒤를 합쳐 재운다.
     const DESC_BUDGET = 155;
     const tail = ended ? ' Official info from the Korea Tourism Organization.' : '';
-    const head = lead ? lead + '. ' : '';
-    const pageDesc = head + (f.ov || '').slice(0, Math.max(40, DESC_BUDGET - head.length - tail.length)) + tail;
+    // 🏷 2026-10-13 — 끝난 축제 ov 는 «*The information below is based on the 2025 festivals…» 안내문으로 시작해
+    //    14장이 같은 설명을 냈다(네이버 서치어드바이저 «설명 중복»). 맨 앞 «*» 안내문을 떼고, 끝난 축제는 축제명을 앞에 세운다.
+    const ovDesc = (f.ov || '').replace(/^\s*\*[^\n]*?(?:\.\s+|\n+)/, '').trim();
+    const head = lead ? lead + '. ' : (ended ? f.title + '. ' : '');
+    const pageDesc = head + ovDesc.slice(0, Math.max(40, DESC_BUDGET - head.length - tail.length)) + tail;
     writePage('en/festival/' + f.slug, layout(
       pageTitle, pageDesc,
       urlPath, content, { lang: 'en', jsonld: ld, noindex: skipIndex }));
