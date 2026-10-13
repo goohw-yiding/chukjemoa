@@ -1,4 +1,6 @@
-﻿en: 영어 목표 자율 운영 — data/en_goals.json (90일 클릭 목표 400·12/31, 달성 시 자동 상향·속도 부족 경보)
+일본어 주간(10/13): 날짜 대조 8건 전부 맞음 · 일본어 이름 7건 · /ja/busy/ 제목 「行かない方がいい日」 · 부산불꽃축제 클룩 R석
 
-Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
-Claude-Session: https://claude.ai/code/session_01JSsgPeqzedxtkPrhuiPPFp
+- festivals_intl_checked.json: 영동난계국악·봉화송이·순창장류·강동선사·동래읍성·목포항구·여주오곡나루·광주김치 (올해 기사·공식 누리집)
+- festivals_intl_fix.json: name.ja 7건(수문장 교대의식·숭례문 파수의식·남산봉수의식·페인터즈·마토예술제·DDP 건축투어·왕가의 산책) — 남의 항목 유지
+- ja-busy.js: title·h1·description 을 검색어 「韓国 行かない方がいい日 2027」에 맞추고 첫 문단에 겹치는 연휴 횟수
+- klook.js·festival-ja.js: /ja/festival/busanbulkkotchukje/ 「料金 有料」 바로 뒤 R석(클룩 171795, 2026-11-07 확인). PR 배지·고지
