@@ -295,9 +295,18 @@ ${mapScript('en')}
     const tail = ended ? ' Official info from the Korea Tourism Organization.' : '';
     // 🏷 2026-10-13 — 끝난 축제 ov 는 «*The information below is based on the 2025 festivals…» 안내문으로 시작해
     //    14장이 같은 설명을 냈다(네이버 서치어드바이저 «설명 중복»). 맨 앞 «*» 안내문을 떼고, 끝난 축제는 축제명을 앞에 세운다.
-    const ovDesc = (f.ov || '').replace(/^\s*\*[^\n]*?(?:\.\s+|\n+)/, '').trim();
+    let ovDesc = (f.ov || '').trim();
+    if (ovDesc.startsWith('*')) {   // 안내문은 두 문장(«…based on the 2025 festivals. Details for the 2026 … available.»)
+      ovDesc = ovDesc.replace(/^\*\s*/, '');
+      while (/^[^.\n]*(information below|festivals will be|will be updated|become available|based on the 20\d\d)[^.\n]*[.\n]\s*/i.test(ovDesc))
+        ovDesc = ovDesc.replace(/^[^.\n]*[.\n]\s*/, '');
+      ovDesc = ovDesc.replace(/^\*\s*/, '').replace(/\s+/g, ' ');
+    }
     const head = lead ? lead + '. ' : (ended ? f.title + '. ' : '');
-    const pageDesc = head + ovDesc.slice(0, Math.max(40, DESC_BUDGET - head.length - tail.length)) + tail;
+    const room = Math.max(40, DESC_BUDGET - head.length - tail.length);
+    let body = ovDesc.slice(0, room);
+    if (ovDesc.length > room) body = body.replace(/\s+\S*$/, '') + '…';   // 낱말 중간에서 끊지 않는다
+    const pageDesc = head + body + tail;
     writePage('en/festival/' + f.slug, layout(
       pageTitle, pageDesc,
       urlPath, content, { lang: 'en', jsonld: ld, noindex: skipIndex }));
