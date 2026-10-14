@@ -17,6 +17,8 @@ function apply(list) {
     if (fx.intro) f._intro = fx.intro;               // fest_intro_en 필드 덮어쓰기('' = 그 줄 숨김)
     // ⏳ 기한 — noteUntil / aff.until (YYYYMMDD) 이 지나면 자동으로 안 붙인다(투어 출발일이 지난 링크를 사람이 안 치워도 되게)
     const live = u => !u || String(u) >= T8;
+    // 🆕 2026-10-14 desc — 검색결과 설명(155자 이내) 손글씨. 노출 많고 클릭 0인 진행/예정 축제용. descUntil(없으면 축제 끝날) 지나면 자동으로 빠진다
+    if (fx.desc && live(fx.descUntil || f.end)) f._desc = fx.desc;
     if (fx.note && live(fx.noteUntil)) f._note = fx.note;
     if (fx.noteFoot && f._note) f._noteFoot = fx.noteFoot;     // 「What's new」 상자 아래 출처 문장(없으면 기본 문구)
     if (fx.aff && live(fx.aff.until)) f._aff = fx.aff;                     // 확인된 제휴 상품(klook-en.js productLink)

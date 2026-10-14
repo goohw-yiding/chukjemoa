@@ -306,7 +306,8 @@ ${mapScript('en')}
     const room = Math.max(40, DESC_BUDGET - head.length - tail.length);
     let body = ovDesc.slice(0, room);
     if (ovDesc.length > room) body = body.replace(/\s+\S*$/, '') + '…';   // 낱말 중간에서 끊지 않는다
-    const pageDesc = head + body + tail;
+    // 🆕 2026-10-14 — festivals_en_fix.json 의 desc(공식 확인한 사실로 손으로 쓴 설명)가 있으면 진행/예정 축제에서만 그걸 쓴다
+    const pageDesc = (!ended && f._desc) ? String(f._desc).slice(0, DESC_BUDGET) : head + body + tail;
     writePage('en/festival/' + f.slug, layout(
       pageTitle, pageDesc,
       urlPath, content, { lang: 'en', jsonld: ld, noindex: skipIndex }));

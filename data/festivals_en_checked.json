@@ -10,7 +10,7 @@
   "2588597": { "title": "Imsil N Cheese Festival", "date": "2026-09-30", "result": "맞음 10/8~11", "src": "국제뉴스 idxno=3689661(임실군)" },
   "4039267": { "title": "King Jeongjo's Royal Parade", "date": "2026-09-30", "result": "맞음 10/4 (안양→수원→화성 12.1km)", "src": "수원시·수원문화재단(시사저널 9/4)" },
   "4088990": { "title": "Gumi Ramyun Festival", "date": "2026-09-30", "result": "맞음 11/6~8 구미역 일원", "src": "구미시(코리아유니온뉴스 2288294)" },
-  "1373574": { "title": "Chuncheon Makguksu & Dakgalbi Festival", "date": "2026-09-30", "result": "맞음 10/14~18", "src": "9/30 한국어 세션 공식 대조(커밋 3fdbea1f)" },
+  "1373574": {"title": "Chuncheon Makguksu & Dakgalbi Festival", "date": "2026-10-14", "result": "맞음 10/14~18 공지천 일원 + note·desc", "src": "세계일보 2026-07-30, 파이낸셜뉴스 2026-10-13"},
   "697439": { "title": "Anseong Namsadang Baudeogi Festival", "date": "2026-09-30", "result": "맞음 10/2~5", "src": "9/30 한국어 세션 공식 대조(커밋 3fdbea1f)" },
   "293091": { "title": "Busan International Rock Festival", "date": "2026-09-30", "result": "맞음 10/2~4", "src": "9/30 한국어 세션 공식 대조(커밋 3fdbea1f)" },
   "701688": { "title": "Soraepogu Festival", "date": "2026-09-30", "result": "맞음 10/2~4", "src": "9/30 한국어 세션 공식 대조(커밋 3fdbea1f)" },
@@ -22,5 +22,12 @@
   "790394": { "title": "Hanwha Seoul International Fireworks Festival", "date": "2026-10-07", "result": "교정 2025-09-27 → 2026-09-05 + 한글 원제 오매칭 교정", "src": "한화 발표(다음뉴스 2026-08-06)" },
   "4076928": { "title": "Hangang River Festival", "date": "2026-10-07", "result": "맞음 가을 10/17~25", "src": "seoul.go.kr/festa/hangang/y2026 공식" },
   "978249": { "title": "Suwon Hwaseong Festival", "date": "2026-10-07", "result": "날짜는 kv 확정(대조 생략) — 외국인 전용 프로그램 note·Creatrip 링크", "src": "Creatrip 15902·15901 상품 페이지" },
-  "1037621": { "title": "Pohang International Fireworks Festival", "date": "2026-10-07", "result": "미확인", "src": "관광공사 11/19~21 vs 다른 목록 11/20~22, 포항문화재단 공식 공지 없음 — 잠정 안내 note 추가" }
+  "1037621": {"title": "Pohang International Fireworks Festival", "date": "2026-10-14", "result": "미확인", "src": "관광공사 kfes 11/19~21 영일대(2026 업데이트 중 표기). 포항시·포항문화재단 발표·기사 없음(2026-10-14)"},
+  "1273884": {"title": "Bupyeong Pungmul Festival", "date": "2026-10-14", "result": "맞음 10/2~4 부평대로·굴포천 일원(제30회)", "src": "국제뉴스 2026-09-28(부평구 발표 인용)"},
+  "697195": {"title": "Cheonan World Dance Festival", "date": "2026-10-14", "result": "맞음 10/1~5 천안종합운동장 + 10/3~5 삼거리공원", "src": "시사뉴스 2026-08-14(천안시 발표)"},
+  "293144": {"title": "Bucheon International Comics Festival", "date": "2026-10-14", "result": "맞음 9/18~20 한국만화박물관(제29회)", "src": "데일리안 2026-09-17"},
+  "1829490": {"title": "Seosan Haemi Eupseong Festival", "date": "2026-10-14", "result": "맞음 10/9~11 해미읍성", "src": "경향신문 2026-09-29"},
+  "3115770": {"title": "Gwangalli M Drone Light Show", "date": "2026-10-14", "result": "틀림 2026-01-01 하루 → 2026-01-03~12-31 매주 토 2회 교정 + note·desc", "src": "부산시 busan.go.kr/eng/bsevents/1713160, 스포츠경향 2026-07-03"},
+  "697445": {"title": "Gimhae Buncheong Ceramics Festival", "date": "2026-10-14", "result": "날짜 맞음 11/6~10, 장소 틀림 진례 → 장유 롯데가든파크 교정", "src": "festival.buncheong.co.kr 메인, 뉴스핌·김해일보 2026-10-12"},
+  "4108424": {"title": "Jangseong Hwangryonggang Autumn Flower Festival", "date": "2026-10-14", "result": "맞음 10/8~11 황룡강 일원", "src": "아시아경제 2026-07-28(장성군 발표)"}
 }
