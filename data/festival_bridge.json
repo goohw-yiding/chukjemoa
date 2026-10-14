@@ -1,16 +1,16 @@
 {
- "generatedAt": "2026-10-14T10:30",
+ "generatedAt": "2026-10-15T07:08",
  "stats": {
   "en": {
    "total": 291,
-   "linked": 47,
-   "confirmed": 38,
+   "linked": 46,
+   "confirmed": 37,
    "pending": 0,
    "tbc": 7,
    "est": 2,
    "redated": 0,
-   "restored": 0,
-   "review": 0,
+   "restored": 1,
+   "review": 1,
    "removed": 0
   },
   "ja": {
@@ -27,14 +27,14 @@
   },
   "zh": {
    "total": 181,
-   "linked": 35,
-   "confirmed": 31,
+   "linked": 34,
+   "confirmed": 30,
    "pending": 0,
    "tbc": 2,
    "est": 2,
    "redated": 0,
-   "restored": 0,
-   "review": 0,
+   "restored": 1,
+   "review": 1,
    "removed": 0
   },
   "tw": {
@@ -511,16 +511,6 @@
      "date"
     ],
     "apiId": "2667017"
-   },
-   "3310546": {
-    "ko": "탐라문화제",
-    "kv": "confirmed",
-    "signals": [
-     "img",
-     "tel",
-     "date"
-    ],
-    "apiId": "140930"
    },
    "4039393": {
     "ko": "2026 인천개항장 페스타 - 1901 라이브로드",
@@ -1333,15 +1323,6 @@
     ],
     "apiId": "2667017"
    },
-   "3332442": {
-    "ko": "탐라문화제",
-    "kv": "confirmed",
-    "signals": [
-     "tel",
-     "date"
-    ],
-    "apiId": "140930"
-   },
    "3502113": {
     "ko": "2026 인천개항장 페스타 - 1901 라이브로드",
     "kv": "tbc",
@@ -1743,7 +1724,26 @@
    }
   }
  },
- "review": [],
+ "review": [
+  {
+   "lang": "en",
+   "id": "3310546",
+   "title": "Tamna Culture Festival",
+   "why": "신호 1개(tel)뿐",
+   "ko": [
+    "탐라문화제"
+   ]
+  },
+  {
+   "lang": "zh",
+   "id": "3332442",
+   "title": "耽罗文化节",
+   "why": "신호 1개(tel)뿐",
+   "ko": [
+    "탐라문화제"
+   ]
+  }
+ ],
  "removed": [],
  "conflicts": []
 }

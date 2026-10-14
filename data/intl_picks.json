@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-14",
+ "generatedAt": "2026-10-15",
  "rule": "근거 점수 2 이상 · 언어당 최대 25",
  "langs": {
   "en": [
@@ -1187,9 +1187,7 @@
     "score": 5,
     "commerce": false,
     "status": "confirmed",
-    "ids": [
-     "3332442"
-    ],
+    "ids": [],
     "reasons": [
      {
       "claim": "2024 외국인 축제 방문 2위(제주 외국인 70%가 중국인)",
