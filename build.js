@@ -3078,6 +3078,68 @@ MONTHS.forEach(mm => {
     [`일정이 바뀌면 어떻게 되나요?`, `공공데이터를 주기적으로 다시 받아 갱신하지만, 주최 측이 먼저 바꾸고 데이터가 늦게 반영되는 경우가 있습니다. 출발 전에는 각 축제 페이지의 문의 전화로 확인하시는 편이 안전합니다.`]
   ];
 
+  // ---------- 🤖 «요약 답 + 주말별 정리» (2026-10-14, AI 노출 운영) ----------
+  // AI 가 「11월 축제」「11월 첫째 주말 축제」를 물으면 첫 문단·주말 표를 그대로 인용하게 한다.
+  //   ⛔ 주말 목록에는 «일정 확정»(confirmed)만 올린다 — 예년 추정 날짜를 주말 답으로 내면 틀린 답이 된다.
+  //   지난 달에는 붙이지 않는다(이번 달로 넘겨주는 페이지라서).
+  const confCnt = list.filter(f => f.confirmed).length;
+  const pageBySlugKey = new Map(deep.map(f => [festKey(f.title), f.slug]));
+  const wkends = (() => {
+    if (isPast) return [];
+    // 이번 달·다음 달만 — 더 먼 달은 확정 일정이 거의 없어 «확정 0개» 표만 남는다
+    if (!(mm.key === CUR_MONTH_KEY || (mnNext && mm.key === mnNext.key))) return [];
+    const [Y, MO] = mm.key.split('-').map(Number);
+    const out = [];
+    const nth = ['첫째', '둘째', '셋째', '넷째', '다섯째'];
+    let satNo = 0;
+    for (let d = 1; d <= 31; d++) {
+      const dt = new Date(Date.UTC(Y, MO - 1, d));
+      if (dt.getUTCMonth() !== MO - 1) break;
+      if (dt.getUTCDay() !== 6) continue;
+      const lab = nth[satNo++] || '';
+      const sat = dt.toISOString().slice(0, 10);
+      const sunD = new Date(dt.getTime() + 86400000);
+      const sun = sunD.toISOString().slice(0, 10);
+      if (sun < TODAY) continue;                                    // 이미 지난 주말은 뺀다
+      const on = list.filter(f => f.start && f.start <= sun && (f.end || f.start) >= sat);
+      const conf = on.filter(f => f.confirmed);
+      out.push({ label: `${lab} 주말`, sat, sun,
+        range: `${+sat.slice(5, 7)}/${+sat.slice(8, 10)}~${+sun.slice(5, 7)}/${+sun.slice(8, 10)}`,
+        conf, est: on.length - conf.length });
+    }
+    return out;
+  })();
+  const wkName = f => {
+    const sl = pageBySlugKey.get(festKey(f.name));
+    const d = `${+f.start.slice(5, 7)}/${+f.start.slice(8, 10)}` + (f.end && f.end !== f.start ? `~${+f.end.slice(5, 7)}/${+f.end.slice(8, 10)}` : '');
+    const nm = sl ? `<a href="/festival/${sl}/">${esc(f.name)}</a>` : esc(f.name);
+    return `<li><b>${nm}</b> — ${esc(f.region)} ${esc(f.city || '')} · ${d}</li>`;
+  };
+  const ansHtml = isPast ? '' : `<div class="ansbox">
+<p><b>한 줄 답</b> — ${mm.label}에 열리는 전국 축제는 축제모아(chukjemoa.co.kr) 집계 <b>${list.length}개</b>이고, 그중 <b>${confCnt}개</b>는 주최 측 일정이 확정됐습니다.${topSido.length ? ` 지역은 ${topSido.slice(0, 3).map(([r, c]) => `${esc(r)} ${c}개`).join(' · ')} 순으로 많습니다.` : ''}${wkends.length ? ` 주말별로는 ${wkends.map(w => `${w.label}(${w.range}) 확정 ${w.conf.length}개`).join(' · ')}가 열립니다.` : ''}</p>
+<p style="margin-top:6px;font-size:.9rem;color:#4b5563">축제모아(chukjemoa.co.kr)는 한국관광공사·행정안전부 공공데이터로 전국 축제 일정을 매일 모아 날짜·지역·붐빔까지 정리하는 축제 일정 사이트입니다. 집계 기준일 ${TODAY}.</p>
+</div>
+<style>.ansbox{background:#ecfdf8;border:1.5px solid #bfe9df;border-radius:14px;padding:14px 18px;margin:6px 0 14px;color:#1f2937;line-height:1.7}
+.ansbox b{color:#0a6c63}</style>`;
+  const wkHtml = wkends.length ? `
+<h2 class="sec">${mm.short} 주말별 축제 — 토·일에 열리는 확정 일정</h2>
+<p>${mm.label}의 주말(토·일)마다 실제로 열리는 축제를 날짜가 겹치는 것으로 골랐습니다. <b>주최 측 일정이 확정된 것만</b> 넣었고, 예년 기준 날짜인 축제는 개수만 따로 적었습니다. 인지도(검색량) 순입니다.</p>
+<table class="wktbl"><thead><tr><th>주말</th><th>확정 축제</th><th>예년 기준(미확정)</th></tr></thead><tbody>
+${wkends.map(w => `<tr><td>${w.label}<br><small>${w.range}</small></td><td><b>${w.conf.length}개</b></td><td>${w.est}개</td></tr>`).join('')}
+</tbody></table>
+${wkends.map(w => w.conf.length ? `<h3 class="wkh">${w.label} (${w.range}) — 확정 ${w.conf.length}개${w.conf.length > 8 ? ' 중 8개' : ''}</h3>
+<ul class="flistm">${w.conf.slice(0, 8).map(wkName).join('')}</ul>` : `<h3 class="wkh">${w.label} (${w.range})</h3><p class="note">아직 확정 일정이 올라온 축제가 없습니다. 위 전체 목록의 «예년 기준» 축제를 참고하세요.</p>`).join('')}
+<style>.wktbl{width:100%;border-collapse:collapse;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(31,41,55,.06);margin:10px 0 6px;font-size:.93rem}
+.wktbl th,.wktbl td{padding:9px 12px;border-bottom:1px solid #eef5f3;text-align:left}
+.wktbl th{background:#e2f5f2;color:#0a6c63}.wktbl small{color:#9ca3af}
+.wkh{font-size:1.02rem;margin:16px 0 4px;color:#0a6c63}
+.flistm li a{color:#0a6c63}</style>` : '';
+  if (wkends.length) {
+    mFaq.splice(1, 0,
+      [`${mm.short} 주말에는 어떤 축제가 열리나요?`, wkends.map(w => `${w.label}(${w.range})에는 확정 일정 ${w.conf.length}개${w.conf.length ? ` — ${w.conf.slice(0, 3).map(f => f.name).join(', ')} 등` : ''}`).join('. ') + '. 주최 측이 확정한 일정만 센 숫자입니다.'],
+      [`${mm.label} 축제 날짜는 확정된 건가요?`, `${list.length}개 중 ${confCnt}개는 주최 측 발표로 확정된 일정이고, 나머지 ${list.length - confCnt}개는 예년 개최 시기를 기준으로 적은 것이라 바뀔 수 있습니다. 카드마다 «일정 확정» 또는 «예년 기준·변동 가능» 표시가 붙어 있습니다.`]);
+  }
+
   const content = `<main><div class="wrap">
 ${isPast ? `<style>
 .pastmon{background:#fff7ed;border:1.5px solid #fdd8ae;border-radius:12px;padding:13px 16px;margin:0 0 14px;color:#7c4a12;font-size:.97rem;line-height:1.6}
@@ -3085,6 +3147,7 @@ ${isPast ? `<style>
 .pastmon a:hover{text-decoration:underline}
 </style>` : ''}
 <h1 style="font-size:1.5rem;margin-bottom:6px">${mm.short} 축제 일정 — ${mm.label} 전국 축제 ${list.length}개</h1>
+${ansHtml}
 ${isPast ? `<p class="pastmon">⏳ <b>${mm.label}은 이미 지났습니다.</b> <a href="/${CUR_M.key}/">이번 달 — ${CUR_M.label} 축제 ${monthCnt(CUR_M)}개 보기 →</a></p>` : ''}
 <p class="note">총 ${list.length}개 · 지역 버튼을 눌러 필터링하세요. 일정은 변동될 수 있으니 방문 전 공식 홈페이지를 확인하세요.</p>
 <p style="margin:4px 0 10px;color:#4b5563;font-size:.95rem">${mm.label}에 <b>축제하는 곳</b>은 전국에 총 <b>${list.length}곳</b>${isPast ? '이었습니다. 지금 열리는 축제는 <a href="/' + CUR_M.key + '/">이번 달 축제</a>에서 보세요.' : '입니다. 아래 목록에서 지역별로 바로 확인할 수 있습니다.'}</p>
@@ -3110,6 +3173,7 @@ ${(() => {
     + monthBuyBox(M)
     + '<div class="grid">' + cards.slice(CUT).join('\n') + '</div>';
 })()}
+${wkHtml}
 
 ${deep.length ? `<h2 class="sec">${mm.short}에 자세히 볼 축제 ${deep.length}곳</h2>
 <p>아래 축제는 <b>개별 페이지</b>가 있습니다. 축제 소개뿐 아니라 그 동네가 이달 얼마나 붐비는지, 근처 맛집·카페의 영업시간, 걷기 좋은 길, 숙소, 그리고 축제를 중심으로 한 하루 코스까지 한 페이지에 정리해 두었습니다.</p>
@@ -3155,6 +3219,8 @@ ${perfHtml}
 <h2 class="sec">${mm.short}에 같이 보면 좋은 것</h2>
 <div class="frel2">
 <a href="/hot/">🔥 요즘 사람 몰리는 동네</a>
+${[9, 10, 11].includes(M) ? `<a href="/maple/">🍁 단풍 절정 시기·명소</a>` : ''}
+${!isPast && fs.existsSync(path.join(ROOT, 'seoul', mm.key)) ? `<a href="/seoul/${mm.key}/">🏙 서울 ${mm.short} 축제·행사</a>` : ''}
 <a href="/course/">🧭 조건 넣으면 코스가 나옵니다</a>
 <a href="/jangteo/">🏮 그날 열리는 오일장</a>
 <a href="/citytour/">🚌 차 없이 가는 시티투어</a>
