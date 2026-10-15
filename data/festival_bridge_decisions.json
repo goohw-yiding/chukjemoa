@@ -21,6 +21,13 @@
    "title": "Gwanghwamun Market",
    "at": "2026-10-01"
   },
+  "3310546": {
+   "ko": "탐라문화제",
+   "decision": "link",
+   "evidence": "https://www.ktriptips.com/eng/festival/3310546",
+   "title": "Tamna Culture Festival",
+   "at": "2026-10-15"
+  },
   "3352421": {
    "ko": "D.FESTA 거리공연축제",
    "decision": "reject",
@@ -117,6 +124,13 @@
    "evidence": "https://zh.wikipedia.org/wiki/江陵端午祭",
    "title": "江陵端午祭",
    "at": "2026-10-05"
+  },
+  "3332442": {
+   "ko": "탐라문화제",
+   "decision": "link",
+   "evidence": "https://www.ktriptips.com/chs/festival/3332442",
+   "title": "耽罗文化节",
+   "at": "2026-10-15"
   },
   "3352392": {
    "ko": "D.FESTA 거리공연축제",
