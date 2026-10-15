@@ -4181,6 +4181,15 @@ const REF_NATIONAL = [
   ['https://www.data.go.kr/', '공공데이터포털', '축제·반려동물 동반·무장애 정보 개방 데이터 원본']
 ];
 const POST_REFS = {
+  // 이주의 축제모아 Vol.5 — TOP5 날짜·장소를 교차 확인한 보도(2026-10-15 확인)
+  'chukjemoa-weekly-vol5': [
+    ['https://www.wikitree.co.kr/articles/1162266', '위키트리', '2026 대전빵축제 10월 17~18일 엑스포과학공원 한빛탑 일대'],
+    ['https://news.tf.co.kr/read/ogmeta/2370707.htm', '더팩트', '제30회 봉화송이축제 10월 15~18일 내성천 일원'],
+    ['https://news.mtn.co.kr/news-detail/2026091512570826671', '머니투데이방송', '양양송이연어축제 10월 16~18일 남대천 둔치'],
+    ['https://kbmaeil.com/article/20260928500335', '경북매일', '포항 낙화의 밤 10월 9·10·17일 포항운하'],
+    ['https://www.reportera.co.kr/travel/ulsan-whale-festival-30th-anniversary-party/', '리포테라', '제30회 울산고래축제 10월 15~18일 장생포 고래문화특구'],
+    ['https://www.heraldk.com/article/2026061014512973648', '헤럴드경제', '제13회 칠곡낙동강평화축제 10월 15~18일 칠곡보생태공원']
+  ],
   // 이주의 축제모아 Vol.4 — TOP5 날짜·장소를 교차 확인한 보도(2026-10-08 확인)
   'chukjemoa-weekly-vol4': [
     ['https://www.newspim.com/news/view/20260827001239', '뉴스핌', '2026 대전 동구동락 축제 10월 9~11일 소제동 일원'],
