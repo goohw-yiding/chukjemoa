@@ -2241,9 +2241,14 @@
   ],
   "category": "전통",
   "desc": "익산 근대역사문화축제 「익산의 시간을 거닐다」는 익산의 근대문화유산과 지역의 역사적 가치를 시민과 관광객이 함께 체험하고 공감할 수 있도록 기획된 시민 참여형 역사문화축제이다. 축제는 익산문화예술의",
-  "confirmed": false,
+  "confirmed": true,
   "apiSource": "TourAPI «근대역사문화축전» id 3386681",
-  "pending": true
+  "sources": [
+   "https://www.jeonmin.co.kr/news/articleView.html?idxno=441048",
+   "https://www.newsis.com/view/NISX20260606_0003658792",
+   "https://www.koreaunionnews.com/2167675"
+  ],
+  "verifiedAt": "2026-10-15"
  },
  {
   "name": "세종단오제",
@@ -2257,9 +2262,14 @@
   ],
   "category": "문화",
   "desc": "단오는 음력 5월 5일로, 일 년 중 양기가 가장 왕성한 날이라 하여 예로부터 우리나라의 큰 명절로 전해져 왔다. 세종문화원은 점차 잊혀가는 단오의 의미와 전통문화를 널리 알리고 시민들과 함께 즐기",
-  "confirmed": false,
+  "confirmed": true,
   "apiSource": "TourAPI «세종단오제» id 3305155",
-  "pending": true
+  "sources": [
+   "https://www.sejongmedia.com/news/articleView.html?idxno=84833",
+   "http://www.newspeach.com/news/articleView.html?idxno=9085",
+   "https://www.kairnews.com/news/495637"
+  ],
+  "verifiedAt": "2026-10-15"
  },
  {
   "name": "2026 대한민국불교문화엑스포",
@@ -2315,9 +2325,14 @@
   ],
   "category": "전통",
   "desc": "『실향민문화축제』는 한국전쟁 이후 이북에서 내려온 실향민들이 정착하며 형성된 속초의 역사적‧문화적 정체성을 바탕으로 개최되는 전국 유일의 실향민문화 축제이다. 아바이마을을 중심으로 이어져 온 실향민",
-  "confirmed": false,
+  "confirmed": true,
   "apiSource": "TourAPI «실향민문화축제» id 2495286",
-  "pending": true
+  "sources": [
+   "https://www.asiatoday.co.kr/kn/view.php?key=20260614010004526",
+   "https://korean.visitkorea.or.kr/kfes/detail/fstvlDetail.do?fstvlCntntsId=00be8cff-e7f7-42cc-83a7-41ba10d321b8",
+   "https://www.kukinews.com/article/view/kuk202606140024"
+  ],
+  "verifiedAt": "2026-10-15"
  },
  {
   "name": "MyK FESTA(마이케이 페스타)",
