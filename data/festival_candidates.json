@@ -1,1 +1,35 @@
-{}
+{
+ "실향민문화축제": {
+  "start": "2026-06-12",
+  "end": "2026-06-13",
+  "place": "",
+  "sources": [
+   "https://www.asiatoday.co.kr/kn/view.php?key=20260614010004526",
+   "https://korean.visitkorea.or.kr/kfes/detail/fstvlDetail.do?fstvlCntntsId=00be8cff-e7f7-42cc-83a7-41ba10d321b8"
+  ],
+  "proposedAt": "2026-10-15",
+  "from": "2026-06-12~2026-06-13"
+ },
+ "세종단오제": {
+  "start": "2026-06-13",
+  "end": "2026-06-13",
+  "place": "",
+  "sources": [
+   "https://www.sejongmedia.com/news/articleView.html?idxno=84833",
+   "http://www.newspeach.com/news/articleView.html?idxno=9085"
+  ],
+  "proposedAt": "2026-10-15",
+  "from": "2026-06-13~2026-06-13"
+ },
+ "근대역사문화축전": {
+  "start": "2026-06-06",
+  "end": "2026-06-07",
+  "place": "",
+  "sources": [
+   "https://www.jeonmin.co.kr/news/articleView.html?idxno=441048",
+   "https://www.newsis.com/view/NISX20260606_0003658792"
+  ],
+  "proposedAt": "2026-10-15",
+  "from": "2026-06-06~2026-06-07"
+ }
+}
