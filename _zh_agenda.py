@@ -89,7 +89,8 @@ try:
 except Exception as ex:
     P(f"- GA4 조회 오류: {str(ex)[:200]}")
 # 링크가 실제로 박혀 있는지 — 빌드 결과물 기준
-KL = {"tw/closed": ("137183", "1467024"), "zh/closed": ("137184", "1467027"), "tw/busy": ("137183", "1467029")}
+KL = {"tw/closed": ("137183", "1467024"), "zh/closed": ("137184", "1467027"), "tw/busy": ("137183", "1467029"),
+      "tw/busan": ("137183", "1482478"), "tw/gyeongju": ("137183", "1488589")}
 bad = []
 for p, (aid, ad) in KL.items():
     try: s = open(os.path.join(ROOT, p, "index.html"), encoding="utf-8").read()
@@ -98,7 +99,7 @@ for p, (aid, ad) in KL.items():
     if "136460" in s and "aff_adid=1466" in s: bad.append(f"/{p}/ 폐기된 옛 광고 ID 남음")
 kory = sum(1 for f in glob.glob(os.path.join(ROOT, "tw", "**", "index.html"), recursive=True) + glob.glob(os.path.join(ROOT, "zh", "**", "index.html"), recursive=True)
            if 'data-bb="kory-' in open(f, encoding="utf-8").read())
-P(f"- 클룩 링크 점검: " + ("✅ 3면 정상" if not bad else "🔴 " + " · ".join(bad)))
+P(f"- 클룩 링크 점검: " + (f"✅ {len(KL)}면 정상" if not bad else "🔴 " + " · ".join(bad)))
 P(f"- 코리 블록이 붙은 중국어 페이지: {kory}장\n")
 
 # ══════════ 3. 날짜 정확성 — 중국어 달력에 뜨는 45일 안 축제

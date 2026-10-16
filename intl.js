@@ -177,6 +177,51 @@ function kakao(name, x, y) {
   return `https://map.kakao.com/link/to/${encodeURIComponent(name)},${y},${x}`;
 }
 
+// ⭐ 2026-10-16 (중국어 주간 회차) — 달력 허브 안에 있던 picksZh 를 밖으로 빼 /tw/·/zh/ 홈(build.js)에서도 쓴다.
+//   home=true 면 지난 회차를 빼고 다가오는 것 5개 + 달력 링크(조용히 — 상품 없음). 3개 미만이면 아무것도 안 낸다.
+const HOMEMORE = { tw: '看完整的韓國慶典日曆 →', zh: '查看完整的韩国节庆日历 →' };
+function picksZhBlock(lang, T, home) {
+      const MAPL = (require('./intl-text.js')[lang] || { cal: {} }).cal.mapLink || '';
+      const PT = {
+        tw: { h: '⭐ 台灣旅客喜愛的韓國慶典', sub: '依台灣旅行社的團體行程、訂票平台，以及韓國觀光公社的訪客統計挑選。排列順序也會參考能否透過合作夥伴線上預訂。', past: m => `往年${m}月`,
+          tag: { stat: '訪客統計', agency: '台灣旅行社有團', ota: '可線上預訂', target: '歡迎台灣旅客' } },
+        zh: { h: '⭐ 中文游客喜爱的韩国节庆', sub: '根据旅行社线路、预订平台和韩国观光公社的访客统计挑选。排序也参考能否通过合作伙伴在线预订。', past: m => `往年${m}月`,
+          tag: { stat: '访客统计', agency: '有旅行社团', ota: '可在线预订', target: '欢迎中国游客' } }
+      }[lang];
+      if (!PT) return '';
+      let picks = [];
+      try { picks = (JSON.parse(fs.readFileSync(path.join(__dirname, 'data', 'intl_picks.json'), 'utf8')).langs || {})[lang] || []; } catch (e) { return ''; }
+      // 선정표 ids 는 «그 언어» TourAPI 줄(festivals_tw/zh.json)의 id 다. 날짜는 intl-bridge.js 가 이미 검증 날짜로 씌워 둔 값.
+      const byId = {}; load('festivals_' + lang + '.json').forEach(f => { (byId[String(f.id)] = byId[String(f.id)] || []).push(f); });
+      const items = [];
+      for (const p of picks) {
+        const f = (p.ids || []).flatMap(id => byId[String(id)] || []).sort((a, b) => String(b.start).localeCompare(String(a.start)))[0];
+        if (!f) continue;
+        const kinds = [...new Set((p.reasons || []).map(r => r.kind).filter(k => PT.tag[k]))].slice(0, 2);
+        items.push({ f, kinds });
+        if (items.length >= (home ? 12 : 8)) break;
+      }
+      if (home) { const up = items.filter(it => String(it.f.end || '') >= T); items.length = 0; items.push(...up.slice(0, 5)); }
+      if (items.length < 3) return '';
+      items.sort((a, b) => (String(a.f.end || '') < T) - (String(b.f.end || '') < T));
+      const li = items.map(({ f, kinds }) => {
+        const ko = f.kvName || '';
+        const sd = String(f.start), ed = String(f.end);
+        const when = ed < T ? PT.past(+sd.slice(4, 6)) : `${sd.slice(0, 4)}.${sd.slice(4, 6)}.${sd.slice(6, 8)} – ${ed.slice(4, 6)}.${ed.slice(6, 8)}`;
+        const tags = kinds.map(k => `<span style="display:inline-block;font-size:.72rem;font-weight:700;color:#0a6c63;background:#e8f6f3;border-radius:999px;padding:1px 8px;margin:4px 4px 0 0">${esc(PT.tag[k])}</span>`).join('');
+        return `<li><div class="t">${esc(f.title)}${ko ? ` <span class="ic-kr">${esc(ko)}</span>` : ''}</div>
+<div class="m">${when}${f.region ? ' · ' + esc(f.region) : ''}</div>${tags ? `<div>${tags}</div>` : ''}
+${f.x && f.y ? `<a class="map" href="${kakao(ko || f.title, f.x, f.y)}" target="_blank" rel="noopener">${MAPL}</a>` : ''}</li>`;
+      }).join('');
+      return `<div class="ic-card"><h2>${PT.h}</h2>
+<p class="ic-note" style="margin-top:0">${PT.sub}</p>
+<ul class="ic-fest">${li}</ul>${home ? `<p style="margin:6px 0 0"><a href="/${lang}/calendar/" style="color:#0c7d72;font-weight:800">${HOMEMORE[lang]}</a></p>` : ''}</div>`;
+}
+function picksZhHome(lang, TODAY) {
+  if (lang !== 'tw' && lang !== 'zh') return '';
+  try { const b = picksZhBlock(lang, String(TODAY).replace(/-/g, ''), true); return b ? `<style>${CSS}</style>${b}` : ''; } catch (e) { return ''; }
+}
+
 // ─────────────────────────────────────────────────────────────
 function build(ctx) {
   const { layout, writePage, TODAY } = ctx;
@@ -606,41 +651,7 @@ ${lang !== 'ja' ? '' : `<div class="ic-card"><h2>📅 混む日は、移動そ�
     // ⭐ 2026-10-06 (중국어 주간 회차) — 선정표(data/intl_picks.json) langs.tw·langs.zh 를 번체·간체 달력 허브 맨 위에.
     //   intl-fest-index.js picksBlock() 과 같은 원칙: 근거 종류는 그 나라 말 꼬리표로만, 한국어 근거 문장은 노출하지 않는다.
     //   지난 회차는 날짜 대신 「往年○月」. 선정 순서에 제휴 상품 유무가 가산되므로(intl-picks.js) 그 사실을 밝힌다.
-    const picksZh = (() => {
-      const PT = {
-        tw: { h: '⭐ 台灣旅客喜愛的韓國慶典', sub: '依台灣旅行社的團體行程、訂票平台，以及韓國觀光公社的訪客統計挑選。排列順序也會參考能否透過合作夥伴線上預訂。', past: m => `往年${m}月`,
-          tag: { stat: '訪客統計', agency: '台灣旅行社有團', ota: '可線上預訂', target: '歡迎台灣旅客' } },
-        zh: { h: '⭐ 中文游客喜爱的韩国节庆', sub: '根据旅行社线路、预订平台和韩国观光公社的访客统计挑选。排序也参考能否通过合作伙伴在线预订。', past: m => `往年${m}月`,
-          tag: { stat: '访客统计', agency: '有旅行社团', ota: '可在线预订', target: '欢迎中国游客' } }
-      }[lang];
-      if (!PT) return '';
-      let picks = [];
-      try { picks = (JSON.parse(fs.readFileSync(path.join(__dirname, 'data', 'intl_picks.json'), 'utf8')).langs || {})[lang] || []; } catch (e) { return ''; }
-      // 선정표 ids 는 «그 언어» TourAPI 줄(festivals_tw/zh.json)의 id 다. 날짜는 intl-bridge.js 가 이미 검증 날짜로 씌워 둔 값.
-      const byId = {}; load('festivals_' + lang + '.json').forEach(f => { (byId[String(f.id)] = byId[String(f.id)] || []).push(f); });
-      const items = [];
-      for (const p of picks) {
-        const f = (p.ids || []).flatMap(id => byId[String(id)] || []).sort((a, b) => String(b.start).localeCompare(String(a.start)))[0];
-        if (!f) continue;
-        const kinds = [...new Set((p.reasons || []).map(r => r.kind).filter(k => PT.tag[k]))].slice(0, 2);
-        items.push({ f, kinds });
-        if (items.length >= 8) break;
-      }
-      if (items.length < 3) return '';
-      items.sort((a, b) => (String(a.f.end || '') < T) - (String(b.f.end || '') < T));
-      const li = items.map(({ f, kinds }) => {
-        const ko = f.kvName || '';
-        const sd = String(f.start), ed = String(f.end);
-        const when = ed < T ? PT.past(+sd.slice(4, 6)) : `${sd.slice(0, 4)}.${sd.slice(4, 6)}.${sd.slice(6, 8)} – ${ed.slice(4, 6)}.${ed.slice(6, 8)}`;
-        const tags = kinds.map(k => `<span style="display:inline-block;font-size:.72rem;font-weight:700;color:#0a6c63;background:#e8f6f3;border-radius:999px;padding:1px 8px;margin:4px 4px 0 0">${esc(PT.tag[k])}</span>`).join('');
-        return `<li><div class="t">${esc(f.title)}${ko ? ` <span class="ic-kr">${esc(ko)}</span>` : ''}</div>
-<div class="m">${when}${f.region ? ' · ' + esc(f.region) : ''}</div>${tags ? `<div>${tags}</div>` : ''}
-${f.x && f.y ? `<a class="map" href="${kakao(ko || f.title, f.x, f.y)}" target="_blank" rel="noopener">${S.cal.mapLink}</a>` : ''}</li>`;
-      }).join('');
-      return `<div class="ic-card"><h2>${PT.h}</h2>
-<p class="ic-note" style="margin-top:0">${PT.sub}</p>
-<ul class="ic-fest">${li}</ul></div>`;
-    })();
+    const picksZh = picksZhBlock(lang, T, false);
 
     const calHub = `<main><div class="wrap"><style>${CSS}</style>
 <h1 class="ic-h1">${S.cal.h1}</h1>
@@ -811,4 +822,4 @@ ${next ? `<a href="/${lang}/calendar/${next}/">${monthLabel(next, lang)} →</a>
   return urls;
 }
 
-module.exports = { build, holName };   // 2026-09-30 tw-busy.js 가 한국 공휴일 번체 이름을 같은 표에서 쓴다
+module.exports = { build, holName, picksZhHome };   // 2026-09-30 tw-busy.js 가 한국 공휴일 번체 이름을 같은 표에서 쓴다

@@ -1,9 +1,27 @@
 {
+  "140930": {
+    "title": "탐라문화제",
+    "date": "2026-10-16",
+    "result": "맞음 — 2026-10-17~10-21 (제65회, 제주시민복지타운광장 일대 — 작년 탑동에서 이전)",
+    "src": "https://www.newsnjeju.com/news/articleView.html?idxno=300227"
+  },
+  "229048": {
+    "title": "동래읍성역사축제",
+    "date": "2026-10-13",
+    "result": "맞음 — 10/16~10/18 (동래문화회관·동래읍성지 북문광장·온천장 일원)",
+    "src": "https://www.hankyung.com/article/202609233755K"
+  },
   "235076": {
     "title": "부산불꽃축제",
     "date": "2026-10-02",
     "result": "일치 11/07 (zh·tw)",
     "src": "https://busanfireworks.com/reservation"
+  },
+  "293084": {
+    "title": "영동난계국악축제",
+    "date": "2026-10-13",
+    "result": "맞음 — 10/15~10/18 (제57회, 레인보우힐링관광지 일원)",
+    "src": "https://www.newspim.com/news/view/20261008000048"
   },
   "386053": {
     "title": "평창송어축제",
@@ -17,11 +35,29 @@
     "result": "맞음 — 10/15~10/18 (제30회, 강경읍 일원)",
     "src": "https://www.joongdo.co.kr/web/view.php?key=20260925010007875"
   },
+  "506544": {
+    "title": "봉화송이축제",
+    "date": "2026-10-13",
+    "result": "맞음 — 10/15~10/18 (봉화읍 내성천 일원)",
+    "src": "https://news.tf.co.kr/read/ogmeta/2370707.htm"
+  },
+  "506616": {
+    "title": "서귀포칠십리축제",
+    "date": "2026-10-16",
+    "result": "맞음 — 2026-10-23~10-25 (제32회, 천지연폭포 주차장 일원)",
+    "src": "https://www.newsfreezone.co.kr/news/articleView.html?idxno=714054"
+  },
   "506670": {
     "title": "안동국제탈춤페스티벌",
     "date": "2026-09-30",
     "result": "맞음 — 9/24~10/4 (원본 그대로. 한국어 수동목록 9/25 가 틀려 있었다)",
     "src": "https://www.kukinews.com/article/view/kuk202609170163"
+  },
+  "507531": {
+    "title": "한성백제문화제",
+    "date": "2026-10-16",
+    "result": "맞음 — 2026-10-23~10-25 (제26회, 올림픽공원 88잔디마당)",
+    "src": "https://www.songpa.go.kr/hanseong/main.do"
   },
   "507599": {
     "title": "얼음나라화천 산천어축제",
@@ -29,11 +65,29 @@
     "result": "맞음 — 2027-01-09~01-31 (23일간)",
     "src": "https://www.ajunews.com/view/20261002095755372"
   },
+  "574014": {
+    "title": "목포항구축제",
+    "date": "2026-10-13",
+    "result": "맞음 — 10/16~10/18 (목포항·삼학도 일원)",
+    "src": "https://news.mtn.co.kr/news-detail/2026100716292179691"
+  },
   "574285": {
     "title": "김제지평선축제",
     "date": "2026-10-02",
     "result": "일치 10/01~10/05 (zh·tw)",
     "src": "https://nocutnews.co.kr/news/6585091"
+  },
+  "604097": {
+    "title": "광주김치축제",
+    "date": "2026-10-13",
+    "result": "맞음 — 10/23~10/25 (제33회, 개막식 10/23 공식 누리집 경연 공고와 일치)",
+    "src": "https://kimchi.gwangju.go.kr/index.php?cate=003001"
+  },
+  "638241": {
+    "title": "순창장류축제",
+    "date": "2026-10-13",
+    "result": "맞음 — 10/15~10/18 (09~22시, 셔틀 3노선)",
+    "src": "https://news.mtn.co.kr/news-detail/2026100815461921681"
   },
   "825295": {
     "title": "강릉커피축제",
@@ -59,6 +113,18 @@
     "result": "미확인 — 2026 회차 미발표. 참고: 2025 회차는 2025-12-12~2026-01-18(대한민국 구석구석), 달력은 往年12月 표기",
     "src": "https://m.visitkorea.or.kr/kfes/detail/fstvlDetail.do?fstvlCntntsId=bcd79254-697d-47f5-a408-e022f0e9f7fd"
   },
+  "1147035": {
+    "title": "여주오곡나루축제",
+    "date": "2026-10-13",
+    "result": "맞음 — 10/23~10/25 (신륵사 관광지 일원)",
+    "src": "https://inews24.com/view/2010469"
+  },
+  "1307813": {
+    "title": "강동선사문화축제",
+    "date": "2026-10-13",
+    "result": "맞음 — 2026.10.16~10.18 (암사동 유적, 강동구 공식 일정표)",
+    "src": "https://gangdong.go.kr/web/culture/contents/gdc030_040"
+  },
   "1841539": {
     "title": "마토예술제",
     "date": "2026-10-09",
@@ -77,6 +143,18 @@
     "result": "맞음 — 10/8~10/11 (제12회)",
     "src": "https://www.newspim.com/news/view/20260918000462"
   },
+  "2756476": {
+    "title": "세계유산 조선왕릉축전",
+    "date": "2026-10-16",
+    "result": "맞음 — 본 축전 2026-10-17~10-25 왕릉 12곳 (10/16 융릉·건릉 개막제, 10/19 휴릉일 일부 운영)",
+    "src": "https://www.d-art.co.kr/news/articleView.html?idxno=6365"
+  },
+  "2770434": {
+    "title": "대전 빵 축제",
+    "date": "2026-10-16",
+    "result": "맞음 — 2026-10-17~10-18. 단 장소가 소제동 원도심 → 엑스포과학공원 한빛탑 앞으로 이전(공사)",
+    "src": "https://www.koreadaily.com/article/20261009160034702"
+  },
   "2874909": {
     "title": "여수밤바다 불꽃축제",
     "date": "2026-10-09",
@@ -89,52 +167,10 @@
     "result": "미확인 — 부산시 누리집에 2025 제9회(10/17~19)만 있음. 2026 공식 발표 못 찾음",
     "src": "https://www.busan.go.kr/eng/bsevents/1701555"
   },
-  "293084": {
-    "title": "영동난계국악축제",
-    "date": "2026-10-13",
-    "result": "맞음 — 10/15~10/18 (제57회, 레인보우힐링관광지 일원)",
-    "src": "https://www.newspim.com/news/view/20261008000048"
-  },
-  "506544": {
-    "title": "봉화송이축제",
-    "date": "2026-10-13",
-    "result": "맞음 — 10/15~10/18 (봉화읍 내성천 일원)",
-    "src": "https://news.tf.co.kr/read/ogmeta/2370707.htm"
-  },
-  "638241": {
-    "title": "순창장류축제",
-    "date": "2026-10-13",
-    "result": "맞음 — 10/15~10/18 (09~22시, 셔틀 3노선)",
-    "src": "https://news.mtn.co.kr/news-detail/2026100815461921681"
-  },
-  "1307813": {
-    "title": "강동선사문화축제",
-    "date": "2026-10-13",
-    "result": "맞음 — 2026.10.16~10.18 (암사동 유적, 강동구 공식 일정표)",
-    "src": "https://gangdong.go.kr/web/culture/contents/gdc030_040"
-  },
-  "229048": {
-    "title": "동래읍성역사축제",
-    "date": "2026-10-13",
-    "result": "맞음 — 10/16~10/18 (동래문화회관·동래읍성지 북문광장·온천장 일원)",
-    "src": "https://www.hankyung.com/article/202609233755K"
-  },
-  "574014": {
-    "title": "목포항구축제",
-    "date": "2026-10-13",
-    "result": "맞음 — 10/16~10/18 (목포항·삼학도 일원)",
-    "src": "https://news.mtn.co.kr/news-detail/2026100716292179691"
-  },
-  "1147035": {
-    "title": "여주오곡나루축제",
-    "date": "2026-10-13",
-    "result": "맞음 — 10/23~10/25 (신륵사 관광지 일원)",
-    "src": "https://inews24.com/view/2010469"
-  },
-  "604097": {
-    "title": "광주김치축제",
-    "date": "2026-10-13",
-    "result": "맞음 — 10/23~10/25 (제33회, 개막식 10/23 공식 누리집 경연 공고와 일치)",
-    "src": "https://kimchi.gwangju.go.kr/index.php?cate=003001"
+  "3377995": {
+    "title": "김천김밥축제",
+    "date": "2026-10-16",
+    "result": "맞음 — 2026-10-23~10-25 (사명대사공원·직지문화공원 일원)",
+    "src": "https://www.dailian.co.kr/news/view/1654964/"
   }
 }

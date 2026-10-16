@@ -5834,7 +5834,7 @@ document.getElementById('fCount').textContent=LBL.loading;
 <p>${L.heroP}</p>
 <div class="hero-cta"><a class="cta1" href="/${lang}/search/">${L.heroCta}</a>${(INTL_CITY_BY_LANG[lang] || []).length ? `<a class="cta2" href="/${lang}/cities/" style="background:rgba(255,255,255,.92);color:#0a6c63">🏙 ${esc((HOME_T[lang] || {}).cityH || 'Cities')}</a>` : ''}</div>
 </div></div>
-${(() => { const B = intlHomeBlocks(lang, data.length, intlPlaceCount(lang)); return B ? B.stat + B.cities + B.places + B.pract : ''; })()}
+${/* ⭐ 2026-10-16 중국어 회차 — 번체·간체 홈에도 «그 나라 사람들이 좋아하는 축제» 선정표(intl.js picksZhHome, 다가오는 것만) */ require('./intl.js').picksZhHome(lang, TODAY)}${(() => { const B = intlHomeBlocks(lang, data.length, intlPlaceCount(lang)); return B ? B.stat + B.cities + B.places + B.pract : ''; })()}
 <h2 class="sec">${L.sec}</h2>
 <p style="color:#4b5563;line-height:1.75;margin-bottom:14px">${L.lead}</p>
 <h2 class="sec">${L.upcoming || "Upcoming festivals"}</h2>
