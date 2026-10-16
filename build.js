@@ -8705,9 +8705,17 @@ console.log('✓ 섹션 사이트맵 —', Object.entries(SEC).map(([f, l]) => f
 //   밀린 걸 구글이 소화할 때까지(10/9·10/16 재측정) 새 URL 은 한 빌드에 NEW_URL_LIMIT 개까지만 «조용히» 허용하고,
 //   넘으면 크게 경고하고 data/new_urls_log.json 에 남긴다(빌드는 멈추지 않는다 — 다른 세션 배포를 깨지 않기 위해).
 //   ⚠️ 경고가 뜨면: 의도한 생성인지 확인하고, 아니면 그 생성기를 되돌린다.
+// 2026-10-16 최종 재측정 후 방침(장남 님: «정확성·보기 편함이 먼저, 색인은 그다음 — 순리대로»):
+//   ✅ 축제 상세(/festival/·/xx/festival/)와 블로그 글은 «확인된 축제·글 하나 = 페이지 하나»라 한도에서 뺀다.
+//      국문 축제 상세는 대량으로 올라가도 1~4일 안에 색인됐다(10/4·10/8·10/15 실측).
+//   ⛔ 도시·외국어 도시·장소·오일장처럼 «같은 틀에 데이터만 바꿔 찍는» 묶음은 계속 한도 20 —
+//      9/21주 도시 확장 묶음은 3주째 40% 안팎에서 정체(10/16 실측). 새로 열 땐 사람이 볼 고유 내용부터.
 {
   const NEW_URL_LIMIT = 20;
-  const fresh = sitemapUrls.filter(u => !LM[u]);
+  const ONE_TO_ONE = u => /^\/((en|ja|zh|tw|es)\/)?(festival|blog)\//.test(u.replace(SITE, ''));
+  const freshAll = sitemapUrls.filter(u => !LM[u]);
+  const fresh = freshAll.filter(u => !ONE_TO_ONE(u));
+  if (freshAll.length - fresh.length) console.log('✓ 새 축제·글 페이지', freshAll.length - fresh.length, '개 (가드 한도 밖)');
   if (fresh.length) {
     const logP = path.join(ROOT, 'data', 'new_urls_log.json');
     let log = []; try { log = JSON.parse(fs.readFileSync(logP, 'utf8')); } catch (e) { }
