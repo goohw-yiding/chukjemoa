@@ -688,14 +688,14 @@ ${/* 🇯🇵 2026-09-15 — 「いつ行くか」의 바로 다음 질문 세 �
      이 페이지는 달(月)까지만 답한다. 날짜를 정하려면 «혼잡한가»가 필요하고,
      날짜가 정해지면 «어디로 가나»가 온다. 이 페이지가 스스로 만든 질문이라 억지가 아니다.
      /ja/calendar/ 는 크롤 9/04 로 홈(8/28)보다 신선하다. */''}
-${lang !== 'tw' ? '' : `<div class="ic-card"><h2>🗓️ 決定月份之後，接著是「哪幾天」</h2>
+${lang === 'ja' ? require('./ja-climate.js').yearTable() + '\n' : ''}${lang !== 'tw' ? '' : `<div class="ic-card"><h2>🗓️ 決定月份之後，接著是「哪幾天」</h2>
 <p>這一頁能幫你決定<b>幾月去</b>。但同一個月裡，<b>碰上台韓連假重疊的那幾天</b>，機票、飯店和店家的情況完全不同。台灣連假和韓國國定假日放在同一張表的是<a href="/tw/busy/" style="color:#0c7d72;font-weight:800">韓國連假 × 台灣連假</a>。</p></div>`}
 ${lang !== 'ja' ? '' : `<div class="ic-card"><h2>🗓️ 月が決まったら、次は「日」です</h2>
 <p>ここまでで<b>何月に行くか</b>は決められます。ただし同じ月でも、<b>日韓の連休が重なる週</b>は航空券もホテルも店の混み方もまったく別物になります。日本の祝日（内閣府）と韓国の祝日を1枚に重ねたのが<a href="/ja/busy/" style="color:#0c7d72;font-weight:800">韓国が混む日</a>です。</p>
 <p>日が決まったら、次は<b>どこへ行くか</b>。ソウルから鉄道で行ける地方の街を、<a href="/ja/daytrip/" style="color:#0c7d72;font-weight:800">日帰りで行ける街</a>に所要時間・運賃・1日の本数つきで出しました。ソウルに残る日は<a href="/ja/palace/" style="color:#0c7d72;font-weight:800">王宮</a>が定番ですが、<b>宮ごとに休む曜日が違う</b>ので曜日を先に見てください。</p>
 ${/* 📍 /ja/places/ 는 81만 자인데 구글이 «한 번도» 못 봤다(crawl=none). 156장 전부가 내비로
       링크하는데도 그렇다 — 내비로는 안 간다. 본문 링크를 여기 하나 더 놓는다. */''}
-<p>それ以外の街で何が見られるかは<a href="/ja/places/" style="color:#0c7d72;font-weight:800">行ってみる場所</a>に、道・市・郡ごとにまとめてあります。韓国観光公社の公式日本語紹介つきで、<b>地図アプリに貼るための韓国語の住所</b>も一緒に載せています。</p></div>`}
+<p>それ以外の街で何が見られるかは<a href="/ja/places/" style="color:#0c7d72;font-weight:800">行ってみる場所</a>に、道・市・郡ごとにまとめてあります。その地域にどんな種類の場所が多いかと、<b>地図アプリに貼るための韓国語の住所</b>を一緒に載せています。</p></div>`}
 
 <div class="ic-nav">
 <a href="/${lang}/closed/">${S.nav.closed}</a><a href="/${lang}/access/">${S.nav.acc}</a><a href="/${lang}/trend/">${S.nav.trend}</a><a href="/${lang}/trip/">${S.nav.trip}</a></div>
@@ -776,7 +776,7 @@ ${lang !== 'ja' ? '' : (() => {
   if (!here.length) return '';
   return `<div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:10px">${here.map(b =>
     `<a href="/ja/closed/${b.slug}/" style="background:#fff;border:1.5px solid #fdd8ae;color:#9a5b1f;font-weight:800;font-size:.9rem;padding:9px 14px;border-radius:999px;text-decoration:none">📅 ${esc(b.ja)}に店は開いてる？</a>`).join('')}</div>`;
-})()}</div>` : ''}
+})()}</div>` : ''}${/* 🌡️ 2026-10-17 — ja 만: 그 달 서울 평년 기온·강수를 일본 도시와 비교(ja-climate.js). 다른 언어 바이트는 그대로 */ lang === 'ja' ? '\n' + require('./ja-climate.js').monthBlock(m) : ''}
 
 <div class="ic-card"><h2>${S.cal.mFesH(monthLabel(ym, lang))}</h2>
 <p>${S.cal.mFesP}</p>
