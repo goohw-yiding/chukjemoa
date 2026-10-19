@@ -2055,7 +2055,7 @@
   "name": "ING 페스티벌",
   "region": "서울",
   "city": "성동구",
-  "place": "서울특별시 성동구 왕십리로 63 (성수동1가)",
+  "place": "언더스탠드에비뉴",
   "start": "2026-05-22",
   "end": "2026-05-24",
   "month": [
@@ -2063,9 +2063,14 @@
   ],
   "category": "문화",
   "desc": "ING 페스티벌은 언더스탠드에비뉴에서 개최되는 체험형 축제로, 어린이와 가족, 지역주민이 함께 어우러져 ESG와 사회적 가치를 보다 친근하게 경험할 수 있도록 기획된 행사이다. 어린이 미술대회 (w",
-  "confirmed": false,
+  "confirmed": true,
   "apiSource": "TourAPI «ING 페스티벌» id 4058500",
-  "pending": true
+  "sources": [
+   "http://www.senews.kr/38075",
+   "https://understandavenue.com/default/05/menu01.php?com_board_basic=read_form&com_board_idx=223&com_board=&com_board_search_code=",
+   "https://www.jeonmae.co.kr/news/articleView.html?idxno=1258450"
+  ],
+  "verifiedAt": "2026-10-19"
  },
  {
   "name": "하전바지락 오감체험 페스티벌",
@@ -2140,9 +2145,14 @@
   ],
   "category": "꽃",
   "desc": "강원도 원주시 용수골 일대에서 열리는 는 지역 주민의 꽃 사랑에서 출발한 대표적인 지역 축제이다. 2005년 귀농한 한 주민이 약 300평 규모의 밭에 꽃양귀비를 심으며 시작되었으며, 예상보다 많은",
-  "confirmed": false,
+  "confirmed": true,
   "apiSource": "TourAPI «원주용수골꽃양귀비축제» id 2602974",
-  "pending": true
+  "sources": [
+   "https://www.gangwon.to/gwtour//now/festival?articleSeq=60509",
+   "https://korean.visitkorea.or.kr/kfes/detail/fstvlDetail.do?fstvlCntntsId=aa361709-4651-40f8-903d-9cf355c86454",
+   "https://www.ktriptips.com/kor/festival/2602974"
+  ],
+  "verifiedAt": "2026-10-19"
  },
  {
   "name": "임실N펫스타",
@@ -2186,9 +2196,14 @@
   ],
   "category": "문화",
   "desc": "디아스포라영화제는 인천광역시에서 열리는 영화제로, 세계 각지에 흩어져 있으면서도 자신들의 문화를 지켜온 유대인의 삶을 지칭하는 디아스포라(Diaspora)에서 착안해 기획되었다. 1902년 한국 최",
-  "confirmed": false,
+  "confirmed": true,
   "apiSource": "TourAPI «제14회 디아스포라영화제» id 3097834",
-  "pending": true
+  "sources": [
+   "https://www.kgnews.co.kr/mobile/article.html?no=892273",
+   "https://www.incheon.go.kr/IC010601/3070090",
+   "https://www.mydaily.co.kr/page/view/2026052611045793430"
+  ],
+  "verifiedAt": "2026-10-19"
  },
  {
   "name": "춘천마임축제",

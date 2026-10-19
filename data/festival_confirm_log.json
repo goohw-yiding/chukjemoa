@@ -1868,5 +1868,42 @@
   "at": "2026-10-19",
   "name": "2026 캠핑요리축제",
   "note": "2026-10-19: 개최 확인(nate 20260613n08665 등 6/13 기사, 평화누리캠핑장) 그러나 날짜 문구 있는 2곳 근거 못 찾음(nate robots 차단) — 적힌 종료일 6/14 의심"
+ },
+ {
+  "at": "2026-10-19",
+  "name": "ING 페스티벌",
+  "from": "2026-05-22~2026-05-24",
+  "to": "2026-05-22~2026-05-24",
+  "place": "언더스탠드에비뉴",
+  "confirm": "교차확인(조사자 2곳 + 검증자 1곳, 기계 검증 통과)",
+  "sources": [
+   "http://www.senews.kr/38075",
+   "https://understandavenue.com/default/05/menu01.php?com_board_basic=read_form&com_board_idx=223&com_board=&com_board_search_code=",
+   "https://www.jeonmae.co.kr/news/articleView.html?idxno=1258450"
+  ]
+ },
+ {
+  "at": "2026-10-19",
+  "name": "제14회 디아스포라영화제",
+  "from": "2026-05-22~2026-05-26",
+  "to": "2026-05-22~2026-05-26",
+  "confirm": "교차확인(조사자 2곳 + 검증자 1곳, 기계 검증 통과)",
+  "sources": [
+   "https://www.kgnews.co.kr/mobile/article.html?no=892273",
+   "https://www.incheon.go.kr/IC010601/3070090",
+   "https://www.mydaily.co.kr/page/view/2026052611045793430"
+  ]
+ },
+ {
+  "at": "2026-10-19",
+  "name": "원주용수골꽃양귀비축제",
+  "from": "2026-05-20~2026-06-07",
+  "to": "2026-05-20~2026-06-07",
+  "confirm": "교차확인(조사자 2곳 + 검증자 1곳, 기계 검증 통과)",
+  "sources": [
+   "https://www.gangwon.to/gwtour//now/festival?articleSeq=60509",
+   "https://korean.visitkorea.or.kr/kfes/detail/fstvlDetail.do?fstvlCntntsId=aa361709-4651-40f8-903d-9cf355c86454",
+   "https://www.ktriptips.com/kor/festival/2602974"
+  ]
  }
 ]
