@@ -128,21 +128,6 @@ function build(cfg, ctx) {
   // ── 재료
   const D = {};
   for (const k of Object.keys(AXES)) D[k] = load(ROOT, AXES[k].file).filter(is).filter(AXES[k].filter);
-  // 🧹 2026-10-16 — 같은 업소가 두 번 실려 있었다(강릉 숙소 「루소호텔」 교동광장로100번길 12 가 2장).
-  //    원천 데이터에 같은 이름·같은 주소가 중복 등록된 경우다. 이름+주소(괄호 속 동 이름 제외)가 같으면 하나만 남긴다.
-  //    ⚠️ 주소만 같은 경우는 합치지 않는다 — 한 건물에 다른 업소가 있을 수 있다.
-  const addrKey = a => norm(String(a || '').replace(/\([^)]*\)/g, ''));
-  for (const k of Object.keys(D)) {
-    const seen = new Map();
-    for (const r of D[k]) {
-      const key = norm(r.title) + '|' + addrKey(r.addr);
-      const prev = seen.get(key);
-      // 정보가 더 많은 쪽을 남긴다
-      const score = x => ['img', 'ov', 'open', 'rest', 'menu', 'park', 'ci', 'co', 'rooms', 'psbl', 'tel'].filter(f => x[f]).length;
-      if (!prev || score(r) > score(prev)) seen.set(key, r);
-    }
-    D[k] = [...seen.values()];
-  }
   const spotsKo = load(ROOT, 'spots_ko.json').filter(is);          // 사진 보충용(개요는 없다)
   const trr = load(ROOT, 'trrsrt.json').filter(r => String(r.sido || '') === cfg.sido
     && (METRO.has(cfg.sido) || new RegExp(cfg.sgg).test(String(r.addr || ''))));
@@ -193,8 +178,6 @@ function build(cfg, ctx) {
   };
   const note = s => `<p class="cy-note">${s}</p>`;
   const wxOf = r => (WX && r.x && r.y) ? WX.now(r.x, r.y) : '';
-  // 2026-10-16 — 원천 값이 「주차 가능」처럼 «주차»를 달고 와서 카드에 「주차 주차 가능」으로 나왔다.
-  const parkTxt = v => String(v).replace(/^\s*주차\s*/, '') || String(v);
   const shortAddr = r => esc(String(r.addr || '').replace(/^\S+\s+\S+\s+/, '').slice(0, 34));
   const img = r => r.img ? `<img class="cy-img" src="${esc(String(r.img).replace(/^http:/, 'https:'))}" alt="${esc(r.title)}" loading="lazy" onerror="this.remove()">` : '';
 
@@ -211,7 +194,7 @@ ${p.t && (p.t.park || p.t.cap) ? `<p class="cy-meta">${p.t.park ? `🅿️ 주�
       if (r.open) b.push(`🕘 ${esc(String(r.open).slice(0, 46))}`);
       if (r.rest) b.push(`🚫 ${esc(String(r.rest).slice(0, 26))}`);
       if (r.menu) b.push(`🍽 ${esc(String(r.menu).slice(0, 40))}`);
-      if (r.park) b.push(`🅿️ 주차 ${esc(parkTxt(r.park).slice(0, 18))}`);
+      if (r.park) b.push(`🅿️ 주차 ${esc(String(r.park).slice(0, 18))}`);
       return `<div class="cy-card">${img(r)}<div class="cy-body"><h3>${esc(r.title)}</h3>
 <p class="cy-meta">${r.kind ? `<span class="cy-tag">${esc(r.kind)}</span>` : ''}${shortAddr(r)}${wxOf(r)}</p>
 ${b.length ? `<div class="cy-key">${b.join('<br>')}</div>` : ''}</div></div>`;
@@ -221,7 +204,7 @@ ${b.length ? `<div class="cy-key">${b.join('<br>')}</div>` : ''}</div></div>`;
       if (r.ci || r.co) b.push(`🕒 체크인 ${esc(r.ci || '-')} · 체크아웃 ${esc(r.co || '-')}`);
       // 2026-10-06: 원천 값에 «4실»처럼 단위가 붙어 오는 곳이 있어 «4실실»로 나왔다 — 숫자만 남기고 단위는 한 번만 붙인다.
   if (r.rooms) { const rn = String(r.rooms).trim(); b.push(`🚪 객실 ${esc(/^\d+\s*실$/.test(rn) ? rn.replace(/\s*실$/, '') : rn)}${/^\d+(\s*실)?$/.test(rn) ? '실' : ''}`); }
-      if (r.park) b.push(`🅿️ 주차 ${esc(parkTxt(r.park).slice(0, 18))}`);
+      if (r.park) b.push(`🅿️ 주차 ${esc(String(r.park).slice(0, 18))}`);
       return `<div class="cy-card">${img(r)}<div class="cy-body"><h3>${esc(r.title)}</h3>
 <p class="cy-meta">${r.kind ? `<span class="cy-tag">${esc(r.kind)}</span>` : ''}${shortAddr(r)}</p>
 ${b.length ? `<div class="cy-key">${b.join('<br>')}</div>` : ''}</div></div>`;
@@ -244,18 +227,13 @@ ${f.img ? `<img class="cy-img" src="${esc(String(f.img).replace(/^http:/, 'https
   const hourOpen = s => { const m = String(s || '').match(/(\d{1,2})\s*:\s*(\d{2})\s*[~-]/); return m ? +m[1] : null; };
   const hourClose = s => { const m = String(s || '').match(/[~-]\s*(\d{1,2})\s*:\s*(\d{2})/); return m ? +m[1] : null; };
   const cnt = (l, f) => l.filter(f).length;
-  // 2026-10-16 — 원천 주차 값이 「가능」「있음」「주차 가능」「불가」 등 제각각이라 /가능/ 만 세면 크게 모자랐다
-  //    (강릉 숙소: 「주차 가능 3곳」인데 카드엔 「주차 있음」이 수십 곳). 객실 수도 「25실」처럼 단위가 붙어 와서
-  //    +r.rooms 가 NaN → 「객실 수가 등록된 3곳」으로 잘못 셌다. 화면의 카드와 요약 숫자가 어긋나면 안 된다.
-  const parkYes = r => { const p = String(r.park || ''); return !!p && /가능|있음|무료|유료|\d\s*대/.test(p) && !/불가|없음/.test(p); };
-  const roomsNum = r => { const m = String(r.rooms || '').match(/\d+/); return m ? +m[0] : 0; };
   const FACTS = {
     food: l => {
       const n = l.length, noRest = cnt(l, r => /무휴/.test(String(r.rest || '')));
       const sun = cnt(l, r => /일요일/.test(String(r.rest || ''))), mon = cnt(l, r => /월요일/.test(String(r.rest || '')));
       const late = cnt(l, r => { const h = hourClose(r.open); return h !== null && (h >= 21 || h <= 3); });
       const early = cnt(l, r => { const h = hourOpen(r.open); return h !== null && h <= 8; });
-      const park = cnt(l, parkYes), noPark = cnt(l, r => /불가|없음/.test(String(r.park || '')));
+      const park = cnt(l, r => /가능/.test(String(r.park || ''))), noPark = cnt(l, r => /불가|없음/.test(String(r.park || '')));
       const kinds = {}; l.forEach(r => { if (r.kind) kinds[r.kind] = (kinds[r.kind] || 0) + 1; });
       const top = Object.entries(kinds).sort((a, b) => b[1] - a[1])[0];
       return `<div class="cy-key" style="padding:14px 16px;margin:0 0 16px">
@@ -271,8 +249,8 @@ ${top ? `· 가장 많은 종류는 <b>${esc(top[0])} ${top[1]}곳(${pct(top[1],
       const kinds = {}; l.forEach(r => { if (r.kind) kinds[r.kind] = (kinds[r.kind] || 0) + 1; });
       const top = Object.entries(kinds).sort((a, b) => b[1] - a[1])[0];
       const ci15 = cnt(l, r => /^15/.test(String(r.ci || ''))), co11 = cnt(l, r => /^11/.test(String(r.co || '')));
-      const park = cnt(l, parkYes);
-      const roomsN = cnt(l, r => roomsNum(r) > 0), small = cnt(l, r => roomsNum(r) > 0 && roomsNum(r) <= 5), big = cnt(l, r => roomsNum(r) >= 20);
+      const park = cnt(l, r => /가능/.test(String(r.park || '')));
+      const roomsN = cnt(l, r => +r.rooms > 0), small = cnt(l, r => +r.rooms > 0 && +r.rooms <= 5), big = cnt(l, r => +r.rooms >= 20);
       return `<div class="cy-key" style="padding:14px 16px;margin:0 0 16px">
 <b style="font-size:1.02rem">숫자로 본 ${esc(KO)} 숙소 ${n}곳</b><br>
 ${top ? `· 가장 많은 종류는 <b>${esc(top[0])} ${top[1]}곳(${pct(top[1], n)}%)</b>입니다.<br>` : ''}

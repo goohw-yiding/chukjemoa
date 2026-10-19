@@ -1,28 +1,28 @@
 {
- "generatedAt": "2026-10-19T07:08",
+ "generatedAt": "2026-10-19T09:45",
  "stats": {
   "en": {
-   "total": 291,
+   "total": 301,
    "linked": 47,
    "confirmed": 38,
    "pending": 0,
    "tbc": 7,
    "est": 2,
-   "redated": 0,
+   "redated": 4,
    "restored": 0,
    "review": 0,
    "removed": 0
   },
   "ja": {
-   "total": 219,
+   "total": 220,
    "linked": 43,
    "confirmed": 35,
    "pending": 0,
    "tbc": 6,
    "est": 2,
-   "redated": 0,
+   "redated": 3,
    "restored": 0,
-   "review": 0,
+   "review": 1,
    "removed": 0
   },
   "zh": {
@@ -32,13 +32,13 @@
    "pending": 0,
    "tbc": 2,
    "est": 2,
-   "redated": 0,
+   "redated": 4,
    "restored": 0,
    "review": 0,
    "removed": 0
   },
   "tw": {
-   "total": 176,
+   "total": 171,
    "linked": 36,
    "confirmed": 31,
    "pending": 0,
@@ -517,6 +517,8 @@
     "kv": "confirmed",
     "signals": [
      "tel",
+     "geo",
+     "date",
      "decision"
     ],
     "apiId": "140930"
@@ -1742,7 +1744,17 @@
    }
   }
  },
- "review": [],
+ "review": [
+  {
+   "lang": "ja",
+   "id": "3483199",
+   "title": "ディアスポラ映画祭",
+   "why": "신호 1개(geo)뿐",
+   "ko": [
+    "제14회 디아스포라영화제"
+   ]
+  }
+ ],
  "removed": [],
  "conflicts": []
 }
