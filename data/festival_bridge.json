@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-19T10:51",
+ "generatedAt": "2026-10-19T11:44",
  "stats": {
   "en": {
    "total": 301,
@@ -38,7 +38,7 @@
    "removed": 0
   },
   "tw": {
-   "total": 171,
+   "total": 176,
    "linked": 36,
    "confirmed": 31,
    "pending": 0,

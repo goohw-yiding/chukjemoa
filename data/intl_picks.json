@@ -550,7 +550,7 @@
   "ja": [
    {
     "ko": "부산불꽃축제",
-    "score": 12,
+    "score": 10,
     "commerce": false,
     "status": "confirmed",
     "ids": [
@@ -560,11 +560,6 @@
      {
       "claim": "한큐교통사 부산불꽃축제 관람 투어",
       "url": "https://www.hankyu-travel.com/tour/detail_i.php?p_course_id=KT3386&p_hei=10",
-      "kind": "agency"
-     },
-     {
-      "claim": "HIS 부산 불꽃 투어",
-      "url": "https://tour.his-j.com/03A_20/NN-FPL3300-Z788A/",
       "kind": "agency"
      },
      {
@@ -696,32 +691,6 @@
       "claim": "트레이지 일본어 진해 벚꽃 당일투어",
       "url": "https://www.trazy.com/ja/experience/detail/jinhae-cherry-blossom-tour-seoul-busan",
       "kind": "ota"
-     }
-    ]
-   },
-   {
-    "ko": "안동국제탈춤페스티벌",
-    "score": 4,
-    "commerce": true,
-    "status": "confirmed",
-    "ids": [
-     "696923"
-    ],
-    "reasons": [
-     {
-      "claim": "트립닷컴 일본판 12선",
-      "url": "https://jp.trip.com/guide/info/%E9%9F%93%E5%9B%BD%E3%81%AE%E7%A5%AD%E3%82%8A.html",
-      "kind": "media"
-     },
-     {
-      "claim": "한큐교통사 안동 탈춤축제 투어 상품",
-      "url": "https://www.hankyu-travel.com/tour/detail_i.php?p_hei=10&p_course_id=KT580A",
-      "kind": "agency"
-     },
-     {
-      "claim": "서울나비 일본어 안동국제탈춤페스티벌 소개",
-      "url": "https://www.seoulnavi.com/special/5053265",
-      "kind": "media"
      }
     ]
    },
@@ -972,6 +941,27 @@
       "claim": "트레이지 일본어 화천산천어축제 셔틀 패키지",
       "url": "https://www.trazy.com/ja/experience/detail/hwacheon-sancheoneo-ice-festival-shuttle-bus-package",
       "kind": "ota"
+     }
+    ]
+   },
+   {
+    "ko": "안동국제탈춤페스티벌",
+    "score": 2,
+    "commerce": true,
+    "status": "confirmed",
+    "ids": [
+     "696923"
+    ],
+    "reasons": [
+     {
+      "claim": "트립닷컴 일본판 12선",
+      "url": "https://jp.trip.com/guide/info/%E9%9F%93%E5%9B%BD%E3%81%AE%E7%A5%AD%E3%82%8A.html",
+      "kind": "media"
+     },
+     {
+      "claim": "서울나비 일본어 안동국제탈춤페스티벌 소개",
+      "url": "https://www.seoulnavi.com/special/5053265",
+      "kind": "media"
      }
     ]
    },
@@ -1342,30 +1332,6 @@
     ]
    },
    {
-    "ko": "부산바다축제",
-    "score": 3,
-    "commerce": false,
-    "status": "confirmed",
-    "ids": [],
-    "reasons": [
-     {
-      "claim": "부산시 간체 뉴스 '2025 주요 행사 일정': 제29회 부산바다축제",
-      "url": "https://www.busan.go.kr/zhs/bsnews01/1663501",
-      "kind": "media"
-     },
-     {
-      "claim": "VisitBusan 간체 부산바다축제 소개",
-      "url": "https://www.visitbusan.net/index.do?menuCd=DOM_000000601005001000&uc_seq=71&lang_cd=cng",
-      "kind": "media"
-     },
-     {
-      "claim": "중국어 한국여행 사이트 来韩网의 부산바다축제 소개 기사",
-      "url": "https://www.laihanwang.com/phone/news/show_317.html",
-      "kind": "media"
-     }
-    ]
-   },
-   {
     "ko": "서울빛초롱축제",
     "score": 3,
     "commerce": false,
@@ -1613,22 +1579,20 @@
     ]
    },
    {
-    "ko": "부산불꽃축제",
+    "ko": "부산바다축제",
     "score": 2,
     "commerce": false,
     "status": "confirmed",
-    "ids": [
-     "1808199"
-    ],
+    "ids": [],
     "reasons": [
      {
-      "claim": "부산관광공사 VisitBusan 간체 페이지: 부산불꽃축제 관람 명소 추천",
-      "url": "https://www.visitbusan.net/index.do?menuCd=DOM_000000502002001000&uc_seq=2604&lang_cd=cng",
+      "claim": "부산시 간체 뉴스 '2025 주요 행사 일정': 제29회 부산바다축제",
+      "url": "https://www.busan.go.kr/zhs/bsnews01/1663501",
       "kind": "media"
      },
      {
-      "claim": "부산시 간체 행사 캘린더: 제20회 부산불꽃축제",
-      "url": "https://www.busan.go.kr/zhs/bsevents/1693997?curPage=&srchYear=2025&srchMonth=11&srchStartDt=&srchEndDt=&srchKey=&srchText=&check=",
+      "claim": "중국어 한국여행 사이트 来韩网의 부산바다축제 소개 기사",
+      "url": "https://www.laihanwang.com/phone/news/show_317.html",
       "kind": "media"
      }
     ]
@@ -1921,37 +1885,6 @@
     ]
    },
    {
-    "ko": "부산바다축제",
-    "score": 4,
-    "commerce": false,
-    "status": "confirmed",
-    "ids": [
-     "333373"
-    ],
-    "reasons": [
-     {
-      "claim": "부산관광공사 VisitBusan 번체 부산바다축제 페이지",
-      "url": "https://www.visitbusan.net/index.do?menuCd=DOM_000000601005001000&uc_seq=71&lang_cd=cnb",
-      "kind": "media"
-     },
-     {
-      "claim": "대만 블로그(pixnet) '부산 최대 해양 축제 부산바다축제' 소개",
-      "url": "https://travelerts.pixnet.net/blog/post/383213636",
-      "kind": "media"
-     },
-     {
-      "claim": "한국관광공사 번체 사이트 부산바다축제 페이지",
-      "url": "https://big5chinese.visitkorea.or.kr/cht/ATT/3_4_view.jsp?cid=333373",
-      "kind": "media"
-     },
-     {
-      "claim": "대만 PopDaily '부산 사계절 축제 16선': 부산바다축제",
-      "url": "https://www.popdaily.com.tw/korea/1348982",
-      "kind": "media"
-     }
-    ]
-   },
-   {
     "ko": "평창송어축제",
     "score": 4,
     "commerce": false,
@@ -2056,6 +1989,32 @@
      {
       "claim": "한국관광공사 번체 사이트 대관령눈꽃축제 페이지",
       "url": "https://big5chinese.visitkorea.or.kr/cht/ATT/3_4_view.jsp?cid=679303",
+      "kind": "media"
+     }
+    ]
+   },
+   {
+    "ko": "부산바다축제",
+    "score": 3,
+    "commerce": false,
+    "status": "confirmed",
+    "ids": [
+     "333373"
+    ],
+    "reasons": [
+     {
+      "claim": "대만 블로그(pixnet) '부산 최대 해양 축제 부산바다축제' 소개",
+      "url": "https://travelerts.pixnet.net/blog/post/383213636",
+      "kind": "media"
+     },
+     {
+      "claim": "한국관광공사 번체 사이트 부산바다축제 페이지",
+      "url": "https://big5chinese.visitkorea.or.kr/cht/ATT/3_4_view.jsp?cid=333373",
+      "kind": "media"
+     },
+     {
+      "claim": "대만 PopDaily '부산 사계절 축제 16선': 부산바다축제",
+      "url": "https://www.popdaily.com.tw/korea/1348982",
       "kind": "media"
      }
     ]

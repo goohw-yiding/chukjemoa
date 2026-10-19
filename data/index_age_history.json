@@ -1562,5 +1562,403 @@
     "ETC": 1
    }
   }
+ },
+ {
+  "d": "2026-10-16",
+  "tot": {
+   "IDX": 672,
+   "DISC": 134,
+   "CRAWL": 6,
+   "UNK": 50,
+   "ETC": 1
+  },
+  "byWeek": {
+   "2026-08-10주": {
+    "n": 68,
+    "IDX": 66,
+    "DISC": 1,
+    "CRAWL": 1,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "2026-08-17주": {
+    "n": 100,
+    "IDX": 100,
+    "DISC": 0,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "2026-09-14주": {
+    "n": 28,
+    "IDX": 22,
+    "DISC": 5,
+    "CRAWL": 0,
+    "UNK": 1,
+    "ETC": 0
+   },
+   "2026-08-24주": {
+    "n": 25,
+    "IDX": 25,
+    "DISC": 0,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "2026-09-21주": {
+    "n": 109,
+    "IDX": 43,
+    "DISC": 52,
+    "CRAWL": 0,
+    "UNK": 14,
+    "ETC": 0
+   },
+   "2026-09-28주": {
+    "n": 40,
+    "IDX": 34,
+    "DISC": 4,
+    "CRAWL": 0,
+    "UNK": 2,
+    "ETC": 0
+   },
+   "2026-09-07주": {
+    "n": 203,
+    "IDX": 129,
+    "DISC": 53,
+    "CRAWL": 1,
+    "UNK": 20,
+    "ETC": 0
+   },
+   "2026-10-12주": {
+    "n": 40,
+    "IDX": 37,
+    "DISC": 2,
+    "CRAWL": 0,
+    "UNK": 1,
+    "ETC": 0
+   },
+   "2026-10-05주": {
+    "n": 31,
+    "IDX": 17,
+    "DISC": 10,
+    "CRAWL": 1,
+    "UNK": 3,
+    "ETC": 0
+   },
+   "2026-08-31주": {
+    "n": 66,
+    "IDX": 54,
+    "DISC": 5,
+    "CRAWL": 0,
+    "UNK": 6,
+    "ETC": 1
+   },
+   "알수없음": {
+    "n": 22,
+    "IDX": 18,
+    "DISC": 2,
+    "CRAWL": 0,
+    "UNK": 2,
+    "ETC": 0
+   },
+   "2026-08-03주": {
+    "n": 96,
+    "IDX": 92,
+    "DISC": 0,
+    "CRAWL": 3,
+    "UNK": 1,
+    "ETC": 0
+   },
+   "2026-07-06주": {
+    "n": 25,
+    "IDX": 25,
+    "DISC": 0,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "2026-07-13주": {
+    "n": 5,
+    "IDX": 5,
+    "DISC": 0,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "2026-07-20주": {
+    "n": 2,
+    "IDX": 2,
+    "DISC": 0,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "2026-07-27주": {
+    "n": 3,
+    "IDX": 3,
+    "DISC": 0,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   }
+  },
+  "bySec": {
+   "festival/x": {
+    "n": 159,
+    "IDX": 156,
+    "DISC": 1,
+    "CRAWL": 2,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "1단 페이지": {
+    "n": 71,
+    "IDX": 71,
+    "DISC": 0,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "course/x": {
+    "n": 12,
+    "IDX": 12,
+    "DISC": 0,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "trails/x": {
+    "n": 38,
+    "IDX": 35,
+    "DISC": 0,
+    "CRAWL": 3,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "blog/x": {
+    "n": 55,
+    "IDX": 51,
+    "DISC": 2,
+    "CRAWL": 0,
+    "UNK": 2,
+    "ETC": 0
+   },
+   "en/city": {
+    "n": 40,
+    "IDX": 23,
+    "DISC": 14,
+    "CRAWL": 0,
+    "UNK": 3,
+    "ETC": 0
+   },
+   "ja/city": {
+    "n": 43,
+    "IDX": 27,
+    "DISC": 14,
+    "CRAWL": 1,
+    "UNK": 1,
+    "ETC": 0
+   },
+   "zh/city": {
+    "n": 27,
+    "IDX": 17,
+    "DISC": 8,
+    "CRAWL": 0,
+    "UNK": 2,
+    "ETC": 0
+   },
+   "tw/city": {
+    "n": 30,
+    "IDX": 18,
+    "DISC": 8,
+    "CRAWL": 0,
+    "UNK": 4,
+    "ETC": 0
+   },
+   "en": {
+    "n": 1,
+    "IDX": 1,
+    "DISC": 0,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "en/festival/x": {
+    "n": 62,
+    "IDX": 45,
+    "DISC": 12,
+    "CRAWL": 0,
+    "UNK": 5,
+    "ETC": 0
+   },
+   "en/blog/x": {
+    "n": 7,
+    "IDX": 7,
+    "DISC": 0,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "ja": {
+    "n": 1,
+    "IDX": 1,
+    "DISC": 0,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "ja/festival/x": {
+    "n": 20,
+    "IDX": 12,
+    "DISC": 4,
+    "CRAWL": 0,
+    "UNK": 3,
+    "ETC": 1
+   },
+   "ja/closed/x": {
+    "n": 6,
+    "IDX": 4,
+    "DISC": 0,
+    "CRAWL": 0,
+    "UNK": 2,
+    "ETC": 0
+   },
+   "ja/places/x": {
+    "n": 17,
+    "IDX": 4,
+    "DISC": 10,
+    "CRAWL": 0,
+    "UNK": 3,
+    "ETC": 0
+   },
+   "zh": {
+    "n": 1,
+    "IDX": 1,
+    "DISC": 0,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "tw": {
+    "n": 1,
+    "IDX": 1,
+    "DISC": 0,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "en/trip/x": {
+    "n": 3,
+    "IDX": 3,
+    "DISC": 0,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "ja/trip/x": {
+    "n": 3,
+    "IDX": 3,
+    "DISC": 0,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "zh/trip/x": {
+    "n": 3,
+    "IDX": 3,
+    "DISC": 0,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "tw/trip/x": {
+    "n": 3,
+    "IDX": 3,
+    "DISC": 0,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "en/calendar/x": {
+    "n": 2,
+    "IDX": 2,
+    "DISC": 0,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "ja/calendar/x": {
+    "n": 2,
+    "IDX": 2,
+    "DISC": 0,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "zh/calendar/x": {
+    "n": 2,
+    "IDX": 2,
+    "DISC": 0,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "tw/calendar/x": {
+    "n": 2,
+    "IDX": 2,
+    "DISC": 0,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "home": {
+    "n": 1,
+    "IDX": 1,
+    "DISC": 0,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "jangteo/x": {
+    "n": 123,
+    "IDX": 89,
+    "DISC": 24,
+    "CRAWL": 0,
+    "UNK": 10,
+    "ETC": 0
+   },
+   "accessible/x": {
+    "n": 17,
+    "IDX": 17,
+    "DISC": 0,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "pet/x": {
+    "n": 15,
+    "IDX": 15,
+    "DISC": 0,
+    "CRAWL": 0,
+    "UNK": 0,
+    "ETC": 0
+   },
+   "indoor/x": {
+    "n": 12,
+    "IDX": 7,
+    "DISC": 2,
+    "CRAWL": 0,
+    "UNK": 3,
+    "ETC": 0
+   },
+   "도시 하위(ko)": {
+    "n": 84,
+    "IDX": 37,
+    "DISC": 35,
+    "CRAWL": 0,
+    "UNK": 12,
+    "ETC": 0
+   }
+  }
  }
 ]

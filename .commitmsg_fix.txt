@@ -1,1 +1,0 @@
-감사 오탐 수리 — 루트 _*.html 은 .vercelignore(/_*) 대상이라 라이브에 없음, audit-pages.js 에서 제외 (canonical 누락 1→0)
