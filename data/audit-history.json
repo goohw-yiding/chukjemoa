@@ -6,12 +6,12 @@
  "markets_api.json:tel": 99,
  "onsen.json:ov": 100,
  "onsen.json:tel": 100,
- "onsen.json:open": 98,
- "onsen.json:park": 98,
+ "onsen.json:open": 97,
+ "onsen.json:park": 100,
  "flower.json:ov": 100,
- "flower.json:tel": 99,
+ "flower.json:tel": 98,
  "flower.json:open": 97,
- "flower.json:park": 93,
+ "flower.json:park": 95,
  "valleys.json:ov": 100,
  "valleys.json:tel": 99,
  "valleys.json:open": 92,
@@ -19,7 +19,7 @@
  "maple.json:ov": 100,
  "maple.json:tel": 100,
  "maple.json:open": 90,
- "maple.json:park": 84,
+ "maple.json:park": 86,
  "mountains_ko.json:ov": 100,
  "mountains_ko.json:sigungu": 100,
  "cafes_ko.json:ov": 100,
@@ -41,5 +41,5 @@
  "accessible.json:acc": 15,
  "trails.json:desc": 100,
  "trails.json:summary": 100,
- "trails.json:x": 43
+ "trails.json:x": 32
 }
