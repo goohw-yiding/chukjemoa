@@ -72,7 +72,9 @@ async function main(){
   const merged = {};
   prev.forEach(t => { if (t && t.id) merged[t.id] = t; });
   let added = 0, updated = 0;
-  out.forEach(t => { if (merged[t.id]) updated++; else added++; merged[t.id] = t; });
+  // ★ 2026-10-19 사고: 갱신 때 항목을 통째로 바꿔 끼워, 다른 스크립트가 붙여 둔 좌표(x·y·gsrc)가 26건 지워졌다(112→86).
+  //   API가 주는 필드만 덮어쓰고, 기존 항목에만 있는 필드(좌표 등)는 남긴다.
+  out.forEach(t => { if (merged[t.id]) updated++; else added++; merged[t.id] = Object.assign({}, merged[t.id] || {}, t); });
   const final = Object.values(merged);
   final.sort((a,b)=> (a.sido||'힣').localeCompare(b.sido||'힣') || (a.name||'').localeCompare(b.name||''));
   if (prev.length && final.length < prev.length) {
