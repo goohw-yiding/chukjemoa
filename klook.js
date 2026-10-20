@@ -151,3 +151,16 @@ function ktxGjTw() {
 module.exports.ktxGjTw = ktxGjTw;
 module.exports.esimZh = esimZh;
 module.exports.hotelTw = hotelTw;
+// 2026-10-20 일본어 회차 — /ja/mountains/ : 「2026年 紅葉の見頃（山林庁予測）」 표의 «雪岳山 10月20日ごろ» 사실 바로 뒤 → 서울발 설악산 단풍 당일 투어
+//   클룩 5466 「雪岳山国立公園 紅葉日帰りツアー（ソウル発）」 를 Claude 브라우저로 열어 확인: 季節限定·「明日から利用可能」(10/21~)·06:00 弘大発·約13時間·
+//   「営業期間は紅葉や天候により変更される場合があります」. 설악산 절정 10/20(산림청) → 11/3 까지만 보인다.
+//   전용 광고 ID 없음 → 부산불꽃처럼 eSIM ID 를 빌려 쓰고 data-bb="klook-koyo" 로 구분한다.
+AD.koyo = AD.esim;
+const KOYO = { url: 'https://www.klook.com/ja/activity/5466-seoraksan-national-park-autumn-day-tour-seoul/', until: '20261103' };
+function koyoSeorak(today8) {
+  const d = today8 || new Date(Date.now() + 9 * 3600e3).toISOString().slice(0, 10).replace(/-/g, '');
+  if (d > KOYO.until) return '';
+  return box(`${PR}雪岳山の見頃は10月20日ごろの予測です。ソウルから雪岳山へは往復バスつきの日帰りツアー（約13時間）があり、Klookで日本語のまま予約できます → `
+    + a(url(KOYO.url, AD.koyo), '雪岳山の紅葉日帰りツアーを見る（Klook）', 'koyo', 'ja-mountains', 'inline-context'));
+}
+module.exports.koyoSeorak = koyoSeorak;
