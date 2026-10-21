@@ -1,15 +1,15 @@
 {
- "generatedAt": "2026-10-21T07:07",
+ "generatedAt": "2026-10-22T07:07",
  "stats": {
   "en": {
    "total": 301,
-   "linked": 47,
-   "confirmed": 38,
+   "linked": 46,
+   "confirmed": 37,
    "pending": 0,
    "tbc": 7,
    "est": 2,
    "redated": 0,
-   "restored": 0,
+   "restored": 1,
    "review": 0,
    "removed": 0
   },
@@ -230,16 +230,6 @@
      "date"
     ],
     "apiId": "506523"
-   },
-   "697209": {
-    "ko": "강경젓갈축제",
-    "kv": "confirmed",
-    "signals": [
-     "img",
-     "geo",
-     "date"
-    ],
-    "apiId": "506376"
    },
    "697432": {
     "ko": "대구약령시한방문화축제",

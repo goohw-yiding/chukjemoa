@@ -1,9 +1,13 @@
-일본어 주간(10/20) — 날짜 대조 7건 전부 맞음 · 일본어 이름 2건 · /ja/mountains/ 2026 단풍 절정 예측 + 클룩 설악산 단풍 투어
+영어 주간(10/21) — 속도 부족 처방: 보강 4장(포항불빛 포항시 발표·서울억새·익산국화·마산가고파) + 검색 설명 · 날짜 대조 10건 · 광안리 드론쇼 Creatrip 관람 공간 링크
 
-- 날짜 대조(festivals_intl_checked): 국향대전·청송사과·구미라면·뷰티썸 수원·광주비엔날레·경복궁 별빛야행·홍성남당항 대하 — 전부 맞음
-- 일본어 이름(festivals_intl_fix name.ja): 탐라문화제 耽羅文化祭 · 한성백제문화제 漢城百済文化祭
-- /ja/mountains/: title·desc 「韓国の有名な山」, 맨 위 「2026年 韓国の紅葉の見頃（山林庁の予測）」 표(설악·소백 10/20, 속리 10/28, 내장 11/4, 한라 11/6) — 11/16부터 자동 숨김
-- klook.js koyoSeorak: 클룩 5466 설악산 단풍 당일투어(서울발, 10/21~ 예약 가능 확인) — 표 바로 뒤, 11/3까지
+- 포항국제불빛축제: 잠정 안내 → 포항시 발표(뉴스1 10/19) 11/19~21, 11/21 20시 영일대 불꽃쇼
+- 서울억새축제(서울시 공식)·익산 천만송이 국화축제(익산시)·마산가고파국화축제(매일신문) note+desc
+- 광안리 M 드론쇼: Creatrip 15648(광안대교 오션뷰 실내 관람 공간) aff ~12/31
+- 부산불꽃: 클룩 171795·Creatrip 12948 모두 판매 종료 → aff 제거
+- 교정 파일 정리: 진주 항목 삭제, 춘천막국수닭갈비 note/desc 정리
+- 한글 원제 좌표 오매칭 4건 숨김, 백년나이트 야시장은 맞음(KNOWN_OK)
+- /en/blog/ojang-day-guide-en/ 검색 설명 개선(«ojang» 5.4위 클릭 0)
+- festivals_en_checked.json 10건 기록
 
 Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
-Claude-Session: https://claude.ai/code/session_01JnDX7vrJThVsB8c9rM3FEB
+Claude-Session: https://claude.ai/code/session_01QkWMxEZeC7fH3mN26feu5N
