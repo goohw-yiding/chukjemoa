@@ -174,7 +174,7 @@ for f in KO:
         if float(f["x"]) > 0 and float(f["y"]) > 0:
             D[k3(f["x"], f["y"]) + "|" + f["start"]] = f; X.setdefault(k3(f["x"], f["y"]), f)
     except Exception: pass
-KNOWN_OK = {"705394", "3547242", "2657121", "3544525", "3307776", "292836", "697199", "4091877"}
+KNOWN_OK = {"705394", "3547242", "2657121", "3544525", "3307776", "292836", "697199", "4091877", "3544280"}
 n5 = 0
 for fid, f in eff.items():
     if len(f.get("ov", "")) < 200 or fid in FIX or fid in KNOWN_OK: continue
