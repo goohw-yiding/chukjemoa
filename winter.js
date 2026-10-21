@@ -106,6 +106,8 @@ ${curW.slice(0, 30).map(f => `<li><b>${esc(f.name)}</b> <span style="color:#9ca3
 <b>이 페이지의 날짜는 전부 «예년 기준»입니다.</b> 해마다 요일과 날씨에 따라 며칠씩 달라지고, 얼음 축제는 결빙이 늦으면 개막 자체가 밀립니다. 출발 전 주최 측 공식 채널 확인이 필요합니다.
 </div>
 
+<p style="font-size:.97rem"><a href="/winter/light/" style="color:#0a6c63;font-weight:800">✨ 빛축제·눈꽃(얼음)축제만 따로 보기 — 날짜를 고르면 그날 열리는 곳 →</a></p>
+
 ${liveBlock}
 
 ${monthBlock(12, '❄️ 12월', '연말 분위기와 겹쳐 «빛·등불» 계열이 가장 많은 달입니다. 도심에서 열리는 것이 많아 이동 부담이 작습니다.')}
@@ -147,6 +149,8 @@ ${faq.map(([q, a]) => `<p style="line-height:1.8"><b>${esc(q)}</b><br>${esc(a)}<
     '/winter/', content, { jsonld: `<script type="application/ld+json">${JSON.stringify(faqLd)}</script>`, ogImage: '/img/cat2-snow-b.webp' }));
 
   console.log('✓ /winter/ — 예년 겨울 축제', winter.length, '곳 · 개요 있는 것', good.length, '곳');
-  return ['/winter/'];
+  // 2026-10-21 AI 노출 운영: 빛축제·눈꽃축제 질문 전용 페이지
+  const lightUrls = require('./winter-light.js').build({ ROOT, layout, writePage, SITE_NAME });
+  return ['/winter/', ...lightUrls];
 }
 module.exports = { build };
