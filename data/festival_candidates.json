@@ -1,1 +1,46 @@
-{}
+{
+ "포항국제불빛축제": {
+  "start": "2026-11-19",
+  "end": "2026-11-21",
+  "place": "포항시 영일대해수욕장·송도 일원",
+  "sources": [
+   "https://www.hankyung.com/article/2026102153561",
+   "https://korean.visitkorea.or.kr/kfes/detail/fstvlDetail.do?fstvlCntntsId=1a7b7f32-e5a4-47b1-9e35-4a87499eccd8"
+  ],
+  "proposedAt": "2026-10-22",
+  "from": "2026-11-19~2026-11-21"
+ },
+ "제25회 의정부음악극축제": {
+  "start": "2026-05-09",
+  "end": "2026-05-17",
+  "place": "",
+  "sources": [
+   "https://www.munhwa.com/article/11585194",
+   "https://www.sctoday.co.kr/news/articleView.html?idxno=47674"
+  ],
+  "proposedAt": "2026-10-22",
+  "from": "2026-05-09~2026-05-17"
+ },
+ "D.FESTA 거리공연축제": {
+  "start": "2026-05-16",
+  "end": "2026-05-17",
+  "place": "",
+  "sources": [
+   "https://culture.seoul.go.kr/culture/culture/cultureEvent/view.do?cultcode=157840&menuNo=200010",
+   "https://www.newssunday.co.kr/news/view.php?no=249149"
+  ],
+  "proposedAt": "2026-10-22",
+  "from": "2026-05-16~2026-05-17"
+ },
+ "작당페스타": {
+  "start": "2026-05-16",
+  "end": "2026-05-17",
+  "place": "",
+  "sources": [
+   "https://www.seoul.co.kr/news/society/2026/05/13/20260513500185",
+   "https://www.newscj.com/news/articleView.html?idxno=3400380"
+  ],
+  "proposedAt": "2026-10-22",
+  "from": "2026-05-16~2026-05-17"
+ }
+}
