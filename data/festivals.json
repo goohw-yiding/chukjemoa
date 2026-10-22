@@ -2014,9 +2014,14 @@
   ],
   "category": "문화",
   "desc": "2026 작당페스타는 청년문화공간 ‘청년작당소’ 개소 6주년을 기념하는 축제이다. 서로 다른 삶과 활동을 이어가는 청년들이 한자리에 모여 각자의 경험과 고민을 나누고, 새로운 시선을 발견할 수 있는",
-  "confirmed": false,
+  "confirmed": true,
   "apiSource": "TourAPI «작당페스타» id 3115722",
-  "pending": true
+  "sources": [
+   "https://www.seoul.co.kr/news/society/2026/05/13/20260513500185",
+   "https://www.newscj.com/news/articleView.html?idxno=3400380",
+   "https://news.nate.com/view/20260513n27018"
+  ],
+  "verifiedAt": "2026-10-22"
  },
  {
   "name": "D.FESTA 거리공연축제",
@@ -2030,9 +2035,14 @@
   ],
   "category": "음악",
   "desc": "대학로를 대표하는 거리예술 축제인 ‘D.FESTA 거리공연축제’가 올해로 뜻깊은 20주년을 맞이했다. (사)한국소극장협회(이사장 장경민)는 오는 5월 16일(토)부터 17일(일)까지 양일간 대학로 ",
-  "confirmed": false,
+  "confirmed": true,
   "apiSource": "TourAPI «D.FESTA 거리공연축제» id 1717921",
-  "pending": true
+  "sources": [
+   "https://culture.seoul.go.kr/culture/culture/cultureEvent/view.do?cultcode=157840&menuNo=200010",
+   "https://www.newssunday.co.kr/news/view.php?no=249149",
+   "https://www.asiatoday.co.kr/kn/view.php?key=20260508001122102"
+  ],
+  "verifiedAt": "2026-10-22"
  },
  {
   "name": "Colorful Garden 자라섬 꽃 페스타",
@@ -2131,9 +2141,14 @@
   ],
   "category": "음악",
   "desc": "의정부음악극축제는 매년 5월, 문화와 예술의 도시 의정부에서 펼쳐지는 공연예술 축제이다. 의정부음악극축제를 통해 세계적인 공연 단체의 우수한 작품을 초청하여 관객들에게 선보이고, 국내에서 인정받은 ",
-  "confirmed": false,
+  "confirmed": true,
   "apiSource": "TourAPI «제25회 의정부음악극축제» id 141865",
-  "pending": true
+  "sources": [
+   "https://www.munhwa.com/article/11585194",
+   "https://www.sctoday.co.kr/news/articleView.html?idxno=47674",
+   "https://www.wikitree.co.kr/articles/1135393"
+  ],
+  "verifiedAt": "2026-10-22"
  },
  {
   "name": "원주용수골꽃양귀비축제",
@@ -2656,7 +2671,7 @@
   "name": "포항국제불빛축제",
   "region": "경북",
   "city": "포항시",
-  "place": "포항시 영일대해수욕장·송도 일원",
+  "place": "영일대해수욕장 일원",
   "start": "2026-11-19",
   "end": "2026-11-21",
   "month": [
@@ -2664,8 +2679,13 @@
   ],
   "category": "불꽃",
   "desc": "영일대 해변 국제 불꽃쇼",
-  "confirmed": false,
+  "confirmed": true,
   "addedFrom": "intl-wishlist",
-  "pending": true
+  "sources": [
+   "https://www.hankyung.com/article/2026102153561",
+   "https://korean.visitkorea.or.kr/kfes/detail/fstvlDetail.do?fstvlCntntsId=1a7b7f32-e5a4-47b1-9e35-4a87499eccd8",
+   "https://english.visitkorea.or.kr/svc/contents/contentsView.do?vcontsId=91513"
+  ],
+  "verifiedAt": "2026-10-22"
  }
 ]

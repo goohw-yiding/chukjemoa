@@ -1986,5 +1986,54 @@
   "at": "2026-10-22",
   "name": "2026 캠핑요리축제",
   "note": "2026-10-22: 개최 확인(nate 20260613n08621 6/13 개회 사진기사) 그러나 날짜 범위 문구 있는 인정 근거 2곳 없음(themade·개인블로그만)"
+ },
+ {
+  "at": "2026-10-22",
+  "name": "제25회 의정부음악극축제",
+  "from": "2026-05-09~2026-05-17",
+  "to": "2026-05-09~2026-05-17",
+  "confirm": "교차확인(조사자 2곳 + 검증자 1곳, 기계 검증 통과)",
+  "sources": [
+   "https://www.munhwa.com/article/11585194",
+   "https://www.sctoday.co.kr/news/articleView.html?idxno=47674",
+   "https://www.wikitree.co.kr/articles/1135393"
+  ]
+ },
+ {
+  "at": "2026-10-22",
+  "name": "D.FESTA 거리공연축제",
+  "from": "2026-05-16~2026-05-17",
+  "to": "2026-05-16~2026-05-17",
+  "confirm": "교차확인(조사자 2곳 + 검증자 1곳, 기계 검증 통과)",
+  "sources": [
+   "https://culture.seoul.go.kr/culture/culture/cultureEvent/view.do?cultcode=157840&menuNo=200010",
+   "https://www.newssunday.co.kr/news/view.php?no=249149",
+   "https://www.asiatoday.co.kr/kn/view.php?key=20260508001122102"
+  ]
+ },
+ {
+  "at": "2026-10-22",
+  "name": "작당페스타",
+  "from": "2026-05-16~2026-05-17",
+  "to": "2026-05-16~2026-05-17",
+  "confirm": "교차확인(조사자 2곳 + 검증자 1곳, 기계 검증 통과)",
+  "sources": [
+   "https://www.seoul.co.kr/news/society/2026/05/13/20260513500185",
+   "https://www.newscj.com/news/articleView.html?idxno=3400380",
+   "https://news.nate.com/view/20260513n27018"
+  ]
+ },
+ {
+  "at": "2026-10-22",
+  "name": "포항국제불빛축제",
+  "from": "2026-11-19~2026-11-21",
+  "to": "2026-11-19~2026-11-21",
+  "place": "영일대해수욕장 일원",
+  "confirm": "교차확인(조사자 2곳 + 검증자 1곳, 기계 검증 통과)",
+  "sources": [
+   "https://www.hankyung.com/article/2026102153561",
+   "https://korean.visitkorea.or.kr/kfes/detail/fstvlDetail.do?fstvlCntntsId=1a7b7f32-e5a4-47b1-9e35-4a87499eccd8",
+   "https://english.visitkorea.or.kr/svc/contents/contentsView.do?vcontsId=91513"
+  ]
  }
 ]
