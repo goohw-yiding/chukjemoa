@@ -1,12 +1,12 @@
 {
- "generatedAt": "2026-10-22T08:06",
+ "generatedAt": "2026-10-22T11:37",
  "stats": {
   "en": {
    "total": 301,
    "linked": 46,
    "confirmed": 37,
-   "pending": 0,
-   "tbc": 7,
+   "pending": 1,
+   "tbc": 6,
    "est": 2,
    "redated": 0,
    "restored": 0,
@@ -17,8 +17,8 @@
    "total": 220,
    "linked": 43,
    "confirmed": 35,
-   "pending": 0,
-   "tbc": 6,
+   "pending": 1,
+   "tbc": 5,
    "est": 2,
    "redated": 0,
    "restored": 0,
@@ -473,7 +473,7 @@
    },
    "2656853": {
     "ko": "D.FESTA 거리공연축제",
-    "kv": "tbc",
+    "kv": "pending",
     "signals": [
      "img",
      "geo",
@@ -948,7 +948,7 @@
    },
    "2657014": {
     "ko": "D.FESTA 거리공연축제",
-    "kv": "tbc",
+    "kv": "pending",
     "signals": [
      "img",
      "geo",

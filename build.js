@@ -4182,6 +4182,14 @@ const REF_NATIONAL = [
   ['https://www.data.go.kr/', '공공데이터포털', '축제·반려동물 동반·무장애 정보 개방 데이터 원본']
 ];
 const POST_REFS = {
+  // 이주의 축제모아 Vol.6 — TOP5 날짜·장소를 교차 확인한 보도(2026-10-22 확인)
+  'chukjemoa-weekly-vol6': [
+    ['https://news-wa.com/article/travel/tour-korea/2026/10/12/20261012500016', '뉴스와', '2026 김천김밥축제 10월 23~25일 직지문화공원·사명대사공원 일원'],
+    ['https://www.reportera.co.kr/travel/dreampark-chrysanthemum-festival/', '리포테라', '드림파크 국화축제 10월 16~25일 드림파크 야생화단지'],
+    ['https://news.mtn.co.kr/news-detail/2026092909314591259', '머니투데이방송', '제18회 강릉커피축제 10월 21~25일 강릉커피거리 일원'],
+    ['https://news.mtn.co.kr/article/2026101913205897639', '머니투데이방송', '원주만두축제 10월 23~25일 원주천·문화의거리 일원'],
+    ['https://inews24.com/view/2010469', '아이뉴스24', '2026 여주오곡나루축제 10월 23~25일 신륵사 관광지 일원']
+  ],
   // 이주의 축제모아 Vol.5 — TOP5 날짜·장소를 교차 확인한 보도(2026-10-15 확인)
   'chukjemoa-weekly-vol5': [
     ['https://www.wikitree.co.kr/articles/1162266', '위키트리', '2026 대전빵축제 10월 17~18일 엑스포과학공원 한빛탑 일대'],
