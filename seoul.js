@@ -41,9 +41,15 @@ const MN = ['', '1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', 
 const fmt = s => /^\d{8}$/.test(s) ? `${+s.slice(4, 6)}월 ${+s.slice(6, 8)}일` : '';
 const WD = ['일', '월', '화', '수', '목', '금', '토'];
 const wd = s => /^\d{8}$/.test(s) ? WD[new Date(+s.slice(0, 4), +s.slice(4, 6) - 1, +s.slice(6, 8)).getDay()] : '';
+// 🗓 2026-10-23 — 해를 넘기는 행사는 연도를 붙인다.
+//   실측: /seoul/2026-11/ 첫 카드가 「11월 17일(수) ~ 11월 16일(월)」(=2021-11-17~2026-11-16)로
+//   끝이 시작보다 앞선 것처럼 보였다. 상설에 가까운 전시가 몇 년씩 걸쳐 있어서다.
+const fmtY = s => /^\d{8}$/.test(s) ? `${s.slice(0, 4)}년 ${fmt(s)}` : '';
 const range = r => r.start === r.end
   ? `${fmt(r.start)}(${wd(r.start)})`
-  : `${fmt(r.start)}(${wd(r.start)}) ~ ${fmt(r.end)}(${wd(r.end)})`;
+  : r.start.slice(0, 4) !== r.end.slice(0, 4)
+    ? `${fmtY(r.start)}(${wd(r.start)}) ~ ${fmtY(r.end)}(${wd(r.end)})`
+    : `${fmt(r.start)}(${wd(r.start)}) ~ ${fmt(r.end)}(${wd(r.end)})`;
 
 function build({ ROOT, layout, writePage, SITE, SITE_NAME, TODAY, WX }) {
   let db;
@@ -168,19 +174,99 @@ ${srcNote}
     if (list.length < 20) continue;
     const y = ym.slice(0, 4), m = +ym.slice(4, 6);
     const ex = list.filter(r => r.g === 'exhibition').length, pf = list.filter(r => r.g === 'performance').length;
+    const isFest = r => /^축제/.test(r.cat || '');
+    const fsCnt = list.filter(isFest).length, frCnt = list.filter(r => r.free).length;
+    const mKey = `${y}-${String(m).padStart(2, '0')}`;
+
+    // ---------- 🤖 «한 줄 답 + 주말별 정리» (2026-10-23, AI 노출 운영 — 전국 월별 페이지 10-14 틀의 서울판)
+    // AI 가 「서울 11월 주말 행사」「11월 서울 축제」를 물으면 첫 문단·주말 표를 그대로 인용하게 한다.
+    //   ⚠️ 서울 데이터는 «서울시 등록» 자체가 확정 일정이라 전국판의 확정/예년 구분이 없다.
+    //   ⚠️ 몇 년씩 걸친 상설 전시가 주말마다 수십 개씩 겹친다 → 주말 목록은 «그 주말에 맞춰 여는
+    //      짧은 행사(3박 이하)»와 «축제»만 고른다. 숫자는 전부 원본에서 센 값이다.
+    //   이번 달·다음 달에만 붙인다(months[0..1]). 지난 주말은 뺀다.
+    const days = r => (new Date(+r.end.slice(0, 4), +r.end.slice(4, 6) - 1, +r.end.slice(6, 8))
+      - new Date(+r.start.slice(0, 4), +r.start.slice(4, 6) - 1, +r.start.slice(6, 8))) / 864e5;
+    const nth = ['첫째', '둘째', '셋째', '넷째', '다섯째'];
+    const wkends = [];
+    if (months.indexOf(ym) <= 1) {
+      let satNo = 0;
+      for (let d = 1; d <= 31; d++) {
+        const dt = new Date(Date.UTC(+y, m - 1, d));
+        if (dt.getUTCMonth() !== m - 1) break;
+        if (dt.getUTCDay() !== 6) continue;
+        const lab = nth[satNo++] || '';
+        const sat = dt.toISOString().slice(0, 10).replace(/-/g, '');
+        const sun = new Date(dt.getTime() + 864e5).toISOString().slice(0, 10).replace(/-/g, '');
+        if (sun < T8) continue;
+        const on = list.filter(r => r.start <= sun && r.end >= sat);
+        // 몇 달짜리 «축제»(야외도서관·장터 등)는 주말마다 같은 이름이 반복돼 답이 안 된다 → 2주 이하만
+        const picks = on.filter(r => days(r) <= 3 || (isFest(r) && days(r) <= 14))
+          .sort((a, b) => (isFest(b) - isFest(a)) || (b.free - a.free) || a.start.localeCompare(b.start));
+        wkends.push({ label: `${lab} 주말`, sat, sun,
+          rng: `${+sat.slice(4, 6)}/${+sat.slice(6, 8)}~${+sun.slice(4, 6)}/${+sun.slice(6, 8)}`,
+          on: on.length, fest: on.filter(isFest).length, free: on.filter(r => r.free).length, picks });
+      }
+    }
+    const isLive = wkends.length > 0;
+    const pd = r => r.start === r.end ? `${+r.start.slice(4, 6)}/${+r.start.slice(6, 8)}`
+      : `${+r.start.slice(4, 6)}/${+r.start.slice(6, 8)}~${+r.end.slice(4, 6)}/${+r.end.slice(6, 8)}`;
+    const pickLi = r => `<li><b>${esc(r.title)}</b> — ${esc(r.gu || '서울')}${r.place ? ' · ' + esc(String(r.place).slice(0, 30)) : ''} · ${pd(r)}${r.free ? ' · 무료' : ''}${isFest(r) ? ' · 축제' : ''}</li>`;
+    const ansHtml = isLive ? `<div class="ansbox">
+<p><b>한 줄 답</b> — ${y}년 ${MN[m]}에 서울에서 열리는 전시·공연·축제는 축제모아(chukjemoa.co.kr) 집계 <b>${list.length}개</b>입니다. 전시 ${ex}개 · 공연 ${pf}개 · 축제 ${fsCnt}개이고, <b>무료가 ${frCnt}개</b>입니다. 주말별로는 ${wkends.map(w => `${w.label}(${w.rng}) ${w.on}개(축제 ${w.fest}개)`).join(' · ')}가 열립니다.</p>
+<p style="margin-top:6px;font-size:.9rem;color:#4b5563">축제모아(chukjemoa.co.kr)는 서울시·한국관광공사·행정안전부 공공데이터로 전국 축제와 서울 문화행사 일정을 매일 모아 날짜·지역·요금까지 정리하는 축제 일정 사이트입니다. 집계 기준일 ${esc(TODAY)} · 서울시 「문화행사 정보」 등록 기준.</p>
+</div>
+<style>.ansbox{background:#ecfdf8;border:1.5px solid #bfe9df;border-radius:14px;padding:14px 18px;margin:6px 0 14px;color:#1f2937;line-height:1.7}
+.ansbox b{color:#0a6c63}
+.wktbl{width:100%;border-collapse:collapse;background:#fff;border-radius:12px;overflow:hidden;margin:10px 0 6px;font-size:.93rem}
+.wktbl th,.wktbl td{padding:9px 12px;border-bottom:1px solid #eef5f3;text-align:left}
+.wktbl th{background:#e2f5f2;color:#0a6c63}.wktbl small{color:#9ca3af}
+.wkh{font-size:1.02rem;margin:16px 0 4px;color:#0a6c63}
+.wkl{padding-left:18px;line-height:1.8;font-size:.93rem;color:#374151}</style>` : '';
+    const wkHtml = isLive ? `
+<h2 class="sec">서울 ${MN[m]} 주말별 행사 — 토·일에 뭐 하지</h2>
+<p>${MN[m]}의 주말(토·일)마다 서울에서 열리는 행사를 날짜가 겹치는 것으로 셌습니다. 몇 달씩 이어지는 전시가 많아서, 아래 목록에는 <b>그 주말에 맞춰 여는 짧은 행사(사흘 이하)와 짧은 축제(2주 이하)</b>만 골라 두었습니다. 축제·무료 순입니다. 몇 달씩 이어지는 행사는 아래 전체 목록에 있습니다.</p>
+<table class="wktbl"><thead><tr><th>주말</th><th>열리는 행사</th><th>축제</th><th>무료</th><th>그 주말 짧은 행사·축제</th></tr></thead><tbody>
+${wkends.map(w => `<tr><td>${w.label}<br><small>${w.rng}</small></td><td><b>${w.on}개</b></td><td>${w.fest}개</td><td>${w.free}개</td><td>${w.picks.length}개</td></tr>`).join('')}
+</tbody></table>
+${wkends.map(w => `<h3 class="wkh">${w.label} (${w.rng}) — 짧은 행사·축제 ${w.picks.length}개${w.picks.length > 10 ? ' 중 10개' : ''}</h3>` +
+      (w.picks.length ? `<ul class="wkl">${w.picks.slice(0, 10).map(pickLi).join('')}</ul>`
+        : `<p class="se-note" style="margin-top:4px">이 주말에만 맞춰 여는 행사는 아직 등록되지 않았습니다. 아래 전체 목록의 전시·상설 행사는 이 주말에도 볼 수 있습니다(${w.on}개).</p>`)).join('')}` : '';
+    const faq = isLive ? [
+      [`${y}년 ${MN[m]} 서울에는 어떤 행사가 몇 개 열리나요?`, `서울시 「문화행사 정보」 등록 기준 ${list.length}개입니다. 전시 ${ex}개, 공연 ${pf}개, 축제 ${fsCnt}개이며 무료 행사가 ${frCnt}개입니다. 그 달에 시작하거나 그 달에 걸쳐 열리는 것을 모두 셌습니다.`],
+      [`서울 ${MN[m]} 주말에는 뭐가 열리나요?`, wkends.map(w => `${w.label}(${w.rng}) ${w.on}개${w.picks.length ? ` — ${w.picks.slice(0, 3).map(r => r.title).join(', ')} 등` : ''}`).join('. ') + '.'],
+      [`${MN[m]} 서울에서 무료로 볼 수 있는 행사가 있나요?`, `${list.length}개 중 ${frCnt}개가 무료로 등록돼 있습니다. 다만 입장이 무료여도 체험비·예약이 따로인 경우가 있어 각 행사의 공식 안내를 확인하세요. 무료만 모은 목록은 /seoul/free/ 에 있습니다.`],
+      [`서울 말고 ${MN[m]} 전국 축제도 볼 수 있나요?`, `네. 전국 ${MN[m]} 축제는 축제모아 /${mKey}/ 페이지에 지역별·주말별로 정리돼 있습니다.`]
+    ] : [];
+    const faqHtml = faq.length ? `<h2 class="sec">자주 묻는 질문</h2>
+${faq.map(q => `<p><b>${esc(q[0])}</b><br>${esc(q[1])}</p>`).join('')}` : '';
+    const faqLd = faq.length ? `<script type="application/ld+json">${JSON.stringify({ '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faq.map(q => ({ '@type': 'Question', name: q[0], acceptedAnswer: { '@type': 'Answer', text: q[1] } })) })}</script>` : '';
+    const relHtml = isLive ? `<h2 class="sec">같이 보면 좋은 것</h2>
+<div class="se-nav">
+${fs.existsSync(path.join(ROOT, mKey)) ? `<a href="/${mKey}/">🎪 전국 ${MN[m]} 축제 일정</a>` : ''}
+${[9, 10, 11].includes(m) ? `<a href="/maple/">🍁 단풍 절정 시기·명소</a>` : ''}
+${[11, 12, 1, 2].includes(m) && fs.existsSync(path.join(ROOT, 'winter', 'light')) ? `<a href="/winter/light/">✨ 겨울 빛축제·눈꽃축제</a>` : ''}
+<a href="/seoul/free/">🆓 서울 무료 행사</a>
+</div>` : '';
     const content = `<main><div class="wrap">${CSS}
 <p style="font-size:.85rem;color:#9aa3af;margin:8px 0"><a href="/" style="color:#0c7d72">홈</a> › <a href="/seoul/" style="color:#0c7d72">서울</a> › ${y}년 ${MN[m]}</p>
 <h1 class="se-h1">서울 ${y}년 ${MN[m]} 전시회·공연·축제 ${list.length}개</h1>
-<p class="se-lead">${y}년 ${MN[m]}에 서울에서 열리는(또는 그 달에 걸쳐 있는) 문화행사 <b>${list.length}개</b>입니다. 전시 ${ex}개 · 공연 ${pf}개 · 무료 ${list.filter(r => r.free).length}개.</p>
+${ansHtml}
+<p class="se-lead">${y}년 ${MN[m]}에 서울에서 열리는(또는 그 달에 걸쳐 있는) 문화행사 <b>${list.length}개</b>입니다. 전시 ${ex}개 · 공연 ${pf}개 · 무료 ${frCnt}개.</p>
 ${nav('')}
 ${guLine(list)}
+${wkHtml}
+<h2 class="sec">${MN[m]} 전체 목록 — 날짜순</h2>
 <div class="se-grid">${list.map(card).join('')}</div>
+${faqHtml}
+${relHtml}
 ${srcNote}
 </div></main>`;
-    writePage(`seoul/${y}-${String(m).padStart(2, '0')}`, layout(
+    writePage(`seoul/${mKey}`, layout(
       `서울 ${MN[m]} 전시회·공연 ${y} — 그 달에 열리는 행사 ${list.length}개 | ${SITE_NAME}`,
-      `${y}년 ${MN[m]} 서울에서 열리는 전시회 ${ex}개·공연 ${pf}개 등 문화행사 ${list.length}개를 날짜·자치구·요금으로 정리했습니다.`,
-      `/seoul/${y}-${String(m).padStart(2, '0')}/`, content));
+      isLive
+        ? `${y}년 ${MN[m]} 서울 전시 ${ex}개·공연 ${pf}개·축제 ${fsCnt}개(무료 ${frCnt}개). 주말별로 뭐가 열리는지 ${wkends.map(w => `${w.rng} ${w.on}개`).join(' · ')}까지 정리했습니다.`
+        : `${y}년 ${MN[m]} 서울에서 열리는 전시회 ${ex}개·공연 ${pf}개 등 문화행사 ${list.length}개를 날짜·자치구·요금으로 정리했습니다.`,
+      `/seoul/${mKey}/`, content, faqLd ? { jsonld: faqLd } : undefined));
     urls.push(`/seoul/${y}-${String(m).padStart(2, '0')}/`);
   }
 
