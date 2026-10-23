@@ -100,7 +100,7 @@
 _고아는 홈에서 BFS로 잰다. 「끝나서 링크를 뗀」 지난달 달력·종료 축제 9장은 정상이라 제외했다._
 | 항목 | 건수 |
 |---|---|
-| 끊긴 내부 링크 | **7** |
+| 끊긴 내부 링크 | 0 |
 | 홈에서 도달 불가(고아) | 0 |
 | 렌더 사고 | 0 |
 | 사이트맵 유령 URL | 0 |
@@ -108,20 +108,13 @@ _고아는 홈에서 BFS로 잰다. 「끝나서 링크를 뗀」 지난달 달�
 | 인라인 JS 문법오류 | 0 |
 | 개발용 주석 유출 | 0 |
 
-🔴 끊긴 내부 링크 7건
-- /blog/autumn-flower-peak-timing-data/ → /festival/jeongeup-gujeolcho-kkotchukje/
-- /blog/chukjemoa-weekly-vol5/ → /jangteo/jeongseon/
-- /festival/je12hoe-haneulsupgil-geotgichukje/ → /jangteo/jeongseon/
-- /festival/jeongseon-gukgayusanyahaeng/ → /jangteo/jeongseon/
-- /festival/jeongseonarirangje/ → /jangteo/jeongseon/
-- /festival/jeongseonmemiljeonbyeongchukje/ → /jangteo/jeongseon/
-- /festival/tangwangmunhwachukje/ → /jangteo/jeongseon/
+✅ 산출물 이상 없음
 
 ## 7. 색인 대상 본문 두께 · 판박이 정도
 | 섹션 | 개수 | 최소 | 중앙 | 최대 | 2,000자 미만 | 평균 유사도 |
 |---|---|---|---|---|---|---|
 | 걷기길 | 38 | 2584 | 9373 | 48584 | 0 | 0.042 |
-| 블로그 | 57 | 2624 | 5420 | 7467 | 0 | 0.040 |
+| 블로그 | 57 | 2624 | 5420 | 7467 | 0 | 0.039 |
 | 오일장 시도 | 120 | 2740 | 4223 | 31254 | 0 | 0.124 |
 | 외국어 | 258 | 1195 | 6566 | 40972 | **3** | 0.063 |
 | 월별 | 11 | 4303 | 8761 | 35222 | 0 | 0.076 |
@@ -153,9 +146,8 @@ _고아는 홈에서 BFS로 잰다. 「끝나서 링크를 뗀」 지난달 달�
 
 ---
 ## 요약
-- 🔴 즉시 고칠 것: **2건**
+- 🔴 즉시 고칠 것: **1건**
   - 임박 재확인 후보 중 D-3 이내 긴급 1건 — 취소·연기·변경 여부 재검색 필요
-  - 끊긴 내부 링크 7건
 - 🟠 보강할 것: **10건**
   - 21일 넘게 갱신 안 된 파일 12개
   - 오일장 — 빈 시도 3개(서울,광주,세종)
