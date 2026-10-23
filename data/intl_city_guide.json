@@ -96,5 +96,45 @@
         ["烏竹軒 観覧案内", "https://ontrip.kr/travel-guides/details/129784"]
       ]
     }
+  },
+  "tw": {
+    "_label": {
+      "access": "從機場・車站怎麼去",
+      "local": "在當地用得到的",
+      "src": "資料來源（2026年10月確認）",
+      "checked": "以下是 2026 年 10 月的資訊。車資、時刻可能變動，出發前請到官方網站再確認一次。"
+    },
+    "seoul": {
+      "access": [
+        "從仁川機場進首爾搭機場鐵路 AREX。直達車從第一航廈到首爾站中途不停，約 43 分鐘；普通車約 53 分鐘，但會停金浦機場・弘大入口（홍대입구）・孔德（공덕），住弘大一帶的話，搭普通車反而少轉一次車。",
+        "金浦機場站有地鐵 5 號線、9 號線和 AREX 交會。往光化門・東大門方向搭 5 號線，往汝矣島・江南（新論峴一帶）方向搭 9 號線，都不用轉車。"
+      ],
+      "local": [
+        "首爾市的「氣候同行卡（기후동행카드）」有 1・2・3・5・7 日的短期券，期間內首爾市內地鐵、公車不限次數搭乘，7 日券是 20,000 韓元。可用範圍是首爾市內，再加上在仁川機場下車；金浦市、高陽市等首爾以外的區間不能用。原本的 30 日券已經結束（2026 年 9 月起停止儲值），短期券照常使用。",
+        "首爾市內公車預計 2027 年 1 月起，可以直接用海外發行的 Visa・Mastercard・銀聯・JCB 卡感應上車（2026 年 9 月公布，目前還沒開始）。在那之前請準備 T-money 等交通卡。"
+      ],
+      "src": [
+        [
+          "AREX（Wikipedia）",
+          "https://en.wikipedia.org/wiki/AREX"
+        ],
+        [
+          "金浦機場站（Wikipedia）",
+          "https://en.wikipedia.org/wiki/Gimpo_International_Airport_station"
+        ],
+        [
+          "首爾市 氣候同行卡 FAQ（30日券結束・7日券價格）",
+          "https://news.seoul.go.kr/traffic/public/climatecard-faq/faq-stop"
+        ],
+        [
+          "首爾市 Media Hub（短期券可用範圍）",
+          "https://mediahub.seoul.go.kr/archives/2019060"
+        ],
+        [
+          "Newspim 2026-09-22（海外卡感應上車）",
+          "https://www.newspim.com/news/view/20260922001118"
+        ]
+      ]
+    }
   }
 }
