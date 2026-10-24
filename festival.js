@@ -46,7 +46,21 @@ const INTRO = (() => {
   try { return JSON.parse(fs.readFileSync(path.join(__dirname, 'data', 'fest_intro.json'), 'utf8')); }
   catch (e) { return {}; }
 })();
-const introOf = f => INTRO[String(f && f.id)] || {};
+// 🆕 2026-10-24: TourAPI 에 프로그램이 비어 있는 진행·예정 축제는 주최 측 공식 발표·보도로 확인한
+//    2026 회차 프로그램을 손으로 채운다(slug 키). 각 항목에 src(근거 URL)가 있어야 한다 — 없으면 안 쓴다.
+const INTRO_MANUAL = (() => {
+  try { return JSON.parse(fs.readFileSync(path.join(__dirname, 'data', 'fest_intro_manual.json'), 'utf8')); }
+  catch (e) { return {}; }
+})();
+const introOf = f => {
+  const base = INTRO[String(f && f.id)] || {};
+  const m = f && INTRO_MANUAL[f._slug];
+  if (!m || !m.src || !m.src.length) return base;
+  return Object.assign({}, base, {
+    program: base.program || m.program, fee: base.fee || m.fee, playtime: base.playtime || m.playtime,
+    _manualSrc: base.program ? null : m.src,
+  });
+};
 
 function load(f) { try { return JSON.parse(fs.readFileSync(path.join(__dirname, 'data', f), 'utf8')); } catch (e) { return []; } }
 const num = v => { const n = Number(v); return isFinite(n) ? n : 0; };
@@ -430,7 +444,9 @@ ${(() => {
         .filter(o => o.t.length > 1);
       if (!lines.length) return '';
       return `<h2 class="sec">${esc(f.title)}에서 하는 것</h2>
-<p class="note" style="margin:-2px 0 10px">한국관광공사 TourAPI에 등록된 <b>공식 행사 프로그램</b>입니다. ${ended ? '지난 회차 기준이며, ' : ''}주최 측 사정으로 바뀔 수 있으니 방문 전 확인하세요.</p>
+<p class="note" style="margin:-2px 0 10px">${q._manualSrc
+  ? `주최 측 공식 발표·보도로 확인한 <b>2026년 프로그램</b>입니다(출처: ${q._manualSrc.slice(0, 2).map((u, i) => `<a href="${esc(u)}" target="_blank" rel="noopener nofollow">${i + 1}</a>`).join(' · ')}). `
+  : `한국관광공사 TourAPI에 등록된 <b>공식 행사 프로그램</b>입니다. `}${ended ? '지난 회차 기준이며, ' : ''}주최 측 사정으로 바뀔 수 있으니 방문 전 확인하세요.</p>
 <ul class="fprog">${lines.slice(0, 24).map(o => `<li${o.sub ? ' class="sub"' : ''}>${esc(o.t)}</li>`).join('')}</ul>`;
     })()}
 
@@ -723,8 +739,8 @@ ${mapScript('ko')}
 </div></main>`;
 
     writePage('festival', layout(
-      `축제 상세 ${index.length}곳 — 일정·근처 맛집·걷기길·하루 코스 | ${SITE_NAME}`,
-      `전국 축제 ${index.length}곳의 상세 페이지. 일정과 장소는 물론 그 동네 붐빔 정도, 근처 맛집·카페 영업시간, 걷기길 거리, 축제 중심 하루 코스까지 한 페이지에 정리했습니다.`,
+      `진행·예정 축제 ${index.length - endedN}곳 — 일정·근처 맛집·걷기길·하루 코스 | ${SITE_NAME}`,
+      `전국 진행·예정 축제 ${index.length - endedN}곳의 상세 페이지. 일정과 장소는 물론 그 동네 붐빔 정도, 근처 맛집·카페 영업시간, 걷기길 거리, 축제 중심 하루 코스까지 한 페이지에 정리했습니다.`,
       '/festival/', hub, {}));
     urls.push('/festival/');
   }

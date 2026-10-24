@@ -133,11 +133,17 @@ function indexPage(lang, rows, TODAY8) {
     : `${MN[+String(s).slice(4, 6)].slice(0, 3)} ${+String(s).slice(6, 8)}`;
   const moLabel = m => lang === 'ja' ? `${+m}月` : MN[+m];
 
-  const rowHtml = f => `<a class="ixrow" href="${base}${esc(f._slug)}/">
+  // 🐞 2026-10-24: 끝난 회차 상세는 noindex — 허브가 거기로 링크하면 심사자가 «끝난 페이지»로 떨어진다
+  //    (애드센스 «가치 없는 콘텐츠» 반려 분석). 끝난 것은 링크 없이 «지난 일정 기록»으로만 남긴다.
+  const rowHtml = f => {
+    const past = String(f.end || '') < TODAY8;
+    const tag = past ? 'div' : 'a';
+    return `<${tag} class="ixrow"${past ? ' style="opacity:.75"' : ` href="${base}${esc(f._slug)}/"`}>
 <span class="dt">${fmt(f.start)}–${fmt(f.end)}</span>
 <span><span class="nm">${esc(f.title)}${
   String(f.start) <= TODAY8 && String(f.end) >= TODAY8 ? `<span class="ixnow">${esc(t.on)}</span>` : ''
-}</span><span class="rg">${esc(f.region || '')}</span></span></a>`;
+}</span><span class="rg">${esc(f.region || '')}</span></span></${tag}>`;
+  };
 
   const group = list => {
     const by = {};
