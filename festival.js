@@ -244,6 +244,8 @@ function build(ctx) {
   //    애드센스 「가치가 별로 없는 콘텐츠」의 유력 원인. → 끝난 축제는 색인에서 빼고(noindex),
   //    페이지 상단에서 «지금 갈 수 있는 곳»으로 곧장 보낸다. 링크·헤더검색은 살린다(follow).
   const TD = TODAY.replace(/-/g, '');
+  // 🐞 2026-10-24: «같이 볼 축제» 칩이 끝난 축제(noindex)로 링크하던 것 — 진행·예정만 추천한다(애드센스 반려 분석).
+  const liveCand = cand.filter(o => String(o.end) >= TD);
   const aliveBySido = {};
   cand.filter(f => String(f.end) >= TD)
     .sort((a, b) => String(a.start).localeCompare(String(b.start)))
@@ -402,7 +404,7 @@ ${/* 🔴 2026-09-04 신설 — 축제 상세는 **세션당 1.00~1.10장**, 사
       → 사람이 「이 축제가 뭔지」를 읽기 «직전», 위쪽에 같은 동선을 짧게 하나 더 놓는다.
       ⚠️ 아래 83% 블록은 그대로 둔다 — 끝까지 읽은 사람에게도 출구가 있어야 한다. */''}
 ${(() => {
-      const same = cand.filter(o => o !== f && o.sido === f.sido).slice(0, 3);
+      const same = liveCand.filter(o => o !== f && o.sido === f.sido).slice(0, 3);
       if (!same.length) return '';
       return `<div class="fnext">
 <div class="fnext-t">${esc(f.sido)}에서 같이 볼 축제</div>
@@ -501,8 +503,8 @@ ${mapBlock({ x: f.x, y: f.y, title: f.title, lang: 'ko' })}
 
 <h2 class="sec">같이 보면 좋은 축제</h2>
 <div class="frel">
-${cand.filter(o => o !== f && o.sido === f.sido).slice(0, 4).map(o => `<a href="/festival/${o._slug}/">${esc(o.title)}</a>`).join('')}
-${cand.filter(o => o !== f && o.sido !== f.sido && String(o.start).slice(4, 6) === String(f.start).slice(4, 6)).slice(0, 3).map(o => `<a href="/festival/${o._slug}/">${esc(o.title)}</a>`).join('')}
+${liveCand.filter(o => o !== f && o.sido === f.sido).slice(0, 4).map(o => `<a href="/festival/${o._slug}/">${esc(o.title)}</a>`).join('')}
+${liveCand.filter(o => o !== f && o.sido !== f.sido && String(o.start).slice(4, 6) === String(f.start).slice(4, 6)).slice(0, 3).map(o => `<a href="/festival/${o._slug}/">${esc(o.title)}</a>`).join('')}
 </div>
 ${/* 🏙 2026-09-07 신설 — 축제 → 도시. 상품이 아니라 «정보» 링크다.
       축제 상세는 세션당 1.0~1.1장짜리 막다른 길인데, 그중 45%는 우리가 도시 페이지를 가진 곳이다.
@@ -675,13 +677,16 @@ ${mapScript('ko')}
 <div class="date">${fmtDate(String(r.start))} ~ ${fmtDate(String(r.end)).slice(5)}</div>
 <div class="loc">📍 ${esc(r.sido)}${r.sigungu ? ' ' + esc(r.sigungu) : ''}</div></div></a>`;
 
+    // 🐞 2026-10-24: 허브가 끝난 축제(noindex) 564장으로 링크를 걸어, 사이트를 둘러보면 «이미 끝났습니다»에
+    //    계속 떨어졌다(애드센스 «가치 없는 콘텐츠» 반려 분석). 시·도 목록은 진행·예정만 링크하고, 끝난 것은 개수만.
     const bySido = {};
-    withState.forEach(r => (bySido[r.sido] = bySido[r.sido] || []).push(r));
+    withState.filter(r => !r.ended).forEach(r => (bySido[r.sido] = bySido[r.sido] || []).push(r));
+    const endedN = withState.filter(r => r.ended).length;
     const sidoOrder = Object.keys(bySido).sort((a, b) => bySido[b].length - bySido[a].length);
     const sidoBlock = sidoOrder.map(s => `<details><summary><b>${esc(s)}</b> <span>${bySido[s].length}곳</span></summary>
-<ul class="flist">${bySido[s].sort((a, b) => (a.ended ? 1 : 0) - (b.ended ? 1 : 0)
-      || HOT(b.title) - HOT(a.title) || String(a.start).localeCompare(String(b.start)))
-      .map(r => `<li><a href="/festival/${r.slug}/">${esc(r.title)}</a> <span class="note">${esc(r.sigungu || '')} · ${fmtDate(String(r.start)).slice(5)}${r.ended ? ' (종료)' : ''}</span></li>`).join('')}</ul></details>`).join('');
+<ul class="flist">${bySido[s].sort((a, b) => HOT(b.title) - HOT(a.title) || String(a.start).localeCompare(String(b.start)))
+      .map(r => `<li><a href="/festival/${r.slug}/">${esc(r.title)}</a> <span class="note">${esc(r.sigungu || '')} · ${fmtDate(String(r.start)).slice(5)}</span></li>`).join('')}</ul></details>`).join('')
+      + (endedN ? `<p class="note" style="margin-top:10px">올해 이미 끝난 축제 ${endedN}곳은 목록에서 뺐습니다. 내년 일정이 나오면 다시 올립니다.</p>` : '');
 
     const mon = {};
     withState.forEach(r => { const m = +String(r.start).slice(4, 6); (mon[m] = mon[m] || []).push(r); });
@@ -689,8 +694,8 @@ ${mapScript('ko')}
       .map(m => `<b>${m}월</b> ${mon[m].length}곳`).join(' · ');
 
     const hub = `<main><div class="wrap">
-<h1>축제 상세 페이지 ${index.length}곳</h1>
-<p class="lead">일정만 적어 놓은 목록이 아닙니다. ${index.length}곳 각각에 <b>그 동네가 얼마나 붐비는지</b>, 걸어서 갈 수 있는 <b>맛집과 카페의 영업시간·휴무일</b>,
+<h1>진행·예정 축제 상세 페이지 ${index.length - endedN}곳</h1>
+<p class="lead">일정만 적어 놓은 목록이 아닙니다. ${index.length - endedN}곳 각각에 <b>그 동네가 얼마나 붐비는지</b>, 걸어서 갈 수 있는 <b>맛집과 카페의 영업시간·휴무일</b>,
 근처 <b>걷기길의 거리와 소요시간</b>, 그리고 <b>그 축제를 중심으로 짠 하루 코스</b>까지 한 페이지에 넣었습니다.
 저희가 모은 축제 ${(fes || []).length.toLocaleString()}건 중 개요가 ${MIN_OV}자 넘고, 사진이 있고, 근처에 볼거리가 ${MIN_NEAR}곳 이상인 것만 골랐습니다.
 나머지는 페이지를 만들어도 읽을 게 없어서 만들지 않았습니다.</p>

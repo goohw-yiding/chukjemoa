@@ -3008,6 +3008,8 @@ MONTHS.forEach(mm => {
   // 개별 축제 페이지가 있는 것 = 이 달의 '깊게 볼 축제'
   const deep = FEST_PAGES.concat(FEST_KEPT)
     .filter(f => +String(f.start).slice(4, 6) === M || +String(f.end).slice(4, 6) === M)
+    // 🐞 2026-10-24: 끝난 축제 상세는 noindex — 여기서 링크하면 심사자가 «이미 끝났습니다»로 떨어진다(애드센스 반려 분석).
+    .filter(f => String(f.end) >= TODAY.replace(/-/g, ''))
     .sort((a, b) => String(a.start).localeCompare(String(b.start)));
   // ---------- 「예년 이맘때」 (2026-08-31) ----------
   // 12~4월은 TourAPI에도 자료가 없다 — 지자체가 개최 2~3개월 전에야 등록하기 때문이다.
@@ -3793,7 +3795,9 @@ const JANGTEO_ENDDAY_URLS = [];
   const ymd8 = s => `${String(s).slice(0, 4)}.${+String(s).slice(4, 6)}.${+String(s).slice(6, 8)}`;
   const rangeOf8 = f => f.start === f.end ? ymd8(f.start) : `${ymd8(f.start)} ~ ${ymd8(f.end)}`;
   const NEAR_FEST_KM = 30, NEAR_FEST_N = 3;
-  const fesWithCoord = apiFests.filter(f => +f.x && +f.y && String(f.end) >= TODAY);
+  // 🐞 2026-10-24: api end 는 '20260621'(8자리), TODAY 는 '2026-10-24' — 문자열 비교가 늘 참이라
+  //    끝난 축제(noindex)가 장날 카드 «이 근처 축제»에 계속 걸렸다(애드센스 반려 분석). 하이픈을 빼고 비교.
+  const fesWithCoord = apiFests.filter(f => +f.x && +f.y && String(f.end) >= TODAY.replace(/-/g, ''));
   const nearFestOf = m => {
     if (!(+m.x && +m.y)) return [];
     return fesWithCoord
