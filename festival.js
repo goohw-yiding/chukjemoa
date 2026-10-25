@@ -32,6 +32,19 @@ const { inKorea } = require('./geo.js');
 const { prose, proseLead } = require('./prose.js');
 const { mapBlock, mapScript } = require('./nmap.js');   // 좌표 기반 지도 — 주소보다 좌표가 정확하다
 const WX = require('./weather.js');                     // 축제 당일 날씨(예보 창 안에 있는 축제만)
+const FIELD = require('./field-notes.js');              // 🚶 2026-10-24 직접 다녀온 기록
+// 🧭 2026-10-24 「한눈에 판단」 재료 — 터미널→축제장 실측(대중교통·도로), 교차확인 기록.
+//    «깊이가 없다»(재방문 9%, 축제 상세 58초)의 처방: 정보 나열이 아니라 «가볼 만한가»를 데이터로 말한다.
+const TRANSIT = (() => { try { return JSON.parse(fs.readFileSync(path.join(__dirname, 'data', 'transit_access.json'), 'utf8')); } catch (e) { return {}; } })();
+const nmKey = s => String(s || '').replace(/\s|\(.*?\)|[「」『』"'“”]/g, '').replace(/^20\d\d/, '').replace(/^제\d+회/, '').replace(/20\d\d$/, '');
+const CONFIRM = (() => {
+  const m = new Map();
+  try {
+    const c = JSON.parse(fs.readFileSync(path.join(__dirname, 'data', 'festival_confirm_log.json'), 'utf8'));
+    (Array.isArray(c) ? c : Object.values(c)).forEach(e => { if (e && e.name && (e.sources || []).length) { const k = nmKey(e.name); if (!m.has(k) || String(e.at) > String(m.get(k).at)) m.set(k, e); } });
+  } catch (e) { }
+  return m;
+})();
 
 const MIN_OV = 300, MIN_NEAR = 3, FROM_YEAR = '2026';
 
@@ -137,6 +150,12 @@ const CSS = `
 .fnext-row{display:flex;flex-wrap:wrap;gap:7px}
 .fnext-row a{background:#fff;border:1.5px solid #cfe9e3;color:#0a6c63;font-weight:800;font-size:.9rem;padding:8px 14px;border-radius:999px;text-decoration:none}
 .fnext-row a.hot{background:#0f9d8f;border-color:#0f9d8f;color:#fff}
+.fverdict{background:#f2fbfa;border:1.5px solid #cdeae5;border-radius:16px;padding:16px 18px;margin:16px 0}
+.fverdict h2{font-size:1.08rem;font-weight:900;color:#0a6c63;margin:0 0 10px}
+.fverdict dl{display:grid;grid-template-columns:96px 1fr;gap:7px 10px;margin:0;font-size:.95rem;line-height:1.65}
+.fverdict dt{font-weight:800;color:#0a6c63}.fverdict dd{margin:0;color:#374151}
+.fverdict-c{font-size:.86rem;color:#4b5563;margin:10px 0 0}.fverdict-c a{color:#0c7d72;font-weight:700}
+@media(max-width:420px){.fverdict dl{grid-template-columns:1fr}.fverdict dd{margin-bottom:4px}}
 .forg{background:#fafaf9;border:1px dashed #d6d3d1;border-radius:12px;padding:13px 16px;margin:22px 0 6px}
 .forg b{display:block;font-size:.92rem;font-weight:800;color:#57534e;margin-bottom:5px}
 .forg p{font-size:.87rem;color:#78716c;line-height:1.75;margin:0 0 8px}
@@ -323,6 +342,43 @@ function build(ctx) {
       busyP += `<p class="note" style="margin-top:6px">이 숫자는 축제장 자체가 아니라 <b>${esc(sg)} 전체</b>의 방문자 기준입니다. 축제장 앞 혼잡과는 다를 수 있습니다.</p>`;
     }
 
+    // ── 🧭 한눈에 판단 (2026-10-24) — 진행·예정만. 우리 데이터에 «있는 것만» 문장으로. 지어내지 않는다.
+    let verdictHtml = '';
+    if (!ended) {
+      const q0 = introOf(f);
+      const lines = [];
+      const d8 = s => new Date(+String(s).slice(0, 4), +String(s).slice(4, 6) - 1, +String(s).slice(6, 8));
+      const s0 = d8(f.start), e0 = d8(f.end), nDays = Math.round((e0 - s0) / 86400e3) + 1;
+      const wk = [];
+      for (let t = new Date(s0); t <= e0 && wk.length < 4; t.setDate(t.getDate() + 1)) if (t.getDay() === 0 || t.getDay() === 6) wk.push(`${'일월화수목금토'[t.getDay()]} ${t.getMonth() + 1}/${t.getDate()}`);
+      lines.push(['📅 언제', nDays === 1 ? `하루만 열립니다(${dayName(String(f.start))}요일).` : nDays > 40 ? `${nDays}일 동안 이어지는 긴 행사라 날짜에 쫓길 필요가 없습니다.`
+        : `${nDays}일간 열립니다. ${wk.length ? `주말은 ${wk.join(' · ')}${wk.length >= 4 ? ' 등' : ''} — 붐비는 게 싫으면 평일이 낫습니다.` : '주말 없이 평일에만 열립니다.'}`]);
+      if (idx) lines.push(['👥 붐빔', idx >= 1.15 ? `이 지역이 평소의 ${idx.toFixed(2)}배 붐비는 시기입니다. 주말이라면 오전 일찍 도착하세요.` : `평소의 ${idx.toFixed(2)}배로 이 지역치고 한산한 시기입니다.`]);
+      if (q0.fee) lines.push(['🎟 요금', /무료/.test(q0.fee) && q0.fee.length < 20 ? '무료입니다.' : String(q0.fee).slice(0, 90)]);
+      const ta = TRANSIT['terminal:' + f.id];
+      if (ta && ta.transit && ta.transit.min) {
+        const tr = ta.transit, rd = ta.road || {};
+        const easy = tr.min <= Math.max(45, (rd.min || 0) * 1.8) && (tr.walk || 0) <= 1200;
+        lines.push(['🚌 가는 길', `${ta.from}에서 대중교통 약 ${tr.min}분${tr.fare ? `(${(+tr.fare).toLocaleString()}원)` : ''}${tr.walk ? `, 걷는 거리 ${(+tr.walk).toLocaleString()}m` : ''}${rd.min ? ` · 차로 약 ${rd.min}분` : ''}. ${easy ? '대중교통으로도 무난합니다.' : '차로 가는 편이 훨씬 편합니다.'}`]);
+      }
+      const txt = (q0.program || '') + ' ' + (f.ov || '');
+      const who = [];
+      if (/어린이|키즈|아이와|가족|체험/.test(txt)) who.push('아이와 함께 가는 가족');
+      if (/먹거리|시식|맛보|음식|수산물|한우|장터|푸드/.test(txt)) who.push('먹으러 가는 분');
+      if (/불꽃|드론|야간|라이트|빛축제|조명/.test(txt)) who.push('밤 풍경을 보러 가는 분');
+      if (/공연|콘서트|가수|축하무대|버스킹/.test(txt) && who.length < 2) who.push('공연을 좋아하는 분');
+      if (/전시|비엔날레|미술|사진전/.test(txt) && who.length < 2) who.push('전시를 즐기는 분');
+      if (who.length) lines.push(['🙋 이런 분께', who.slice(0, 2).join(', ') + '께 맞습니다.']);
+      const cf = CONFIRM.get(nmKey(f.title));
+      const confirmLine = cf
+        ? `✅ 일정은 ${String(cf.at).slice(5).replace('-', '/')}에 주최 측 발표·보도와 교차 확인했습니다(${cf.sources.slice(0, 2).map((u, i) => `<a href="${esc(u)}" target="_blank" rel="noopener nofollow">출처${i + 1}</a>`).join(' · ')}).`
+        : `📋 일정은 한국관광공사에 등록된 공식 정보로, 매일 아침 다시 받아 갱신합니다.`;
+      if (lines.length >= 2) verdictHtml = `<div class="fverdict"><h2>한눈에 판단 — 가볼 만할까?</h2>
+<dl>${lines.map(([k, v]) => `<dt>${k}</dt><dd>${esc(v)}</dd>`).join('')}</dl>
+<p class="fverdict-c">${confirmLine}</p></div>`;
+      else verdictHtml = `<p class="fverdict-c" style="margin:10px 0">${confirmLine}</p>`;
+    }
+
     // ── 끝난 축제 안내 (2026-08-18)
     // 「종료」 배지 하나만 달아 두고 본문 전체를 현재형으로 두면, 못 가는 행사를 권하는 페이지가 된다.
     // 기록으로서의 값은 남기되 «지금 갈 수 있는 곳»을 상단에서 바로 준다.
@@ -408,6 +464,8 @@ ${f.tel ? `<dt>문의</dt><dd>${esc(f.tel)}</dd>` : ''}
 </div>
 
 ${endedBox}
+${verdictHtml}
+${FIELD.block('festival', f._slug, `${f.title}, 직접 가 보니`)}
 
 ${wx.html}
 

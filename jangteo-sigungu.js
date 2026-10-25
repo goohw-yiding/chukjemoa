@@ -21,6 +21,7 @@
 // ⚠️ build.js 의 「유령 페이지 삭제」가 /jangteo/ 하위에서 등록되지 않은 폴더를 통째로 지운다.
 //    이 모듈이 돌려주는 URL 목록을 그 keep 집합에 반드시 넣어야 한다.
 const fs = require('fs'), path = require('path');
+const FIELD = require('./field-notes');   // 🚶 2026-10-24 직접 다녀온 기록(data/field_notes.json)
 
 const APPROVED_FULL = new Set(['양양군', '고령군', '횡성군', '오산시', '포천시', '성주군', '강화군']);
 const MIN_BODY = 2400;   // 렌더된 본문 최소 길이(시·도 최소가 3,076자, 시·군은 그보다 작게 잡되 얇지 않게)
@@ -236,6 +237,7 @@ ${soon ? `<div class="jsg-next">
 <div class="jsg-next-d">${soon.n.d.getMonth() + 1}월 ${soon.n.d.getDate()}일 (${DOW[soon.n.d.getDay()]}) · <b>${gapWord(soon.n.gap)}</b></div>
 <div class="jsg-next-m">${esc(soon.m.name)}${soonChip}</div>
 </div>` : ''}
+${FIELD.block('jangteo', slug, `${city} 장날, 직접 가 보니`)}
 
 ${/* ⚠️ 제목과 내용이 «같은 말»이어야 한다 — 두 달치로 만들었다가 석 달치로 늘리고
       제목을 안 고쳐서 「9월·10월」이라 써 놓고 11월까지 싣고 있었다(2026-09-09 라이브에서 잡음). */''}
