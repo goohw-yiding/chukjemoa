@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-25",
+ "generatedAt": "2026-10-26",
  "rule": "근거 점수 2 이상 · 언어당 최대 25",
  "langs": {
   "en": [
@@ -266,9 +266,7 @@
     "score": 4,
     "commerce": false,
     "status": "confirmed",
-    "ids": [
-     "1385298"
-    ],
+    "ids": [],
     "reasons": [
      {
       "claim": "트레이지 영문 부산불꽃축제 좌석 티켓",
@@ -553,9 +551,7 @@
     "score": 10,
     "commerce": false,
     "status": "confirmed",
-    "ids": [
-     "1016771"
-    ],
+    "ids": [],
     "reasons": [
      {
       "claim": "한큐교통사 부산불꽃축제 관람 투어",
@@ -1735,9 +1731,7 @@
     "score": 8,
     "commerce": false,
     "status": "confirmed",
-    "ids": [
-     "1113727"
-    ],
+    "ids": [],
     "reasons": [
      {
       "claim": "부산시: 대만 여행사 대량 사전 예약",
