@@ -338,7 +338,9 @@ function build(ctx) {
     if (idx) {
       busyP = idx >= 1.15
         ? `<p>축제가 열리는 <b>${esc(f.sido)} ${esc(sg)}</b>${eunNeun(sg)} ${rm}월에 평소보다 <b>${idx.toFixed(2)}배</b> 붐빕니다. 한국관광공사 「한국관광 데이터랩」의 시·군·구 방문자 수를 그 지역의 평소 하루 평균과 비교한 값입니다. 숙소는 미리 잡고, 주차장은 오전에 차는 편이라고 보시면 됩니다.</p>`
-        : `<p>축제가 열리는 <b>${esc(f.sido)} ${esc(sg)}</b>${eunNeun(sg)} ${rm}월 기준 평소의 <b>${idx.toFixed(2)}배</b>로, 이 지역치고는 <b>한산한 편</b>입니다. 사람에 치이지 않고 축제를 보고 싶다면 유리한 조건입니다.</p>`;
+        : idx < 1
+        ? `<p>축제가 열리는 <b>${esc(f.sido)} ${esc(sg)}</b>${eunNeun(sg)} ${rm}월 기준 평소의 <b>${idx.toFixed(2)}배</b>로, 이 지역치고는 <b>한산한 편</b>입니다. 사람에 치이지 않고 축제를 보고 싶다면 유리한 조건입니다.</p>`
+        : `<p>축제가 열리는 <b>${esc(f.sido)} ${esc(sg)}</b>${eunNeun(sg)} ${rm}월 기준 평소의 <b>${idx.toFixed(2)}배</b>로, <b>평소와 비슷한 수준</b>입니다. 축제 날 축제장 주변만 붐비고 지역 전체가 북적이는 시기는 아닙니다.</p>`;
       busyP += `<p class="note" style="margin-top:6px">이 숫자는 축제장 자체가 아니라 <b>${esc(sg)} 전체</b>의 방문자 기준입니다. 축제장 앞 혼잡과는 다를 수 있습니다.</p>`;
     }
 
@@ -353,7 +355,7 @@ function build(ctx) {
       for (let t = new Date(s0); t <= e0 && wk.length < 4; t.setDate(t.getDate() + 1)) if (t.getDay() === 0 || t.getDay() === 6) wk.push(`${'일월화수목금토'[t.getDay()]} ${t.getMonth() + 1}/${t.getDate()}`);
       lines.push(['📅 언제', nDays === 1 ? `하루만 열립니다(${dayName(String(f.start))}요일).` : nDays > 40 ? `${nDays}일 동안 이어지는 긴 행사라 날짜에 쫓길 필요가 없습니다.`
         : `${nDays}일간 열립니다. ${wk.length ? `주말은 ${wk.join(' · ')}${wk.length >= 4 ? ' 등' : ''} — 붐비는 게 싫으면 평일이 낫습니다.` : '주말 없이 평일에만 열립니다.'}`]);
-      if (idx) lines.push(['👥 붐빔', idx >= 1.15 ? `이 지역이 평소의 ${idx.toFixed(2)}배 붐비는 시기입니다. 주말이라면 오전 일찍 도착하세요.` : `평소의 ${idx.toFixed(2)}배로 이 지역치고 한산한 시기입니다.`]);
+      if (idx) lines.push(['👥 붐빔', idx >= 1.15 ? `이 지역이 평소의 ${idx.toFixed(2)}배 붐비는 시기입니다. 주말이라면 오전 일찍 도착하세요.` : idx < 1 ? `평소의 ${idx.toFixed(2)}배로 이 지역치고 한산한 시기입니다.` : `평소의 ${idx.toFixed(2)}배로 평소와 비슷한 수준입니다. 주말 낮 시간만 피하면 여유 있습니다.`]);
       if (q0.fee) lines.push(['🎟 요금', /무료/.test(q0.fee) && q0.fee.length < 20 ? '무료입니다.' : String(q0.fee).slice(0, 90)]);
       const ta = TRANSIT['terminal:' + f.id];
       if (ta && ta.transit && ta.transit.min) {
