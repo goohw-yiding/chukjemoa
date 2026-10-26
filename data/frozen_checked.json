@@ -228,55 +228,5 @@
   "date": "2026-10-18",
   "result": "ok",
   "src": "https://www.newspim.com/news/view/20260928000885"
- },
- "hwangmaesan-eoksaechukje": {
-  "date": "2026-10-25",
-  "result": "ok",
-  "src": "https://www.gukjenews.com/news/articleView.html?idxno=3695547"
- },
- "daedeokdaecheonghomulgyeolchukje": {
-  "date": "2026-10-25",
-  "result": "ok",
-  "src": "https://www.mcst.go.kr/site/s_culture/festival/festivalView.jsp?pSeq=13551"
- },
- "hanseongbaekjemunhwaje": {
-  "date": "2026-10-25",
-  "result": "ok",
-  "src": "https://news.tf.co.kr/read/life/2374931.htm"
- },
- "ulsan-junggu-gukgayusanyahaeng": {
-  "date": "2026-10-25",
-  "result": "ok",
-  "src": "https://www.mcst.go.kr/site/s_culture/festival/festivalView.jsp?pSeq=13542"
- },
- "gangjinman-chumchuneun-galdaechukje": {
-  "date": "2026-10-25",
-  "result": "ok",
-  "src": "https://www.fnnews.com/news/202610061232572305"
- },
- "jejumachukje": {
-  "date": "2026-10-25",
-  "result": "ok",
-  "src": "https://www.segye.com/newsView/20261020522794"
- },
- "yeongdeungposeonyudowonchukje": {
-  "date": "2026-10-25",
-  "result": "ok",
-  "src": "https://www.mcst.go.kr/site/s_culture/festival/festivalView.jsp?pSeq=13357"
- },
- "busangeullobeorweptunpeseutibeol": {
-  "date": "2026-10-25",
-  "result": "ok",
-  "src": "https://www.mcst.go.kr/site/s_culture/festival/festivalView.jsp?pSeq=12777"
- },
- "seongnamdong-keopipeseutibeol": {
-  "date": "2026-10-25",
-  "result": "ok",
-  "src": "https://www.mcst.go.kr/site/s_culture/festival/festivalView.jsp?pSeq=13366"
- },
- "seongbukgeorimunhwachukje-dadapeseuta": {
-  "date": "2026-10-25",
-  "result": "ok",
-  "src": "https://www.mcst.go.kr/site/s_culture/festival/festivalView.jsp?pSeq=13528"
  }
 }
