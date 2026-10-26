@@ -95,6 +95,12 @@ W "2c) road distance for new nearby pairs (cap 100 calls/day)"
 W "2e) confirm festival dates from TourAPI"
 & node confirm-festivals.js 2>&1 | Select-Object -First 12 | ForEach-Object { W "   $_" }
 
+# 2026-09-28 added, lost the same day (auto refresh commit bba65038 overwrote it), restored 2026-10-26.
+#   site -> naver blog back-link cards (build.js naverBlogInject reads data/naver_posts.json).
+#   naver-posts.js reads rss.blog.naver.com/goohw.xml, fetches ONLY new posts (1.5s apart). Never blocks deploy.
+W "2d) naver blog posts -> page map (back-link cards)"
+& node naver-posts.js 2>&1 | Select-Object -Last 1 | ForEach-Object { W "   $_" }
+
 W "3) build"
 $out = & node build.js 2>&1
 if ($LASTEXITCODE -ne 0) {
