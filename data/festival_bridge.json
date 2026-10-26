@@ -1,14 +1,14 @@
 {
- "generatedAt": "2026-10-26T09:45",
+ "generatedAt": "2026-10-26T10:52",
  "stats": {
   "en": {
    "total": 298,
    "linked": 45,
    "confirmed": 37,
-   "pending": 0,
-   "tbc": 6,
+   "pending": 2,
+   "tbc": 4,
    "est": 2,
-   "redated": 3,
+   "redated": 1,
    "restored": 0,
    "review": 0,
    "removed": 0
@@ -17,10 +17,10 @@
    "total": 216,
    "linked": 42,
    "confirmed": 35,
-   "pending": 0,
-   "tbc": 5,
+   "pending": 1,
+   "tbc": 4,
    "est": 2,
-   "redated": 2,
+   "redated": 0,
    "restored": 0,
    "review": 1,
    "removed": 0
@@ -32,7 +32,7 @@
    "pending": 0,
    "tbc": 2,
    "est": 2,
-   "redated": 3,
+   "redated": 0,
    "restored": 0,
    "review": 0,
    "removed": 0
@@ -45,7 +45,7 @@
    "tbc": 3,
    "est": 2,
    "redated": 0,
-   "restored": 1,
+   "restored": 0,
    "review": 0,
    "removed": 0
   }
@@ -213,7 +213,7 @@
    },
    "697199": {
     "ko": "춘향제",
-    "kv": "tbc",
+    "kv": "pending",
     "signals": [
      "img",
      "geo"
@@ -400,7 +400,7 @@
    },
    "1811002": {
     "ko": "수원연극축제",
-    "kv": "tbc",
+    "kv": "pending",
     "signals": [
      "img",
      "tel",
@@ -838,7 +838,7 @@
    },
    "1939291": {
     "ko": "수원연극축제",
-    "kv": "tbc",
+    "kv": "pending",
     "signals": [
      "img",
      "geo",
