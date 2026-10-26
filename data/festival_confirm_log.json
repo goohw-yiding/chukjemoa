@@ -2120,5 +2120,57 @@
   "at": "2026-10-26",
   "name": "2026 캠핑요리축제",
   "note": "2026-10-26: 공식 campingcook.isplus.com '2026.06.12 - 2026.06.14' ✅ 1곳. 2번째 인정 근거(범위 문구) 못 찾음 — nate 20260613n08665 종료일 문구 없음"
+ },
+ {
+  "at": "2026-10-26",
+  "name": "2026 실경역사뮤지컬 의기논개",
+  "from": "2026-04-24~2026-05-16",
+  "to": "2026-04-24~2026-05-16",
+  "place": "진주성 의암 일원",
+  "confirm": "교차확인(조사자 2곳 + 검증자 1곳, 기계 검증 통과)",
+  "sources": [
+   "https://www.kukinews.com/article/view/kuk202605180185",
+   "http://www.knnews.co.kr/news/articleView.php?idxno=1541961",
+   "https://www.newsis.com/view/NISX20260518_0003633582"
+  ]
+ },
+ {
+  "at": "2026-10-26",
+  "name": "순천만갈대축제",
+  "from": "2026-11-01~2026-11-09",
+  "to": "2026-10-24~2026-10-25",
+  "place": "순천만습지",
+  "confirm": "교차확인(조사자 2곳 + 검증자 1곳, 기계 검증 통과)",
+  "sources": [
+   "https://www.jungbunews.com/news/articleView.html?idxno=2771095",
+   "https://www.newssunday.co.kr/news/view.php?no=255087",
+   "https://www.webeconomy.co.kr/news/articleView.html?idxno=2344715"
+  ]
+ },
+ {
+  "at": "2026-10-26",
+  "name": "춘향제",
+  "from": "2026-04-30~2026-05-06",
+  "to": "2026-04-30~2026-05-06",
+  "place": "광한루원 일원",
+  "confirm": "교차확인(조사자 2곳 + 검증자 1곳, 기계 검증 통과)",
+  "sources": [
+   "https://www.heraldk.com/article/2026033115512641867",
+   "https://sports.khan.co.kr/article/202604011426003",
+   "https://mobile.newsis.com/view/NISX20260401_0003574047"
+  ]
+ },
+ {
+  "at": "2026-10-26",
+  "name": "수원연극축제",
+  "from": "2026-05-16~2026-05-17",
+  "to": "2026-05-16~2026-05-17",
+  "place": "경기상상캠퍼스",
+  "confirm": "교차확인(조사자 2곳 + 검증자 1곳, 기계 검증 통과)",
+  "sources": [
+   "https://www.dailian.co.kr/news/view/1643659/2026%EB%85%84-%EC%88%98%EC%9B%90%EC%97%B0%EA%B7%B9%EC%B6%95%EC%A0%9C-%EC%88%B2%EC%86%8D-%ED%8C%8C%ED%8B%B0-1-2026",
+   "https://www.kgnews.co.kr/mobile/article.html?no=895552",
+   "https://www.m-economynews.com/mobile/article.html?no=67144"
+  ]
  }
 ]
