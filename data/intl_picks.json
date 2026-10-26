@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-26",
+ "generatedAt": "2026-10-27",
  "rule": "근거 점수 2 이상 · 언어당 최대 25",
  "langs": {
   "en": [
@@ -586,61 +586,6 @@
     ]
    },
    {
-    "ko": "진주남강유등축제",
-    "score": 8,
-    "commerce": false,
-    "status": "confirmed",
-    "ids": [
-     "634123"
-    ],
-    "reasons": [
-     {
-      "claim": "한큐 「咸安落火ノリと晋州南江流灯祭り」 상품",
-      "url": "https://www.hankyu-travel.com/tour/detail_i.php?p_hei=60&p_course_id=KF43020",
-      "kind": "agency"
-     },
-     {
-      "claim": "진주시 해외 1순위 타깃 일본·대만",
-      "url": "https://www.newspim.com/news/view/20260519000408",
-      "kind": "target"
-     },
-     {
-      "claim": "한큐교통사 진주남강유등축제·함안낙화놀이 가을 투어 상품",
-      "url": "https://www.hankyu-travel.com/tour/detail_i.php?p_hei=20&p_course_id=KN836B",
-      "kind": "agency"
-     },
-     {
-      "claim": "뉴스경남: 진주문화관광재단, JTB 해외 EXPO 2026 참가해 일본 여행업계에 진주남강유등축제 집중 홍보",
-      "url": "https://www.newsgn.com/news/articleView.html?idxno=571272",
-      "kind": "target"
-     }
-    ]
-   },
-   {
-    "ko": "함안낙화놀이",
-    "score": 6,
-    "commerce": false,
-    "status": "confirmed",
-    "ids": [],
-    "reasons": [
-     {
-      "claim": "한큐 함안낙화놀이 + 진주유등 상품",
-      "url": "https://www.hankyu-travel.com/tour/detail_i.php?p_hei=60&p_course_id=KF43020",
-      "kind": "agency"
-     },
-     {
-      "claim": "한큐교통사 함안낙화놀이·진주남강유등축제 투어 상품",
-      "url": "https://www.hankyu-travel.com/tour/detail_i.php?p_hei=20&p_course_id=KN836B",
-      "kind": "agency"
-     },
-     {
-      "claim": "한큐교통사 가을 2대 축제(함안낙화·진주유등) 투어",
-      "url": "https://www.hankyu-travel.com/tour/detail_i.php?p_course_id=K065B&p_hei=30",
-      "kind": "agency"
-     }
-    ]
-   },
-   {
     "ko": "서울세계불꽃축제",
     "score": 5,
     "commerce": true,
@@ -718,6 +663,27 @@
       "claim": "서울시 일본어 공식사이트 겨울 빛축제(랜턴) 소개",
       "url": "https://japanese.seoul.go.kr/%E8%89%B2%E3%81%A8%E5%85%89%E3%81%AB%E5%BD%A9%E3%82%89%E3%82%8C%E3%81%9F%E5%B9%BB%E6%83%B3%E7%9A%84%E3%81%AA%E5%86%AC%E3%81%AE%E9%83%BD%E5%B8%82%E3%83%BB%E3%82%BD%E3%82%A6%E3%83%AB%E4%B8%96/",
       "kind": "media"
+     }
+    ]
+   },
+   {
+    "ko": "진주남강유등축제",
+    "score": 4,
+    "commerce": false,
+    "status": "confirmed",
+    "ids": [
+     "634123"
+    ],
+    "reasons": [
+     {
+      "claim": "진주시 해외 1순위 타깃 일본·대만",
+      "url": "https://www.newspim.com/news/view/20260519000408",
+      "kind": "target"
+     },
+     {
+      "claim": "뉴스경남: 진주문화관광재단, JTB 해외 EXPO 2026 참가해 일본 여행업계에 진주남강유등축제 집중 홍보",
+      "url": "https://www.newsgn.com/news/articleView.html?idxno=571272",
+      "kind": "target"
      }
     ]
    },
