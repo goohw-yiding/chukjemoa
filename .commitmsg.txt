@@ -1,13 +1,8 @@
-영어 주간(10/21) — 속도 부족 처방: 보강 4장(포항불빛 포항시 발표·서울억새·익산국화·마산가고파) + 검색 설명 · 날짜 대조 10건 · 광안리 드론쇼 Creatrip 관람 공간 링크
+ja 주간(10/27): 날짜 대조 6건 + 포항불빛 일본어 이름 + 그랜드세일 TourAPI 페이지 → /ja/grandsale/ 안내
 
-- 포항국제불빛축제: 잠정 안내 → 포항시 발표(뉴스1 10/19) 11/19~21, 11/21 20시 영일대 불꽃쇼
-- 서울억새축제(서울시 공식)·익산 천만송이 국화축제(익산시)·마산가고파국화축제(매일신문) note+desc
-- 광안리 M 드론쇼: Creatrip 15648(광안대교 오션뷰 실내 관람 공간) aff ~12/31
-- 부산불꽃: 클룩 171795·Creatrip 12948 모두 판매 종료 → aff 제거
-- 교정 파일 정리: 진주 항목 삭제, 춘천막국수닭갈비 note/desc 정리
-- 한글 원제 좌표 오매칭 4건 숨김, 백년나이트 야시장은 맞음(KNOWN_OK)
-- /en/blog/ojang-day-guide-en/ 검색 설명 개선(«ojang» 5.4위 클릭 0)
-- festivals_en_checked.json 10건 기록
+- 대조: 김해분청도자기 11/6~10 맞음, 달밤에체조 부산 9/19~11/7 맞음, 마토예술제 10/31 맞음(10/9 미확인 해소), 섬진강실험예술제·곰뱅이텄다·APAP 미확인(날짜 그대로)
+- 588175 포항국제불빛축제 name.ja 浦項国際光祭り (관광공사 일본어 표기) → /ja/calendar/2026-11/ 본 목록 편입
+- /ja/festival/2027-koriageuraendeuseil/: 「コリアグランドセール 2027」 9.7위 페이지 — title 에 2027·기간, 본문에 /ja/grandsale/ 안내 1줄 (festival-ja.js, ja id 2758742 만)
 
 Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
-Claude-Session: https://claude.ai/code/session_01QkWMxEZeC7fH3mN26feu5N
+Claude-Session: https://claude.ai/code/session_012MFxCJegJ4mbkBbuB5yH38
