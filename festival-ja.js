@@ -194,7 +194,7 @@ ${(() => {
     })()}
 ${f.tel ? `<dt>☎️ 問い合わせ</dt><dd>${esc(f.tel)}</dd>` : ''}
 </dl></div>
-${/* 2026-10-13 — 「🎫 料金 有料」 사실 바로 뒤에만 클룩(광고 표시·대가 고지). 상품을 확인한 축제만 klook.js FIREWORKS 에 있다 */ (!ended && (INTRO[String(f.id)] || {}).fee) ? require('./klook.js').fireworks(f._slug, TODAY8) : ''}
+${/* 2026-10-13 — 「🎫 料金 有料」 사실 바로 뒤에만 클룩(광고 표시·대가 고지). 상품을 확인한 축제만 klook.js FIREWORKS 에 있다 */ (!ended && (INTRO[String(f.id)] || {}).fee) ? require('./klook.js').fireworks(f._slug, TODAY8) : ''}${/* 2026-10-27 — 「コリアグランドセール 2027」 검색이 이 TourAPI 페이지(9.7위)로 들어온다 → 정리 페이지 /ja/grandsale/ 로 안내 */ (!ended && String(f.id) === '2758742') ? `<p class="gs-link">👉 2027年の日程（2026年12月23日〜2027年2月13日・53日間）、7つの特典分野、期間中の韓国・日本の祝日と旧正月の休業日、12〜2月のソウルの気温は <a href="/ja/grandsale/"><strong>コリアグランドセール 2027 まとめ</strong></a> に一覧にしています。</p>\n` : ''}
 ${ended ? `<div class="fend"><h2>⚠️ 上の日程はすでに終了しています</h2>
 <p>掲載されているのは公式に確認できた直近の日程です。韓国の祭りは毎年ほぼ同じ時期に開かれる年中行事が多いのですが、次回の日程はまだ公表されていません。旅行を決める前に公式サイトでご確認ください。</p></div>` : ''}
 <div class="fov"><h2>この祭りについて</h2><p>${esc(f.ov)}</p>
@@ -254,7 +254,7 @@ ${mapScript('ja')}
     //   링크·내부 이동은 살아 있으므로 404가 생기지 않는다.
     const skipIndex = tooThin || ended;
     writePage('ja/festival/' + f._slug, layout(
-      `${f.title} — 日程・場所・アクセス | 축제모아`,
+      String(f.id) === '2758742' ? `コリアグランドセール 2027（12/23〜2/13）— 会場・ウェルカムセンター | 축제모아` : `${f.title} — 日程・場所・アクセス | 축제모아`,
       String(f.ov || '').slice(0, 110),
       urlPath, content, { lang: 'ja', jsonld: ld, noindex: skipIndex }));
     if (skipIndex) thinOut.push(urlPath); else urls.push(urlPath);
