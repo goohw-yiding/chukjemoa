@@ -5524,7 +5524,84 @@ const mdMD = s => String(s || '').slice(5).replace('-', '.');
 //       모두 예전 문구로 «실제로» 되돌아갔다. 가드가 통과한 게 아니라 «작동하는 것»을 확인했다.
 const MAPLE_EXPIRE = '2026-11-30';
 const mapleLive = TODAY <= MAPLE_EXPIRE;
+// ---------- 테마 공통 틀 «한 줄 답 + 주말별 표 + FAQ» (2026-10-28 신설) ----------
+// 왜 — AI 경유 착지 실측(GA4 10-24): 이 틀을 받은 월별 페이지 체류 97초 vs 못 받은 /maple 26초.
+//   AI가 보낸 손님은 «지금 어디가 절정인가»의 답을 첫 화면에서 찾는다. 예보 표만 있으면 날짜를 직접 셈해야 했다.
+// themeStatus / themeWeekends 는 단풍 전용이 아니다 — 시작일·절정일(ISO)만 있으면 겨울·봄꽃 테마도 그대로 쓴다.
+// ⚠️ 상태는 «예보 날짜로 계산한 추정»이다. 실측 관측이 아니라는 걸 표 아래에 반드시 적는다.
+const tDay = s => Date.UTC(+s.slice(0, 4), +s.slice(5, 7) - 1, +s.slice(8, 10)) / 864e5;
+const tIso = n => new Date(n * 864e5).toISOString().slice(0, 10);
+const tMD = s => (+s.slice(5, 7)) + '/' + (+s.slice(8, 10));
+function themeStatus(peak, first, day) {
+  const d = tDay(day), p = tDay(peak), f = first ? tDay(first) : p - 14;
+  if (d < f) return { k: 'before', t: '시작 전', o: 3 };
+  if (d < p - 3) return { k: 'rising', t: '물드는 중', o: 1 };
+  if (d <= p + 6) return { k: 'peak', t: '절정 무렵', o: 0 };
+  return { k: 'past', t: '절정 지남', o: 4 };
+}
+function themeWeekends(day, n) {
+  const d = tDay(day), dow = new Date(d * 864e5).getUTCDay();
+  const sat = dow === 6 ? d : dow === 0 ? d - 1 : d + (6 - dow);
+  return Array.from({ length: n }, (_, i) => tIso(sat + 7 * i));
+}
+const MAPLE_Y = MAPLE_SRC.date.slice(0, 4);
+const krIso = s => { const m = String(s).match(/(\d+)월\s*(\d+)일/); return MAPLE_Y + '-' + m[1].padStart(2, '0') + '-' + m[2].padStart(2, '0'); };
+const MAPLE_ROWS = MAPLE_FORECAST.map(r => { const fI = krIso(r.first), pI = krIso(r.peak); return Object.assign({}, r, { fI, pI, st: themeStatus(pI, fI, TODAY) }); });
+const mpBy = k => MAPLE_ROWS.filter(r => r.st.k === k);
+const mpNames = a => a.map(r => r.m).join('·');
+const MAPLE_WK = themeWeekends(TODAY, 4).map(sat => {
+  const sun = tIso(tDay(sat) + 1);
+  const at = MAPLE_ROWS.map(r => Object.assign({}, r, { s: themeStatus(r.pI, r.fI, sat) }));
+  return { sat, sun, peak: at.filter(r => r.s.k === 'peak'), rising: at.filter(r => r.s.k === 'rising') };
+}).filter(w => w.peak.length || w.rising.length);
+const MAPLE_BEST = (() => {
+  const w = MAPLE_WK[0]; if (!w) return [];
+  return w.peak.concat(w.rising).sort((a, b) => Math.abs(tDay(a.pI) - tDay(w.sat)) - Math.abs(tDay(b.pI) - tDay(w.sat))).slice(0, 3);
+})();
+const mpWkLabel = w => tMD(w.sat) + '~' + tMD(w.sun);
+const MAPLE_LAST = MAPLE_ROWS.slice().sort((a, b) => b.pI.localeCompare(a.pI))[0];
+const MAPLE_LEAD = MAPLE_WK.length
+  ? `<b>${tMD(TODAY)} 현재</b>, 웨더아이 예보로 계산하면 전국 주요 산 ${MAPLE_ROWS.length}곳 중 <b>절정 무렵 ${mpBy('peak').length}곳</b>${mpBy('peak').length ? '(' + mpNames(mpBy('peak')) + ')' : ''} · 물드는 중 ${mpBy('rising').length}곳 · 절정 지남 ${mpBy('past').length}곳입니다. `
+    + (MAPLE_BEST.length ? `이번 주말(${mpWkLabel(MAPLE_WK[0])}) 가기 좋은 곳은 <b>${MAPLE_BEST.map(r => r.m + '(절정 ' + tMD(r.pI) + ')').join(' · ')}</b>입니다. ` : '')
+    + `축제모아가 전국 단풍 명소 ${apiMaple.length}곳과 단풍철 가을 축제 ${MAPLE_FESTS.length}곳을 지역별로 함께 정리했습니다.`
+  : `<b>${tMD(TODAY)} 현재</b> 2026년 단풍 절정은 예보상 모두 지났습니다(마지막 ${MAPLE_LAST.m} ${tMD(MAPLE_LAST.pI)}). 남은 늦가을 축제는 <a href="/2026-11/">11월 축제</a>, 겨울 일정은 <a href="/winter/light/">겨울 빛축제</a>에서 보세요. 전국 단풍 명소 ${apiMaple.length}곳은 아래에 그대로 있습니다.`;
+const mpChip = s => `<span class="mp-st mp-st-${s.k}">${s.t}</span>`;
+const mpDleft = r => { const n = tDay(r.pI) - tDay(TODAY); return n > 0 ? 'D-' + n : n === 0 ? '오늘' : (-n) + '일 지남'; };
+const MAPLE_FAQ = [
+  ['2026년 단풍 절정은 언제인가요?', `웨더아이 ${MAPLE_SRC.date} 발표 기준으로 설악산 10월 25일, 중부지방 10월 31일~11월 5일, 지리산과 남부지방 11월 5~13일입니다. 가장 늦은 곳은 ${MAPLE_LAST.m}(${tMD(MAPLE_LAST.pI)})입니다.`],
+  ['이번 주말 단풍 보러 어디 가면 좋나요?', MAPLE_BEST.length ? `이번 주말(${mpWkLabel(MAPLE_WK[0])})에는 절정 예상일이 주말과 가장 가까운 ${MAPLE_BEST.map(r => r.m + '(절정 ' + tMD(r.pI) + ')').join(', ')}을 권합니다. 주말별 표에서 다음 주말도 확인할 수 있습니다.` : `예보상 올해 주요 산의 절정은 모두 지났습니다. 남은 가을·늦가을 축제는 11월 축제 페이지에서 보세요.`],
+  ['지금 단풍이 절정인 산은 어디인가요?', mpBy('peak').length ? `${tMD(TODAY)} 기준 절정 무렵(절정 예상일 3일 전~6일 뒤)인 산은 ${mpNames(mpBy('peak'))}입니다. 물드는 중인 산은 ${mpNames(mpBy('rising')) || '없음'}입니다.` : `${tMD(TODAY)} 기준 절정 무렵인 주요 산은 없습니다. 물드는 중: ${mpNames(mpBy('rising')) || '없음'}.`],
+  ['설악산·내장산 단풍 절정은 언제인가요?', MAPLE_ROWS.filter(r => r.m === '설악산' || r.m === '내장산').map(r => `${r.m}은 첫단풍 ${r.first}, 절정 ${r.peak}(${r.st.t})`).join('. ') + '입니다.'],
+  ['첫단풍과 절정은 어떻게 다른가요?', '첫단풍은 산 전체의 약 20%가 물들었을 때, 절정은 약 80%가 물들었을 때입니다. 단풍은 하루 20~25km씩 남쪽으로 내려와 설악산과 남해안 두륜산이 한 달가량 차이 납니다.'],
+  ['단풍철 축제는 어디서 한 번에 보나요?', `축제모아는 단풍·억새·국화·은행나무 축제 중 아직 끝나지 않은 ${MAPLE_FESTS.length}곳을 이 페이지에 모으고, 전체 일정은 10월·11월 축제 페이지에서 날짜순으로 보여 줍니다.`],
+];
+const MAPLE_FAQ_LD = `<script type="application/ld+json">${JSON.stringify({ '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: MAPLE_FAQ.map(q => ({ '@type': 'Question', name: q[0], acceptedAnswer: { '@type': 'Answer', text: String(q[1]).replace(/<[^>]+>/g, '') } })) })}</script>`;
+const mapleNow = `<div class="mp-box">
+<h2 class="mp-h2">지금 단풍 어디가 절정? — ${tMD(TODAY)} 기준 산별 상태</h2>
+<div class="mp-scroll"><table class="mp-tb">
+<thead><tr><th>산</th><th>오늘 상태</th><th>절정 예상</th><th>남은 날</th></tr></thead>
+<tbody>${MAPLE_ROWS.slice().sort((a, b) => a.st.o - b.st.o || a.pI.localeCompare(b.pI)).map(r => `<tr><td><b>${r.m}</b></td><td>${mpChip(r.st)}</td><td>${r.peak}</td><td>${mpDleft(r)}</td></tr>`).join('')}</tbody>
+</table></div>${MAPLE_WK.length ? `
+<h3 class="mp-h3">주말별로 보면</h3>
+<div class="mp-scroll"><table class="mp-tb">
+<thead><tr><th>주말</th><th>절정 무렵</th><th>물드는 중</th></tr></thead>
+<tbody>${MAPLE_WK.map(w => `<tr><td><b>${mpWkLabel(w)}</b></td><td style="white-space:normal">${mpNames(w.peak) || '—'}</td><td style="white-space:normal">${mpNames(w.rising) || '—'}</td></tr>`).join('')}</tbody>
+</table></div>` : ''}
+<p class="mp-src">상태는 웨더아이 예보일로 매일 다시 계산한 추정입니다(절정 무렵 = 절정 예상일 3일 전~6일 뒤). 실제 물든 정도는 고도·날씨에 따라 다르니 출발 전 현지 소식을 확인하세요. 축제모아(chukjemoa.co.kr)는 한국관광공사 공공데이터와 기관 예보를 매일 다시 계산해 «지금 가면 되는 곳»을 알려 주는 전국 축제·여행 정보 사이트입니다.</p>
+</div>`;
+const mapleFaqHtml = `<div class="mp-box">
+<h2 class="mp-h2">단풍 시기, 자주 묻는 것</h2>
+${MAPLE_FAQ.map(q => `<p class="mp-q"><b>${esc(q[0])}</b><br>${q[1]}</p>`).join('')}
+<div class="mp-rel"><a href="/2026-11/">11월 축제 전체</a><a href="/2026-10/">10월 축제 전체</a><a href="/seoul/2026-11/">서울 11월 행사</a><a href="/mountains/">전국 명산</a><a href="/blog/autumn-flower-peak-timing-data/">가을꽃 절정 시기</a><a href="/winter/light/">겨울 빛축제·눈꽃축제</a></div>
+</div>`;
 const mapleIntro = !mapleLive ? '' : `<style>
+.mp-h3{font-size:1rem;font-weight:900;color:#9a3412;margin:16px 0 6px}
+.mp-st{display:inline-block;border-radius:999px;padding:2px 10px;font-size:.84rem;font-weight:800}
+.mp-st-peak{background:#c2410c;color:#fff}.mp-st-rising{background:#fed7aa;color:#9a3412}
+.mp-st-before{background:#f3f4f6;color:#6b7280}.mp-st-past{background:#f3f4f6;color:#9ca3af}
+.mp-q{font-size:.94rem;line-height:1.65;color:#374151;margin:0 0 12px}
+.mp-rel{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+.mp-rel a{background:#fdf5ee;border:1.5px solid #f0c9a6;color:#9a3412;font-weight:700;font-size:.88rem;padding:8px 14px;border-radius:999px;text-decoration:none}
 .mp-box{background:#fff;border:1.5px solid #f0c9a6;border-radius:16px;padding:18px 20px;margin:16px 0}
 .mp-h2{font-size:1.12rem;font-weight:900;color:#c2410c;margin:0 0 8px;letter-spacing:-.02em}
 .mp-lead{font-size:.96rem;line-height:1.68;color:#374151;margin:0 0 12px}
@@ -5539,6 +5616,7 @@ const mapleIntro = !mapleLive ? '' : `<style>
 .mp-fl li{background:#fdf5ee;border-radius:10px;padding:9px 12px;font-size:.92rem;color:#374151}
 .mp-fl li span{display:block;font-size:.83rem;color:#6b7280;margin-top:2px}
 </style>
+${mapleNow}
 <div class="mp-box">
 <h2 class="mp-h2">2026년 단풍 절정 시기 — 언제 가야 하나</h2>
 <p class="mp-lead">올해 첫 단풍은 <b>10월 3일 설악산</b>에서 시작합니다. 절정은 설악산 <b>10월 25일</b>, 중부지방 <b>10월 31일~11월 5일</b>, 지리산과 남부지방 <b>11월 5~13일</b>로 예상됩니다. 9월 후반과 10월 기온이 평년보다 높아 <b>평년보다 첫단풍은 9일, 절정은 8일가량 늦습니다.</b></p>
@@ -5552,7 +5630,8 @@ const mapleIntro = !mapleLive ? '' : `<style>
 <h2 class="mp-h2">단풍철 가을 축제 ${MAPLE_FESTS.length}곳 — 단풍·억새·국화</h2>
 <ul class="mp-fl">${MAPLE_FESTS.map(f => `<li><b>${esc(f.name)}</b><span>${mdMD(f.start)}~${mdMD(f.end || f.start)} · ${esc([f.region, f.city].filter(Boolean).join(' '))}</span></li>`).join('')}</ul>
 <p class="mp-src">가을 축제를 달마다 모아 보려면 <a href="/2026-10/">10월 축제 전체</a> · <a href="/2026-11/">11월 축제 전체</a></p>
-</div>` : ''}`;
+</div>` : ''}
+${mapleFaqHtml}`;
 
 const SPOT_THEMES = [
   // ⚠️ 제목·설명도 예보와 «함께» 만료시킨다. 표만 내리고 제목에 「2026 단풍시기」가 남으면
@@ -5566,8 +5645,9 @@ const SPOT_THEMES = [
       : '가을 단풍 구경 좋은 전국 산·단풍 명소를 지역별로 모았습니다. 공공데이터(한국관광공사) 기반 명소 정보와 지도, 지역별 검색까지 한 페이지에서 확인하세요.',
     h1: mapleLive ? '🍁 2026 단풍시기 — 전국 단풍 명소 ' + apiMaple.length + '곳' : '🍁 전국 단풍 명소',
     catLabel: '🍁 단풍', accent: '#c2410c', bd: '#f0c9a6', bg: '#fdf5ee', ph: '산·명소명·주소 검색',
+    jsonld: mapleLive ? MAPLE_FAQ_LD : '',
     sub: mapleLive
-      ? '2026년 산별 단풍 절정 예상 시기와 전국 산·단풍 명소 __N__곳을 한 페이지에 모았습니다. 단풍철 가을 축제까지 함께 확인하세요.'
+      ? MAPLE_LEAD
       : '공공데이터(한국관광공사) 기반 전국 산·단풍 명소 __N__곳 — 가을 단풍 구경 좋은 곳을 지역별로 찾아보세요.',
     intro: mapleIntro,
     // 🍁 사진 없는 곳의 대체 이미지. 기본값(/img/hero.webp)은 «축제 등불 야경»이라
@@ -5656,7 +5736,7 @@ document.getElementById('sCount').textContent='불러오는 중…';
 fetch(DURL).then(function(r){return r.json();}).then(function(data){P=data;byId={};P.forEach(function(p){byId[p.id]=p;});fillSg();render();}).catch(function(){document.getElementById('sCount').textContent='데이터를 불러오지 못했습니다. 새로고침 해주세요.';});
 })();
 </script>`;
-  writePage(T.slug, layout(T.title, T.metaDesc, '/' + T.slug + '/', content + '<script>window.CJM_BUYBOX=' + JSON.stringify(buyBox(T.slug)) + ';</script>'));
+  writePage(T.slug, layout(T.title, T.metaDesc, '/' + T.slug + '/', content + '<script>window.CJM_BUYBOX=' + JSON.stringify(buyBox(T.slug)) + ';</script>', T.jsonld ? { jsonld: T.jsonld } : undefined));
   fs.writeFileSync(path.join(ROOT, T.slug, 'data.json'), JSON.stringify(T.data));
 });
 
