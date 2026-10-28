@@ -1,50 +1,50 @@
 {
- "generatedAt": "2026-10-28T07:06",
+ "generatedAt": "2026-10-29T07:07",
  "stats": {
   "en": {
    "total": 298,
-   "linked": 45,
-   "confirmed": 39,
+   "linked": 46,
+   "confirmed": 40,
    "pending": 0,
    "tbc": 4,
    "est": 2,
-   "redated": 0,
+   "redated": 1,
    "restored": 0,
    "review": 0,
    "removed": 0
   },
   "ja": {
    "total": 216,
-   "linked": 42,
-   "confirmed": 36,
+   "linked": 43,
+   "confirmed": 37,
    "pending": 0,
    "tbc": 4,
    "est": 2,
-   "redated": 0,
+   "redated": 1,
    "restored": 0,
    "review": 1,
    "removed": 0
   },
   "zh": {
    "total": 177,
-   "linked": 34,
-   "confirmed": 30,
+   "linked": 35,
+   "confirmed": 31,
    "pending": 0,
    "tbc": 2,
    "est": 2,
-   "redated": 0,
+   "redated": 1,
    "restored": 0,
    "review": 0,
    "removed": 0
   },
   "tw": {
    "total": 176,
-   "linked": 35,
-   "confirmed": 30,
+   "linked": 36,
+   "confirmed": 31,
    "pending": 0,
    "tbc": 3,
    "est": 2,
-   "redated": 0,
+   "redated": 1,
    "restored": 0,
    "review": 0,
    "removed": 0
@@ -377,6 +377,15 @@
      "date"
     ],
     "apiId": "590921"
+   },
+   "1385298": {
+    "ko": "부산불꽃축제",
+    "kv": "confirmed",
+    "signals": [
+     "geo",
+     "decision"
+    ],
+    "apiId": "235076"
    },
    "1675246": {
     "ko": "강릉커피축제",
@@ -793,6 +802,15 @@
      "date"
     ],
     "apiId": "914138"
+   },
+   "1016771": {
+    "ko": "부산불꽃축제",
+    "kv": "confirmed",
+    "signals": [
+     "geo",
+     "decision"
+    ],
+    "apiId": "235076"
    },
    "1202956": {
     "ko": "부산국제록페스티벌",
@@ -1225,6 +1243,15 @@
     ],
     "apiId": "1095732"
    },
+   "1808199": {
+    "ko": "부산불꽃축제",
+    "kv": "confirmed",
+    "signals": [
+     "geo",
+     "decision"
+    ],
+    "apiId": "235076"
+   },
    "1812008": {
     "ko": "강릉단오제",
     "kv": "confirmed",
@@ -1581,6 +1608,15 @@
      "date"
     ],
     "apiId": "914138"
+   },
+   "1113727": {
+    "ko": "부산불꽃축제",
+    "kv": "confirmed",
+    "signals": [
+     "geo",
+     "decision"
+    ],
+    "apiId": "235076"
    },
    "1117216": {
     "ko": "서울빛초롱축제",

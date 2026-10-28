@@ -1,8 +1,4 @@
-ja 주간(10/27): 날짜 대조 6건 + 포항불빛 일본어 이름 + 그랜드세일 TourAPI 페이지 → /ja/grandsale/ 안내
-
-- 대조: 김해분청도자기 11/6~10 맞음, 달밤에체조 부산 9/19~11/7 맞음, 마토예술제 10/31 맞음(10/9 미확인 해소), 섬진강실험예술제·곰뱅이텄다·APAP 미확인(날짜 그대로)
-- 588175 포항국제불빛축제 name.ja 浦項国際光祭り (관광공사 일본어 표기) → /ja/calendar/2026-11/ 본 목록 편입
-- /ja/festival/2027-koriageuraendeuseil/: 「コリアグランドセール 2027」 9.7위 페이지 — title 에 2027·기간, 본문에 /ja/grandsale/ 안내 1줄 (festival-ja.js, ja id 2758742 만)
+영어 주간(10/28) 커밋 메시지 정정 — 직전 fed80ef3 은 일본어 세션 메시지가 잘못 붙었지만 실제 내용은 영어 10/28 회차: 사이트 전체 구글 급감(10/23~) 확인·목표 400→200 재설정 · 여수밤바다 불꽃 2026 장소(엑스포장)·셔틀 note · 청송사과 desc · 날짜 대조 8건 · 끝난 축제 교정 3건 정리 · 한글 원제 오매칭 1건 숨김
 
 Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
-Claude-Session: https://claude.ai/code/session_012MFxCJegJ4mbkBbuB5yH38
+Claude-Session: https://claude.ai/code/session_012MFxCLdRhGY7VsF39anb23
