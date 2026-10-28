@@ -38,5 +38,13 @@
   "697361": {"title": "Bonghwa Pine Mushroom Festival", "date": "2026-10-21", "result": "맞음 10/15~18 내성천 일원", "src": "더팩트 2026-09-29 봉화군 발표"},
   "1084180": {"title": "Jeju Olle Walking Festival", "date": "2026-10-21", "result": "맞음 11/5~7 (10/6 두 곳 대조, fix.json note)", "src": "서울신문 2026-07-08 · 제이누리 no=69060"},
   "3487931": {"title": "Jeonju Hanok Village Traditional Performance Parade", "date": "2026-10-21", "result": "관광공사 자료와 일치 4/18~10/31 매주 토 15~16시 — 주최 원문 미확인", "src": "노상놀이야 상세(내용출처 한국관광공사)"},
-  "3562686": {"title": "October Festa in Gwangalli", "date": "2026-10-21", "result": "미확인 — 2026 개최 발표 못 찾음(부산시 행사 목록엔 6월 어방축제만)", "src": "busan.go.kr/eng/bsevents 검색 2026-10-21"}
+  "3562686": {"title": "October Festa in Gwangalli", "date": "2026-10-21", "result": "미확인 — 2026 개최 발표 못 찾음(부산시 행사 목록엔 6월 어방축제만)", "src": "busan.go.kr/eng/bsevents 검색 2026-10-21"},
+  "3547117": {"title": "Hongseong Global BBQ Festival", "date": "2026-10-28", "result": "맞음 10/29~11/1 홍주성 일원", "src": "쿠키뉴스 2026-10-20 kuk202610200041 (홍성군)"},
+  "3544280": {"title": "100 Years Night Night Market", "date": "2026-10-28", "result": "맞음 10/30~31 16~21시 백년시장 일대, 무료", "src": "서울시 미디어허브 2026-10-12 archives/2019634"},
+  "3358416": {"title": "Hantangang Garden Festa", "date": "2026-10-28", "result": "맞음 9/12~11/1 한탄강 생태경관단지", "src": "위키트리 2026-09-07 articles/1157739 (포천시)"},
+  "1398781": {"title": "Cheongsong Apple Festival", "date": "2026-10-28", "result": "맞음 11/4~8 (제20회)", "src": "경북매일 2026-10-18 article/20261018500281 (청송군)"},
+  "3396183": {"title": "Yeosu Night Sea Fireworks Festival", "date": "2026-10-28", "result": "맞음 10/31 여수세계박람회장 — note·desc 추가", "src": "전국매일신문 2026-10-25 idxno=1304655 · 남해안신문 2026-10-26 idxno=93831 (여수시)"},
+  "3337796": {"title": "International Ki Sports Festival", "date": "2026-10-28", "result": "미확인 — 2026 개최 발표 못 찾음(검색 2회)", "src": "웹 검색 2026-10-28"},
+  "752980": {"title": "Chungjang Street Festival of Recollection", "date": "2026-10-28", "result": "한국어 3곳 확정(kv=confirmed) 10/7~11, 끝남 처리 맞음 — 대조 생략", "src": "data/festival_bridge.json links.en"},
+  "716565": {"title": "Gyeongnam Goseong Dinosaur World Expo", "date": "2026-10-28", "result": "맞음 9/22~11/1(41일) 당항포관광지", "src": "뉴시스 2026-07-30 NISX20260730_0003729797 · 시대일보 2026-09-08"}
 }
