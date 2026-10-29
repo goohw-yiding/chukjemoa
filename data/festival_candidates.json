@@ -1,1 +1,46 @@
-{}
+{
+ "임실N펫스타": {
+  "start": "2026-05-01",
+  "end": "2026-05-03",
+  "place": "",
+  "sources": [
+   "https://www.jjan.kr/article/20260410500037",
+   "https://www.kukinews.com/article/view/kuk202605040047"
+  ],
+  "proposedAt": "2026-10-29",
+  "from": "2026-05-01~2026-05-03"
+ },
+ "홍천 산나물축제": {
+  "start": "2026-05-01",
+  "end": "2026-05-03",
+  "place": "",
+  "sources": [
+   "https://www.fnnews.com/news/202605011132460396",
+   "https://www.kukinews.com/article/view/kuk202605020004"
+  ],
+  "proposedAt": "2026-10-29",
+  "from": "2026-05-01~2026-05-03"
+ },
+ "인천어린이과학관 과학으로 자라는 어린이": {
+  "start": "2026-05-05",
+  "end": "2026-05-05",
+  "place": "",
+  "sources": [
+   "https://www.kyeongin.com/article/1762586",
+   "https://www.mt.co.kr/amp/industry/2026/05/12/2026051217490154980"
+  ],
+  "proposedAt": "2026-10-29",
+  "from": "2026-05-05~2026-05-05"
+ },
+ "2026 캠핑요리축제": {
+  "start": "2026-06-12",
+  "end": "2026-06-14",
+  "place": "",
+  "sources": [
+   "https://campingcook.isplus.com/",
+   "http://www.sukbakmagazine.com/news/articleView.html?idxno=68456"
+  ],
+  "proposedAt": "2026-10-29",
+  "from": "2026-06-12~2026-06-14"
+ }
+}
