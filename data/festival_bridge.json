@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-29T07:07",
+ "generatedAt": "2026-10-29T09:35",
  "stats": {
   "en": {
    "total": 298,
@@ -8,7 +8,7 @@
    "pending": 0,
    "tbc": 4,
    "est": 2,
-   "redated": 1,
+   "redated": 0,
    "restored": 0,
    "review": 0,
    "removed": 0
@@ -20,7 +20,7 @@
    "pending": 0,
    "tbc": 4,
    "est": 2,
-   "redated": 1,
+   "redated": 0,
    "restored": 0,
    "review": 1,
    "removed": 0
@@ -32,7 +32,7 @@
    "pending": 0,
    "tbc": 2,
    "est": 2,
-   "redated": 1,
+   "redated": 0,
    "restored": 0,
    "review": 0,
    "removed": 0
@@ -44,7 +44,7 @@
    "pending": 0,
    "tbc": 3,
    "est": 2,
-   "redated": 1,
+   "redated": 0,
    "restored": 0,
    "review": 0,
    "removed": 0
