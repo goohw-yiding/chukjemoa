@@ -4188,6 +4188,15 @@ const REF_NATIONAL = [
   ['https://www.data.go.kr/', '공공데이터포털', '축제·반려동물 동반·무장애 정보 개방 데이터 원본']
 ];
 const POST_REFS = {
+  // 이주의 축제모아 Vol.7 — TOP5 날짜·장소를 교차 확인한 보도·공식 페이지(2026-10-29 확인)
+  'chukjemoa-weekly-vol7': [
+    ['https://www.inews24.com/view/2014943', '아이뉴스24', '익산 천만송이 국화축제 10월 23일~11월 1일 중앙체육공원·신흥근린공원·익산역 일원'],
+    ['https://www.mcst.go.kr/site/s_culture/festival/festivalView.jsp?pSeq=13374', '문화체육관광부 지역축제', '여수밤바다 불꽃축제 10월 31일 여수세계박람회장 일원'],
+    ['https://www.pressian.com/pages/articles/2026080417310951825', '프레시안', '2026 여수밤바다 불꽃축제 10월 31일 박람회장으로 장소 변경'],
+    ['https://www.imaeil.com/page/view/2026101607051923639', '매일신문', '2026 마산가고파국화축제 10월 31일~11월 8일 3·15해양누리공원 일대'],
+    ['https://www.ajunews.com/view/20261027105422457', '아주경제', '홍성글로벌바비큐페스티벌 10월 29일~11월 1일 홍주성 일원'],
+    ['https://www.mcst.go.kr/site/s_culture/festival/festivalView.jsp?pSeq=13333', '문화체육관광부 지역축제', '제23회 예산사과축제 10월 30~31일 예당호 출렁다리 일원']
+  ],
   // 이주의 축제모아 Vol.6 — TOP5 날짜·장소를 교차 확인한 보도(2026-10-22 확인)
   'chukjemoa-weekly-vol6': [
     ['https://news-wa.com/article/travel/tour-korea/2026/10/12/20261012500016', '뉴스와', '2026 김천김밥축제 10월 23~25일 직지문화공원·사명대사공원 일원'],
