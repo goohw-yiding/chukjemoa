@@ -2142,7 +2142,7 @@
   "name": "홍천 산나물축제",
   "region": "강원",
   "city": "홍천군",
-  "place": "강원특별자치도 홍천군 홍천읍 갈마곡리 501",
+  "place": "홍천 도시산림공원 토리숲",
   "start": "2026-05-01",
   "end": "2026-05-03",
   "month": [
@@ -2150,9 +2150,14 @@
   ],
   "category": "문화",
   "desc": "강원도 홍천군은 전국 시·군 중 가장 넓은 면적을 자랑하며, 전체 국토의 85%가 울창한 산림으로 둘러싸인 천혜의 자연 저장고이다. 특히 동쪽으로 갈수록 해발고도가 높아지는 독특한 지리적 특성은 청",
-  "confirmed": false,
+  "confirmed": true,
   "apiSource": "TourAPI «홍천 산나물축제» id 2597638",
-  "pending": true
+  "sources": [
+   "https://www.fnnews.com/news/202605011132460396",
+   "https://www.kukinews.com/article/view/kuk202605020004",
+   "https://biz.heraldcorp.com/article/10729929"
+  ],
+  "verifiedAt": "2026-10-29"
  },
  {
   "name": "제25회 의정부음악극축제",
@@ -2201,7 +2206,7 @@
   "name": "임실N펫스타",
   "region": "전북",
   "city": "임실군",
-  "place": "전북특별자치도 임실군 오수면 의견로 3",
+  "place": "임실 오수의견관광지",
   "start": "2026-05-01",
   "end": "2026-05-03",
   "month": [
@@ -2209,15 +2214,20 @@
   ],
   "category": "문화",
   "desc": "반려동물 클러스터 도시로 성장하고 있는 임실에서 개최되는 임실N펫스타는 도전적이고 실험적인 프로그램을 통해 반려동물 문화의 새로운 방향을 제시하는 대한민국 대표 반려동물 축제이다. 올해는 축제 장소",
-  "confirmed": false,
+  "confirmed": true,
   "apiSource": "TourAPI «임실N펫스타» id 2984556",
-  "pending": true
+  "sources": [
+   "https://www.jjan.kr/article/20260410500037",
+   "https://www.kukinews.com/article/view/kuk202605040047",
+   "https://www.news1.kr/local/jeonbuk/6149820"
+  ],
+  "verifiedAt": "2026-10-29"
  },
  {
   "name": "인천어린이과학관 과학으로 자라는 어린이",
   "region": "인천",
   "city": "계양구",
-  "place": "인천광역시 계양구 방축로 21 (방축동)",
+  "place": "인천어린이과학관",
   "start": "2026-05-05",
   "end": "2026-05-05",
   "month": [
@@ -2225,9 +2235,14 @@
   ],
   "category": "문화",
   "desc": "‘과학으로 자라는 어린이’는 인천어린이과학관에서 어린이날을 기념하여 개최하는 가족 대상 과학문화행사이다. 어린이와 가족이 함께 참여하여 과학을 쉽고 흥미롭게 체험할 수 있도록 공연, 참여형 이벤트,",
-  "confirmed": false,
+  "confirmed": true,
   "apiSource": "TourAPI «인천어린이과학관 과학으로 자라는 어린이» id 1806117",
-  "pending": true
+  "sources": [
+   "https://www.kyeongin.com/article/1762586",
+   "https://www.mt.co.kr/amp/industry/2026/05/12/2026051217490154980",
+   "https://www.m-i.kr/news/articleView.html?idxno=1364967"
+  ],
+  "verifiedAt": "2026-10-29"
  },
  {
   "name": "제14회 디아스포라영화제",
@@ -2481,7 +2496,7 @@
   "name": "2026 캠핑요리축제",
   "region": "경기",
   "city": "파주시",
-  "place": "경기도 파주시 문산읍 마정리 1153-3",
+  "place": "파주 평화누리캠핑장",
   "start": "2026-06-12",
   "end": "2026-06-14",
   "month": [
@@ -2489,9 +2504,14 @@
   ],
   "category": "문화",
   "desc": "2026 캠핑요리축제는 일간스포츠와 이데일리가 공동 주최하는 캠핑 체류형 요리 축제이다. 2026년 6월 12일부터 6월 14일까지 3일간 경기도 파주시 평화누리캠핑장에서 개최되며 전국의 캠핑 참가",
-  "confirmed": false,
+  "confirmed": true,
   "apiSource": "TourAPI «2026 캠핑요리축제» id 2812160",
-  "pending": true
+  "sources": [
+   "https://campingcook.isplus.com/",
+   "http://www.sukbakmagazine.com/news/articleView.html?idxno=68456",
+   "https://www.ktriptips.com/kor/festival/2812160"
+  ],
+  "verifiedAt": "2026-10-29"
  },
  {
   "name": "음성품바축제",

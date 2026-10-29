@@ -2252,5 +2252,57 @@
   "at": "2026-10-29",
   "name": "부산크리스마스트리문화축제",
   "note": "2026-10-29: 2026 미발표. 현 명칭 광복로 겨울빛 트리축제"
+ },
+ {
+  "at": "2026-10-29",
+  "name": "2026 캠핑요리축제",
+  "from": "2026-06-12~2026-06-14",
+  "to": "2026-06-12~2026-06-14",
+  "place": "파주 평화누리캠핑장",
+  "confirm": "교차확인(조사자 2곳 + 검증자 1곳, 기계 검증 통과)",
+  "sources": [
+   "https://campingcook.isplus.com/",
+   "http://www.sukbakmagazine.com/news/articleView.html?idxno=68456",
+   "https://www.ktriptips.com/kor/festival/2812160"
+  ]
+ },
+ {
+  "at": "2026-10-29",
+  "name": "임실N펫스타",
+  "from": "2026-05-01~2026-05-03",
+  "to": "2026-05-01~2026-05-03",
+  "place": "임실 오수의견관광지",
+  "confirm": "교차확인(조사자 2곳 + 검증자 1곳, 기계 검증 통과)",
+  "sources": [
+   "https://www.jjan.kr/article/20260410500037",
+   "https://www.kukinews.com/article/view/kuk202605040047",
+   "https://www.news1.kr/local/jeonbuk/6149820"
+  ]
+ },
+ {
+  "at": "2026-10-29",
+  "name": "홍천 산나물축제",
+  "from": "2026-05-01~2026-05-03",
+  "to": "2026-05-01~2026-05-03",
+  "place": "홍천 도시산림공원 토리숲",
+  "confirm": "교차확인(조사자 2곳 + 검증자 1곳, 기계 검증 통과)",
+  "sources": [
+   "https://www.fnnews.com/news/202605011132460396",
+   "https://www.kukinews.com/article/view/kuk202605020004",
+   "https://biz.heraldcorp.com/article/10729929"
+  ]
+ },
+ {
+  "at": "2026-10-29",
+  "name": "인천어린이과학관 과학으로 자라는 어린이",
+  "from": "2026-05-05~2026-05-05",
+  "to": "2026-05-05~2026-05-05",
+  "place": "인천어린이과학관",
+  "confirm": "교차확인(조사자 2곳 + 검증자 1곳, 기계 검증 통과)",
+  "sources": [
+   "https://www.kyeongin.com/article/1762586",
+   "https://www.mt.co.kr/amp/industry/2026/05/12/2026051217490154980",
+   "https://www.m-i.kr/news/articleView.html?idxno=1364967"
+  ]
  }
 ]
