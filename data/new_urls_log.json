@@ -357,5 +357,18 @@
   "urls": [
    "/jangteo/uiryeong/"
   ]
+ },
+ {
+  "d": "2026-10-31",
+  "n": 7,
+  "urls": [
+   "/tide/",
+   "/tide/gyeonggi-incheon/",
+   "/tide/chungnam/",
+   "/tide/jeonbuk/",
+   "/tide/jeonnam/",
+   "/tide/gyeongnam/",
+   "/tide/jeju-east/"
+  ]
  }
 ]
