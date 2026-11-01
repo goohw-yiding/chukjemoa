@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-01T07:06",
+ "updated": "2026-11-02T07:07",
  "posts": [
   {
    "id": "224460747356",
@@ -33,6 +33,28 @@
     "/"
    ],
    "fest": null
+  },
+  {
+   "id": "224461571637",
+   "title": "과메기 제철 2026 — 포항 구룡포에서 맛보는 법, 주말 무료 시식회와 걸어서 도는 하루 코스",
+   "date": "2026-11-01",
+   "cat": "제철 먹거리",
+   "url": "https://blog.naver.com/goohw/224461571637",
+   "targets": [
+    "/"
+   ],
+   "fest": null
+  },
+  {
+   "id": "224461564264",
+   "title": "청송사과축제 2026 — 11월 4~8일 용전천, 날짜별 공연·블랙이글스 에어쇼·체험 총정리",
+   "date": "2026-11-01",
+   "cat": "축제총정리",
+   "url": "https://blog.naver.com/goohw/224461564264",
+   "targets": [
+    "/"
+   ],
+   "fest": "cheongsongsagwachukje"
   },
   {
    "id": "224460415964",
@@ -395,7 +417,7 @@
    "targets": [
     "/"
    ],
-   "fest": "yeosubambada-bulkkotchukje"
+   "fest": null
   },
   {
    "id": "224455039080",
