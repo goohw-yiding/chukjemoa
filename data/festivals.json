@@ -2150,9 +2150,14 @@
   ],
   "category": "문화",
   "desc": "강원도 홍천군은 전국 시·군 중 가장 넓은 면적을 자랑하며, 전체 국토의 85%가 울창한 산림으로 둘러싸인 천혜의 자연 저장고이다. 특히 동쪽으로 갈수록 해발고도가 높아지는 독특한 지리적 특성은 청",
-  "confirmed": false,
+  "confirmed": true,
   "apiSource": "TourAPI «홍천 산나물축제» id 2597638",
-  "pending": true
+  "sources": [
+   "https://biz.heraldcorp.com/article/10729929",
+   "https://www.kukinews.com/article/view/kuk202605020004",
+   "https://www.kwnews.co.kr/article/20260429500433"
+  ],
+  "verifiedAt": "2026-11-02"
  },
  {
   "name": "제25회 의정부음악극축제",
@@ -2209,9 +2214,14 @@
   ],
   "category": "문화",
   "desc": "반려동물 클러스터 도시로 성장하고 있는 임실에서 개최되는 임실N펫스타는 도전적이고 실험적인 프로그램을 통해 반려동물 문화의 새로운 방향을 제시하는 대한민국 대표 반려동물 축제이다. 올해는 축제 장소",
-  "confirmed": false,
+  "confirmed": true,
   "apiSource": "TourAPI «임실N펫스타» id 2984556",
-  "pending": true
+  "sources": [
+   "https://www.jjan.kr/article/20260410500037",
+   "https://www.news1.kr/local/jeonbuk/6149820",
+   "https://www.kukinews.com/article/view/kuk202605040047"
+  ],
+  "verifiedAt": "2026-11-02"
  },
  {
   "name": "인천어린이과학관 과학으로 자라는 어린이",

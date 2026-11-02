@@ -2243,5 +2243,30 @@
   "at": "2026-11-02",
   "name": "인천어린이과학관 과학으로 자라는 어린이",
   "note": "2026-11-02: 근거 1곳 — 경인일보 kyeongin.com/article/1762586(2026-04-27) '5일 오전 10시~오후 5시' ✅. 2번째 근거 못 찾음"
+ },
+ {
+  "at": "2026-11-02",
+  "name": "임실N펫스타",
+  "from": "2026-05-01~2026-05-03",
+  "to": "2026-05-01~2026-05-03",
+  "confirm": "교차확인(조사자 2곳 + 검증자 1곳, 기계 검증 통과)",
+  "sources": [
+   "https://www.jjan.kr/article/20260410500037",
+   "https://www.news1.kr/local/jeonbuk/6149820",
+   "https://www.kukinews.com/article/view/kuk202605040047"
+  ]
+ },
+ {
+  "at": "2026-11-02",
+  "name": "홍천 산나물축제",
+  "from": "2026-05-01~2026-05-03",
+  "to": "2026-05-01~2026-05-03",
+  "place": "홍천 도시산림공원 토리숲",
+  "confirm": "교차확인(조사자 2곳 + 검증자 1곳, 기계 검증 통과)",
+  "sources": [
+   "https://biz.heraldcorp.com/article/10729929",
+   "https://www.kukinews.com/article/view/kuk202605020004",
+   "https://www.kwnews.co.kr/article/20260429500433"
+  ]
  }
 ]
