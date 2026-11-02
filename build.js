@@ -4024,6 +4024,23 @@ ${faq.map(([q, ans]) => `<p style="line-height:1.8"><b>${esc(q)}</b><br>${esc(an
     console.log('  🗑 유령 페이지 삭제 /jangteo/' + e.name + '/');
     gone++;
   }
+  // SWEEP_JT_DEAD 2026-11-03: 축제 상세(festival.js)는 이 블록보다 «먼저» 빌드돼 지난 빌드의 /jangteo/{시군}/ 폴더를 보고 링크를 건다.
+  //   이번 빌드에서 시·군 페이지가 얇아 제외되면(정선·구례·김천 등) 링크만 남아 끊긴다 → 여기서 죽은 링크의 <a> 만 벗기고 글자는 남긴다.
+  {
+    let swept = 0;
+    for (const dir of ['festival', 'blog']) {
+      const base = path.join(ROOT, dir); if (!fs.existsSync(base)) continue;
+      for (const e of fs.readdirSync(base, { withFileTypes: true })) {
+        if (!e.isDirectory()) continue;
+        const fp = path.join(base, e.name, 'index.html'); if (!fs.existsSync(fp)) continue;
+        const h = fs.readFileSync(fp, 'utf8'); if (!h.includes('href="/jangteo/')) continue;
+        const h2 = h.replace(/<a href="\/jangteo\/([^\/"]+)\/"[^>]*>([\s\S]*?)<\/a>/g, (m, s, t) =>
+          fs.existsSync(path.join(ROOT, 'jangteo', s, 'index.html')) ? m : (swept++, t));
+        if (h2 !== h) fs.writeFileSync(fp, h2);
+      }
+    }
+    if (swept) console.log('  🔗 죽은 /jangteo/{시군}/ 링크 ' + swept + '개 → 글자만 남김');
+  }
   console.log('✓ /jangteo/{시도}/ —', JANGTEO_SIDO_URLS.length, '페이지 (시장 6곳 이상인 시도만)' + (gone ? ` · 정리 ${gone}개` : ''));
 }
 

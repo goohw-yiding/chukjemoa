@@ -110,25 +110,13 @@
 _고아는 홈에서 BFS로 잰다. 「끝나서 링크를 뗀」 지난달 달력·종료 축제 621장은 정상이라 제외했다._
 | 항목 | 건수 |
 |---|---|
-| 끊긴 내부 링크 | **10** |
+| 끊긴 내부 링크 | 0 |
 | 홈에서 도달 불가(고아) | **49** |
 | 렌더 사고 | 0 |
 | 사이트맵 유령 URL | 0 |
 | canonical 누락 | 0 |
 | 인라인 JS 문법오류 | 0 |
 | 개발용 주석 유출 | 0 |
-
-🔴 끊긴 내부 링크 10건
-- /blog/festival-station-vs-terminal-data/ → /festival/chuncheonmakguksudakgalbichukje/
-- /festival/2026-tansojungnip-heuksalligi-bangnamhoe/ → /jangteo/gurye/
-- /festival/gimcheongimbapchukje/ → /jangteo/gimcheon/
-- /festival/gurye300ri-beotkkotchukje/ → /jangteo/gurye/
-- /festival/guryesansuyukkotchukje/ → /jangteo/gurye/
-- /festival/je12hoe-haneulsupgil-geotgichukje/ → /jangteo/jeongseon/
-- /festival/jeongseon-gukgayusanyahaeng/ → /jangteo/jeongseon/
-- /festival/jeongseonarirangje/ → /jangteo/jeongseon/
-- /festival/jeongseonmemiljeonbyeongchukje/ → /jangteo/jeongseon/
-- /festival/tangwangmunhwachukje/ → /jangteo/jeongseon/
 
 🟠 홈에서 도달 불가(고아) 49건
 - /blog/chukjemoa-weekly-vol7/
@@ -178,9 +166,8 @@ _고아는 홈에서 BFS로 잰다. 「끝나서 링크를 뗀」 지난달 달�
 
 ---
 ## 요약
-- 🔴 즉시 고칠 것: **2건**
+- 🔴 즉시 고칠 것: **1건**
   - 임박 재확인 후보 중 D-3 이내 긴급 1건 — 취소·연기·변경 여부 재검색 필요
-  - 끊긴 내부 링크 10건
 - 🟠 보강할 것: **11건**
   - 21일 넘게 갱신 안 된 파일 23개
   - 오일장 — 빈 시도 3개(서울,광주,세종)
