@@ -42,6 +42,17 @@ if ($dow -eq 'Monday' -or $dow -eq 'Thursday') {
 #   TourAPI's daily cap is per service (Kor/Eng/Jpn/Chs/Cht/Spn), and a capped response
 #   arrives looking like "no data", so batching them on one day is how datasets vanish.
 #   Self-healing: add a source, or leave the PC off for a week, and it catches up on its own.
+# 2026-11-02: /tide/ (tidal-flat calendar, tide.js) reads data/tide_fcst.json (KHOA tide forecast).
+#   The API gives ONE station x ONE day per call; _tide_collect.py skips dates it already has,
+#   so a weekly run adds ~7 days x 32 stations = ~220 calls (5-10 min, sequential, rate-limited).
+#   Mondays only. Window = today .. +56 days. Failure must not block the deploy (old data still renders).
+if ($dow -eq 'Monday') {
+  W "0b) tide forecast (Mon, today..+56d)"
+  $t0 = (Get-Date).ToString('yyyyMMdd'); $t1 = (Get-Date).AddDays(56).ToString('yyyyMMdd')
+  cmd /c "chcp 65001 >nul & set PYTHONIOENCODING=utf-8 & py -3 _tide_collect.py $t0 $t1" 2>&1 |
+    Select-Object -Last 1 | ForEach-Object { W "   $_" }
+}
+
 W "0c) slow sources (rotating, max 3/day)"
 & node _slow_fetch.js 2>&1 | ForEach-Object { W "   $_" }
 if ($LASTEXITCODE -ne 0) { W "   WARNING: a slow source failed and was reverted - see lines above" }

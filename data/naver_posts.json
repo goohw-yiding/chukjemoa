@@ -1,6 +1,127 @@
 {
- "updated": "2026-11-02T07:07",
+ "updated": "2026-11-03T07:07",
  "posts": [
+  {
+   "id": "224462591415",
+   "title": "포천 가볼만한곳 11월 — 산정호수, 한탄강 하늘다리, 비둘기낭 폭포, 아트밸리까지 9곳과 하루 코스",
+   "date": "2026-11-02",
+   "cat": "도시별 가볼만한곳",
+   "url": "https://blog.naver.com/goohw/224462591415",
+   "targets": [
+    "/"
+   ],
+   "fest": null
+  },
+  {
+   "id": "224462440973",
+   "title": "창녕장날 — 읍내 3·8일·남지 2·7일, 11월·12월 날짜와 우포늪·부곡온천 코스",
+   "date": "2026-11-02",
+   "cat": "오일장·장날",
+   "url": "https://blog.naver.com/goohw/224462440973",
+   "targets": [
+    "/"
+   ],
+   "fest": null
+  },
+  {
+   "id": "224462424636",
+   "title": "충남축제·충북축제 이번 주말 7곳 (11월 7일~8일) — 부여국화축제·홍성 남당항 대하축제",
+   "date": "2026-11-02",
+   "cat": "이번 주 축제·주말 나들이",
+   "url": "https://blog.naver.com/goohw/224462424636",
+   "targets": [
+    "/"
+   ],
+   "fest": "hongseongnamdanghang-daehachukje"
+  },
+  {
+   "id": "224462182026",
+   "title": "겨울 여행 어디로 갈까 — 1월에 평소보다 붐빈 곳은 22곳뿐, 화천·무주 vs 평창·정선",
+   "date": "2026-11-02",
+   "cat": "도시별 가볼만한곳",
+   "url": "https://blog.naver.com/goohw/224462182026",
+   "targets": [
+    "/blog/january-winter-travel-crowd-data/"
+   ],
+   "fest": null
+  },
+  {
+   "id": "224462166976",
+   "title": "청양장날 — 이번 주 충청 오일장(11/2~11/8) 날짜와 토요일 청양장·구기자 장터 소개",
+   "date": "2026-11-02",
+   "cat": "오일장·장날",
+   "url": "https://blog.naver.com/goohw/224462166976",
+   "targets": [
+    "/jangteo/cheongyang/"
+   ],
+   "fest": null
+  },
+  {
+   "id": "224462014769",
+   "title": "원주장날 — 이번 주 강원 오일장(11/2~11/8) 날짜와 토요일 원주 민속풍물시장·만두 골목 소개",
+   "date": "2026-11-02",
+   "cat": "오일장·장날",
+   "url": "https://blog.naver.com/goohw/224462014769",
+   "targets": [
+    "/jangteo/wonju/"
+   ],
+   "fest": null
+  },
+  {
+   "id": "224462002584",
+   "title": "남양주장날 — 이번 주 수도권 오일장(11/2~11/8) 날짜와 토요일 장현장·일요일 마석장 소개",
+   "date": "2026-11-02",
+   "cat": "오일장·장날",
+   "url": "https://blog.naver.com/goohw/224462002584",
+   "targets": [
+    "/jangteo/"
+   ],
+   "fest": null
+  },
+  {
+   "id": "224461982311",
+   "title": "하이원리조트 스키 시즌 2026 — 11월 말 개장 예정, 슬로프 19개·리프트권 요금·가는 길 미리 보기",
+   "date": "2026-11-02",
+   "cat": "도시별 가볼만한곳",
+   "url": "https://blog.naver.com/goohw/224461982311",
+   "targets": [
+    "/"
+   ],
+   "fest": null
+  },
+  {
+   "id": "224461964492",
+   "title": "굴 제철 2026 — 통영·보령 천북·여수 돌산 굴구이, 언제 가서 어디서 먹을까",
+   "date": "2026-11-02",
+   "cat": "제철 먹거리",
+   "url": "https://blog.naver.com/goohw/224461964492",
+   "targets": [
+    "/"
+   ],
+   "fest": null
+  },
+  {
+   "id": "224461571637",
+   "title": "과메기 제철 2026 — 포항 구룡포에서 맛보는 법, 주말 무료 시식회와 걸어서 도는 하루 코스",
+   "date": "2026-11-01",
+   "cat": "제철 먹거리",
+   "url": "https://blog.naver.com/goohw/224461571637",
+   "targets": [
+    "/"
+   ],
+   "fest": null
+  },
+  {
+   "id": "224461564264",
+   "title": "청송사과축제 2026 — 11월 4~8일 용전천, 날짜별 공연·블랙이글스 에어쇼·체험 총정리",
+   "date": "2026-11-01",
+   "cat": "축제총정리",
+   "url": "https://blog.naver.com/goohw/224461564264",
+   "targets": [
+    "/"
+   ],
+   "fest": "cheongsongsagwachukje"
+  },
   {
    "id": "224460747356",
    "title": "묵호 가볼만한곳 — 인생 생선구이 먹고 논골담길·묵호등대·도째비골까지, 날씨 좋은 날의 하루",
@@ -33,28 +154,6 @@
     "/"
    ],
    "fest": null
-  },
-  {
-   "id": "224461571637",
-   "title": "과메기 제철 2026 — 포항 구룡포에서 맛보는 법, 주말 무료 시식회와 걸어서 도는 하루 코스",
-   "date": "2026-11-01",
-   "cat": "제철 먹거리",
-   "url": "https://blog.naver.com/goohw/224461571637",
-   "targets": [
-    "/"
-   ],
-   "fest": null
-  },
-  {
-   "id": "224461564264",
-   "title": "청송사과축제 2026 — 11월 4~8일 용전천, 날짜별 공연·블랙이글스 에어쇼·체험 총정리",
-   "date": "2026-11-01",
-   "cat": "축제총정리",
-   "url": "https://blog.naver.com/goohw/224461564264",
-   "targets": [
-    "/"
-   ],
-   "fest": "cheongsongsagwachukje"
   },
   {
    "id": "224460415964",
@@ -417,7 +516,7 @@
    "targets": [
     "/"
    ],
-   "fest": null
+   "fest": "yeosubambada-bulkkotchukje"
   },
   {
    "id": "224455039080",
