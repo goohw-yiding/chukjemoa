@@ -58,6 +58,8 @@ const BRAND_LD = [
 // ⚠️ toISOString()은 UTC라 KST 오전 9시 이전에 빌드하면 날짜가 하루 밀린다(지난 축제가 남고 sitemap lastmod가 어제로 찍힘).
 //    그래서 KST로 고정해서 뽑는다.
 const TODAY = new Date(Date.now() + 9 * 3600 * 1000).toISOString().slice(0, 10);
+// 2026-11-03 구글 회복안 1차 정리 목록(layout 의 pruned · 사이트맵 NOINDEX_URLS 에서 쓴다)
+const PRUNE_NOINDEX = new Set((() => { try { return JSON.parse(require('fs').readFileSync(require('path').join(__dirname, 'data', 'prune_noindex.json'), 'utf8')).paths || []; } catch (e) { return []; } })());
 
 // ⭐ 데이터를 읽기 «전»에 위생 점검 겸 자동 수리를 돌린다.
 //    수집 스크립트 하나가 다시 어긋나도(2026-08-18에 네 곳에서 어긋나 있었다) 사이트엔 틀린 값이 안 나간다.
@@ -2209,6 +2211,11 @@ function layout(title, desc, urlPath, content, opts) {
   //   번체는 90일 13클릭·「韓國10月活動」 1위 — 되는 자리를 끄고 있었다. es 는 그대로 보류.
   //   기획서: 프로젝트 문서 claude/기획_2026-09-30_축제모아_중국어.md
   const SUSPEND_LANGS = ['es'];
+  // 🔻 2026-11-03 — 구글 품질 판정(10/23 급락) 회복안 1차 정리(장남 님 승인). data/prune_noindex.json 의 37장.
+  //   기준: 9/15 이전 생성 · 구글 90일 노출 0 · 네이버 28일 유입 0 · GA4 90일 검색·추천 유입 3회 미만
+  //   (8/19 교훈대로 «구글 아닌 검색엔진»까지 확인했다). 페이지는 살려 두고 색인만 뺀다 — 되돌리려면 paths 를 비운다.
+  //   ⚠️ 새 페이지(9/15 이후 생성)는 노출이 쌓일 시간이 없었으므로 이 목록에 넣지 않는다. 12/1 재판정.
+  const pruned = PRUNE_NOINDEX.has(urlPath);
   const suspendedLang = SUSPEND_LANGS.length > 0 &&
     new RegExp('^/(' + SUSPEND_LANGS.join('|') + ')/').test(urlPath);
   // 🌏 2026-09-14 — og:site_name 이 «전 페이지 한글 축제모아»였다. /en/ · /ja/ 페이지도 그랬다.
@@ -2376,7 +2383,7 @@ ${alts}
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="${escA(title)}">
 <meta name="twitter:description" content="${escA(desc)}">
-<meta name="twitter:image" content="${ogAbs(opts.ogImage || ogImageFor(urlPath), SITE)}">${(opts.noindex || forceNoindex || suspendedLang) ? '\n<meta name="robots" content="noindex, follow">' : ''}
+<meta name="twitter:image" content="${ogAbs(opts.ogImage || ogImageFor(urlPath), SITE)}">${(opts.noindex || forceNoindex || suspendedLang || pruned) ? '\n<meta name="robots" content="noindex, follow">' : ''}
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE}" crossorigin="anonymous"></script>
 ${BRAND_LD}
@@ -8711,7 +8718,7 @@ const urls = ['/', ...MONTHS.map(m => `/${m.key}/`), '/search/', ...(holidays.le
 const SUSPEND_LANG_URLS = urls.filter(u => /^\/(es)\//.test(u)); // 2026-09-30 tw·zh 재개
 // 🔻 2026-09-17: /advertise/ 도 색인에서 뺀다 — 광고주 모집면(GSC 90일 노출 0).
 //    /about/ · /contact/ · /privacy/ · /editorial/ 는 신뢰 페이지라 그대로 둔다.
-const NOINDEX_URLS = new Set([...SIDO_URLS, ...THEME_URLS, ...SUSPEND_LANG_URLS, '/advertise/']);
+const NOINDEX_URLS = new Set([...SIDO_URLS, ...THEME_URLS, ...SUSPEND_LANG_URLS, '/advertise/', ...PRUNE_NOINDEX]);
 // 끝난 축제(2026-08-18): 색인·사이트맵에서만 뺀다. 헤더검색에는 남긴다 —
 // 축제 이름을 아는 사람이 검색했는데 "없다"고 답하면 그건 우리 쪽 손실이다.
 const ENDED_FEST_URLS = new Set(FESTIVAL_URLS.noindex || []);
