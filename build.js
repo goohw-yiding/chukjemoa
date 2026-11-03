@@ -44,6 +44,8 @@ const BRAND_LD = [
     name: SITE_NAME, alternateName: ['Chukjemoa', 'chukjemoa.co.kr', 'Chukjemoa Festival Guide'],
     url: SITE + '/', logo: SITE + '/apple-touch-icon.png',
     email: 'goohw593@gmail.com',
+    // 2026-11-03 장남 님 지시: 운영 주체 = 개인 운영자 «장사하는남자 장남 구희완» (구글 품질 판정 대응 — 누가 만드는지 명시)
+    founder: { '@type': 'Person', name: '구희완', alternateName: '장사하는남자 장남', sameAs: ['https://blog.naver.com/goohw'] },
     description: '전국 축제·오일장(5일장) 일정을 공공데이터로 모아 월별·지역별로 정리하는 한국 축제 정보 사이트. 오일장 장날 계산과 무장애 여행 정보를 함께 제공한다.' },
   { '@context': 'https://schema.org', '@type': 'WebSite',
     name: SITE_NAME, alternateName: 'Chukjemoa', url: SITE + '/', inLanguage: 'ko-KR',
@@ -2327,7 +2329,7 @@ function layout(title, desc, urlPath, content, opts) {
     ? `<p>${SITE_NAME} — 전국 축제·오일장 일정 모음</p>
 <p>축제 일정은 주최 측 사정에 따라 변경될 수 있습니다. 방문 전 공식 홈페이지를 확인하세요.</p>
 <p><a href="/about/">소개</a> · <a href="/editorial/">편집 원칙</a> · <a href="/contact/">문의</a> · <a href="/advertise/">광고·제휴</a> · <a href="/privacy/">개인정보처리방침</a></p>
-<p>문의: goohw593@gmail.com</p>
+<p>운영: 구희완(장사하는남자 장남) · 문의: goohw593@gmail.com</p>
 <p class="srcnote">축제 정보 출처: 한국관광공사 TourAPI 등 <a href="https://www.data.go.kr/" target="_blank" rel="noopener nofollow">공공데이터포털</a> 개방 데이터. 최종 갱신 ${TODAY}.<br>일정·요금은 주최 측 사정으로 변경될 수 있으니 방문 전 주최 측 공식 채널에서 확인하시기 바랍니다. 잘못된 정보는 <a href="/contact/">문의</a>로 알려주시면 확인 후 정정합니다.</p>
 <p>© 2026 ${SITE_NAME}</p>`
     : FOOTERS[lang];
@@ -8511,8 +8513,12 @@ const TRIP_URLS = require('./trip.js').build({ ROOT, layout, writePage, SITE_NAM
 </ul>
 <p>그래도 틀립니다. 수집·검증 기준과 우리가 하지 않는 것은 <a href="/editorial/">편집 원칙</a>에 더 자세히 적어 두었습니다.</p>
 
+<h2 class="sec">만드는 사람</h2>
+<p>축제모아는 <b>개인 운영자 구희완(장사하는남자 장남)</b>이 만들고 운영합니다. 데이터 수집·정리는 프로그램의 도움을 받지만, 어떤 정보를 싣고 무엇을 빼는지는 운영자가 직접 정하고 책임집니다. 직접 다녀온 길과 장터 이야기는 운영자의 <a href="https://blog.naver.com/goohw" rel="noopener" target="_blank">네이버 블로그 «축제모아 · 전국 축제 여행 기록»</a>에 따로 적고 있습니다.</p>
+<p>연락: <a href="mailto:goohw593@gmail.com">goohw593@gmail.com</a> · 잘못된 정보 제보는 <a href="/contact/">문의 페이지</a>로 받습니다.</p>
+
 <h2 class="sec">이용 안내</h2>
-<p>모든 정보는 무료이며 회원가입이 필요 없습니다. 사이트 운영은 광고와 상품 판매 수익으로 이루어집니다. 일부 상품 링크는 쿠팡 파트너스 활동의 일환으로 수수료를 제공받으며, 해당 위치에 그 사실을 표시합니다. 축제모아를 운영하는 쿠웅샵에서 직접 판매하는 상품도 같은 방식으로 구분해 표시합니다.</p>
+<p>모든 정보는 무료이며 회원가입이 필요 없습니다. 사이트 운영은 광고와 상품 판매 수익으로 이루어집니다. 일부 상품 링크는 쿠팡 파트너스 활동의 일환으로 수수료를 제공받으며, 해당 위치에 그 사실을 표시합니다. 운영자가 함께 운영하는 쇼핑몰 쿠웅샵에서 직접 판매하는 상품도 같은 방식으로 구분해 표시합니다.</p>
 <p>일정 오류나 누락을 발견하시면 <a href="/contact/">문의 페이지</a>로 알려주세요. 확인 후 신속히 반영하겠습니다. 편집·검수 기준은 <a href="/editorial/">편집 원칙</a>에, 개인정보 처리에 관한 사항은 <a href="/privacy/">개인정보처리방침</a>에서 확인하실 수 있습니다.</p>
 </article></div></main>`;
   writePage('about', layout(
