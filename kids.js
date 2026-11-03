@@ -45,7 +45,7 @@ function build({ ROOT, layout, writePage, SITE_NAME }) {
     const k = t.replace(/\s|제\s*\d+\s*회|20\d\d/g, '');
     if (seen.has(k)) return null; seen.add(k);
     const fi = intro[String(x.id)] || {};
-    let fee = strip(fi.fee).replace(/(^|\s)-\s*/g, '$1· ').replace(/^·\s*/, '').trim();
+    let fee = strip(fi.fee).replace(/\s*-\s+/g, ' · ').replace(/^·\s*/, '').trim();
     if (fee.length > 80) fee = fee.slice(0, 78).replace(/[\s·,]+[^\s·,]*$/, '') + ' … (자세한 요금은 주최 측)';
     const free = /^무료/.test(fee) ? 'free' : fee ? 'paid' : 'unk';
     return { id: String(x.id), t: t.replace(/^20\d\d\s*/, ''), s: x.start, e: x.end, sido: x.sido, sig: x.sigungu || '', tel: strip(x.tel), place: strip(fi.place).slice(0, 40), time: strip(fi.playtime).slice(0, 50), fee, free, sen: sen ? sen.slice(0, 160) : '', slug: slugOf[String(x.id)] || '', img: String(x.img || '').replace(/^http:/, 'https:') };

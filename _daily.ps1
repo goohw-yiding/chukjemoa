@@ -63,6 +63,13 @@ if ($LASTEXITCODE -ne 0) { W "   WARNING: a slow source failed and was reverted 
 W "1) volume fetch (naver search-ad, new only / full every 30d)"
 cmd /c "chcp 65001 >nul & set PYTHONIOENCODING=utf-8 & py -3 _fest_volume.py 420" 2>&1 |
   Select-Object -First 3 | ForEach-Object { W "   $_" }
+# 2026-11-03: in-season volume estimate (DataLab month ratio x current volume) -> data/fest_peak.json.
+#   planner.js uses it so winter festivals are scheduled 6 weeks early instead of the week before.
+if ($dow -eq 'Monday') {
+  W "1a) festival peak-season volume (Mon)"
+  cmd /c "chcp 65001 >nul & set PYTHONIOENCODING=utf-8 & py -3 _fest_peak.py" 2>&1 |
+    Select-Object -First 1 | ForEach-Object { W "   $_" }
+}
 
 # 2026-10-07: jangteo_volume.json (27d old) / museum_volume.json (25d old) had NO scheduled writer.
 # Jangteo TOP5 short (Thu) and market/museum ordering read them. Refresh weekly on Sunday.

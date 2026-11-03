@@ -1,4 +1,9 @@
-영어 주간(10/28) 커밋 메시지 정정 — 직전 fed80ef3 은 일본어 세션 메시지가 잘못 붙었지만 실제 내용은 영어 10/28 회차: 사이트 전체 구글 급감(10/23~) 확인·목표 400→200 재설정 · 여수밤바다 불꽃 2026 장소(엑스포장)·셔틀 note · 청송사과 desc · 날짜 대조 8건 · 끝난 축제 교정 3건 정리 · 한글 원제 오매칭 1건 숨김
+ja 주간(11/3): 왕궁 무료개방 안내·일본어 이름 2·날짜 대조 10·公式訳なし 판정 수정
+
+- /ja/palace/: Korea Grand Festival 기간(10/29~11/15) 4대궁·종묘·조선왕릉 무료 안내(궁능유적본부 9/22 공지, 후원 특별관람·휴관일 제외). 11/16 빌드부터 자동으로 빠짐
+- festivals_intl_checked: 10건(맞음 5: 수문장교대·광안리드론쇼·남산봉수·크리스마스빌리지부산·코리아그랜드페스티벌 / 미확인 5: 숭례문파수·왕가의산책·페인터즈·광화문마켓·최남단방어)
+- festivals_intl_fix: name.ja クリスマスビレッジ釜山·コリアグランドフェスティバル, 588175 official.ja
+- intl.js: fix 의 official:{ja:true} 면 「公式訳なし」 안 붙임(浦項国際光祭り — 관광공사 일본어 표기)
 
 Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
-Claude-Session: https://claude.ai/code/session_012MFxCLdRhGY7VsF39anb23
+Claude-Session: https://claude.ai/code/session_012MFxCKgqo7xLDDEwySpQWT
