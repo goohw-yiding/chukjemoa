@@ -278,7 +278,7 @@ function build(ctx) {
           if (f._kv === 'confirmed' && ((x.start && d8(x.start) !== String(f.start)) || (x.end && d8(x.end) !== String(f.end))))
             console.log(`⚠️ 날짜 충돌 — ${f.title}: 한국어 교차확정 ${f.start}~${f.end} ≠ 외국어 교정파일 ${x.start}~${x.end} (교정파일 적용됨, 확인 필요)`);
           f._ck = orig; if (x.start) f.start = d8(x.start); if (x.end) f.end = d8(x.end); n2++; }
-        if (x.name) f._name = x.name;
+        if (x.name) f._name = x.name; if (x.official) f._official = x.official; // official:{ja:true} = 관광공사 등 공식 표기를 옮긴 이름(「公式訳なし」 안 붙임)
       }
     });
     if (n1 || n2) console.log(`🗓 외국어 달력 날짜 교정 — 공식확인 기록 ${n1}건 · 외국어 교정파일 ${n2}건`);
@@ -730,7 +730,7 @@ ${/* 📍 /ja/places/ 는 81만 자인데 구글이 «한 번도» 못 봤다(cr
         const sd = String(f.start), ed = String(f.end);
         const dd = `${sd.slice(0, 4)}.${sd.slice(4, 6)}.${sd.slice(6, 8)} – ${ed.slice(4, 6)}.${ed.slice(6, 8)}`;
         return `<li><div class="t">${esc(name)} <span class="ic-kr">${esc(f.title)}</span></div>
-<div class="m">${dd}${reg ? ' · ' + esc(reg) : ''}${o ? '' : ' · ' + S.cal.noTrans}</div>
+<div class="m">${dd}${reg ? ' · ' + esc(reg) : ''}${o || (f._official && f._official[lang]) ? '' : ' · ' + S.cal.noTrans}</div>
 <a class="map" href="${kakao(f.title, f.x, f.y)}" target="_blank" rel="noopener">${S.cal.mapLink}</a></li>`;
       }).join('');
 

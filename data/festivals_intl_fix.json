@@ -39,7 +39,10 @@
     },
     "src_zh": "韓國觀光公社 중문 표기 그대로(festivals_tw 1055409 · festivals_zh 1236482)",
     "src_ja": "韓國觀光公社 일본어 표기 그대로(ID 1226767 「浦項国際光祭り（포항국제불빛축제）」) · 2026-11-19~21 재확인(위키트리 10/27, 21일 국제불꽃쇼에 프랑스·일본팀)",
-    "at_ja": "2026-10-27"
+    "at_ja": "2026-10-27",
+    "official": {
+      "ja": true
+    }
   },
   "952988": {
     "name": {
@@ -164,5 +167,23 @@
     },
     "src_zh": "뜻 번역 — 공식 중문 명칭 없음"
   },
-  "_readme": "외국어(중국어·일본어·스페인어) 달력 교정 — intl.js 가 매일 빌드 때 읽는다. {TourAPI 국문 id: {start:'YYYY-MM-DD', end, src:'공식 근거 URL', at:'확인일', cancel:true(취소·연기), name:{tw,zh,ja,es}(공식 번역이 없을 때 붙이는 이름)}}. 공식 발표로 확인한 것만 넣는다. 영어는 festivals_en_fix.json 이 따로 있다."
+  "_readme": "외국어(중국어·일본어·스페인어) 달력 교정 — intl.js 가 매일 빌드 때 읽는다. {TourAPI 국문 id: {start:'YYYY-MM-DD', end, src:'공식 근거 URL', at:'확인일', cancel:true(취소·연기), name:{tw,zh,ja,es}(공식 번역이 없을 때 붙이는 이름)}}. 공식 발표로 확인한 것만 넣는다. 영어는 festivals_en_fix.json 이 따로 있다.",
+  "3437916": {
+    "name": {
+      "ja": "クリスマスビレッジ釜山"
+    },
+    "src_ja": "공식 일본어 명칭 없음 — 행사명 'Christmas Village Busan' 음역. 2026-11-26~12-25 확인(시빅뉴스 10/26)",
+    "at_ja": "2026-11-03",
+    "src": "https://www.civicnews.com/news/articleView.html?idxno=40523",
+    "at": "2026-11-03"
+  },
+  "4134331": {
+    "name": {
+      "ja": "コリアグランドフェスティバル"
+    },
+    "src_ja": "공식 일본어 명칭 미확인 — 영문 'Korea Grand Festival' 음역(일본어 검색어 「コリアグランドフェスティバル」 실재). 2026-10-29~11-15 확인",
+    "at_ja": "2026-11-03",
+    "src": "https://www.traveltimes.co.kr/news/articleView.html?idxno=500625",
+    "at": "2026-11-03"
+  }
 }
