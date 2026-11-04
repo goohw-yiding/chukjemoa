@@ -1,0 +1,5 @@
+r = open('data/festivals_en_fix.json', encoding='utf-8', newline='').read()
+i = r.find('"1853185"')
+print(repr(r[:60])); print(repr(r[i-12:i+20]))
+r2 = open('data/festivals_en_checked.json', encoding='utf-8', newline='').read()
+print(repr(r2[:80]))

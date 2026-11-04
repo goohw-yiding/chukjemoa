@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-11-04T13:53",
+ "generatedAt": "2026-11-05T07:06",
  "stats": {
   "en": {
    "total": 298,
@@ -109,7 +109,6 @@
     "ko": "부산국제록페스티벌",
     "kv": "confirmed",
     "signals": [
-     "img",
      "geo",
      "date"
     ],
@@ -143,8 +142,7 @@
     "signals": [
      "img",
      "tel",
-     "geo",
-     "date"
+     "geo"
     ],
     "apiId": "386053"
    },
@@ -605,8 +603,7 @@
     "signals": [
      "img",
      "tel",
-     "geo",
-     "date"
+     "geo"
     ],
     "apiId": "386053"
    },
@@ -816,7 +813,6 @@
     "ko": "부산국제록페스티벌",
     "kv": "confirmed",
     "signals": [
-     "img",
      "geo",
      "date"
     ],
@@ -1218,8 +1214,7 @@
     "signals": [
      "img",
      "tel",
-     "geo",
-     "date"
+     "geo"
     ],
     "apiId": "386053"
    },
@@ -1276,7 +1271,6 @@
     "ko": "부산국제록페스티벌",
     "kv": "confirmed",
     "signals": [
-     "img",
      "geo",
      "date"
     ],
@@ -1593,8 +1587,7 @@
     "signals": [
      "img",
      "tel",
-     "geo",
-     "date"
+     "geo"
     ],
     "apiId": "386053"
    },
@@ -1653,7 +1646,6 @@
     "ko": "부산국제록페스티벌",
     "kv": "confirmed",
     "signals": [
-     "img",
      "geo",
      "date"
     ],
