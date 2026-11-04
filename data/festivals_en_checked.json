@@ -1,12 +1,12 @@
 {
   "697197": { "title": "Jinju Namgang Yudeung Festival", "date": "2026-09-30", "result": "맞음 10/3~18", "src": "진주시 발표(다음뉴스 7/30)" },
-  "1057670": { "title": "Baekje Cultural Festival", "date": "2026-09-30", "result": "맞음 10/3~11", "src": "baekjeculturalfestival.kr 공식" },
-  "3345888": { "title": "Gangnam Festival", "date": "2026-09-30", "result": "맞음 10/3~5, 도산대로", "src": "서울시 펀서울 festacode=610" },
+  "1057670": {"title": "Baekje Cultural Festival", "date": "2026-11-04", "result": "2026 끝남(10/3~11, 9/30 공식 확인) — 2027 발표 대기", "src": "baekjeculturalfestival.kr (9/30 대조)"},
+  "3345888": {"title": "Gangnam Festival", "date": "2026-11-04", "result": "2026 끝남(10/3~5, 9/30 확인) — 2027 발표 대기", "src": "서울시 대표 축제 (9/30 대조)"},
   "697441": { "title": "Jeongseon Arirang Festival", "date": "2026-09-30", "result": "맞음 10/1~4", "src": "9/30 한국어 세션 공식 대조(커밋 3fdbea1f)" },
-  "3310546": { "title": "Tamna Culture Festival", "date": "2026-09-30", "result": "교정 10/17~21", "src": "제주도·제주예총 발표" },
-  "3307792": { "title": "Sejong Hangeul Festival", "date": "2026-09-30", "result": "교정 10/9~11", "src": "세종시 발표" },
-  "1385298": { "title": "Busan Fireworks Festival", "date": "2026-09-30", "result": "교정 11/7", "src": "busanfireworks.com" },
-  "2561910": { "title": "Goyang Autumn Flower Festival", "date": "2026-09-30", "result": "맞음 10/1~11", "src": "고양시 발표(머니투데이 9/28 등)" },
+  "3310546": {"title": "Tamna Culture Festival", "date": "2026-11-04", "result": "2026 끝남(10/17~21, kv=confirmed) — 2027 발표 대기", "src": "제주시·제주예총 발표 (9/30 대조)"},
+  "3307792": {"title": "Sejong Hangeul Festival", "date": "2026-11-04", "result": "2026 끝남(10/9~11, 9/30 교정) — 2027 발표 대기", "src": "세종시 발표 (9/30 대조)"},
+  "1385298": {"title": "Busan Fireworks Festival", "date": "2026-11-04", "result": "한국어 3곳 확정(kv=confirmed) 11/7 — 맞음", "src": "busanfireworks.com · data/festival_bridge.json"},
+  "2561910": {"title": "Goyang Autumn Flower Festival", "date": "2026-11-04", "result": "2026 끝남(10/1~11, 9/30 확인) — 2027 발표 대기", "src": "고양시 발표 (9/30 대조)"},
   "2588597": { "title": "Imsil N Cheese Festival", "date": "2026-09-30", "result": "맞음 10/8~11", "src": "국제뉴스 idxno=3689661(임실군)" },
   "4039267": { "title": "King Jeongjo's Royal Parade", "date": "2026-09-30", "result": "맞음 10/4 (안양→수원→화성 12.1km)", "src": "수원시·수원문화재단(시사저널 9/4)" },
   "4088990": { "title": "Gumi Ramyun Festival", "date": "2026-09-30", "result": "맞음 11/6~8 구미역 일원", "src": "구미시(코리아유니온뉴스 2288294)" },
@@ -46,5 +46,11 @@
   "3396183": {"title": "Yeosu Night Sea Fireworks Festival", "date": "2026-10-28", "result": "맞음 10/31 여수세계박람회장 — note·desc 추가", "src": "전국매일신문 2026-10-25 idxno=1304655 · 남해안신문 2026-10-26 idxno=93831 (여수시)"},
   "3337796": {"title": "International Ki Sports Festival", "date": "2026-10-28", "result": "미확인 — 2026 개최 발표 못 찾음(검색 2회)", "src": "웹 검색 2026-10-28"},
   "752980": {"title": "Chungjang Street Festival of Recollection", "date": "2026-10-28", "result": "한국어 3곳 확정(kv=confirmed) 10/7~11, 끝남 처리 맞음 — 대조 생략", "src": "data/festival_bridge.json links.en"},
-  "716565": {"title": "Gyeongnam Goseong Dinosaur World Expo", "date": "2026-10-28", "result": "맞음 9/22~11/1(41일) 당항포관광지", "src": "뉴시스 2026-07-30 NISX20260730_0003729797 · 시대일보 2026-09-08"}
+  "716565": {"title": "Gyeongnam Goseong Dinosaur World Expo", "date": "2026-10-28", "result": "맞음 9/22~11/1(41일) 당항포관광지", "src": "뉴시스 2026-07-30 NISX20260730_0003729797 · 시대일보 2026-09-08"},
+  "3366992": {"title": "Goesan Gimjang Festival", "date": "2026-11-04", "result": "맞음 11/5~8 10~20시 괴산유기농엑스포광장 — note·desc 추가", "src": "문체부 축제 목록 pSeq=11907"},
+  "4116386": {"title": "Beautysum Suwon", "date": "2026-11-04", "result": "맞음 11/5~7 수원컨벤션센터 — note·desc 추가", "src": "스페셜타임스 2026-10-30 idxno=480063 (수원시)"},
+  "1855864": {"title": "Pohang Steel Art Festival", "date": "2026-11-04", "result": "맞음 10/24~11/15 — note·desc 추가", "src": "경북매일 2026-10-19 article/20261018500697"},
+  "4110303": {"title": "Moonlit Night Exercise Busan Challenge", "date": "2026-11-04", "result": "맞음 9/19~11/7 주말 7회 — note·desc 추가", "src": "부산시 2026-09-02 nbtnewsBU/1752265"},
+  "4126454": {"title": "Sium Sium Morning", "date": "2026-11-04", "result": "미확인 — 강동구 발표 못 찾음(검색 2회)", "src": "웹 검색 2026-11-04"},
+  "4066947": {"title": "Peace On: Dam", "date": "2026-11-04", "result": "미확인 — 2026 개최 발표 못 찾음(검색 2회)", "src": "웹 검색 2026-11-04"}
 }

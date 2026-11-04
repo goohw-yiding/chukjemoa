@@ -81,13 +81,6 @@
   "desc": "Nov 4–8, 2026 · Cheongsong. The 20th Cheongsong Apple Festival along Yongjeoncheon Stream in Cheongsong-eup, at the peak of apple harvest season.",
   "src": "경북매일 2026-09-28 article/20260928500366 (11/4~8 청송읍 용전천 일원, 주제 「지금 청송! 사과로 물들다」) + 2026-10-18 article/20261018500281 (제20회). 2026-10-28 영어 세션"
  },
- "1853185": {
-  "note": "The 23rd Iksan Chrysanthemum Festival (billed as 'Ten Million Chrysanthemums') runs Oct 23 – Nov 1, 2026 at Jungang Sports Park, Sinheung Neighborhood Park and around Iksan Station; the chrysanthemum sculptures stay on display until Nov 8. After dark there are interactive light installations and a chrysanthemum light tunnel, with EDM parties and circus shows planned for the evenings and fireworks on Oct 31. A sweet-potato zone lets children dig up and carry sweet potatoes. Opening hours, admission and parking were not given in the city's announcement.",
-  "noteUntil": "20261101",
-  "noteFoot": "Source: Inews24, Oct 14, 2026 (Iksan City press conference). Checked Oct 21, 2026.",
-  "desc": "Oct 23 – Nov 1, 2026 · Iksan. Chrysanthemum displays at Jungang Sports Park and around Iksan Station, a light tunnel at night and fireworks on Oct 31.",
-  "src": "아이뉴스24 2026-10-14 inews24.com/view/2014943 (익산시 기자회견: 제23회 10/23~11/1 중앙체육공원·신흥근린공원·익산역 일원, 조형물 11/8까지, 야간 인터랙티브 조명·국화빛 터널, EDM·동춘서커스, 10/31 불꽃, 고구마 놀이터). 2026-10-21 영어 세션"
- },
  "2394700": {
   "ko": {
    "title": "전주 국가유산 야행",
@@ -164,13 +157,6 @@
   "noteFoot": "Source: Han River Watershed Management Committee official event page, checked Oct 7, 2026.",
   "src": "hanriver.or.kr/ecology/20110_info.php (2026 한강수계 걷기행사: 9/19 가평역·10/10 한탄강 유네스코 지질공원·11/7 춘천역, 09~14시, 8세+, 무료, 통합생태체험시스템 신청) 2026-10-07 확인"
  },
- "3396183": {
-  "note": "On Oct 31, 2026 the fireworks move to the Yeosu Expo site (Deokchung-dong, next to Yeosu-EXPO Station), which is a side venue of the 2026 Yeosu World Island Expo. An overseas pyrotechnics team stages an island-themed show. On the day, extra shuttle buses run between the Island Expo main venue (Dolsan Jinmo area) and Yeosu-EXPO Station; the city asks visitors to check the official festival site for show times, traffic control and parking.",
-  "noteUntil": "20261031",
-  "noteFoot": "Sources: Yeosu City announcement as reported by Jeonguk Maeil Sinmun (Oct 25, 2026) and Namhaean Sinmun (Oct 26, 2026). Checked Oct 28, 2026.",
-  "desc": "Oct 31, 2026 · Yeosu. Night fireworks over the sea at the Yeosu Expo site, next to Yeosu-EXPO Station. Extra shuttle buses run on the day.",
-  "src": "jeonmae.co.kr idxno=1304655 (2026-10-25: 31일 덕충동 여수세계박람회장, 섬박람회 부행사장, 진모지구 제외, 섬박람회 주행사장↔여수엑스포역 셔틀 증차, 교통·주차는 누리집) + nhanews.com idxno=93831 (2026-10-26: 해외 연출팀 '섬' 주제, 안전인력 570여 명). 시간은 기사에 없어 안 씀. 2026-10-28 영어 세션"
- },
  "3536904": {
   "ko": {
    "title": "오슬로우 빈티지 마켓",
@@ -205,5 +191,10 @@
   "noteFoot": "Checked against the official site gumiramyun.com on Nov 4, 2026.",
   "src": "https://www.gumiramyun.com/ (축제 정보 모아보기·셔틀버스 이용 안내)"
  },
- "_readme": "영어 축제 수동 교정(2026-09-30~, 영어 세션). TourAPI 영문 DB(festivals_en.json)는 매일 자동 갱신으로 덮이므로 교정은 여기에만 둔다. en-fix.js 가 build.js·festival-en.js 에서 적용. ko: {title,addr} = 지도 복사 칸 한글 원제·주소 지정, null = 좌표만 겹친 «다른 축제» 이름이 붙던 것을 숨김. 날짜는 주최측 공식 발표로만 고친다(src 필수). 공식 날짜가 TourAPI 영문과 같아지면 이 항목을 지운다."
+ "_readme": "영어 축제 수동 교정(2026-09-30~, 영어 세션). TourAPI 영문 DB(festivals_en.json)는 매일 자동 갱신으로 덮이므로 교정은 여기에만 둔다. en-fix.js 가 build.js·festival-en.js 에서 적용. ko: {title,addr} = 지도 복사 칸 한글 원제·주소 지정, null = 좌표만 겹친 «다른 축제» 이름이 붙던 것을 숨김. 날짜는 주최측 공식 발표로만 고친다(src 필수). 공식 날짜가 TourAPI 영문과 같아지면 이 항목을 지운다.",
+ "3366992": {"note": "The 2026 Goesan Gimjang Festival (gimjang is the late-autumn custom of making a season's worth of kimchi) runs Nov 5–8, 10:00–20:00, around the Goesan Organic Expo Plaza.", "noteUntil": "20261108", "noteFoot": "Source: Ministry of Culture, Sports and Tourism festival listing (Goesan County). Checked Nov 4, 2026.", "desc": "Nov 5–8, 2026 · Goesan, North Chungcheong. Kimchi-making (gimjang) festival around the Goesan Organic Expo Plaza, open 10:00–20:00.", "src": "mcst.go.kr festivalView pSeq=11907: 2026.11.5~11.8 10:00~20:00 괴산유기농엑스포광장 일원. 2026-11-04 영어 세션"},
+ "4116386": {"note": "BeautySum Suwon 2026 is a beauty expo hosted by Suwon City. It runs Nov 5–7 in the 1st-floor exhibition hall of Suwon Convention Center (Gwanggyo).", "noteUntil": "20261107", "noteFoot": "Source: Suwon City announcement as reported by Special Times (Oct 30, 2026). Checked Nov 4, 2026.", "desc": "Nov 5–7, 2026 · Suwon. Beauty expo hosted by Suwon City in the 1st-floor exhibition hall of Suwon Convention Center, Gwanggyo.", "src": "specialtimes.co.kr idxno=480063 (2026-10-30): 11/5~7 수원컨벤션센터 1층 전시홀, 주최 수원시, 주관 수원시·수원컨벤션센터·메쎄이상. 2026-11-04 영어 세션"},
+ "1855864": {"note": "The 2026 Pohang Steel Art Festival runs for 23 days, Oct 24 – Nov 15. Works and programs are spread across the city: Dongbin Culture Warehouse 1969, Songdo Beach, Kkumteul-ro, Jungang Shopping Arcade and Jukdo Market.", "noteUntil": "20261115", "noteFoot": "Source: Kyongbuk Maeil (Oct 19, 2026). Checked Nov 4, 2026.", "desc": "Oct 24 – Nov 15, 2026 · Pohang. Steel art installations across the city, from Songdo Beach and Dongbin Culture Warehouse 1969 to Jukdo Market.", "src": "kbmaeil.com article/20261018500697 (2026-10-19): 10/24~11/15 23일간, 동빈문화창고1969·송도해수욕장·꿈틀로·중앙상가·죽도시장 등. 2026-11-04 영어 세션"},
+ "4110303": {"note": "The Moonlit Night Exercise Busan Challenge runs on weekends from Sep 19 to Nov 7, 2026 (seven sessions in total), at Busan Citizens Park, Bukhang Waterfront Park and Hwamyeong Ecological Park.", "noteUntil": "20261107", "noteFoot": "Source: Busan Metropolitan City news (Sep 2, 2026). Checked Nov 4, 2026.", "desc": "Sep 19 – Nov 7, 2026 · Busan. Weekend evening workout sessions (seven in total) at Busan Citizens Park, Bukhang Waterfront Park and Hwamyeong Ecological Park.", "src": "busan.go.kr nbtnewsBU/1752265 (2026-09-02): 9/19~11/7 주말 총 7회, 부산시민공원·북항친수공원·화명생태공원. 회차별 장소·시간은 원문에 없어 안 씀. 2026-11-04 영어 세션"},
+ "3562082": {"ko": null, "src": "「2026 용골 댄스 페스타」가 좌표만으로 붙음(다른 행사) — 숨김. 2026-11-04 영어 세션"}
 }
