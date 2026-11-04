@@ -65,11 +65,22 @@ const INTRO_MANUAL = (() => {
   try { return JSON.parse(fs.readFileSync(path.join(__dirname, 'data', 'fest_intro_manual.json'), 'utf8')); }
   catch (e) { return {}; }
 })();
+// 🆕 2026-11-04 구미라면축제: TourAPI 개요에 «전년도(2025) 내용» 표시가 있으면 프로그램·운영시간도 작년 것이다
+//    (구미라면 2025 프로그램·«10:00~22:00» 이 2026 것처럼 나갔다 — 실제 2026은 11:00~21:00/10:00~21:00/10:00~19:00).
+//    → 손으로 확인한 2026 항목(force 또는 작년 표시)이 있으면 그것이 이긴다. 없으면 «지난해 기준»이라고 밝힌다.
+const isStaleOv = f => /전년도|작년도|업데이트\s*중|20\d\d년\)?\s*축제\s*내용/.test(String((f && f.ov) || ''));
 const introOf = f => {
   const base = INTRO[String(f && f.id)] || {};
   const m = f && INTRO_MANUAL[f._slug];
-  if (!m || !m.src || !m.src.length) return base;
-  return Object.assign({}, base, {
+  // 끝난 축제는 «지난 회차 기준» 문구가 이미 붙으므로 작년 표시를 따로 달지 않는다(올해 회차가 남은 축제만)
+  const T8 = new Date(Date.now() + 9 * 3600e3).toISOString().slice(0, 10).replace(/-/g, '');
+  const stale = isStaleOv(f) && String((f && f.end) || '').replace(/-/g, '') >= T8;
+  if (!m || !m.src || !m.src.length) return stale && (base.program || base.playtime) ? Object.assign({}, base, { _stale: true }) : base;
+  const win = m.force || stale;
+  return Object.assign({}, base, win ? {
+    program: m.program || base.program, fee: m.fee || base.fee, playtime: m.playtime || base.playtime,
+    place: m.place || base.place, shuttle: m.shuttle, parking: m.parking, _manualSrc: m.src, _stale: !m.program,
+  } : {
     program: base.program || m.program, fee: base.fee || m.fee, playtime: base.playtime || m.playtime,
     _manualSrc: base.program ? null : m.src,
   });
@@ -453,9 +464,11 @@ ${(() => {
       const q = introOf(f);
       const rows = [];
       if (q.fee) rows.push(`<dt>이용요금</dt><dd>${esc(q.fee)}</dd>`);
-      if (q.playtime) rows.push(`<dt>운영시간</dt><dd>${esc(q.playtime)}</dd>`);
+      if (q.playtime) rows.push(`<dt>운영시간</dt><dd>${esc(q.playtime)}${q._stale && !q._manualSrc ? ' <span style="color:#b45309">(지난해 기준 — 올해 시간은 주최 측 확인)</span>' : ''}</dd>`);
       // 행사장이 주소에 이미 들어 있으면 같은 말을 두 번 쓰지 않는다
       if (q.place && !String(f.addr || '').includes(q.place)) rows.push(`<dt>행사장</dt><dd>${esc(q.place)}</dd>`);
+      if (q.shuttle) rows.push(`<dt>셔틀버스</dt><dd>${esc(q.shuttle)}</dd>`);
+      if (q.parking) rows.push(`<dt>주차</dt><dd>${esc(q.parking)}</dd>`);
       if (q.age) rows.push(`<dt>관람연령</dt><dd>${esc(q.age)}</dd>`);
       if (q.host) rows.push(`<dt>주최</dt><dd>${esc(q.host)}${q.org && q.org !== q.host ? ` <span style="color:#9ca3af">· 주관 ${esc(q.org)}</span>` : ''}</dd>`);
       return rows.join('\n');
@@ -506,6 +519,7 @@ ${(() => {
       return `<h2 class="sec">${esc(f.title)}에서 하는 것</h2>
 <p class="note" style="margin:-2px 0 10px">${q._manualSrc
   ? `주최 측 공식 발표·보도로 확인한 <b>2026년 프로그램</b>입니다(출처: ${q._manualSrc.slice(0, 2).map((u, i) => `<a href="${esc(u)}" target="_blank" rel="noopener nofollow">${i + 1}</a>`).join(' · ')}). `
+  : q._stale ? `한국관광공사에 등록된 <b>지난해(전년도) 프로그램</b>입니다 — 올해 내용은 아직 갱신 전이라 다를 수 있습니다. `
   : `한국관광공사 TourAPI에 등록된 <b>공식 행사 프로그램</b>입니다. `}${ended ? '지난 회차 기준이며, ' : ''}주최 측 사정으로 바뀔 수 있으니 방문 전 확인하세요.</p>
 <ul class="fprog">${lines.slice(0, 24).map(o => `<li${o.sub ? ' class="sub"' : ''}>${esc(o.t)}</li>`).join('')}</ul>`;
     })()}
