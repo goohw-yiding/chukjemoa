@@ -250,7 +250,17 @@ function absImgOf(f) {
 // 🖼 2026-09-23: 축제 상세와 월별 허브가 «둘 다 hero.webp」라, 네이버 블로그에 링크 카드를
 //    두 개 붙이면 같은 등불 사진이 두 번 떴다(장남 님 실측). 공유 썸네일은 페이지마다 달라야 한다.
 //    ⚠️ 관광공사 사진은 외부 절대 URL 이다 — SITE 를 앞에 붙이면 깨진다. 여기서 갈라 준다.
-const ogAbs = (x, SITE_) => /^https?:/i.test(String(x)) ? String(x).replace(/^http:/, 'https:') : SITE_ + x;
+// 🖼 2026-11-04 장남 님 «이렇게 계속 나와»: 11/2에 hero.webp 를 밝은 억새 사진으로 바꿨는데 네이버 블로그 링크 카드는
+//    계속 옛 «밤 등불» 사진을 보여 줬다. 네이버는 og:image 를 «주소»로 기억하므로 파일만 바꾸면 안 바뀐다.
+//    → 우리 이미지 주소 끝에 파일 내용의 지문(?v=)을 붙인다. 그림이 바뀌면 주소가 바뀌어 네이버·카톡이 새로 받는다.
+const OG_VER = {};
+const ogVer = p => {
+  if (OG_VER[p] !== undefined) return OG_VER[p];
+  try { OG_VER[p] = '?v=' + require('crypto').createHash('md5').update(fs.readFileSync(path.join(__dirname, String(p).replace(/^\//, '').split('?')[0]))).digest('hex').slice(0, 8); }
+  catch (e) { OG_VER[p] = ''; }
+  return OG_VER[p];
+};
+const ogAbs = (x, SITE_) => /^https?:/i.test(String(x)) ? String(x).replace(/^http:/, 'https:') : SITE_ + x + (/\?/.test(String(x)) ? '' : ogVer(x));
 function ogImageFor(urlPath) {
   const u = String(urlPath || '/');
   if (/^\/valley\//.test(u) || /\/trend\/valley\//.test(u)) return '/img/cat2-water-b.webp';
