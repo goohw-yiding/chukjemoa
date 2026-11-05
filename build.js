@@ -4224,6 +4224,19 @@ const REF_NATIONAL = [
   ['https://www.data.go.kr/', '공공데이터포털', '축제·반려동물 동반·무장애 정보 개방 데이터 원본']
 ];
 const POST_REFS = {
+  // 이주의 축제모아 Vol.8 — TOP5 날짜·장소를 교차 확인한 보도·공식 페이지(2026-11-05 확인)
+  'chukjemoa-weekly-vol8': [
+    ['https://www.wikitree.co.kr/articles/1169596', '위키트리', '제26회 마산가고파국화축제 10월 31일~11월 8일 3·15해양누리공원·마산해양신도시 일원'],
+    ['https://www.imaeil.com/page/view/2026101607051923639', '매일신문', '2026 마산가고파국화축제 일정·주차 5,500면'],
+    ['https://www.mcst.go.kr/site/s_culture/festival/festivalView.jsp?pSeq=11935', '문화체육관광부 지역축제', '부산불꽃축제 11월 7일 광안리해수욕장·해운대·이기대 일원'],
+    ['https://www.specialtimes.co.kr/news/articleView.html?idxno=480599', '스페셜타임스', '제21회 부산불꽃축제 11월 7일 프로그램·관람석'],
+    ['https://mcst.go.kr/site/s_culture/festival/festivalView.jsp?pSeq=12036', '문화체육관광부 지역축제', '2026 구미라면축제 11월 6~8일 구미역·역전로 일원'],
+    ['https://www.wikitree.co.kr/articles/1165422', '위키트리', '구미라면축제 기간 카카오 T 셔틀 7개 노선'],
+    ['https://www.kbmaeil.com/article/20261026500196', '경북매일', '제20회 청송사과축제 11월 4~8일 용전천 현비암 일원'],
+    ['https://news.tf.co.kr/read/ogmeta/2380383.htm', '더팩트', '청송사과축제 20주년 5일간 개최·블랙이글스 에어쇼'],
+    ['https://www.mcst.go.kr/site/s_culture/festival/festivalView.jsp?pSeq=13555', '문화체육관광부 지역축제', '제23회 부여국화축제 10월 30일~11월 8일 궁남지 일원'],
+    ['https://www.specialtimes.co.kr/news/articleView.html?idxno=478256', '스페셜타임스', '부여국화축제 일정·테마공간']
+  ],
   // 이주의 축제모아 Vol.7 — TOP5 날짜·장소를 교차 확인한 보도·공식 페이지(2026-10-29 확인)
   'chukjemoa-weekly-vol7': [
     ['https://www.inews24.com/view/2014943', '아이뉴스24', '익산 천만송이 국화축제 10월 23일~11월 1일 중앙체육공원·신흥근린공원·익산역 일원'],
