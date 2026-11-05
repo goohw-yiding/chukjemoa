@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-11-05T07:06",
+ "generatedAt": "2026-11-05T10:51",
  "stats": {
   "en": {
    "total": 298,
@@ -17,8 +17,8 @@
    "total": 216,
    "linked": 43,
    "confirmed": 37,
-   "pending": 0,
-   "tbc": 4,
+   "pending": 1,
+   "tbc": 3,
    "est": 2,
    "redated": 0,
    "restored": 0,
@@ -820,7 +820,7 @@
    },
    "1485500": {
     "ko": "여수거북선축제",
-    "kv": "tbc",
+    "kv": "pending",
     "signals": [
      "img",
      "tel",
