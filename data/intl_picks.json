@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-11-05",
+ "generatedAt": "2026-11-06",
  "rule": "근거 점수 2 이상 · 언어당 최대 25",
  "langs": {
   "en": [
@@ -1140,7 +1140,7 @@
    },
    {
     "ko": "탐라문화제",
-    "score": 5,
+    "score": 4,
     "commerce": false,
     "status": "confirmed",
     "ids": [
@@ -1165,11 +1165,6 @@
      {
       "claim": "중국 뤄양 대학 사생의 탐라문화제 참가 기사",
       "url": "https://www.lypt.edu.cn/2024/1007/c1454a48304/page.htm",
-      "kind": "media"
-     },
-     {
-      "claim": "중국어 한국여행 사이트 来韩网의 탐라문화제 소개 기사",
-      "url": "https://www.laihanwang.com/phone/news/show_146.html",
       "kind": "media"
      }
     ]
@@ -1298,32 +1293,6 @@
     ]
    },
    {
-    "ko": "서울빛초롱축제",
-    "score": 3,
-    "commerce": false,
-    "status": "est",
-    "ids": [
-     "1117166"
-    ],
-    "reasons": [
-     {
-      "claim": "서울시 중문(간체) 공식사이트 서울빛초롱축제 소개",
-      "url": "https://chinese.seoul.go.kr/%E9%A6%96%E5%B0%94%E8%8A%B1%E7%81%AF%E8%8A%82/",
-      "kind": "media"
-     },
-     {
-      "claim": "인민망 한국채널 '서울 빛초롱축제 청계광장 개막' 화보 기사",
-      "url": "http://korea.people.com.cn/n/2014/1121/c205167-8812462-5.html",
-      "kind": "media"
-     },
-     {
-      "claim": "중국어 한국여행 사이트 来韩网의 서울빛초롱축제 소개 기사",
-      "url": "https://www.laihanwang.com/phone/news/show_429.html",
-      "kind": "media"
-     }
-    ]
-   },
-   {
     "ko": "안동국제탈춤페스티벌",
     "score": 3,
     "commerce": false,
@@ -1374,32 +1343,6 @@
     ]
    },
    {
-    "ko": "진해군항제",
-    "score": 3,
-    "commerce": false,
-    "status": "confirmed",
-    "ids": [
-     "702171"
-    ],
-    "reasons": [
-     {
-      "claim": "중국어 위키백과(간체) 진해군항제 문서",
-      "url": "https://zh.wikipedia.org/zh-cn/%E9%95%87%E6%B5%B7%E5%86%9B%E6%B8%AF%E8%8A%82",
-      "kind": "media"
-     },
-     {
-      "claim": "신화망 '한국 진해: 벚꽃 만개' 사진 기사(2026.4)",
-      "url": "https://www.news.cn/photo/20260402/408e629b6954493cba474e5c4bdea2cc/c.html",
-      "kind": "media"
-     },
-     {
-      "claim": "중국어 한국여행 사이트 来韩网의 진해군항제 소개 기사",
-      "url": "https://www.laihanwang.com/phone/news/show_233.html",
-      "kind": "media"
-     }
-    ]
-   },
-   {
     "ko": "평창송어축제",
     "score": 3,
     "commerce": false,
@@ -1442,88 +1385,6 @@
     ]
    },
    {
-    "ko": "강릉커피축제",
-    "score": 2,
-    "commerce": false,
-    "status": "confirmed",
-    "ids": [
-     "1899699"
-    ],
-    "reasons": [
-     {
-      "claim": "韩游网 '2015 하반기 한국 축제 총정리'에 강릉커피축제 수록",
-      "url": "https://www.hanyouwang.com/news/detail_4019.html",
-      "kind": "media"
-     },
-     {
-      "claim": "중국어 한국여행 사이트 来韩网의 강릉커피축제 소개 기사",
-      "url": "https://www.laihanwang.com/phone/news/show_413.html",
-      "kind": "media"
-     }
-    ]
-   },
-   {
-    "ko": "논산딸기축제",
-    "score": 2,
-    "commerce": false,
-    "status": "confirmed",
-    "ids": [
-     "707644"
-    ],
-    "reasons": [
-     {
-      "claim": "来韩网 '논산딸기축제' 소개 기사",
-      "url": "https://www.laihanwang.com/phone/news/show_225.html",
-      "kind": "media"
-     },
-     {
-      "claim": "来韩网 '논산딸기와 사랑에 빠지다, 논산딸기축제' 기사",
-      "url": "https://www.laihanwang.com/phone/news/show_43.html",
-      "kind": "media"
-     }
-    ]
-   },
-   {
-    "ko": "대관령눈꽃축제",
-    "score": 2,
-    "commerce": false,
-    "status": "est",
-    "ids": [],
-    "reasons": [
-     {
-      "claim": "韩游网 '평창 겨울축제 개막'(평창송어·대관령눈꽃 통합) 기사",
-      "url": "https://www.hanyouwang.com/news/detail_5006.html",
-      "kind": "media"
-     },
-     {
-      "claim": "来韩网 '2026년 2월 한국 축제' 기사(대관령눈꽃축제)",
-      "url": "https://www.laihanwang.com/phone/news/show_437.html",
-      "kind": "media"
-     }
-    ]
-   },
-   {
-    "ko": "무주반딧불축제",
-    "score": 2,
-    "commerce": false,
-    "status": "confirmed",
-    "ids": [
-     "692791"
-    ],
-    "reasons": [
-     {
-      "claim": "韩游网 '2015 하반기 한국 축제 총정리'에 무주반딧불축제 수록",
-      "url": "https://www.hanyouwang.com/news/detail_4019.html",
-      "kind": "media"
-     },
-     {
-      "claim": "중국어 한국여행 사이트 来韩网의 무주반딧불축제 소개 기사",
-      "url": "https://www.laihanwang.com/phone/news/show_366.html",
-      "kind": "media"
-     }
-    ]
-   },
-   {
     "ko": "부산국제록페스티벌",
     "score": 2,
     "commerce": false,
@@ -1557,67 +1418,71 @@
       "kind": "media"
      },
      {
-      "claim": "중국어 한국여행 사이트 来韩网의 부산바다축제 소개 기사",
-      "url": "https://www.laihanwang.com/phone/news/show_317.html",
+      "claim": "VisitBusan 간체 부산바다축제 소개",
+      "url": "https://www.visitbusan.net/index.do?menuCd=DOM_000000601005001000&uc_seq=71&lang_cd=cng",
       "kind": "media"
      }
     ]
    },
    {
-    "ko": "부산자갈치축제",
-    "score": 2,
-    "commerce": false,
-    "status": "confirmed",
-    "ids": [],
-    "reasons": [
-     {
-      "claim": "韩游网 '2015 하반기 한국 축제 총정리'에 부산자갈치축제 수록",
-      "url": "https://www.hanyouwang.com/news/detail_4019.html",
-      "kind": "media"
-     },
-     {
-      "claim": "중국어 한국여행 사이트 来韩网의 부산자갈치축제 소개 기사",
-      "url": "https://www.laihanwang.com/phone/news/show_408.html",
-      "kind": "media"
-     }
-    ]
-   },
-   {
-    "ko": "인천펜타포트 락 페스티벌",
+    "ko": "부산불꽃축제",
     "score": 2,
     "commerce": false,
     "status": "confirmed",
     "ids": [
-     "699220"
+     "1808199"
     ],
     "reasons": [
      {
-      "claim": "중국어 쇼핑가이드 extrabux '2024 한국 음악축제 추천'(펜타포트)",
-      "url": "https://www.extrabux.com/chs/guide/8310189",
+      "claim": "부산관광공사 VisitBusan 간체 페이지: 부산불꽃축제 관람 명소 추천",
+      "url": "https://www.visitbusan.net/index.do?menuCd=DOM_000000502002001000&uc_seq=2604&lang_cd=cng",
       "kind": "media"
      },
      {
-      "claim": "중국어 한국여행 사이트 来韩网 '한국 대표 음악축제 인천펜타포트' 기사",
-      "url": "https://www.laihanwang.com/phone/news/show_309.html",
+      "claim": "부산시 간체 행사 캘린더: 제20회 부산불꽃축제",
+      "url": "https://www.busan.go.kr/zhs/bsevents/1693997?curPage=&srchYear=2025&srchMonth=11&srchStartDt=&srchEndDt=&srchKey=&srchText=&check=",
       "kind": "media"
      }
     ]
    },
    {
-    "ko": "포항국제불빛축제",
+    "ko": "서울빛초롱축제",
     "score": 2,
     "commerce": false,
-    "status": "confirmed",
-    "ids": [],
+    "status": "est",
+    "ids": [
+     "1117166"
+    ],
     "reasons": [
      {
-      "claim": "주부산 중국총영사관: 부총영사 제16회 포항국제불빛축제 참석",
-      "url": "https://busan.china-consulate.gov.cn/xw/201906/t20190605_5292423.htm",
+      "claim": "서울시 중문(간체) 공식사이트 서울빛초롱축제 소개",
+      "url": "https://chinese.seoul.go.kr/%E9%A6%96%E5%B0%94%E8%8A%B1%E7%81%AF%E8%8A%82/",
       "kind": "media"
      },
      {
-      "claim": "중국어 한국여행 사이트 来韩网의 포항국제불빛축제 소개 기사",
-      "url": "https://www.laihanwang.com/phone/news/show_291.html",
+      "claim": "인민망 한국채널 '서울 빛초롱축제 청계광장 개막' 화보 기사",
+      "url": "http://korea.people.com.cn/n/2014/1121/c205167-8812462-5.html",
+      "kind": "media"
+     }
+    ]
+   },
+   {
+    "ko": "진해군항제",
+    "score": 2,
+    "commerce": false,
+    "status": "confirmed",
+    "ids": [
+     "702171"
+    ],
+    "reasons": [
+     {
+      "claim": "중국어 위키백과(간체) 진해군항제 문서",
+      "url": "https://zh.wikipedia.org/zh-cn/%E9%95%87%E6%B5%B7%E5%86%9B%E6%B8%AF%E8%8A%82",
+      "kind": "media"
+     },
+     {
+      "claim": "신화망 '한국 진해: 벚꽃 만개' 사진 기사(2026.4)",
+      "url": "https://www.news.cn/photo/20260402/408e629b6954493cba474e5c4bdea2cc/c.html",
       "kind": "media"
      }
     ]
@@ -1851,6 +1716,37 @@
     ]
    },
    {
+    "ko": "부산바다축제",
+    "score": 4,
+    "commerce": false,
+    "status": "confirmed",
+    "ids": [
+     "333373"
+    ],
+    "reasons": [
+     {
+      "claim": "부산관광공사 VisitBusan 번체 부산바다축제 페이지",
+      "url": "https://www.visitbusan.net/index.do?menuCd=DOM_000000601005001000&uc_seq=71&lang_cd=cnb",
+      "kind": "media"
+     },
+     {
+      "claim": "대만 블로그(pixnet) '부산 최대 해양 축제 부산바다축제' 소개",
+      "url": "https://travelerts.pixnet.net/blog/post/383213636",
+      "kind": "media"
+     },
+     {
+      "claim": "한국관광공사 번체 사이트 부산바다축제 페이지",
+      "url": "https://big5chinese.visitkorea.or.kr/cht/ATT/3_4_view.jsp?cid=333373",
+      "kind": "media"
+     },
+     {
+      "claim": "대만 PopDaily '부산 사계절 축제 16선': 부산바다축제",
+      "url": "https://www.popdaily.com.tw/korea/1348982",
+      "kind": "media"
+     }
+    ]
+   },
+   {
     "ko": "평창송어축제",
     "score": 4,
     "commerce": false,
@@ -1955,32 +1851,6 @@
      {
       "claim": "한국관광공사 번체 사이트 대관령눈꽃축제 페이지",
       "url": "https://big5chinese.visitkorea.or.kr/cht/ATT/3_4_view.jsp?cid=679303",
-      "kind": "media"
-     }
-    ]
-   },
-   {
-    "ko": "부산바다축제",
-    "score": 3,
-    "commerce": false,
-    "status": "confirmed",
-    "ids": [
-     "333373"
-    ],
-    "reasons": [
-     {
-      "claim": "대만 블로그(pixnet) '부산 최대 해양 축제 부산바다축제' 소개",
-      "url": "https://travelerts.pixnet.net/blog/post/383213636",
-      "kind": "media"
-     },
-     {
-      "claim": "한국관광공사 번체 사이트 부산바다축제 페이지",
-      "url": "https://big5chinese.visitkorea.or.kr/cht/ATT/3_4_view.jsp?cid=333373",
-      "kind": "media"
-     },
-     {
-      "claim": "대만 PopDaily '부산 사계절 축제 16선': 부산바다축제",
-      "url": "https://www.popdaily.com.tw/korea/1348982",
       "kind": "media"
      }
     ]
