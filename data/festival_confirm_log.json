@@ -2344,5 +2344,44 @@
   "at": "2026-11-05",
   "name": "인천어린이과학관 과학으로 자라는 어린이",
   "note": "2026-11-05: 근거 1곳(kyeongin 1762586) 그대로. fnnews 202605020800269594 과학관 어린이날 종합기사엔 인천 언급 없음 ❌"
+ },
+ {
+  "at": "2026-11-05",
+  "name": "하전바지락 오감체험 페스티벌",
+  "from": "2026-05-01~2026-05-03",
+  "to": "2026-05-01~2026-05-03",
+  "place": "고창 심원면 하전어촌체험마을",
+  "confirm": "교차확인(조사자 2곳 + 검증자 1곳, 기계 검증 통과)",
+  "sources": [
+   "https://www.segye.com/newsView/20260430516058",
+   "https://www.kairnews.com/news/484554",
+   "https://www.newspim.com/news/view/20260428000119"
+  ]
+ },
+ {
+  "at": "2026-11-05",
+  "name": "여수거북선축제",
+  "from": "2026-05-01~2026-05-03",
+  "to": "2026-05-01~2026-05-03",
+  "place": "이순신광장 및 중앙동 일원",
+  "confirm": "교차확인(조사자 2곳 + 검증자 1곳, 기계 검증 통과)",
+  "sources": [
+   "https://www.heraldk.com/article/2026040722020545787",
+   "https://www.breaknews.com/1198544",
+   "https://www.ggoverallnews.co.kr/news/articleView.html?idxno=103490"
+  ]
+ },
+ {
+  "at": "2026-11-05",
+  "name": "파주장단콩축제",
+  "from": "2026-11-20~2026-11-22",
+  "to": "2026-11-27~2026-11-29",
+  "place": "임진각관광지",
+  "confirm": "교차확인(조사자 2곳 + 검증자 1곳, 기계 검증 통과)",
+  "sources": [
+   "https://tour.paju.go.kr/tour/festival/festival02/festival02_2/festival02_2_01/festival02_2_01_01.jsp",
+   "https://www.metroseoul.co.kr/article/20261013500164",
+   "https://www.paju.go.kr/tour/festival/festival02/festival02_2/festival02_2_01/festival02_2_01_01.jsp"
+  ]
  }
 ]
