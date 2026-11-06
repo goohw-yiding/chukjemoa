@@ -96,6 +96,15 @@
     "src": "name only (날짜는 그대로)",
     "src_zh": "인천공항 공식 중문 페이지 https://www.airport.kr/ap_ch/1732/subview.do 「王室出行」"
   },
+  "2720203": {
+    "src": "name only (날짜는 그대로)",
+    "at": "2026-11-06",
+    "name": {
+      "tw": "2026 首爾街頭表演「角落 Live」",
+      "zh": "2026 首尔街头表演「角落 Live」"
+    },
+    "src_zh": "뜻 번역 — 공식 중문 명칭 없음"
+  },
   "2809535": {
     "name": {
       "ja": "南山烽燧儀式など伝統文化行事",
@@ -117,6 +126,33 @@
     "at": "2026-10-09",
     "src": "name only (날짜는 그대로)",
     "src_ja": "뜻 번역 — /ja/palace/ 「光化門 把守儀式」 표기에 맞춤"
+  },
+  "3113265": {
+    "src": "name only (날짜는 그대로)",
+    "at": "2026-11-06",
+    "name": {
+      "tw": "APAP 作品導覽（安養公共藝術計畫）",
+      "zh": "APAP 作品导览（安养公共艺术计划）"
+    },
+    "src_zh": "뜻 번역 — 공식 중문 명칭 없음"
+  },
+  "3377038": {
+    "src": "name only (날짜는 그대로)",
+    "at": "2026-11-06",
+    "name": {
+      "tw": "2026 國際禪修大會（奉恩寺）",
+      "zh": "2026 国际禅修大会（奉恩寺）"
+    },
+    "src_zh": "뜻 번역 — 공식 중문 명칭 없음"
+  },
+  "3437916": {
+    "name": {
+      "ja": "クリスマスビレッジ釜山"
+    },
+    "src_ja": "공식 일본어 명칭 없음 — 행사명 'Christmas Village Busan' 음역. 2026-11-26~12-25 확인(시빅뉴스 10/26)",
+    "at_ja": "2026-11-03",
+    "src": "https://www.civicnews.com/news/articleView.html?idxno=40523",
+    "at": "2026-11-03"
   },
   "3473295": {
     "name": {
@@ -167,16 +203,6 @@
     },
     "src_zh": "뜻 번역 — 공식 중문 명칭 없음"
   },
-  "_readme": "외국어(중국어·일본어·스페인어) 달력 교정 — intl.js 가 매일 빌드 때 읽는다. {TourAPI 국문 id: {start:'YYYY-MM-DD', end, src:'공식 근거 URL', at:'확인일', cancel:true(취소·연기), name:{tw,zh,ja,es}(공식 번역이 없을 때 붙이는 이름)}}. 공식 발표로 확인한 것만 넣는다. 영어는 festivals_en_fix.json 이 따로 있다.",
-  "3437916": {
-    "name": {
-      "ja": "クリスマスビレッジ釜山"
-    },
-    "src_ja": "공식 일본어 명칭 없음 — 행사명 'Christmas Village Busan' 음역. 2026-11-26~12-25 확인(시빅뉴스 10/26)",
-    "at_ja": "2026-11-03",
-    "src": "https://www.civicnews.com/news/articleView.html?idxno=40523",
-    "at": "2026-11-03"
-  },
   "4134331": {
     "name": {
       "ja": "コリアグランドフェスティバル"
@@ -185,5 +211,6 @@
     "at_ja": "2026-11-03",
     "src": "https://www.traveltimes.co.kr/news/articleView.html?idxno=500625",
     "at": "2026-11-03"
-  }
+  },
+  "_readme": "외국어(중국어·일본어·스페인어) 달력 교정 — intl.js 가 매일 빌드 때 읽는다. {TourAPI 국문 id: {start:'YYYY-MM-DD', end, src:'공식 근거 URL', at:'확인일', cancel:true(취소·연기), name:{tw,zh,ja,es}(공식 번역이 없을 때 붙이는 이름)}}. 공식 발표로 확인한 것만 넣는다. 영어는 festivals_en_fix.json 이 따로 있다."
 }
