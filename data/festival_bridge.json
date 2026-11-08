@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-11-08T07:06",
+ "generatedAt": "2026-11-09T07:10",
  "stats": {
   "en": {
    "total": 268,
@@ -8,7 +8,7 @@
    "pending": 0,
    "tbc": 4,
    "est": 3,
-   "redated": 4,
+   "redated": 0,
    "restored": 0,
    "review": 1,
    "removed": 0
@@ -32,21 +32,21 @@
    "pending": 0,
    "tbc": 2,
    "est": 2,
-   "redated": 3,
+   "redated": 0,
    "restored": 0,
    "review": 1,
    "removed": 0
   },
   "tw": {
-   "total": 176,
+   "total": 161,
    "linked": 36,
    "confirmed": 31,
    "pending": 0,
    "tbc": 3,
    "est": 2,
-   "redated": 0,
+   "redated": 3,
    "restored": 0,
-   "review": 0,
+   "review": 1,
    "removed": 0
   }
  },
@@ -119,6 +119,7 @@
     "ko": "김제지평선축제",
     "kv": "confirmed",
     "signals": [
+     "img",
      "tel",
      "geo",
      "date"
@@ -381,9 +382,9 @@
     "ko": "서울빛초롱축제",
     "kv": "est",
     "signals": [
-     "img",
      "tel",
-     "geo"
+     "geo",
+     "date"
     ],
     "apiId": "1095732"
    },
@@ -762,7 +763,6 @@
     "ko": "김제지평선축제",
     "kv": "confirmed",
     "signals": [
-     "img",
      "tel",
      "geo",
      "date"
@@ -877,7 +877,6 @@
     "ko": "서울빛초롱축제",
     "kv": "est",
     "signals": [
-     "img",
      "tel",
      "geo"
     ],
@@ -1183,6 +1182,7 @@
     "ko": "김제지평선축제",
     "kv": "confirmed",
     "signals": [
+     "img",
      "tel",
      "geo",
      "date"
@@ -1246,8 +1246,8 @@
     "ko": "서울빛초롱축제",
     "kv": "est",
     "signals": [
-     "img",
-     "tel"
+     "tel",
+     "date"
     ],
     "apiId": "1095732"
    },
@@ -1603,7 +1603,8 @@
     "signals": [
      "img",
      "tel",
-     "geo"
+     "geo",
+     "date"
     ],
     "apiId": "386053"
    },
@@ -1618,22 +1619,23 @@
     ],
     "apiId": "914138"
    },
-   "1113727": {
-    "ko": "부산불꽃축제",
+   "1055409": {
+    "ko": "포항국제불빛축제",
     "kv": "confirmed",
     "signals": [
-     "geo",
-     "decision"
+     "img",
+     "tel",
+     "date"
     ],
-    "apiId": "235076"
+    "apiId": "588175"
    },
    "1117216": {
     "ko": "서울빛초롱축제",
     "kv": "est",
     "signals": [
-     "img",
      "tel",
-     "geo"
+     "geo",
+     "date"
     ],
     "apiId": "1095732"
    },
@@ -1662,6 +1664,7 @@
     "ko": "부산국제록페스티벌",
     "kv": "confirmed",
     "signals": [
+     "img",
      "geo",
      "date"
     ],
@@ -1765,6 +1768,15 @@
    "lang": "zh",
    "id": "4135916",
    "title": "首尔光影节·光化门",
+   "why": "신호 1개(geo)뿐",
+   "ko": [
+    "서울빛초롱축제"
+   ]
+  },
+  {
+   "lang": "tw",
+   "id": "4137295",
+   "title": "首爾光影節‧光化門",
    "why": "신호 1개(geo)뿐",
    "ko": [
     "서울빛초롱축제"

@@ -1165,14 +1165,15 @@
   "city": "종로구",
   "place": "청계천·광화문광장 일대",
   "start": "2026-12-11",
-  "end": "2027-01-17",
+  "end": "2027-01-31",
   "month": [
    12,
    1
   ],
   "category": "빛",
   "desc": "청계천 밝히는 겨울 등불 축제",
-  "confirmed": false
+  "confirmed": false,
+  "apiSource": "TourAPI «서울빛초롱축제» id 1095732"
  },
  {
   "name": "청양칠갑산얼음분수축제",

@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-11-08",
+ "generatedAt": "2026-11-09",
  "rule": "근거 점수 2 이상 · 언어당 최대 25",
  "langs": {
   "en": [
@@ -1566,9 +1566,7 @@
     "score": 8,
     "commerce": false,
     "status": "confirmed",
-    "ids": [
-     "1113727"
-    ],
+    "ids": [],
     "reasons": [
      {
       "claim": "부산시: 대만 여행사 대량 사전 예약",
@@ -1886,7 +1884,9 @@
     "score": 3,
     "commerce": false,
     "status": "confirmed",
-    "ids": [],
+    "ids": [
+     "1055409"
+    ],
     "reasons": [
      {
       "claim": "마리끌레르 대만판 한국 3대 불꽃축제(포항) 기사",
