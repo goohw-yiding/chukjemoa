@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-11-09T10:49",
+ "generatedAt": "2026-11-09T07:10",
  "stats": {
   "en": {
    "total": 268,
@@ -14,15 +14,15 @@
    "removed": 0
   },
   "ja": {
-   "total": 204,
-   "linked": 42,
-   "confirmed": 36,
+   "total": 216,
+   "linked": 43,
+   "confirmed": 38,
    "pending": 0,
-   "tbc": 4,
+   "tbc": 3,
    "est": 2,
    "redated": 0,
    "restored": 0,
-   "review": 2,
+   "review": 1,
    "removed": 0
   },
   "zh": {
@@ -38,15 +38,15 @@
    "removed": 0
   },
   "tw": {
-   "total": 176,
+   "total": 161,
    "linked": 36,
    "confirmed": 31,
    "pending": 0,
    "tbc": 3,
    "est": 2,
-   "redated": 0,
+   "redated": 3,
    "restored": 0,
-   "review": 0,
+   "review": 1,
    "removed": 0
   }
  },
@@ -617,8 +617,7 @@
     "signals": [
      "img",
      "tel",
-     "geo",
-     "date"
+     "geo"
     ],
     "apiId": "386053"
    },
@@ -764,7 +763,6 @@
     "ko": "김제지평선축제",
     "kv": "confirmed",
     "signals": [
-     "img",
      "tel",
      "geo",
      "date"
@@ -815,30 +813,27 @@
     ],
     "apiId": "914138"
    },
+   "1016771": {
+    "ko": "부산불꽃축제",
+    "kv": "confirmed",
+    "signals": [
+     "geo",
+     "decision"
+    ],
+    "apiId": "235076"
+   },
    "1202956": {
     "ko": "부산국제록페스티벌",
     "kv": "confirmed",
     "signals": [
-     "img",
      "geo",
      "date"
     ],
     "apiId": "140799"
    },
-   "1226767": {
-    "ko": "포항국제불빛축제",
-    "kv": "confirmed",
-    "signals": [
-     "img",
-     "tel",
-     "geo",
-     "date"
-    ],
-    "apiId": "588175"
-   },
    "1485500": {
     "ko": "여수거북선축제",
-    "kv": "tbc",
+    "kv": "confirmed",
     "signals": [
      "img",
      "tel",
@@ -883,8 +878,7 @@
     "kv": "est",
     "signals": [
      "tel",
-     "geo",
-     "date"
+     "geo"
     ],
     "apiId": "1095732"
    },
@@ -949,6 +943,16 @@
      "date"
     ],
     "apiId": "2031318"
+   },
+   "2549651": {
+    "ko": "홍천강 별빛음악 맥주축제",
+    "kv": "confirmed",
+    "signals": [
+     "img",
+     "geo",
+     "date"
+    ],
+    "apiId": "2539802"
    },
    "2657014": {
     "ko": "D.FESTA 거리공연축제",
@@ -1481,6 +1485,7 @@
     "ko": "김제지평선축제",
     "kv": "confirmed",
     "signals": [
+     "img",
      "tel",
      "geo",
      "date"
@@ -1598,7 +1603,8 @@
     "signals": [
      "img",
      "tel",
-     "geo"
+     "geo",
+     "date"
     ],
     "apiId": "386053"
    },
@@ -1613,21 +1619,23 @@
     ],
     "apiId": "914138"
    },
-   "1113727": {
-    "ko": "부산불꽃축제",
+   "1055409": {
+    "ko": "포항국제불빛축제",
     "kv": "confirmed",
     "signals": [
-     "geo",
-     "decision"
+     "img",
+     "tel",
+     "date"
     ],
-    "apiId": "235076"
+    "apiId": "588175"
    },
    "1117216": {
     "ko": "서울빛초롱축제",
     "kv": "est",
     "signals": [
      "tel",
-     "geo"
+     "geo",
+     "date"
     ],
     "apiId": "1095732"
    },
@@ -1656,6 +1664,7 @@
     "ko": "부산국제록페스티벌",
     "kv": "confirmed",
     "signals": [
+     "img",
      "geo",
      "date"
     ],
@@ -1756,18 +1765,18 @@
    ]
   },
   {
-   "lang": "ja",
-   "id": "4135181",
-   "title": "ソウルライト光化門",
+   "lang": "zh",
+   "id": "4135916",
+   "title": "首尔光影节·光化门",
    "why": "신호 1개(geo)뿐",
    "ko": [
     "서울빛초롱축제"
    ]
   },
   {
-   "lang": "zh",
-   "id": "4135916",
-   "title": "首尔光影节·光化门",
+   "lang": "tw",
+   "id": "4137295",
+   "title": "首爾光影節‧光化門",
    "why": "신호 1개(geo)뿐",
    "ko": [
     "서울빛초롱축제"

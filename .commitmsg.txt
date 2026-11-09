@@ -1,4 +1,9 @@
-영어 주간(10/28) 커밋 메시지 정정 — 직전 fed80ef3 은 일본어 세션 메시지가 잘못 붙었지만 실제 내용은 영어 10/28 회차: 사이트 전체 구글 급감(10/23~) 확인·목표 400→200 재설정 · 여수밤바다 불꽃 2026 장소(엑스포장)·셔틀 note · 청송사과 desc · 날짜 대조 8건 · 끝난 축제 교정 3건 정리 · 한글 원제 오매칭 1건 숨김
+en: 11/4 weekly — 4 upcoming festival notes, fix.json cleanup, date checks
+
+- note+desc (official sources): Goesan Gimjang 11/5-8, BeautySum Suwon 11/5-7,
+  Pohang Steel Art 10/24-11/15, Moonlit Night Exercise Busan 9/19-11/7
+- fix.json: drop expired Iksan / Yeosu note entries; hide wrong ko match (Busan Jung-gu Pet)
+- checked.json: 12 records; en_goals: target 200 kept, verdict deferred to 12/1
 
 Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
-Claude-Session: https://claude.ai/code/session_012MFxCLdRhGY7VsF39anb23
+Claude-Session: https://claude.ai/code/session_012MFxCMp3CbgRbzfHEyfdwt

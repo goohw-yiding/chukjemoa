@@ -142,7 +142,7 @@ ${table(ice)}
 </ul>
 
 <h2 class="sec">같이 보면 좋은 것</h2>
-<div class="frel2"><a href="/winter/">❄️ 겨울 축제 12월·1월·2월 총정리</a><a href="/2026-11/">11월 축제 일정</a><a href="/2026-12/">12월 축제 일정</a><a href="/onsen/">♨️ 전국 온천</a><a href="/mountains/">⛰️ 상고대·설경 명산</a><a href="/tide/">🌊 갯벌체험 물때 달력</a><a href="/kids/">👨‍👩‍👧 아이와 가볼만한 축제</a><a href="/course/">🧭 코스 짜기</a></div>
+<div class="frel2"><a href="/winter/christmas-market/">🎄 크리스마스 마켓·빌리지</a><a href="/winter/">❄️ 겨울 축제 12월·1월·2월 총정리</a><a href="/2026-11/">11월 축제 일정</a><a href="/2026-12/">12월 축제 일정</a><a href="/onsen/">♨️ 전국 온천</a><a href="/mountains/">⛰️ 상고대·설경 명산</a><a href="/tide/">🌊 갯벌체험 물때 달력</a><a href="/kids/">👨‍👩‍👧 아이와 가볼만한 축제</a><a href="/course/">🧭 코스 짜기</a></div>
 
 <h2 class="sec">자주 묻는 것</h2>
 ${faq.map(([q, a]) => `<p style="line-height:1.8"><b>${esc(q)}</b><br>${esc(a)}</p>`).join('')}

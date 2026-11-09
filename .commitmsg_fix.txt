@@ -1,4 +1,4 @@
-감사 수리 — 끊긴 내부 링크 7건 해소
+감사 자동 수리 — 끊긴 내부 링크 10건 제거
 
-- 블로그 2편(autumn-flower-peak-timing-data, chukjemoa-weekly-vol5)에서 존재하지 않는 페이지로 가던 링크를 벗기고 글자만 남김
-- 정선군 장날 페이지가 본문 2,387자(기준 2,400)로 빠지면서 축제 상세 5장의 링크가 끊겼던 것은 재빌드로 정리됨
+- build.js: 시·군 장날 페이지가 얇아 제외될 때 축제 상세에 남는 죽은 /jangteo/{시군}/ 링크를 빌드 말미에 벗김(글자만 남김)
+- data/posts.json: 존재하지 않는 /festival/chuncheonmakguksudakgalbichukje/ 링크 해제
