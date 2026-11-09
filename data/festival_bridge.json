@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-11-09T07:10",
+ "generatedAt": "2026-11-09T14:18",
  "stats": {
   "en": {
    "total": 268,
@@ -10,7 +10,7 @@
    "est": 3,
    "redated": 0,
    "restored": 0,
-   "review": 1,
+   "review": 0,
    "removed": 0
   },
   "ja": {
@@ -34,7 +34,7 @@
    "est": 2,
    "redated": 0,
    "restored": 0,
-   "review": 1,
+   "review": 0,
    "removed": 0
   },
   "tw": {
@@ -44,9 +44,9 @@
    "pending": 0,
    "tbc": 3,
    "est": 2,
-   "redated": 3,
+   "redated": 0,
    "restored": 0,
-   "review": 1,
+   "review": 0,
    "removed": 0
   }
  },
@@ -1747,39 +1747,12 @@
  },
  "review": [
   {
-   "lang": "en",
-   "id": "4135897",
-   "title": "Seoul Light Gwanghwamun",
-   "why": "신호 1개(geo)뿐",
-   "ko": [
-    "서울빛초롱축제"
-   ]
-  },
-  {
    "lang": "ja",
    "id": "3483199",
    "title": "ディアスポラ映画祭",
    "why": "신호 1개(geo)뿐",
    "ko": [
     "제14회 디아스포라영화제"
-   ]
-  },
-  {
-   "lang": "zh",
-   "id": "4135916",
-   "title": "首尔光影节·光化门",
-   "why": "신호 1개(geo)뿐",
-   "ko": [
-    "서울빛초롱축제"
-   ]
-  },
-  {
-   "lang": "tw",
-   "id": "4137295",
-   "title": "首爾光影節‧光化門",
-   "why": "신호 1개(geo)뿐",
-   "ko": [
-    "서울빛초롱축제"
    ]
   }
  ],
