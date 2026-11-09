@@ -1,6 +1,116 @@
 {
- "updated": "2026-11-09T07:10",
+ "updated": "2026-11-10T07:07",
  "posts": [
+  {
+   "id": "224470722328",
+   "title": "누들대전축제 2026 — 11월 13~15일 서대전시민광장, 시간·쿠킹쇼 일정·가는 법",
+   "date": "2026-11-09",
+   "cat": "축제총정리",
+   "url": "https://blog.naver.com/goohw/224470722328",
+   "targets": [
+    "/festival/nudeuldaejeonchukje/"
+   ],
+   "fest": "nudeuldaejeonchukje"
+  },
+  {
+   "id": "224470552436",
+   "title": "스키장 개장 2026 — 모나용평 11월 말 목표, 지난 시즌 개장일로 보는 전국 스키장 순서",
+   "date": "2026-11-09",
+   "cat": "도시별 가볼만한곳",
+   "url": "https://blog.naver.com/goohw/224470552436",
+   "targets": [
+    "/winter/"
+   ],
+   "fest": null
+  },
+  {
+   "id": "224470484874",
+   "title": "가평 글램핑장 고르는 법 — 겨울 난방·안전 체크와 자라섬 캠핑장 카라반 요금",
+   "date": "2026-11-09",
+   "cat": "도시별 가볼만한곳",
+   "url": "https://blog.naver.com/goohw/224470484874",
+   "targets": [
+    "/winter/"
+   ],
+   "fest": null
+  },
+  {
+   "id": "224470438435",
+   "title": "진안장날 — 이번 주 전라 오일장(11/9~11/15) 날짜와 토요일 진안고원시장·마이산 코스",
+   "date": "2026-11-09",
+   "cat": "오일장·장날",
+   "url": "https://blog.naver.com/goohw/224470438435",
+   "targets": [
+    "/jangteo/jinan/"
+   ],
+   "fest": null
+  },
+  {
+   "id": "224470224448",
+   "title": "옥천장날 — 이번 주 충청 오일장(11/9~11/15) 날짜와 일요일 옥천장·정지용 생가 코스",
+   "date": "2026-11-09",
+   "cat": "오일장·장날",
+   "url": "https://blog.naver.com/goohw/224470224448",
+   "targets": [
+    "/jangteo/okcheon/"
+   ],
+   "fest": null
+  },
+  {
+   "id": "224470216142",
+   "title": "북한산 단풍 코스 11월 — 늦단풍 남은 계곡길·둘레길 고르는 법, 산에 들어가는 시간과 가는 길",
+   "date": "2026-11-09",
+   "cat": "단풍·꽃 명소",
+   "url": "https://blog.naver.com/goohw/224470216142",
+   "targets": [
+    "/maple/"
+   ],
+   "fest": null
+  },
+  {
+   "id": "224470097644",
+   "title": "춘천장날 — 이번 주 강원 오일장(11/9~11/15) 날짜와 토요일 샘밭장터·풍물시장 소개",
+   "date": "2026-11-09",
+   "cat": "오일장·장날",
+   "url": "https://blog.naver.com/goohw/224470097644",
+   "targets": [
+    "/jangteo/gangwon/"
+   ],
+   "fest": null
+  },
+  {
+   "id": "224470041015",
+   "title": "이천장날 — 이번 주 수도권 오일장(11/9~11/15) 날짜와 토요일 장호원장·관고장 소개",
+   "date": "2026-11-09",
+   "cat": "오일장·장날",
+   "url": "https://blog.naver.com/goohw/224470041015",
+   "targets": [
+    "/jangteo/icheon/"
+   ],
+   "fest": null
+  },
+  {
+   "id": "224470013109",
+   "title": "홍천장날 — 11월·12월 날짜 총정리, 홍천중앙시장 주차·홍총떡과 장 보고 들를 곳",
+   "date": "2026-11-09",
+   "cat": "오일장·장날",
+   "url": "https://blog.naver.com/goohw/224470013109",
+   "targets": [
+    "/jangteo/hongcheon/"
+   ],
+   "fest": null
+  },
+  {
+   "id": "224469984178",
+   "title": "유성온천 — 대전 지하철로 가는 온천, 무료 족욕장 시간과 하루 코스·유성장 날짜",
+   "date": "2026-11-09",
+   "cat": "온천 여행",
+   "url": "https://blog.naver.com/goohw/224469984178",
+   "targets": [
+    "/onsen/"
+   ],
+   "fest": null
+  },
   {
    "id": "224469018733",
    "title": "태안 빛축제부터 해운대·청계천까지 — 2026 겨울 빛축제 총정리, 일정·점등 시간·입장료",
@@ -109,7 +219,7 @@
    "targets": [
     "/2026-11/"
    ],
-   "fest": "goesangimjangchukje"
+   "fest": null
   },
   {
    "id": "224465617086",
@@ -252,7 +362,7 @@
    "targets": [
     "/"
    ],
-   "fest": "hongseongnamdanghang-daehachukje"
+   "fest": null
   },
   {
    "id": "224462182026",
@@ -340,7 +450,7 @@
    "targets": [
     "/"
    ],
-   "fest": "cheongsongsagwachukje"
+   "fest": null
   },
   {
    "id": "224460747356",

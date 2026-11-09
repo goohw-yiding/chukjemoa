@@ -1,4 +1,4 @@
-# 축제모아 정밀 점검 — 2026-11-09
+# 축제모아 정밀 점검 — 2026-11-10
 `node audit.js` 자동 생성. 숫자는 전부 실측입니다.
 
 ## 1. 데이터 위생
@@ -14,50 +14,56 @@
 ✅ 데이터 위생 이상 없음 (build 가 매번 `fix-data.js` 로 고칩니다)
 
 ## 2. 데이터 갱신 상태
-🟠 21일 넘게 갱신 안 된 파일 43개
-- _places_ja.bak.json — 69일
-- jp_holidays.json — 56일
-- cafes_tw.json — 55일
-- mountains_tw.json — 55일
-- restaurants_zh.json — 55일
-- train_station_geo.json — 55일
-- train_time.json — 55일
-- coupang_map.json — 40일
-- intl_evidence.json — 40일
-- jangteo_gate.json — 38일
-- sigungu_slug.json — 38일
-- frozen_notice.json — 36일
-- jeju_hub.json — 36일
-- visitjeju.json — 36일
-- festival_ov_override.json — 34일
-- busan_places.json — 33일
-- places_en.json — 33일
-- places_es.json — 33일
-- places_tw.json — 33일
-- places_zh.json — 33일
-- naver-kwcache.json — 32일
-- naver-queue.json — 32일
-- festival_bridge_decisions.json — 25일
-- climate_normals_ja.json — 23일
-- cafes_en.json — 21일
-- cafes_ja.json — 21일
-- cafes_ko.json — 21일
-- cafes_zh.json — 21일
-- index_age_history.json — 21일
-- markets_api.json — 21일
-- mountains_en.json — 21일
-- mountains_ja.json — 21일
-- mountains_ko.json — 21일
-- mountains_zh.json — 21일
-- restaurants_en.json — 21일
-- restaurants_ja.json — 21일
-- restaurants_ko.json — 21일
-- restaurants_tw.json — 21일
-- stays_en.json — 21일
-- stays_ja.json — 21일
-- stays_ko.json — 21일
-- stays_tw.json — 21일
-- stays_zh.json — 21일
+🟠 21일 넘게 갱신 안 된 파일 49개
+- _places_ja.bak.json — 70일
+- jp_holidays.json — 57일
+- cafes_tw.json — 56일
+- mountains_tw.json — 56일
+- restaurants_zh.json — 56일
+- train_station_geo.json — 56일
+- train_time.json — 56일
+- coupang_map.json — 41일
+- intl_evidence.json — 41일
+- jangteo_gate.json — 39일
+- sigungu_slug.json — 39일
+- frozen_notice.json — 37일
+- jeju_hub.json — 37일
+- visitjeju.json — 37일
+- festival_ov_override.json — 35일
+- busan_places.json — 34일
+- places_en.json — 34일
+- places_es.json — 34일
+- places_tw.json — 34일
+- places_zh.json — 34일
+- naver-kwcache.json — 33일
+- naver-queue.json — 33일
+- markets_es.json — 26일
+- climate_normals_ja.json — 24일
+- cafes_en.json — 22일
+- cafes_ja.json — 22일
+- cafes_ko.json — 22일
+- cafes_zh.json — 22일
+- index_age_history.json — 22일
+- markets_api.json — 22일
+- mountains_en.json — 22일
+- mountains_ja.json — 22일
+- mountains_ko.json — 22일
+- mountains_zh.json — 22일
+- restaurants_en.json — 22일
+- restaurants_ja.json — 22일
+- restaurants_ko.json — 22일
+- restaurants_tw.json — 22일
+- stays_en.json — 22일
+- stays_ja.json — 22일
+- stays_ko.json — 22일
+- stays_tw.json — 22일
+- stays_zh.json — 22일
+- spots_en.json — 21일
+- spots_es.json — 21일
+- spots_ja.json — 21일
+- spots_ko.json — 21일
+- spots_tw.json — 21일
+- spots_zh.json — 21일
 
 ## 3. 시·도 커버리지 (0인 곳 = 「전국」과 어긋남)
 | 데이터 | 건수 | 비어 있는 시·도 |
@@ -95,11 +101,11 @@
 | 시점 | 아직 안 끝난 축제 상세 |
 |---|---|
 | 오늘 | 52 / 718 |
-| +30일 (2026-12-09) | 20 / 718 |
-| +60일 (2027-01-08) | 9 / 718 |
-| +90일 (2027-02-07) | 6 / 718 |
-| +120일 (2027-03-09) | 3 / 718 |
-| +150일 (2027-04-08) | 2 / 718 |
+| +30일 (2026-12-10) | 20 / 718 |
+| +60일 (2027-01-09) | 9 / 718 |
+| +90일 (2027-02-08) | 6 / 718 |
+| +120일 (2027-03-10) | 3 / 718 |
+| +150일 (2027-04-09) | 2 / 718 |
 
 ## 5-B. Override 재확인 후보 (개요 보강분 신선도)
 개요를 사람이 직접 써 넣은(override) 127건 중, 아직 안 열렸고 개막이 임박한 것과 끝난 지 얼마 안 된 것을 뽑았습니다. 전자는 취소·연기·변경 위험, 후자는 「정말 열렸는지」 확인이 목적입니다.
@@ -112,15 +118,15 @@
 **② 지난 축제 표본 점검 후보 (종료 14일 이내) — 2건 중 최대 5건 표본**
 | 종료 후 경과 | 축제(id) | 확인일 |
 |---|---|---|
-| D+1 | 대한민국 국향대전 (638576) | 2026-10-04 |
-| D+1 | 구미라면 축제 (3028462) | 2026-08-29 |
+| D+2 | 대한민국 국향대전 (638576) | 2026-10-04 |
+| D+2 | 구미라면 축제 (3028462) | 2026-08-29 |
 
 🟠 지난 축제 표본 점검 대상 2건 — 실제 개최·취소 보도 여부 가볍게 재검색 권장 (매 빌드 아님, 주간 점검에서만)
 
 **출처 시점 태그 현황** — pre(사전공지) 3 · post(사후보도) 0 · unknown(미태그) 118
 (override 항목에 `sourceTiming: "pre"|"post"` 를 남기면 위 ①·② 판정 없이도 「사전공지만 있고 아직 사후 확인이 없는 것」을 바로 걸러낼 수 있습니다. 지금은 날짜 기준으로만 판정합니다.)
 
-## 6. 빌드 산출물 점검 (1810페이지)
+## 6. 빌드 산출물 점검 (1811페이지)
 _고아는 홈에서 BFS로 잰다. 「끝나서 링크를 뗀」 지난달 달력·종료 축제 646장은 정상이라 제외했다._
 | 항목 | 건수 |
 |---|---|
@@ -149,12 +155,12 @@ _고아는 홈에서 BFS로 잰다. 「끝나서 링크를 뗀」 지난달 달�
 |---|---|---|---|---|---|---|
 | 걷기길 | 37 | 2584 | 7907 | 48584 | 0 | 0.042 |
 | 블로그 | 61 | 2622 | 5418 | 7465 | 0 | 0.040 |
-| 오일장 시도 | 119 | 2607 | 4140 | 23317 | 0 | 0.131 |
-| 외국어 | 191 | 1195 | 6560 | 41081 | **3** | 0.063 |
-| 월별 | 11 | 5044 | 7170 | 15040 | 0 | 0.102 |
-| 축제상세 | 86 | 4620 | 5684 | 6825 | 0 | 0.143 |
+| 오일장 시도 | 120 | 2606 | 4152 | 23316 | 0 | 0.130 |
+| 외국어 | 191 | 1195 | 6593 | 40856 | **3** | 0.063 |
+| 월별 | 11 | 5044 | 7170 | 15029 | 0 | 0.099 |
+| 축제상세 | 86 | 4620 | 5684 | 6825 | 0 | 0.142 |
 | 코스 | 12 | 3380 | 4317 | 6060 | 0 | 0.189 |
-| 허브·기타 | 197 | 735 | 9327 | 77208 | **3** | 0.007 |
+| 허브·기타 | 197 | 735 | 9318 | 77208 | **3** | 0.007 |
 
 🟠 본문 2,000자 미만 색인 페이지 4개 (의도적 예외 2개 제외)
 - 735자  /contact/  ← 의도적(법적·안내 페이지는 늘리지 않는다)
@@ -167,21 +173,21 @@ _고아는 홈에서 BFS로 잰다. 「끝나서 링크를 뗀」 지난달 달�
 ## 8. 「N곳」이라 말하는데 실제로 보여주는 항목 수
 | 페이지 | 본문 | 항목(h2/h3) | 항목당 글자 |
 |---|---|---|---|
-| /onsen/ | 7713자 | 32 | 241자 |
-| /flower/ | 11442자 | 47 | 243자 |
+| /onsen/ | 7698자 | 32 | 241자 |
+| /flower/ | 11420자 | 47 | 243자 |
 | /pet/ | 11674자 | 60 | 195자 |
 | /accessible/ | 10300자 | 60 | 172자 |
-| /valley/ | 14356자 | 60 | 239자 |
-| /maple/ | 16917자 | 65 | 260자 |
+| /valley/ | 14327자 | 60 | 239자 |
+| /maple/ | 16894자 | 65 | 260자 |
 | /mountains/ | 50437자 | 272 | 185자 |
 | /cafe/ | 52148자 | 241 | 216자 |
-| /jangteo/ | 54847자 | 27 | 2031자 |
+| /jangteo/ | 54695자 | 27 | 2026자 |
 
 ---
 ## 요약
 - 🔴 즉시 고칠 것: **0건**
 - 🟠 보강할 것: **11건**
-  - 21일 넘게 갱신 안 된 파일 43개
+  - 21일 넘게 갱신 안 된 파일 49개
   - 오일장 — 빈 시도 3개(서울,광주,세종)
   - 온천 — 빈 시도 6개(서울,대구,인천,광주,세종,제주)
   - 계곡 — 빈 시도 5개(대구,인천,광주,대전,세종)
