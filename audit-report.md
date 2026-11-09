@@ -1,4 +1,4 @@
-# 축제모아 정밀 점검 — 2026-11-09
+# 축제모아 정밀 점검 — 2026-10-29
 `node audit.js` 자동 생성. 숫자는 전부 실측입니다.
 
 ## 1. 데이터 위생
@@ -14,50 +14,30 @@
 ✅ 데이터 위생 이상 없음 (build 가 매번 `fix-data.js` 로 고칩니다)
 
 ## 2. 데이터 갱신 상태
-🟠 21일 넘게 갱신 안 된 파일 43개
-- _places_ja.bak.json — 69일
-- jp_holidays.json — 56일
-- cafes_tw.json — 55일
-- mountains_tw.json — 55일
-- restaurants_zh.json — 55일
-- train_station_geo.json — 55일
-- train_time.json — 55일
-- coupang_map.json — 40일
-- intl_evidence.json — 40일
-- jangteo_gate.json — 38일
-- sigungu_slug.json — 38일
-- frozen_notice.json — 36일
-- jeju_hub.json — 36일
-- visitjeju.json — 36일
-- festival_ov_override.json — 34일
-- busan_places.json — 33일
-- places_en.json — 33일
-- places_es.json — 33일
-- places_tw.json — 33일
-- places_zh.json — 33일
-- naver-kwcache.json — 32일
-- naver-queue.json — 32일
-- festival_bridge_decisions.json — 25일
-- climate_normals_ja.json — 23일
-- cafes_en.json — 21일
-- cafes_ja.json — 21일
-- cafes_ko.json — 21일
-- cafes_zh.json — 21일
-- index_age_history.json — 21일
-- markets_api.json — 21일
-- mountains_en.json — 21일
-- mountains_ja.json — 21일
-- mountains_ko.json — 21일
-- mountains_zh.json — 21일
-- restaurants_en.json — 21일
-- restaurants_ja.json — 21일
-- restaurants_ko.json — 21일
-- restaurants_tw.json — 21일
-- stays_en.json — 21일
-- stays_ja.json — 21일
-- stays_ko.json — 21일
-- stays_tw.json — 21일
-- stays_zh.json — 21일
+🟠 21일 넘게 갱신 안 된 파일 23개
+- _places_ja.bak.json — 58일
+- jp_holidays.json — 45일
+- cafes_tw.json — 44일
+- mountains_tw.json — 44일
+- restaurants_zh.json — 44일
+- train_station_geo.json — 44일
+- train_time.json — 44일
+- coupang_map.json — 29일
+- intl_evidence.json — 29일
+- jangteo_gate.json — 27일
+- sigungu_slug.json — 27일
+- frozen_notice.json — 25일
+- jeju_hub.json — 25일
+- visitjeju.json — 25일
+- festival_ov_override.json — 23일
+- busan_places.json — 22일
+- places_en.json — 22일
+- places_es.json — 22일
+- places_tw.json — 22일
+- places_zh.json — 22일
+- stret.json — 22일
+- naver-kwcache.json — 21일
+- naver-queue.json — 21일
 
 ## 3. 시·도 커버리지 (0인 곳 = 「전국」과 어긋남)
 | 데이터 | 건수 | 비어 있는 시·도 |
@@ -71,7 +51,7 @@
 | 카페 | 1756 | 없음 |
 | 반려 | 1450 | 없음 |
 | 무장애 | 9628 | 없음 |
-| 축제 | 878 | 없음 |
+| 축제 | 872 | 없음 |
 
 ## 4. 설명(개요) 채움률 — 낮으면 페이지가 이름 나열이 된다
 | 데이터 | 건수 | 개요 있음 | 전화번호 있음 |
@@ -94,101 +74,109 @@
 ## 5. 축제 재고 — 앞으로 몇 개가 남나
 | 시점 | 아직 안 끝난 축제 상세 |
 |---|---|
-| 오늘 | 52 / 718 |
-| +30일 (2026-12-09) | 20 / 718 |
-| +60일 (2027-01-08) | 9 / 718 |
-| +90일 (2027-02-07) | 6 / 718 |
-| +120일 (2027-03-09) | 3 / 718 |
-| +150일 (2027-04-08) | 2 / 718 |
+| 오늘 | 93 / 699 |
+| +30일 (2026-11-28) | 24 / 699 |
+| +60일 (2026-12-28) | 10 / 699 |
+| +90일 (2027-01-27) | 4 / 699 |
+| +120일 (2027-02-26) | 2 / 699 |
+| +150일 (2027-03-28) | 2 / 699 |
 
 ## 5-B. Override 재확인 후보 (개요 보강분 신선도)
 개요를 사람이 직접 써 넣은(override) 127건 중, 아직 안 열렸고 개막이 임박한 것과 끝난 지 얼마 안 된 것을 뽑았습니다. 전자는 취소·연기·변경 위험, 후자는 「정말 열렸는지」 확인이 목적입니다.
 
 (override 6건은 상세 페이지가 없어 제외했습니다 — API 목록에서 빠진 축제라 렌더되는 곳이 없습니다.)
 
-**① 임박 재확인 후보 (D-14 이내, 아직 미개최) — 0건**
-없음
+**① 임박 재확인 후보 (D-14 이내, 아직 미개최) — 1건**
+| D-day | 축제(id) | 확인일 | 출처 태그 |
+|---|---|---|---|
+| D-8 | 구미라면 축제 (3028462) | 2026-08-29 | unknown |
 
-**② 지난 축제 표본 점검 후보 (종료 14일 이내) — 2건 중 최대 5건 표본**
+(D-3 이내 긴급 건 없음)
+
+**② 지난 축제 표본 점검 후보 (종료 14일 이내) — 5건 중 최대 5건 표본**
 | 종료 후 경과 | 축제(id) | 확인일 |
 |---|---|---|
-| D+1 | 대한민국 국향대전 (638576) | 2026-10-04 |
-| D+1 | 구미라면 축제 (3028462) | 2026-08-29 |
+| D+4 | 강릉커피축제 (825295) | 2026-08-29 |
+| D+4 | 김천김밥축제 (3377995) | 2026-08-29 |
+| D+5 | 경복궁 별빛야행 (2648460) | 2026-08-30 |
+| D+11 | 진주남강유등축제 (506926) | 2026-09-30 |
+| D+11 | 울산고래축제 (553263) | 2026-08-29 |
 
-🟠 지난 축제 표본 점검 대상 2건 — 실제 개최·취소 보도 여부 가볍게 재검색 권장 (매 빌드 아님, 주간 점검에서만)
+🟠 지난 축제 표본 점검 대상 5건 — 실제 개최·취소 보도 여부 가볍게 재검색 권장 (매 빌드 아님, 주간 점검에서만)
 
 **출처 시점 태그 현황** — pre(사전공지) 3 · post(사후보도) 0 · unknown(미태그) 118
 (override 항목에 `sourceTiming: "pre"|"post"` 를 남기면 위 ①·② 판정 없이도 「사전공지만 있고 아직 사후 확인이 없는 것」을 바로 걸러낼 수 있습니다. 지금은 날짜 기준으로만 판정합니다.)
 
-## 6. 빌드 산출물 점검 (1810페이지)
-_고아는 홈에서 BFS로 잰다. 「끝나서 링크를 뗀」 지난달 달력·종료 축제 646장은 정상이라 제외했다._
+## 6. 빌드 산출물 점검 (1833페이지)
+_고아는 홈에서 BFS로 잰다. 「끝나서 링크를 뗀」 지난달 달력·종료 축제 597장은 정상이라 제외했다._
 | 항목 | 건수 |
 |---|---|
 | 끊긴 내부 링크 | 0 |
-| 홈에서 도달 불가(고아) | **31** |
+| 홈에서 도달 불가(고아) | **42** |
 | 렌더 사고 | 0 |
 | 사이트맵 유령 URL | 0 |
 | canonical 누락 | 0 |
 | 인라인 JS 문법오류 | 0 |
 | 개발용 주석 유출 | 0 |
 
-🟠 홈에서 도달 불가(고아) 31건
+🟠 홈에서 도달 불가(고아) 42건
 - /festival/2026-daehanminguk-haeyang-mobilliti-anjeon-ekseupo/
-- /festival/2026-jejuollegeotgichukje/
-- /festival/bomulchatgi-chukje-geumgoereul-chajara/
+- /festival/2026-je14hoe-gyeonggijeongwonmunhwabangnamhoe/
+- /festival/anadeurim-peseutibeol/
+- /festival/boeundaechu-chukje/
 - /festival/buanbugeunnoeulchukje/
-- /festival/busangeullobeorweptunpeseutibeol/
+- /festival/busan-seogu-uiryogwangwangchukje/
+- /festival/busansujemaekjumaseuteoseuchaellinji/
+- /festival/cheongjeongwando-gaeul-seom-yeohaeng/
+- /festival/cheongwonsaengmyeongchukje/
 - /festival/chiaksan-hanuchukje/
-- /festival/daedeokdaecheonghomulgyeolchukje/
-- /festival/daegu-gukgayusanyahaeng/
-- /festival/dobonghangeuljanchi/
-- /festival/gangjinman-chumchuneun-galdaechukje/
 
 ## 7. 색인 대상 본문 두께 · 판박이 정도
 | 섹션 | 개수 | 최소 | 중앙 | 최대 | 2,000자 미만 | 평균 유사도 |
 |---|---|---|---|---|---|---|
-| 걷기길 | 37 | 2584 | 7907 | 48584 | 0 | 0.042 |
-| 블로그 | 61 | 2622 | 5418 | 7465 | 0 | 0.040 |
-| 오일장 시도 | 119 | 2607 | 4140 | 23317 | 0 | 0.131 |
-| 외국어 | 191 | 1195 | 6560 | 41081 | **3** | 0.063 |
-| 월별 | 11 | 5044 | 7170 | 15040 | 0 | 0.102 |
-| 축제상세 | 86 | 4620 | 5684 | 6825 | 0 | 0.143 |
+| 걷기길 | 38 | 2584 | 9373 | 48584 | 0 | 0.042 |
+| 블로그 | 58 | 2623 | 5419 | 7466 | 0 | 0.039 |
+| 오일장 시도 | 121 | 2656 | 4159 | 27074 | 0 | 0.126 |
+| 외국어 | 243 | 1195 | 6584 | 40563 | **3** | 0.061 |
+| 월별 | 11 | 4847 | 7242 | 24991 | 0 | 0.089 |
+| 축제상세 | 150 | 4558 | 5707 | 6690 | 0 | 0.146 |
 | 코스 | 12 | 3380 | 4317 | 6060 | 0 | 0.189 |
-| 허브·기타 | 197 | 735 | 9327 | 77208 | **3** | 0.007 |
+| 허브·기타 | 188 | 735 | 9189 | 77208 | **4** | 0.007 |
 
-🟠 본문 2,000자 미만 색인 페이지 4개 (의도적 예외 2개 제외)
+🟠 본문 2,000자 미만 색인 페이지 5개 (의도적 예외 2개 제외)
 - 735자  /contact/  ← 의도적(법적·안내 페이지는 늘리지 않는다)
 - 1195자  /zh/chuseok/
 - 1197자  /tw/chuseok/
 - 1267자  /privacy/  ← 의도적(법적·안내 페이지는 늘리지 않는다)
 - 1375자  /jecheon/
 - 1474자  /ja/chuseok/
+- 1702자  /holiday/
 
 ## 8. 「N곳」이라 말하는데 실제로 보여주는 항목 수
 | 페이지 | 본문 | 항목(h2/h3) | 항목당 글자 |
 |---|---|---|---|
-| /onsen/ | 7713자 | 32 | 241자 |
-| /flower/ | 11442자 | 47 | 243자 |
+| /onsen/ | 7719자 | 32 | 241자 |
+| /flower/ | 11454자 | 47 | 244자 |
 | /pet/ | 11674자 | 60 | 195자 |
 | /accessible/ | 10300자 | 60 | 172자 |
-| /valley/ | 14356자 | 60 | 239자 |
-| /maple/ | 16917자 | 65 | 260자 |
+| /valley/ | 14393자 | 60 | 240자 |
+| /maple/ | 17159자 | 65 | 264자 |
 | /mountains/ | 50437자 | 272 | 185자 |
 | /cafe/ | 52148자 | 241 | 216자 |
-| /jangteo/ | 54847자 | 27 | 2031자 |
+| /jangteo/ | 54858자 | 27 | 2032자 |
 
 ---
 ## 요약
 - 🔴 즉시 고칠 것: **0건**
 - 🟠 보강할 것: **11건**
-  - 21일 넘게 갱신 안 된 파일 43개
+  - 21일 넘게 갱신 안 된 파일 23개
   - 오일장 — 빈 시도 3개(서울,광주,세종)
   - 온천 — 빈 시도 6개(서울,대구,인천,광주,세종,제주)
   - 계곡 — 빈 시도 5개(대구,인천,광주,대전,세종)
   - 단풍 — 빈 시도 4개(대구,광주,대전,세종)
   - 명산 — 빈 시도 4개(대구,광주,대전,세종)
   - 무장애 개요 필드 자체 없음
-  - 30일 뒤 축제 재고 20건 (임계 40 미만)
-  - 지난 축제 표본 점검 대상 2건 — 실제 개최·취소 보도 여부 가볍게 재검색 권장 (매 빌드 아님, 주간 점검에서만)
-  - 홈에서 도달 불가(고아) 31건
-  - 본문 2,000자 미만 색인 페이지 4개 (의도적 예외 2개 제외)
+  - 30일 뒤 축제 재고 24건 (임계 40 미만)
+  - 지난 축제 표본 점검 대상 5건 — 실제 개최·취소 보도 여부 가볍게 재검색 권장 (매 빌드 아님, 주간 점검에서만)
+  - 홈에서 도달 불가(고아) 42건
+  - 본문 2,000자 미만 색인 페이지 5개 (의도적 예외 2개 제외)

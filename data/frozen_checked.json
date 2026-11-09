@@ -228,30 +228,5 @@
   "date": "2026-10-18",
   "result": "ok",
   "src": "https://www.newspim.com/news/view/20260928000885"
- },
- "bomulchatgi-chukje-geumgoereul-chajara": {
-  "date": "2026-11-08",
-  "result": "ok",
-  "src": "https://www.mcst.go.kr/site/s_culture/festival/festivalView.jsp?pSeq=13541"
- },
- "goheungyujachukje": {
-  "date": "2026-11-08",
-  "result": "ok",
-  "src": "https://www.mcst.go.kr/site/s_culture/festival/festivalList.jsp?pCurrentPage=7"
- },
- "pohang-haebyeongdaemunhwa-chukje": {
-  "date": "2026-11-08",
-  "result": "ok",
-  "src": "https://kbmaeil.com/article/20261026500614"
- },
- "choenamdan-bangeo-chukje": {
-  "date": "2026-11-08",
-  "result": "ok",
-  "src": "https://www.mcst.go.kr/site/s_culture/festival/festivalView.jsp?pSeq=13570"
- },
- "hwasununjumunhwachukje": {
-  "date": "2026-11-08",
-  "result": "ok",
-  "src": "https://www.joongdo.co.kr/web/view.php?key=20261102010009098"
  }
 }

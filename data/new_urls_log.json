@@ -359,8 +359,8 @@
   ]
  },
  {
-  "d": "2026-11-03",
-  "n": 7,
+  "d": "2026-11-09",
+  "n": 8,
   "urls": [
    "/tide/",
    "/tide/gyeonggi-incheon/",
@@ -368,28 +368,8 @@
    "/tide/jeonbuk/",
    "/tide/jeonnam/",
    "/tide/gyeongnam/",
-   "/tide/jeju-east/"
-  ]
- },
- {
-  "d": "2026-11-03",
-  "n": 1,
-  "urls": [
+   "/tide/jeju-east/",
    "/kids/"
-  ]
- },
- {
-  "d": "2026-11-04",
-  "n": 1,
-  "urls": [
-   "/winter/christmas-market/"
-  ]
- },
- {
-  "d": "2026-11-05",
-  "n": 1,
-  "urls": [
-   "/jangteo/jeongseon/"
   ]
  }
 ]

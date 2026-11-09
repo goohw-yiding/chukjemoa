@@ -244,7 +244,7 @@ ${faq.map(q => `<p><b>${esc(q[0])}</b><br>${esc(q[1])}</p>`).join('')}` : '';
 <div class="se-nav">
 ${fs.existsSync(path.join(ROOT, mKey)) ? `<a href="/${mKey}/">🎪 전국 ${MN[m]} 축제 일정</a>` : ''}
 ${[9, 10, 11].includes(m) ? `<a href="/maple/">🍁 단풍 절정 시기·명소</a>` : ''}
-${[11, 12, 1, 2].includes(m) && fs.existsSync(path.join(ROOT, 'winter', 'light')) ? `<a href="/winter/light/">✨ 겨울 빛축제·눈꽃축제</a>` : ''}${[11, 12].includes(m) && fs.existsSync(path.join(ROOT, 'winter', 'christmas-market')) ? `<a href="/winter/christmas-market/">🎄 크리스마스 마켓·빌리지</a>` : ''}
+${[11, 12, 1, 2].includes(m) && fs.existsSync(path.join(ROOT, 'winter', 'light')) ? `<a href="/winter/light/">✨ 겨울 빛축제·눈꽃축제</a>` : ''}
 <a href="/seoul/free/">🆓 서울 무료 행사</a>
 </div>` : '';
     const content = `<main><div class="wrap">${CSS}

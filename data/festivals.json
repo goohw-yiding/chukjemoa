@@ -1143,21 +1143,15 @@
   "name": "파주장단콩축제",
   "region": "경기",
   "city": "파주시",
-  "place": "임진각관광지",
-  "start": "2026-11-27",
-  "end": "2026-11-29",
+  "place": "임진각 광장",
+  "start": "2026-11-20",
+  "end": "2026-11-22",
   "month": [
    11
   ],
   "category": "음식",
   "desc": "장단콩·메주 직거래 먹거리 축제",
-  "confirmed": true,
-  "sources": [
-   "https://tour.paju.go.kr/tour/festival/festival02/festival02_2/festival02_2_01/festival02_2_01_01.jsp",
-   "https://www.metroseoul.co.kr/article/20261013500164",
-   "https://www.paju.go.kr/tour/festival/festival02/festival02_2/festival02_2_01/festival02_2_01_01.jsp"
-  ],
-  "verifiedAt": "2026-11-05"
+  "confirmed": false
  },
  {
   "name": "서울빛초롱축제",
@@ -1165,15 +1159,14 @@
   "city": "종로구",
   "place": "청계천·광화문광장 일대",
   "start": "2026-12-11",
-  "end": "2027-01-31",
+  "end": "2027-01-17",
   "month": [
    12,
    1
   ],
   "category": "빛",
   "desc": "청계천 밝히는 겨울 등불 축제",
-  "confirmed": false,
-  "apiSource": "TourAPI «서울빛초롱축제» id 1095732"
+  "confirmed": false
  },
  {
   "name": "청양칠갑산얼음분수축제",
@@ -2001,7 +1994,7 @@
   "name": "여수거북선축제",
   "region": "전남",
   "city": "여수시",
-  "place": "이순신광장 및 중앙동 일원",
+  "place": "여수시 선어시장길 6 (중앙동)",
   "start": "2026-05-01",
   "end": "2026-05-03",
   "month": [
@@ -2009,14 +2002,8 @@
   ],
   "category": "문화",
   "desc": "여수거북선축제는 임진왜란 당시 전라좌도 수군절도영(이하 좌수영)이 관할하던 순천도호부, 낙안군, 보성군, 광양현, 흥양현의 오관과 방답진, 사도진, 여도진, 옥포진, 발포진의 오포지역 수군 진지의 ",
-  "confirmed": true,
-  "apiSource": "TourAPI «여수거북선축제» id 553315",
-  "sources": [
-   "https://www.heraldk.com/article/2026040722020545787",
-   "https://www.breaknews.com/1198544",
-   "https://www.ggoverallnews.co.kr/news/articleView.html?idxno=103490"
-  ],
-  "verifiedAt": "2026-11-05"
+  "confirmed": false,
+  "apiSource": "TourAPI «여수거북선축제» id 553315"
  },
  {
   "name": "수원연극축제",
@@ -2125,7 +2112,7 @@
   "name": "하전바지락 오감체험 페스티벌",
   "region": "전북",
   "city": "고창군",
-  "place": "고창 심원면 하전어촌체험마을",
+  "place": "전북특별자치도 고창군 심원면 서전길 55-21",
   "start": "2026-05-01",
   "end": "2026-05-03",
   "month": [
@@ -2133,14 +2120,8 @@
   ],
   "category": "문화",
   "desc": "고창 하전 바지락 오감 체험 페스티벌은 유네스코 세계 자연유산인 고창 갯벌 내 하전 마을에서 개최되는 행사이다. 하전 마을은 전국 최대 규모의 바지락 생산지이며, 해당 축제는 이 지역 특산물인 바지",
-  "confirmed": true,
-  "apiSource": "TourAPI «하전바지락 오감체험 페스티벌» id 3489178",
-  "sources": [
-   "https://www.segye.com/newsView/20260430516058",
-   "https://www.kairnews.com/news/484554",
-   "https://www.newspim.com/news/view/20260428000119"
-  ],
-  "verifiedAt": "2026-11-05"
+  "confirmed": false,
+  "apiSource": "TourAPI «하전바지락 오감체험 페스티벌» id 3489178"
  },
  {
   "name": "불로초 원정대, 불로초를 찾아라!",
@@ -2161,7 +2142,7 @@
   "name": "홍천 산나물축제",
   "region": "강원",
   "city": "홍천군",
-  "place": "홍천 도시산림공원 토리숲",
+  "place": "강원특별자치도 홍천군 홍천읍 갈마곡리 501",
   "start": "2026-05-01",
   "end": "2026-05-03",
   "month": [
@@ -2169,14 +2150,8 @@
   ],
   "category": "문화",
   "desc": "강원도 홍천군은 전국 시·군 중 가장 넓은 면적을 자랑하며, 전체 국토의 85%가 울창한 산림으로 둘러싸인 천혜의 자연 저장고이다. 특히 동쪽으로 갈수록 해발고도가 높아지는 독특한 지리적 특성은 청",
-  "confirmed": true,
-  "apiSource": "TourAPI «홍천 산나물축제» id 2597638",
-  "sources": [
-   "https://biz.heraldcorp.com/article/10729929",
-   "https://www.kukinews.com/article/view/kuk202605020004",
-   "https://www.kwnews.co.kr/article/20260429500433"
-  ],
-  "verifiedAt": "2026-11-02"
+  "confirmed": false,
+  "apiSource": "TourAPI «홍천 산나물축제» id 2597638"
  },
  {
   "name": "제25회 의정부음악극축제",
@@ -2233,14 +2208,8 @@
   ],
   "category": "문화",
   "desc": "반려동물 클러스터 도시로 성장하고 있는 임실에서 개최되는 임실N펫스타는 도전적이고 실험적인 프로그램을 통해 반려동물 문화의 새로운 방향을 제시하는 대한민국 대표 반려동물 축제이다. 올해는 축제 장소",
-  "confirmed": true,
-  "apiSource": "TourAPI «임실N펫스타» id 2984556",
-  "sources": [
-   "https://www.jjan.kr/article/20260410500037",
-   "https://www.news1.kr/local/jeonbuk/6149820",
-   "https://www.kukinews.com/article/view/kuk202605040047"
-  ],
-  "verifiedAt": "2026-11-02"
+  "confirmed": false,
+  "apiSource": "TourAPI «임실N펫스타» id 2984556"
  },
  {
   "name": "인천어린이과학관 과학으로 자라는 어린이",
