@@ -77,10 +77,18 @@ const ktxNote = () => `<p style="font-size:.8rem;color:#8a8178;margin-top:8px">$
 //   ⚠️ 전용 광고 ID 는 대시보드(장남님 크롬에만 로그인)에서만 만들 수 있다 → 그때까지 eSIM 광고 ID 를 빌려 쓴다(k_site 가 달라도 302 — 9/24 실측).
 //      우리 쪽 구분은 data-bb="klook-fireworks"·data-place 로 한다. 전용 ID 가 생기면 아래 한 줄만 바꾼다.
 AD.fireworks = AD.esim;
-const FIREWORKS = { busanbulkkotchukje: { url: 'https://www.klook.com/ja/activity/171795-2026-busan-fireworks-festival-21th-anniversary-ticket/', until: '20261107' } };
+// 2026-11-10 일본어 회차 — /ja/festival/gugakgongyeon-jinyeon/ (인사동 상설 국악공연 「진연」, 「🎫 料金 一般65,000ウォン」 바로 뒤)
+//   클룩 157764 를 Claude 브라우저로 열어 확인: 「ソウル 韓国伝統音楽公演「チンヨン」チケット」 10, Insadong 5-gil · 60分 · 「2026年11月13日から利用可能」.
+//   주소가 TourAPI(인사동5길 10)와 같고, 서울경제 2026-04-15 기사도 「예매는 겟유어가이드·클룩」이라 밝힘. 광고 ID 는 불꽃처럼 eSIM 것을 빌려 쓰고 data-bb=klook-gugak 로 구분.
+const FIREWORKS = {
+  busanbulkkotchukje: { url: 'https://www.klook.com/ja/activity/171795-2026-busan-fireworks-festival-21th-anniversary-ticket/', until: '20261107' },
+  'gugakgongyeon-jinyeon': { url: 'https://www.klook.com/ja/activity/157764-jinyeon-korean-traditional-music-performance-with-modern-vibes/', until: '20261231', item: 'gugak',
+    text: '上のとおり、この公演は有料です。仁寺洞の会場で行われる60分の公演で、チケットはKlookでも日本語で日付を選んで予約できます → ', label: '国楽公演「進宴」のチケットを見る（Klook）' },
+};
 function fireworks(slug, today8) {
   const P = FIREWORKS[slug];
   if (!P || (today8 && today8 > P.until)) return '';
+  if (P.text) return box(`${PR}${P.text}` + a(url(P.url, AD.fireworks), P.label, P.item, 'ja-festival-' + slug, 'inline-context'));
   return box(`${PR}上のとおり、この花火祭りの座席は有料です。2026年11月7日の回のR席は、Klookでも日本語で予約できます → `
     + a(url(P.url, AD.fireworks), '釜山花火祭りのR席を見る（Klook）', 'fireworks', 'ja-festival-' + slug, 'inline-context'));
 }
