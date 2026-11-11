@@ -7,23 +7,7 @@
   "ko": null,
   "src": "지도 칸 한글 원제가 좌표만으로 「홍천 사과축제」에 붙던 것 — 다른 행사라 숨김(2026-10-21 영어 세션)"
  },
- "697445": {
-  "addr": "Lotte Garden Park area (next to Lotte Premium Outlets Gimhae), Sinmun-dong, Gimhae-si, Gyeongsangnam-do",
-  "x": "128.826623242068",
-  "y": "35.183024156029",
-  "ko": {
-   "title": "김해분청도자기축제",
-   "addr": "경상남도 김해시 신문동 1410 롯데가든파크 일원"
-  },
-  "intro": {
-   "place": "Lotte Garden Park area in Jangyu, Gimhae (next to Lotte Premium Outlets Gimhae)"
-  },
-  "note": "The 31st edition runs Nov 6–10, 2026 and, for the first time in its 31 years, moves out of Jillye (the Buncheong Ceramics Museum area) to Lotte Garden Park next to Lotte Premium Outlets Gimhae in Jangyu. Expect potters' exhibitions and sales, clay-shaping workshops, a traditional kiln firing and large-scale pottery demonstrations. Shuttle and parking details had not been announced as of Oct 14, 2026, and older pages on the festival site still describe the Jillye venue.",
-  "noteUntil": "20261110",
-  "noteFoot": "Sources: official festival site main page (festival.buncheong.co.kr); Newspim and Gimhae Ilbo, Oct 12, 2026.",
-  "desc": "Nov 6–10, 2026 · Gimhae. The Buncheong pottery festival moves to Lotte Garden Park in Jangyu this year: potters' market, clay workshops, a kiln firing.",
-  "src": "festival.buncheong.co.kr 메인(2026 제31회 11/6~10 장유 롯데가든파크) + 뉴스핌·김해일보 2026-10-12. 좌표: 카카오 「롯데가든파크」 신문동 1410. 하위 페이지(오시는길)는 2025 진례 기준이라 안 씀"
- },
+ "697445": {"addr": "Lotte Garden Park area (next to Lotte Premium Outlets Gimhae), Sinmun-dong, Gimhae-si, Gyeongsangnam-do", "x": "128.826623242068", "y": "35.183024156029", "ko": {"title": "김해분청도자기축제", "addr": "경상남도 김해시 신문동 1410 롯데가든파크 일원"}, "intro": {"place": "Lotte Garden Park area in Jangyu, Gimhae (next to Lotte Premium Outlets Gimhae)"}, "src": "festival.buncheong.co.kr 메인(2026 제31회 11/6~10 장유 롯데가든파크) + 뉴스핌·김해일보 2026-10-12. 좌표: 카카오 「롯데가든파크」 신문동 1410. 하위 페이지(오시는길)는 2025 진례 기준이라 안 씀 / 11/11 축제 끝남 → note·desc 정리. 2026-11-11 영어 세션"},
  "790394": {
   "start": "20260905",
   "end": "20260905",
@@ -33,23 +17,8 @@
   },
   "src": "한화 발표 — 2026-09-05(토) 여의도 개최(다음뉴스 2026-08-06 「한화, 9월 5일 여의도서 ‘서울세계불꽃축제 2026’ 개최」, SBS Biz). 지도 칸 한글 원제가 좌표만으로 「서울스프링페스티벌」에 붙던 것 교정"
  },
- "1037621": {
-  "note": "Pohang City has set the 2026 festival for Nov 19–21 around Yeongildae Beach — later than usual, because the early-summer slot clashed with the June local elections. Nov 19: a media-art lighting ceremony at Songdo Pier. Nov 20: a fireworks street parade with groups from all 29 town and neighborhood districts. Nov 21: the main fireworks show over Yeongildae Beach from 8 pm for about an hour, with teams from Korea, Japan and France and a finale by Korea's Hanwha. Road closures, shuttles and viewing areas had not been announced as of Oct 21, 2026.",
-  "noteUntil": "20261121",
-  "noteFoot": "Source: News1, Oct 19, 2026, citing Pohang City. Checked Oct 21, 2026.",
-  "desc": "Nov 19–21, 2026 · Pohang. Main fireworks show Nov 21 from 8 pm over Yeongildae Beach (Korea, Japan, France, Hanwha finale); street parade Nov 20.",
-  "src": "뉴스1 2026-10-19(스포탈코리아 idxno=2025052909553626445 게재) 「포항시 등에 따르면」 — 11/19 송도부두 미디어아트 점등, 11/20 불꽃 거리 퍼레이드(29개 읍면동), 11/21 20시 1시간 영일대해수욕장 불꽃쇼(한·일·프랑스+한화 피날레), 6월 지방선거로 연기. 관광공사 kfes 11/19~21 과 일치. 2026-10-21 영어 세션"
- },
- "1084180": {
-  "intro": {
-   "place": "Jeju Olle Routes 19 and 20 (Jocheon-eup to Gujwa-eup, Jeju-si)",
-   "fee": "KRW 30,000; KRW 25,000 for groups of 20 or more, youth, people with disabilities and national merit recipients"
-  },
-  "note": "The 2026 Jeju Olle Walking Festival runs Nov 5–7 on Olle Routes 19 and 20. Day 1: opening at Jocheon Sports Ground, then 13 km to Dongbok-ri Sports Park. Day 2: Dongbok-ri Sports Park to Jeju Batdam Theme Park (11.5 km). Day 3: Jeju Haenyeo Anti-Japanese Movement Memorial Park back to Jeju Batdam Theme Park (12.9 km). Pre-registration period: Jul 8 – Oct 9, 2026, in the official Olle Pass app — foreign visitors register in the same app. The organizers say this is the last edition in the three-day, one-route format; from 2027 the festival is planned to spread across 23 routes over 25 days.",
-  "noteUntil": "20261107",
-  "noteFoot": "Checked against two reports of the organizer's announcement (Seoul Shinmun 2026-07-08, Jnuri 2026-07). The participation fee appears in one of them only — confirm in the Olle Pass app.",
-  "src": "서울신문 2026-07-08 (seoul.co.kr/news/society/2026/07/08/20260708500087) — 11/5~7·19·20코스·참가비·올레패스·10/9 마감·내년 25일 23코스 개편 / 제이누리 no=69060 — 11/5~7·일자별 구간(13·11.5·12.9km)·사전신청 7/8~10/9·외국인 같은 앱. 2026-10-06 영어 세션"
- },
+ "1037621": {"note": "Pohang City has confirmed the 2026 festival for Nov 19–21 at Yeongildae Beach and Songdo Pier (moved from early summer because of the June local elections). Nov 19: a media-facade lighting ceremony at Songdo Pier and a citizens' fireworks show. Nov 20: the Asia DJ Festival and a Night Carnival. Nov 21: the International Fireworks Show with teams from France and Japan, followed by Korea's Grand Finale over Yeongildae Beach (an earlier report put the start at 8 pm). The city expects more than 150,000 visitors and will run AI crowd-monitoring cameras around Yeongildae Beach. Road closures and shuttle buses had not been announced as of Nov 11, 2026.", "noteUntil": "20261121", "noteFoot": "Sources: Kyongbuk Maeil, Oct 27 and Nov 6, 2026, citing Pohang City; News1, Oct 19, 2026. Checked Nov 11, 2026.", "desc": "Nov 19–21, 2026 · Pohang. Yeongildae Beach & Songdo Pier: lighting ceremony, DJ festival, and the Nov 21 international fireworks show (France, Japan, Korea finale).", "src": "경북매일 2026-10-27 article/20261027500411(포항시 발표): 11/19~21 영일대해수욕장·송도부두, 19일 미디어파사드 점등식·시민불꽃쇼, 20일 아시아 DJ 페스티벌·나이트카니발, 21일 국제불꽃쇼(프랑스·일본)+그랜드피날레. 경북매일 2026-11-06 article/20261106500141: 15만명 예상, AI CCTV. 20시는 뉴스1 10/19. 셔틀·통제 미발표. 2026-11-11 영어 세션"},
+ "1084180": {"intro": {"place": "Jeju Olle Routes 19 and 20 (Jocheon-eup to Gujwa-eup, Jeju-si)", "fee": "KRW 30,000; KRW 25,000 for groups of 20 or more, youth, people with disabilities and national merit recipients"}, "src": "서울신문 2026-07-08 (seoul.co.kr/news/society/2026/07/08/20260708500087) — 11/5~7·19·20코스·참가비·올레패스·10/9 마감·내년 25일 23코스 개편 / 제이누리 no=69060 — 11/5~7·일자별 구간(13·11.5·12.9km)·사전신청 7/8~10/9·외국인 같은 앱. 2026-10-06 영어 세션 / 11/11 축제 끝남 → note·desc 정리. 2026-11-11 영어 세션"},
  "1244634": {
   "note": "The 26th Masan Gagopa Chrysanthemum Festival runs Oct 31 – Nov 8, 2026, and admission is free. This year it spreads along the waterfront across three areas: 3·15 Marine Nuri Park (about 100,000 chrysanthemum pots), Happo Waterfront Park and Masan Marine New Town. Its signature piece is a single chrysanthemum plant trained to carry 1,540 blooms, a Guinness World Record. The opening night starts with fireworks, and on the evening of Nov 4 a nakhwa ('falling fire') show is held over the sea for the first time, with more than 1,500 hanging fire sticks burning for about an hour. Changwon City provides about 5,500 parking spaces across the three sites and a free shuttle from Masan Station, but the weekday shuttle stops at 6 pm.",
   "noteUntil": "20261108",
@@ -148,15 +117,7 @@
   "ko": null,
   "src": "「대한민국불교문화엑스포」가 붙던 것 — 한글 원제 미확인이라 숨김"
  },
- "3364856": {
-  "intro": {
-   "playtime": "9:00 am – 2:00 pm on each walk day"
-  },
-  "note": "The walk is held on three separate days, not continuously: Sep 19 (Gapyeong, meeting at Gapyeong Station), Oct 10 (Pocheon, Hantangang River UNESCO Global Geopark) and Nov 7, 2026 (Chuncheon, meeting at Chuncheon Station). Each walk runs 9 am – 2 pm. It is free for ages 8 and up, with online registration on the Han River Watershed Management Committee website (hanriver.or.kr). Every participant gets a tote bag and a souvenir; finishing all three courses earns a completion badge.",
-  "noteUntil": "20261107",
-  "noteFoot": "Source: Han River Watershed Management Committee official event page, checked Oct 7, 2026.",
-  "src": "hanriver.or.kr/ecology/20110_info.php (2026 한강수계 걷기행사: 9/19 가평역·10/10 한탄강 유네스코 지질공원·11/7 춘천역, 09~14시, 8세+, 무료, 통합생태체험시스템 신청) 2026-10-07 확인"
- },
+ "3364856": {"intro": {"playtime": "9:00 am – 2:00 pm on each walk day"}, "src": "hanriver.or.kr/ecology/20110_info.php (2026 한강수계 걷기행사: 9/19 가평역·10/10 한탄강 유네스코 지질공원·11/7 춘천역, 09~14시, 8세+, 무료, 통합생태체험시스템 신청) 2026-10-07 확인 / 11/11 축제 끝남 → note·desc 정리. 2026-11-11 영어 세션"},
  "3536904": {
   "ko": {
    "title": "오슬로우 빈티지 마켓",
@@ -180,21 +141,16 @@
   "ko": null,
   "src": "지도 칸 한글 원제가 좌표만으로 「서울국제불교박람회」에 붙던 것 — 다른 행사라 숨김(2026-10-21 영어 세션)"
  },
- "4088990": {
-  "intro": {
-   "playtime": "Nov 6 (Fri) 11:00–21:00 · Nov 7 (Sat) 10:00–21:00 · Nov 8 (Sun) 10:00–19:00 (ramyeon restaurants)",
-   "fee": "Free entry (dishes are paid, mostly KRW 7,000–12,000; half portions KRW 4,000–4,500)",
-   "program": "Ramyeon Restaurants 1–25 and Ramyeon Trucks 26–33 — local restaurants serving creative ramyeon dishes\n- Order by QR code or kiosk (overseas cards accepted at the kiosk)\nGod-Land (Gumi Elementary School) — freshly fried ramyeon from the Nongshim Gumi factory, Nov 6–7 10:00–20:00, Nov 8 10:00–19:00\nRamyeon Makers Lab — build your own ramyeon (noodles, soup, toppings, package)\nSelf-Cook Lounge — cook-your-own zone and camping-style seating\nStage: Nov 6 18:30 \"Sing to You\" live broadcast · Nov 7 15:00 Global Ramyeon Challenge · Nov 7 19:00 Ssaeng Ramyeon Stage · Nov 8 14:00 busking"
-  },
-  "note": "2026 details checked on the official festival site: shuttle buses run from Gumi Sports Complex (every 10 min), Gumi Agricultural Wholesale Market (10–15 min) and Seonsan Bus Terminal (30 min) to Gumi Elementary School. Last return bus 21:00 on Fri–Sat and 19:00 on Sunday. Parking is expected to be crowded, so the organizer recommends public transport — Gumi Station is right at the festival.",
-  "noteUntil": "20261108",
-  "noteFoot": "Checked against the official site gumiramyun.com on Nov 4, 2026.",
-  "src": "https://www.gumiramyun.com/ (축제 정보 모아보기·셔틀버스 이용 안내)"
- },
+ "4088990": {"intro": {"playtime": "Nov 6 (Fri) 11:00–21:00 · Nov 7 (Sat) 10:00–21:00 · Nov 8 (Sun) 10:00–19:00 (ramyeon restaurants)", "fee": "Free entry (dishes are paid, mostly KRW 7,000–12,000; half portions KRW 4,000–4,500)", "program": "Ramyeon Restaurants 1–25 and Ramyeon Trucks 26–33 — local restaurants serving creative ramyeon dishes\n- Order by QR code or kiosk (overseas cards accepted at the kiosk)\nGod-Land (Gumi Elementary School) — freshly fried ramyeon from the Nongshim Gumi factory, Nov 6–7 10:00–20:00, Nov 8 10:00–19:00\nRamyeon Makers Lab — build your own ramyeon (noodles, soup, toppings, package)\nSelf-Cook Lounge — cook-your-own zone and camping-style seating\nStage: Nov 6 18:30 \"Sing to You\" live broadcast · Nov 7 15:00 Global Ramyeon Challenge · Nov 7 19:00 Ssaeng Ramyeon Stage · Nov 8 14:00 busking"}, "src": "https://www.gumiramyun.com/ (축제 정보 모아보기·셔틀버스 이용 안내) / 11/11 축제 끝남 → note·desc 정리. 2026-11-11 영어 세션"},
  "_readme": "영어 축제 수동 교정(2026-09-30~, 영어 세션). TourAPI 영문 DB(festivals_en.json)는 매일 자동 갱신으로 덮이므로 교정은 여기에만 둔다. en-fix.js 가 build.js·festival-en.js 에서 적용. ko: {title,addr} = 지도 복사 칸 한글 원제·주소 지정, null = 좌표만 겹친 «다른 축제» 이름이 붙던 것을 숨김. 날짜는 주최측 공식 발표로만 고친다(src 필수). 공식 날짜가 TourAPI 영문과 같아지면 이 항목을 지운다.",
  "3366992": {"note": "The 2026 Goesan Gimjang Festival (gimjang is the late-autumn custom of making a season's worth of kimchi) runs Nov 5–8, 10:00–20:00, around the Goesan Organic Expo Plaza.", "noteUntil": "20261108", "noteFoot": "Source: Ministry of Culture, Sports and Tourism festival listing (Goesan County). Checked Nov 4, 2026.", "desc": "Nov 5–8, 2026 · Goesan, North Chungcheong. Kimchi-making (gimjang) festival around the Goesan Organic Expo Plaza, open 10:00–20:00.", "src": "mcst.go.kr festivalView pSeq=11907: 2026.11.5~11.8 10:00~20:00 괴산유기농엑스포광장 일원. 2026-11-04 영어 세션"},
  "4116386": {"note": "BeautySum Suwon 2026 is a beauty expo hosted by Suwon City. It runs Nov 5–7 in the 1st-floor exhibition hall of Suwon Convention Center (Gwanggyo).", "noteUntil": "20261107", "noteFoot": "Source: Suwon City announcement as reported by Special Times (Oct 30, 2026). Checked Nov 4, 2026.", "desc": "Nov 5–7, 2026 · Suwon. Beauty expo hosted by Suwon City in the 1st-floor exhibition hall of Suwon Convention Center, Gwanggyo.", "src": "specialtimes.co.kr idxno=480063 (2026-10-30): 11/5~7 수원컨벤션센터 1층 전시홀, 주최 수원시, 주관 수원시·수원컨벤션센터·메쎄이상. 2026-11-04 영어 세션"},
  "1855864": {"note": "The 2026 Pohang Steel Art Festival runs for 23 days, Oct 24 – Nov 15. Works and programs are spread across the city: Dongbin Culture Warehouse 1969, Songdo Beach, Kkumteul-ro, Jungang Shopping Arcade and Jukdo Market.", "noteUntil": "20261115", "noteFoot": "Source: Kyongbuk Maeil (Oct 19, 2026). Checked Nov 4, 2026.", "desc": "Oct 24 – Nov 15, 2026 · Pohang. Steel art installations across the city, from Songdo Beach and Dongbin Culture Warehouse 1969 to Jukdo Market.", "src": "kbmaeil.com article/20261018500697 (2026-10-19): 10/24~11/15 23일간, 동빈문화창고1969·송도해수욕장·꿈틀로·중앙상가·죽도시장 등. 2026-11-04 영어 세션"},
  "4110303": {"note": "The Moonlit Night Exercise Busan Challenge runs on weekends from Sep 19 to Nov 7, 2026 (seven sessions in total), at Busan Citizens Park, Bukhang Waterfront Park and Hwamyeong Ecological Park.", "noteUntil": "20261107", "noteFoot": "Source: Busan Metropolitan City news (Sep 2, 2026). Checked Nov 4, 2026.", "desc": "Sep 19 – Nov 7, 2026 · Busan. Weekend evening workout sessions (seven in total) at Busan Citizens Park, Bukhang Waterfront Park and Hwamyeong Ecological Park.", "src": "busan.go.kr nbtnewsBU/1752265 (2026-09-02): 9/19~11/7 주말 총 7회, 부산시민공원·북항친수공원·화명생태공원. 회차별 장소·시간은 원문에 없어 안 씀. 2026-11-04 영어 세션"},
- "3562082": {"ko": null, "src": "「2026 용골 댄스 페스타」가 좌표만으로 붙음(다른 행사) — 숨김. 2026-11-04 영어 세션"}
+ "3562082": {"ko": null, "src": "「2026 용골 댄스 페스타」가 좌표만으로 붙음(다른 행사) — 숨김. 2026-11-04 영어 세션"},
+ "4116443": {"note": "The 2026 Citywide Energy Walk Festival is on Sunday, Nov 15, 13:30–17:00, and is free. It opens at Daejeon Expo Citizens' Plaza at 13:30; the mobile stamp walking tour (14:00–15:30) starts from the plaza and passes through Hanbat Arboretum, with four QR missions for a finisher reward. An energy OX quiz and six eco-energy hands-on booths are in Exhibition Hall 1 of DCC (Daejeon Convention Center).", "noteUntil": "20261115", "noteFoot": "Source: Special Times (Nov 8, 2026), festival listing (hosts include Daejeon City; organized by Daejeon Tourism Organization). Checked Nov 11, 2026.", "desc": "Sun Nov 15, 2026 · Daejeon. Free, non-competitive walk from Daejeon Expo Citizens' Plaza through Hanbat Arboretum, 13:30–17:00, with energy booths at DCC.", "src": "스페셜타임스 2026-11-08 idxno=483008: 11/15(일) 13:30~17:00 대전엑스포시민광장, 무료, 스탬프 워킹투어 14:00~15:30 엑스포시민광장~한밭수목원 QR 4개, DCC 제1전시장 OX퀴즈·체험 6종. 주최 기후에너지환경부·대전시·한국태양광발전학회, 주관 대전관광공사. 2026-11-11 영어 세션"},
+ "4135883": {"note": "Christmas Village Busan 2026 runs Nov 26 – Dec 25 at the Busan Cinema Center in Centum City. Entry is by paid ticket, sold on YES24; prices differ for weekdays, weekend daytime, weekend evenings and the Christmas days (Dec 24–25). Hours: weekdays 16:00–22:00, weekends and Dec 24–25 from 11:00 to 22:00.", "noteUntil": "20261225", "noteFoot": "Source: YES24 ticket page for Christmas Village Busan 2026. Checked Nov 11, 2026.", "desc": "Nov 26 – Dec 25, 2026 · Busan Cinema Center, Centum City. Paid-ticket Christmas village with a snowy plaza, parades and pop-ups; weekdays from 4 pm.", "src": "YES24 티켓 m.ticket.yes24.com/Perf/60679: 2026.11.26~12.25 영화의전당, 평일 16~22시·주말 11~22시·크리스마스 시즌 11~22시, 요금 구간 4개(평일·주말주간·주말야간·크리스마스). 요금 금액은 맘맘 등 다른 곳과 달라 안 씀. 2026-11-11 영어 세션"},
+ "4135897": {"note": "Seoul Light Gwanghwamun is part of Seoul Winter Festa 2026, which Seoul's official culture portal lists for Dec 11, 2026 – Jan 31, 2027 at Gwanghwamun Square and six other sites. Its Gwanghwamun program includes the media-facade light show and the New Year countdown, alongside Gwanghwamun Market and the Seoul Lantern Festival along Cheonggyecheon.", "noteUntil": "20270103", "noteFoot": "Source: Seoul Culture Portal (festival.seoul.go.kr), Seoul Winter Festa listing. Checked Nov 11, 2026.", "desc": "From Dec 11, 2026 · Gwanghwamun Square, Seoul. Media-facade light show and New Year countdown, part of Seoul Winter Festa (Dec 11 – Jan 31).", "src": "서울문화포털 festivalView festacode=373 윈터페스타 2026-12-11~2027-01-31 광화문광장 외 6곳 — 서울라이트광화문(미디어파사드·신년 카운트다운)·광화문마켓·서울빛초롱축제(청계천). 서울라이트 종료일(1/3)은 원문 미확인. 2026-11-11 영어 세션"},
+ "4010852": {"ko": null, "src": "「2027 ACE Fair」(2027-09-23) — 2026 회차(9/10~13)가 아님 → 숨김. 2026-11-11 영어 세션"},
+ "1117592": {"ko": null, "src": "「병오년 해맞이 행사」(2025-12-31) — 지난 회차, 2026-12-31 행사 이름 미발표 → 숨김. 2026-11-11 영어 세션"}
 }

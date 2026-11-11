@@ -22,7 +22,7 @@
   "790394": { "title": "Hanwha Seoul International Fireworks Festival", "date": "2026-10-07", "result": "교정 2025-09-27 → 2026-09-05 + 한글 원제 오매칭 교정", "src": "한화 발표(다음뉴스 2026-08-06)" },
   "4076928": { "title": "Hangang River Festival", "date": "2026-10-07", "result": "맞음 가을 10/17~25", "src": "seoul.go.kr/festa/hangang/y2026 공식" },
   "978249": { "title": "Suwon Hwaseong Festival", "date": "2026-10-07", "result": "날짜는 kv 확정(대조 생략) — 외국인 전용 프로그램 note·Creatrip 링크", "src": "Creatrip 15902·15901 상품 페이지" },
-  "1037621": {"title": "Pohang International Fireworks Festival", "date": "2026-10-21", "result": "맞음 11/19~21 영일대 (포항시 발표 확인 — 미확인 해제)", "src": "뉴스1 2026-10-19 「포항시 등에 따르면」"},
+  "1037621": {"title": "Pohang International Fireworks Festival", "date": "2026-11-11", "result": "맞음 11/19~21(포항시 10/27 발표) — note 프로그램 갱신·desc", "src": "경북매일 2026-10-27·11-06"},
   "1273884": {"title": "Bupyeong Pungmul Festival", "date": "2026-10-14", "result": "맞음 10/2~4 부평대로·굴포천 일원(제30회)", "src": "국제뉴스 2026-09-28(부평구 발표 인용)"},
   "697195": {"title": "Cheonan World Dance Festival", "date": "2026-10-14", "result": "맞음 10/1~5 천안종합운동장 + 10/3~5 삼거리공원", "src": "시사뉴스 2026-08-14(천안시 발표)"},
   "293144": {"title": "Bucheon International Comics Festival", "date": "2026-10-14", "result": "맞음 9/18~20 한국만화박물관(제29회)", "src": "데일리안 2026-09-17"},
@@ -52,5 +52,12 @@
   "1855864": {"title": "Pohang Steel Art Festival", "date": "2026-11-04", "result": "맞음 10/24~11/15 — note·desc 추가", "src": "경북매일 2026-10-19 article/20261018500697"},
   "4110303": {"title": "Moonlit Night Exercise Busan Challenge", "date": "2026-11-04", "result": "맞음 9/19~11/7 주말 7회 — note·desc 추가", "src": "부산시 2026-09-02 nbtnewsBU/1752265"},
   "4126454": {"title": "Sium Sium Morning", "date": "2026-11-04", "result": "미확인 — 강동구 발표 못 찾음(검색 2회)", "src": "웹 검색 2026-11-04"},
-  "4066947": {"title": "Peace On: Dam", "date": "2026-11-04", "result": "미확인 — 2026 개최 발표 못 찾음(검색 2회)", "src": "웹 검색 2026-11-04"}
+  "4066947": {"title": "Peace On: Dam", "date": "2026-11-04", "result": "미확인 — 2026 개최 발표 못 찾음(검색 2회)", "src": "웹 검색 2026-11-04"},
+  "4116443": {"title": "Citywide Energy Walk Festival", "date": "2026-11-11", "result": "맞음 11/15 13:30~17:00 — note·desc 추가", "src": "스페셜타임스 2026-11-08 idxno=483008"},
+  "4135883": {"title": "Busan Christmas Village", "date": "2026-11-11", "result": "맞음 11/26~12/25 영화의전당 — note·desc 추가", "src": "YES24 Perf/60679"},
+  "4135897": {"title": "Seoul Light Gwanghwamun", "date": "2026-11-11", "result": "시작 12/11 맞음(윈터페스타 12/11~1/31), 종료 1/3 원문 미확인 — note·desc 추가", "src": "서울문화포털 festacode=373"},
+  "1121607": {"title": "Seoul Lantern Festival", "date": "2026-11-11", "result": "윈터페스타 12/11~1/31 과 일치, 빛초롱 자체 공지(festacode=360)는 날짜 비어 있음(예정)", "src": "서울문화포털 festacode=373"},
+  "3043397": {"title": "Gwanghwamun Market", "date": "2026-11-11", "result": "시작 12/11 맞음(윈터페스타 프로그램), 종료 1/10 원문 미확인", "src": "서울문화포털 festacode=373"},
+  "3554627": {"title": "The Souvenir Fair", "date": "2026-11-11", "result": "관광공사 자료와 일치 11/20~22 DDP 아트홀 1·2관 무료 — 문체부·관광공사 원문 미확인", "src": "여기유 place/26973(관광공사 API)"},
+  "2513248": {"title": "E-World Illumination", "date": "2026-11-11", "result": "미확인 — eworld.kr 에 2026 공지 없음(검색 2회)", "src": "eworld.kr 2026-11-11"}
 }
