@@ -146,7 +146,7 @@ ${tbl}
 </ul>
 
 <h2 class="sec">같이 보면 좋은 것</h2>
-<div class="frel2"><a href="/winter/light/">✨ 겨울 빛축제·눈꽃축제</a><a href="/winter/">❄️ 겨울 축제 총정리</a><a href="/2026-12/">12월 축제 일정</a><a href="/seoul/2026-12/">🏙 서울 12월 축제·행사</a><a href="/kids/">👨‍👩‍👧 아이와 가볼만한 축제</a><a href="/course/">🧭 코스 짜기</a></div>
+<div class="frel2"><a href="/winter/light/">✨ 겨울 빛축제·눈꽃축제</a><a href="/winter/sunrise/">🌅 새해 해맞이·해넘이</a><a href="/winter/">❄️ 겨울 축제 총정리</a><a href="/2026-12/">12월 축제 일정</a><a href="/seoul/2026-12/">🏙 서울 12월 축제·행사</a><a href="/kids/">👨‍👩‍👧 아이와 가볼만한 축제</a><a href="/course/">🧭 코스 짜기</a></div>
 
 <h2 class="sec">자주 묻는 것</h2>
 ${faq.map(([q, a]) => `<p style="line-height:1.8"><b>${esc(q)}</b><br>${esc(a)}</p>`).join('')}

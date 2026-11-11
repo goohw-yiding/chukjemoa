@@ -106,7 +106,7 @@ ${curW.slice(0, 30).map(f => `<li><b>${esc(f.name)}</b> <span style="color:#9ca3
 <b>이 페이지의 날짜는 전부 «예년 기준»입니다.</b> 해마다 요일과 날씨에 따라 며칠씩 달라지고, 얼음 축제는 결빙이 늦으면 개막 자체가 밀립니다. 출발 전 주최 측 공식 채널 확인이 필요합니다.
 </div>
 
-<p style="font-size:.97rem"><a href="/winter/light/" style="color:#0a6c63;font-weight:800">✨ 빛축제·눈꽃(얼음)축제만 따로 보기 — 날짜를 고르면 그날 열리는 곳 →</a><br><a href="/winter/christmas-market/" style="color:#0a6c63;font-weight:800">🎄 크리스마스 마켓·빌리지만 따로 보기 — 날짜·지역별 →</a></p>
+<p style="font-size:.97rem"><a href="/winter/light/" style="color:#0a6c63;font-weight:800">✨ 빛축제·눈꽃(얼음)축제만 따로 보기 — 날짜를 고르면 그날 열리는 곳 →</a><br><a href="/winter/christmas-market/" style="color:#0a6c63;font-weight:800">🎄 크리스마스 마켓·빌리지만 따로 보기 — 날짜·지역별 →</a><br><a href="/winter/sunrise/" style="color:#0a6c63;font-weight:800">🌅 새해 해맞이·해넘이 행사만 따로 보기 — 지역별 →</a></p>
 
 ${liveBlock}
 
@@ -153,6 +153,8 @@ ${faq.map(([q, a]) => `<p style="line-height:1.8"><b>${esc(q)}</b><br>${esc(a)}<
   const lightUrls = require('./winter-light.js').build({ ROOT, layout, writePage, SITE_NAME });
   // 2026-11-04 AI 노출 운영: 크리스마스 마켓·빌리지 질문 전용 페이지
   const xmasUrls = require('./christmas-market.js').build({ ROOT, layout, writePage, SITE_NAME });
-  return ['/winter/', ...lightUrls, ...xmasUrls];
+  // 2026-11-11 AI 노출 운영: 새해 해맞이·해넘이 질문 전용 페이지
+  const sunriseUrls = require('./sunrise.js').build({ ROOT, layout, writePage, SITE_NAME });
+  return ['/winter/', ...lightUrls, ...xmasUrls, ...sunriseUrls];
 }
 module.exports = { build };

@@ -3243,7 +3243,7 @@ ${perfHtml}
 <div class="frel2">
 <a href="/hot/">🔥 요즘 사람 몰리는 동네</a>
 ${[9, 10, 11].includes(M) ? `<a href="/maple/">🍁 단풍 절정 시기·명소</a>` : ''}
-${[11, 12, 1, 2].includes(M) ? `<a href="/winter/light/">✨ 겨울 빛축제·눈꽃축제 일정</a>` : ''}${[11, 12].includes(M) ? `<a href="/winter/christmas-market/">🎄 크리스마스 마켓·빌리지</a>` : ''}
+${[11, 12, 1, 2].includes(M) ? `<a href="/winter/light/">✨ 겨울 빛축제·눈꽃축제 일정</a>` : ''}${[11, 12].includes(M) ? `<a href="/winter/christmas-market/">🎄 크리스마스 마켓·빌리지</a>` : ''}${[11, 12, 1].includes(M) ? `<a href="/winter/sunrise/">🌅 새해 해맞이·해넘이</a>` : ''}
 ${!isPast && fs.existsSync(path.join(ROOT, 'seoul', mm.key)) ? `<a href="/seoul/${mm.key}/">🏙 서울 ${mm.short} 축제·행사</a>` : ''}
 <a href="/course/">🧭 조건 넣으면 코스가 나옵니다</a>
 <a href="/jangteo/">🏮 그날 열리는 오일장</a>
