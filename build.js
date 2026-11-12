@@ -4224,6 +4224,16 @@ const REF_NATIONAL = [
   ['https://www.data.go.kr/', '공공데이터포털', '축제·반려동물 동반·무장애 정보 개방 데이터 원본']
 ];
 const POST_REFS = {
+  // 이주의 축제모아 Vol.9 — TOP5 날짜·장소를 교차 확인한 보도·공식 페이지(2026-11-12 확인)
+  'chukjemoa-weekly-vol9': [
+    ['https://news.tf.co.kr/read/ogmeta/2382266.htm', '더팩트', '제2회 코리아 그랜드 페스티벌 10월 29일~11월 15일 전국, 31일 안동 원도심 통합 개막식'],
+    ['https://www.wikitree.co.kr/articles/1170816', '위키트리', '2026 코리아 그랜드 페스티벌 안동 개막·18일간 4만 개사 참여'],
+    ['https://mediahub.seoul.go.kr/archives/2019615', '내 손안에 서울', '2026 남산 나이트 페스티벌 10월 23일~11월 14일 매주 금·토 남산공원 일대'],
+    ['https://www.kbmaeil.com/article/20261105500133', '경북매일', '2026 영주사과축제 서울 청계광장 행사 홍보'],
+    ['https://www.specialtimes.co.kr/news/articleView.html?idxno=482348', '스페셜타임스', '영주 사과축제 11월 13~15일 서울 청계광장'],
+    ['https://www.specialtimes.co.kr/news/articleView.html?idxno=482784', '스페셜타임스', '포천펫스타 11월 14일 포천아트밸리'],
+    ['https://www.inews24.com/view/2017357', '아이뉴스24', '2026 수성국제비엔날레 10월 27일~11월 22일 수성못 상화동산 일원']
+  ],
   // 이주의 축제모아 Vol.8 — TOP5 날짜·장소를 교차 확인한 보도·공식 페이지(2026-11-05 확인)
   'chukjemoa-weekly-vol8': [
     ['https://www.wikitree.co.kr/articles/1169596', '위키트리', '제26회 마산가고파국화축제 10월 31일~11월 8일 3·15해양누리공원·마산해양신도시 일원'],
