@@ -460,7 +460,7 @@ function guideHtml(ROOT, lang, key) {
 <h2>${esc(lb.access || 'Access')}</h2>${ul(c.access || [])}
 ${(c.local || []).length ? `<h3>${esc(lb.local || '')}</h3>${ul(c.local)}` : ''}
 ${(L._pay || []).length ? `<h3>${esc(lb.pay || '')}</h3>${ul(L._pay)}` : ''}
-<div class="ig-src"><p>${esc(lb.checked || '')}</p><details><summary>${esc(lb.src || 'Sources')}</summary><ul>${src}</ul></details></div>
+<div class="ig-src"><p>${esc(c.checked || lb.checked || '')}</p><details><summary>${esc(c.srcLabel || lb.src || 'Sources')}</summary><ul>${src}</ul></details></div>
 </section>`;
 }
 

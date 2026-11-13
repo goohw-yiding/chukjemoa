@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-11-11T07:06",
+ "generatedAt": "2026-11-13T14:28",
  "stats": {
   "en": {
    "total": 268,
@@ -328,7 +328,6 @@
     "ko": "추억의충장축제",
     "kv": "confirmed",
     "signals": [
-     "img",
      "tel",
      "geo",
      "date"
@@ -752,7 +751,6 @@
     "ko": "추억의충장축제",
     "kv": "confirmed",
     "signals": [
-     "img",
      "tel",
      "geo",
      "date"
@@ -1118,7 +1116,6 @@
     "ko": "추억의충장축제",
     "kv": "confirmed",
     "signals": [
-     "img",
      "tel",
      "geo",
      "date"
@@ -1590,7 +1587,6 @@
     "ko": "추억의충장축제",
     "kv": "confirmed",
     "signals": [
-     "img",
      "tel",
      "geo",
      "date"
