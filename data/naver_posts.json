@@ -1,6 +1,105 @@
 {
- "updated": "2026-11-11T07:06",
+ "updated": "2026-11-13T07:05",
  "posts": [
+  {
+   "id": "224474517939",
+   "title": "루지 타는 곳 — 통영·부산·강화 루지 요금과 운영시간, 키 제한 비교 (11월)",
+   "date": "2026-11-12",
+   "cat": "교통·시간표",
+   "url": "https://blog.naver.com/goohw/224474517939",
+   "targets": [
+    "/"
+   ],
+   "fest": null
+  },
+  {
+   "id": "224473889866",
+   "title": "청주 가볼만한곳 11월 — 청남대 입장료·상당산성·수암골 노을까지 하루 코스와 쉬는 날",
+   "date": "2026-11-12",
+   "cat": "도시별 가볼만한곳",
+   "url": "https://blog.naver.com/goohw/224473889866",
+   "targets": [
+    "/cheongju/"
+   ],
+   "fest": null
+  },
+  {
+   "id": "224473477199",
+   "title": "경남 통영 가볼만한곳 11월 — 케이블카 요금·디피랑 시간과 동피랑·달아공원 하루 코스",
+   "date": "2026-11-11",
+   "cat": "도시별 가볼만한곳",
+   "url": "https://blog.naver.com/goohw/224473477199",
+   "targets": [
+    "/tongyeong/"
+   ],
+   "fest": null
+  },
+  {
+   "id": "224473249341",
+   "title": "포천펫스타 2026 일정 — 11월 14일 포천아트밸리 입장료·시간·주차와 펫트립 신청",
+   "date": "2026-11-11",
+   "cat": "축제총정리",
+   "url": "https://blog.naver.com/goohw/224473249341",
+   "targets": [
+    "/"
+   ],
+   "fest": "pocheonpetseuta"
+  },
+  {
+   "id": "224472794096",
+   "title": "경남축제·경북축제 이번 주말 8곳 (11월 14일~15일) — 포항 해병대문화축제·부산종합민속예술제",
+   "date": "2026-11-11",
+   "cat": "이번 주 축제·주말 나들이",
+   "url": "https://blog.naver.com/goohw/224472794096",
+   "targets": [
+    "/2026-11/"
+   ],
+   "fest": "busanjonghamminsogyesulje"
+  },
+  {
+   "id": "224472736729",
+   "title": "서울축제·경기도축제 이번 주말 6곳 (11월 14일~15일) — 대한민국 우리술대축제·영주사과축제 청계광장",
+   "date": "2026-11-11",
+   "cat": "이번 주 축제·주말 나들이",
+   "url": "https://blog.naver.com/goohw/224472736729",
+   "targets": [
+    "/2026-11/"
+   ],
+   "fest": null
+  },
+  {
+   "id": "224472599698",
+   "title": "영주사과축제 2026 서울 청계광장 — 11월 13~15일 시간·입장료·사과 20종 전시와 가는 길",
+   "date": "2026-11-11",
+   "cat": "축제총정리",
+   "url": "https://blog.naver.com/goohw/224472599698",
+   "targets": [
+    "/seoul/exhibition/"
+   ],
+   "fest": null
+  },
+  {
+   "id": "224472570580",
+   "title": "정동진 레일바이크 예약 — 11월 시간·요금·주차와 바다 옆 코스 타는 법",
+   "date": "2026-11-11",
+   "cat": "교통·시간표",
+   "url": "https://blog.naver.com/goohw/224472570580",
+   "targets": [
+    "/"
+   ],
+   "fest": null
+  },
+  {
+   "id": "224472549598",
+   "title": "여수 해상케이블카 요금·운행시간 — 크리스탈캐빈 차이와 주차, 11월 점검일",
+   "date": "2026-11-11",
+   "cat": "교통·시간표",
+   "url": "https://blog.naver.com/goohw/224472549598",
+   "targets": [
+    "/"
+   ],
+   "fest": null
+  },
   {
    "id": "224472059224",
    "title": "전남축제·전북축제 이번 주말 6곳 (11월 14일~15일) — 고흥유자축제·광주비엔날레 마지막 주말",
@@ -87,7 +186,7 @@
    "targets": [
     "/"
    ],
-   "fest": null
+   "fest": "muan-yd-peseutibeol"
   },
   {
    "id": "224470722328",
@@ -318,7 +417,7 @@
    "targets": [
     "/"
    ],
-   "fest": "gimhaebuncheongdojagichukje"
+   "fest": null
   },
   {
    "id": "224465593381",
@@ -329,7 +428,7 @@
    "targets": [
     "/"
    ],
-   "fest": "gimhaebuncheongdojagichukje"
+   "fest": null
   },
   {
    "id": "224465550588",

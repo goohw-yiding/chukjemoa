@@ -308,6 +308,19 @@ ${faq.map(([q, a]) => `<p class="jsg-faq"><b>${esc(q)}</b><br>${esc(a)}</p>`).jo
     };
   };
 
+  // ── 이미 라이브인 시·군 장날 페이지 (2026-11-13 장남 님 결정: «정확성» — 라이브 페이지는 하한에서 면제)
+  //   왜: 정선장날(월 4,250건) 페이지가 11월 들어 «근처 축제» 칸이 줄며 본문 2,397자(하한 2,400자보다 3자 적음)로
+  //   떨어지자 빌드가 페이지를 빼먹었다 → 커밋 관문이 «상시 페이지 삭제»로 막아 11/12~11/13 매일 빌드 배포가 멈췄다.
+  //   계절마다 오르내리는 글자 수 때문에 이미 검색에 걸린 주소를 404 로 만들지 않는다.
+  //   하한은 «새 페이지를 만들지 말지»에만 쓴다(2026-10-02 원칙: 새 얇은 페이지 대량 생성 금지는 그대로).
+  //   라이브 기준 = git HEAD 에 jangteo/{slug}/index.html 이 있는가(커밋 관문과 같은 기준).
+  let LIVE = new Set();
+  try {
+    const out = require('child_process').execSync('git ls-tree -d --name-only HEAD jangteo/', { cwd: ROOT, encoding: 'utf8' });
+    LIVE = new Set(out.split(/\r?\n/).filter(Boolean).map(s => s.replace(/^jangteo\//, '')));
+  } catch (e) { console.log('  ⚠️ git 으로 라이브 장날 목록을 못 읽음 — 하한 면제 없이 진행'); }
+  const keptThin = [];
+
   // ── 1패스: 근처 링크 «없이» 재서 만들 목록을 정한다
   const pass = [];
   made.forEach(o => {
@@ -317,7 +330,10 @@ ${faq.map(([q, a]) => `<p class="jsg-faq"><b>${esc(q)}</b><br>${esc(a)}</p>`).jo
     //   «근처 장소» 칸까지 넣고 잰다. 장날은 각 시·군청·관광공사 등 공식 출처로 확인했다.
     //   (영주는 넣지 않는다 — 「영주장날」은 농특산물 쇼핑몰·축제 이름이라 오일장 검색이 아니다)
     const r = render(APPROVED_FULL.has(o.city) ? o : { ...o, placesHtml: '' }, '');
-    if (r.bodyLen < MIN_BODY) { skipped.push(`${o.city}(본문 ${r.bodyLen}자)`); return; }
+    if (r.bodyLen < MIN_BODY) {
+      if (LIVE.has(o.slug)) { keptThin.push(`${o.city}(본문 ${r.bodyLen}자)`); pass.push(o); return; }
+      skipped.push(`${o.city}(본문 ${r.bodyLen}자)`); return;
+    }
     pass.push(o);
   });
   const cityToSlug = new Map(pass.map(o => [o.city, o.slug]));
@@ -345,7 +361,8 @@ ${faq.map(([q, a]) => `<p class="jsg-faq"><b>${esc(q)}</b><br>${esc(a)}</p>`).jo
   if (URLS.length) console.log(`  본문 ${minLen}~${maxLen}자`);
 
   console.log(`✓ /jangteo/{시군}/ — ${URLS.length}페이지 (SERP 게이트 통과 ${okCity.size}곳 중)`
-    + (skipped.length ? ` · 제외 ${skipped.length}곳: ${skipped.slice(0, 6).join(', ')}${skipped.length > 6 ? '…' : ''}` : ''));
+    + (skipped.length ? ` · 제외 ${skipped.length}곳: ${skipped.join(', ')}` : ''));
+  if (keptThin.length) console.log(`  ⚠️ 하한 ${MIN_BODY}자 미달이지만 이미 라이브라 유지 ${keptThin.length}곳: ${keptThin.join(', ')}`);
   return URLS;
 }
 
