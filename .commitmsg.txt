@@ -1,8 +1,4 @@
-일본어 주간(11/10): 날짜 대조 6건 + 진연 클룩 + DDP 건축투어 시작일 교정
-
-- 대조: 최남단 방어축제 11/19~22 맞음(제주일보 11/8, 이름 最南端ブリ祭り), 국악공연 진연 연중 맞음,
-  DDP 건축투어 시작일 1/1 → 3/21 교정(DDP 공식 투어 목록), 서울빛초롱·광화문 마켓·숭례문 파수의식 미확인
-- 클룩: /ja/festival/gugakgongyeon-jinyeon/ 「料金」 뒤 국악공연 진연 티켓(157764, 인사동5길 10 확인, data-bb=klook-gugak)
+en: 11/11 포항불빛 검색 설명(desc) 155자 잘림 → 139자로 줄임
 
 Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
-Claude-Session: https://claude.ai/code/session_012MFxCK3iP3ChrcSwGQwyCb
+Claude-Session: https://claude.ai/code/session_012MFxCMQB12FKyo6rhXS2Te
