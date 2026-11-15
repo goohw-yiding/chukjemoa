@@ -253,5 +253,15 @@
   "date": "2026-11-08",
   "result": "ok",
   "src": "https://www.joongdo.co.kr/web/view.php?key=20261102010009098"
+ },
+ "nudeuldaejeonchukje": {
+  "date": "2026-11-15",
+  "result": "ok",
+  "src": "https://www.daejonilbo.com/news/articleView.html?idxno=2313471"
+ },
+ "choenamdanbangeochukje": {
+  "date": "2026-11-15",
+  "result": "ok",
+  "src": "https://www.khan.co.kr/article/202611081825001/"
  }
 }

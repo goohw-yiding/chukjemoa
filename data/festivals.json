@@ -1163,7 +1163,7 @@
   "name": "서울빛초롱축제",
   "region": "서울",
   "city": "종로구",
-  "place": "청계천·광화문광장 일대",
+  "place": "서울 청계천 일대",
   "start": "2026-12-11",
   "end": "2027-01-31",
   "month": [
@@ -1173,7 +1173,8 @@
   "category": "빛",
   "desc": "청계천 밝히는 겨울 등불 축제",
   "confirmed": false,
-  "apiSource": "TourAPI «서울빛초롱축제» id 1095732"
+  "apiSource": "TourAPI «서울빛초롱축제» id 1095732",
+  "pending": true
  },
  {
   "name": "청양칠갑산얼음분수축제",
@@ -1237,15 +1238,16 @@
   "name": "담양산타축제",
   "region": "전남",
   "city": "담양군",
-  "place": "메타프로방스 일원",
-  "start": "2026-12-18",
+  "place": "전남 담양",
+  "start": "2026-12-24",
   "end": "2026-12-25",
   "month": [
    12
   ],
   "category": "빛",
   "desc": "산타 퍼레이드와 크리스마스 조명",
-  "confirmed": false
+  "confirmed": false,
+  "pending": true
  },
  {
   "name": "평창송어축제",

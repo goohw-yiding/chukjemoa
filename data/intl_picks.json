@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-11-15",
+ "generatedAt": "2026-11-16",
  "rule": "근거 점수 2 이상 · 언어당 최대 25",
  "langs": {
   "en": [
@@ -215,7 +215,7 @@
     "ko": "서울빛초롱축제",
     "score": 5,
     "commerce": false,
-    "status": "est",
+    "status": "pending",
     "ids": [
      "1121607"
     ],
@@ -645,10 +645,8 @@
     "ko": "서울빛초롱축제",
     "score": 4,
     "commerce": false,
-    "status": "est",
-    "ids": [
-     "1956428"
-    ],
+    "status": "pending",
+    "ids": [],
     "reasons": [
      {
       "claim": "4travel 한국 축제 순위 상위(청계천 랜턴)",
@@ -1449,10 +1447,8 @@
     "ko": "서울빛초롱축제",
     "score": 2,
     "commerce": false,
-    "status": "est",
-    "ids": [
-     "1117166"
-    ],
+    "status": "pending",
+    "ids": [],
     "reasons": [
      {
       "claim": "서울시 중문(간체) 공식사이트 서울빛초롱축제 소개",
@@ -1649,7 +1645,7 @@
     "ko": "서울빛초롱축제",
     "score": 4,
     "commerce": true,
-    "status": "est",
+    "status": "pending",
     "ids": [
      "1117216"
     ],
