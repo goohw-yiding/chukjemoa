@@ -55,6 +55,13 @@
    "evidence": "서울라이트 광화문은 광화문 외벽 미디어파사드 쇼로, 청계천 등불 축제인 서울빛초롱축제와 서울윈터페스타 안의 별개 프로그램(서울시 보도자료 news.seoul.go.kr/culture/archives/531388)",
    "title": "Seoul Light Gwanghwamun",
    "at": "2026-11-09"
+  },
+  "4149562": {
+   "ko": "서울빛초롱축제",
+   "decision": "reject",
+   "evidence": "BIG 건축 전시(MATERIALISM)로 청계천 빛초롱축제와 다른 행사",
+   "title": "MATERIALISM | Curated Exhibition by the Bjarke Ingels Group",
+   "at": "2026-11-16"
   }
  },
  "ja": {
@@ -85,6 +92,13 @@
    "evidence": "별바다부산 나이트캠크닉은 별도 야간 피크닉 행사",
    "title": "星の海・釜山「ナイトミュージック・キャンクニック」",
    "at": "2026-10-01"
+  },
+  "4135181": {
+   "ko": "서울빛초롱축제",
+   "decision": "reject",
+   "evidence": "광화문 미디어파사드 '서울라이트 광화문'은 청계천 빛초롱축제와 별개 행사",
+   "title": "ソウルライト光化門",
+   "at": "2026-11-16"
   }
  },
  "tw": {

@@ -1,28 +1,28 @@
 {
- "generatedAt": "2026-11-16T09:45",
+ "generatedAt": "2026-11-16T14:18",
  "stats": {
   "en": {
    "total": 268,
    "linked": 47,
-   "confirmed": 40,
-   "pending": 1,
+   "confirmed": 41,
+   "pending": 0,
    "tbc": 4,
    "est": 2,
    "redated": 0,
    "restored": 0,
-   "review": 1,
+   "review": 0,
    "removed": 0
   },
   "ja": {
    "total": 203,
    "linked": 42,
-   "confirmed": 37,
-   "pending": 1,
+   "confirmed": 38,
+   "pending": 0,
    "tbc": 3,
    "est": 1,
    "redated": 0,
    "restored": 0,
-   "review": 2,
+   "review": 1,
    "removed": 0
   },
   "zh": {
@@ -40,8 +40,8 @@
   "tw": {
    "total": 161,
    "linked": 36,
-   "confirmed": 31,
-   "pending": 1,
+   "confirmed": 32,
+   "pending": 0,
    "tbc": 3,
    "est": 1,
    "redated": 0,
@@ -380,7 +380,7 @@
    },
    "1121607": {
     "ko": "서울빛초롱축제",
-    "kv": "pending",
+    "kv": "confirmed",
     "signals": [
      "img",
      "geo",
@@ -880,7 +880,7 @@
    },
    "1956428": {
     "ko": "서울빛초롱축제",
-    "kv": "pending",
+    "kv": "confirmed",
     "signals": [
      "img",
      "geo",
@@ -1617,7 +1617,7 @@
    },
    "1117216": {
     "ko": "서울빛초롱축제",
-    "kv": "pending",
+    "kv": "confirmed",
     "signals": [
      "geo",
      "date"
@@ -1732,30 +1732,12 @@
  },
  "review": [
   {
-   "lang": "en",
-   "id": "4149562",
-   "title": "MATERIALISM | Curated Exhibition by the Bjarke Ingels Group",
-   "why": "신호 1개(geo)뿐",
-   "ko": [
-    "서울빛초롱축제"
-   ]
-  },
-  {
    "lang": "ja",
    "id": "3483199",
    "title": "ディアスポラ映画祭",
    "why": "신호 1개(geo)뿐",
    "ko": [
     "제14회 디아스포라영화제"
-   ]
-  },
-  {
-   "lang": "ja",
-   "id": "4135181",
-   "title": "ソウルライト光化門",
-   "why": "신호 1개(geo)뿐",
-   "ko": [
-    "서울빛초롱축제"
    ]
   }
  ],

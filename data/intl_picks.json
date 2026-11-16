@@ -215,7 +215,7 @@
     "ko": "서울빛초롱축제",
     "score": 5,
     "commerce": false,
-    "status": "pending",
+    "status": "confirmed",
     "ids": [
      "1121607"
     ],
@@ -643,7 +643,7 @@
     "ko": "서울빛초롱축제",
     "score": 4,
     "commerce": false,
-    "status": "pending",
+    "status": "confirmed",
     "ids": [
      "1956428"
     ],
@@ -1449,7 +1449,7 @@
     "ko": "서울빛초롱축제",
     "score": 2,
     "commerce": false,
-    "status": "pending",
+    "status": "confirmed",
     "ids": [],
     "reasons": [
      {
@@ -1647,7 +1647,7 @@
     "ko": "서울빛초롱축제",
     "score": 4,
     "commerce": true,
-    "status": "pending",
+    "status": "confirmed",
     "ids": [
      "1117216"
     ],
