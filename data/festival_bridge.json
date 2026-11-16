@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-11-16T07:09",
+ "generatedAt": "2026-11-16T09:45",
  "stats": {
   "en": {
    "total": 268,
@@ -10,18 +10,18 @@
    "est": 2,
    "redated": 0,
    "restored": 0,
-   "review": 0,
+   "review": 1,
    "removed": 0
   },
   "ja": {
-   "total": 216,
+   "total": 203,
    "linked": 42,
-   "confirmed": 38,
-   "pending": 0,
+   "confirmed": 37,
+   "pending": 1,
    "tbc": 3,
    "est": 1,
    "redated": 0,
-   "restored": 1,
+   "restored": 0,
    "review": 2,
    "removed": 0
   },
@@ -33,7 +33,7 @@
    "tbc": 2,
    "est": 1,
    "redated": 0,
-   "restored": 1,
+   "restored": 0,
    "review": 0,
    "removed": 0
   },
@@ -328,6 +328,7 @@
     "ko": "추억의충장축제",
     "kv": "confirmed",
     "signals": [
+     "img",
      "tel",
      "geo",
      "date"
@@ -381,6 +382,7 @@
     "ko": "서울빛초롱축제",
     "kv": "pending",
     "signals": [
+     "img",
      "geo",
      "date"
     ],
@@ -615,7 +617,8 @@
     "signals": [
      "img",
      "tel",
-     "geo"
+     "geo",
+     "date"
     ],
     "apiId": "386053"
    },
@@ -750,6 +753,7 @@
     "ko": "추억의충장축제",
     "kv": "confirmed",
     "signals": [
+     "img",
      "tel",
      "geo",
      "date"
@@ -760,6 +764,7 @@
     "ko": "김제지평선축제",
     "kv": "confirmed",
     "signals": [
+     "img",
      "tel",
      "geo",
      "date"
@@ -810,23 +815,26 @@
     ],
     "apiId": "914138"
    },
-   "1016771": {
-    "ko": "부산불꽃축제",
-    "kv": "confirmed",
-    "signals": [
-     "geo",
-     "decision"
-    ],
-    "apiId": "235076"
-   },
    "1202956": {
     "ko": "부산국제록페스티벌",
     "kv": "confirmed",
     "signals": [
+     "img",
      "geo",
      "date"
     ],
     "apiId": "140799"
+   },
+   "1226767": {
+    "ko": "포항국제불빛축제",
+    "kv": "confirmed",
+    "signals": [
+     "img",
+     "tel",
+     "geo",
+     "date"
+    ],
+    "apiId": "588175"
    },
    "1485500": {
     "ko": "여수거북선축제",
@@ -869,6 +877,16 @@
      "date"
     ],
     "apiId": "577335"
+   },
+   "1956428": {
+    "ko": "서울빛초롱축제",
+    "kv": "pending",
+    "signals": [
+     "img",
+     "geo",
+     "date"
+    ],
+    "apiId": "1095732"
    },
    "2007560": {
     "ko": "강릉커피축제",
@@ -931,16 +949,6 @@
      "date"
     ],
     "apiId": "2031318"
-   },
-   "2549651": {
-    "ko": "홍천강 별빛음악 맥주축제",
-    "kv": "confirmed",
-    "signals": [
-     "img",
-     "geo",
-     "date"
-    ],
-    "apiId": "2539802"
    },
    "2657014": {
     "ko": "D.FESTA 거리공연축제",
@@ -1106,6 +1114,7 @@
     "ko": "추억의충장축제",
     "kv": "confirmed",
     "signals": [
+     "img",
      "tel",
      "geo",
      "date"
@@ -1723,6 +1732,15 @@
  },
  "review": [
   {
+   "lang": "en",
+   "id": "4149562",
+   "title": "MATERIALISM | Curated Exhibition by the Bjarke Ingels Group",
+   "why": "신호 1개(geo)뿐",
+   "ko": [
+    "서울빛초롱축제"
+   ]
+  },
+  {
    "lang": "ja",
    "id": "3483199",
    "title": "ディアスポラ映画祭",
@@ -1733,8 +1751,8 @@
   },
   {
    "lang": "ja",
-   "id": "1956428",
-   "title": "ソウルランタンフェスティバル",
+   "id": "4135181",
+   "title": "ソウルライト光化門",
    "why": "신호 1개(geo)뿐",
    "ko": [
     "서울빛초롱축제"

@@ -425,5 +425,15 @@
    "/jangteo/jeongseon/",
    "/jangteo/gwangyang/"
   ]
+ },
+ {
+  "d": "2026-11-16",
+  "n": 4,
+  "urls": [
+   "/en/trip/third-time/",
+   "/ja/trip/third-time/",
+   "/zh/trip/third-time/",
+   "/tw/trip/third-time/"
+  ]
  }
 ]

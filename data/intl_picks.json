@@ -555,9 +555,7 @@
     "score": 10,
     "commerce": false,
     "status": "confirmed",
-    "ids": [
-     "1016771"
-    ],
+    "ids": [],
     "reasons": [
      {
       "claim": "한큐교통사 부산불꽃축제 관람 투어",
@@ -646,7 +644,9 @@
     "score": 4,
     "commerce": false,
     "status": "pending",
-    "ids": [],
+    "ids": [
+     "1956428"
+    ],
     "reasons": [
      {
       "claim": "4travel 한국 축제 순위 상위(청계천 랜턴)",
@@ -767,7 +767,9 @@
     "score": 4,
     "commerce": false,
     "status": "confirmed",
-    "ids": [],
+    "ids": [
+     "1226767"
+    ],
     "reasons": [
      {
       "claim": "일본 PR매체: 산스타라인(일본 여행브랜드) 포항 국제불꽃쇼 참가 3박4일 투어 판매",
