@@ -4224,6 +4224,16 @@ const REF_NATIONAL = [
   ['https://www.data.go.kr/', '공공데이터포털', '축제·반려동물 동반·무장애 정보 개방 데이터 원본']
 ];
 const POST_REFS = {
+  // 이주의 축제모아 Vol.10 — TOP5 날짜·장소를 교차 확인한 보도·공식 페이지(2026-11-19 확인)
+  'chukjemoa-weekly-vol10': [
+    ['https://kbmaeil.com/article/20261109500531', '경북매일', '2026 포항국제불빛축제 11월 19~21일 영일대해수욕장·해오름대교·송도 일원, 21일 국제불꽃쇼'],
+    ['https://www.specialtimes.co.kr/news/articleView.html?idxno=485098', '스페셜타임스', '무안 YD 페스티벌 11월 20~22일 남악중앙공원'],
+    ['https://www.specialtimes.co.kr/news/articleView.html?idxno=485491', '스페셜타임스', '순창 KOREA 떡볶이 페스타 11월 21~22일 순창발효테마파크 일원'],
+    ['https://www.koreadaily.com/article/20261103120100184', '코리아데일리', '순창 코리아 떡볶이 페스타 21~22일 프로그램'],
+    ['https://www.kocca.kr/kocca/koccanews/reportview.do?nttNo=1232', '한국콘텐츠진흥원', '게임문화축제 2026 11월 19~22일 벡스코 제2전시장(지스타 기간)'],
+    ['https://www.specialtimes.co.kr/news/articleView.html?idxno=485496', '스페셜타임스', '2026 보드게임페스타(시즌2) 11월 21~22일 세텍 1·2전시실'],
+    ['https://www.ktriptips.com/kor/festival/2789700', '한국관광 정보(ktriptips)', '운정호수공원 불꽃축제 2026 — 불꽃쇼는 10월 31일, 불빛정원 점등 12월 31일까지(이번 호 제외 근거)']
+  ],
   // 이주의 축제모아 Vol.9 — TOP5 날짜·장소를 교차 확인한 보도·공식 페이지(2026-11-12 확인)
   'chukjemoa-weekly-vol9': [
     ['https://news.tf.co.kr/read/ogmeta/2382266.htm', '더팩트', '제2회 코리아 그랜드 페스티벌 10월 29일~11월 15일 전국, 31일 안동 원도심 통합 개막식'],
