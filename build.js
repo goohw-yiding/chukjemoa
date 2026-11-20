@@ -6358,8 +6358,11 @@ const INDOOR_URLS = [];
 if (apiIndoor.length) {
   const kc = {}; apiIndoor.forEach(o => kc[o.kind] = (kc[o.kind] || 0) + 1);
   const kinds = Object.entries(kc).sort((a, b) => b[1] - a[1]);
+  // 2026-11-20 AI 노출 실행: «한 줄 답 + 고르기 도구 + 지역×종류 표 + FAQ» (indoor-guide.js)
+  const IG = require('./indoor-guide.js').build({ apiIndoor, esc, fs, path, ROOT });
   const content = `<main><div class="wrap">
-<h1 class="page-h1">🏠 실내 가볼만한 곳</h1>
+<h1 class="page-h1">🏠 추운 날·비 오는 날 실내 가볼만한 곳</h1>
+${IG.html}
 <p class="page-sub">비가 오는 날, 바람이 센 날, 한여름 한낮 — <b>밖이 어려운 날</b>에 갈 수 있는 전국 실내 관광지 ${apiIndoor.length.toLocaleString()}곳입니다.
 「문화시설」로 뭉뚱그리지 않고 <b>실내인 것이 이름으로 확실한 곳만</b> 골랐습니다. 비 오는 날 헛걸음이 제일 아깝기 때문입니다.</p>
 <p style="color:#6b7280;font-size:.95rem;line-height:1.8">${kinds.map(([k, n]) => `${esc(k)} <b>${n}</b>`).join(' · ')}</p>
@@ -6373,11 +6376,12 @@ if (apiIndoor.length) {
   }))}</div>
 <p class="note">데이터 출처: 한국관광공사(무장애여행·관광지·관광단지·온천). <b>「실내」는 저희가 이름으로 판정한 것</b>이고 원본에 실내 여부 항목이 있는 것은 아닙니다 — 일부만 실내인 곳도 있으니 운영 시간·휴관일과 함께 방문 전 확인하세요.
 동네 시립·교육 도서관은 실내지만 「가볼만한 곳」이 아니라 뺐습니다.</p>
+${IG.faqHtml}
 </div></main>`;
   writePage('indoor', layout(
-    `실내 가볼만한 곳 — 전국 실내 관광지 ${apiIndoor.length.toLocaleString()}곳 | ${SITE_NAME}`,
-    `비 오는 날에도 갈 수 있는 전국 실내 가볼만한 곳 ${apiIndoor.length.toLocaleString()}곳. 박물관·미술관·과학관·아쿠아리움·온천을 지역별로 모았습니다.`,
-    '/indoor/', content));
+    `${IG.title} | ${SITE_NAME}`,
+    IG.desc,
+    '/indoor/', content, { jsonld: IG.faqLd }));
   INDOOR_URLS.push('/indoor/');
 }
 

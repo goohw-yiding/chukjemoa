@@ -123,6 +123,7 @@ ${curBlock}
 <p style="color:#374151;font-size:.97rem;line-height:1.8">겨울은 야외 축제가 눈에 띄게 줄어드는 계절입니다. 대신 <b>계절을 타지 않는 것</b>들이 이 시기에 진가를 발휘합니다.</p>
 <ul style="line-height:2;font-size:.97rem;padding-left:20px">
 <li><a href="/onsen/" style="color:#0a6c63;font-weight:700">♨️ 전국 온천</a> — 추울수록 목적지가 되는 곳입니다.</li>
+<li><a href="/indoor/" style="color:#0a6c63;font-weight:700">🏠 추운 날 실내 가볼만한 곳</a> — 박물관·과학관·아쿠아리움·체험관을 지역과 목적(아이와·몸 녹이기·전시)으로 골라 봅니다.</li>
 <li><a href="/jangteo/" style="color:#0a6c63;font-weight:700">🏮 전국 오일장</a> — 장날은 날씨와 무관하게 정해진 날에 섭니다. 겨울 장터 먹거리가 따로 있습니다.</li>
 <li><a href="/trails/" style="color:#0a6c63;font-weight:700">🥾 걷기 여행</a> — 해안 걷기길은 사람이 적은 겨울이 오히려 걷기 좋습니다.</li>
 <li><a href="/mountains/" style="color:#0a6c63;font-weight:700">⛰️ 전국 명산</a> — 상고대와 설경은 겨울에만 볼 수 있습니다.</li>
