@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-11-20",
+ "generatedAt": "2026-11-22",
  "rule": "근거 점수 2 이상 · 언어당 최대 25",
  "langs": {
   "en": [
@@ -1560,6 +1560,35 @@
     ]
    },
    {
+    "ko": "부산불꽃축제",
+    "score": 8,
+    "commerce": false,
+    "status": "confirmed",
+    "ids": [],
+    "reasons": [
+     {
+      "claim": "부산시: 대만 여행사 대량 사전 예약",
+      "url": "https://www.newspim.com/news/view/20260904000501",
+      "kind": "target"
+     },
+     {
+      "claim": "대만 山富旅遊 「釜山國際煙火節5日」",
+      "url": "https://www.travel4u.com.tw/en/group/itinerary/PUS05247CX/",
+      "kind": "agency"
+     },
+     {
+      "claim": "대만 동남여행(settour) 부산불꽃축제 단체여행 상품",
+      "url": "https://tour.settour.com.tw/product/GFG0000015408",
+      "kind": "agency"
+     },
+     {
+      "claim": "동남여행 부산불꽃축제 단체여행(2)",
+      "url": "https://tour.settour.com.tw/product/GFG0000028142",
+      "kind": "agency"
+     }
+    ]
+   },
+   {
     "ko": "서울세계불꽃축제",
     "score": 7,
     "commerce": false,
@@ -1585,30 +1614,6 @@
       "claim": "인사이트: 서울관광재단·한화, 서울세계불꽃축제 해외 초청석으로 대만 관광객 유치 패키지",
       "url": "https://www.insight.co.kr/news/566114",
       "kind": "target"
-     }
-    ]
-   },
-   {
-    "ko": "부산불꽃축제",
-    "score": 6,
-    "commerce": false,
-    "status": "confirmed",
-    "ids": [],
-    "reasons": [
-     {
-      "claim": "부산시: 대만 여행사 대량 사전 예약",
-      "url": "https://www.newspim.com/news/view/20260904000501",
-      "kind": "target"
-     },
-     {
-      "claim": "대만 동남여행(settour) 부산불꽃축제 단체여행 상품",
-      "url": "https://tour.settour.com.tw/product/GFG0000015408",
-      "kind": "agency"
-     },
-     {
-      "claim": "동남여행 부산불꽃축제 단체여행(2)",
-      "url": "https://tour.settour.com.tw/product/GFG0000028142",
-      "kind": "agency"
      }
     ]
    },
@@ -1823,6 +1828,30 @@
     ]
    },
    {
+    "ko": "대관령눈꽃축제",
+    "score": 3,
+    "commerce": false,
+    "status": "est",
+    "ids": [],
+    "reasons": [
+     {
+      "claim": "대만 ETtoday '한국 겨울 필수 6대 축제'(대관령 포함)",
+      "url": "https://travel.ettoday.net/article/444307.htm",
+      "kind": "media"
+     },
+     {
+      "claim": "대만 여행앱 Funliday 한국 눈 명소 TOP12(대관령)",
+      "url": "https://www.funliday.com/posts/korea-snow-spot-top12/",
+      "kind": "media"
+     },
+     {
+      "claim": "한국관광공사 번체 사이트 대관령눈꽃축제 페이지",
+      "url": "https://big5chinese.visitkorea.or.kr/cht/ATT/3_4_view.jsp?cid=679303",
+      "kind": "media"
+     }
+    ]
+   },
+   {
     "ko": "진도신비의바닷길축제",
     "score": 3,
     "commerce": false,
@@ -1905,25 +1934,6 @@
      {
       "claim": "대만 블로그 ginatw 김제 지평선축제 후기",
       "url": "https://ginatw.com/gimje/",
-      "kind": "media"
-     }
-    ]
-   },
-   {
-    "ko": "대관령눈꽃축제",
-    "score": 2,
-    "commerce": false,
-    "status": "est",
-    "ids": [],
-    "reasons": [
-     {
-      "claim": "대만 ETtoday '한국 겨울 필수 6대 축제'(대관령 포함)",
-      "url": "https://travel.ettoday.net/article/444307.htm",
-      "kind": "media"
-     },
-     {
-      "claim": "대만 여행앱 Funliday 한국 눈 명소 TOP12(대관령)",
-      "url": "https://www.funliday.com/posts/korea-snow-spot-top12/",
       "kind": "media"
      }
     ]
