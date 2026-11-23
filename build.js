@@ -19,8 +19,20 @@ fs.writeFileSync = function (file, data, ...rest) {
   if (typeof data === 'string' && data.indexOf('http://tong.visitkorea.or.kr') !== -1) {
     data = data.split('http://tong.visitkorea.or.kr').join('https://tong.visitkorea.or.kr');
   }
-  return _origWriteFileSync.call(fs, file, data, ...rest);
+  // 2026-11-23: 빌드가 3번 연속 `Error: UNKNOWN (errno -4094) open …/index.html` 로 멈췄다(매번 다른 파일).
+  //   방금 쓴 파일을 백신 실시간 감시·색인기가 잠깐 붙잡고 있을 때 덮어쓰면 윈도우가 거절한다 — 잠깐 뒤엔 풀린다.
+  //   그래서 «파일로 나가는 한 곳»에서 짧게 기다렸다 다시 쓴다(최대 12번, 합쳐서 약 20초). 그래도 안 되면 원래 오류를 그대로 던진다.
+  for (let _try = 0; ; _try++) {
+    try { return _origWriteFileSync.call(fs, file, data, ...rest); }
+    catch (e) {
+      if (_try >= 12 || !/^(UNKNOWN|EBUSY|EPERM|EACCES)$/.test(e.code || '')) throw e;
+      _writeRetry.n++; _writeRetry.files.push(String(file));
+      Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, 150 * (_try + 1));
+    }
+  }
 };
+const _writeRetry = { n: 0, files: [] };
+process.on('exit', () => { if (_writeRetry.n) console.log(`⚠️ 쓰기 재시도 ${_writeRetry.n}번 (잠긴 파일을 기다렸다 다시 씀) — 예: ${_writeRetry.files.slice(0, 3).join(', ')}`); });
 
 const ROOT = __dirname;
 const SITE = 'https://chukjemoa.co.kr';
