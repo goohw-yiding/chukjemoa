@@ -80,6 +80,19 @@ module.exports = function (R, RED, ORANGE, red, orange) {
       if (String(p.end || '').replace(/-/g, '') < TODAY8) endedFest.add('/festival/' + p.slug + '/');
     }
   } catch (e) { }
+  // 2026-11-24 — festival_pages.json 에 없는 상세(22장)도 빌드돼 있다. 그런 페이지는 HTML의 JSON-LD endDate로 종료 여부를 본다.
+  //    이걸 안 하면 끝난 축제 12장이 「고아」로 잡혀 매주 오탐이 된다.
+  try {
+    const FD = path.join(ROOT, 'festival');
+    for (const d of fs.readdirSync(FD)) {
+      const u = '/festival/' + d + '/';
+      if (endedFest.has(u)) continue;
+      const f = path.join(FD, d, 'index.html');
+      if (!fs.existsSync(f)) continue;
+      const m = fs.readFileSync(f, 'utf8').match(/"endDate":"([^"]*)"/);
+      if (m && m[1].replace(/-/g, '').slice(0, 8) < TODAY8) endedFest.add(u);
+    }
+  } catch (e) { }
   const benign = u => {
     const m = u.match(/(\d{4}-\d{2})\/$/);
     if (m && m[1] < THISMONTH) return true;

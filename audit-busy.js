@@ -19,7 +19,8 @@ for (const d of fs.readdirSync(R, { withFileTypes: true })) {
   const p = path.join(R, d.name, 'index.html');
   if (!fs.existsSync(p)) continue;
   const h = fs.readFileSync(p, 'utf8');
-  const sido = (meta[d.name] && meta[d.name].sido) || '(미상)';
+  // festival_pages.json 에 없는 상세는 HTML JSON-LD의 addressRegion 으로 시·도를 잡는다(2026-11-24 — (미상) 22건 오탐)
+  const sido = (meta[d.name] && meta[d.name].sido) || ((h.match(/"addressRegion":"([^"]*)"/) || [])[1]) || '(미상)';
   bySido[sido] = bySido[sido] || { n: 0, busy: 0 };
   bySido[sido].n++; total++;
   if (/fbadge (hot|qt)/.test(h)) { bySido[sido].busy++; withBusy++; }
