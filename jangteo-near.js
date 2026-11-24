@@ -113,14 +113,14 @@ function client() {
     if (mode) go();
   });
   geoBtn.addEventListener('click', function () {
-    if (!navigator.geolocation) { out.innerHTML = '<p class="jtn-msg">이 브라우저는 위치 기능을 쓸 수 없어요. 오른쪽에서 시·도를 골라 주세요.</p>'; return; }
+    if (!navigator.geolocation) { out.innerHTML = '<p class="jtn-msg">이 브라우저는 위치 기능을 쓸 수 없어요. 아래 «시·도로 고르기»에서 골라 주세요.</p>'; return; }
     geoBtn.disabled = true; geoBtn.textContent = '위치 확인 중…';
     navigator.geolocation.getCurrentPosition(function (p) {
       geoBtn.disabled = false; geoBtn.textContent = '📍 내 위치에서 다시 찾기';
       pos = [p.coords.latitude, p.coords.longitude]; mode = 'geo'; go();
     }, function () {
       geoBtn.disabled = false; geoBtn.textContent = '📍 내 위치에서 가까운 장 보기';
-      out.innerHTML = '<p class="jtn-msg">위치를 확인하지 못했어요. 오른쪽에서 <b>시·도를 고르면</b> 같은 목록을 볼 수 있습니다.</p>';
+      out.innerHTML = '<p class="jtn-msg">위치를 확인하지 못했어요. 바로 아래 <b>«시·도로 고르기»</b>에서 고르면 같은 목록을 볼 수 있습니다.</p>';
       track('jangteo_near', { place: PLACE, method: 'geo_denied', results: 0, day: chips[picked].k });
     }, { enableHighAccuracy: false, timeout: 8000, maximumAge: 600000 });
   });
