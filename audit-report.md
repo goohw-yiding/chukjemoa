@@ -78,28 +78,18 @@
 (override 항목에 `sourceTiming: "pre"|"post"` 를 남기면 위 ①·② 판정 없이도 「사전공지만 있고 아직 사후 확인이 없는 것」을 바로 걸러낼 수 있습니다. 지금은 날짜 기준으로만 판정합니다.)
 
 ## 6. 빌드 산출물 점검 (1786페이지)
-_고아는 홈에서 BFS로 잰다. 「끝나서 링크를 뗀」 지난달 달력·종료 축제 657장은 정상이라 제외했다._
+_고아는 홈에서 BFS로 잰다. 「끝나서 링크를 뗀」 지난달 달력·종료 축제 669장은 정상이라 제외했다._
 | 항목 | 건수 |
 |---|---|
 | 끊긴 내부 링크 | 0 |
-| 홈에서 도달 불가(고아) | **12** |
+| 홈에서 도달 불가(고아) | 0 |
 | 렌더 사고 | 0 |
 | 사이트맵 유령 URL | 0 |
 | canonical 누락 | 0 |
 | 인라인 JS 문법오류 | 0 |
 | 개발용 주석 유출 | 0 |
 
-🟠 홈에서 도달 불가(고아) 12건
-- /festival/2026-jejuollegeotgichukje/
-- /festival/bomulchatgi-chukje-geumgoereul-chajara/
-- /festival/choenamdan-bangeo-chukje/
-- /festival/choenamdanbangeochukje/
-- /festival/gimje-jawonsunhwan-saerobomi-chukje/
-- /festival/goheungyujachukje/
-- /festival/hwasununjumunhwachukje/
-- /festival/jipyeongjeontongbalhyochukje/
-- /festival/miryang-maeunmat-chukje/
-- /festival/nudeuldaejeonchukje/
+✅ 산출물 이상 없음
 
 ## 7. 색인 대상 본문 두께 · 판박이 정도
 | 섹션 | 개수 | 최소 | 중앙 | 최대 | 2,000자 미만 | 평균 유사도 |
@@ -138,7 +128,7 @@ _고아는 홈에서 BFS로 잰다. 「끝나서 링크를 뗀」 지난달 달�
 ---
 ## 요약
 - 🔴 즉시 고칠 것: **0건**
-- 🟠 보강할 것: **11건**
+- 🟠 보강할 것: **10건**
   - 오일장 — 빈 시도 3개(서울,광주,세종)
   - 온천 — 빈 시도 10개(서울,부산,대구,인천,광주,대전,울산,세종,전남,제주)
   - 봄꽃 — 빈 시도 10개(부산,대구,인천,광주,대전,울산,세종,강원,충북,충남)
@@ -148,5 +138,4 @@ _고아는 홈에서 BFS로 잰다. 「끝나서 링크를 뗀」 지난달 달�
   - 무장애 개요 필드 자체 없음
   - 30일 뒤 축제 재고 21건 (임계 40 미만)
   - 지난 축제 표본 점검 대상 2건 — 실제 개최·취소 보도 여부 가볍게 재검색 권장 (매 빌드 아님, 주간 점검에서만)
-  - 홈에서 도달 불가(고아) 12건
   - 본문 2,000자 미만 색인 페이지 5개 (의도적 예외 2개 제외)

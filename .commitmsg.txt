@@ -1,4 +1,4 @@
-en: 11/11 포항불빛 검색 설명(desc) 155자 잘림 → 139자로 줄임
+ja: 11/24 주간 — 날짜 대조 7건 + 크리스마스 연휴 블록에 서울라이트 광화문
 
-Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
-Claude-Session: https://claude.ai/code/session_012MFxCMQB12FKyo6rhXS2Te
+- 대조 7건(festivals_intl_checked): 맞음 2 — 함평 겨울빛축제 12/18~31(아주경제 11/17, 함평군 발표), 오슬로우 빈티지 크리스마스 마켓 12/4~20 금·토·일(여행픽 11/18). 미확인 5 — 광화문 마켓·평창송어·럭키칠곡·울산 성남동 눈꽃·철원 얼음트레킹(날짜 그대로). 틀림 0.
+- /ja/closed/christmas/: 「ソウルライト光化門」 2026-12-11~2027-01-03 광화문광장 한 줄(여행픽 2026-11-07, 펀서울 서울윈터페스티벌 373 프로그램).

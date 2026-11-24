@@ -3369,6 +3369,9 @@ const marketsAll = (() => {
 })();
 const marketsDay = marketsAll.filter(m => (m.daysNum || []).length);   // 장날 아는 곳
 const marketsNoDay = marketsAll.filter(m => !(m.daysNum || []).length); // 장날 미확인
+// 📍 2026-11-24 — «내 근처에서 열리는 장»(거리순). 왜·어떻게는 jangteo-near.js 맨 위.
+const JT_NEAR = require('./jangteo-near.js');
+const JT_NEAR_SIDOS = [...new Set(marketsDay.filter(m => parseFloat(m.x) && parseFloat(m.y)).map(m => m.region).filter(Boolean))].sort((a, b) => a.localeCompare(b, 'ko'));
 console.log(`✓ 오일장 — 합계 ${marketsAll.length}곳 · 장날 확인 ${marketsDay.length} · 미확인 ${marketsNoDay.length}`
   + ` (출처: 손 ${marketsAll.filter(m => String(m.src).includes('hand')).length}`
   + ` · 표준데이터 ${marketsAll.filter(m => String(m.src).includes('std')).length}`
@@ -3561,12 +3564,29 @@ const chuseokBox = (pair, list) => {
 </section>`;
 };
 
+// 🗓 2026-11-24 — 허브 아래쪽 «추석 연휴엔 오일장이 더 붐빕니다»가 날짜가 박힌 채 11월에도 그대로 나오고 있었다.
+//    명절(추석·설날) 30일 전부터 연휴 끝날까지만 띄운다. 날짜는 holidays.json 에서 읽는다 — 손으로 적지 않는다.
+const JT_HOLIDAY_NOTE = (() => {
+  const D = x => new Date(+x.slice(0, 4), +x.slice(5, 7) - 1, +x.slice(8, 10)), t = D(TODAY);
+  for (const nm of ['추석', '설날']) {
+    const ds = holidays.filter(h => h.name === nm && D(h.date) >= t).map(h => h.date).sort();
+    const run = []; for (const x of ds) { if (!run.length || D(x) - D(run[run.length - 1]) <= 86400000 * 1.5) run.push(x); else break; }
+    if (!run.length) continue;
+    const first = D(run[0]), last = D(run[run.length - 1]);
+    if (t < new Date(first.getTime() - 30 * 86400000) || t > last) continue;
+    const label = nm === '설날' ? '설' : '추석';
+    return `<h2 class="sec">${nm === '설날' ? '🧧' : '🌕'} ${label} 연휴엔 오일장이 더 붐빕니다</h2>
+<p style="background:#fff7ed;border:1.5px solid #fdd8ae;border-radius:12px;padding:14px 16px;color:#374151;font-size:.95rem;line-height:1.8">${first.getFullYear()}년 ${label} 연휴는 ${first.getMonth() + 1}월 ${first.getDate()}일(${WD_KO[first.getDay()]})부터 ${last.getMonth() + 1}월 ${last.getDate()}일(${WD_KO[last.getDay()]})까지입니다. 차례상 재료를 오일장에서 준비하는 경우가 많아 연휴 직전 장날은 평소보다 붐빕니다. 명절 당일에는 쉬는 장이 많으니 먼 길이면 시장이나 시·군청에 전화로 확인하고 출발하세요.</p>`;
+  }
+  return '';
+})();
 const jangteoContent = `<main><div class="wrap">
 <div style="border-radius:12px;overflow:hidden;margin-bottom:16px"><img src="/img/jangteo.webp" alt="전통 오일장 풍경" style="width:100%;max-height:220px;object-fit:cover;display:block"></div>
 <h1 style="font-size:1.5rem;margin-bottom:6px">전국 유명 오일장(5일장) 날짜 총정리</h1>
 ${/* 🏷 2026-09-14 — 자기 지칭 문장. 위 월별 페이지 주석과 같은 이유다(본문 55,459자에 1회였다).
       ⛔ 이름만 반복하지 말 것. «우리만 셀 수 있는 숫자»에 이름을 붙인다. */''}
 <p style="margin:4px 0 12px;color:#4b5563;font-size:.95rem">축제모아는 한국관광공사 전통시장 정보와 행정안전부 전국전통시장표준데이터에서 <b>${marketsDay.length}곳</b>의 장날을 확인해 끝자리별로 정리했습니다. 장날이 적혀 있지 않은 시장은 <b>추측해서 넣지 않았습니다</b>.</p>
+${JT_NEAR.block({ place: 'hub', sidos: JT_NEAR_SIDOS, esc })}
 ${chuseokBox()}
 <style>
 .datepick{background:#fff;border-radius:14px;padding:14px 16px;box-shadow:0 2px 10px rgba(31,41,55,.06);margin:12px 0 16px;display:flex;flex-wrap:wrap;gap:10px;align-items:center}
@@ -3674,8 +3694,7 @@ ${marketsNoDay.length ? `<h2 class="sec">장날을 확인하지 못한 시장 ${
 <h2 class="sec">이 데이터는 어디서 왔나</h2>
 <p style="color:#374151;font-size:.95rem;line-height:1.8">한국관광공사 TourAPI의 전통시장 정보 <b>${marketsAll.length - markets.length}곳</b>에, 저희가 직접 정리한 유명 장터 <b>${markets.length}곳</b>(대표 품목·특징 서술)을 합쳤습니다. 장날은 공공데이터 설명문에서 뽑아낸 뒤 <b>끝자리 간격이 정확히 5일 때만</b> 오일장으로 인정했습니다 — 그래서 「23·28일」 같은 표기도 3·8일장으로 바르게 읽습니다. 명절·기상에 따라 쉬는 날이 있으니 먼 길이라면 확인 후 출발하세요.</p>
 
-<h2 class="sec">🌕 추석 연휴엔 오일장이 더 붐빕니다</h2>
-<p style="background:#fff7ed;border:1.5px solid #fdd8ae;border-radius:12px;padding:14px 16px;color:#374151;font-size:.95rem;line-height:1.8">2026년 추석(9월 25일 금요일, 연휴 24~27일) 차례상 재료를 오일장에서 준비하는 경우가 많아 연휴 직전 장날은 평소보다 붐빕니다. <a href="/blog/chuseok-2026-holiday-guide/" style="color:#9a5b1f;font-weight:800">2026년 추석 연휴 가이드</a>에서 연휴 일정과 겹치는 축제·오일장을 함께 확인하세요.</p>
+${JT_HOLIDAY_NOTE}
 
 <h2 class="sec">자주 묻는 질문</h2>
 <div class="faqbox">${JANGTEO_FAQ.map(q=>`<details><summary>${q[0]}</summary><p>${q[1]}</p></details>`).join('')}</div>
@@ -3742,6 +3761,11 @@ const JANGTEO_SIGUNGU_URLS = require('./jangteo-sigungu.js').build({
 const SIGUNGU_BY_SIDO = {};
 (JANGTEO_SIGUNGU_URLS.meta || []).forEach(r => (SIGUNGU_BY_SIDO[r.sido] = SIGUNGU_BY_SIDO[r.sido] || []).push(r));
 Object.values(SIGUNGU_BY_SIDO).forEach(a => a.sort((x, y) => y.vol - x.vol));
+{
+  const slugBy = new Map((JANGTEO_SIGUNGU_URLS.meta || []).map(r => [r.sido + '|' + r.city, r.slug]));
+  const r = JT_NEAR.writeData(ROOT, marketsDay, m => slugBy.get(m.region + '|' + m.city) || '');
+  console.log(`✓ /jangteo/near.json — 좌표 있는 장 ${r.n}곳 (좌표 없어 뺀 곳 ${r.noCoord})`);
+}
 // 🔢 2026-09-14 — 끝자리 페이지가 «실제로 만들어질 쌍»을 허브보다 먼저 정해 둔다.
 //    허브가 먼저 그려지기 때문에, 여기서 정해 두지 않으면 허브가 «없는 페이지»로 링크를 건다.
 //    (시·군 페이지에서 겪은 것과 같은 순서 문제 — 그때 배운 대로 앞으로 뺐다.)
@@ -3891,6 +3915,7 @@ ${/* 🏷 2026-09-14 — 자기 지칭. 시·도 페이지는 본문 29,300자�
 오일장은 <b>날짜 끝자리</b>로 열립니다. 예를 들어 4·9일장이면 4, 9, 14, 19, 24, 29일에 섭니다.
 <a href="/jangteo/" style="color:#0a6c63;font-weight:800">전국 표에서 날짜를 넣으면</a> 그 날 열리는 장을 한 번에 볼 수 있습니다.
 </div>
+${JT_NEAR.block({ place: 'sido', sido, sidos: JT_NEAR_SIDOS, esc })}
 ${chuseokBox(null, withDay)}
 
 ${/* 시도별 오일장도 세션당 1.07~1.35장이다 — 내부 이동 링크가 98% 지점의 「다른 지역」뿐이었다.
@@ -4004,6 +4029,7 @@ ${faq.map(([q, a]) => `<p style="line-height:1.8"><b>${esc(q)}</b><br>${esc(a)}<
 <b>${alias}은 모두 같은 장입니다.</b> 끝자리가 5 차이 나면 한 시장이 두 날짜에 다 서기 때문입니다.${b === 10 ? ' 10일·20일·30일은 끝자리가 0이라 「0일장」이라고도 부릅니다.' : ''}
 오늘 어디가 서는지 한 번에 보려면 <a href="/jangteo/" style="color:#0a6c63;font-weight:800">전국 오일장 표</a>에서 날짜를 넣어 보세요.
 </div>
+${JT_NEAR.block({ place: 'ending', digits: pair.map(d => d % 10).join(''), sidos: JT_NEAR_SIDOS, esc })}
 ${chuseokBox(pair)}
 
 <h2 class="sec">다른 끝자리</h2>
