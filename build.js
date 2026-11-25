@@ -5749,6 +5749,8 @@ ${mapleNow}
 </div>` : ''}
 ${mapleFaqHtml}`;
 
+// 2026-11-25 AI 노출 실행: /onsen/ 에 «한 줄 답 + 고르기 + 표 + FAQ» — 목록도 공공데이터 4종에서 온천·스파 이름이 확실한 곳으로 넓힘(onsen-guide.js)
+const ONSEN_G = require('./onsen-guide.js').build({ ROOT, apiOnsen });
 const SPOT_THEMES = [
   // ⚠️ 제목·설명도 예보와 «함께» 만료시킨다. 표만 내리고 제목에 「2026 단풍시기」가 남으면
   //    내용 없는 약속이 되고, 그게 CTR 을 갉아먹는다.
@@ -5783,9 +5785,10 @@ const SPOT_THEMES = [
     fallback: '/img/flower-fallback.webp',
     imgCredit: '대체 이미지: 위키미디어 공용 「원주 동화마을 수목원 벚꽃」 © 슐라, CC BY-SA 4.0.',
     note: '데이터 출처: 한국관광공사(공공데이터포털). 꽃 개화 시기는 해마다 날씨에 따라 크게 달라지니 방문 전 개화 상황을 확인하세요.' },
-  { data: apiOnsen, slug: 'onsen', title: '전국 온천·스파 명소 — 겨울 온천 여행지 총정리 | ' + SITE_NAME,
-    metaDesc: '겨울 온천 여행·찜질하기 좋은 전국 온천·스파를 지역별로 모았습니다. 공공데이터(한국관광공사) 기반 명소 정보와 지도, 지역별 검색까지 한 페이지에서 확인하세요.',
-    h1: '♨️ 전국 온천·스파 명소', catLabel: '♨️ 온천·스파', accent: '#0369a1', bd: '#bcdcec', bg: '#eff8fc', ph: '온천·명소명·주소 검색',
+  { data: ONSEN_G.data, slug: 'onsen', title: (ONSEN_G.title || '전국 온천·스파 명소 — 겨울 온천 여행지 총정리') + ' | ' + SITE_NAME,
+    metaDesc: ONSEN_G.desc || '겨울 온천 여행·찜질하기 좋은 전국 온천·스파를 지역별로 모았습니다. 공공데이터(한국관광공사) 기반 명소 정보와 지도, 지역별 검색까지 한 페이지에서 확인하세요.',
+    intro: ONSEN_G.intro, jsonld: ONSEN_G.jsonld,
+    h1: '♨️ 겨울 온천 어디로? 전국 온천·스파 명소', catLabel: '♨️ 온천·스파', accent: '#0369a1', bd: '#bcdcec', bg: '#eff8fc', ph: '온천·명소명·주소 검색',
     sub: '공공데이터(한국관광공사) 기반 전국 온천·스파 __N__곳 — 겨울에 몸 녹이기 좋은 온천을 지역별로 찾아보세요. 카드를 누르면 상세정보와 지도·검색 링크가 열립니다.',
     // ⚠️ 온천만 «사진»이 아니라 자체 일러스트다. 무료 출처에 쓸 만한 진짜 온천 사진이 없었다 —
     //    유일한 후보(유성온천 족욕체험장)는 행인 얼굴이 그대로 찍힌 영상 캡처라 쓸 수 없다.
