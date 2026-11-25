@@ -27,7 +27,7 @@
   "697195": {"title": "Cheonan World Dance Festival", "date": "2026-10-14", "result": "맞음 10/1~5 천안종합운동장 + 10/3~5 삼거리공원", "src": "시사뉴스 2026-08-14(천안시 발표)"},
   "293144": {"title": "Bucheon International Comics Festival", "date": "2026-10-14", "result": "맞음 9/18~20 한국만화박물관(제29회)", "src": "데일리안 2026-09-17"},
   "1829490": {"title": "Seosan Haemi Eupseong Festival", "date": "2026-10-14", "result": "맞음 10/9~11 해미읍성", "src": "경향신문 2026-09-29"},
-  "3115770": {"title": "Gwangalli M Drone Light Show", "date": "2026-10-14", "result": "틀림 2026-01-01 하루 → 2026-01-03~12-31 매주 토 2회 교정 + note·desc", "src": "부산시 busan.go.kr/eng/bsevents/1713160, 스포츠경향 2026-07-03"},
+  "3115770": {"title": "Gwangalli M Drone Light Show", "date": "2026-11-25", "result": "맞음 매주 토, 10~2월 19·21시(11/28 프로그램까지 공지) — 12월 프로그램은 공식 누리집 확인 필요", "src": "부산시 영문 게시 2026-11-11 bsnews01/1763224"},
   "697445": {"title": "Gimhae Buncheong Ceramics Festival", "date": "2026-10-14", "result": "날짜 맞음 11/6~10, 장소 틀림 진례 → 장유 롯데가든파크 교정", "src": "festival.buncheong.co.kr 메인, 뉴스핌·김해일보 2026-10-12"},
   "4108424": {"title": "Jangseong Hwangryonggang Autumn Flower Festival", "date": "2026-10-14", "result": "맞음 10/8~11 황룡강 일원", "src": "아시아경제 2026-07-28(장성군 발표)"},
   "293231": {"title": "Seoul Silver Grass Festival", "date": "2026-10-21", "result": "맞음 10/17~23 하늘공원", "src": "서울시 news.seoul.go.kr/env/archives/570795 (2026-09-28)"},
@@ -64,5 +64,13 @@
   "3536904": {"title": "Oh Slow Vintage Christmas Market", "date": "2026-11-18", "result": "미확인 — «12월 인천 상상플랫폼»만 확인, 날짜 없음", "src": "인천in 2026-10-23 idxno=121734"},
   "3507211": {"title": "Jemulpo Wave Market", "date": "2026-11-18", "result": "미확인 — 2026 3회는 10/17~18 상상플랫폼, 11/21~22 회차 근거 없음", "src": "대학저널 2026-10-15·시대 2026-10-12"},
   "3583850": {"title": "Ulsan Christmas Market", "date": "2026-11-18", "result": "미확인 — 2026 발표 못 찾음(2025: 12/5~27 울산대공원 풍차 일원)", "src": "이벤터스 117365(2025)·검색 2026-11-18"},
-  "661861": {"title": "Pyeongchang Trout Festival", "date": "2026-11-18", "result": "미확인 — 2027 일정 공식 발표 못 찾음(kv est)", "src": "검색 2026-11-18"}
+  "661861": {"title": "Pyeongchang Trout Festival", "date": "2026-11-18", "result": "미확인 — 2027 일정 공식 발표 못 찾음(kv est)", "src": "검색 2026-11-18"},
+  "685135": {"title": "Hwacheon Sancheoneo Ice Festival", "date": "2026-11-25", "result": "맞음 2027-01-09~31 — note·desc·Creatrip 14421 추가", "src": "국제뉴스 2026-11-13·아주경제 2026-10-02"},
+  "4149562": {"title": "MATERIALISM | BIG", "date": "2026-11-25", "result": "맞음 11/7~2027-2/28 서울도시건축전시관 무료 — note·desc 추가", "src": "서울시 미디어허브 2026-11-06"},
+  "1876890": {"title": "Yangpyeong Icefish Festival", "date": "2026-11-25", "result": "한글 원제 「양평빙송어축제」 = 같은 행사(곱다니길 55-2, 수미마을) — 오매칭 아님. 2026-27 날짜 미발표(TourAPI 영문은 2025-26판)", "src": "관광공사 ktriptips kor/1762432·ger/1907097"},
+  "2758139": {"title": "Korea Grand Sale", "date": "2026-11-25", "result": "미확인 — 관광공사 자료 12/23~2/13 뿐, 문체부·위원회 원문 발표 못 찾음", "src": "여기유 place/3673(관광공사 API)"},
+  "4060947": {"title": "Gugak Performance Jinyeon", "date": "2026-11-25", "result": "미확인 — 주최 공식 일정 못 찾음", "src": "검색 2026-11-25"},
+  "293277": {"title": "Homigot Sunrise Festival", "date": "2026-11-25", "result": "미확인 — 2027 행사 발표 전(12월 초 예상)", "src": "검색 2026-11-25"},
+  "1117592": {"title": "Jeongdongjin Sunrise Festival", "date": "2026-11-25", "result": "미확인 — 2027 행사 발표 전", "src": "검색 2026-11-25"},
+  "1490063": {"title": "Yeosu Hyangiram Sunrise Festival", "date": "2026-11-25", "result": "미확인 — 2027 행사 발표 전", "src": "검색 2026-11-25"}
 }

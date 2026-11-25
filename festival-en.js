@@ -188,7 +188,10 @@ function build(ctx) {
     // 🏷 진행/예정만 「연도+날짜+도시」. 제목에 이미 4자리 연도가 있으면 또 붙이지 않는다.
     const yr = ended ? '' : yearOf(f.start);
     const useYr = (yr && !/\b20\d\d\b/.test(String(f.title || ''))) ? yr : '';
-    const span = ended ? '' : dateSpan(f);
+    // 2026-11-25 해를 넘기는 축제(예: Dec 4 – Mar 14)는 «Dec 4, 2026–Mar 14, 2027» 로 양쪽 연도를 쓴다
+    //   (전엔 «Dec 4–Mar 14, 2026» 처럼 끝 날짜에 시작 연도가 붙어 틀렸다). 제목 머리의 연도는 이때 뺀다.
+    const crossYr = !ended && !!yearOf(f.end) && !!yearOf(f.start) && yearOf(f.end) !== yearOf(f.start);
+    const span = ended ? '' : (crossYr ? `${fmtShort(f.start)}, ${yearOf(f.start)}–${fmtShort(f.end)}, ${yearOf(f.end)}` : dateSpan(f));
     const cnm = ended ? '' : cityName(f);
 
     // 💳 2026-09-30 제휴 — 진행/예정 축제만, 지도 복사 칸 바로 뒤에 eSIM(klook-en.js). 끝난 축제엔 안 붙인다.
@@ -284,11 +287,11 @@ ${mapScript('en')}
     // 제목 — 끝난 축제는 종전 그대로. 진행/예정만 예산 60자 안에서 연도→날짜→도시→브랜드 순으로 붙인다.
     const pageTitle = ended
       ? `${f.title} — Dates, Location & Info | Chukjemoa`
-      : fitTitle(`${f.title}${useYr ? ' ' + useYr : ''}`,
+      : fitTitle(`${f.title}${useYr && !crossYr ? ' ' + useYr : ''}`,
           [span ? ` — ${span}` : '', cnm ? `, ${cnm}` : ''].filter(Boolean));
     // description — 진행/예정은 앞머리에 «날짜·연도·도시»를 세운다(사람이 스니펫에서 먼저 찾는 것).
     const lead = ended ? '' :
-      [span && useYr ? `${span}, ${useYr}` : (span || useYr), cnm].filter(Boolean).join(' · ');
+      [span && useYr && !crossYr ? `${span}, ${useYr}` : (span || useYr), cnm].filter(Boolean).join(' · ');
     // ⚠️ description 예산도 155자 하나로 관리한다 — 종전엔 끝난 축제에서 ov 155자 «뒤에» 출처 문장(50자)을
     //    더 붙여 205자가 나갔다(구글이 160자쯤에서 자르므로 출처 문장은 아무도 못 봤다). 앞뒤를 합쳐 재운다.
     const DESC_BUDGET = 155;
