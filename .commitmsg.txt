@@ -1,4 +1,10 @@
-ja: 11/24 주간 — 날짜 대조 7건 + 크리스마스 연휴 블록에 서울라이트 광화문
+영어 주간(11/25): 해 넘기는 축제 제목·설명 연도 표기 수정, 화천산천어 2027 note·desc + Creatrip 서울 출발 투어, MATERIALISM note·desc, 끝난 축제 note 정리, 날짜 대조 9건
 
-- 대조 7건(festivals_intl_checked): 맞음 2 — 함평 겨울빛축제 12/18~31(아주경제 11/17, 함평군 발표), 오슬로우 빈티지 크리스마스 마켓 12/4~20 금·토·일(여행픽 11/18). 미확인 5 — 광화문 마켓·평창송어·럭키칠곡·울산 성남동 눈꽃·철원 얼음트레킹(날짜 그대로). 틀림 0.
-- /ja/closed/christmas/: 「ソウルライト光化門」 2026-12-11~2027-01-03 광화문광장 한 줄(여행픽 2026-11-07, 펀서울 서울윈터페스티벌 373 프로그램).
+- festival-en.js: 시작·종료 연도가 다르면 «Dec 4, 2026–Mar 14, 2027» 처럼 양쪽 연도(전엔 끝에 시작 연도가 붙어 틀림)
+- 685135 화천산천어축제 2027-01-09~31(화천군, 국제뉴스 11/13) + Creatrip 14421(1/11~31, aff.until 20270129)
+- 4149562 MATERIALISM 11/7~2/28 서울도시건축전시관 무료(서울시 11/6)
+- 끝난 축제 8건 note·desc 키 정리(항목 유지)
+- checked 9건, en_goals 유지(판정 보류) 기록
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_012MFxCLn56Fn1cPKSNDnpx3

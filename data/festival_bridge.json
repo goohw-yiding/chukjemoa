@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-11-25T07:05",
+ "generatedAt": "2026-11-26T07:05",
  "stats": {
   "en": {
    "total": 268,
@@ -372,7 +372,6 @@
     "kv": "confirmed",
     "signals": [
      "img",
-     "tel",
      "geo",
      "date"
     ],
@@ -798,7 +797,6 @@
     "kv": "confirmed",
     "signals": [
      "img",
-     "tel",
      "geo",
      "date"
     ],
