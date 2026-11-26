@@ -4262,6 +4262,18 @@ const REF_NATIONAL = [
   ['https://www.data.go.kr/', '공공데이터포털', '축제·반려동물 동반·무장애 정보 개방 데이터 원본']
 ];
 const POST_REFS = {
+  // 이주의 축제모아 Vol.11 — TOP5 날짜·장소를 교차 확인한 보도·공식 페이지(2026-11-26 확인)
+  'chukjemoa-weekly-vol11': [
+    ['https://www.paju.go.kr/tour/festival/festival02/festival02_2/festival02_2_01/festival02_2_01_01.jsp', '파주시', '파주장단콩축제 11월 27~29일 임진각 광장, 27일 14시 개막'],
+    ['https://www.specialtimes.co.kr/news/articleView.html?idxno=487431', '스페셜타임스', '크리스마스 빌리지 부산 2026 11월 26일~12월 25일 영화의전당, 유료 입장'],
+    ['https://popga.co.kr/content/magazine/506', '팝가', '크리스마스 빌리지 부산 2026 운영시간·입장권 가격'],
+    ['https://www.news-wa.com/amp/travel/tour-korea/2026/11/16/20261116500022', '뉴스와', '제13회 해운대 빛축제 11월 28일~2027년 1월 10일 해운대해수욕장·구남로'],
+    ['https://kbmaeil.com/article/20261114500031', '경북매일', '해운대 빛축제 11월 28일 점등'],
+    ['https://www.specialtimes.co.kr/news/articleView.html?idxno=487429', '스페셜타임스', '2026 울산문화박람회 11월 26~29일 유에코(UECO)'],
+    ['https://www.specialtimes.co.kr/news/articleView.html?idxno=487432', '스페셜타임스', '2026 단단단페스티벌 11월 26~28일 강릉단오제전수교육관, 무료'],
+    ['https://supple.kr/news/cmw8lt4v4jwbwal9p4rgtjuo0', '연합뉴스(서플)', '단단단페스티벌 26일 개막, 사전 예매·현장 접수'],
+    ['https://www.specialtimes.co.kr/news/articleView.html?idxno=482784', '스페셜타임스', '2026 포천 펫스타 11월 14일 포천아트밸리(이번 호 제외 근거)']
+  ],
   // 이주의 축제모아 Vol.10 — TOP5 날짜·장소를 교차 확인한 보도·공식 페이지(2026-11-19 확인)
   'chukjemoa-weekly-vol10': [
     ['https://kbmaeil.com/article/20261109500531', '경북매일', '2026 포항국제불빛축제 11월 19~21일 영일대해수욕장·해오름대교·송도 일원, 21일 국제불꽃쇼'],
