@@ -49,6 +49,14 @@ for i in range(0, len(uniq), 5):
 out = {}
 for n, k in pairs:
     if k in vol: out[n] = dict(vol[k], kw=k)
+# 🔴 2026-11-26 안전장치 — 11/22 일요일 회차에서 네이버 API 조회가 통째로 실패했는데
+#    nv_volume.volumes() 가 실패를 삼키고 빈 결과를 돌려줘서 «전부 0» 파일로 덮어썼다(장날 134건·박물관 137건).
+#    그 0 데이터로 장날 TOP5 숏폼 ep8 이 가나다순·「검색 0회」로 뽑힐 뻔했다.
+#    → 검색량이 잡힌 비율이 절반 미만이면 저장하지 않고 실패로 끝낸다(기존 파일 유지).
+_n_all, _n_ok = len(out), sum(1 for v in out.values() if v.get("vol", 0) > 0)
+if _n_all == 0 or _n_ok < _n_all * 0.5:
+    print("!! 검색량이 잡힌 것 %d/%d — 조회 실패로 보고 저장하지 않음(기존 파일 유지)" % (_n_ok, _n_all), flush=True)
+    sys.exit(2)
 json.dump(out, open(OUT, "w", encoding="utf-8"), ensure_ascii=False, indent=0)
 have = [v for v in out.values() if not v.get("none")]
 print("저장 %d건 (검색량 잡힌 것 %d · 오류 %d)" % (len(out), len(have), err))
