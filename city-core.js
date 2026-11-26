@@ -165,21 +165,9 @@ function build(cfg, ctx) {
   D.pet.sort((a, b) => (b.img ? 1 : 0) - (a.img ? 1 : 0));
 
   // ── 게이트: 축마다 재고가 모자라면 «그 축은 만들지 않는다»
-  const open = cfg.axes.filter(a => D[a.slug] && D[a.slug].length >= (a.min || AXES[a.slug].min));
-  const openSet = new Set(open.map(a => a.slug));
-
-  // 🗑 정리 — ⚠️ **정적 생성기는 「없어진 항목의 폴더」를 안 지운다.**
-  //    게이트를 올렸더니 통과 못 한 축(여수 숙소 등)의 옛 폴더가 그대로 남아 라이브 200을 반환했다.
-  //    사이트맵엔 없으니 눈에 안 띈다 — 그래서 «만드는 곳에서 지우는 것까지» 같이 한다.
-  {
-    const dir = path.join(ROOT, cfg.key);
-    if (fs.existsSync(dir)) for (const d of fs.readdirSync(dir, { withFileTypes: true })) {
-      if (d.isDirectory() && !openSet.has(d.name)) {
-        fs.rmSync(path.join(dir, d.name), { recursive: true, force: true });
-        console.log(`   🗑 ${base}${d.name}/ 삭제 — 게이트 미달로 더는 만들지 않는 축입니다`);
-      }
-    }
-  }
+  //    1차는 개수(min). 최종 판정은 카드를 실제로 그려 본 뒤 «글자 수 게이트»(축 페이지 만들기 직전)에서 한다.
+  let open = cfg.axes.filter(a => D[a.slug] && D[a.slug].length >= (a.min || AXES[a.slug].min));
+  let openSet = new Set(open.map(a => a.slug));
 
   const nav = cur => `<div class="cy-nav">${[[`${cfg.emoji} ${KO} 전체`, '']]
     .concat(open.map(a => [AXES[a.slug].label, a.slug]))
@@ -342,6 +330,39 @@ ${body}
     })
   };
 
+  // ── 게이트 2: 글자 수 (2026-11-26)
+  //    개수 기준(min)은 «몇 곳이면 2,000자가 되는가»를 잴 때 쓴 대용값이다(cities.js 단양·포천 주석).
+  //    🔴 그런데 원천에서 1곳만 빠져도 페이지가 통째로 지워졌다 — 단양 «구인사»가 무장애 자료에서 사라져 14→13,
+  //       포천 «산정호수 조각공원»의 설명이 비어 20→19 (둘 다 11/16 갱신). 11/22 빌드가 두 페이지를 지워 404가 났다.
+  //    ⭐ 그래서 개수가 기준의 80% 이상이면 «실제로 그린 본문»을 세어 공백 빼고 2,000자 이상일 때 연다.
+  const textLen = h => String(h).replace(/<style[\s\S]*?<\/style>/g, '').replace(/<[^>]+>/g, '')
+    .replace(/&[a-z#0-9]+;/gi, ' ').replace(/\s+/g, '').length;
+  for (const a of cfg.axes) {
+    if (openSet.has(a.slug) || !D[a.slug]) continue;
+    const list = D[a.slug], min = a.min || AXES[a.slug].min;
+    if (list.length < Math.ceil(min * 0.8)) continue;
+    const body = (FACTS[a.slug] ? FACTS[a.slug](list) : '') + kindLine(list, '분류별')
+      + list.slice(0, AXES[a.slug].show).map(CARD[a.slug]).join('');
+    const len = textLen(body);
+    if (len >= 2000) { open.push(a); console.log(`   ✓ ${base}${a.slug}/ — ${list.length}곳(기준 ${min})이지만 본문 ${len}자라 엽니다`); }
+    else console.log(`   · ${base}${a.slug}/ — ${list.length}곳 · 본문 ${len}자, 2,000자 미달이라 만들지 않습니다`);
+  }
+  open = cfg.axes.filter(a => open.includes(a));
+  openSet = new Set(open.map(a => a.slug));
+
+  // 🗑 정리 — ⚠️ **정적 생성기는 「없어진 항목의 폴더」를 안 지운다.**
+  //    게이트를 올렸더니 통과 못 한 축(여수 숙소 등)의 옛 폴더가 그대로 남아 라이브 200을 반환했다.
+  //    사이트맵엔 없으니 눈에 안 띈다 — 그래서 «만드는 곳에서 지우는 것까지» 같이 한다.
+  {
+    const dir = path.join(ROOT, cfg.key);
+    if (fs.existsSync(dir)) for (const d of fs.readdirSync(dir, { withFileTypes: true })) {
+      if (d.isDirectory() && !openSet.has(d.name)) {
+        fs.rmSync(path.join(dir, d.name), { recursive: true, force: true });
+        console.log(`   🗑 ${base}${d.name}/ 삭제 — 게이트 미달로 더는 만들지 않는 축입니다`);
+      }
+    }
+  }
+
   for (const a of open) {
     const list = D[a.slug], n = list.length, C = COPY[a.slug](n), A = AXES[a.slug];
     mk(a.slug, `${C.t} | ${SITE_NAME}`, C.d, C.h, C.l,
@@ -382,7 +403,8 @@ ${KORY.block(cfg.key, KO, 'ko')}
 ${note(AXES[open[0] ? open[0].slug : 'spot'].src)}`;
 
   const total = open.reduce((s, a) => s + D[a.slug].length, 0);
-  mk('', `${KO} ${open.map(a => AXES[a.slug].label.replace(/^\S+\s/, '')).join('·')} ${MN[mn]} — 지금 갈 만한 ${total}곳 | ${SITE_NAME}`,
+  // 2026-11-26 — 열린 축이 하나도 없을 때 제목에 «지금 갈 만한 0곳»이 찍혔다(단양·제천). 0이면 숫자를 빼고 쓴다.
+  mk('', total ? `${KO} ${open.map(a => AXES[a.slug].label.replace(/^\S+\s/, '')).join('·')} ${MN[mn]} — 지금 갈 만한 ${total}곳 | ${SITE_NAME}` : `${KO} 여행 ${MN[mn]} — 가기 전에 알아둘 것 | ${SITE_NAME}`,
     `${KO} ${open.map(a => `${AXES[a.slug].label.replace(/^\S+\s/, '')} ${D[a.slug].length}곳`).join(', ')}을 한곳에. 공공데이터 기반, 영업시간·주차·날씨까지.`,
     `${cfg.emoji} ${KO} — ${open.map(a => AXES[a.slug].label.replace(/^\S+\s/, '')).join('·')}`,
     `${KO}에서 <b>지금 갈 만한 곳</b>을 한곳에 모았습니다. ${open.map(a => `${AXES[a.slug].label.replace(/^\S+\s/, '')} ${D[a.slug].length}곳`).join(' · ')}${fes.length ? ` · 다가오는 축제 ${fes.length}건` : ''}.`,

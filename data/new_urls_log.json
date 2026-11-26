@@ -442,5 +442,15 @@
   "urls": [
    "/winter/ice-fishing/"
   ]
+ },
+ {
+  "d": "2026-11-26",
+  "n": 4,
+  "urls": [
+   "/danyang/spot/",
+   "/pohang/food/",
+   "/jecheon/spot/",
+   "/pocheon/spot/"
+  ]
  }
 ]
