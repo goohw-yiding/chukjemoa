@@ -90,7 +90,7 @@ except Exception as ex:
     P(f"- GA4 조회 오류: {str(ex)[:200]}")
 # 링크가 실제로 박혀 있는지 — 빌드 결과물 기준
 KL = {"tw/closed": ("137183", "1467024"), "zh/closed": ("137184", "1467027"), "tw/busy": ("137183", "1467029"),
-      "tw/busan": ("137183", "1482478"), "tw/gyeongju": ("137183", "1488589")}
+      "tw/busan": ("137183", "1482478"), "tw/gyeongju": ("137183", "1488589"), "tw/sokcho": ("137183", "1598362")}
 bad = []
 for p, (aid, ad) in KL.items():
     try: s = open(os.path.join(ROOT, p, "index.html"), encoding="utf-8").read()

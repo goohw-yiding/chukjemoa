@@ -119,8 +119,10 @@ const TARGET_ZH = {
   twHotel: 'https://www.klook.com/zh-TW/search/result/?query=' + encodeURIComponent('首爾 飯店'),
   twKtx: 'https://www.klook.com/zh-TW/search/result/?query=KTX',
   twKtxGj: 'https://www.klook.com/zh-TW/search/result/?query=' + encodeURIComponent('慶州 KTX'),
+  twSokcho: 'https://www.klook.com/zh-TW/search/result/?query=' + encodeURIComponent('束草'),
 };
 AD.twKtxGj = '1488589';  // chukjemoa-tw · tw-gyeongju / ktx (2026-10-09, zh-TW 「慶州 KTX」 검색 15건 — 首爾至慶州 KTX NT$1,173 확인)
+AD.twBusSk = '1598362';  // chukjemoa-tw · tw-sokcho / bus (2026-11-27, zh-TW 「束草」 검색 209건 — 首爾-束草 高速巴士票·雪嶽山 首爾出發一日遊 확인)
 const ZH_TXT = {
   tw: { badge: '廣告', note: '透過這個連結預訂，本站會收到介紹費；你支付的金額不會改變。',
     esim: '在韓國要用 NAVER 地圖查營業時間、打電話或看店家 IG，手機都得有網路。韓國用的 eSIM 可以出發前先買好 → ',
@@ -157,6 +159,13 @@ function ktxGjTw() {
     + a(urlZh('tw', TARGET_ZH.twKtxGj, AD.twKtxGj), '看首爾—慶州 KTX 車票（Klook）', 'ktx', 'tw-gyeongju', 'inline-context'), T);
 }
 module.exports.ktxGjTw = ktxGjTw;
+// 2026-11-27 — /tw/sokcho/ : 「속초엔 철도가 없고 동서고속화철도는 2029년 목표 — 서울에서 고속버스나 설악산 당일투어」 사실 문장 바로 뒤 (근거: 아시아경제 2026-07-16)
+function busSokchoTw() {
+  const T = ZH_TXT.tw;
+  return boxZh(badgeZh(T.badge) + '束草目前沒有鐵路，連接春川與束草的「東西高速化鐵路」通車目標已延到 2029 年；從首爾一般搭高速巴士，或參加從首爾出發的雪嶽山一日遊 → '
+    + a(urlZh('tw', TARGET_ZH.twSokcho, AD.twBusSk), '看首爾—束草高速巴士・雪嶽山一日遊（Klook）', 'bus', 'tw-sokcho', 'inline-context'), T);
+}
+module.exports.busSokchoTw = busSokchoTw;
 module.exports.esimZh = esimZh;
 module.exports.hotelTw = hotelTw;
 // 2026-10-20 일본어 회차 — /ja/mountains/ : 「2026年 紅葉の見頃（山林庁予測）」 표의 «雪岳山 10月20日ごろ» 사실 바로 뒤 → 서울발 설악산 단풍 당일 투어
